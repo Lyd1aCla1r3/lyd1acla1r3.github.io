@@ -48,7 +48,7 @@ All writing samples are original documentation I authored. PDFs are snapshots of
 
 ## Case Studies
 
-The pipeline case studies describe systems I designed and built at Gravitee. These are architectural overviews — no proprietary source code is included:
+The pipeline case studies describe systems I designed and built at a leading API management company. These are architectural overviews — no proprietary source code is included:
 
 - **AI Doc Writer Agent** — Multi-stage content generation from PR diffs to publication-ready docs
 - **Analytics Deflection Engine** — 9-step pipeline transforming AI assistant analytics into documentation improvement reports
