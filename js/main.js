@@ -82,7 +82,7 @@
      ================================================================== */
 
   // Chip center (the image is at bottom:-60, right:-60, 580x580)
-  function chipX() { return W - 230; }
+  function chipX() { return W - 90; }
   function chipY() { return H - 230; }
 
   // Hex node: upper-left corner area
