@@ -804,8 +804,8 @@ main, .nav, .footer {
 }
 .sample-card__link:hover { gap: 10px; }
 .sample-card__link svg { width: 16px; height: 16px; }
-.sample-card__link--pdf { color: var(--text-muted); }
-.sample-card__link--pdf:hover { color: var(--rose-gold); }
+.sample-card__link--pdf, .sample-card__link--live { color: var(--text-muted); }
+.sample-card__link--pdf:hover, .sample-card__link--live:hover { color: var(--rose-gold); }
 .sample-card__link--request {
   color: var(--text-muted);
   font-style: italic;
