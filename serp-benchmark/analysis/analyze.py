@@ -37,6 +37,9 @@ def generate_charts(df, charts_dir, blog_charts_dir):
 
     def apply_ombre(ax, gradient_keys):
         """Applies an ombre gradient strictly to the bar containers."""
+        from matplotlib.image import BboxImage
+        from matplotlib.transforms import Bbox, TransformedBbox
+        
         for group_idx, container in enumerate(ax.containers):
             if group_idx >= len(gradient_keys): break
             key = gradient_keys[group_idx]
@@ -51,7 +54,13 @@ def generate_charts(df, charts_dir, blog_charts_dir):
                 w, h = patch.get_width(), patch.get_height()
                 
                 patch.set_visible(False)
-                ax.imshow(gradient, extent=[x, x+w, y, y+h], aspect='auto', cmap=cmap, origin='lower', zorder=2)
+                
+                # Use BboxImage which safely bypasses categorical axis converters
+                bbox = Bbox.from_bounds(x, y, w, h)
+                bbox = TransformedBbox(bbox, ax.transData)
+                bbox_image = BboxImage(bbox, cmap=cmap, origin='lower', zorder=2)
+                bbox_image.set_data(gradient)
+                ax.add_artist(bbox_image)
                 
                 # Subtle border
                 rect = patches.Rectangle((x, y), w, h, linewidth=0.5, edgecolor='#cccccc', facecolor='none', zorder=3)
