@@ -7,12 +7,28 @@ from pathlib import Path
 import seaborn as sns
 
 def generate_charts(df, charts_dir, blog_charts_dir):
+    # Professional, publication-ready aesthetics
     sns.set_theme(style="whitegrid")
+    plt.rcParams.update({
+        'font.family': 'sans-serif',
+        'font.weight': 'medium',
+        'axes.labelweight': 'bold',
+        'axes.titleweight': 'bold',
+        'axes.spines.top': False,
+        'axes.spines.right': False,
+        'axes.spines.left': False,
+        'axes.grid': True,
+        'grid.color': '#E0E0E0',
+        'grid.linestyle': '--',
+        'grid.linewidth': 0.8,
+        'axes.axisbelow': True,
+    })
+    
     # Custom colors mapping from the portfolio CSS
     colors = {
         'yield': '#b76e79',       # --rose-gold
-        'citations': '#c9a96e',   # --gold
-        'blocks': '#8b4f5a'       # --rose-gold-dark
+        'Citations': '#c9a96e',   # --gold
+        'Text Blocks': '#8b4f5a'  # --rose-gold-dark
     }
     
     def save_dual(filename):
@@ -26,57 +42,75 @@ def generate_charts(df, charts_dir, blog_charts_dir):
         detection_rates = df.groupby('provider')['present'].mean() * 100
         detection_rates = detection_rates.sort_values(ascending=False)
         
-        plt.figure(figsize=(8, 5))
-        ax = sns.barplot(x=detection_rates.index, y=detection_rates.values, color=colors['yield'])
+        plt.figure(figsize=(9, 5.5))
+        ax = sns.barplot(x=detection_rates.index, y=detection_rates.values, color=colors['yield'], width=0.5)
         
-        # Styling
-        sns.despine(top=True, right=True)
-        plt.title('AI Overview Detection Yield', fontsize=16, pad=20, fontfamily='sans-serif', fontweight='bold')
+        plt.title('AI Overview Detection Yield', fontsize=16, pad=20)
         plt.ylabel('Extraction Rate (%)', fontsize=12)
         plt.xlabel('', fontsize=12)
-        plt.ylim(0, 110)
+        plt.ylim(0, 105)
+        import numpy as np
+        plt.yticks(np.arange(0, 101, 10))
         
         # Direct Labeling
         for i, v in enumerate(detection_rates.values):
-            ax.text(i, v + 2, f"{v:.1f}%", ha='center', va='bottom', fontsize=11, fontweight='bold')
+            ax.text(i, v + 2, f"{v:.1f}%", ha='center', va='bottom', fontsize=11, fontweight='bold', color='#333333')
             
         save_dual('detection_yield.png')
 
-    # 2. Extraction Richness (Citations and Text Blocks)
+    # 2. Extraction Richness (Combined Grouped Bar Chart)
     present_df = df[df['present'] == True]
-    all_providers = df['provider'].unique()
     if not present_df.empty:
-        # Average Citations
-        avg_citations = present_df.groupby('provider')['citations_count'].mean().reindex(all_providers, fill_value=0)
-        avg_citations = avg_citations.sort_values(ascending=False)
+        active_providers = present_df['provider'].unique()
         
-        plt.figure(figsize=(8, 5))
-        ax = sns.barplot(x=avg_citations.index, y=avg_citations.values, color=colors['citations'])
-        sns.despine(top=True, right=True)
-        plt.title('Extraction Richness: Citations Preserved', fontsize=16, pad=20, fontfamily='sans-serif', fontweight='bold')
-        plt.ylabel('Average Citations per AI Overview', fontsize=12)
+        avg_citations = present_df.groupby('provider')['citations_count'].mean().reindex(active_providers)
+        avg_blocks = present_df.groupby('provider')['text_blocks_count'].mean().reindex(active_providers)
+        
+        # Create a combined DataFrame for melting
+        richness_df = pd.DataFrame({
+            'provider': active_providers,
+            'Citations': avg_citations.values,
+            'Text Blocks': avg_blocks.values
+        })
+        
+        # Sort by Citations descending for aesthetic flow
+        richness_df = richness_df.sort_values(by='Citations', ascending=False)
+        
+        melted_df = richness_df.melt(id_vars='provider', var_name='Metric', value_name='Average Count')
+        
+        plt.figure(figsize=(9, 5.5))
+        ax = sns.barplot(
+            data=melted_df, 
+            x='provider', 
+            y='Average Count', 
+            hue='Metric',
+            palette={'Citations': colors['Citations'], 'Text Blocks': colors['Text Blocks']},
+            width=0.6
+        )
+        
+        plt.title('Extraction Richness: Citations & Text Blocks', fontsize=16, pad=20)
+        plt.ylabel('Average Count per AI Overview', fontsize=12)
         plt.xlabel('', fontsize=12)
         
-        for i, v in enumerate(avg_citations.values):
-            ax.text(i, v + 0.2, f"{v:.1f}", ha='center', va='bottom', fontsize=11, fontweight='bold')
-            
-        save_dual('richness_citations.png')
-
-        # Average Text Blocks
-        avg_blocks = present_df.groupby('provider')['text_blocks_count'].mean().reindex(all_providers, fill_value=0)
-        avg_blocks = avg_blocks.sort_values(ascending=False)
+        # Add granular ticks for the count
+        max_val = melted_df['Average Count'].max()
+        if max_val > 0:
+            tick_step = 1 if max_val <= 10 else 2
+            plt.yticks(np.arange(0, int(max_val) + 2, tick_step))
         
-        plt.figure(figsize=(8, 5))
-        ax = sns.barplot(x=avg_blocks.index, y=avg_blocks.values, color=colors['blocks'])
-        sns.despine(top=True, right=True)
-        plt.title('Extraction Richness: Text Blocks Preserved', fontsize=16, pad=20, fontfamily='sans-serif', fontweight='bold')
-        plt.ylabel('Average Text Blocks per AI Overview', fontsize=12)
-        plt.xlabel('', fontsize=12)
-        
-        for i, v in enumerate(avg_blocks.values):
-            ax.text(i, v + 0.2, f"{v:.1f}", ha='center', va='bottom', fontsize=11, fontweight='bold')
+        # Direct Labeling on grouped bars
+        for p in ax.patches:
+            if p.get_height() > 0:
+                ax.annotate(f"{p.get_height():.1f}", 
+                            (p.get_x() + p.get_width() / 2., p.get_height()), 
+                            ha='center', va='bottom', 
+                            xytext=(0, 5), textcoords='offset points',
+                            fontsize=10, fontweight='bold', color='#333333')
+                
+        # Style Legend
+        plt.legend(title='', frameon=False, loc='upper right', fontsize=11)
             
-        save_dual('richness_text_blocks.png')
+        save_dual('richness_combined.png')
 
 def main():
     root_dir = Path(__file__).parent.parent
