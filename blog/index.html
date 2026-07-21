@@ -9,12 +9,14 @@
   <style>
     .blog-list { max-width: 800px; margin: 0 auto; padding: var(--space-4xl) var(--space-md); }
     .blog-item {
-        background: var(--bg-card);
+        background: rgba(255, 255, 255, 0.65);
         padding: var(--space-xl);
         border-radius: var(--radius-lg);
         border: 1px solid var(--border-subtle);
         margin-bottom: var(--space-lg);
         transition: transform 0.2s ease, box-shadow 0.2s ease;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
     }
     .blog-item:hover {
         transform: translateY(-2px);
@@ -26,6 +28,8 @@
   </style>
 </head>
 <body>
+  <!-- Fixed chip visual (always visible, bottom-left, behind everything) -->
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
   <!-- Full-screen overlay canvas for the diagonal binary→agent→text animation -->
   <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
 
@@ -44,7 +48,7 @@
 
   <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-2xl));">
     <div class="container blog-list">
-        <h1 class="section-title">Blog</h1>
+        <h1 class="section-title" style="text-align: center; padding-left: 200px;">Blog</h1>
         <a href="serp-api-benchmark.html">
             <article class="blog-item">
                 <h2>Benchmarking SERP API Fidelity for AI Overviews</h2>

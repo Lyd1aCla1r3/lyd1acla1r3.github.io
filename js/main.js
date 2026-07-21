@@ -69,11 +69,11 @@
   window.addEventListener('resize', resize);
 
   // Colors
-  var RG  = 'rgba(185, 115, 130, ';
-  var RGD = 'rgba(160, 90, 110, ';
-  var GD  = 'rgba(195, 165, 95, ';
-  var GDD = 'rgba(160, 130, 60, ';
-  var WH  = 'rgba(255, 230, 220, ';
+  var RG  = 'rgba(230, 160, 175, ';
+  var RGD = 'rgba(200, 130, 150, ';
+  var GD  = 'rgba(235, 205, 145, ';
+  var GDD = 'rgba(200, 170, 100, ';
+  var WH  = 'rgba(255, 245, 240, ';
 
   /* ==================================================================
      KEY POSITIONS

@@ -46,24 +46,30 @@
     .blog-post a:hover {
         border-bottom-color: var(--text-accent);
     }
-    .blog-post code {
-        background: var(--bg-tertiary);
-        color: var(--text-primary);
-        padding: 0.2em 0.4em;
-        border-radius: 4px;
-        font-family: var(--font-mono);
-        font-size: 0.9em;
+    .blog-post {
+        background: rgba(255, 255, 255, 0.65);
+        padding: var(--space-2xl);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-subtle);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
     }
-    .blog-post blockquote {
-        border-left: 4px solid var(--border-accent);
-        margin-left: 0;
-        padding-left: var(--space-lg);
-        font-style: italic;
-        color: var(--text-muted);
-    }
+    .blog-post h1 { margin-top: 0; font-family: var(--font-display); color: var(--text-primary); font-size: 2.5rem; line-height: 1.1; margin-bottom: 0.5rem; }
+    .blog-post .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; display: flex; gap: 1rem; align-items: center; }
+    .blog-post .meta span { display: inline-flex; align-items: center; gap: 0.25rem; }
+    .blog-post h2 { font-family: var(--font-display); color: var(--text-primary); margin-top: 2.5rem; margin-bottom: 1rem; font-size: 1.8rem; }
+    .blog-post h3 { font-family: var(--font-display); color: var(--text-primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.4rem; }
+    .blog-post p { line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1.05rem; }
+    .blog-post ul, .blog-post ol { margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem; }
+    .blog-post li { margin-bottom: 0.5rem; }
+    .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+    .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
   </style>
 </head>
 <body>
+  <!-- Fixed chip visual (always visible, bottom-left, behind everything) -->
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
   <!-- Full-screen overlay canvas for the diagonal binary→agent→text animation -->
   <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
 

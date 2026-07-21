@@ -182,7 +182,13 @@ body {
   line-height: var(--lh-normal);
   color: var(--text-primary);
   background-color: rgba(253, 248, 244, 0.15);
-  overflow-x: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
 }
 
 img { max-width: 100%; height: auto; display: block; }
@@ -353,17 +359,16 @@ ul, ol { list-style: none; }
   right: -180px;
   width: 580px;
   height: 580px;
-  z-index: 0;
+  z-index: 1;
   pointer-events: none;
-  transform: scaleX(-1) rotate(12deg);
+  background-image: url('../assets/images/gpu-chip.jpg');
+  background-size: cover;
+  background-position: center;
+  transform: scaleX(-1) rotate(12deg) translateZ(0);
   transform-origin: center center;
-}
-
-.chip-visual__img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 16px;
+  will-change: transform, opacity;
+  
+  /* Move mask and opacity to the container to avoid Safari object-fit mask bugs */
   opacity: 0.55;
   mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 35%, transparent 72%);
   -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 35%, transparent 72%);
@@ -375,14 +380,15 @@ ul, ol { list-style: none; }
   inset: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 1;
+  z-index: 2;
   pointer-events: none;
+  transform: translateZ(0);
 }
 
 /* All content above the animation */
 main, .nav, .footer {
   position: relative;
-  z-index: 2;
+  z-index: 10;
 }
 
 /* Semi-transparent backgrounds — graphic ALWAYS visible */
@@ -1069,8 +1075,8 @@ main, .nav, .footer {
 /* ---------- Responsive ---------- */
 
 /* Prevent horizontal overflow globally */
-html, body {
-  overflow-x: hidden;
+html {
+  /* overflow-x: hidden removed to prevent Safari fixed-element culling */
 }
 
 @media (max-width: 1024px) {
