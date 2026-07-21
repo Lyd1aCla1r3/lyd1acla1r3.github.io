@@ -81,8 +81,13 @@
         <li><a href="../index.html#about" class="nav__link">About</a></li>
         <li><a href="../index.html#samples" class="nav__link">Writing</a></li>
         <li><a href="../index.html#case-studies" class="nav__link">Engineering</a></li>
+        <li><a href="../index.html#skills" class="nav__link">Skills</a></li>
         <li><a href="index.html" class="nav__link">Blog</a></li>
+        <li><a href="../index.html#contact" class="nav__link">Contact</a></li>
       </ul>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="nav__toggle-icon"></span>
+      </button>
     </div>
   </nav>
 
@@ -164,7 +169,7 @@
 <p>Real technical research has a rig, and every claim in this article is fully reproducible. I have open-sourced the entire benchmarking framework, including the Python harness, the scoring logic, and the exact raw JSON responses used to generate these charts.</p>
 <p><strong>To reproduce this benchmark from scratch:</strong>
 Clone the repo, add your API keys to <code>config.yaml</code>, and run <code>python benchmark/run.py</code> followed by <code>python analysis/analyze.py</code>. The runner queries all four SERP APIs with the same 50 queries and extracts the AI Overviews using the provider-specific parsing modules. The analyzer script generates the comparison charts and aggregate yield statistics published in this article.</p>
-<p>You can view the code, audit the raw data, and run the rig yourself at my GitHub repository here: <a href="https://github.com/lyd1acla1r3/serp-benchmark">SERP API Benchmark Framework</a></p>
+<p>You can view the code, audit the raw data, and run the rig yourself at my GitHub repository here: <a href="https://github.com/Lyd1aCla1r3/lyd1acla1r3.github.io/tree/main/serp-benchmark">SERP API Benchmark Framework</a></p>
 <hr />
 <h2>What I'd Measure Next</h2>
 <p>This benchmark captures AI Overview parsing fidelity at a single point in time, but search engine behavior changes frequently. If I were to expand this research, I would focus on two vectors:</p>
