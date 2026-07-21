@@ -1,0 +1,24 @@
+# API Keys for SERP providers
+# Get your keys from the respective provider dashboards
+api_keys:
+  searchapi: "YOUR_SEARCHAPI_KEY_HERE"
+  serpapi: "YOUR_SERPAPI_KEY_HERE"
+  serper: "YOUR_SERPER_KEY_HERE"
+  dataforseo: "YOUR_DATAFORSEO_LOGIN:YOUR_DATAFORSEO_PASSWORD"
+
+# Benchmark Configuration
+config:
+  # The path to the query dataset
+  queries_path: "queries.json"
+  
+  # The path where gold standard captures will be saved
+  gold_standard_dir: "gold_standard/verified"
+  
+  # The path where API benchmark results will be saved
+  results_dir: "results"
+
+  # Rate limiting between requests in seconds
+  rate_limit_seconds: 1.0
+
+  # Maximum number of retries per query per provider
+  max_retries: 3

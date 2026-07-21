@@ -1,0 +1,325 @@
+{
+  "query": "rules of the game go",
+  "intent": "long-tail",
+  "scores": {
+    "SearchApi": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "SerpApi": {
+      "extracted": {
+        "present": true,
+        "summary": "",
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "snippet": "Go is a strategy game played on a grid. Black moves first, placing one stone on an intersection. Players take turns claiming territory and capturing enemy stones. The player with the most territory and captured pieces at the end of the game wins.",
+            "snippet_links": [
+              {
+                "link": "https://www.youtube.com/watch?v=6VSIf7sAGSU"
+              }
+            ],
+            "snippet_highlighted_words": [
+              "Black moves first, placing one stone on an intersection. Players take turns claiming territory and capturing enemy stones. The player with the most territory and captured pieces at the end of the game wins"
+            ],
+            "reference_indexes": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Here are the essential rules:"
+          },
+          {
+            "type": "heading",
+            "snippet": "1. The Board and Pieces"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Go is played on a grid of intersections. While traditional boards are 19 \u00d7 19, beginners often start on 9 \u00d7 9 or 13 \u00d7 13 boards."
+              },
+              {
+                "snippet": "Players use two colors of stones: Black and White. Black always goes first, placing the first stone on any empty intersection."
+              },
+              {
+                "snippet": "Once played, stones do not move. They are only removed if they are captured."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "2. Liberties"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Liberties are the empty intersections immediately adjacent (vertically or horizontally) to a stone.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.youtube.com/watch?v=6VSIf7sAGSU"
+                  }
+                ],
+                "reference_indexes": [
+                  5
+                ]
+              },
+              {
+                "snippet": "Stones of the same color connected along the lines are considered a single group. They share all the liberties of the individual stones in that group.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.youtube.com/watch?v=6VSIf7sAGSU"
+                  }
+                ],
+                "reference_indexes": [
+                  6
+                ]
+              },
+              {
+                "snippet": "If all the liberties of a stone or group are blocked by the opponent, the stones are captured and removed from the board as \"prisoners\".",
+                "snippet_links": [
+                  {
+                    "link": "https://www.youtube.com/watch?v=6VSIf7sAGSU"
+                  }
+                ],
+                "reference_indexes": [
+                  3
+                ]
+              },
+              {
+                "snippet": "A stone or group with only one liberty remaining is in Atari (similar to \"check\" in chess).",
+                "snippet_links": [
+                  {
+                    "link": "https://www.youtube.com/watch?v=6VSIf7sAGSU"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              3
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "3. The Ko Rule (No Repetition)"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "You are not allowed to make a move that would exactly repeat a previous board position."
+              },
+              {
+                "snippet": "This specifically prevents the situation called Ko, where two stones endlessly capture each other back and forth. If a stone is captured in a Ko, the capturing player must play elsewhere on the board for at least one turn before their opponent can recapture it.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.youtube.com/watch?v=6VSIf7sAGSU"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              5,
+              7
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "4. Eyes and Life"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "To keep your groups safe from being captured, they must have two \"eyes\". An eye is an isolated, empty space completely enclosed by your stones.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.youtube.com/watch?v=Lh-_4fh5plI"
+                  }
+                ]
+              },
+              {
+                "snippet": "If a group has two separate eyes, the opponent can never capture it because they can only play in one eye at a time, which is not an illegal self-capture."
+              }
+            ],
+            "reference_indexes": [
+              0,
+              8
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "5. Winning and Scoring"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "The game ends when both players pass consecutively (indicating there are no more profitable or safe moves to make).",
+                "snippet_links": [
+                  {
+                    "link": "https://www.youtube.com/watch?v=6VSIf7sAGSU"
+                  }
+                ],
+                "reference_indexes": [
+                  3
+                ]
+              },
+              {
+                "snippet": "A player's score is calculated by the total number of empty intersections they successfully enclosed (their territory) plus the number of opponent stones they captured.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.youtube.com/watch?v=6VSIf7sAGSU"
+                  }
+                ],
+                "reference_indexes": [
+                  3
+                ]
+              },
+              {
+                "snippet": "Because Black has the advantage of going first, White is usually awarded bonus points called Komi (typically 6.5 or 7.5 points) to prevent ties.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.youtube.com/watch?v=6VSIf7sAGSU"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "For a quick, visual demonstration of the game's core concepts in action:",
+            "video": {
+              "link": "https://www.youtube.com/watch?v=6VSIf7sAGSU",
+              "thumbnail": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRAMDleIh2TE2sPmdn9arS6_LziUJ0aXKmpeu8ovavlaYmw4XlM"
+            }
+          }
+        ],
+        "citations": [
+          {
+            "url": "https://www.youtube.com/watch?v=6VSIf7sAGSU",
+            "title": "How to Play Go - Learn In 5 Minutes!",
+            "snippet": "hello everyone this is Colossus. and today we're going to be learning how to play Go in under five. minutes go is a two-player game with one player taking the b"
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=Lh-_4fh5plI",
+            "title": "How to Play Go | Learn to Play Board Games #WEGames",
+            "snippet": "and today I'm going to be going over Go a game where your brain will feel like it's doing gymnastics on a trampoline it's easy to learn but can take a lifetime"
+          },
+          {
+            "url": "https://www.britgo.org/intro/intro2.html",
+            "title": "How to Play | British Go Association",
+            "snippet": "The rules. A game of Go starts with an empty board. Each player has an effectively unlimited supply of pieces (called stones), one taking the black stones, the"
+          },
+          {
+            "url": "https://woodexpressions.com/pages/how-to-play-go-rules-setup-and-strategy",
+            "title": "How to Play Go: Rules, Setup, and Strategy - Wood Expressions",
+            "snippet": "Go Setup. Place the board between two players. One player takes black stones, and the other takes white stones. The board starts empty. The player with black st..."
+          },
+          {
+            "url": "https://en.wikipedia.org/wiki/Rules_of_Go",
+            "title": "Rules of Go - Wikipedia",
+            "snippet": "Players and equipment * Rule 1. Players: Go is a game between two players, called Black and White. * Rule 2. Board: Go is played on a plain grid o"
+          },
+          {
+            "url": "https://en.wikipedia.org/wiki/Go_(game)",
+            "title": "Go (game) - Wikipedia",
+            "snippet": "Rules. ... Aside from the order of play (alternating moves, Black moves first or takes a handicap) and scoring rules, there are essentially only two rules in Go..."
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=cFVM_hwh56s",
+            "title": "How To Play Go (Beginner Tutorial)",
+            "snippet": "board there are 81 intersections. the player of the black markers is the first to take a turn black plays a marker on the board. after the marker is placed play"
+          },
+          {
+            "url": "https://www.mastersofgames.com/rules/go-rules.htm",
+            "title": "The Rules / Instructions of Go or Wei Chi",
+            "snippet": "To play the game of Go, you need: * **Board** A flat table or a traditional floor-board with legs * **Pieces** Black and white lens-shaped discs called stones T..."
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=oZTdT8MQexk",
+            "title": "Rules Explained | Beginner Tutorial on Go Game, Baduk, Weiqi - YouTube",
+            "snippet": "all the stones are identical by the way so there are no stones with special abilities you wouldn't have to remember how each individual stone has to be played t..."
+          }
+        ],
+        "related_searches": []
+      }
+    },
+    "Serper": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "DataForSEO": {
+      "extracted": {
+        "present": true,
+        "summary": "![How to Play Go: Setup, Strategy &amp; Gameplay Explained](https://api.dataforseo.com/cdn/i/07210110-2120-0139-0000-7df23cf9bb0e:6)\nGo is a strategy game played on a grid. `Black moves first, placing one stone on an intersection. Players take turns claiming territory and capturing enemy stones. The player with the most territory and captured pieces at the end of the game wins`.[](https://www.youtube.com/watch?v=6VSIf7sAGSU) [[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)[[2]](https://www.youtube.com/watch?v=Lh-_4fh5plI)[[3]](https://www.britgo.org/intro/intro2.html)[[4]](https://woodexpressions.com/pages/how-to-play-go-rules-setup-and-strategy)\n\nHere are the essential rules:\n\n1. The Board and Pieces\n\n- Go is played on a grid of intersections. While traditional boards are 19 \u00d7 19, beginners often start on 9 \u00d7 9 or 13 \u00d7 13 boards.\n- Players use two colors of stones: Black and White. Black always goes first, placing the first stone on any empty intersection.\n- Once played, stones do not move . They are only removed if they are captured.[](https://www.youtube.com/watch?v=6VSIf7sAGSU) [[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)[[2]](https://en.wikipedia.org/wiki/Rules_of_Go)[[3]](https://www.britgo.org/intro/intro2.html)[[4]](https://woodexpressions.com/pages/how-to-play-go-rules-setup-and-strategy)\n\n2. Liberties\n\n- Liberties are the empty intersections immediately adjacent (vertically or horizontally) to a stone.[](https://www.youtube.com/watch?v=6VSIf7sAGSU) [[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)[[2]](https://en.wikipedia.org/wiki/Go_%28game%29)\n- Stones of the same color connected along the lines are considered a single group. They share all the liberties of the individual stones in that group.[](https://www.youtube.com/watch?v=6VSIf7sAGSU) [[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)[[2]](https://www.youtube.com/watch?v=cFVM_hwh56s)\n- If all the liberties of a stone or group are blocked by the opponent, the stones are captured and removed from the board as \"prisoners\".[](https://www.youtube.com/watch?v=6VSIf7sAGSU) [[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)[[2]](https://woodexpressions.com/pages/how-to-play-go-rules-setup-and-strategy)\n- A stone or group with only one liberty remaining is in `Atari` (similar to \"check\" in chess).[](https://www.youtube.com/watch?v=6VSIf7sAGSU) [[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)[[2]](https://woodexpressions.com/pages/how-to-play-go-rules-setup-and-strategy)\n\n3. The Ko Rule (No Repetition)\n\n- You are not allowed to make a move that would exactly repeat a previous board position.\n- This specifically prevents the situation called `Ko` , where two stones endlessly capture each other back and forth. If a stone is captured in a Ko, the capturing player must play elsewhere on the board for at least one turn before their opponent can recapture it.[](https://www.youtube.com/watch?v=6VSIf7sAGSU) [[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)[[2]](https://www.mastersofgames.com/rules/go-rules.htm)[[3]](https://en.wikipedia.org/wiki/Go_%28game%29)\n\n4. Eyes and Life\n\n- To keep your groups safe from being captured, they must have two \"eyes\". An eye is an isolated, empty space completely enclosed by your stones.[](https://www.youtube.com/watch?v=Lh-_4fh5plI) [[1]](https://www.youtube.com/watch?v=Lh-_4fh5plI)\n- If a group has two separate eyes, the opponent can never capture it because they can only play in one eye at a time, which is not an illegal self-capture.[[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)[[2]](https://www.youtube.com/watch?v=oZTdT8MQexk)\n\n5. Winning and Scoring\n\n- The game ends when both players pass consecutively (indicating there are no more profitable or safe moves to make).[](https://www.youtube.com/watch?v=6VSIf7sAGSU) [[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)[[2]](https://woodexpressions.com/pages/how-to-play-go-rules-setup-and-strategy)\n- A player's score is calculated by the total number of empty intersections they successfully enclosed (their territory) plus the number of opponent stones they captured.[](https://www.youtube.com/watch?v=6VSIf7sAGSU) [[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)[[2]](https://woodexpressions.com/pages/how-to-play-go-rules-setup-and-strategy)\n- Because Black has the advantage of going first, White is usually awarded bonus points called `Komi` (typically 6.5 or 7.5 points) to prevent ties.[](https://www.youtube.com/watch?v=6VSIf7sAGSU) [[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)\n\nFor a quick, visual demonstration of the game's core concepts in action:![Related video thumbnail](https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRAMDleIh2TE2sPmdn9arS6_LziUJ0aXKmpeu8ovavlaYmw4XlM)\n3:19[How to Play Go - Learn In 5 Minutes!26K views \u00a0\u00b7\u00a04 years ago![](https://api.dataforseo.com/cdn/i/07210110-2120-0139-0000-7df23cf9bb0e:7)\nYouTube\u00a0\u00b7\u00a0Shawn Ray](https://www.youtube.com/watch?v=6VSIf7sAGSU)",
+        "text_blocks": [
+          "![How to Play Go: Setup, Strategy &amp; Gameplay Explained](https://api.dataforseo.com/cdn/i/07210110-2120-0139-0000-7df23cf9bb0e:6)\nGo is a strategy game played on a grid. `Black moves first, placing one stone on an intersection. Players take turns claiming territory and capturing enemy stones. The player with the most territory and captured pieces at the end of the game wins`.[](https://www.youtube.com/watch?v=6VSIf7sAGSU) [[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)[[2]](https://www.youtube.com/watch?v=Lh-_4fh5plI)[[3]](https://www.britgo.org/intro/intro2.html)[[4]](https://woodexpressions.com/pages/how-to-play-go-rules-setup-and-strategy)\n\nHere are the essential rules:\n\n1. The Board and Pieces\n\n- Go is played on a grid of intersections. While traditional boards are 19 \u00d7 19, beginners often start on 9 \u00d7 9 or 13 \u00d7 13 boards.\n- Players use two colors of stones: Black and White. Black always goes first, placing the first stone on any empty intersection.\n- Once played, stones do not move . They are only removed if they are captured.[](https://www.youtube.com/watch?v=6VSIf7sAGSU) [[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)[[2]](https://en.wikipedia.org/wiki/Rules_of_Go)[[3]](https://www.britgo.org/intro/intro2.html)[[4]](https://woodexpressions.com/pages/how-to-play-go-rules-setup-and-strategy)\n\n2. Liberties\n\n- Liberties are the empty intersections immediately adjacent (vertically or horizontally) to a stone.[](https://www.youtube.com/watch?v=6VSIf7sAGSU) [[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)[[2]](https://en.wikipedia.org/wiki/Go_%28game%29)\n- Stones of the same color connected along the lines are considered a single group. They share all the liberties of the individual stones in that group.[](https://www.youtube.com/watch?v=6VSIf7sAGSU) [[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)[[2]](https://www.youtube.com/watch?v=cFVM_hwh56s)\n- If all the liberties of a stone or group are blocked by the opponent, the stones are captured and removed from the board as \"prisoners\".[](https://www.youtube.com/watch?v=6VSIf7sAGSU) [[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)[[2]](https://woodexpressions.com/pages/how-to-play-go-rules-setup-and-strategy)\n- A stone or group with only one liberty remaining is in `Atari` (similar to \"check\" in chess).[](https://www.youtube.com/watch?v=6VSIf7sAGSU) [[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)[[2]](https://woodexpressions.com/pages/how-to-play-go-rules-setup-and-strategy)\n\n3. The Ko Rule (No Repetition)\n\n- You are not allowed to make a move that would exactly repeat a previous board position.\n- This specifically prevents the situation called `Ko` , where two stones endlessly capture each other back and forth. If a stone is captured in a Ko, the capturing player must play elsewhere on the board for at least one turn before their opponent can recapture it.[](https://www.youtube.com/watch?v=6VSIf7sAGSU) [[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)[[2]](https://www.mastersofgames.com/rules/go-rules.htm)[[3]](https://en.wikipedia.org/wiki/Go_%28game%29)\n\n4. Eyes and Life\n\n- To keep your groups safe from being captured, they must have two \"eyes\". An eye is an isolated, empty space completely enclosed by your stones.[](https://www.youtube.com/watch?v=Lh-_4fh5plI) [[1]](https://www.youtube.com/watch?v=Lh-_4fh5plI)\n- If a group has two separate eyes, the opponent can never capture it because they can only play in one eye at a time, which is not an illegal self-capture.[[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)[[2]](https://www.youtube.com/watch?v=oZTdT8MQexk)\n\n5. Winning and Scoring\n\n- The game ends when both players pass consecutively (indicating there are no more profitable or safe moves to make).[](https://www.youtube.com/watch?v=6VSIf7sAGSU) [[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)[[2]](https://woodexpressions.com/pages/how-to-play-go-rules-setup-and-strategy)\n- A player's score is calculated by the total number of empty intersections they successfully enclosed (their territory) plus the number of opponent stones they captured.[](https://www.youtube.com/watch?v=6VSIf7sAGSU) [[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)[[2]](https://woodexpressions.com/pages/how-to-play-go-rules-setup-and-strategy)\n- Because Black has the advantage of going first, White is usually awarded bonus points called `Komi` (typically 6.5 or 7.5 points) to prevent ties.[](https://www.youtube.com/watch?v=6VSIf7sAGSU) [[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)\n\nFor a quick, visual demonstration of the game's core concepts in action:![Related video thumbnail](https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRAMDleIh2TE2sPmdn9arS6_LziUJ0aXKmpeu8ovavlaYmw4XlM)\n3:19[How to Play Go - Learn In 5 Minutes!26K views \u00a0\u00b7\u00a04 years ago![](https://api.dataforseo.com/cdn/i/07210110-2120-0139-0000-7df23cf9bb0e:7)\nYouTube\u00a0\u00b7\u00a0Shawn Ray](https://www.youtube.com/watch?v=6VSIf7sAGSU)"
+        ],
+        "citations": [
+          {
+            "url": "https://www.youtube.com/watch?v=6VSIf7sAGSU",
+            "title": "How to Play Go - Learn In 5 Minutes!",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.britgo.org/intro/intro2.html",
+            "title": "How to Play | British Go Association",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.mastersofgames.com/rules/go-rules.htm",
+            "title": "The Rules / Instructions of Go or Wei Chi",
+            "snippet": ""
+          },
+          {
+            "url": "https://en.wikipedia.org/wiki/Rules_of_Go",
+            "title": "Rules of Go - Wikipedia",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=Lh-_4fh5plI",
+            "title": "How to Play Go | Learn to Play Board Games #WEGames",
+            "snippet": ""
+          },
+          {
+            "url": "https://woodexpressions.com/pages/how-to-play-go-rules-setup-and-strategy",
+            "title": "How to Play Go: Rules, Setup, and Strategy - Wood Expressions",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=cFVM_hwh56s",
+            "title": "How To Play Go (Beginner Tutorial)",
+            "snippet": ""
+          },
+          {
+            "url": "https://en.wikipedia.org/wiki/Go_%28game%29",
+            "title": "Go (game) - Wikipedia",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/shorts/tL1VUla6Vpk",
+            "title": "How to Play Game of Go | Go Game Rules \ud83c\udf8b #GoGame #BoardGame ...",
+            "snippet": ""
+          }
+        ],
+        "related_searches": []
+      }
+    }
+  }
+}

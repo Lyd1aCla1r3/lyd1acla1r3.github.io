@@ -1,0 +1,232 @@
+{
+  "query": "how to file a small claims court case",
+  "intent": "informational",
+  "scores": {
+    "SearchApi": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "SerpApi": {
+      "extracted": {
+        "present": true,
+        "summary": "",
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "snippet": "To file a small claims case, determine the correct local courthouse, complete the required claim form (often called a Statement or Affidavit of Claim), pay the filing fee, and formally serve the defendant.",
+            "snippet_links": [
+              {
+                "link": "https://www.nycourts.gov/new-york-city-small-claims-court/starting-case-nyc-small-claims-court"
+              }
+            ],
+            "reference_indexes": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "Step 1: Confirm Jurisdiction and Venue"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Limits: Small claims courts handle disputes below a specific monetary cap (e.g., $10,000 in New York, $12,500 in California)."
+              },
+              {
+                "snippet": "Location:\nFile your case in the district or county court where the defendant lives, works, or where the dispute originated.",
+                "snippet_links": [
+                  {
+                    "link": "https://selfhelp.courts.ca.gov/small-claims-california"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              0,
+              3,
+              4,
+              5
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "Step 2: Fill Out Your Forms"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Gather all relevant evidence, contracts, and receipts."
+              },
+              {
+                "snippet": "Obtain the required forms online or from your local court clerk\u2019s office\n. Ensure you have the exact legal name and address of the person or business you are suing."
+              },
+              {
+                "snippet": "Sign the forms in front of a court clerk or a notary public, if required.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.flcourts.gov/Courts-System/florida-courts-help/other-resources/Small-Claims"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              2,
+              6,
+              7,
+              8
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "Step 3: Pay the Filing Fee"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Filing fees typically range from $15 to $100, depending on the amount claimed and your local jurisdiction."
+              },
+              {
+                "snippet": "If you cannot afford the fee, ask the clerk for a\nfee waiver form.",
+                "snippet_links": [
+                  {
+                    "link": "https://selfhelp.courts.ca.gov/small-claims-california"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              3,
+              0
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "Step 4: Serve the Defendant"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "The defendant must be formally notified of the lawsuit (served) with the court papers by a specific deadline."
+              },
+              {
+                "snippet": "Depending on your court, you may use certified mail, the sheriff's department, or a professional process server. You cannot serve the papers yourself\n."
+              },
+              {
+                "snippet": "After service is complete, you must file a Proof of Service form with the court clerk.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.mdcourts.gov/legalhelp/smallclaims"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              1,
+              9,
+              10
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "For a visual guide on completing the correct forms and naming the right defendants in Los Angeles County (which applies to many state systems):",
+            "video": {
+              "link": "https://www.youtube.com/watch?v=J5UqTzLfqak&t=459",
+              "thumbnail": "https://serpapi.com/images/i/R0lGODlhAQABAIAAAP_______yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw.gif"
+            }
+          },
+          {
+            "type": "paragraph",
+            "snippet": "If you tell me your city or state, I can find the exact claim forms, filing fees, and monetary limits\nfor your local court."
+          }
+        ],
+        "citations": [
+          {
+            "url": "https://www.nycourts.gov/new-york-city-small-claims-court/starting-case-nyc-small-claims-court",
+            "title": "Starting a Case in NYC Small Claims Court | New York Courts",
+            "snippet": "To file a small claims court case in New York City, you must: * Be at least 18 years old * Sue in the proper county * Fill out a s..."
+          },
+          {
+            "url": "https://www.mdcourts.gov/legalhelp/smallclaims",
+            "title": "Small Claims | Maryland Courts",
+            "snippet": "How Can I File a Small Claim? There are four basic steps to starting a small claims case: File a Complaint form (DC-CV-001) with the court. Pay the filing fee. Che..."
+          },
+          {
+            "url": "https://www.flcourts.gov/Courts-System/florida-courts-help/other-resources/Small-Claims",
+            "title": "Small Claims - Florida Courts",
+            "snippet": "The Court Process. A small claims case is a legal action filed in county court to settle minor legal disputes where the dollar amo..."
+          },
+          {
+            "url": "https://selfhelp.courts.ca.gov/small-claims-california",
+            "title": "Small claims in California | California Courts | Self Help Guide",
+            "snippet": "Small claims basics. Small claims court allows you to sue a person, business, or government agency that you think owes you money. Generally, you can only sue for u..."
+          },
+          {
+            "url": "https://www.peoples-law.org/small-claims",
+            "title": "Small Claims | The Maryland People's Law Library",
+            "snippet": "To file a small claim, you must: * File a complaint with the court * Pay the filing fee * Notify the other side of the suit * Submit proof of service to the court ..."
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=J5UqTzLfqak&t=459",
+            "title": "2024 LA County Small Claims Process Explained",
+            "snippet": "within 6 to 12 months of the events in question. if small claims court sounds like a good fit for your situation stick with us while we go through each step starti"
+          },
+          {
+            "url": "https://michiganlegalhelp.org/resources/money-debt-and-consumer-issues/taking-small-claims-case-court",
+            "title": "Taking a Small Claims Case to Court - Michigan Legal Help",
+            "snippet": "Fill Out the Form. To start a case in Small Claims Court, you must file an Affidavit and Claim in the Small Claims Court. Use our ..."
+          },
+          {
+            "url": "https://selfhelp.courts.ca.gov/small-claims/start-case/file",
+            "title": "File your Plaintiff\u2019s Claim | California Courts | Self Help Guide",
+            "snippet": "Take your forms to the court clerk Read this page to figure out where to take your forms to start your small claims case. At the c..."
+          },
+          {
+            "url": "https://www.njcourts.gov/faq/how-do-i-file-a-case-small-claims-court",
+            "title": "How do I file a case in small claims court? - NJ Courts",
+            "snippet": "How do I file a case in small claims court? * Give your full name, address and telephone number. * To ensure proper service of the..."
+          },
+          {
+            "url": "https://www.nccourts.gov/help-topics/lawsuits-and-small-claims/small-claims",
+            "title": "Small Claims | North Carolina Judicial Branch",
+            "snippet": "A party must appear in court at the appointed day and time if he or she wants to be heard by the magistrate. In small claims court..."
+          },
+          {
+            "url": "https://legalatoms.com/illinois/illinois-small-claims-court-process-self-represented/",
+            "title": "Illinois Small Claims court Process Self Represented",
+            "snippet": "There are three recognized methods: (1) service by the county sheriff, (2) service by a licensed private process server, or (3) certified mail where allowed by the..."
+          }
+        ],
+        "related_searches": []
+      }
+    },
+    "Serper": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "DataForSEO": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    }
+  }
+}

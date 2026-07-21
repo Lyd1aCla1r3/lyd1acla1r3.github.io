@@ -1,0 +1,696 @@
+{
+  "search_metadata": {
+    "id": "6a5e9d001fad36700771f23e",
+    "status": "Success",
+    "json_endpoint": "https://serpapi.com/searches/8OP_bnWYXufXOfiJGpYKBg/6a5e9d001fad36700771f23e.json",
+    "pixel_position_endpoint": "https://serpapi.com/searches/8OP_bnWYXufXOfiJGpYKBg/6a5e9d001fad36700771f23e.json_with_pixel_position",
+    "created_at": "2026-07-20 22:11:12 UTC",
+    "processed_at": "2026-07-20 22:11:12 UTC",
+    "google_url": "https://www.google.com/search?q=symptoms+of+vitamin+D+deficiency&oq=symptoms+of+vitamin+D+deficiency&sourceid=chrome&ie=UTF-8",
+    "raw_html_file": "https://serpapi.com/searches/8OP_bnWYXufXOfiJGpYKBg/6a5e9d001fad36700771f23e.html",
+    "total_time_taken": 0.61
+  },
+  "search_parameters": {
+    "engine": "google",
+    "q": "symptoms of vitamin D deficiency",
+    "google_domain": "google.com",
+    "device": "desktop"
+  },
+  "search_information": {
+    "query_displayed": "symptoms of vitamin D deficiency",
+    "total_results": 157,
+    "time_taken_displayed": 0.17,
+    "organic_results_state": "Results for exact spelling"
+  },
+  "related_questions": [
+    {
+      "question": "What happens when your vitamin D goes low?",
+      "type": "ai_overview",
+      "page_token": "FguLiHicHdDRbqJAFIDh7Mt4WQVrN5qYJlQHZB2zMMyRnpuGGVCEA4yVFpm7fZd9qn2abfoCf_L9f_7Spa3__fgs-97cVtPpMAwP5647U_Ggu2aa3cZWT3VGpDJdr55-PjnPJ73efuy8l-vOi6QxsIlnAsKFTAFiCQCOuWC9CHSCd916pLbIoyOle9l_qCSMRINBQuaONrZi41leUQWQg4TlI7fl78I3L2gZqCa_ppaVBchZXhtbtGGYuPGYB-YU-32LKXlfvVshHeTyzpW_oAMDD13Zo0P8WNNcBYarDSu1cNLMZ2KfhDyp9HCsaCHneBBNKBQxi7NegLv8hS68a7dst2XuiYrRa4r7uKZZkeKQMxYdNljCcRlzr7tEMra6ogaCA0t8liV1P2IK19zvxrwOKYOQKzmMX55WRpOT_lzPJ98_12-npl-Z9-78H0jYhmw",
+      "serpapi_ai_overview_link": "https://serpapi.com/search.json?engine=google_ai_overview&page_token=FguLiHicHdDRbqJAFIDh7Mt4WQVrN5qYJlQHZB2zMMyRnpuGGVCEA4yVFpm7fZd9qn2abfoCf_L9f_7Spa3__fgs-97cVtPpMAwP5647U_Ggu2aa3cZWT3VGpDJdr55-PjnPJ73efuy8l-vOi6QxsIlnAsKFTAFiCQCOuWC9CHSCd916pLbIoyOle9l_qCSMRINBQuaONrZi41leUQWQg4TlI7fl78I3L2gZqCa_ppaVBchZXhtbtGGYuPGYB-YU-32LKXlfvVshHeTyzpW_oAMDD13Zo0P8WNNcBYarDSu1cNLMZ2KfhDyp9HCsaCHneBBNKBQxi7NegLv8hS68a7dst2XuiYrRa4r7uKZZkeKQMxYdNljCcRlzr7tEMra6ogaCA0t8liV1P2IK19zvxrwOKYOQKzmMX55WRpOT_lzPJ98_12-npl-Z9-78H0jYhmw",
+      "next_page_token": "eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSSmFXcFlaazlWU2tNdFIyaFJZVlpuWmxSVlRGVjBjblZKWm5kd2VFaFpiMkY1VG05cFkyVlJjeTFYVTNWaU0xRmthSEZsYVc1cE1IbE1lSEZvZEdGSVMzUklZbUpuTFUxR2RsWjVaakpMUXpsd01tbHpTV3B0TkRKNFVSSVhRVW94WldGMlMwWkpkSGwyY0hSUlVEUTJZVlZ2VVRBYUlrRkVjM0k1WmxSd01HUlJNalIwVnpNNWNqVk9ielkzVUZOcFEwdGxNMHRMTkhjIiwiZmN2IjoiMyIsImVpIjoiQUoxZWF2S0ZJdHl2cHRRUDQ2YVVvUTAiLCJxYyI6IkNpQnplVzF3ZEc5dGN5QnZaaUIyYVhSaGJXbHVJR1FnWkdWbWFXTnBaVzVqZVJBQUdBRjlJQnBSUHciLCJxdWVzdGlvbiI6IldoYXQgaGFwcGVucyB3aGVuIHlvdXIgdml0YW1pbiBEIGdvZXMgbG93PyIsImxrIjoiR2lsM2FHRjBJR2hoY0hCbGJuTWdkMmhsYmlCNWIzVnlJSFpwZEdGdGFXNGdaQ0JuYjJWeklHeHZkdyIsImJzIjoiYzQyT3V4S0NNQkJGeHphVk5kVTJnbzlDNUFkb0xHd2RDOFl5Smd2Wk1TWklBaG4tWHJSUXhuSFVkdTg1OXk0N3NtV2h1QWZGNnhxTmc2RFFRR19iQmpyeV9FSUd0bEJaZEtCdHlMTlZ0QWpmYWZtazJZRWxqMnJlSUhpRnNFbkJVVFZZdHJ6bnI0RThtMGR4LUFlVmJNX2kzWER3RmhwT0RrZGZhdXhRTzdpMkpNNjZ6N01rbXFsUHBId2pHYkswVUNRVTJLYmlCc2dCTDBzVUhpV2MtdEdBeEpJRW9SRkQtU1phaDktT0hEblR5UTAiLCJpZCI6ImZjX0FKMWVhdktGSXR5dnB0UVA0NmFVb1EwXzUifQ==",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google_related_questions&google_domain=google.com&next_page_token=eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSSmFXcFlaazlWU2tNdFIyaFJZVlpuWmxSVlRGVjBjblZKWm5kd2VFaFpiMkY1VG05cFkyVlJjeTFYVTNWaU0xRmthSEZsYVc1cE1IbE1lSEZvZEdGSVMzUklZbUpuTFUxR2RsWjVaakpMUXpsd01tbHpTV3B0TkRKNFVSSVhRVW94WldGMlMwWkpkSGwyY0hSUlVEUTJZVlZ2VVRBYUlrRkVjM0k1WmxSd01HUlJNalIwVnpNNWNqVk9ielkzVUZOcFEwdGxNMHRMTkhjIiwiZmN2IjoiMyIsImVpIjoiQUoxZWF2S0ZJdHl2cHRRUDQ2YVVvUTAiLCJxYyI6IkNpQnplVzF3ZEc5dGN5QnZaaUIyYVhSaGJXbHVJR1FnWkdWbWFXTnBaVzVqZVJBQUdBRjlJQnBSUHciLCJxdWVzdGlvbiI6IldoYXQgaGFwcGVucyB3aGVuIHlvdXIgdml0YW1pbiBEIGdvZXMgbG93PyIsImxrIjoiR2lsM2FHRjBJR2hoY0hCbGJuTWdkMmhsYmlCNWIzVnlJSFpwZEdGdGFXNGdaQ0JuYjJWeklHeHZkdyIsImJzIjoiYzQyT3V4S0NNQkJGeHphVk5kVTJnbzlDNUFkb0xHd2RDOFl5Smd2Wk1TWklBaG4tWHJSUXhuSFVkdTg1OXk0N3NtV2h1QWZGNnhxTmc2RFFRR19iQmpyeV9FSUd0bEJaZEtCdHlMTlZ0QWpmYWZtazJZRWxqMnJlSUhpRnNFbkJVVFZZdHJ6bnI0RThtMGR4LUFlVmJNX2kzWER3RmhwT0RrZGZhdXhRTzdpMkpNNjZ6N01rbXFsUHBId2pHYkswVUNRVTJLYmlCc2dCTDBzVUhpV2MtdEdBeEpJRW9SRkQtU1phaDktT0hEblR5UTAiLCJpZCI6ImZjX0FKMWVhdktGSXR5dnB0UVA0NmFVb1EwXzUifQ%3D%3D"
+    },
+    {
+      "question": "What are the 10 signs of low vitamin D?",
+      "type": "ai_overview",
+      "page_token": "OrUKDnicHdDdbqJAFADg9GV6WfnZuKuJaRZhWlSm4SBn5NxscABHGH5aqSPe9V36VPs0m-z3CN_Xtz53zd-HqxrH4bKczYwxT6e-P-nySfbtLL9MnZzJXOtjLpvl_Ofcfq7kKvgMvfV76MXpMKAPVtLRSOK2FYmt8smeaM-3GcI6D_SW-1ynjK5ckHhjwN98D8qOn3k7pGXNcqjVugzYhHYhovaXBYEZE4wMWtgKEf6gZhNGDieh42nvbBzu6lC2zCvuNHIH7vuahGz6G7cpKjsFe421PPy-CYG7I9IcmoXBVy-GTk_E2Etmmbts9GvWKMMtVZHFX8D3PlI2ODlinKU3CFThJTXT2YF20GirPJApGIu5TwrFAiKvP8cp3GWtW_RRRwFdRCddCDaYpWp3dOEzcYvqYC80IZzT-LGS15X7-P9z9adqx-Xw0Z_-ARJAhGM",
+      "serpapi_ai_overview_link": "https://serpapi.com/search.json?engine=google_ai_overview&page_token=OrUKDnicHdDdbqJAFADg9GV6WfnZuKuJaRZhWlSm4SBn5NxscABHGH5aqSPe9V36VPs0m-z3CN_Xtz53zd-HqxrH4bKczYwxT6e-P-nySfbtLL9MnZzJXOtjLpvl_Ofcfq7kKvgMvfV76MXpMKAPVtLRSOK2FYmt8smeaM-3GcI6D_SW-1ynjK5ckHhjwN98D8qOn3k7pGXNcqjVugzYhHYhovaXBYEZE4wMWtgKEf6gZhNGDieh42nvbBzu6lC2zCvuNHIH7vuahGz6G7cpKjsFe421PPy-CYG7I9IcmoXBVy-GTk_E2Etmmbts9GvWKMMtVZHFX8D3PlI2ODlinKU3CFThJTXT2YF20GirPJApGIu5TwrFAiKvP8cp3GWtW_RRRwFdRCddCDaYpWp3dOEzcYvqYC80IZzT-LGS15X7-P9z9adqx-Xw0Z_-ARJAhGM",
+      "next_page_token": "eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSSmFXcFlaazlWU2tNdFIyaFJZVlpuWmxSVlRGVjBjblZKWm5kd2VFaFpiMkY1VG05cFkyVlJjeTFYVTNWaU0xRmthSEZsYVc1cE1IbE1lSEZvZEdGSVMzUklZbUpuTFUxR2RsWjVaakpMUXpsd01tbHpTV3B0TkRKNFVSSVhRVW94WldGMlMwWkpkSGwyY0hSUlVEUTJZVlZ2VVRBYUlrRkVjM0k1WmxSd01HUlJNalIwVnpNNWNqVk9ielkzVUZOcFEwdGxNMHRMTkhjIiwiZmN2IjoiMyIsImVpIjoiQUoxZWF2S0ZJdHl2cHRRUDQ2YVVvUTAiLCJxYyI6IkNpQnplVzF3ZEc5dGN5QnZaaUIyYVhSaGJXbHVJR1FnWkdWbWFXTnBaVzVqZVJBQUdBRjlJQnBSUHciLCJxdWVzdGlvbiI6IldoYXQgYXJlIHRoZSAxMCBzaWducyBvZiBsb3cgdml0YW1pbiBEPyIsImxrIjoiR2laM2FHRjBJR0Z5WlNCMGFHVWdNVEFnYzJsbmJuTWdiMllnYkc5M0lIWnBkR0Z0YVc0Z1pBIiwiYnMiOiJjNDJPdXhLQ01CQkZ4emFWTmRVMmdvOUM1QWRvTEd3ZEM4WXlKZ3ZaTVNaSUFobi1YclJReG5IVWR1ODU5eTQ3c21XaHVBZkY2eHFOZzZEUVFHX2JCanJ5X0VJR3RsQlpkS0J0eUxOVnRBamZhZm1rMllFbGoycmVJSGlGc0VuQlVUVll0cnpucjRFOG0wZHgtQWVWYk1faTNYRHdGaHBPRGtkZmF1eFFPN2kySk02Nno3TWttcWxQcEh3akdiSzBVQ1FVMktiaUJzZ0JMMHNVSGlXYy10R0F4SklFb1JGRC1TWmFoOS1PSERuVHlRMCIsImlkIjoiZmNfQUoxZWF2S0ZJdHl2cHRRUDQ2YVVvUTBfNSJ9",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google_related_questions&google_domain=google.com&next_page_token=eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSSmFXcFlaazlWU2tNdFIyaFJZVlpuWmxSVlRGVjBjblZKWm5kd2VFaFpiMkY1VG05cFkyVlJjeTFYVTNWaU0xRmthSEZsYVc1cE1IbE1lSEZvZEdGSVMzUklZbUpuTFUxR2RsWjVaakpMUXpsd01tbHpTV3B0TkRKNFVSSVhRVW94WldGMlMwWkpkSGwyY0hSUlVEUTJZVlZ2VVRBYUlrRkVjM0k1WmxSd01HUlJNalIwVnpNNWNqVk9ielkzVUZOcFEwdGxNMHRMTkhjIiwiZmN2IjoiMyIsImVpIjoiQUoxZWF2S0ZJdHl2cHRRUDQ2YVVvUTAiLCJxYyI6IkNpQnplVzF3ZEc5dGN5QnZaaUIyYVhSaGJXbHVJR1FnWkdWbWFXTnBaVzVqZVJBQUdBRjlJQnBSUHciLCJxdWVzdGlvbiI6IldoYXQgYXJlIHRoZSAxMCBzaWducyBvZiBsb3cgdml0YW1pbiBEPyIsImxrIjoiR2laM2FHRjBJR0Z5WlNCMGFHVWdNVEFnYzJsbmJuTWdiMllnYkc5M0lIWnBkR0Z0YVc0Z1pBIiwiYnMiOiJjNDJPdXhLQ01CQkZ4emFWTmRVMmdvOUM1QWRvTEd3ZEM4WXlKZ3ZaTVNaSUFobi1YclJReG5IVWR1ODU5eTQ3c21XaHVBZkY2eHFOZzZEUVFHX2JCanJ5X0VJR3RsQlpkS0J0eUxOVnRBamZhZm1rMllFbGoycmVJSGlGc0VuQlVUVll0cnpucjRFOG0wZHgtQWVWYk1faTNYRHdGaHBPRGtkZmF1eFFPN2kySk02Nno3TWttcWxQcEh3akdiSzBVQ1FVMktiaUJzZ0JMMHNVSGlXYy10R0F4SklFb1JGRC1TWmFoOS1PSERuVHlRMCIsImlkIjoiZmNfQUoxZWF2S0ZJdHl2cHRRUDQ2YVVvUTBfNSJ9"
+    },
+    {
+      "question": "How to raise vitamin D levels quickly?",
+      "type": "ai_overview",
+      "page_token": "pmMRQXicHdBdTsIwAADgeBkepWOASkJM6lbGMkbW360vZrRA2bofdFrdm3fxVJ5G4wm-5Pv6tpe2_rl5N8PQv66mU-fc7bnrzvZ4q7pmWr5-tmqqSmsPpapXy7ul93hS6_BtC5-uW5ixvucBBmQ2BDkw7Z7riw5MTK2NcBAPxYieCIvHtOmXlMc9zTsPt31IgnosAZhLwJH0zaeoFy9aSEA9LPAMU-wbeBjRSDYpSje6lE265xXcKcCjVHBJR2gP9WLOIusn7KHCubxKxmNaoaasMn9PsSlmWgh7P-Oj3u6Ec6yOE-XB6BhqkHAYFo12hcWERPpD5Cj4cyzxjePMtKHRkFTIFrlMcG3BMZdOI5SlgTRcPOAd7C4Zw6OqbMM3Ok9yuTw0Jt5vmKOVNWm4CIhAC-md55pzx7LJSb2v_cn_5_r51Ayr_qU7_wLRloLZ",
+      "serpapi_ai_overview_link": "https://serpapi.com/search.json?engine=google_ai_overview&page_token=pmMRQXicHdBdTsIwAADgeBkepWOASkJM6lbGMkbW360vZrRA2bofdFrdm3fxVJ5G4wm-5Pv6tpe2_rl5N8PQv66mU-fc7bnrzvZ4q7pmWr5-tmqqSmsPpapXy7ul93hS6_BtC5-uW5ixvucBBmQ2BDkw7Z7riw5MTK2NcBAPxYieCIvHtOmXlMc9zTsPt31IgnosAZhLwJH0zaeoFy9aSEA9LPAMU-wbeBjRSDYpSje6lE265xXcKcCjVHBJR2gP9WLOIusn7KHCubxKxmNaoaasMn9PsSlmWgh7P-Oj3u6Ec6yOE-XB6BhqkHAYFo12hcWERPpD5Cj4cyzxjePMtKHRkFTIFrlMcG3BMZdOI5SlgTRcPOAd7C4Zw6OqbMM3Ok9yuTw0Jt5vmKOVNWm4CIhAC-md55pzx7LJSb2v_cn_5_r51Ayr_qU7_wLRloLZ",
+      "next_page_token": "eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSSmFXcFlaazlWU2tNdFIyaFJZVlpuWmxSVlRGVjBjblZKWm5kd2VFaFpiMkY1VG05cFkyVlJjeTFYVTNWaU0xRmthSEZsYVc1cE1IbE1lSEZvZEdGSVMzUklZbUpuTFUxR2RsWjVaakpMUXpsd01tbHpTV3B0TkRKNFVSSVhRVW94WldGMlMwWkpkSGwyY0hSUlVEUTJZVlZ2VVRBYUlrRkVjM0k1WmxSd01HUlJNalIwVnpNNWNqVk9ielkzVUZOcFEwdGxNMHRMTkhjIiwiZmN2IjoiMyIsImVpIjoiQUoxZWF2S0ZJdHl2cHRRUDQ2YVVvUTAiLCJxYyI6IkNpQnplVzF3ZEc5dGN5QnZaaUIyYVhSaGJXbHVJR1FnWkdWbWFXTnBaVzVqZVJBQUdBRjlJQnBSUHciLCJxdWVzdGlvbiI6IkhvdyB0byByYWlzZSB2aXRhbWluIEQgbGV2ZWxzIHF1aWNrbHk/IiwibGsiOiJHaVZvYjNjZ2RHOGdjbUZwYzJVZ2RtbDBZVzFwYmlCa0lHeGxkbVZzY3lCeGRXbGphMng1IiwiYnMiOiJjNDJPdXhLQ01CQkZ4emFWTmRVMmdvOUM1QWRvTEd3ZEM4WXlKZ3ZaTVNaSUFobi1YclJReG5IVWR1ODU5eTQ3c21XaHVBZkY2eHFOZzZEUVFHX2JCanJ5X0VJR3RsQlpkS0J0eUxOVnRBamZhZm1rMllFbGoycmVJSGlGc0VuQlVUVll0cnpucjRFOG0wZHgtQWVWYk1faTNYRHdGaHBPRGtkZmF1eFFPN2kySk02Nno3TWttcWxQcEh3akdiSzBVQ1FVMktiaUJzZ0JMMHNVSGlXYy10R0F4SklFb1JGRC1TWmFoOS1PSERuVHlRMCIsImlkIjoiZmNfQUoxZWF2S0ZJdHl2cHRRUDQ2YVVvUTBfNSJ9",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google_related_questions&google_domain=google.com&next_page_token=eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSSmFXcFlaazlWU2tNdFIyaFJZVlpuWmxSVlRGVjBjblZKWm5kd2VFaFpiMkY1VG05cFkyVlJjeTFYVTNWaU0xRmthSEZsYVc1cE1IbE1lSEZvZEdGSVMzUklZbUpuTFUxR2RsWjVaakpMUXpsd01tbHpTV3B0TkRKNFVSSVhRVW94WldGMlMwWkpkSGwyY0hSUlVEUTJZVlZ2VVRBYUlrRkVjM0k1WmxSd01HUlJNalIwVnpNNWNqVk9ielkzVUZOcFEwdGxNMHRMTkhjIiwiZmN2IjoiMyIsImVpIjoiQUoxZWF2S0ZJdHl2cHRRUDQ2YVVvUTAiLCJxYyI6IkNpQnplVzF3ZEc5dGN5QnZaaUIyYVhSaGJXbHVJR1FnWkdWbWFXTnBaVzVqZVJBQUdBRjlJQnBSUHciLCJxdWVzdGlvbiI6IkhvdyB0byByYWlzZSB2aXRhbWluIEQgbGV2ZWxzIHF1aWNrbHk%2FIiwibGsiOiJHaVZvYjNjZ2RHOGdjbUZwYzJVZ2RtbDBZVzFwYmlCa0lHeGxkbVZzY3lCeGRXbGphMng1IiwiYnMiOiJjNDJPdXhLQ01CQkZ4emFWTmRVMmdvOUM1QWRvTEd3ZEM4WXlKZ3ZaTVNaSUFobi1YclJReG5IVWR1ODU5eTQ3c21XaHVBZkY2eHFOZzZEUVFHX2JCanJ5X0VJR3RsQlpkS0J0eUxOVnRBamZhZm1rMllFbGoycmVJSGlGc0VuQlVUVll0cnpucjRFOG0wZHgtQWVWYk1faTNYRHdGaHBPRGtkZmF1eFFPN2kySk02Nno3TWttcWxQcEh3akdiSzBVQ1FVMktiaUJzZ0JMMHNVSGlXYy10R0F4SklFb1JGRC1TWmFoOS1PSERuVHlRMCIsImlkIjoiZmNfQUoxZWF2S0ZJdHl2cHRRUDQ2YVVvUTBfNSJ9"
+    },
+    {
+      "question": "Which organ is affected by vitamin D deficiency?",
+      "type": "ai_overview",
+      "page_token": "gzPDO3icHdBNjpswGABQ9TKznNhAUiVSVIlgk4kKiA_sgDcV-QxhwPyIkDCTXa_QM_RUPU2r7t_q_fxt3vv2z5df9TyPt91qtSzL63UYrqZ8xaFbFbfPHldYGHMpsN1tvm7otwr37IHuYUI3FuMoPSAJgU6xmYlUfUTHsdPt21wKPmG3nQrvRDUZmbDMGjN1h-fVuZB1VbbDp0qlObdUSBtnJWWXCz4Cbe2iMQny1kFG7dwOH8lTRUCM0LbbI-MMslMG1jyUHhyVHVZJNj5jyiNodKEZs8K-HrSvPtBnjqI1jfuAAOVeJGSr09MGKRCR8lxZy4yWtiHLn0VaO_IcVoIEDnqw1tbpLhp9gB7u596kQROTSxP2rNZu0nCTZ-o7tIaUmVo053HoqVqetxC4w3ss4ImN6STTOTRuHPnbPvDrm_TflrCBqTjW_0x9CI7jTS8vFT729sv_6_2Pqpt34zRc_wI4Yozr",
+      "serpapi_ai_overview_link": "https://serpapi.com/search.json?engine=google_ai_overview&page_token=gzPDO3icHdBNjpswGABQ9TKznNhAUiVSVIlgk4kKiA_sgDcV-QxhwPyIkDCTXa_QM_RUPU2r7t_q_fxt3vv2z5df9TyPt91qtSzL63UYrqZ8xaFbFbfPHldYGHMpsN1tvm7otwr37IHuYUI3FuMoPSAJgU6xmYlUfUTHsdPt21wKPmG3nQrvRDUZmbDMGjN1h-fVuZB1VbbDp0qlObdUSBtnJWWXCz4Cbe2iMQny1kFG7dwOH8lTRUCM0LbbI-MMslMG1jyUHhyVHVZJNj5jyiNodKEZs8K-HrSvPtBnjqI1jfuAAOVeJGSr09MGKRCR8lxZy4yWtiHLn0VaO_IcVoIEDnqw1tbpLhp9gB7u596kQROTSxP2rNZu0nCTZ-o7tIaUmVo053HoqVqetxC4w3ss4ImN6STTOTRuHPnbPvDrm_TflrCBqTjW_0x9CI7jTS8vFT729sv_6_2Pqpt34zRc_wI4Yozr",
+      "next_page_token": "eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSSmFXcFlaazlWU2tNdFIyaFJZVlpuWmxSVlRGVjBjblZKWm5kd2VFaFpiMkY1VG05cFkyVlJjeTFYVTNWaU0xRmthSEZsYVc1cE1IbE1lSEZvZEdGSVMzUklZbUpuTFUxR2RsWjVaakpMUXpsd01tbHpTV3B0TkRKNFVSSVhRVW94WldGMlMwWkpkSGwyY0hSUlVEUTJZVlZ2VVRBYUlrRkVjM0k1WmxSd01HUlJNalIwVnpNNWNqVk9ielkzVUZOcFEwdGxNMHRMTkhjIiwiZmN2IjoiMyIsImVpIjoiQUoxZWF2S0ZJdHl2cHRRUDQ2YVVvUTAiLCJxYyI6IkNpQnplVzF3ZEc5dGN5QnZaaUIyYVhSaGJXbHVJR1FnWkdWbWFXTnBaVzVqZVJBQUdBRjlJQnBSUHciLCJxdWVzdGlvbiI6IldoaWNoIG9yZ2FuIGlzIGFmZmVjdGVkIGJ5IHZpdGFtaW4gRCBkZWZpY2llbmN5PyIsImxrIjoiR2k5M2FHbGphQ0J2Y21kaGJpQnBjeUJoWm1abFkzUmxaQ0JpZVNCMmFYUmhiV2x1SUdRZ1pHVm1hV05wWlc1amVRIiwiYnMiOiJjNDJPdXhLQ01CQkZ4emFWTmRVMmdvOUM1QWRvTEd3ZEM4WXlKZ3ZaTVNaSUFobi1YclJReG5IVWR1ODU5eTQ3c21XaHVBZkY2eHFOZzZEUVFHX2JCanJ5X0VJR3RsQlpkS0J0eUxOVnRBamZhZm1rMllFbGoycmVJSGlGc0VuQlVUVll0cnpucjRFOG0wZHgtQWVWYk1faTNYRHdGaHBPRGtkZmF1eFFPN2kySk02Nno3TWttcWxQcEh3akdiSzBVQ1FVMktiaUJzZ0JMMHNVSGlXYy10R0F4SklFb1JGRC1TWmFoOS1PSERuVHlRMCIsImlkIjoiZmNfQUoxZWF2S0ZJdHl2cHRRUDQ2YVVvUTBfNSJ9",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google_related_questions&google_domain=google.com&next_page_token=eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSSmFXcFlaazlWU2tNdFIyaFJZVlpuWmxSVlRGVjBjblZKWm5kd2VFaFpiMkY1VG05cFkyVlJjeTFYVTNWaU0xRmthSEZsYVc1cE1IbE1lSEZvZEdGSVMzUklZbUpuTFUxR2RsWjVaakpMUXpsd01tbHpTV3B0TkRKNFVSSVhRVW94WldGMlMwWkpkSGwyY0hSUlVEUTJZVlZ2VVRBYUlrRkVjM0k1WmxSd01HUlJNalIwVnpNNWNqVk9ielkzVUZOcFEwdGxNMHRMTkhjIiwiZmN2IjoiMyIsImVpIjoiQUoxZWF2S0ZJdHl2cHRRUDQ2YVVvUTAiLCJxYyI6IkNpQnplVzF3ZEc5dGN5QnZaaUIyYVhSaGJXbHVJR1FnWkdWbWFXTnBaVzVqZVJBQUdBRjlJQnBSUHciLCJxdWVzdGlvbiI6IldoaWNoIG9yZ2FuIGlzIGFmZmVjdGVkIGJ5IHZpdGFtaW4gRCBkZWZpY2llbmN5PyIsImxrIjoiR2k5M2FHbGphQ0J2Y21kaGJpQnBjeUJoWm1abFkzUmxaQ0JpZVNCMmFYUmhiV2x1SUdRZ1pHVm1hV05wWlc1amVRIiwiYnMiOiJjNDJPdXhLQ01CQkZ4emFWTmRVMmdvOUM1QWRvTEd3ZEM4WXlKZ3ZaTVNaSUFobi1YclJReG5IVWR1ODU5eTQ3c21XaHVBZkY2eHFOZzZEUVFHX2JCanJ5X0VJR3RsQlpkS0J0eUxOVnRBamZhZm1rMllFbGoycmVJSGlGc0VuQlVUVll0cnpucjRFOG0wZHgtQWVWYk1faTNYRHdGaHBPRGtkZmF1eFFPN2kySk02Nno3TWttcWxQcEh3akdiSzBVQ1FVMktiaUJzZ0JMMHNVSGlXYy10R0F4SklFb1JGRC1TWmFoOS1PSERuVHlRMCIsImlkIjoiZmNfQUoxZWF2S0ZJdHl2cHRRUDQ2YVVvUTBfNSJ9"
+    }
+  ],
+  "ai_overview": {
+    "text_blocks": [
+      {
+        "type": "paragraph",
+        "snippet": "Vitamin D deficiency is frequently silent, but it can cause persistent fatigue, general muscle weakness, achy or throbbing bone pain (particularly in the lower back or legs), and a compromised immune system leading to frequent illnesses. Severe or prolonged deficiency can cause mood changes like depression.",
+        "snippet_links": [
+          {
+            "link": "https://my.clevelandclinic.org/health/diseases/15050-vitamin-d-vitamin-d-deficiency"
+          }
+        ],
+        "snippet_highlighted_words": [
+          "persistent fatigue, general muscle weakness, achy or throbbing bone pain (particularly in the lower back or legs), and a compromised immune system leading to frequent illnesses"
+        ],
+        "reference_indexes": [
+          0,
+          1,
+          15
+        ]
+      },
+      {
+        "type": "paragraph",
+        "snippet": "The signs and symptoms of a deficiency depend heavily on the severity and age, but can be grouped into several key areas:",
+        "reference_indexes": [
+          0,
+          9,
+          11
+        ]
+      },
+      {
+        "type": "heading",
+        "snippet": "Bone and Joint Pain"
+      },
+      {
+        "type": "list",
+        "list": [
+          {
+            "snippet": "Deep bone pain: A dull, aching pain felt inside the bones, particularly in the pelvis, lower back, hips, and legs."
+          },
+          {
+            "snippet": "Fractures and weakness: In adults, low vitamin D impairs calcium absorption, which can lead to weakened bones (osteopenia or osteoporosis) and an increased risk of bone fractures from minor falls."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "snippet": "Muscle Symptoms"
+      },
+      {
+        "type": "list",
+        "list": [
+          {
+            "snippet": "Aches and cramps: Vitamin D is crucial for muscle contraction; a lack of it can lead to frequent muscle aches and painful cramps."
+          },
+          {
+            "snippet": "Weakness: Noticeable loss of muscle strength, which can manifest as difficulty climbing stairs or getting up from a chair.",
+            "snippet_links": [
+              {
+                "link": "https://www.endocrinecenter.com/blog/10-unexpected-signs-of-a-vitamin-d-deficiency"
+              }
+            ]
+          }
+        ],
+        "reference_indexes": [
+          1,
+          6
+        ]
+      },
+      {
+        "type": "heading",
+        "snippet": "Immunity and Fatigue"
+      },
+      {
+        "type": "list",
+        "list": [
+          {
+            "snippet": "Frequent infections: Vitamin D is essential for a robust immune system. If you are catching colds, flu, or other infections easily, it may be a warning sign."
+          },
+          {
+            "snippet": "Persistent fatigue: Feeling constantly drained, sleepy, or experiencing low energy despite adequate rest.",
+            "snippet_links": [
+              {
+                "link": "https://www.endocrinecenter.com/blog/10-unexpected-signs-of-a-vitamin-d-deficiency"
+              }
+            ]
+          }
+        ],
+        "reference_indexes": [
+          1,
+          16,
+          8
+        ]
+      },
+      {
+        "type": "heading",
+        "snippet": "Mood and Mental Health"
+      },
+      {
+        "type": "list",
+        "list": [
+          {
+            "snippet": "Depression and anxiety: Low levels of vitamin D are often linked to a sour mood, irritability, or feelings of persistent sadness.",
+            "snippet_links": [
+              {
+                "link": "https://www.unitypoint.org/news-and-articles/how-to-spot-a-vitamin-d-deficiency"
+              }
+            ]
+          }
+        ],
+        "reference_indexes": [
+          8
+        ]
+      },
+      {
+        "type": "heading",
+        "snippet": "Symptoms in Children"
+      },
+      {
+        "type": "list",
+        "list": [
+          {
+            "snippet": "Rickets: Severe lack of vitamin D in children causes rickets, which leads to developmental delays, bone deformities (such as bowed legs or knock-knees), and muscle spasms.",
+            "snippet_links": [
+              {
+                "link": "https://my.clevelandclinic.org/health/diseases/15050-vitamin-d-vitamin-d-deficiency"
+              }
+            ]
+          }
+        ],
+        "reference_indexes": [
+          0,
+          3
+        ]
+      },
+      {
+        "type": "paragraph",
+        "snippet": "If you suspect you have a vitamin D deficiency, you should consult your doctor. A healthcare provider can order a simple blood test (the 25-hydroxy vitamin D test) to determine your exact levels and recommend appropriate supplementation or lifestyle adjustments.",
+        "snippet_links": [
+          {
+            "link": "https://www.nebraskamed.com/primary-care/9-vitamin-d-deficiency-symptoms-and-11-high-vitamin-d-foods"
+          }
+        ],
+        "reference_indexes": [
+          9,
+          10,
+          12,
+          13,
+          14
+        ]
+      }
+    ],
+    "references": [
+      {
+        "title": "Vitamin D Deficiency: Causes, Symptoms & Treatment",
+        "link": "https://my.clevelandclinic.org/health/diseases/15050-vitamin-d-vitamin-d-deficiency",
+        "snippet": "What are the signs and symptoms of vitamin D deficiency? Severe lack of vitamin D in children causes rickets. Symptoms of rickets include: \u00b7 Lack of vitamin D i...",
+        "source": "my.clevelandclinic.org",
+        "thumbnail": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTZ3XOHZ4vsU8KFO-M8qPktlfW7xZt0RDRCc7qtc6ABmZufuufDcyPVTnQoTeWT72cGmELSXPhFiA3X5dk",
+        "source_icon": "https://encrypted-tbn3.gstatic.com/faviconV2?url=https://my.clevelandclinic.org&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 0
+      },
+      {
+        "title": "10 Unexpected Signs of a Vitamin D Deficiency - The Endocrine Center",
+        "link": "https://www.endocrinecenter.com/blog/10-unexpected-signs-of-a-vitamin-d-deficiency",
+        "snippet": "10 Unexpected Signs of a Vitamin D Deficiency. The Endocrine Center Blog 10 Unexpected Signs of a Vitamin D Deficiency \u00b7 1. Fatigue that won't go away. Occasion...",
+        "source": "endocrinecenter.com",
+        "thumbnail": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSsbfLVVA_vdyq1YHzaTUV_NpJVtnXgSaQXrr9pAgP-esRCVkn7ciPjPkKg4i0-H-FrjUoiHrCYcW4Hvi0",
+        "source_icon": "https://encrypted-tbn1.gstatic.com/faviconV2?url=https://www.endocrinecenter.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 1
+      },
+      {
+        "link": "https://www.youtube.com/watch?v=_UYmVkBbuzg",
+        "source": "youtube.com",
+        "index": 2
+      },
+      {
+        "title": "Vitamin D Deficiency - Nutrition - Merck Manual Consumer Version",
+        "link": "https://www.merckmanuals.com/home/disorders-of-nutrition/vitamins/vitamin-d-deficiency",
+        "snippet": "Symptoms of Vitamin D Deficiency * Vitamin D deficiency can cause muscle aches, weakness, and bone pain in people of all ages. * M...",
+        "source": "merckmanuals.com",
+        "thumbnail": "https://www.merckmanuals.com/home/disorders-of-nutrition/vitamins/vitamin-d-deficiency",
+        "source_icon": "https://encrypted-tbn1.gstatic.com/faviconV2?url=https://www.merckmanuals.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 3
+      },
+      {
+        "title": "11 Bizarre Symptoms of Vitamin D Deficiency (You NEED to Know)",
+        "link": "https://www.youtube.com/watch?v=AXq2ZdXXFCU",
+        "snippet": "today I'm going to give you 11 really bizarre wild vitamin D deficiency symptoms now of course most people know the usual vitamin D symptoms. lower back pain de",
+        "source": "youtube.com",
+        "thumbnail": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQd95TaQ5vnF0S-RXA45PuHJuBgp1s2RmnXlIBM1fEeWcRhSX9FjV9ERSFMAAR21IT43xpbOelVB4OIk_Q",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.youtube.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 4
+      },
+      {
+        "title": "Warning Signs of Vitamin D Deficiency",
+        "link": "https://www.youtube.com/watch?v=cz1IU-6Q7kE",
+        "snippet": "vitamin D is essential for our bones and teeth immune system brain health and regulating inflammation. we get some amount of vitamin D by consuming fish and mea",
+        "source": "youtube.com",
+        "thumbnail": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTTYvMeDfgRpSVfihwb_iUobeubVHFM-HEEMVEKQAkzrUlRuYuyMsY-s6NnKvT-BTwlKzGeWNIjC8r7ACc",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.youtube.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 5
+      },
+      {
+        "title": "Time to soak up the sun? 8 signs of low vitamin D",
+        "link": "https://www.bswhealth.com/blog/7-signs-you-may-be-vitamin-d-deficient",
+        "snippet": "Vitamin D deficiency can cause: * Bone pain * Bone fractures * Muscle pain * Muscle weakness Some signs of low vitamin D include: * Bone pain and lower back pai...",
+        "source": "bswhealth.com",
+        "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqc5z5WW6URZN1_0QdHTYvWsD3cOdkNofSPqSSGszBLEzsQ53U8YYzof0bYCGNC2g2JhGkgCcvNG508cg",
+        "source_icon": "https://encrypted-tbn0.gstatic.com/faviconV2?url=https://www.bswhealth.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 6
+      },
+      {
+        "link": "https://www.youtube.com/watch?v=9hbUuSzGHik",
+        "source": "youtube.com",
+        "index": 7
+      },
+      {
+        "title": "How to Spot a Vitamin D Deficiency",
+        "link": "https://www.unitypoint.org/news-and-articles/how-to-spot-a-vitamin-d-deficiency",
+        "snippet": "A medical expert, like a doctor, is best able to help you find the information and care you need. This information does not constitute medical advice or diagnos...",
+        "source": "unitypoint.org",
+        "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-EAicgSYDElGdHrcGOGPdp9l074t6SHC2Bcr4JvXu66cSv1Tx1UQ_mw77qVpGLRnVu8HP5eVr8lkoqRE",
+        "source_icon": "https://encrypted-tbn3.gstatic.com/faviconV2?url=https://www.unitypoint.org&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 8
+      },
+      {
+        "title": "9 vitamin D deficiency symptoms (and 11 high vitamin D foods) | Nebraska Medicine Omaha, NE",
+        "link": "https://www.nebraskamed.com/primary-care/9-vitamin-d-deficiency-symptoms-and-11-high-vitamin-d-foods",
+        "snippet": "Vitamin D is a fat-soluble vitamin that's essential for health. Symptoms of vitamin D deficiency depend on the severity of the deficiency and the person. Some s...",
+        "source": "nebraskamed.com",
+        "thumbnail": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSCUfTet5FEuOhQ5fEJzkoJyOGcxQawLJlhOH2UQ_m2gFzuu1Ogtj3CftI2x2LdAWEqPd14GVfxyf2Bk-U",
+        "source_icon": "https://encrypted-tbn0.gstatic.com/faviconV2?url=https://www.nebraskamed.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 9
+      },
+      {
+        "title": "Recognition and Management of Vitamin D Deficiency | AFP - AAFP",
+        "link": "https://www.aafp.org/afp/2009/1015/p841",
+        "snippet": "Vitamin D deficiency affects persons of all ages. Common manifestations of vitamin D deficiency are symmetric low back pain, proximal muscle weakness, muscle ac...",
+        "source": "aafp.org",
+        "thumbnail": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQbIwWOxaZ6eSsKB_iMpOavJPxgRNEETDw-qUf7epFQOoCttw6qZF58ALnGWh3ccv_p_qhus5J5RyLSyWY",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.aafp.org&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 10
+      },
+      {
+        "title": "Vitamin D Deficiency and Related Disorders - Medscape Reference",
+        "link": "https://emedicine.medscape.com/article/128762-overview",
+        "snippet": "Signs and symptoms. Vitamin D deficiency is often clinically silent. Manifestations are as follows: Children are often found to have started walking late or pre...",
+        "source": "emedicine.medscape.com",
+        "thumbnail": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSXg2NQf10O2lnlS8bqZqi2cy5LJ9bpr8Yupt4kFGC-pjWaH7xjASMGBCFqe_RjvOosnGJEw9ptSkX6YXo",
+        "source_icon": "https://encrypted-tbn3.gstatic.com/faviconV2?url=https://emedicine.medscape.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 11
+      },
+      {
+        "title": "Vitamin D Deficiency | Fact Sheets | Yale Medicine",
+        "link": "https://www.yalemedicine.org/conditions/vitamin-d-deficiency",
+        "snippet": "Vitamin D deficiency can be harmful to bones and muscles. Symptoms include: * Muscle pain * Bone pain * Tingling sensation in hands or feet * Muscle weakness Vi...",
+        "source": "yalemedicine.org",
+        "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSP8oto1YDtXBwOmKSfkIUAdkCVB9H6BK4XeUcdKtFjSsETWIo5V6yoFoLS0_xMCSZqokxoY_6LgJljGXE",
+        "source_icon": "https://encrypted-tbn0.gstatic.com/faviconV2?url=https://www.yalemedicine.org&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 12
+      },
+      {
+        "title": "Vitamin D Deficiency: Causes, Symptoms, Treatment, & More",
+        "link": "https://www.goodrx.com/conditions/vitamin-d-deficiency",
+        "snippet": "If you think you may have a low level of vitamin D, don't wait until you have symptoms. Your healthcare provider can check your level with a simple blood test.",
+        "source": "goodrx.com",
+        "thumbnail": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcS-SlB2r1Z3EGPchqmuRtL13r3w2Y9p1Y6InD1ZaWGIsPrTDXUkkicWMc8armch3tc2Jvj-0LCkAVwRKO4",
+        "source_icon": "https://encrypted-tbn0.gstatic.com/faviconV2?url=https://www.goodrx.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 13
+      },
+      {
+        "title": "Don\u2019t Ignore These Subtle Vitamin D Deficiency Signs\u2014Act Now!",
+        "link": "https://ubiehealth.com/doctors-note/vitamin-d-deficiency-symptoms-subtle-md-overlook4262q2",
+        "snippet": "What are the signs and symptoms of vitamin D deficiency? Severe lack of vitamin D in children causes rickets. Symptoms of rickets include: \u00b7 Lack of vitamin D i...",
+        "source": "ubiehealth.com",
+        "thumbnail": "https://ubiehealth.com/doctors-note/vitamin-d-deficiency-symptoms-subtle-md-overlook4262q2",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://ubiehealth.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 14
+      },
+      {
+        "title": "Doctor explains Vitamin D Deficiency | Causes, Symptoms, Treatment and ...",
+        "link": "https://www.youtube.com/watch?v=_UYmVkBbuzg&t=122",
+        "snippet": "reasons or have darker skin tones such as African African Caribbean or South Asian backgrounds. now babies under one year should also receive vitamin D drops un",
+        "source": "YouTube",
+        "thumbnail": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSY_h4O7C9PL6ZmIP7X7NpkIqtyEAQ-A3ORxmiiIZDQCrU2ntdU5gYotfb6IEp42GSHA6IkMVHSw_ViWjA",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.youtube.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 15
+      },
+      {
+        "title": "8 Signs Your Body Is Begging for Vitamin D",
+        "link": "https://www.youtube.com/watch?v=9hbUuSzGHik&t=15",
+        "snippet": "eight signs your body is begging for vitamin D. ever since your childhood. your parents teachers and doctors seem to be on repeat take your vitamins. eat this i",
+        "source": "YouTube",
+        "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXFlh3XtObqYg8JM86n1TPeieWoBGPI02CeeWxa7MAgLUs98ETASHFmEDfmyYvgJzNyMr6SMcgYLDvWdQ",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.youtube.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 16
+      }
+    ]
+  },
+  "organic_results": [
+    {
+      "position": 1,
+      "title": "Vitamin D Deficiency: Causes, Symptoms & Treatment",
+      "link": "https://my.clevelandclinic.org/health/diseases/15050-vitamin-d-vitamin-d-deficiency",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://my.clevelandclinic.org/health/diseases/15050-vitamin-d-vitamin-d-deficiency&ved=2ahUKEwjyhaf5ouKVAxXcl4kEHWMTJdQQFnoECDMQAQ",
+      "displayed_link": "https://my.clevelandclinic.org \u203a health \u203a diseases \u203a 150...",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAUVBMVEVHcEz________________________6_f3___-iwOAFcLtUjMYEeb8AY7a40uoUdL3u9_e618O41cBUlWUAbRkAdicGhUIOg0EJfTWawKWrybT7G_bRAAAACXRSTlMAEpjj8Dr__5uczjdLAAAA2ElEQVR4Aa2TBYLDMAwEHZJiO2iS2_8_9OQwHLcT2s2EQQiR5UV5o8gzwVTwBRXvxwtcgHPORA0g1YJG1GuWALUoAFWz0HZdu2aFUIjya1n-Tqq-75PkhbpKJQcGMc2lush-gI2hf4cE3TJHmbqGWULH4C4xdVjlaIw5Sq7jKq3z3h0Pm7qdJfoQAh0l8QqPs4yBrpJCPMh4lPEqH_vje1wkl0jkjHFEce4HyZWCN2a6OLpJWiTRLot0KwtuHN2aPUKRPrCnjxPeItg1PwHqbz_Nbz_qb3-HD4x2ITmCgB3xAAAAAElFTkSuQmCC.png",
+      "date": "Aug 2, 2022",
+      "snippet": "Signs and symptoms might include: Fatigue. Symptoms can include: Nausea. Increased thirst and urination. Poor appetite. Constipation. Weakness. ...",
+      "snippet_highlighted_words": [
+        "Fatigue"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "Signs and symptoms might include: Fatigue. Symptoms can include: Nausea. Increased thirst and urination. Poor appetite. Constipation. Weakness. ...",
+          "source_info_link": "https://my.clevelandclinic.org/health/diseases/15050-vitamin-d-vitamin-d-deficiency",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAUVBMVEVHcEz________________________6_f3___-iwOAFcLtUjMYEeb8AY7a40uoUdL3u9_e618O41cBUlWUAbRkAdicGhUIOg0EJfTWawKWrybT7G_bRAAAACXRSTlMAEpjj8Dr__5uczjdLAAAA2ElEQVR4Aa2TBYLDMAwEHZJiO2iS2_8_9OQwHLcT2s2EQQiR5UV5o8gzwVTwBRXvxwtcgHPORA0g1YJG1GuWALUoAFWz0HZdu2aFUIjya1n-Tqq-75PkhbpKJQcGMc2lush-gI2hf4cE3TJHmbqGWULH4C4xdVjlaIw5Sq7jKq3z3h0Pm7qdJfoQAh0l8QqPs4yBrpJCPMh4lPEqH_vje1wkl0jkjHFEce4HyZWCN2a6OLpJWiTRLot0KwtuHN2aPUKRPrCnjxPeItg1PwHqbz_Nbz_qb3-HD4x2ITmCgB3xAAAAAElFTkSuQmCC.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://my.clevelandclinic.org/health/diseases/15050-vitamin-d-vitamin-d-deficiency&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fmy.clevelandclinic.org%2Fhealth%2Fdiseases%2F15050-vitamin-d-vitamin-d-deficiency",
+      "source": "Cleveland Clinic"
+    },
+    {
+      "position": 2,
+      "title": "Vitamin D Deficiency in Adults: When to Test and How to Treat",
+      "link": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2912737/",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://pmc.ncbi.nlm.nih.gov/articles/PMC2912737/&ved=2ahUKEwjyhaf5ouKVAxXcl4kEHWMTJdQQFnoECC0QAQ",
+      "displayed_link": "https://pmc.ncbi.nlm.nih.gov \u203a articles \u203a PMC2912737",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAdVBMVEX____x8fHZ2dro6OnI1OLm7PLIycpLTlNUV1tPUVaYrckANIcAQ40AOIjF0eBgYmZXWV2am54nYZwAT5MATZLU3egAPosAUpQASI-Ko8Jxc3Zqi7QAS5G_wMH2-ftKdaekt88AQYy7ydulpqgYWZiEhYiur7HtRrZhAAAAr0lEQVR4AbXOtQHDABAEwRMzM7P679D8Fn2qTSdZ3JcgUhIgy7KyM1XTKQMwLdtxN_S2_AAIoyjeUN-pISFJs7xg0SuBqs5ShUW9QWtnccei57fo7WwYOaSn6ITsEyH7RLh_iunpjP4EzFEUsugBRZ6lCTskQkmzugKHC9DFmd1yaAgYh8zuwaC_AhHdELI3hOcbyt_Mf99E7xtq1XxKe91YudNjS2woEej7Xsa9PQHRihsm1AtvDQAAAABJRU5ErkJggg.png",
+      "author": "by KA Kennel",
+      "snippet": "bone pain, myalgias, and generalized weakness, fibromyalgia, chronic fatigue, age-related weakness, or even depression.10",
+      "snippet_highlighted_words": [
+        "bone pain, myalgias, and generalized weakness"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "bone pain, myalgias, and generalized weakness, fibromyalgia, chronic fatigue, age-related weakness, or even depression.10",
+          "source_info_link": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2912737/",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAdVBMVEX____x8fHZ2dro6OnI1OLm7PLIycpLTlNUV1tPUVaYrckANIcAQ40AOIjF0eBgYmZXWV2am54nYZwAT5MATZLU3egAPosAUpQASI-Ko8Jxc3Zqi7QAS5G_wMH2-ftKdaekt88AQYy7ydulpqgYWZiEhYiur7HtRrZhAAAAr0lEQVR4AbXOtQHDABAEwRMzM7P679D8Fn2qTSdZ3JcgUhIgy7KyM1XTKQMwLdtxN_S2_AAIoyjeUN-pISFJs7xg0SuBqs5ShUW9QWtnccei57fo7WwYOaSn6ITsEyH7RLh_iunpjP4EzFEUsugBRZ6lCTskQkmzugKHC9DFmd1yaAgYh8zuwaC_AhHdELI3hOcbyt_Mf99E7xtq1XxKe91YudNjS2woEej7Xsa9PQHRihsm1AtvDQAAAABJRU5ErkJggg.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://pmc.ncbi.nlm.nih.gov/articles/PMC2912737/&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fpmc.ncbi.nlm.nih.gov%2Farticles%2FPMC2912737%2F",
+      "source": "National Institutes of Health (NIH) | (.gov)"
+    },
+    {
+      "position": 3,
+      "title": "10 Unexpected Signs of a Vitamin D Deficiency",
+      "link": "https://www.endocrinecenter.com/blog/10-unexpected-signs-of-a-vitamin-d-deficiency",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.endocrinecenter.com/blog/10-unexpected-signs-of-a-vitamin-d-deficiency&ved=2ahUKEwjyhaf5ouKVAxXcl4kEHWMTJdQQFnoECDIQAQ",
+      "displayed_link": "https://www.endocrinecenter.com \u203a blog \u203a 10-unexpect...",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAgVBMVEVHcEwAAAAAAAAAZpcAGicAdKsBpfIAlt0AAAAAUXcAnugAou4Aj9IAAAAAAAAAmuMAoOsAicoAQV8AgLsAlNkAXooAfrgAjtAAickCg8AAhsUBfrkAcaUAe7UAebJgp8273OuizeIAd7A4ksL___8Acq5OnccAaJmOwNvt-PwAday0bJWDAAAAK3RSTlMAAQV8N5X_6iVt___YEB7-_89Otf-X4_______1f3___________-2___pZdrxIAAAAUdJREFUeAGlksGCQzAQhmVA0KBdlhiJ0qjW-z_gTkjr1L30c5mZb-Y_wPse9o8Dj33UAH7wyQKEUczhsLTI3mUSpdlJwKsHJoLcWQiKMk2jEGBXwP1TFu63IM5ZSmQXmwaMh3FUZmdgr1CLDWYgkti2ZSyshDymUEvkA-Q_rik4s4d-WTjiPDhXVVVYWQY2VZyqN_Vv0zZkSWebvFTNgZRd21i9Scbqpj1AlJ3TAaPUvpNSIk0tqOjpWsqOOclckdDDdZRIqEkPN7TZv4JkoLSeBmPMddbEfDXmrqRsF3ByfpB86onW8GnMOCN2CbOxK8k7yXG_HM3zNmmltncAC9JoGB_2kE7nG9IW1kDSA8olO8_k1FbaYuXuCyWod7BPVtyLwB4SADRSSiEuHHjdr2ufCEbOkSfLstQXIDzBc_ePHLgYRnjf8wcIaCO2ryTKqQAAAABJRU5ErkJggg.png",
+      "snippet": "10 Unexpected Signs of a Vitamin D Deficiency \u00b7 1. Fatigue that won't go away \u00b7 2. Muscle aches and weakness \u00b7 3. Frequent illnesses \u00b7 7. Hair loss \u00b7 8. Slow ...",
+      "snippet_highlighted_words": [
+        "1. Fatigue that won't go away"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "10 Unexpected Signs of a Vitamin D Deficiency \u00b7 1. Fatigue that won't go away \u00b7 2. Muscle aches and weakness \u00b7 3. Frequent illnesses \u00b7 7. Hair loss \u00b7 8. Slow ...",
+          "source_info_link": "https://www.endocrinecenter.com/blog/10-unexpected-signs-of-a-vitamin-d-deficiency",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAgVBMVEVHcEwAAAAAAAAAZpcAGicAdKsBpfIAlt0AAAAAUXcAnugAou4Aj9IAAAAAAAAAmuMAoOsAicoAQV8AgLsAlNkAXooAfrgAjtAAickCg8AAhsUBfrkAcaUAe7UAebJgp8273OuizeIAd7A4ksL___8Acq5OnccAaJmOwNvt-PwAday0bJWDAAAAK3RSTlMAAQV8N5X_6iVt___YEB7-_89Otf-X4_______1f3___________-2___pZdrxIAAAAUdJREFUeAGlksGCQzAQhmVA0KBdlhiJ0qjW-z_gTkjr1L30c5mZb-Y_wPse9o8Dj33UAH7wyQKEUczhsLTI3mUSpdlJwKsHJoLcWQiKMk2jEGBXwP1TFu63IM5ZSmQXmwaMh3FUZmdgr1CLDWYgkti2ZSyshDymUEvkA-Q_rik4s4d-WTjiPDhXVVVYWQY2VZyqN_Vv0zZkSWebvFTNgZRd21i9Scbqpj1AlJ3TAaPUvpNSIk0tqOjpWsqOOclckdDDdZRIqEkPN7TZv4JkoLSeBmPMddbEfDXmrqRsF3ByfpB86onW8GnMOCN2CbOxK8k7yXG_HM3zNmmltncAC9JoGB_2kE7nG9IW1kDSA8olO8_k1FbaYuXuCyWod7BPVtyLwB4SADRSSiEuHHjdr2ufCEbOkSfLstQXIDzBc_ePHLgYRnjf8wcIaCO2ryTKqQAAAABJRU5ErkJggg.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://www.endocrinecenter.com/blog/10-unexpected-signs-of-a-vitamin-d-deficiency&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fwww.endocrinecenter.com%2Fblog%2F10-unexpected-signs-of-a-vitamin-d-deficiency",
+      "source": "The Endocrine Center",
+      "read_more_link": "https://www.endocrinecenter.com/blog/10-unexpected-signs-of-a-vitamin-d-deficiency#:~:text=10%20Unexpected%20Signs%20of%20a,Vitamin%20D%20Deficiency&text=1.%20Fatigue%20that%20won't%20go,away&text=2.%20Muscle%20aches%20and%20weakness&text=3.%20Frequent%20illnesses&text=7.%20Hair%20loss&text=8.%20Slow%20wound%20healing"
+    },
+    {
+      "position": 4,
+      "title": "Vitamin D Deficiency | Fact Sheets",
+      "link": "https://www.yalemedicine.org/conditions/vitamin-d-deficiency",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.yalemedicine.org/conditions/vitamin-d-deficiency&ved=2ahUKEwjyhaf5ouKVAxXcl4kEHWMTJdQQFnoECCwQAQ",
+      "displayed_link": "https://www.yalemedicine.org \u203a conditions \u203a vitamin-d-...",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAYFBMVEU2iso2i8o1isoxiMkkhMgfgscrhshUmNDB1uzb5_TQ4fCVveBDkM2wzeebv-Hk7fdbnNHu9PoAe8S70-r6_f5KlM6mxuRqpNX___-80-pvptZjoNN9rtmuyubF2e2Gs9sJX-DXAAAAu0lEQVR4AdSOhQHDQAhFW_gQd5de9t-yXOo2QHF4JxxMjqZm78kL_ZQ_hAyBEquAFPuYha-QgzCKE02zKAzyUDxLi5Jvz0pR1X4i0rSd9ejb4Q65GxNIFDCmfII_3Mw3aF02Ym5ACJcCpOspfIKMMYuUDA55ohKRe4Kk27jtcNZCuqh-hv7XkncocZCt8gqDG9TFFYIXiGCcYcmGUvV4gZo45xIlzRfWLWXNy-eFAKjP_HA6bzglE7zZAQDcUw1NLDsoWgAAAABJRU5ErkJggg.png",
+      "snippet": "Symptoms include muscle pain, bone pain, tingly sensation in hands or feet, muscle weakness. Treatment includes lifestyle changes, vitamin D supplements, ...",
+      "snippet_highlighted_words": [
+        "muscle pain, bone pain, tingly sensation in hands or feet, muscle weakness"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "Symptoms include muscle pain, bone pain, tingly sensation in hands or feet, muscle weakness. Treatment includes lifestyle changes, vitamin D supplements, ...",
+          "source_info_link": "https://www.yalemedicine.org/conditions/vitamin-d-deficiency",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAYFBMVEU2iso2i8o1isoxiMkkhMgfgscrhshUmNDB1uzb5_TQ4fCVveBDkM2wzeebv-Hk7fdbnNHu9PoAe8S70-r6_f5KlM6mxuRqpNX___-80-pvptZjoNN9rtmuyubF2e2Gs9sJX-DXAAAAu0lEQVR4AdSOhQHDQAhFW_gQd5de9t-yXOo2QHF4JxxMjqZm78kL_ZQ_hAyBEquAFPuYha-QgzCKE02zKAzyUDxLi5Jvz0pR1X4i0rSd9ejb4Q65GxNIFDCmfII_3Mw3aF02Ym5ACJcCpOspfIKMMYuUDA55ohKRe4Kk27jtcNZCuqh-hv7XkncocZCt8gqDG9TFFYIXiGCcYcmGUvV4gZo45xIlzRfWLWXNy-eFAKjP_HA6bzglE7zZAQDcUw1NLDsoWgAAAABJRU5ErkJggg.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://www.yalemedicine.org/conditions/vitamin-d-deficiency&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fwww.yalemedicine.org%2Fconditions%2Fvitamin-d-deficiency",
+      "source": "Yale Medicine",
+      "read_more_link": "https://www.yalemedicine.org/conditions/vitamin-d-deficiency#:~:text=%E2%80%A2Symptoms%20include%20muscle%20pain%2C%20bone,hands%20or%20feet%2C%20muscle%20weakness&text=%E2%80%A2Treatment%20includes%20lifestyle%20changes%2C%20vitamin,D%20supplements%2C%20medication"
+    },
+    {
+      "position": 5,
+      "title": "Vitamin D Deficiency and Related Disorders",
+      "link": "https://emedicine.medscape.com/article/128762-overview",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://emedicine.medscape.com/article/128762-overview&ved=2ahUKEwjyhaf5ouKVAxXcl4kEHWMTJdQQFnoECC4QAQ",
+      "displayed_link": "https://emedicine.medscape.com \u203a Endocrinology",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAb1BMVEX____29_vY3-7W3e0NTagANKAAOaEAKZ2sutqGm8sALp6Oos0GSqcAR6YuXa8AO6IASKYAQaUAQqQAN6HL1OgAPqNGbLUbU6vCzeR8k8YARaVXeLpAaLMAMp9lg79Pcrfl6vRbfLyUptC1wt7s8PerJwSyAAABIUlEQVR4AWLACwBc0AWChDAMBdDgsh9rB9eR-59xU4IHTV7dsk08q1yy-OO4nu8H4d2i2I__1j8fSNI7ZjkKQZUD-nW1sASKaP0tGJPqijVX1InwnNMaH4ztiV1_4tB1V-RkPLq-dNF3UNOalHk3KXTD0VHNlka3Y0Z1At2INdpzFsb3hj5XkNSCqZrJYC-I0iwCWbh1tA0m83YcHZHjAcpkNXdce1Ybgt-8wPJD9PVHW3DYsCbOR-S-Ra7qacUkFZSlTApJNSnPFsxlfb40-nlA18kiDbpXpLYAwDMKIrmhpXPZnfRUgvv2o0I6CmaCMrzpGve0I_z1T-eatljogU2GrKF7fEtGhyeKta_j9mZtoH1fBx9abBPLDaXGxf-RDQAwtxYvp91bYgAAAABJRU5ErkJggg.png",
+      "date": "Sep 19, 2024",
+      "snippet": "Adults can experience chronic muscle aches and pains. Physical findings in severe vitamin D deficiency are as follows: In children, bowing in ...",
+      "snippet_highlighted_words": [
+        "chronic muscle aches and pains"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "Adults can experience chronic muscle aches and pains. Physical findings in severe vitamin D deficiency are as follows: In children, bowing in ...",
+          "source_info_link": "https://emedicine.medscape.com/article/128762-overview",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAb1BMVEX____29_vY3-7W3e0NTagANKAAOaEAKZ2sutqGm8sALp6Oos0GSqcAR6YuXa8AO6IASKYAQaUAQqQAN6HL1OgAPqNGbLUbU6vCzeR8k8YARaVXeLpAaLMAMp9lg79Pcrfl6vRbfLyUptC1wt7s8PerJwSyAAABIUlEQVR4AWLACwBc0AWChDAMBdDgsh9rB9eR-59xU4IHTV7dsk08q1yy-OO4nu8H4d2i2I__1j8fSNI7ZjkKQZUD-nW1sASKaP0tGJPqijVX1InwnNMaH4ztiV1_4tB1V-RkPLq-dNF3UNOalHk3KXTD0VHNlka3Y0Z1At2INdpzFsb3hj5XkNSCqZrJYC-I0iwCWbh1tA0m83YcHZHjAcpkNXdce1Ybgt-8wPJD9PVHW3DYsCbOR-S-Ra7qacUkFZSlTApJNSnPFsxlfb40-nlA18kiDbpXpLYAwDMKIrmhpXPZnfRUgvv2o0I6CmaCMrzpGve0I_z1T-eatljogU2GrKF7fEtGhyeKta_j9mZtoH1fBx9abBPLDaXGxf-RDQAwtxYvp91bYgAAAABJRU5ErkJggg.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://emedicine.medscape.com/article/128762-overview&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Femedicine.medscape.com%2Farticle%2F128762-overview",
+      "source": "Medscape",
+      "read_more_link": "https://emedicine.medscape.com/article/128762-overview#:~:text=Adults%20can%20experience%20chronic%20muscle,children%2C%20bowing%20in%20the%20legs"
+    },
+    {
+      "position": 6,
+      "title": "How to Spot a Vitamin D Deficiency",
+      "link": "https://www.unitypoint.org/news-and-articles/how-to-spot-a-vitamin-d-deficiency",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.unitypoint.org/news-and-articles/how-to-spot-a-vitamin-d-deficiency&ved=2ahUKEwjyhaf5ouKVAxXcl4kEHWMTJdQQFnoECFUQAQ",
+      "displayed_link": "https://www.unitypoint.org \u203a news-and-articles \u203a how-to-...",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABBElEQVR4Ae2XhU1EQRCGf7QHomgftHCzuRZoAi3jZA6iuNWCu0sMd2cyyYtiK5zuJt-6fM_fAunJBlC-H8R7wscfeEYSiLeEa2FD-LBgX-jTtTWTNLgICDJRMwzPa7sdfdAj9xTQvBludxDYg2b8BZLyg_V8gQXuokAUiAJRwElA3-NmpAu2IRHwClRYRU-2SfOlEeBrYduRZ0XzjmhUKoEUX_mevU3nS6A_QrxYGgHKtoB4TPgADJ9bQXzyrQDx6R_GX3q-B_L3Pwg8WsxVsQJRIApEAX4MLXBgPSidbwskcABQYdBawPAMuoca_QXyQ9CJDA9Yb1JTvKzvdTeBA11c1v4EvU0GTxPTubcAAAAASUVORK5CYII.png",
+      "snippet": "What are Vitamin D Deficiency Symptoms? \u00b7 Fatigue or tiredness \u00b7 Bone pain \u00b7 Joint pain \u00b7 Muscle pain \u00b7 Sour mood \u00b7 Low energy \u00b7 More frequent illness \u00b7 Anxiety ...",
+      "snippet_highlighted_words": [
+        "Fatigue or tiredness"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "What are Vitamin D Deficiency Symptoms? \u00b7 Fatigue or tiredness \u00b7 Bone pain \u00b7 Joint pain \u00b7 Muscle pain \u00b7 Sour mood \u00b7 Low energy \u00b7 More frequent illness \u00b7 Anxiety ...",
+          "source_info_link": "https://www.unitypoint.org/news-and-articles/how-to-spot-a-vitamin-d-deficiency",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABBElEQVR4Ae2XhU1EQRCGf7QHomgftHCzuRZoAi3jZA6iuNWCu0sMd2cyyYtiK5zuJt-6fM_fAunJBlC-H8R7wscfeEYSiLeEa2FD-LBgX-jTtTWTNLgICDJRMwzPa7sdfdAj9xTQvBludxDYg2b8BZLyg_V8gQXuokAUiAJRwElA3-NmpAu2IRHwClRYRU-2SfOlEeBrYduRZ0XzjmhUKoEUX_mevU3nS6A_QrxYGgHKtoB4TPgADJ9bQXzyrQDx6R_GX3q-B_L3Pwg8WsxVsQJRIApEAX4MLXBgPSidbwskcABQYdBawPAMuoca_QXyQ9CJDA9Yb1JTvKzvdTeBA11c1v4EvU0GTxPTubcAAAAASUVORK5CYII.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://www.unitypoint.org/news-and-articles/how-to-spot-a-vitamin-d-deficiency&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fwww.unitypoint.org%2Fnews-and-articles%2Fhow-to-spot-a-vitamin-d-deficiency",
+      "source": "UnityPoint Health",
+      "read_more_link": "https://www.unitypoint.org/news-and-articles/how-to-spot-a-vitamin-d-deficiency#:~:text=What%20are%20Vitamin%20D%20Deficiency,Symptoms%3F&text=Fatigue%20or%20tiredness&text=Bone%20pain&text=Joint%20pain&text=Muscle%20pain&text=Sour%20mood&text=Low%20energy&text=More%20frequent%20illness&text=Anxiety"
+    },
+    {
+      "position": 7,
+      "title": "9 vitamin D deficiency symptoms (and 11 high ...",
+      "link": "https://www.nebraskamed.com/primary-care/9-vitamin-d-deficiency-symptoms-and-11-high-vitamin-d-foods",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.nebraskamed.com/primary-care/9-vitamin-d-deficiency-symptoms-and-11-high-vitamin-d-foods&ved=2ahUKEwjyhaf5ouKVAxXcl4kEHWMTJdQQFnoECDAQAQ",
+      "displayed_link": "https://www.nebraskamed.com \u203a primary-care \u203a 9-vita...",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAY1BMVEWtEiqsBSSsDSerAB-9Ul65RlS7TFmqABq2PEuzLz_ap6zCZnCqABjWnaP____oyMunAAC0NESkAAD05efiu7_NhY3crrLPi5L8-PipABTLgIfUlp3w29305OawHzTAX2qpAA0o0C-dAAAA10lEQVR4Ab3QVYKEMBBF0ZcEJ4TCXfa_yqkgacY-uw_ORYN3ExaYFEzCUYD0fN8PQt6JAt6L7xomqUaYGZYTZGFYonHSmeFbysqwuoRueJs9oikUcWQthd3PaOLSRpaVv2M_2Gh1469oKhtzw_JnDCdzK2dzmkKc1PiKw3LujAon4btIUp2v9gUu1Ls7IYQ96Am3ob1jTRAr13ZwUa7m1hIUj98q4QyTqwlXb9J4oNnViSBCPEldudq59Kru3lnjV6XWfdIfaOv5BzfCn9SeJLvCf7TGB3wBxdITm2_BWQ4AAAAASUVORK5CYII.png",
+      "date": "Jul 19, 2022",
+      "snippet": "Most patients with vitamin D deficiency are asymptomatic, however if you're exhausted, your bones hurt, you have muscle weakness or mood changes, that's an ...",
+      "snippet_highlighted_words": [
+        "exhausted, your bones hurt, you have muscle weakness or mood changes"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "Most patients with vitamin D deficiency are asymptomatic, however if you're exhausted, your bones hurt, you have muscle weakness or mood changes, that's an ...",
+          "source_info_link": "https://www.nebraskamed.com/primary-care/9-vitamin-d-deficiency-symptoms-and-11-high-vitamin-d-foods",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAY1BMVEWtEiqsBSSsDSerAB-9Ul65RlS7TFmqABq2PEuzLz_ap6zCZnCqABjWnaP____oyMunAAC0NESkAAD05efiu7_NhY3crrLPi5L8-PipABTLgIfUlp3w29305OawHzTAX2qpAA0o0C-dAAAA10lEQVR4Ab3QVYKEMBBF0ZcEJ4TCXfa_yqkgacY-uw_ORYN3ExaYFEzCUYD0fN8PQt6JAt6L7xomqUaYGZYTZGFYonHSmeFbysqwuoRueJs9oikUcWQthd3PaOLSRpaVv2M_2Gh1469oKhtzw_JnDCdzK2dzmkKc1PiKw3LujAon4btIUp2v9gUu1Ls7IYQ96Am3ob1jTRAr13ZwUa7m1hIUj98q4QyTqwlXb9J4oNnViSBCPEldudq59Kru3lnjV6XWfdIfaOv5BzfCn9SeJLvCf7TGB3wBxdITm2_BWQ4AAAAASUVORK5CYII.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://www.nebraskamed.com/primary-care/9-vitamin-d-deficiency-symptoms-and-11-high-vitamin-d-foods&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fwww.nebraskamed.com%2Fprimary-care%2F9-vitamin-d-deficiency-symptoms-and-11-high-vitamin-d-foods",
+      "source": "Nebraska Medicine Omaha, NE",
+      "read_more_link": "https://www.nebraskamed.com/primary-care/9-vitamin-d-deficiency-symptoms-and-11-high-vitamin-d-foods#:~:text=%22Most%20patients%20with%20vitamin%20D,with%20your%20body%2C%22%20says%20Dr."
+    },
+    {
+      "position": 8,
+      "title": "Doctor explains Vitamin D Deficiency | Causes, Symptoms ...",
+      "link": "https://www.youtube.com/watch?v=_UYmVkBbuzg",
+      "displayed_link": "39.4K+ views \u00b7 1 year ago",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZ0Y5kpg5Oz-YwW86POB75Hbm3NwrTihqLddvSJJuMRVryo5evROJYuw&s",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8_9hAAAAhUlEQVR4AWNwL_ChCFPHgP8MxqxA7ArEKVBcCcUNIAznI-RdQXrABgAZpv8ZjP6Tg0F6QQbsosCAXSADHmGVVPIC0jKEDHgAMuAbmgRE445D___feYzXIJBeBigH04BVW_9DAcgwqEGYaik2gGIvUByIlEbjDooTEiwps5GRlNmolpkowgBVP9wMSzSKGAAAAABJRU5ErkJggg.png",
+      "snippet": "Signs and symptoms might include: Fatigue. Bone pain. Muscle weakness, muscle aches or muscle cramps. Mood changes, like depression.",
+      "duration": "8:10",
+      "about_this_result": {
+        "source": {
+          "description": "Signs and symptoms might include: Fatigue. Bone pain. Muscle weakness, muscle aches or muscle cramps. Mood changes, like depression.",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8_9hAAAAhUlEQVR4AWNwL_ChCFPHgP8MxqxA7ArEKVBcCcUNIAznI-RdQXrABgAZpv8ZjP6Tg0F6QQbsosCAXSADHmGVVPIC0jKEDHgAMuAbmgRE445D___feYzXIJBeBigH04BVW_9DAcgwqEGYaik2gGIvUByIlEbjDooTEiwps5GRlNmolpkowgBVP9wMSzSKGAAAAABJRU5ErkJggg.png"
+        }
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://www.youtube.com/watch?v=_UYmVkBbuzg&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D_UYmVkBbuzg",
+      "video_link": "https://encrypted-vtbn0.gstatic.com/video?q=tbn:ANd9GcS3X-bRF3qQsTqxtTg254V4SfhA3H4q37eFEA",
+      "source": "YouTube \u00b7 Doctor O'Donovan"
+    },
+    {
+      "position": 9,
+      "title": "Recognition and Management of Vitamin D Deficiency | AFP",
+      "link": "https://www.aafp.org/afp/2009/1015/p841",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.aafp.org/afp/2009/1015/p841&ved=2ahUKEwjyhaf5ouKVAxXcl4kEHWMTJdQQFnoECDEQAQ",
+      "displayed_link": "https://www.aafp.org \u203a afp",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAflBMVEVHcEz___________________________________________8ON1n___8ANFoAKVEAIEz1ah8AMFVOYnrlZiYAFUZgcoaQnKnAx85UQk_v8fOLl6X6_PzIXjFmRkzJz9WPT0I3PFPc4OQAAzx5iJidp7OEkaCqs73m6ewqSGb6OVLfAAAADHRSTlMAYMPF34Qz6j4XXjHxCDeQAAABaklEQVQokWWTh3KDMAyGzYqTFuEFhjDDynj_F6yMbaCt7uCAD0m_hgnx9p2EFICGyYX8tS8KQ6OV0s0A9OsXusVtyTmTaIzzpo1vB7tCxViKlplbyngF14OVxfY16y1Ni8bTGzTcfsvyzlHegI0cV4VjoxAP71vFm86WpQ52eS5GR1kbIKSlg9lDdP3uykqKtYNnvRB3hHdP4UKSYVeDXp3oc69pSEjoomZ3kaMizOpcWRkRquUB-xOUmhJQcg874iV8qVLBCY5djv5ezwb3sJIxbLoxtocNG2aFH2b1s2dEkmp7zHS9M5uIVwm5tLZOmXr4sq0uWlwJutikOMTN3vA0ieSC7SNBbf9kTwtnqE2sog62ka02q7KO8wT4ztfYDVubONnHsEkpmHjKtBs2ronafGFYis8LQEuuz0vUFBL3Sr2wnlrzojyYWc1JzctW6TrPajqvptFMXRPK9U2Dfzt_SSJzHKLTcfgB2lIn3IzE1uoAAAAASUVORK5CYII.png",
+      "author": "by P BORDELON",
+      "snippet": "Common manifestations of vitamin D deficiency are symmetric low back pain, proximal muscle weakness, muscle aches, and throbbing bone pain ...",
+      "snippet_highlighted_words": [
+        "vitamin D deficiency",
+        "low"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "Common manifestations of vitamin D deficiency are symmetric low back pain, proximal muscle weakness, muscle aches, and throbbing bone pain ...",
+          "source_info_link": "https://www.aafp.org/afp/2009/1015/p841",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAflBMVEVHcEz___________________________________________8ON1n___8ANFoAKVEAIEz1ah8AMFVOYnrlZiYAFUZgcoaQnKnAx85UQk_v8fOLl6X6_PzIXjFmRkzJz9WPT0I3PFPc4OQAAzx5iJidp7OEkaCqs73m6ewqSGb6OVLfAAAADHRSTlMAYMPF34Qz6j4XXjHxCDeQAAABaklEQVQokWWTh3KDMAyGzYqTFuEFhjDDynj_F6yMbaCt7uCAD0m_hgnx9p2EFICGyYX8tS8KQ6OV0s0A9OsXusVtyTmTaIzzpo1vB7tCxViKlplbyngF14OVxfY16y1Ni8bTGzTcfsvyzlHegI0cV4VjoxAP71vFm86WpQ52eS5GR1kbIKSlg9lDdP3uykqKtYNnvRB3hHdP4UKSYVeDXp3oc69pSEjoomZ3kaMizOpcWRkRquUB-xOUmhJQcg874iV8qVLBCY5djv5ezwb3sJIxbLoxtocNG2aFH2b1s2dEkmp7zHS9M5uIVwm5tLZOmXr4sq0uWlwJutikOMTN3vA0ieSC7SNBbf9kTwtnqE2sog62ka02q7KO8wT4ztfYDVubONnHsEkpmHjKtBs2ronafGFYis8LQEuuz0vUFBL3Sr2wnlrzojyYWc1JzctW6TrPajqvptFMXRPK9U2Dfzt_SSJzHKLTcfgB2lIn3IzE1uoAAAAASUVORK5CYII.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://www.aafp.org/afp/2009/1015/p841&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fwww.aafp.org%2Fafp%2F2009%2F1015%2Fp841",
+      "source": "American Academy Of Family Physicians | AAFP",
+      "read_more_link": "https://www.aafp.org/afp/2009/1015/p841#:~:text=Common%20manifestations%20of%20vitamin%20D,over%20the%20sternum%20or%20tibia."
+    }
+  ],
+  "related_searches": [
+    {
+      "block_position": 1,
+      "query": "Vitamin D supplements",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&q=Vitamin+D+supplements&sa=X&ved=2ahUKEwjyhaf5ouKVAxXcl4kEHWMTJdQQ1QJ6BAglEAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Vitamin+D+supplements"
+    },
+    {
+      "block_position": 1,
+      "query": "14 signs of vitamin D deficiency",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&q=14+signs+of+vitamin+D+deficiency&sa=X&ved=2ahUKEwjyhaf5ouKVAxXcl4kEHWMTJdQQ1QJ6BAg0EAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=14+signs+of+vitamin+D+deficiency"
+    },
+    {
+      "block_position": 1,
+      "query": "Low vitamin D symptoms female",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&q=Low+vitamin+D+symptoms+female&sa=X&ved=2ahUKEwjyhaf5ouKVAxXcl4kEHWMTJdQQ1QJ6BAgvEAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Low+vitamin+D+symptoms+female"
+    },
+    {
+      "block_position": 1,
+      "query": "Weird symptoms of vitamin D deficiency",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&q=Weird+symptoms+of+vitamin+D+deficiency&sa=X&ved=2ahUKEwjyhaf5ouKVAxXcl4kEHWMTJdQQ1QJ6BAgrEAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Weird+symptoms+of+vitamin+D+deficiency"
+    },
+    {
+      "block_position": 1,
+      "query": "Vitamin D foods",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&q=Vitamin+D+foods&sa=X&ved=2ahUKEwjyhaf5ouKVAxXcl4kEHWMTJdQQ1QJ6BAgqEAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Vitamin+D+foods"
+    },
+    {
+      "block_position": 1,
+      "query": "14 signs of vitamin D deficiency in adults",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&q=14+signs+of+vitamin+D+deficiency+in+adults&sa=X&ved=2ahUKEwjyhaf5ouKVAxXcl4kEHWMTJdQQ1QJ6BAgpEAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=14+signs+of+vitamin+D+deficiency+in+adults"
+    },
+    {
+      "block_position": 1,
+      "query": "Vitamin D deficiency ruined my life",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&q=Vitamin+D+deficiency+ruined+my+life&sa=X&ved=2ahUKEwjyhaf5ouKVAxXcl4kEHWMTJdQQ1QJ6BAgoEAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Vitamin+D+deficiency+ruined+my+life"
+    },
+    {
+      "block_position": 1,
+      "query": "Vitamin D deficiency neurological symptoms",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&q=Vitamin+D+deficiency+neurological+symptoms&sa=X&ved=2ahUKEwjyhaf5ouKVAxXcl4kEHWMTJdQQ1QJ6BAgnEAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Vitamin+D+deficiency+neurological+symptoms"
+    }
+  ],
+  "pagination": {
+    "current": 1,
+    "next": "https://www.google.com/search?q=symptoms+of+vitamin+D+deficiency&sca_esv=3271cc0dab4982ea&ei=AJ1eavKFItyvptQP46aUoQ0&start=10&sa=N&sstk=AU9db-CMG5KP7-xbyX6u1GcJvDfvmH44wYUbhY98FyThKbN9Mo1IWvkGyeUEvKa12ZmV1dACBJqZCzI-BOn4tglFklpdYOmtS37EJQ&ved=2ahUKEwjyhaf5ouKVAxXcl4kEHWMTJdQQ8NMDegQIQxAW",
+    "other_pages": {
+      "2": "https://www.google.com/search?q=symptoms+of+vitamin+D+deficiency&sca_esv=3271cc0dab4982ea&ei=AJ1eavKFItyvptQP46aUoQ0&start=10&sa=N&sstk=AU9db-CMG5KP7-xbyX6u1GcJvDfvmH44wYUbhY98FyThKbN9Mo1IWvkGyeUEvKa12ZmV1dACBJqZCzI-BOn4tglFklpdYOmtS37EJQ&ved=2ahUKEwjyhaf5ouKVAxXcl4kEHWMTJdQQ8tMDegQIQxAE",
+      "3": "https://www.google.com/search?q=symptoms+of+vitamin+D+deficiency&sca_esv=3271cc0dab4982ea&ei=AJ1eavKFItyvptQP46aUoQ0&start=20&sa=N&sstk=AU9db-CMG5KP7-xbyX6u1GcJvDfvmH44wYUbhY98FyThKbN9Mo1IWvkGyeUEvKa12ZmV1dACBJqZCzI-BOn4tglFklpdYOmtS37EJQ&ved=2ahUKEwjyhaf5ouKVAxXcl4kEHWMTJdQQ8tMDegQIQxAG",
+      "4": "https://www.google.com/search?q=symptoms+of+vitamin+D+deficiency&sca_esv=3271cc0dab4982ea&ei=AJ1eavKFItyvptQP46aUoQ0&start=30&sa=N&sstk=AU9db-CMG5KP7-xbyX6u1GcJvDfvmH44wYUbhY98FyThKbN9Mo1IWvkGyeUEvKa12ZmV1dACBJqZCzI-BOn4tglFklpdYOmtS37EJQ&ved=2ahUKEwjyhaf5ouKVAxXcl4kEHWMTJdQQ8tMDegQIQxAI",
+      "5": "https://www.google.com/search?q=symptoms+of+vitamin+D+deficiency&sca_esv=3271cc0dab4982ea&ei=AJ1eavKFItyvptQP46aUoQ0&start=40&sa=N&sstk=AU9db-CMG5KP7-xbyX6u1GcJvDfvmH44wYUbhY98FyThKbN9Mo1IWvkGyeUEvKa12ZmV1dACBJqZCzI-BOn4tglFklpdYOmtS37EJQ&ved=2ahUKEwjyhaf5ouKVAxXcl4kEHWMTJdQQ8tMDegQIQxAK",
+      "6": "https://www.google.com/search?q=symptoms+of+vitamin+D+deficiency&sca_esv=3271cc0dab4982ea&ei=AJ1eavKFItyvptQP46aUoQ0&start=50&sa=N&sstk=AU9db-CMG5KP7-xbyX6u1GcJvDfvmH44wYUbhY98FyThKbN9Mo1IWvkGyeUEvKa12ZmV1dACBJqZCzI-BOn4tglFklpdYOmtS37EJQ&ved=2ahUKEwjyhaf5ouKVAxXcl4kEHWMTJdQQ8tMDegQIQxAM",
+      "7": "https://www.google.com/search?q=symptoms+of+vitamin+D+deficiency&sca_esv=3271cc0dab4982ea&ei=AJ1eavKFItyvptQP46aUoQ0&start=60&sa=N&sstk=AU9db-CMG5KP7-xbyX6u1GcJvDfvmH44wYUbhY98FyThKbN9Mo1IWvkGyeUEvKa12ZmV1dACBJqZCzI-BOn4tglFklpdYOmtS37EJQ&ved=2ahUKEwjyhaf5ouKVAxXcl4kEHWMTJdQQ8tMDegQIQxAO",
+      "8": "https://www.google.com/search?q=symptoms+of+vitamin+D+deficiency&sca_esv=3271cc0dab4982ea&ei=AJ1eavKFItyvptQP46aUoQ0&start=70&sa=N&sstk=AU9db-CMG5KP7-xbyX6u1GcJvDfvmH44wYUbhY98FyThKbN9Mo1IWvkGyeUEvKa12ZmV1dACBJqZCzI-BOn4tglFklpdYOmtS37EJQ&ved=2ahUKEwjyhaf5ouKVAxXcl4kEHWMTJdQQ8tMDegQIQxAQ",
+      "9": "https://www.google.com/search?q=symptoms+of+vitamin+D+deficiency&sca_esv=3271cc0dab4982ea&ei=AJ1eavKFItyvptQP46aUoQ0&start=80&sa=N&sstk=AU9db-CMG5KP7-xbyX6u1GcJvDfvmH44wYUbhY98FyThKbN9Mo1IWvkGyeUEvKa12ZmV1dACBJqZCzI-BOn4tglFklpdYOmtS37EJQ&ved=2ahUKEwjyhaf5ouKVAxXcl4kEHWMTJdQQ8tMDegQIQxAS",
+      "10": "https://www.google.com/search?q=symptoms+of+vitamin+D+deficiency&sca_esv=3271cc0dab4982ea&ei=AJ1eavKFItyvptQP46aUoQ0&start=90&sa=N&sstk=AU9db-CMG5KP7-xbyX6u1GcJvDfvmH44wYUbhY98FyThKbN9Mo1IWvkGyeUEvKa12ZmV1dACBJqZCzI-BOn4tglFklpdYOmtS37EJQ&ved=2ahUKEwjyhaf5ouKVAxXcl4kEHWMTJdQQ8tMDegQIQxAU"
+    }
+  },
+  "serpapi_pagination": {
+    "current": 1,
+    "next_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=symptoms+of+vitamin+D+deficiency&start=10",
+    "next": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=symptoms+of+vitamin+D+deficiency&start=10",
+    "other_pages": {
+      "2": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=symptoms+of+vitamin+D+deficiency&start=10",
+      "3": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=symptoms+of+vitamin+D+deficiency&start=20",
+      "4": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=symptoms+of+vitamin+D+deficiency&start=30",
+      "5": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=symptoms+of+vitamin+D+deficiency&start=40",
+      "6": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=symptoms+of+vitamin+D+deficiency&start=50",
+      "7": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=symptoms+of+vitamin+D+deficiency&start=60",
+      "8": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=symptoms+of+vitamin+D+deficiency&start=70",
+      "9": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=symptoms+of+vitamin+D+deficiency&start=80",
+      "10": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=symptoms+of+vitamin+D+deficiency&start=90"
+    }
+  }
+}

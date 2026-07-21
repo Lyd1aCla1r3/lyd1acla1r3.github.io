@@ -1,0 +1,313 @@
+{
+  "query": "what is an inverted yield curve",
+  "intent": "definition",
+  "scores": {
+    "SearchApi": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "SerpApi": {
+      "extracted": {
+        "present": true,
+        "summary": "",
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "snippet": "An inverted yield curve is a rare market phenomenon where short-term debt securities (like 2-year Treasury bonds) pay higher interest rates than long-term debt securities (like 10-year Treasury bonds).",
+            "snippet_links": [
+              {
+                "link": "https://www.investopedia.com/terms/i/invertedyieldcurve.asp"
+              }
+            ],
+            "reference_indexes": [
+              0,
+              1
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Because investors typically demand higher returns for tying up their money over longer, more uncertain periods, yield curves normally slope upward. When the curve inverts, it indicates a significant shift in market psychology and economic expectations.",
+            "snippet_links": [
+              {
+                "link": "https://www.investopedia.com/terms/i/invertedyieldcurve.asp"
+              }
+            ],
+            "reference_indexes": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "Why an Inversion Happens"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "An inversion is typically driven by two main factors reflecting market expectations:",
+            "snippet_links": [
+              {
+                "link": "https://www.brookings.edu/articles/the-hutchins-center-explains-the-yield-curve-what-it-is-and-why-it-matters/"
+              }
+            ],
+            "reference_indexes": [
+              3,
+              4
+            ]
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Central Bank Policy: Short-term bond yields are heavily influenced by the central bank's short-term interest rates (e.g., the Federal Funds Rate). If the central bank raises these rates to combat inflation, short-term yields spike."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "What It Means for the Economy"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Historically, an inverted yield curve is one of the most reliable leading indicators of an impending recession. It reflects market anticipation that the economy will deteriorate enough to force the central bank to slash interest rates in the future to stimulate growth.",
+            "snippet_links": [
+              {
+                "link": "https://www.investopedia.com/terms/i/invertedyieldcurve.asp"
+              }
+            ],
+            "reference_indexes": [
+              0,
+              3,
+              11,
+              20
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "For consumers and businesses, it can mean a tighter credit environment, as banks pay more for short-term borrowing but make less on long-term lending, sometimes reducing the availability of loans.",
+            "snippet_links": [
+              {
+                "link": "https://www.investopedia.com/articles/basics/06/invertedyieldcurve.asp"
+              }
+            ],
+            "reference_indexes": [
+              11,
+              13,
+              14,
+              15,
+              16
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "To explore current bond yields and track historic curve shifts, you can consult the U.S. Department of the Treasury daily yield curve rates.",
+            "reference_indexes": [
+              17,
+              18,
+              19
+            ]
+          }
+        ],
+        "citations": [
+          {
+            "url": "https://www.investopedia.com/terms/i/invertedyieldcurve.asp",
+            "title": "What an Inverted Yield Curve Tells Investors - Investopedia",
+            "snippet": "An inverted yield curve means yields decrease the further out the maturity date is. What Is an Inverted Yield Curve? The yield curve graphically represents yiel..."
+          },
+          {
+            "url": "https://fortis.capital/blog/what-does-it-mean-when-the-yield-curve-is-inverted/",
+            "title": "What does it mean when the yield curve is inverted?",
+            "snippet": "What is an Inverted Yield Curve? An inverted yield curve is a situation where the yield on shorter-term bonds, such as a two year Treasury bond, is higher than"
+          },
+          {
+            "url": "https://russellinvestments.com/us/blog/inverted-yield-curve",
+            "title": "The inverted yield curve: What institutional investors should know",
+            "snippet": "The Treasury yield curve demonstrates the level of interest rates on U.S. government bonds of varying maturities. Normally, the yield curve is upward sloping, m..."
+          },
+          {
+            "url": "https://www.brookings.edu/articles/the-hutchins-center-explains-the-yield-curve-what-it-is-and-why-it-matters/",
+            "title": "The Hutchins Center Explains: The yield curve - what it is, and why it ...",
+            "snippet": "An inverted yield curve means the interest rate on long-term bonds is lower than the interest rate on short-term bonds. This is often seen as a bad sign for the..."
+          },
+          {
+            "url": "https://www.currentmarketvaluation.com/models/yield-curve.php",
+            "title": "Yield Curve Valuation Model",
+            "snippet": "The interest rates that these bonds pay reflect two main factors: 1) the Federal Funds rate, and 2) expectations of future returns. * The Federal Funds Rat"
+          },
+          {
+            "url": "https://en.wikipedia.org/wiki/Inverted_yield_curve",
+            "title": "Inverted yield curve - Wikipedia",
+            "snippet": "The inverted yield curve is the contraction phase in the Business cycle or Credit cycle when the federal funds rate and treasury interest rates are high to crea..."
+          },
+          {
+            "url": "https://knowledge.wharton.upenn.edu/podcast/knowledge-at-wharton-podcast/dont-sweat-the-inverted-yield-curve-no-one-really-knows-what-it-means/",
+            "title": "Don't Sweat the Inverted Yield Curve: No One Really Knows What It Means - Knowledge at Wharton",
+            "snippet": "An inverted yield curve occurs when short-term interest rates are higher than long-term ones. The yield curve is a graph that shows short-term yields on the lef..."
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=ZjzCWgXL91Q",
+            "title": "What Does an Inverted Yield Curve Mean? #yieldcurve # ...",
+            "snippet": "and the rate that you get on this safe money is dependent upon something called duration. and that is the length of time that you're investing your money. if yo"
+          },
+          {
+            "url": "https://www.miraeassetmf.co.in/knowledge-center/yield-curve-inversion",
+            "title": "Inverted Yield Curve | Meaning & What Should Investors Do | Mirae Asset",
+            "snippet": "An inverted yield curve is when short-term yields are higher than long-term yields. This is unusual, but it can happen. Yield curve inversion can be caused by:"
+          },
+          {
+            "url": "https://www.td.com/ca/en/investing/direct-investing/articles/inverted-yield-curve",
+            "title": "What is an inverted yield curve? |TD Direct Investing",
+            "snippet": "An inverted yield curve is a phenomenon where the yields on short-term bonds are higher than the yields on longer-term bonds. This is typically caused by invest..."
+          },
+          {
+            "url": "https://mutualfund.adityabirlacapital.com/blog/inverted-yield-curve",
+            "title": "Inverted Yield Curve | Meaning & Importance",
+            "snippet": "What is an Inverted Yield Curve? An inverted yield curve is a yield curve where short-term yields rise faster than longer-term yields. An inverted yield curve i..."
+          },
+          {
+            "url": "https://www.investopedia.com/articles/basics/06/invertedyieldcurve.asp",
+            "title": "The Impact of an Inverted Yield Curve - Investopedia",
+            "snippet": "Key Takeaways * A yield curve illustrates the interest rates on bonds of increasing maturities. * An inverted yield curve occurs when short-term debt"
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=8agblAWXvQM&vl=en-US",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.bajajamc.com/knowledge-centre/inverted-yield-curve",
+            "title": "Inverted Yield Curve: Meaning, Impacts, Causes and Example",
+            "snippet": "Implications of an inverted yield curve For the economy : An inverted yield curve is often seen as an indicator of Potential reces..."
+          },
+          {
+            "url": "https://www.bajajbroking.in/blog/inverted-yield-curve",
+            "title": "What is an Inverted Yield Curve? Meaning for Investors",
+            "snippet": "An inverted yield curve also affects interest rates on consumer and business loans. Banks set lending rates according to the yield of bonds, especially long-ter..."
+          },
+          {
+            "url": "https://www.eclecticassociates.com/blog/does-an-inverted-yield-curve-predict-a-recession",
+            "title": "Does an Inverted Yield Curve Predict a Recession? \u2014 Eclectic Associates, Inc.",
+            "snippet": "There is a good reason that potentially explains the correlation between economic recessions and yield curve inversions. Banks start to cut back lending when th..."
+          },
+          {
+            "url": "https://www.studysmarter.co.uk/explanations/macroeconomics/economics-of-money/yield-curve/",
+            "title": "Yield Curve: Inverted, Current Types",
+            "snippet": "In an inverted yield curve scenario, their ( Banks ) profit margins (net interest margins) can shrink as they ( Banks ) pay more f..."
+          },
+          {
+            "url": "https://www.kiplinger.com/article/investing/t052-c000-s001-riding-the-yield-curve.html",
+            "title": "Understanding Bonds: Riding the Yield Curve",
+            "snippet": "It ( U.S. Treasury yield curve ) compares the three-month, two-year, five-year, 10-year, and 30-year U.S. Treasury debt. Yield curve rates are available at the"
+          },
+          {
+            "url": "https://www.quantconnect.com/docs/v2/writing-algorithms/datasets/treasury-department/us-treasury-yield-curve",
+            "title": "US Treasury Yield Curve",
+            "snippet": "Introduction The US Treasury Yield Curve datasets tracks the yield curve rate from the US ( the United States ) Department of the Treasury. The data starts in J..."
+          },
+          {
+            "url": "https://www.debexpert.com/blog/how-to-use-barbell-and-bullet-for-yield-curve-positioning",
+            "title": "How to Use Barbell and Bullet for Yield Curve Positioning",
+            "snippet": "Evaluate the current yield curve shape The U.S. Treasury provides daily yield curve rates, which are a valuable resource for analysis. Determine if the curve is..."
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=8agblAWXvQM&vl=en-US&t=226",
+            "title": "Yield Curve Inversion Explained: Why Markets Watch It Before Recessions",
+            "snippet": "no official recession followed at all It is not a precise timing. tool Second policy responses matter If the Fed acts aggressively. enough like in 1998. a reces"
+          }
+        ],
+        "related_searches": []
+      }
+    },
+    "Serper": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "DataForSEO": {
+      "extracted": {
+        "present": true,
+        "summary": "![Inverted Yield Curve - Meaning, Causes](https://api.dataforseo.com/cdn/i/07210106-2120-0139-0000-d473544d6ddc:4)\nAn inverted yield curve is a rare market phenomenon where short-term debt securities (like 2-year Treasury bonds) pay higher interest rates than long-term debt securities (like 10-year Treasury bonds).[](https://www.investopedia.com/terms/i/invertedyieldcurve.asp) [[1]](https://www.investopedia.com/terms/i/invertedyieldcurve.asp)[[2]](https://fortis.capital/blog/what-does-it-mean-when-the-yield-curve-is-inverted/)\n\nBecause investors typically demand higher returns for tying up their money over longer, more uncertain periods, yield curves normally slope upward. When the curve inverts, it indicates a significant shift in market psychology and economic expectations.[](https://www.investopedia.com/terms/i/invertedyieldcurve.asp) [[1]](https://www.investopedia.com/terms/i/invertedyieldcurve.asp)[[2]](https://russellinvestments.com/us/blog/inverted-yield-curve)[[3]](https://fortis.capital/blog/what-does-it-mean-when-the-yield-curve-is-inverted/)\n\nWhy an Inversion Happens\n\nAn inversion is typically driven by two main factors reflecting market expectations:[](https://www.brookings.edu/articles/the-hutchins-center-explains-the-yield-curve-what-it-is-and-why-it-matters/) [[1]](https://www.brookings.edu/articles/the-hutchins-center-explains-the-yield-curve-what-it-is-and-why-it-matters/)[[2]](https://www.currentmarketvaluation.com/models/yield-curve.php)\n\n- **Central Bank Policy:** Short-term bond yields are heavily influenced by the central bank's short-term interest rates (e.g., the Federal Funds Rate). If the central bank raises these rates to combat inflation, short-term yields spike.[](https://en.wikipedia.org/wiki/Inverted_yield_curve) [[1]](https://en.wikipedia.org/wiki/Inverted_yield_curve)[[2]](https://www.currentmarketvaluation.com/models/yield-curve.php)[[3]](https://knowledge.wharton.upenn.edu/podcast/knowledge-at-wharton-podcast/dont-sweat-the-inverted-yield-curve-no-one-really-knows-what-it-means/)[[4]](https://www.youtube.com/watch?v=ZjzCWgXL91Q)[[5]](https://www.brookings.edu/articles/the-hutchins-center-explains-the-yield-curve-what-it-is-and-why-it-matters/)\n- **Investor Pessimism:** Long-term yields are driven by market demand. If investors believe a slowing economy will trigger a recession, they will aggressively buy long-term bonds for safety. As the demand for long-term bonds increases, their prices go up, and their yields fall (bond prices and yields have an inverse relationship).[](https://www.miraeassetmf.co.in/knowledge-center/yield-curve-inversion) [[1]](https://www.miraeassetmf.co.in/knowledge-center/yield-curve-inversion)[[2]](https://www.currentmarketvaluation.com/models/yield-curve.php)[[3]](https://www.td.com/ca/en/investing/direct-investing/articles/inverted-yield-curve)[[4]](https://mutualfund.adityabirlacapital.com/blog/inverted-yield-curve)\n\nWhat It Means for the Economy Historically, an inverted yield curve is one of the most reliable leading indicators of an impending recession. It reflects market anticipation that the economy will deteriorate enough to force the central bank to slash interest rates in the future to stimulate growth.[](https://www.investopedia.com/terms/i/invertedyieldcurve.asp) [[1]](https://www.investopedia.com/terms/i/invertedyieldcurve.asp)[[2]](https://www.investopedia.com/articles/basics/06/invertedyieldcurve.asp)[[3]](https://www.brookings.edu/articles/the-hutchins-center-explains-the-yield-curve-what-it-is-and-why-it-matters/)[[4]](https://www.youtube.com/watch?v=8agblAWXvQM&vl=en-US&t=226)For consumers and businesses, it can mean a tighter credit environment, as banks pay more for short-term borrowing but make less on long-term lending, sometimes reducing the availability of loans.[](https://www.investopedia.com/articles/basics/06/invertedyieldcurve.asp) [[1]](https://www.investopedia.com/articles/basics/06/invertedyieldcurve.asp)[[2]](https://www.bajajamc.com/knowledge-centre/inverted-yield-curve)[[3]](https://www.bajajbroking.in/blog/inverted-yield-curve)[[4]](https://www.eclecticassociates.com/blog/does-an-inverted-yield-curve-predict-a-recession)[[5]](https://www.studysmarter.co.uk/explanations/macroeconomics/economics-of-money/yield-curve/)To explore current bond yields and track historic curve shifts, you can consult the U.S. Department of the Treasury daily yield curve rates.[[1]](https://www.kiplinger.com/article/investing/t052-c000-s001-riding-the-yield-curve.html)[[2]](https://www.quantconnect.com/docs/v2/writing-algorithms/datasets/treasury-department/us-treasury-yield-curve)[[3]](https://www.debexpert.com/blog/how-to-use-barbell-and-bullet-for-yield-curve-positioning)",
+        "text_blocks": [
+          "![Inverted Yield Curve - Meaning, Causes](https://api.dataforseo.com/cdn/i/07210106-2120-0139-0000-d473544d6ddc:4)\nAn inverted yield curve is a rare market phenomenon where short-term debt securities (like 2-year Treasury bonds) pay higher interest rates than long-term debt securities (like 10-year Treasury bonds).[](https://www.investopedia.com/terms/i/invertedyieldcurve.asp) [[1]](https://www.investopedia.com/terms/i/invertedyieldcurve.asp)[[2]](https://fortis.capital/blog/what-does-it-mean-when-the-yield-curve-is-inverted/)\n\nBecause investors typically demand higher returns for tying up their money over longer, more uncertain periods, yield curves normally slope upward. When the curve inverts, it indicates a significant shift in market psychology and economic expectations.[](https://www.investopedia.com/terms/i/invertedyieldcurve.asp) [[1]](https://www.investopedia.com/terms/i/invertedyieldcurve.asp)[[2]](https://russellinvestments.com/us/blog/inverted-yield-curve)[[3]](https://fortis.capital/blog/what-does-it-mean-when-the-yield-curve-is-inverted/)\n\nWhy an Inversion Happens\n\nAn inversion is typically driven by two main factors reflecting market expectations:[](https://www.brookings.edu/articles/the-hutchins-center-explains-the-yield-curve-what-it-is-and-why-it-matters/) [[1]](https://www.brookings.edu/articles/the-hutchins-center-explains-the-yield-curve-what-it-is-and-why-it-matters/)[[2]](https://www.currentmarketvaluation.com/models/yield-curve.php)\n\n- **Central Bank Policy:** Short-term bond yields are heavily influenced by the central bank's short-term interest rates (e.g., the Federal Funds Rate). If the central bank raises these rates to combat inflation, short-term yields spike.[](https://en.wikipedia.org/wiki/Inverted_yield_curve) [[1]](https://en.wikipedia.org/wiki/Inverted_yield_curve)[[2]](https://www.currentmarketvaluation.com/models/yield-curve.php)[[3]](https://knowledge.wharton.upenn.edu/podcast/knowledge-at-wharton-podcast/dont-sweat-the-inverted-yield-curve-no-one-really-knows-what-it-means/)[[4]](https://www.youtube.com/watch?v=ZjzCWgXL91Q)[[5]](https://www.brookings.edu/articles/the-hutchins-center-explains-the-yield-curve-what-it-is-and-why-it-matters/)\n- **Investor Pessimism:** Long-term yields are driven by market demand. If investors believe a slowing economy will trigger a recession, they will aggressively buy long-term bonds for safety. As the demand for long-term bonds increases, their prices go up, and their yields fall (bond prices and yields have an inverse relationship).[](https://www.miraeassetmf.co.in/knowledge-center/yield-curve-inversion) [[1]](https://www.miraeassetmf.co.in/knowledge-center/yield-curve-inversion)[[2]](https://www.currentmarketvaluation.com/models/yield-curve.php)[[3]](https://www.td.com/ca/en/investing/direct-investing/articles/inverted-yield-curve)[[4]](https://mutualfund.adityabirlacapital.com/blog/inverted-yield-curve)\n\nWhat It Means for the Economy Historically, an inverted yield curve is one of the most reliable leading indicators of an impending recession. It reflects market anticipation that the economy will deteriorate enough to force the central bank to slash interest rates in the future to stimulate growth.[](https://www.investopedia.com/terms/i/invertedyieldcurve.asp) [[1]](https://www.investopedia.com/terms/i/invertedyieldcurve.asp)[[2]](https://www.investopedia.com/articles/basics/06/invertedyieldcurve.asp)[[3]](https://www.brookings.edu/articles/the-hutchins-center-explains-the-yield-curve-what-it-is-and-why-it-matters/)[[4]](https://www.youtube.com/watch?v=8agblAWXvQM&vl=en-US&t=226)For consumers and businesses, it can mean a tighter credit environment, as banks pay more for short-term borrowing but make less on long-term lending, sometimes reducing the availability of loans.[](https://www.investopedia.com/articles/basics/06/invertedyieldcurve.asp) [[1]](https://www.investopedia.com/articles/basics/06/invertedyieldcurve.asp)[[2]](https://www.bajajamc.com/knowledge-centre/inverted-yield-curve)[[3]](https://www.bajajbroking.in/blog/inverted-yield-curve)[[4]](https://www.eclecticassociates.com/blog/does-an-inverted-yield-curve-predict-a-recession)[[5]](https://www.studysmarter.co.uk/explanations/macroeconomics/economics-of-money/yield-curve/)To explore current bond yields and track historic curve shifts, you can consult the U.S. Department of the Treasury daily yield curve rates.[[1]](https://www.kiplinger.com/article/investing/t052-c000-s001-riding-the-yield-curve.html)[[2]](https://www.quantconnect.com/docs/v2/writing-algorithms/datasets/treasury-department/us-treasury-yield-curve)[[3]](https://www.debexpert.com/blog/how-to-use-barbell-and-bullet-for-yield-curve-positioning)"
+        ],
+        "citations": [
+          {
+            "url": "https://www.investopedia.com/terms/i/invertedyieldcurve.asp",
+            "title": "What an Inverted Yield Curve Tells Investors - Investopedia",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.brookings.edu/articles/the-hutchins-center-explains-the-yield-curve-what-it-is-and-why-it-matters/",
+            "title": "The Hutchins Center Explains: The yield curve - what it is, and why it ...",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.miraeassetmf.co.in/knowledge-center/yield-curve-inversion",
+            "title": "Inverted Yield Curve | Meaning & What Should Investors Do | Mirae Asset",
+            "snippet": ""
+          },
+          {
+            "url": "https://en.wikipedia.org/wiki/Inverted_yield_curve",
+            "title": "Inverted yield curve - Wikipedia",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.td.com/ca/en/investing/direct-investing/articles/inverted-yield-curve",
+            "title": "What is an inverted yield curve? |TD Direct Investing",
+            "snippet": ""
+          },
+          {
+            "url": "https://fortis.capital/blog/what-does-it-mean-when-the-yield-curve-is-inverted/",
+            "title": "What does it mean when the yield curve is inverted?",
+            "snippet": ""
+          },
+          {
+            "url": "https://knowledge.wharton.upenn.edu/podcast/knowledge-at-wharton-podcast/dont-sweat-the-inverted-yield-curve-no-one-really-knows-what-it-means/",
+            "title": "Don't Sweat the Inverted Yield Curve: No One Really Knows What It Means - Knowledge at Wharton",
+            "snippet": ""
+          },
+          {
+            "url": "https://russellinvestments.com/us/blog/inverted-yield-curve",
+            "title": "The inverted yield curve: What institutional investors should know",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.currentmarketvaluation.com/models/yield-curve.php",
+            "title": "Yield Curve Valuation Model",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.investopedia.com/articles/basics/06/invertedyieldcurve.asp",
+            "title": "The Impact of an Inverted Yield Curve - Investopedia",
+            "snippet": ""
+          },
+          {
+            "url": "https://mutualfund.adityabirlacapital.com/blog/inverted-yield-curve",
+            "title": "Inverted Yield Curve | Meaning & Importance",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=8agblAWXvQM&vl=en-US&t=226",
+            "title": "Yield Curve Inversion Explained: Why Markets Watch It Before Recessions",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=ZjzCWgXL91Q",
+            "title": "What Does an Inverted Yield Curve Mean? #yieldcurve # ...",
+            "snippet": ""
+          }
+        ],
+        "related_searches": []
+      }
+    }
+  }
+}

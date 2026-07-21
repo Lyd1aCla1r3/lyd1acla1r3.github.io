@@ -1,0 +1,270 @@
+{
+  "query": "PostgreSQL vs MySQL for time series data",
+  "intent": "comparison",
+  "scores": {
+    "SearchApi": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "SerpApi": {
+      "extracted": {
+        "present": true,
+        "summary": "",
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "snippet": "When it comes to managing time-series data, PostgreSQL is significantly better than MySQL. While neither vanilla database is a native time-series database (TSDB) out of the box, PostgreSQL provides an architecture, feature set, and extension ecosystem that makes it highly effective for time-stamped workloads\n\n\n.",
+            "snippet_links": [
+              {
+                "link": "https://www.influxdata.com/comparison/mysql-vs-postgres/"
+              }
+            ],
+            "snippet_highlighted_words": [
+              "PostgreSQL is significantly better than MySQL"
+            ],
+            "reference_indexes": [
+              0,
+              1,
+              2,
+              3,
+              4
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Here is how they stack up across the key technical requirements for time-series:"
+          },
+          {
+            "type": "heading",
+            "snippet": "1. The Extension Ecosystem (The Deciding Factor)"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "PostgreSQL: Has a massive superpower in TimescaleDB. TimescaleDB is an extension that transforms Postgres into a powerhouse native time-series database\n. It introduces \"hypertables\" which automatically partition data by time, drastically improving write throughput and query speeds at scale while supporting features like native data compression and automated data retention (TTL)."
+              },
+              {
+                "snippet": "MySQL: Lacks an equivalent, mature time-series extension. To handle large-scale time-series data in MySQL, you have to build complex, manual partitioning strategies, or stitch together proprietary tools\n\n\n\n.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.influxdata.com/comparison/mysql-vs-postgres/"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              0,
+              2,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "2. Querying and Analytics"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "PostgreSQL: Excels at complex analytical queries. Its advanced query planner can effectively combine indexes (bitmap scans), handle parallel query plans, and seamlessly process advanced window functions\n. This is crucial when you need to calculate moving averages, delta differences between time blocks, or downsample data over time."
+              },
+              {
+                "snippet": "MySQL: Is highly optimized for fast, simple read/write workloads (like lookups by ID). However, for heavy analytical grouping, complex JOIN\ns, or intensive window functions spanning millions of time-series rows, MySQL often struggles and spills over into temporary tables.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.reddit.com/r/PostgreSQL/comments/tldork/in_what_circumstances_is_mysql_better_than/"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              4,
+              2,
+              10,
+              11,
+              12,
+              13
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "3. Specialized Indexing"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "PostgreSQL: Offers a wide variety of specialized index types. For time series, you can use BRIN (Block Range Indexes), which are incredibly small and performant for data that is naturally ordered by time\n. This allows you to skip scanning irrelevant time periods without the massive storage overhead of traditional indexes."
+              },
+              {
+                "snippet": "MySQL: Is largely restricted to standard B-Tree indexes. As your time-series table grows into the tens or hundreds of millions of rows, B-Tree indexes become too massive to fit into memory, leading to severe write and read performance degradation\n.",
+                "snippet_links": [
+                  {
+                    "link": "https://medium.com/@BuildShift/postgres-vs-mysql-2025-i-migrated-a-prod-app-both-ways-the-no-bs-verdict-bcdb1d11dda4"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              13,
+              7,
+              8,
+              14,
+              17
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "Summary Verdict"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Choose MySQL only if: Your dataset is small-to-medium sized, your time-series requirements are very basic, and your team already has massive operational expertise in managing MySQL."
+              },
+              {
+                "snippet": "Choose PostgreSQL if:\nYou want a relational database that can truly scale with your time-series data. By utilizing vanilla Postgres (or instantly upgrading it with TimescaleDB), you get enterprise-grade time-series capabilities without needing to manage a completely separate NoSQL database silo.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.influxdata.com/comparison/mysql-vs-postgres/"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              0,
+              7,
+              2,
+              5,
+              15,
+              16
+            ]
+          }
+        ],
+        "citations": [
+          {
+            "url": "https://www.influxdata.com/comparison/mysql-vs-postgres/",
+            "title": "MySQL vs PostgreSQL - InfluxDB",
+            "snippet": "PostgreSQL Overview. PostgreSQL, also known as Postgres, is an open-source relational database management system that was first re..."
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=hYGgeMhZTtE&t=1",
+            "title": "MySQL vs PostgreSQL -- The Ultimate Tech Showdown ...",
+            "snippet": "good day and welcome to our second webinar in our series of Postgress versus MySQL in our previous session we talked a little bit about the introduction of MySQL v"
+          },
+          {
+            "url": "https://dev.to/philip_mcclarence_2ef9475/postgresql-vs-mysql-in-2026-performance-features-and-when-to-use-each-3g7e",
+            "title": "PostgreSQL vs MySQL in 2026: Performance, Features and ...",
+            "snippet": "When to Choose PostgreSQL * Complex queries are central to your application. Reporting, analytics, business intelligence, any workload with multi-join queries, CTE..."
+          },
+          {
+            "url": "https://clickhouse.com/resources/engineering/what-is-time-series-database",
+            "title": "What Is a Time-Series Database? Examples, Use Cases ... - ClickHouse",
+            "snippet": "While traditional transactional databases like PostgreSQL or MySQL can store time-stamped data, they're optimized for different workloads than time-series analysis..."
+          },
+          {
+            "url": "https://www.tinybird.co/blog/postgres-vs-mysql",
+            "title": "Postgres vs MySQL - Tinybird",
+            "snippet": "Where Postgres excels * SQL compliance and advanced queries. Postgres has more complete SQL standard compliance than MySQL. Features that are standard SQL but work..."
+          },
+          {
+            "url": "https://www.influxdata.com/comparison/mysql-vs-timescaledb/",
+            "title": "MySQL vs TimescaleDB - InfluxDB",
+            "snippet": "MySQL vs TimescaleDB Breakdown ... MySQL uses a client-server model with a multi-layered server design. It supports the SQL query language and offers various stora..."
+          },
+          {
+            "url": "https://medium.com/plumbersofdatascience/why-time-series-data-needs-a-time-series-database-14fba9e22a23",
+            "title": "Why Time-Series Data Needs a Time-Series Database - Medium",
+            "snippet": "1. Full SQL Support. Many time-series databases introduce their own query languages. Examples include: InfluxQL. Flux. PromQL. TimescaleDB instead uses standard SQ..."
+          },
+          {
+            "url": "https://www.tigerdata.com/learn/the-best-time-series-databases-compared",
+            "title": "The Best Time-Series Databases Compared (2026) - Tiger Data",
+            "snippet": "When You Need a Dedicated TSDB vs. a General-Purpose Database. Does your data have some kind of timestamp or time element related to it, even if that may not be it..."
+          },
+          {
+            "url": "https://www.tigerdata.com/blog/time-series-data-why-and-how-to-use-a-relational-database-instead-of-nosql-d0cd6975e87c",
+            "title": "Time-series data",
+            "snippet": "Usage patterns are similar: a recent survey showed that developers preferred NoSQL to relational databases for time-series data by over 2:1. * Relational databases..."
+          },
+          {
+            "url": "https://www.youtube.com/shorts/mCzVdocSBOw",
+            "title": "PostgreSQL vs MySQL: Which is Better for AI?",
+            "snippet": "so AI readiness we know that my SQL has no native vector database. support um and it's it's really not designed for modern workloads i think Postgress. has some of"
+          },
+          {
+            "url": "https://www.reddit.com/r/PostgreSQL/comments/tldork/in_what_circumstances_is_mysql_better_than/",
+            "title": "In what circumstances is MySQL better than PostgreSQL? - Reddit",
+            "snippet": "The following are the main distinctions between MySQL and PostgreSQL which will help you in selecting the right platform for your organization: * PostgreSQL is an ..."
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=ZTFidbtHnqI",
+            "title": "MySQL vs PostgreSQL: Complete Comparison for 2026",
+            "snippet": "welcome to our comprehensive comparison of two of the world's most popular open-source databases MySQL and Postgres SQL In this video we will dive deep into their "
+          },
+          {
+            "url": "https://www.bytebase.com/blog/postgres-vs-mysql/",
+            "title": "PostgreSQL vs MySQL: Which Database Should You Choose in 2026?",
+            "snippet": "Window Functions Window Frame Types: MySQL only supports the ROWS frame type, which allows you to define a frame consisting of a fixed number of rows. Postgres, on..."
+          },
+          {
+            "url": "https://medium.com/@BuildShift/postgres-vs-mysql-2025-i-migrated-a-prod-app-both-ways-the-no-bs-verdict-bcdb1d11dda4",
+            "title": "Postgres vs MySQL (2025): I migrated a prod app both ways the no- ...",
+            "snippet": "Benchmarks * Point lookups \\u0026 ranges \u2192 MySQL was consistently faster. Its clustered B-tree + REPEATABLE READ default makes \u201cid in, row out\u201d feel instant. * JSON con..."
+          },
+          {
+            "url": "https://www.ibm.com/think/topics/postgresql-vs-mysql",
+            "title": "PostgreSQL vs. MySQL: What\u2019s the Difference? - IBM",
+            "snippet": "PostgreSQL vs MySQL: What are the differences? * Database type. MySQL: Relational. PostgreSQL: Object-relational. * Programming language. MySQL: C/C++ PostgreSQL: ..."
+          },
+          {
+            "url": "https://www.linkedin.com/posts/nikkisiapno_postgres-vs-mysql-%F0%9D%97%A3%F0%9D%97%BC%F0%9D%98%80%F0%9D%98%81%F0%9D%97%B4%F0%9D%97%BF%F0%9D%97%B2%F0%9D%98%80-is-built-activity-7463838949006917633-HSIQ",
+            "title": "Nikki Siapno's Post - LinkedIn",
+            "snippet": "I tend to prefer PostgreSQL as the default choice for new projects, not because I think MySQL is bad, but because Postgres offers more built-in capabilities as a s..."
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=BtvFuSOAR3E",
+            "title": "PostgreSQL vs MySQL: The Breakdown",
+            "snippet": "postgress or my SQL i've used both and let me tell you they have a lot in common. but they also have deep differences beyond the simple technical specs by the end "
+          },
+          {
+            "url": "https://www.crunchydata.com/blog/postgresql-brin-indexes-big-data-performance-with-minimal-storage",
+            "title": "PostgreSQL BRIN Indexes: Big Data Performance...",
+            "snippet": "PostgreSQL 9.5 introduced a feature called block range indexes (aka BRIN ) that is incredibly helpful in efficiently searching over large time series data and has ..."
+          }
+        ],
+        "related_searches": []
+      }
+    },
+    "Serper": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "DataForSEO": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    }
+  }
+}

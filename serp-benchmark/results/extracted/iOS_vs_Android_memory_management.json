@@ -1,0 +1,163 @@
+{
+  "query": "iOS vs Android memory management",
+  "intent": "comparison",
+  "scores": {
+    "SearchApi": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "SerpApi": {
+      "extracted": {
+        "present": true,
+        "summary": "",
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "snippet": "iOS and Android manage memory differently. iOS aggressively suspends background apps, cleans up memory instantly using Automatic Reference Counting (ARC), and runs strictly compiled native code. Android relies on background processes, uses periodic Garbage Collection, and uses Java Virtual Machines (ART) for compatibility, which requires larger RAM footprints\n.",
+            "snippet_links": [
+              {
+                "link": "https://levelup.gitconnected.com/why-iphone-never-talks-about-ram-and-why-android-cant-stop-2bb0f4098f69"
+              }
+            ],
+            "snippet_highlighted_words": [
+              "iOS aggressively suspends background apps, cleans up memory instantly using Automatic Reference Counting (ARC), and runs strictly compiled native code. Android relies on background processes, uses periodic Garbage Collection, and uses Java Virtual Machines (ART) for compatibility, which requires larger RAM footprints"
+            ],
+            "reference_indexes": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "Key Differences"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Memory Reclaim: iOS uses ARC (Automatic Reference Counting), which instantly deallocates memory the moment an object is no longer referenced\n. Android uses Garbage Collection, a background process that periodically sweeps for and deletes unused memory, causing brief latency and requiring a buffer of extra RAM.",
+                "snippet_links": [
+                  {
+                    "link": "https://medium.com/@durgaviswanadh/arc-vs-garbage-collection-the-real-reason-android-needs-more-ram-than-ios-3c654e058aee"
+                  }
+                ],
+                "reference_indexes": [
+                  3,
+                  4
+                ]
+              },
+              {
+                "snippet": "Background Execution: iOS strictly \"freezes\" background applications\u2014saving their current state and clearing their active memory footprint. Android allows applications more freedom to run lingering background services and processes, necessitating a \"Low Memory Killer\" to evict apps only when space runs short.",
+                "snippet_links": [
+                  {
+                    "link": "https://levelup.gitconnected.com/why-iphone-never-talks-about-ram-and-why-android-cant-stop-2bb0f4098f69"
+                  }
+                ],
+                "reference_indexes": [
+                  0
+                ]
+              },
+              {
+                "snippet": "Language and Overhead: iOS apps are compiled into strictly native code, allowing direct hardware communication. Android apps run through a runtime virtual machine (ART) to ensure compatibility across thousands of different devices, which natively consumes more RAM.",
+                "snippet_links": [
+                  {
+                    "link": "https://medium.com/@esatkaraosmanoglu02/why-apple-devices-feel-smooth-even-with-lower-ram-a774c059b607"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              2
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Because of these architectural differences, tests show that identical apps can use around 40% less RAM on iOS compared to Android. This is why iPhones require significantly less hardware RAM (e.g., 6GB to 8GB) to achieve the same snappy performance as Android devices, which typically feature 12GB to 16GB.",
+            "snippet_links": [
+              {
+                "link": "https://www.reddit.com/r/Android/comments/smqger/android_vs_ios_ram_management_who_does_it_better/"
+              }
+            ],
+            "reference_indexes": [
+              2,
+              6
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "For a visual breakdown of how Apple optimizes memory consumption and compresses data to save resources:"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Would you like to know how your specific device's RAM compares to other models, or are you interested in how mobile app development frameworks handle memory in these operating systems?"
+          }
+        ],
+        "citations": [
+          {
+            "url": "https://levelup.gitconnected.com/why-iphone-never-talks-about-ram-and-why-android-cant-stop-2bb0f4098f69",
+            "title": "Why iPhone Never Talks About RAM \u2014 and Why Android Can ...",
+            "snippet": "As a software engineer \u2014 and a curious one \u2014 I've always wondered why Apple treats memory like a secret ingredient in a Michelin-star kitchen, while Android treats..."
+          },
+          {
+            "url": "https://www.quora.com/If-Android-is-based-on-Linux-why-is-RAM-Management-still-bad-compared-to-iOS-having-a-better-RAM-Management",
+            "title": "If Android is based on Linux, why is RAM Management still ...",
+            "snippet": "Architectural Differences: Android and iOS RAM management disparities stem from distinct OS architectures, app lifecycle models, r..."
+          },
+          {
+            "url": "https://medium.com/@esatkaraosmanoglu02/why-apple-devices-feel-smooth-even-with-lower-ram-a774c059b607",
+            "title": "Why Apple Devices Feel Smooth Even With Lower RAM? - Medium",
+            "snippet": "It can seem puzzling: many Android phones brag about 12GB or 16GB of RAM, while recent iPhones often have just 6GB\u20138GB on their spec sheets. Yet in daily use, iPad..."
+          },
+          {
+            "url": "https://medium.com/@durgaviswanadh/arc-vs-garbage-collection-the-real-reason-android-needs-more-ram-than-ios-3c654e058aee",
+            "title": "ARC vs Garbage Collection: The Real Reason Android Needs More ...",
+            "snippet": "iOS: ARC (Automatic Reference Counting) iOS (and macOS) apps are written in Swift or Objective-C, both of which use ARC, or Automatic Reference Counting. Here's ho..."
+          },
+          {
+            "url": "https://www.androidpolice.com/why-android-needs-more-ram-than-ios/",
+            "title": "The reason Android phones need more RAM than iPhones",
+            "snippet": "Each operating system also manages RAM differently. Android employs a method of memory management called garbage collection. This process periodically roots out ob..."
+          },
+          {
+            "url": "https://www.youtube.com/shorts/mnj7DCopqpY",
+            "title": "Why iPhones Use less RAM than Android",
+            "snippet": "this is why 4GB on your iPhone 13 is okay for the most part So first of all generally on paper it seems that iPhones. usually need less RAM than Android phones Let"
+          },
+          {
+            "url": "https://www.reddit.com/r/Android/comments/smqger/android_vs_ios_ram_management_who_does_it_better/",
+            "title": "Android vs iOS RAM management - Who does it better? [Gary ...",
+            "snippet": "and what the size of it in memory is on an Android phone and this is what I found out so for example if you take the Google Play Store or the iTunes Store you can "
+          }
+        ],
+        "related_searches": []
+      }
+    },
+    "Serper": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "DataForSEO": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    }
+  }
+}

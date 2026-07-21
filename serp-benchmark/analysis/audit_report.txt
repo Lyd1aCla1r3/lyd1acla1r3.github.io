@@ -1,0 +1,621 @@
+======================================================================
+DEFINITIVE DATA INTEGRITY AUDIT REPORT
+======================================================================
+
+## PHASE 0: CENSUS
+
+Extracted result files: 50
+Raw files (SearchApi): 49
+Raw files (SerpApi): 49
+Raw files (Serper): 49
+Raw files (DataForSEO): 49
+Total data points: 50 queries × 4 providers = 200
+⚠️  WARNING: SearchApi has 49 raw files but 50 extracted files
+⚠️  WARNING: SerpApi has 49 raw files but 50 extracted files
+⚠️  WARNING: Serper has 49 raw files but 50 extracted files
+⚠️  WARNING: DataForSEO has 49 raw files but 50 extracted files
+
+## PHASE 1: ERROR RESPONSE FILTER
+
+Error/inconclusive responses found: 17
+  ⚠️  SearchApi    | best_practices_for_Kubernetes_pod_disruption_budgets.json | Error key present: 429 Client Error: Too Many Requests for url: https://www.searchapi.io/api/v1/sea
+  ⚠️  SearchApi    | history_of_the_english_language.json                    | Error key present: 429 Client Error: Too Many Requests for url: https://www.searchapi.io/api/v1/sea
+  ⚠️  SearchApi    | how_did_the_bronze_age_collapse_happen.json             | Error key present: 429 Client Error: Too Many Requests for url: https://www.searchapi.io/api/v1/sea
+  ⚠️  SearchApi    | how_do_noise_cancelling_headphones_work.json            | Error key present: 429 Client Error: Too Many Requests for url: https://www.searchapi.io/api/v1/sea
+  ⚠️  SearchApi    | how_to_optimize_sqlite_for_concurrent_writes.json       | Error key present: 429 Client Error: Too Many Requests for url: https://www.searchapi.io/api/v1/sea
+  ⚠️  SearchApi    | rules_of_the_game_go.json                               | Error key present: 429 Client Error: Too Many Requests for url: https://www.searchapi.io/api/v1/sea
+  ⚠️  SearchApi    | symptoms_of_vitamin_D_deficiency.json                   | Error key present: 429 Client Error: Too Many Requests for url: https://www.searchapi.io/api/v1/sea
+  ⚠️  SearchApi    | what_causes_the_aurora_borealis_colors.json             | Error key present: 429 Client Error: Too Many Requests for url: https://www.searchapi.io/api/v1/sea
+  ⚠️  SearchApi    | what_is_a_Roth_conversion_ladder.json                   | Error key present: 429 Client Error: Too Many Requests for url: https://www.searchapi.io/api/v1/sea
+  ⚠️  SearchApi    | what_is_a_blockchain_consensus_mechanism.json           | Error key present: 429 Client Error: Too Many Requests for url: https://www.searchapi.io/api/v1/sea
+  ⚠️  SearchApi    | what_is_an_inverted_yield_curve.json                    | Error key present: 429 Client Error: Too Many Requests for url: https://www.searchapi.io/api/v1/sea
+  ⚠️  SearchApi    | what_is_dark_matter.json                                | Error key present: 429 Client Error: Too Many Requests for url: https://www.searchapi.io/api/v1/sea
+  ⚠️  SearchApi    | what_is_quantitative_easing.json                        | Error key present: 429 Client Error: Too Many Requests for url: https://www.searchapi.io/api/v1/sea
+  ⚠️  SearchApi    | what_is_the_Turing_test.json                            | Error key present: 429 Client Error: Too Many Requests for url: https://www.searchapi.io/api/v1/sea
+  ⚠️  SearchApi    | what_is_the_electoral_college.json                      | Error key present: 429 Client Error: Too Many Requests for url: https://www.searchapi.io/api/v1/sea
+  ⚠️  SearchApi    | what_is_the_event_loop_in_javascript.json               | Error key present: 429 Client Error: Too Many Requests for url: https://www.searchapi.io/api/v1/sea
+  ⚠️  SearchApi    | why_do_cats_chattering_at_birds.json                    | Error key present: 429 Client Error: Too Many Requests for url: https://www.searchapi.io/api/v1/sea
+
+## PHASE 2 & 3: SCHEMA + BLOB SWEEPS (present==False, non-error files)
+
+Data points with present==False: 96
+Skipped (error responses, already flagged): 17
+Auditable (valid responses with present==False): 79
+  ❌ MISSING RAW FILE: searchapi/how_to_build_a_mechanical_keyboard_from_scratch.json
+  ❌ MISSING RAW FILE: serpapi/how_to_build_a_mechanical_keyboard_from_scratch.json
+  ❌ MISSING RAW FILE: serper/how_to_build_a_mechanical_keyboard_from_scratch.json
+  ❌ MISSING RAW FILE: dataforseo/how_to_build_a_mechanical_keyboard_from_scratch.json
+
+Schema Sweep flags: 215
+  🔍 SearchApi    | Docker_vs_Podman.json                                   | key=ai_overview at ai_overview (type=dict)
+  🔍 SearchApi    | Docker_vs_Podman.json                                   | key=answer_count at organic_results[1].sitelinks.list[0].answer_count (type=int)
+  🔍 SearchApi    | Docker_vs_Podman.json                                   | key=answer_count at organic_results[1].sitelinks.list[1].answer_count (type=int)
+  🔍 SearchApi    | Docker_vs_Podman.json                                   | key=answer_link at organic_results[1].rich_snippet.detected_extensions.answer_link (type=str)
+  🔍 SearchApi    | Docker_vs_Podman.json                                   | key=answer_count at organic_results[1].rich_snippet.detected_extensions.answer_count (type=int)
+  🔍 SearchApi    | Docker_vs_Podman.json                                   | key=top_answer at organic_results[1].rich_snippet.detected_extensions.top_answer (type=str)
+  🔍 SearchApi    | Docker_vs_Podman.json                                   | key=is_ai_overview at related_questions[0].is_ai_overview (type=bool)
+  🔍 SearchApi    | Docker_vs_Podman.json                                   | key=answer at related_questions[1].answer (type=str)
+  🔍 SearchApi    | Docker_vs_Podman.json                                   | key=is_ai_overview at related_questions[2].is_ai_overview (type=bool)
+  🔍 SearchApi    | Docker_vs_Podman.json                                   | key=is_ai_overview at related_questions[3].is_ai_overview (type=bool)
+  🔍 DataForSEO   | Docker_vs_Podman.json                                   | key=expand_ai_overview at tasks[0].data.expand_ai_overview (type=bool)
+  🔍 DataForSEO   | Docker_vs_Podman.json                                   | key=asynchronous_ai_overview at tasks[0].result[0].items[0].asynchronous_ai_overview (type=bool)
+  🔍 DataForSEO   | Docker_vs_Podman.json                                   | key=asynchronous_ai_overview at tasks[0].result[0].items[4].items[0].expanded_element[0].asynchronous_ai_overview (type=bool)
+  🔍 DataForSEO   | Docker_vs_Podman.json                                   | key=asynchronous_ai_overview at tasks[0].result[0].items[4].items[1].expanded_element[0].asynchronous_ai_overview (type=bool)
+  🔍 DataForSEO   | Docker_vs_Podman.json                                   | key=asynchronous_ai_overview at tasks[0].result[0].items[4].items[3].expanded_element[0].asynchronous_ai_overview (type=bool)
+  🔍 SearchApi    | GraphQL_vs_REST.json                                    | key=ai_overview at ai_overview (type=dict)
+  🔍 SearchApi    | GraphQL_vs_REST.json                                    | key=answer_count at organic_results[1].sitelinks.list[0].answer_count (type=int)
+  🔍 SearchApi    | GraphQL_vs_REST.json                                    | key=answer_count at organic_results[1].sitelinks.list[1].answer_count (type=int)
+  🔍 SearchApi    | GraphQL_vs_REST.json                                    | key=answers at discussions_and_forums[0].answers (type=list)
+  🔍 SearchApi    | GraphQL_vs_REST.json                                    | key=is_ai_overview at related_questions[0].is_ai_overview (type=bool)
+  🔍 SearchApi    | GraphQL_vs_REST.json                                    | key=answer at related_questions[1].answer (type=str)
+  🔍 SearchApi    | GraphQL_vs_REST.json                                    | key=answer_highlight at related_questions[1].answer_highlight (type=str)
+  🔍 SearchApi    | GraphQL_vs_REST.json                                    | key=is_ai_overview at related_questions[2].is_ai_overview (type=bool)
+  🔍 SearchApi    | GraphQL_vs_REST.json                                    | key=is_ai_overview at related_questions[3].is_ai_overview (type=bool)
+  🔍 DataForSEO   | GraphQL_vs_REST.json                                    | key=expand_ai_overview at tasks[0].data.expand_ai_overview (type=bool)
+  🔍 DataForSEO   | GraphQL_vs_REST.json                                    | key=asynchronous_ai_overview at tasks[0].result[0].items[0].asynchronous_ai_overview (type=bool)
+  🔍 DataForSEO   | GraphQL_vs_REST.json                                    | key=asynchronous_ai_overview at tasks[0].result[0].items[2].items[0].expanded_element[0].asynchronous_ai_overview (type=bool)
+  🔍 DataForSEO   | GraphQL_vs_REST.json                                    | key=asynchronous_ai_overview at tasks[0].result[0].items[2].items[2].expanded_element[0].asynchronous_ai_overview (type=bool)
+  🔍 DataForSEO   | GraphQL_vs_REST.json                                    | key=asynchronous_ai_overview at tasks[0].result[0].items[2].items[3].expanded_element[0].asynchronous_ai_overview (type=bool)
+  🔍 SearchApi    | OLED_vs_QLED_tv.json                                    | key=answer_count at organic_results[0].sitelinks.list[0].answer_count (type=int)
+  🔍 SearchApi    | OLED_vs_QLED_tv.json                                    | key=answer_count at organic_results[0].sitelinks.list[1].answer_count (type=int)
+  🔍 SearchApi    | OLED_vs_QLED_tv.json                                    | key=answer_link at organic_results[0].rich_snippet.detected_extensions.answer_link (type=str)
+  🔍 SearchApi    | OLED_vs_QLED_tv.json                                    | key=answer_count at organic_results[0].rich_snippet.detected_extensions.answer_count (type=int)
+  🔍 SearchApi    | OLED_vs_QLED_tv.json                                    | key=top_answer at organic_results[0].rich_snippet.detected_extensions.top_answer (type=str)
+  🔍 SearchApi    | OLED_vs_QLED_tv.json                                    | key=answers at discussions_and_forums[0].answers (type=list)
+  🔍 SearchApi    | OLED_vs_QLED_tv.json                                    | key=answer at related_questions[0].answer (type=str)
+  🔍 SearchApi    | OLED_vs_QLED_tv.json                                    | key=answer_highlight at related_questions[0].answer_highlight (type=str)
+  🔍 SearchApi    | OLED_vs_QLED_tv.json                                    | key=answer at related_questions[1].answer (type=str)
+  🔍 SearchApi    | OLED_vs_QLED_tv.json                                    | key=answer_highlight at related_questions[1].answer_highlight (type=str)
+  🔍 SearchApi    | OLED_vs_QLED_tv.json                                    | key=answer at related_questions[2].answer (type=str)
+  🔍 SearchApi    | OLED_vs_QLED_tv.json                                    | key=answer_highlight at related_questions[2].answer_highlight (type=str)
+  🔍 SearchApi    | OLED_vs_QLED_tv.json                                    | key=answer at related_questions[3].answer (type=str)
+  🔍 SearchApi    | OLED_vs_QLED_tv.json                                    | key=answer_highlight at related_questions[3].answer_highlight (type=str)
+  🔍 SearchApi    | PostgreSQL_vs_MySQL_for_time_series_data.json           | key=ai_overview at ai_overview (type=dict)
+  🔍 SearchApi    | PostgreSQL_vs_MySQL_for_time_series_data.json           | key=answers at discussions_and_forums[0].answers (type=list)
+  🔍 SearchApi    | PostgreSQL_vs_MySQL_for_time_series_data.json           | key=is_top_answer at discussions_and_forums[0].answers[0].is_top_answer (type=bool)
+  🔍 SearchApi    | PostgreSQL_vs_MySQL_for_time_series_data.json           | key=is_ai_overview at related_questions[0].is_ai_overview (type=bool)
+  🔍 SearchApi    | PostgreSQL_vs_MySQL_for_time_series_data.json           | key=answer at related_questions[1].answer (type=str)
+  🔍 SearchApi    | PostgreSQL_vs_MySQL_for_time_series_data.json           | key=answer_highlight at related_questions[1].answer_highlight (type=str)
+  🔍 SearchApi    | PostgreSQL_vs_MySQL_for_time_series_data.json           | key=answer at related_questions[2].answer (type=str)
+  🔍 SearchApi    | PostgreSQL_vs_MySQL_for_time_series_data.json           | key=answer_highlight at related_questions[2].answer_highlight (type=str)
+  🔍 SearchApi    | PostgreSQL_vs_MySQL_for_time_series_data.json           | key=is_ai_overview at related_questions[3].is_ai_overview (type=bool)
+  🔍 DataForSEO   | PostgreSQL_vs_MySQL_for_time_series_data.json           | key=expand_ai_overview at tasks[0].data.expand_ai_overview (type=bool)
+  🔍 DataForSEO   | PostgreSQL_vs_MySQL_for_time_series_data.json           | key=asynchronous_ai_overview at tasks[0].result[0].items[0].asynchronous_ai_overview (type=bool)
+  🔍 DataForSEO   | PostgreSQL_vs_MySQL_for_time_series_data.json           | key=asynchronous_ai_overview at tasks[0].result[0].items[10].items[0].expanded_element[0].asynchronous_ai_overview (type=bool)
+  🔍 DataForSEO   | PostgreSQL_vs_MySQL_for_time_series_data.json           | key=asynchronous_ai_overview at tasks[0].result[0].items[10].items[1].expanded_element[0].asynchronous_ai_overview (type=bool)
+  🔍 DataForSEO   | PostgreSQL_vs_MySQL_for_time_series_data.json           | key=asynchronous_ai_overview at tasks[0].result[0].items[10].items[2].expanded_element[0].asynchronous_ai_overview (type=bool)
+  🔍 DataForSEO   | PostgreSQL_vs_MySQL_for_time_series_data.json           | key=asynchronous_ai_overview at tasks[0].result[0].items[10].items[3].expanded_element[0].asynchronous_ai_overview (type=bool)
+  🔍 SearchApi    | React_vs_Vue_performance.json                           | key=ai_overview at ai_overview (type=dict)
+  🔍 SearchApi    | React_vs_Vue_performance.json                           | key=answer_count at organic_results[0].sitelinks.list[0].answer_count (type=int)
+  🔍 SearchApi    | React_vs_Vue_performance.json                           | key=answer_count at organic_results[0].sitelinks.list[1].answer_count (type=int)
+  🔍 SearchApi    | React_vs_Vue_performance.json                           | key=answer_link at organic_results[0].rich_snippet.detected_extensions.answer_link (type=str)
+  🔍 SearchApi    | React_vs_Vue_performance.json                           | key=answer_count at organic_results[0].rich_snippet.detected_extensions.answer_count (type=int)
+  🔍 SearchApi    | React_vs_Vue_performance.json                           | key=top_answer at organic_results[0].rich_snippet.detected_extensions.top_answer (type=str)
+  🔍 SearchApi    | React_vs_Vue_performance.json                           | key=answers at discussions_and_forums[0].answers (type=list)
+  🔍 DataForSEO   | React_vs_Vue_performance.json                           | key=expand_ai_overview at tasks[0].data.expand_ai_overview (type=bool)
+  🔍 DataForSEO   | React_vs_Vue_performance.json                           | key=asynchronous_ai_overview at tasks[0].result[0].items[0].asynchronous_ai_overview (type=bool)
+  🔍 DataForSEO   | best_practices_for_Kubernetes_pod_disruption_budgets.json | key=expand_ai_overview at tasks[0].data.expand_ai_overview (type=bool)
+  🔍 DataForSEO   | best_practices_for_Kubernetes_pod_disruption_budgets.json | key=asynchronous_ai_overview at tasks[0].result[0].items[0].asynchronous_ai_overview (type=bool)
+  🔍 SearchApi    | how_to_apply_for_a_passport.json                        | key=ai_overview at ai_overview (type=dict)
+  🔍 SearchApi    | how_to_apply_for_a_passport.json                        | key=is_ai_overview at related_questions[0].is_ai_overview (type=bool)
+  🔍 SearchApi    | how_to_apply_for_a_passport.json                        | key=is_ai_overview at related_questions[1].is_ai_overview (type=bool)
+  🔍 SearchApi    | how_to_apply_for_a_passport.json                        | key=is_ai_overview at related_questions[2].is_ai_overview (type=bool)
+  🔍 SearchApi    | how_to_apply_for_a_passport.json                        | key=is_ai_overview at related_questions[3].is_ai_overview (type=bool)
+  🔍 DataForSEO   | how_to_apply_for_a_passport.json                        | key=expand_ai_overview at tasks[0].data.expand_ai_overview (type=bool)
+  🔍 SearchApi    | how_to_build_a_raised_garden_bed.json                   | key=answers at discussions_and_forums[0].answers (type=list)
+  🔍 SearchApi    | how_to_build_a_raised_garden_bed.json                   | key=is_top_answer at discussions_and_forums[0].answers[0].is_top_answer (type=bool)
+  🔍 SearchApi    | how_to_build_a_raised_garden_bed.json                   | key=is_ai_overview at related_questions[0].is_ai_overview (type=bool)
+  🔍 SearchApi    | how_to_build_a_raised_garden_bed.json                   | key=is_ai_overview at related_questions[1].is_ai_overview (type=bool)
+  🔍 SearchApi    | how_to_build_a_raised_garden_bed.json                   | key=is_ai_overview at related_questions[2].is_ai_overview (type=bool)
+  🔍 SearchApi    | how_to_build_a_raised_garden_bed.json                   | key=is_ai_overview at related_questions[3].is_ai_overview (type=bool)
+  🔍 DataForSEO   | how_to_change_a_flat_tire.json                          | key=expand_ai_overview at tasks[0].data.expand_ai_overview (type=bool)
+  🔍 DataForSEO   | how_to_cook_a_soft_boiled_egg.json                      | key=expand_ai_overview at tasks[0].data.expand_ai_overview (type=bool)
+  🔍 DataForSEO   | how_to_cook_a_soft_boiled_egg.json                      | key=asynchronous_ai_overview at tasks[0].result[0].items[0].asynchronous_ai_overview (type=bool)
+  🔍 DataForSEO   | how_to_cook_a_soft_boiled_egg.json                      | key=asynchronous_ai_overview at tasks[0].result[0].items[4].items[0].expanded_element[0].asynchronous_ai_overview (type=bool)
+  🔍 DataForSEO   | how_to_cook_a_soft_boiled_egg.json                      | key=asynchronous_ai_overview at tasks[0].result[0].items[4].items[1].expanded_element[0].asynchronous_ai_overview (type=bool)
+  🔍 DataForSEO   | how_to_cook_a_soft_boiled_egg.json                      | key=asynchronous_ai_overview at tasks[0].result[0].items[4].items[2].expanded_element[0].asynchronous_ai_overview (type=bool)
+  🔍 DataForSEO   | how_to_cook_a_soft_boiled_egg.json                      | key=asynchronous_ai_overview at tasks[0].result[0].items[4].items[3].expanded_element[0].asynchronous_ai_overview (type=bool)
+  🔍 SearchApi    | how_to_file_a_small_claims_court_case.json              | key=ai_overview at ai_overview (type=dict)
+  🔍 SearchApi    | how_to_file_a_small_claims_court_case.json              | key=is_ai_overview at related_questions[0].is_ai_overview (type=bool)
+  🔍 SearchApi    | how_to_file_a_small_claims_court_case.json              | key=is_ai_overview at related_questions[1].is_ai_overview (type=bool)
+  🔍 SearchApi    | how_to_file_a_small_claims_court_case.json              | key=is_ai_overview at related_questions[2].is_ai_overview (type=bool)
+  🔍 SearchApi    | how_to_file_a_small_claims_court_case.json              | key=is_ai_overview at related_questions[3].is_ai_overview (type=bool)
+  🔍 DataForSEO   | how_to_file_a_small_claims_court_case.json              | key=expand_ai_overview at tasks[0].data.expand_ai_overview (type=bool)
+  🔍 DataForSEO   | how_to_file_a_small_claims_court_case.json              | key=asynchronous_ai_overview at tasks[0].result[0].items[0].asynchronous_ai_overview (type=bool)
+  🔍 DataForSEO   | how_to_file_a_small_claims_court_case.json              | key=asynchronous_ai_overview at tasks[0].result[0].items[2].items[0].expanded_element[0].asynchronous_ai_overview (type=bool)
+  🔍 DataForSEO   | how_to_file_a_small_claims_court_case.json              | key=asynchronous_ai_overview at tasks[0].result[0].items[2].items[1].expanded_element[0].asynchronous_ai_overview (type=bool)
+  🔍 DataForSEO   | how_to_file_a_small_claims_court_case.json              | key=asynchronous_ai_overview at tasks[0].result[0].items[2].items[2].expanded_element[0].asynchronous_ai_overview (type=bool)
+  🔍 DataForSEO   | how_to_file_a_small_claims_court_case.json              | key=asynchronous_ai_overview at tasks[0].result[0].items[2].items[3].expanded_element[0].asynchronous_ai_overview (type=bool)
+  🔍 DataForSEO   | how_to_optimize_sqlite_for_concurrent_writes.json       | key=expand_ai_overview at tasks[0].data.expand_ai_overview (type=bool)
+  🔍 DataForSEO   | how_to_optimize_sqlite_for_concurrent_writes.json       | key=asynchronous_ai_overview at tasks[0].result[0].items[0].asynchronous_ai_overview (type=bool)
+  🔍 SearchApi    | how_to_reset_a_frozen_iphone.json                       | key=answer_box at answer_box (type=dict)
+  🔍 SearchApi    | how_to_reset_a_frozen_iphone.json                       | key=answer at related_questions[0].answer (type=str)
+  🔍 SearchApi    | how_to_reset_a_frozen_iphone.json                       | key=answer at related_questions[1].answer (type=str)
+  🔍 SearchApi    | how_to_reset_a_frozen_iphone.json                       | key=answer at related_questions[2].answer (type=str)
+  🔍 SearchApi    | how_to_reset_a_frozen_iphone.json                       | key=answer at related_questions[3].answer (type=str)
+  🔍 SearchApi    | iOS_vs_Android_memory_management.json                   | key=ai_overview at ai_overview (type=dict)
+  🔍 SearchApi    | iOS_vs_Android_memory_management.json                   | key=answer_count at organic_results[1].sitelinks.list[0].answer_count (type=int)
+  🔍 SearchApi    | iOS_vs_Android_memory_management.json                   | key=answer_count at organic_results[1].sitelinks.list[1].answer_count (type=int)
+  🔍 SearchApi    | iOS_vs_Android_memory_management.json                   | key=answer_link at organic_results[1].rich_snippet.detected_extensions.answer_link (type=str)
+  🔍 SearchApi    | iOS_vs_Android_memory_management.json                   | key=answer_count at organic_results[1].rich_snippet.detected_extensions.answer_count (type=int)
+  🔍 SearchApi    | iOS_vs_Android_memory_management.json                   | key=top_answer at organic_results[1].rich_snippet.detected_extensions.top_answer (type=str)
+  🔍 SearchApi    | iOS_vs_Android_memory_management.json                   | key=answer at related_questions[0].answer (type=str)
+  🔍 SearchApi    | iOS_vs_Android_memory_management.json                   | key=answer_highlight at related_questions[0].answer_highlight (type=str)
+  🔍 SearchApi    | iOS_vs_Android_memory_management.json                   | key=answer at related_questions[1].answer (type=str)
+  🔍 SearchApi    | iOS_vs_Android_memory_management.json                   | key=answer_table at related_questions[1].answer_table (type=dict)
+  🔍 SearchApi    | iOS_vs_Android_memory_management.json                   | key=is_ai_overview at related_questions[2].is_ai_overview (type=bool)
+  🔍 SearchApi    | iOS_vs_Android_memory_management.json                   | key=is_ai_overview at related_questions[3].is_ai_overview (type=bool)
+  🔍 DataForSEO   | iOS_vs_Android_memory_management.json                   | key=expand_ai_overview at tasks[0].data.expand_ai_overview (type=bool)
+  🔍 DataForSEO   | iOS_vs_Android_memory_management.json                   | key=asynchronous_ai_overview at tasks[0].result[0].items[0].asynchronous_ai_overview (type=bool)
+  🔍 DataForSEO   | iOS_vs_Android_memory_management.json                   | key=asynchronous_ai_overview at tasks[0].result[0].items[1].items[2].expanded_element[0].asynchronous_ai_overview (type=bool)
+  🔍 DataForSEO   | iOS_vs_Android_memory_management.json                   | key=asynchronous_ai_overview at tasks[0].result[0].items[1].items[3].expanded_element[0].asynchronous_ai_overview (type=bool)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=ai_overview at ai_overview (type=dict)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer_count at organic_results[1].sitelinks.list[0].answer_count (type=int)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer_count at organic_results[1].sitelinks.list[1].answer_count (type=int)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer_link at organic_results[1].rich_snippet.detected_extensions.answer_link (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer_count at organic_results[1].rich_snippet.detected_extensions.answer_count (type=int)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=top_answer at organic_results[1].rich_snippet.detected_extensions.top_answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answers at discussions_and_forums[0].answers (type=list)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=is_ai_overview at related_questions[0].is_ai_overview (type=bool)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[0].text_blocks[0].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[0].text_blocks[1].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[0].text_blocks[2].items[0].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[0].text_blocks[2].items[1].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[0].text_blocks[2].items[2].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[0].text_blocks[2].items[3].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[0].text_blocks[2].items[4].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[0].text_blocks[2].items[5].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[0].text_blocks[2].items[6].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[0].text_blocks[3].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=is_ai_overview at related_questions[1].is_ai_overview (type=bool)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[1].text_blocks[0].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[1].text_blocks[1].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[1].text_blocks[2].items[0].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[1].text_blocks[2].items[1].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[1].text_blocks[2].items[2].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[1].text_blocks[2].items[3].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[1].text_blocks[2].items[4].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[1].text_blocks[2].items[5].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[1].text_blocks[2].items[6].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=is_ai_overview at related_questions[2].is_ai_overview (type=bool)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[2].text_blocks[0].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[2].text_blocks[1].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[2].text_blocks[2].items[0].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[2].text_blocks[2].items[1].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[2].text_blocks[2].items[2].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[2].text_blocks[2].items[3].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[2].text_blocks[2].items[4].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[2].text_blocks[2].items[5].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[2].text_blocks[2].items[6].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[2].text_blocks[3].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[2].text_blocks[4].items[0].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[2].text_blocks[4].items[1].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=is_ai_overview at related_questions[3].is_ai_overview (type=bool)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[3].text_blocks[0].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[3].text_blocks[1].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[3].text_blocks[2].items[0].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[3].text_blocks[2].items[1].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[3].text_blocks[2].items[2].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[3].text_blocks[2].items[3].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[3].text_blocks[2].items[4].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[3].text_blocks[2].items[5].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[3].text_blocks[3].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[3].text_blocks[4].items[0].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[3].text_blocks[4].items[1].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[3].text_blocks[4].items[2].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[3].text_blocks[5].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[3].text_blocks[6].items[0].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[3].text_blocks[6].items[1].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=is_ai_overview at related_questions[4].is_ai_overview (type=bool)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[4].text_blocks[0].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[4].text_blocks[1].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[4].text_blocks[2].items[0].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[4].text_blocks[2].items[1].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[4].text_blocks[2].items[2].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[4].text_blocks[2].items[3].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[4].text_blocks[3].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[4].text_blocks[4].items[0].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[4].text_blocks[4].items[1].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[4].text_blocks[4].items[2].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=answer at related_questions[4].text_blocks[5].answer (type=str)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=is_ai_overview at related_questions[5].is_ai_overview (type=bool)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=is_ai_overview at related_questions[6].is_ai_overview (type=bool)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=is_ai_overview at related_questions[7].is_ai_overview (type=bool)
+  🔍 SearchApi    | leasing_vs_buying_a_car.json                            | key=is_ai_overview at related_questions[8].is_ai_overview (type=bool)
+  🔍 SearchApi    | snowboard_vs_skis_for_beginners.json                    | key=ai_overview at ai_overview (type=dict)
+  🔍 SearchApi    | snowboard_vs_skis_for_beginners.json                    | key=answer_count at organic_results[0].sitelinks.list[0].answer_count (type=int)
+  🔍 SearchApi    | snowboard_vs_skis_for_beginners.json                    | key=answer_count at organic_results[0].sitelinks.list[1].answer_count (type=int)
+  🔍 SearchApi    | snowboard_vs_skis_for_beginners.json                    | key=is_ai_overview at related_questions[0].is_ai_overview (type=bool)
+  🔍 SearchApi    | snowboard_vs_skis_for_beginners.json                    | key=is_ai_overview at related_questions[1].is_ai_overview (type=bool)
+  🔍 SearchApi    | snowboard_vs_skis_for_beginners.json                    | key=is_ai_overview at related_questions[2].is_ai_overview (type=bool)
+  🔍 SearchApi    | snowboard_vs_skis_for_beginners.json                    | key=is_ai_overview at related_questions[3].is_ai_overview (type=bool)
+  🔍 DataForSEO   | snowboard_vs_skis_for_beginners.json                    | key=expand_ai_overview at tasks[0].data.expand_ai_overview (type=bool)
+  🔍 DataForSEO   | snowboard_vs_skis_for_beginners.json                    | key=asynchronous_ai_overview at tasks[0].result[0].items[0].asynchronous_ai_overview (type=bool)
+  🔍 DataForSEO   | snowboard_vs_skis_for_beginners.json                    | key=asynchronous_ai_overview at tasks[0].result[0].items[4].items[0].expanded_element[0].asynchronous_ai_overview (type=bool)
+  🔍 DataForSEO   | snowboard_vs_skis_for_beginners.json                    | key=asynchronous_ai_overview at tasks[0].result[0].items[4].items[1].expanded_element[0].asynchronous_ai_overview (type=bool)
+  🔍 DataForSEO   | snowboard_vs_skis_for_beginners.json                    | key=asynchronous_ai_overview at tasks[0].result[0].items[4].items[2].expanded_element[0].asynchronous_ai_overview (type=bool)
+  🔍 DataForSEO   | snowboard_vs_skis_for_beginners.json                    | key=asynchronous_ai_overview at tasks[0].result[0].items[4].items[3].expanded_element[0].asynchronous_ai_overview (type=bool)
+  🔍 Serper       | what_causes_the_aurora_borealis_colors.json             | key=answerBox at answerBox (type=dict)
+  🔍 DataForSEO   | what_is_retrieval_augmented_generation.json             | key=expand_ai_overview at tasks[0].data.expand_ai_overview (type=bool)
+  🔍 Serper       | what_is_the_event_loop_in_javascript.json               | key=answerBox at answerBox (type=dict)
+  🔍 DataForSEO   | what_is_the_event_loop_in_javascript.json               | key=expand_ai_overview at tasks[0].data.expand_ai_overview (type=bool)
+  🔍 DataForSEO   | what_is_the_event_loop_in_javascript.json               | key=asynchronous_ai_overview at tasks[0].result[0].items[0].asynchronous_ai_overview (type=bool)
+  🔍 DataForSEO   | what_is_the_event_loop_in_javascript.json               | key=asynchronous_ai_overview at tasks[0].result[0].items[4].items[1].expanded_element[0].asynchronous_ai_overview (type=bool)
+  🔍 DataForSEO   | what_is_the_event_loop_in_javascript.json               | key=asynchronous_ai_overview at tasks[0].result[0].items[4].items[2].expanded_element[0].asynchronous_ai_overview (type=bool)
+
+Blob Sweep flags: 162
+  📄 SearchApi    | Docker_vs_Podman.json                                   | 3780 chars at ai_overview.page_token (parent_key=page_token)
+     Preview: L2FzeW5jL2ZvbHNyY2g_aGxceDNkZW5ceDI2cHdzXHgzZDBceDI2Z2xceDNkdXNceDI2eXZceDNkM1x4MjZjc1x4M2QwXHgyNmVp...
+  📄 SearchApi    | Docker_vs_Podman.json                                   | 586 chars at organic_results[0].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAOVBMVEWVSeiQNd51LbpmHqhhAapZAZ...
+  📄 SearchApi    | Docker_vs_Podman.json                                   | 806 chars at organic_results[1].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAhFBMVEVHcEz/RQD/RQD/RQD/RQD/RQ...
+  📄 SearchApi    | Docker_vs_Podman.json                                   | 686 chars at organic_results[3].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAA21BMVEUAAAAmBAMoGw0qHQ4ZAACTDw...
+  📄 SearchApi    | Docker_vs_Podman.json                                   | 578 chars at organic_results[5].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAALVBMVEVHcEwYGBsYGBsYGBsYGBsYGB...
+  📄 SearchApi    | Docker_vs_Podman.json                                   | 707 chars at organic_results[6].favicon (parent_key=favicon)
+     Preview: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdH...
+  📄 SearchApi    | Docker_vs_Podman.json                                   | 6479 chars at inline_images.images[0].thumbnail (parent_key=thumbnail)
+     Preview: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdH...
+  📄 SearchApi    | Docker_vs_Podman.json                                   | 7519 chars at inline_images.images[1].thumbnail (parent_key=thumbnail)
+     Preview: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdH...
+  📄 SearchApi    | Docker_vs_Podman.json                                   | 7410 chars at inline_images.images[2].thumbnail (parent_key=thumbnail)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMwAAADACAMAAAB/Pny7AAABaFBMVEX///8bMV4klu0oUp9/RKX+//...
+  📄 SearchApi    | Docker_vs_Podman.json                                   | 616 chars at related_questions[0].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxQUJDbUpCU21sVU5IUkpkMWxrT0cwMlJuUkZSalk1Y2pkMWFuVkJSVzVITmxKNk9IZHVRVEZQTVdnMlNVcE1NMmhY...
+  📄 SearchApi    | Docker_vs_Podman.json                                   | 530 chars at related_questions[1].source.favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABRElEQVR4Aa3TA0xwURiA4e+3jWpGri...
+  📄 SearchApi    | Docker_vs_Podman.json                                   | 627 chars at related_questions[1].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxQUJDbUpCU21sVU5IUkpkMWxrT0cwMlJuUkZSalk1Y2pkMWFuVkJSVzVITmxKNk9IZHVRVEZQTVdnMlNVcE1NMmhY...
+  📄 SearchApi    | Docker_vs_Podman.json                                   | 635 chars at related_questions[2].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxQUJDbUpCU21sVU5IUkpkMWxrT0cwMlJuUkZSalk1Y2pkMWFuVkJSVzVITmxKNk9IZHVRVEZQTVdnMlNVcE1NMmhY...
+  📄 SearchApi    | Docker_vs_Podman.json                                   | 628 chars at related_questions[3].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxQUJDbUpCU21sVU5IUkpkMWxrT0cwMlJuUkZSalk1Y2pkMWFuVkJSVzVITmxKNk9IZHVRVEZQTVdnMlNVcE1NMmhY...
+  📄 SearchApi    | GraphQL_vs_REST.json                                    | 3780 chars at ai_overview.page_token (parent_key=page_token)
+     Preview: L2FzeW5jL2ZvbHNyY2g_cHdzXHgzZDBceDI2aGxceDNkZW5ceDI2Z2xceDNkdXNceDI2eXZceDNkM1x4MjZjc1x4M2QwXHgyNmVp...
+  📄 SearchApi    | GraphQL_vs_REST.json                                    | 566 chars at organic_results[0].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAflBMVEUjLz4dKjohLT0NHzFQV2FKUl...
+  📄 SearchApi    | GraphQL_vs_REST.json                                    | 806 chars at organic_results[1].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAhFBMVEVHcEz/RQD/RQD/RQD/RQD/RQ...
+  📄 SearchApi    | GraphQL_vs_REST.json                                    | 546 chars at organic_results[3].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAKlBMVEWHjZZHcEyHjZaHjZaHjZaHjZ...
+  📄 SearchApi    | GraphQL_vs_REST.json                                    | 506 chars at organic_results[5].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAOVBMVEXM/wDM/wDM/wDM/wDT/wBlgg...
+  📄 SearchApi    | GraphQL_vs_REST.json                                    | 1258 chars at organic_results[6].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAADZklEQVR4AcSXA5DkWhSG+5Wfbdu2bV...
+  📄 SearchApi    | GraphQL_vs_REST.json                                    | 806 chars at discussions_and_forums[0].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAhFBMVEVHcEz/RQD/RQD/RQD/RQD/RQ...
+  📄 SearchApi    | GraphQL_vs_REST.json                                    | 558 chars at discussions_and_forums[1].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAe1BMVEVHcEyiKykCAgHLNDIBAQHNND...
+  📄 SearchApi    | GraphQL_vs_REST.json                                    | 596 chars at related_questions[0].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUkxka1pqTmpsUk9HeGZNek5PZWpsbFUxaDROREJVWTJRd1JFVmhTVlJ6T0ZFM1ZtbzJlR1JJ...
+  📄 SearchApi    | GraphQL_vs_REST.json                                    | 546 chars at related_questions[1].source.favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAKlBMVEWHjZZHcEyHjZaHjZaHjZaHjZ...
+  📄 SearchApi    | GraphQL_vs_REST.json                                    | 590 chars at related_questions[1].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUkxka1pqTmpsUk9HeGZNek5PZWpsbFUxaDROREJVWTJRd1JFVmhTVlJ6T0ZFM1ZtbzJlR1JJ...
+  📄 SearchApi    | GraphQL_vs_REST.json                                    | 612 chars at related_questions[2].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUkxka1pqTmpsUk9HeGZNek5PZWpsbFUxaDROREJVWTJRd1JFVmhTVlJ6T0ZFM1ZtbzJlR1JJ...
+  📄 SearchApi    | GraphQL_vs_REST.json                                    | 591 chars at related_questions[3].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUkxka1pqTmpsUk9HeGZNek5PZWpsbFUxaDROREJVWTJRd1JFVmhTVlJ6T0ZFM1ZtbzJlR1JJ...
+  📄 SearchApi    | OLED_vs_QLED_tv.json                                    | 806 chars at organic_results[0].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAhFBMVEVHcEz/RQD/RQD/RQD/RQD/RQ...
+  📄 SearchApi    | OLED_vs_QLED_tv.json                                    | 506 chars at organic_results[1].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAeFBMVEVISEpGRkhVVVdZWVo/P0I5OT...
+  📄 SearchApi    | OLED_vs_QLED_tv.json                                    | 610 chars at organic_results[2].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAV1BMVEVHcEwAiv8Aiv8Aiv8Aiv8Aiv...
+  📄 SearchApi    | OLED_vs_QLED_tv.json                                    | 606 chars at organic_results[4].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAXVBMVEVHcEwHZv8HaP8IZ/8IZ/8IZv...
+  📄 SearchApi    | OLED_vs_QLED_tv.json                                    | 606 chars at organic_results[5].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAdVBMVEVHcEzxdHTmAADoAADlAADuT0...
+  📄 SearchApi    | OLED_vs_QLED_tv.json                                    | 806 chars at discussions_and_forums[0].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAhFBMVEVHcEz/RQD/RQD/RQD/RQD/RQ...
+  📄 SearchApi    | OLED_vs_QLED_tv.json                                    | 582 chars at related_questions[0].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUk1URzlvUlVoU1ptdDFPRVp6UldGWFozVmhkbE5xZUZWV1pHdFVNbkIwY0VSRWIzQmhhbEZ4...
+  📄 SearchApi    | OLED_vs_QLED_tv.json                                    | 619 chars at related_questions[1].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUk1URzlvUlVoU1ptdDFPRVp6UldGWFozVmhkbE5xZUZWV1pHdFVNbkIwY0VSRWIzQmhhbEZ4...
+  📄 SearchApi    | OLED_vs_QLED_tv.json                                    | 602 chars at related_questions[2].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUk1URzlvUlVoU1ptdDFPRVp6UldGWFozVmhkbE5xZUZWV1pHdFVNbkIwY0VSRWIzQmhhbEZ4...
+  📄 SearchApi    | OLED_vs_QLED_tv.json                                    | 526 chars at related_questions[3].source.favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAilBMVEXbKC/aKC/aHibZCxjaGyTkIi...
+  📄 SearchApi    | OLED_vs_QLED_tv.json                                    | 576 chars at related_questions[3].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUk1URzlvUlVoU1ptdDFPRVp6UldGWFozVmhkbE5xZUZWV1pHdFVNbkIwY0VSRWIzQmhhbEZ4...
+  📄 SearchApi    | OLED_vs_QLED_tv.json                                    | 6575 chars at inline_videos[0].image (parent_key=image)
+     Preview: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdH...
+  📄 SearchApi    | OLED_vs_QLED_tv.json                                    | 3207 chars at inline_videos[1].image (parent_key=image)
+     Preview: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdH...
+  📄 SearchApi    | OLED_vs_QLED_tv.json                                    | 8507 chars at inline_videos[2].image (parent_key=image)
+     Preview: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdH...
+  📄 SearchApi    | PostgreSQL_vs_MySQL_for_time_series_data.json           | 3812 chars at ai_overview.page_token (parent_key=page_token)
+     Preview: L2FzeW5jL2ZvbHNyY2g_aGxceDNkZW5ceDI2Z2xceDNkdXNceDI2cHdzXHgzZDBceDI2eXZceDNkM1x4MjZjc1x4M2QwXHgyNmVp...
+  📄 SearchApi    | PostgreSQL_vs_MySQL_for_time_series_data.json           | 798 chars at organic_results[0].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAh1BMVEVHcEz1/4D1/4D1/4D1/4D1/4...
+  📄 SearchApi    | PostgreSQL_vs_MySQL_for_time_series_data.json           | 546 chars at organic_results[1].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAcCAMAAACnDzTfAAAAMFBMVEVHcEzQCW/RCXDNCW53BD/QCW...
+  📄 SearchApi    | PostgreSQL_vs_MySQL_for_time_series_data.json           | 566 chars at organic_results[2].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAflBMVEUjLz4dKjohLT0NHzFQV2FKUl...
+  📄 SearchApi    | PostgreSQL_vs_MySQL_for_time_series_data.json           | 814 chars at organic_results[3].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACGElEQVR4AczWA4wdURiG4be24tpug9...
+  📄 SearchApi    | PostgreSQL_vs_MySQL_for_time_series_data.json           | 546 chars at organic_results[4].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAKlBMVEWHjZZHcEyHjZaHjZaHjZaHjZ...
+  📄 SearchApi    | PostgreSQL_vs_MySQL_for_time_series_data.json           | 666 chars at organic_results[6].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAk1BMVEVHcEw7tv9Dt/8ysf8np/8wsv...
+  📄 SearchApi    | PostgreSQL_vs_MySQL_for_time_series_data.json           | 526 chars at organic_results[7].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAARVBMVEVHcEwAAAAAAAAAAAAAAAAAAA...
+  📄 SearchApi    | PostgreSQL_vs_MySQL_for_time_series_data.json           | 806 chars at discussions_and_forums[0].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAhFBMVEVHcEz/RQD/RQD/RQD/RQD/RQ...
+  📄 SearchApi    | PostgreSQL_vs_MySQL_for_time_series_data.json           | 694 chars at related_questions[0].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUkpjMVZtTWxoaGF6VklVMUZtTUdaSFZGTmpMVGM1ZHpkeFprbzVWMjVtZEVSSU56UnJjbkIy...
+  📄 SearchApi    | PostgreSQL_vs_MySQL_for_time_series_data.json           | 682 chars at related_questions[1].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUkpjMVZtTWxoaGF6VklVMUZtTUdaSFZGTmpMVGM1ZHpkeFprbzVWMjVtZEVSSU56UnJjbkIy...
+  📄 SearchApi    | PostgreSQL_vs_MySQL_for_time_series_data.json           | 566 chars at related_questions[2].source.favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAflBMVEUjLz4dKjohLT0NHzFQV2FKUl...
+  📄 SearchApi    | PostgreSQL_vs_MySQL_for_time_series_data.json           | 704 chars at related_questions[2].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUkpjMVZtTWxoaGF6VklVMUZtTUdaSFZGTmpMVGM1ZHpkeFprbzVWMjVtZEVSSU56UnJjbkIy...
+  📄 SearchApi    | PostgreSQL_vs_MySQL_for_time_series_data.json           | 635 chars at related_questions[3].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUkpjMVZtTWxoaGF6VklVMUZtTUdaSFZGTmpMVGM1ZHpkeFprbzVWMjVtZEVSSU56UnJjbkIy...
+  📄 SearchApi    | React_vs_Vue_performance.json                           | 3792 chars at ai_overview.page_token (parent_key=page_token)
+     Preview: L2FzeW5jL2ZvbHNyY2g_aGxceDNkZW5ceDI2cHdzXHgzZDBceDI2Z2xceDNkdXNceDI2eXZceDNkM1x4MjZjc1x4M2QwXHgyNmVp...
+  📄 SearchApi    | React_vs_Vue_performance.json                           | 806 chars at organic_results[0].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAhFBMVEVHcEz/RQD/RQD/RQD/RQD/RQ...
+  📄 SearchApi    | React_vs_Vue_performance.json                           | 678 chars at organic_results[1].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAhFBMVEX///+44Myw3cetyL+rsbjh4+...
+  📄 SearchApi    | React_vs_Vue_performance.json                           | 722 chars at organic_results[2].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAArlBMVEUAAAAAAAEAAAUxPUdGWGpMYn...
+  📄 SearchApi    | React_vs_Vue_performance.json                           | 526 chars at organic_results[6].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAARVBMVEVHcEwAAAAAAAAAAAAAAAAAAA...
+  📄 SearchApi    | React_vs_Vue_performance.json                           | 518 chars at organic_results[7].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAjVBMVEX////CwsLZ2dnu7u7Hx8fz+/...
+  📄 SearchApi    | React_vs_Vue_performance.json                           | 806 chars at discussions_and_forums[0].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAhFBMVEVHcEz/RQD/RQD/RQD/RQD/RQ...
+  📄 SearchApi    | how_to_apply_for_a_passport.json                        | 3812 chars at ai_overview.page_token (parent_key=page_token)
+     Preview: L2FzeW5jL2ZvbHNyY2g_cHdzXHgzZDBceDI2aGxceDNkZW5ceDI2Z2xceDNkdXNceDI2eXZceDNkM1x4MjZjc1x4M2QwXHgyNmVp...
+  📄 SearchApi    | how_to_apply_for_a_passport.json                        | 1318 chars at organic_results[0].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAABCFBMVEVHcEz/9VH57qfb1Z7OyJT//w...
+  📄 SearchApi    | how_to_apply_for_a_passport.json                        | 758 chars at organic_results[1].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAclBMVEX5+/za5e7P3egYXJIUWZDJ2e...
+  📄 SearchApi    | how_to_apply_for_a_passport.json                        | 930 chars at organic_results[2].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACb0lEQVR4AV1ThW4lQQzb/9cxM/NdmZ...
+  📄 SearchApi    | how_to_apply_for_a_passport.json                        | 722 chars at organic_results[3].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAk1BMVEX////u+f7W8PvN7Pni9Pya2v...
+  📄 SearchApi    | how_to_apply_for_a_passport.json                        | 1570 chars at organic_results[4].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAABEVBMVEVHcEz/2T7/6Z/hz6HOvpnCso...
+  📄 SearchApi    | how_to_apply_for_a_passport.json                        | 694 chars at organic_results[5].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAjVBMVEX////oyLjcq5LTlHHLekvEZi...
+  📄 SearchApi    | how_to_apply_for_a_passport.json                        | 1550 chars at organic_results[6].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAABOFBMVEVHcEz////Z7+9xy/VryfZexP...
+  📄 SearchApi    | how_to_apply_for_a_passport.json                        | 626 chars at organic_results[7].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAeFBMVEX1+PsAVKa80uiux+L///8AVa...
+  📄 SearchApi    | how_to_apply_for_a_passport.json                        | 683 chars at related_questions[0].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUkpRMmhqWHpWR2RGcFViSE5QYVRGMFZFcGZXRWh6WTBabU5XdGtUVzVzYUVGV2NEZzNObDl3...
+  📄 SearchApi    | how_to_apply_for_a_passport.json                        | 683 chars at related_questions[1].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUkpRMmhqWHpWR2RGcFViSE5QYVRGMFZFcGZXRWh6WTBabU5XdGtUVzVzYUVGV2NEZzNObDl3...
+  📄 SearchApi    | how_to_apply_for_a_passport.json                        | 616 chars at related_questions[2].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUkpRMmhqWHpWR2RGcFViSE5QYVRGMFZFcGZXRWh6WTBabU5XdGtUVzVzYUVGV2NEZzNObDl3...
+  📄 SearchApi    | how_to_apply_for_a_passport.json                        | 674 chars at related_questions[3].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUkpRMmhqWHpWR2RGcFViSE5QYVRGMFZFcGZXRWh6WTBabU5XdGtUVzVzYUVGV2NEZzNObDl3...
+  📄 SearchApi    | how_to_apply_for_a_passport.json                        | 6095 chars at inline_videos[0].image (parent_key=image)
+     Preview: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdH...
+  📄 SearchApi    | how_to_apply_for_a_passport.json                        | 2603 chars at inline_videos[1].image (parent_key=image)
+     Preview: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdH...
+  📄 SearchApi    | how_to_apply_for_a_passport.json                        | 7819 chars at inline_videos[2].image (parent_key=image)
+     Preview: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdH...
+  📄 SearchApi    | how_to_build_a_raised_garden_bed.json                   | 806 chars at organic_results[2].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAhFBMVEVHcEz/RQD/RQD/RQD/RQD/RQ...
+  📄 SearchApi    | how_to_build_a_raised_garden_bed.json                   | 806 chars at organic_results[3].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAhFBMVEVHcEz/RQD/RQD/RQD/RQD/RQ...
+  📄 SearchApi    | how_to_build_a_raised_garden_bed.json                   | 5551 chars at organic_results[3].thumbnail (parent_key=thumbnail)
+     Preview: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdH...
+  📄 SearchApi    | how_to_build_a_raised_garden_bed.json                   | 658 chars at organic_results[4].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAk1BMVEXC19zF2+HF3eHI29+UlpWLhY...
+  📄 SearchApi    | how_to_build_a_raised_garden_bed.json                   | 986 chars at organic_results[6].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAA+VBMVEX+//z///3////5/e3a4NRuiF...
+  📄 SearchApi    | how_to_build_a_raised_garden_bed.json                   | 806 chars at discussions_and_forums[0].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAhFBMVEVHcEz/RQD/RQD/RQD/RQD/RQ...
+  📄 SearchApi    | how_to_build_a_raised_garden_bed.json                   | 867 chars at discussions_and_forums[1].favicon (parent_key=favicon)
+     Preview: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdH...
+  📄 SearchApi    | how_to_build_a_raised_garden_bed.json                   | 806 chars at discussions_and_forums[2].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAhFBMVEVHcEz/RQD/RQD/RQD/RQD/RQ...
+  📄 SearchApi    | how_to_build_a_raised_garden_bed.json                   | 691 chars at related_questions[0].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUkpkVFpGY0V4eU4yb3pYMjVXZVROVVpuVklZbk5NVDJsaVYwdEljMkZsTjAxUmNIbEliVzVy...
+  📄 SearchApi    | how_to_build_a_raised_garden_bed.json                   | 682 chars at related_questions[1].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUkpkVFpGY0V4eU4yb3pYMjVXZVROVVpuVklZbk5NVDJsaVYwdEljMkZsTjAxUmNIbEliVzVy...
+  📄 SearchApi    | how_to_build_a_raised_garden_bed.json                   | 691 chars at related_questions[2].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUkpkVFpGY0V4eU4yb3pYMjVXZVROVVpuVklZbk5NVDJsaVYwdEljMkZsTjAxUmNIbEliVzVy...
+  📄 SearchApi    | how_to_build_a_raised_garden_bed.json                   | 658 chars at related_questions[3].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUkpkVFpGY0V4eU4yb3pYMjVXZVROVVpuVklZbk5NVDJsaVYwdEljMkZsTjAxUmNIbEliVzVy...
+  📄 SearchApi    | how_to_build_a_raised_garden_bed.json                   | 5551 chars at inline_videos[0].image (parent_key=image)
+     Preview: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdH...
+  📄 SearchApi    | how_to_build_a_raised_garden_bed.json                   | 5907 chars at inline_videos[1].image (parent_key=image)
+     Preview: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdH...
+  📄 SearchApi    | how_to_build_a_raised_garden_bed.json                   | 5983 chars at inline_videos[2].image (parent_key=image)
+     Preview: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdH...
+  📄 SearchApi    | how_to_file_a_small_claims_court_case.json              | 3824 chars at ai_overview.page_token (parent_key=page_token)
+     Preview: L2FzeW5jL2ZvbHNyY2g_Z2xceDNkdXNceDI2cHdzXHgzZDBceDI2aGxceDNkZW5ceDI2eXZceDNkM1x4MjZjc1x4M2QwXHgyNmVp...
+  📄 SearchApi    | how_to_file_a_small_claims_court_case.json              | 722 chars at organic_results[2].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAATlBMVEVHcEzXvYrXvorXvpLYvovbwI...
+  📄 SearchApi    | how_to_file_a_small_claims_court_case.json              | 534 chars at organic_results[3].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAYFBMVEWzzPK0zfOtw+W2z/aPobyImr...
+  📄 SearchApi    | how_to_file_a_small_claims_court_case.json              | 810 chars at organic_results[6].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAA21BMVEX////u8fXGytLPvpqYoKyMfF...
+  📄 SearchApi    | how_to_file_a_small_claims_court_case.json              | 676 chars at related_questions[0].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUk1jVXBoTlZnM01XUnBNMFZrVUV0bGFXRlRYM0IwZEVZeGRYbDJRVlJ5UjB3eVNGbHpRM280...
+  📄 SearchApi    | how_to_file_a_small_claims_court_case.json              | 698 chars at related_questions[1].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUk1jVXBoTlZnM01XUnBNMFZrVUV0bGFXRlRYM0IwZEVZeGRYbDJRVlJ5UjB3eVNGbHpRM280...
+  📄 SearchApi    | how_to_file_a_small_claims_court_case.json              | 699 chars at related_questions[2].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUk1jVXBoTlZnM01XUnBNMFZrVUV0bGFXRlRYM0IwZEVZeGRYbDJRVlJ5UjB3eVNGbHpRM280...
+  📄 SearchApi    | how_to_file_a_small_claims_court_case.json              | 686 chars at related_questions[3].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUk1jVXBoTlZnM01XUnBNMFZrVUV0bGFXRlRYM0IwZEVZeGRYbDJRVlJ5UjB3eVNGbHpRM280...
+  📄 SearchApi    | how_to_file_a_small_claims_court_case.json              | 5511 chars at inline_videos[0].image (parent_key=image)
+     Preview: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdH...
+  📄 SearchApi    | how_to_file_a_small_claims_court_case.json              | 3483 chars at inline_videos[1].image (parent_key=image)
+     Preview: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdH...
+  📄 SearchApi    | how_to_file_a_small_claims_court_case.json              | 4107 chars at inline_videos[2].image (parent_key=image)
+     Preview: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdH...
+  📄 SearchApi    | how_to_reset_a_frozen_iphone.json                       | 3211 chars at organic_results[0].thumbnail (parent_key=thumbnail)
+     Preview: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdH...
+  📄 SearchApi    | how_to_reset_a_frozen_iphone.json                       | 1418 chars at organic_results[5].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAABX1BMVEVHcEx3GPlxGft3Ff2RCPKlA+...
+  📄 SearchApi    | how_to_reset_a_frozen_iphone.json                       | 668 chars at related_questions[0].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUk1lRzlIZG1sWE0wRTBjMmxXZUY5VWVUVlpPRzF0T1VoQ2FEWnRaVTlLZFVzeWIyUnlNMDB5...
+  📄 SearchApi    | how_to_reset_a_frozen_iphone.json                       | 619 chars at related_questions[1].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUk1lRzlIZG1sWE0wRTBjMmxXZUY5VWVUVlpPRzF0T1VoQ2FEWnRaVTlLZFVzeWIyUnlNMDB5...
+  📄 SearchApi    | how_to_reset_a_frozen_iphone.json                       | 651 chars at related_questions[2].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUk1lRzlIZG1sWE0wRTBjMmxXZUY5VWVUVlpPRzF0T1VoQ2FEWnRaVTlLZFVzeWIyUnlNMDB5...
+  📄 SearchApi    | how_to_reset_a_frozen_iphone.json                       | 651 chars at related_questions[3].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUk1lRzlIZG1sWE0wRTBjMmxXZUY5VWVUVlpPRzF0T1VoQ2FEWnRaVTlLZFVzeWIyUnlNMDB5...
+  📄 SearchApi    | how_to_reset_a_frozen_iphone.json                       | 13827 chars at inline_shorts[0].thumbnail (parent_key=thumbnail)
+     Preview: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdH...
+  📄 SearchApi    | how_to_reset_a_frozen_iphone.json                       | 8367 chars at inline_shorts[1].thumbnail (parent_key=thumbnail)
+     Preview: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdH...
+  📄 SearchApi    | how_to_reset_a_frozen_iphone.json                       | 11567 chars at inline_shorts[2].thumbnail (parent_key=thumbnail)
+     Preview: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdH...
+  📄 SearchApi    | how_to_reset_a_frozen_iphone.json                       | 13439 chars at inline_shorts[3].thumbnail (parent_key=thumbnail)
+     Preview: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdH...
+  📄 SearchApi    | iOS_vs_Android_memory_management.json                   | 3808 chars at ai_overview.page_token (parent_key=page_token)
+     Preview: L2FzeW5jL2ZvbHNyY2g_Z2xceDNkdXNceDI2aGxceDNkZW5ceDI2cHdzXHgzZDBceDI2eXZceDNkM1x4MjZjc1x4M2QwXHgyNmVp...
+  📄 SearchApi    | iOS_vs_Android_memory_management.json                   | 1850 chars at organic_results[0].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAFIElEQVR4Aa2XA3hjWRiGz47tTBpOJ2...
+  📄 SearchApi    | iOS_vs_Android_memory_management.json                   | 534 chars at organic_results[2].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAXVBMVEX////eADnysb3h4eHfAEPgFE...
+  📄 SearchApi    | iOS_vs_Android_memory_management.json                   | 514 chars at organic_results[5].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAM1BMVEVHcEwNRFkRRFgRQVQSRVkSR1...
+  📄 SearchApi    | iOS_vs_Android_memory_management.json                   | 667 chars at related_questions[0].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUkpXWFJrV2pFeVVTMVFORzgwWmt0U2N6RllUekpEUVZOeWVFUmhkRk54UVZWUVIxUndYMU01...
+  📄 SearchApi    | iOS_vs_Android_memory_management.json                   | 502 chars at related_questions[1].source.favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAb1BMVEX/cCT/dUP/iVv+byH/eTn/bT...
+  📄 SearchApi    | iOS_vs_Android_memory_management.json                   | 660 chars at related_questions[1].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUkpXWFJrV2pFeVVTMVFORzgwWmt0U2N6RllUekpEUVZOeWVFUmhkRk54UVZWUVIxUndYMU01...
+  📄 SearchApi    | iOS_vs_Android_memory_management.json                   | 667 chars at related_questions[2].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUkpXWFJrV2pFeVVTMVFORzgwWmt0U2N6RllUekpEUVZOeWVFUmhkRk54UVZWUVIxUndYMU01...
+  📄 SearchApi    | iOS_vs_Android_memory_management.json                   | 646 chars at related_questions[3].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUkpXWFJrV2pFeVVTMVFORzgwWmt0U2N6RllUekpEUVZOeWVFUmhkRk54UVZWUVIxUndYMU01...
+  📄 SearchApi    | iOS_vs_Android_memory_management.json                   | 4947 chars at inline_videos[0].image (parent_key=image)
+     Preview: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdH...
+  📄 SearchApi    | iOS_vs_Android_memory_management.json                   | 4559 chars at inline_videos[1].image (parent_key=image)
+     Preview: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdH...
+  📄 SearchApi    | iOS_vs_Android_memory_management.json                   | 15687 chars at inline_shorts[0].thumbnail (parent_key=thumbnail)
+     Preview: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdH...
+  📄 SearchApi    | iOS_vs_Android_memory_management.json                   | 13759 chars at inline_shorts[1].thumbnail (parent_key=thumbnail)
+     Preview: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdH...
+  📄 SearchApi    | iOS_vs_Android_memory_management.json                   | 6551 chars at inline_shorts[2].thumbnail (parent_key=thumbnail)
+     Preview: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdH...
+  📄 SearchApi    | iOS_vs_Android_memory_management.json                   | 11775 chars at inline_shorts[3].thumbnail (parent_key=thumbnail)
+     Preview: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdH...
+  📄 SearchApi    | leasing_vs_buying_a_car.json                            | 3792 chars at ai_overview.page_token (parent_key=page_token)
+     Preview: L2FzeW5jL2ZvbHNyY2g_cHdzXHgzZDBceDI2aGxceDNkZW5ceDI2Z2xceDNkdXNceDI2eXZceDNkM1x4MjZjc1x4M2QwXHgyNmVp...
+  📄 SearchApi    | leasing_vs_buying_a_car.json                            | 606 chars at organic_results[0].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAARVBMVEVHcEwArUwArk0Ar04Ar04ArE...
+  📄 SearchApi    | leasing_vs_buying_a_car.json                            | 806 chars at organic_results[1].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAhFBMVEVHcEz/RQD/RQD/RQD/RQD/RQ...
+  📄 SearchApi    | leasing_vs_buying_a_car.json                            | 710 chars at organic_results[3].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAVFBMVEVHcEw3j2FYcmQ1kWFWdWRVdm...
+  📄 SearchApi    | leasing_vs_buying_a_car.json                            | 1410 chars at organic_results[4].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAD2ElEQVR4AcXXA5AkSxQF0Kz+tv3Xtj...
+  📄 SearchApi    | leasing_vs_buying_a_car.json                            | 806 chars at discussions_and_forums[0].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAhFBMVEVHcEz/RQD/RQD/RQD/RQD/RQ...
+  📄 SearchApi    | leasing_vs_buying_a_car.json                            | 6753 chars at related_questions[0].markdown (parent_key=markdown)
+     Preview: Leasing a car offers significant advantages, primarily lower monthly payments and smaller upfront co...
+  📄 SearchApi    | leasing_vs_buying_a_car.json                            | 559 chars at related_questions[0].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUk1Yelp5UWxFMVpqWmxja1l4UXpCclpXaE9WR1ZQVEZSU04wdGtWRXB0U0docU5YWTFTSEZE...
+  📄 SearchApi    | leasing_vs_buying_a_car.json                            | 7597 chars at related_questions[1].markdown (parent_key=markdown)
+     Preview: Leasing a car offers lower monthly payments but often costs more in the long run, as you never build...
+  📄 SearchApi    | leasing_vs_buying_a_car.json                            | 559 chars at related_questions[1].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUk1Yelp5UWxFMVpqWmxja1l4UXpCclpXaE9WR1ZQVEZSU04wdGtWRXB0U0docU5YWTFTSEZE...
+  📄 SearchApi    | leasing_vs_buying_a_car.json                            | 6336 chars at related_questions[2].markdown (parent_key=markdown)
+     Preview: Buying a car entails significant financial drawbacks, primarily rapid depreciation (losing ~20% valu...
+  📄 SearchApi    | leasing_vs_buying_a_car.json                            | 556 chars at related_questions[2].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUk1Yelp5UWxFMVpqWmxja1l4UXpCclpXaE9WR1ZQVEZSU04wdGtWRXB0U0docU5YWTFTSEZE...
+  📄 SearchApi    | leasing_vs_buying_a_car.json                            | 6816 chars at related_questions[3].markdown (parent_key=markdown)
+     Preview: Buying a car offers long-term financial benefits, including building equity and eliminating monthly ...
+  📄 SearchApi    | leasing_vs_buying_a_car.json                            | 556 chars at related_questions[3].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUk1Yelp5UWxFMVpqWmxja1l4UXpCclpXaE9WR1ZQVEZSU04wdGtWRXB0U0docU5YWTFTSEZE...
+  📄 SearchApi    | leasing_vs_buying_a_car.json                            | 7580 chars at related_questions[4].markdown (parent_key=markdown)
+     Preview: Leasing a business vehicle allows for tax deductions on monthly payments (pro-rated for business use...
+  📄 SearchApi    | leasing_vs_buying_a_car.json                            | 628 chars at related_questions[4].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUk1Yelp5UWxFMVpqWmxja1l4UXpCclpXaE9WR1ZQVEZSU04wdGtWRXB0U0docU5YWTFTSEZE...
+  📄 SearchApi    | leasing_vs_buying_a_car.json                            | 660 chars at related_questions[5].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUk1Yelp5UWxFMVpqWmxja1l4UXpCclpXaE9WR1ZQVEZSU04wdGtWRXB0U0docU5YWTFTSEZE...
+  📄 SearchApi    | leasing_vs_buying_a_car.json                            | 659 chars at related_questions[6].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUk1Yelp5UWxFMVpqWmxja1l4UXpCclpXaE9WR1ZQVEZSU04wdGtWRXB0U0docU5YWTFTSEZE...
+  📄 SearchApi    | leasing_vs_buying_a_car.json                            | 612 chars at related_questions[7].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUk1Yelp5UWxFMVpqWmxja1l4UXpCclpXaE9WR1ZQVEZSU04wdGtWRXB0U0docU5YWTFTSEZE...
+  📄 SearchApi    | leasing_vs_buying_a_car.json                            | 635 chars at related_questions[8].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUk1Yelp5UWxFMVpqWmxja1l4UXpCclpXaE9WR1ZQVEZSU04wdGtWRXB0U0docU5YWTFTSEZE...
+  📄 SearchApi    | snowboard_vs_skis_for_beginners.json                    | 3804 chars at ai_overview.page_token (parent_key=page_token)
+     Preview: L2FzeW5jL2ZvbHNyY2g_aGxceDNkZW5ceDI2cHdzXHgzZDBceDI2Z2xceDNkdXNceDI2eXZceDNkM1x4MjZjc1x4M2QwXHgyNmVp...
+  📄 SearchApi    | snowboard_vs_skis_for_beginners.json                    | 806 chars at organic_results[0].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAhFBMVEVHcEz/RQD/RQD/RQD/RQD/RQ...
+  📄 SearchApi    | snowboard_vs_skis_for_beginners.json                    | 646 chars at organic_results[1].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAhFBMVEX////z+fxAt994yOe+4/IAqt...
+  📄 SearchApi    | snowboard_vs_skis_for_beginners.json                    | 734 chars at organic_results[2].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAArlBMVEVHcEwAAAABBAYAAAAAAAAAAg...
+  📄 SearchApi    | snowboard_vs_skis_for_beginners.json                    | 4807 chars at organic_results[3].thumbnail (parent_key=thumbnail)
+     Preview: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdH...
+  📄 SearchApi    | snowboard_vs_skis_for_beginners.json                    | 578 chars at organic_results[4].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAOVBMVEVHcEwjHyAjHyAiHh8kHyAjHh...
+  📄 SearchApi    | snowboard_vs_skis_for_beginners.json                    | 514 chars at organic_results[5].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAARVBMVEVHcEwAAAAAAAAAAAAAAAAAAA...
+  📄 SearchApi    | snowboard_vs_skis_for_beginners.json                    | 1446 chars at organic_results[6].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAbCAYAAAAdx42aAAAD8klEQVR4AY2VA9AmORCGP5xt25p/z7...
+  📄 SearchApi    | snowboard_vs_skis_for_beginners.json                    | 566 chars at organic_results[8].favicon (parent_key=favicon)
+     Preview: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAflBMVEXYU03XKh7QMivZUk3YYV7bfX...
+  📄 SearchApi    | snowboard_vs_skis_for_beginners.json                    | 691 chars at related_questions[0].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUk1SMkZUVDNrME5ERnBjbmt4WDI1RFNsOU9NVVZXTTNkM2EyOXdhMm90VUhsU05sRjVlV2xT...
+  📄 SearchApi    | snowboard_vs_skis_for_beginners.json                    | 644 chars at related_questions[1].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUk1SMkZUVDNrME5ERnBjbmt4WDI1RFNsOU9NVVZXTTNkM2EyOXdhMm90VUhsU05sRjVlV2xT...
+  📄 SearchApi    | snowboard_vs_skis_for_beginners.json                    | 702 chars at related_questions[2].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUk1SMkZUVDNrME5ERnBjbmt4WDI1RFNsOU9NVVZXTTNkM2EyOXdhMm90VUhsU05sRjVlV2xT...
+  📄 SearchApi    | snowboard_vs_skis_for_beginners.json                    | 647 chars at related_questions[3].next_page_token (parent_key=next_page_token)
+     Preview: eyJmYyI6IkVxRUJDbUpCU21sVU5IUk1SMkZUVDNrME5ERnBjbmt4WDI1RFNsOU9NVVZXTTNkM2EyOXdhMm90VUhsU05sRjVlV2xT...
+
+## PHASE 4: RICHNESS CHECK (present==True data points)
+
+Total present==True data points: 104
+Present but empty (no summary AND no text_blocks): 0
+
+Schema violations: 0
+
+======================================================================
+PHASE 5: FINAL SUMMARY
+======================================================================
+
+Total data points audited: 200
+  ✅ Present (AI Overview detected):     104
+  ❌ Proven Absent (valid, no AIO):       79
+  ⚠️  Inconclusive (error responses):     17
+  Sum check: 104 + 79 + 17 = 200 (expected 200)
+
+Per-Provider Detection Yield:
+  SearchApi   : 20 present | 13 absent | 17 errors | Raw Yield:  40.0% | Adjusted Yield:  60.6%
+  SerpApi     : 49 present |  1 absent |  0 errors | Raw Yield:  98.0% | Adjusted Yield:  98.0%
+  Serper      :  0 present | 50 absent |  0 errors | Raw Yield:   0.0% | Adjusted Yield:   0.0%
+  DataForSEO  : 35 present | 15 absent |  0 errors | Raw Yield:  70.0% | Adjusted Yield:  70.0%
+
+======================================================================
+⚠️  VERDICT: 377 FLAGS REQUIRE MANUAL REVIEW
+   - Schema flags: 215
+   - Blob flags: 162
+   - Empty-present: 0
+   - Schema violations: 0
+======================================================================

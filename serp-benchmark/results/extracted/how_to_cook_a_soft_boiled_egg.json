@@ -1,0 +1,252 @@
+{
+  "query": "how to cook a soft boiled egg",
+  "intent": "informational",
+  "scores": {
+    "SearchApi": {
+      "extracted": {
+        "present": true,
+        "summary": "",
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "answer": "Lower cold eggs into boiling water and cook for 6 to 7 minutes. This yields perfectly set whites and a warm, runny yolk. Immediately transfer the eggs to an ice bath for 3 minutes to stop the cooking and make peeling a breeze.",
+            "reference_indexes": [
+              0,
+              2,
+              3
+            ]
+          },
+          {
+            "type": "paragraph",
+            "answer": "For flawless soft-boiled eggs every time, follow these step-by-step instructions:"
+          },
+          {
+            "type": "header",
+            "answer": "The Step-by-Step Method"
+          },
+          {
+            "type": "paragraph",
+            "answer": "Boil the water: Bring a medium pot of water to a gentle rolling boil. You need enough water to fully submerge the eggs.",
+            "reference_indexes": [
+              2,
+              1
+            ]
+          },
+          {
+            "type": "video",
+            "link": "https://www.youtube.com/watch?v=Ad_n5-5ma8I&t=184"
+          }
+        ],
+        "citations": [
+          {
+            "url": "https://www.recipetineats.com/how-to-boil-eggs/",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=rVZc9uT8qsI&t=16",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.loveandlemons.com/how-to-make-soft-boiled-eggs/",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://livingthegourmet.com/2026/04/perfect-soft-boiled-eggs.html",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=Ad_n5-5ma8I",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=mcXzPF4-LFw",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=rVZc9uT8qsI",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/shorts/_v_7p6E4s2Q",
+            "title": "",
+            "snippet": ""
+          }
+        ],
+        "related_searches": []
+      }
+    },
+    "SerpApi": {
+      "extracted": {
+        "present": true,
+        "summary": "",
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "snippet": "Lower cold eggs into boiling water and cook for 6 to 7 minutes. This yields perfectly set whites and a warm, runny yolk. Immediately transfer the eggs to an ice bath for 3 minutes to stop the cooking and make peeling a breeze.",
+            "snippet_links": [
+              {
+                "link": "https://www.recipetineats.com/how-to-boil-eggs/"
+              }
+            ],
+            "snippet_highlighted_words": [
+              "Lower cold eggs into boiling water and cook for 6 to 7 minutes"
+            ],
+            "reference_indexes": [
+              1,
+              4,
+              3
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "For flawless soft-boiled eggs every time, follow these step-by-step instructions:"
+          },
+          {
+            "type": "heading",
+            "snippet": "The Step-by-Step Method"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Boil the water: Bring a medium pot of water to a gentle rolling boil. You need enough water to fully submerge the eggs.",
+                "reference_indexes": [
+                  1,
+                  10,
+                  5,
+                  6
+                ]
+              },
+              {
+                "snippet": "Lower the eggs: Use a slotted spoon to gently lower cold eggs (straight from the fridge) into the boiling water. This prevents them from cracking.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.recipetineats.com/how-to-boil-eggs/"
+                  }
+                ],
+                "reference_indexes": [
+                  0,
+                  1,
+                  10
+                ]
+              },
+              {
+                "snippet": "Start the timer: Adjust the heat to maintain a medium bubble. Cook to your preferred consistency:",
+                "list": [
+                  {
+                    "snippet": "6 minutes: Runny, liquid yolk (great for dipping toast)."
+                  },
+                  {
+                    "snippet": "6.5 to 7 minutes: \"Jammy\" or custardy yolk (the standard for ramen).",
+                    "snippet_links": [
+                      {
+                        "link": "https://www.recipetineats.com/how-to-boil-eggs/"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              0,
+              10,
+              7,
+              8
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "For a visual guide on how the time you boil affects the final yolk, as well as an easy demonstration of the ice-bath method:",
+            "video": {
+              "link": "https://www.youtube.com/watch?v=Ad_n5-5ma8I&t=184",
+              "thumbnail": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTWs9JeLsAdTTzedFC7fApCb5gNQmygHqjm6jNZa4kz1x9Hidrp"
+            }
+          }
+        ],
+        "citations": [
+          {
+            "url": "https://www.recipetineats.com/how-to-boil-eggs/",
+            "title": "How to boil eggs - RecipeTin Eats",
+            "snippet": "Instructions. Water level 3cm/1\\\" \u2013 Fill the saucepan with enough water so it will cover the eggs by 3cm / 1\\\" or more. Boil first then add eggs \u2013 Bring to a rapi..."
+          },
+          {
+            "url": "https://www.loveandlemons.com/how-to-make-soft-boiled-eggs/",
+            "title": "How to Make Soft Boiled Eggs Recipe - Love and Lemons",
+            "snippet": "First, heat the water. Bring a medium pot of water to a boil over high heat. Reduce the heat to medium, so the water maintains a gentle boil. Then, add the eggs..."
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=rVZc9uT8qsI",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://livingthegourmet.com/2026/04/perfect-soft-boiled-eggs.html",
+            "title": "How to Make the Perfect Soft Boiled Egg - Living The Gourmet",
+            "snippet": "Quick Answer: The Perfect Soft-Boiled Egg Method For jammy-yolked soft-boiled eggs, start by bringing water to a full boil, then gently and slowly lower the e"
+          },
+          {
+            "url": "https://www.seriouseats.com/sous-vide-soft-boiled-eggs",
+            "title": "Sous-Vide Soft-Boiled Eggs Recipe - Serious Eats",
+            "snippet": "Heading * Placing par-boiled eggs in a 143\u00b0F (61.7\u00b0C) water bath and letting them cook for 45 minutes sets the whites to tender perfection all the way thr"
+          },
+          {
+            "url": "https://www.thekitchn.com/how-to-make-a-soft-boiled-egg-kitchn-cooking-lesson-138819",
+            "title": "How To Make a Perfect Soft Boiled Egg - The Kitchn",
+            "snippet": "How to Make Soft-Boiled Eggs * Bring the water to a boil. Fill a saucepan with a few inches of water and bring it to a rolling boil over high heat."
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=f1uSSB2rA80",
+            "title": "Make Perfect Soft Boiled Eggs EVERY TIME!",
+            "snippet": "this is how you make the perfect softboiled eggs folks bring a pot of water to a boil just enough to cover your eggs when the water is boiling turn down the tem"
+          },
+          {
+            "url": "https://www.facebook.com/justonecookbook/posts/ramen-eggs-are-japanese-soft-boiled-eggs-known-for-a-custardy-jammy-egg-yolk-and/418558086303623/",
+            "title": "Ramen eggs are Japanese soft-boiled eggs known for a custardy jammy egg yolk and umami flavor. They are marinated overnight in a sweetened soy-based sauce. In Japan, we call these marinated eggs Ajitsuke Tamago (\u5473\u4ed8\u3051\u7389\u5b50) or short for Ajitama (\u5473\u7389) or Nitamago (\u716e\u7389\u5b50). RECIPE \u25b6 justonecookbook.com/ramen-egg/",
+            "snippet": "Ramen Eggs are Japanese soft-boiled eggs known for its custardy jammy egg yolk and umami flavor. They are marinated overnight in a sweetened soy-based sauce. Fr..."
+          },
+          {
+            "url": "https://www.instagram.com/reel/DTsb5m_iFCz/",
+            "title": "The perfect jammy egg every time \ud83e\udd5a So many of you asked how I make my jammy eggs, so here it is 6.5 minutes for a runny yolk. 7 minutes for a medium soft, jammy custard center (my favorite). High protein, easy to make, and perfect with ramen, rice, or toast. \u2728Save this for your next ramen night\ud83c\udf5c Instruction -Bring a pot of water to boil over medium heat -Using a spoon, gently lower the cold eggs into the pot one by one. -Let them boil for 6.5 minutes for a runny yolk, or 7 minutes for a medium-runny, jammy custard texture. -While the eggs are cooking, prepare a bowl of ice water. -Immediately transfer the eggs to the ice bath and let them sit for 5 minutes -Peel the eggs gently, then enjoy your perfect jammy eggs. #easyrecipes #softboiledegg #ramenegg #cookinghack #lunchideas #jammyeggs #nauan #highprotein",
+            "snippet": "Instruction -Bring a pot of water to boil over medium heat -Using a spoon, gently lower the cold eggs into the pot one by one. -Let them boil for 6.5 minutes fo..."
+          },
+          {
+            "url": "https://www.youtube.com/shorts/umdCxoQ9dBU",
+            "title": "How to Make the Perfect Boiled Eggs",
+            "snippet": "this is how you make the perfect boiled eggs every single time start off by getting yourself a pot and placing your eggs. now in order to prevent your eggs from"
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=rVZc9uT8qsI&t=16",
+            "title": "Perfect Soft Boiled Eggs",
+            "snippet": "today I'm showing you how to make perfect softboiled eggs with beautiful jammy yolks. get a pot of water onto mediumigh heat and bring it up to a gentle boil. w"
+          }
+        ],
+        "related_searches": []
+      }
+    },
+    "Serper": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "DataForSEO": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    }
+  }
+}

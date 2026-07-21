@@ -1,0 +1,645 @@
+{
+  "version": "0.1.20260717",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "7.1786 sec.",
+  "cost": 0.002,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "07210053-2120-0139-0000-c752f71e4dd0",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "7.0636 sec.",
+      "cost": 0.002,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "serp",
+        "google",
+        "organic",
+        "live",
+        "advanced"
+      ],
+      "data": {
+        "api": "serp",
+        "function": "live",
+        "se": "google",
+        "se_type": "organic",
+        "keyword": "how to cook a soft boiled egg",
+        "location_code": 2840,
+        "language_code": "en",
+        "device": "desktop",
+        "expand_ai_overview": true,
+        "os": "windows"
+      },
+      "result": [
+        {
+          "keyword": "how to cook a soft boiled egg",
+          "type": "organic",
+          "se_domain": "google.com",
+          "location_code": 2840,
+          "language_code": "en",
+          "check_url": "https://www.google.com/search?q=how%20to%20cook%20a%20soft%20boiled%20egg&hl=en&gl=US&ie=UTF-8&uule=w+CAIQIFISCQs2MuSEtepUEUK33kOSuTsc",
+          "datetime": "2026-07-20 21:53:31 +00:00",
+          "spell": null,
+          "refinement_chips": null,
+          "item_types": [
+            "ai_overview",
+            "organic",
+            "people_also_ask",
+            "recipes",
+            "video",
+            "perspectives",
+            "related_searches"
+          ],
+          "se_results_count": 84,
+          "pages_count": 1,
+          "items_count": 12,
+          "items": [
+            {
+              "type": "ai_overview",
+              "rank_group": 1,
+              "rank_absolute": 1,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]",
+              "asynchronous_ai_overview": true,
+              "markdown": null,
+              "items": null,
+              "references": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 2,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]",
+              "domain": "www.recipetineats.com",
+              "title": "How to boil eggs",
+              "url": "https://www.recipetineats.com/how-to-boil-eggs/",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.recipetineats.com \u203a Egg Recipes",
+              "website_name": "RecipeTin Eats",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Mar 22, 2023 \u2014 Bring water to a boil first, add eggs, start the timer. 6 minutes for runny yolks, 8 minutes for soft boiled (my go-to!), 10 minutes for hard \u00a0...",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 64,
+                "rating_max": 5
+              },
+              "price": null,
+              "highlighted": [
+                "8 minutes for soft boiled"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 3,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[4]/div[1]/div[1]",
+              "domain": "www.reddit.com",
+              "title": "Does anyone here know how to make soft-boiled eggs?",
+              "url": "https://www.reddit.com/r/cookingforbeginners/comments/qe99co/does_anyone_here_know_how_to_make_softboiled_eggs/",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "130+ comments  \u00b7  4 years ago",
+              "website_name": "Reddit\u00a0\u00b7\u00a0r/cookingforbeginners",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "I tried and the whites kept coming out undercooked.",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": null,
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 4,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[6]/div[1]/div[1]",
+              "domain": "www.loveandlemons.com",
+              "title": "How to Make Soft Boiled Eggs Recipe",
+              "url": "https://www.loveandlemons.com/how-to-make-soft-boiled-eggs/",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.loveandlemons.com \u203a Recipes",
+              "website_name": "Love and Lemons",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Fill a medium pot with water and heat to a gentle simmer, just below boiling. lower the eggs into the water and let simmer for 7 minutes (6 minutes for a\u00a0...",
+              "pre_snippet": "4.8(109) \u00b7 12 min",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 4.8,
+                "votes_count": 109,
+                "rating_max": 5
+              },
+              "price": null,
+              "highlighted": [
+                "Fill a medium pot with water and heat to a gentle simmer, just below boiling"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "people_also_ask",
+              "rank_group": 1,
+              "rank_absolute": 5,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[8]/div[1]/div[1]/div[1]",
+              "items": [
+                {
+                  "type": "people_also_ask_element",
+                  "title": "What's the secret to a perfect soft boiled egg?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[8]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "How long do you cook a soft boiled egg for?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[8]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Do you put eggs in boiling water or cold water?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[8]/div[1]/div[1]/div[1]/div[1]/div[2]/div[3]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "What is the 5 5 5 rule for boiling eggs?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[8]/div[1]/div[1]/div[1]/div[1]/div[2]/div[4]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "recipes",
+              "rank_group": 1,
+              "rank_absolute": 6,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[10]/div[1]/div[1]/div[1]/div[1]/g-section-with-header[1]",
+              "items": [
+                {
+                  "type": "recipes_element",
+                  "title": "How to Make Soft Boiled Eggs",
+                  "url": "https://www.loveandlemons.com/how-to-make-soft-boiled-eggs/",
+                  "domain": "www.loveandlemons.com",
+                  "source": "Love and Lemons",
+                  "description": "Eggs, sea salt, black pepper",
+                  "time": "12 min",
+                  "rating": {
+                    "rating_type": "Max5",
+                    "value": 4.8,
+                    "votes_count": 109,
+                    "rating_max": 5
+                  }
+                },
+                {
+                  "type": "recipes_element",
+                  "title": "How to boil eggs",
+                  "url": "https://www.recipetineats.com/how-to-boil-eggs/",
+                  "domain": "www.recipetineats.com",
+                  "source": "RecipeTin Eats",
+                  "description": "Fridge cold",
+                  "time": null,
+                  "rating": {
+                    "rating_type": "Max5",
+                    "value": 5,
+                    "votes_count": 64,
+                    "rating_max": 5
+                  }
+                },
+                {
+                  "type": "recipes_element",
+                  "title": "the perfect soft boiled egg",
+                  "url": "https://savvy-planet.com/blogs/recipes/the-perfect-soft-boiled-egg",
+                  "domain": "savvy-planet.com",
+                  "source": "Savvy Planet",
+                  "description": "Egg, garlic powder",
+                  "time": null,
+                  "rating": {
+                    "rating_type": "Max5",
+                    "value": 5,
+                    "votes_count": 7,
+                    "rating_max": 5
+                  }
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 7,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[11]/div[1]/div[1]/div[1]",
+              "domain": "www.youtube.com",
+              "title": "Perfect SOFT BOILED EGGS",
+              "url": "https://www.youtube.com/watch?v=-Wy29w2DNGE",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "3.7K+ views  \u00b7  5 years ago",
+              "website_name": "YouTube\u00a0\u00b7\u00a0Home Chef Seattle",
+              "is_image": false,
+              "is_video": true,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": null,
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": null,
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2021-07-08 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "video",
+              "rank_group": 1,
+              "rank_absolute": 8,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[13]/div[1]",
+              "items": [
+                {
+                  "type": "video_element",
+                  "source": "YouTube \u00b7 Epicurious",
+                  "title": "The Secret to Perfect Boiled Eggs (Soft, Jammy, Hard ...",
+                  "timestamp": "2024-10-02 00:00:00 +00:00",
+                  "url": "https://www.youtube.com/watch?v=mcXzPF4-LFw"
+                },
+                {
+                  "type": "video_element",
+                  "source": "YouTube \u00b7 Oui Chef!",
+                  "title": "Make Perfect Soft Boiled Eggs EVERY TIME!",
+                  "timestamp": "2024-06-01 00:00:00 +00:00",
+                  "url": "https://www.youtube.com/watch?v=f1uSSB2rA80"
+                },
+                {
+                  "type": "video_element",
+                  "source": "YouTube \u00b7 Chef Studio",
+                  "title": "Perfect Soft Boiled Eggs",
+                  "timestamp": "2021-11-13 00:00:00 +00:00",
+                  "url": "https://www.youtube.com/watch?v=rVZc9uT8qsI"
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 9,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[15]/div[1]/div[1]",
+              "domain": "www.seriouseats.com",
+              "title": "Perfect Soft-Boiled Egg Recipe",
+              "url": "https://www.seriouseats.com/perfect-soft-boiled-eggs",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.seriouseats.com \u203a ... \u203a Eggs \u203a Boiled Eggs",
+              "website_name": "Serious Eats",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Feb 11, 2025 \u2014 Bring water to a gentle simmer in a medium pot. Gently lower eggs into water with a slotted spoon. Cook for exactly 6 minutes, then remove eggs\u00a0...",
+              "pre_snippet": "5.0(3) \u00b7 15 min",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 3,
+                "rating_max": 5
+              },
+              "price": null,
+              "highlighted": [
+                "Cook for exactly 6 minutes"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 10,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[17]/div[1]/div[1]",
+              "domain": "www.thekitchn.com",
+              "title": "How To Make a Perfect Soft Boiled Egg",
+              "url": "https://www.thekitchn.com/how-to-make-a-soft-boiled-egg-kitchn-cooking-lesson-138819",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.thekitchn.com \u203a ... \u203a Eggs",
+              "website_name": "The Kitchn",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Gently lower the eggs into the water. Cook the eggs for 5 to 7 minutes. If cooking 3 or 4 eggs at once, you may need to cook for a few seconds longer. Cool the\u00a0...",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 72,
+                "rating_max": 5
+              },
+              "price": null,
+              "highlighted": [
+                "Cook the eggs for 5 to 7 minutes"
+              ],
+              "links": [
+                {
+                  "type": "link_element",
+                  "title": "Helpful Tips",
+                  "description": null,
+                  "url": "https://www.thekitchn.com/how-to-make-a-soft-boiled-egg-kitchn-cooking-lesson-138819",
+                  "domain": "www.thekitchn.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "Ingredients",
+                  "description": null,
+                  "url": "https://www.thekitchn.com/how-to-make-a-soft-boiled-egg-kitchn-cooking-lesson-138819",
+                  "domain": "www.thekitchn.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "Instructions",
+                  "description": null,
+                  "url": "https://www.thekitchn.com/how-to-make-a-soft-boiled-egg-kitchn-cooking-lesson-138819",
+                  "domain": "www.thekitchn.com"
+                }
+              ],
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "perspectives",
+              "rank_group": 1,
+              "rank_absolute": 11,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[19]/div[1]",
+              "title": "What people are saying",
+              "items": [
+                {
+                  "type": "perspectives_element",
+                  "title": "How to Prep a Soft-boiled Egg",
+                  "description": null,
+                  "url": "https://www.youtube.com/shorts/V-pSRNDzusw",
+                  "domain": "www.youtube.com",
+                  "date": "1 month ago",
+                  "source": "Laura Prepon",
+                  "timestamp": "2026-06-20 21:53:31 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Help with soft boiled eggs",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/Cooking/comments/1uzte09/help_with_soft_boiled_eggs/",
+                  "domain": "www.reddit.com",
+                  "date": "2 days ago",
+                  "source": "r/Cooking",
+                  "timestamp": "2026-07-18 21:53:31 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "\ud83e\udd5aSOFT-BOILED EGG",
+                  "description": null,
+                  "url": "https://www.youtube.com/shorts/3qTXXLK7Bzk",
+                  "domain": "www.youtube.com",
+                  "date": "2 hours ago",
+                  "source": "DRAGBOX",
+                  "timestamp": "2026-07-20 19:53:31 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Well the mrs definitely got wrong with the 6 mins 4 was perfect for a soft boiled egg should of asked Alexa.",
+                  "description": null,
+                  "url": "https://www.facebook.com/groups/359449298384504/posts/1915406502788768/",
+                  "domain": "www.facebook.com",
+                  "date": "3 weeks ago",
+                  "source": "Rate My Plate",
+                  "timestamp": "2026-06-29 21:53:31 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Spilling my secrets to the perfect soft boiled eggs, since so many of you were asking! \ud83e\udd2b\ud83e\udd5a\n\nThis step-by-step guide guarantees sufficiently cooked whites and a soft runny yolk, perfect for soups, ramens, curries, avocado toast or literally anything else to be honest \ud83e\udd2a\n\nIf you want the recipes for all of my favourite healthy meals to pair these eggs with, along with info on how to get the most out of a wholefoods diet, and extra tips + tricks to optimise how you feel every day..\n\nComment the word \u2728THRIVE\u2728 and I\u2019ll send my guide to you \ud83d\udc8c\n\n(It\u2019s also a living guide that I\u2019m continually adding to, so any updates I make are sent directly to your inbox!) \ud83e\udef6\ud83c\udffc\n\n#softboiledegg #cookingtips #healthycooking #healthyrecipes #wholefoodsdiet",
+                  "description": null,
+                  "url": "https://www.instagram.com/reel/DaaTmV_M8jA/",
+                  "domain": "www.instagram.com",
+                  "date": "2 weeks ago",
+                  "source": "melandphil",
+                  "timestamp": "2026-07-06 21:53:31 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "How To Make The Perfect Soft Boiled Egg Step By Step | The Only Tutorial You'll Ever Need",
+                  "description": null,
+                  "url": "https://www.youtube.com/shorts/4UGwW4MnRTM",
+                  "domain": "www.youtube.com",
+                  "date": "Apr 25, 2026",
+                  "source": "Ivan McCombs",
+                  "timestamp": "2026-04-25 00:00:00 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Buttery Soft-Boiled Eggs | How I Like to Make My Eggs EP 6",
+                  "description": null,
+                  "url": "https://www.youtube.com/shorts/Z5f5XaiByAg",
+                  "domain": "www.youtube.com",
+                  "date": "Apr 27, 2026",
+                  "source": "Zachary Neman",
+                  "timestamp": "2026-04-27 00:00:00 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "How long should you boil eggs? It depends on how you like the yolks\u2014soft, jammy, medium, or fully set. This easy guide includes exact cook times for every level of doneness, plus my favorite tips for easy-peel eggs that turn out just right every time. \ud83e\udd5a",
+                  "description": null,
+                  "url": "https://www.facebook.com/natashaskitchen/photos/how-long-should-you-boil-eggs-it-depends-on-how-you-like-the-yolkssoft-jammy-med/1548889003267595/",
+                  "domain": "www.facebook.com",
+                  "date": "1 month ago",
+                  "source": "natashaskitchen",
+                  "timestamp": "2026-06-20 21:53:31 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "The Perfect Soft Boiled Egg\n\nNothing gives me the ick more than a rubber like overcooked boiled egg.\n\nHere\u2019s how I make the perfect boiled egg\n\n1. Bring a pot of water to the boil\n2. Add eggs (mine are always room temp) to the boiling water and set a timer for 6 minutes 45 seconds\n3. Whilst they boil away prepare a bowl of ice water\n4. When the timer goes off, pop the eggs straight into the ice water and let them chill for 5 minutes\n5. Tap the eggs lightly all over on the bench so it\u2019s covered in lots of cracks then peel\n6. Serve however you please and enjoy!\n\n#eggs #breakfast #breakfastrecipes #bodybuilding",
+                  "description": null,
+                  "url": "https://www.instagram.com/reel/DY4hHvrK2-_/?hl=en",
+                  "domain": "www.instagram.com",
+                  "date": "1 month ago",
+                  "source": "ekansh_taneja_fitness",
+                  "timestamp": "2026-06-20 21:53:31 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "How To Boil An Egg Like A Pro EVERYTIME \ud83e\udd5a",
+                  "description": null,
+                  "url": "https://www.youtube.com/watch?v=EK6GpBtSvns",
+                  "domain": "www.youtube.com",
+                  "date": "Apr 27, 2026",
+                  "source": "Flavour Network",
+                  "timestamp": "2026-04-27 00:00:00 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "First time soft boiling an egg, how\u2019d I do?",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/eggs/comments/1u4rhhc/first_time_soft_boiling_an_egg_howd_i_do/",
+                  "domain": "www.reddit.com",
+                  "date": "1 month ago",
+                  "source": "r/eggs",
+                  "timestamp": "2026-06-20 21:53:31 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Making boiled eggs has never been so easy!",
+                  "description": null,
+                  "url": "https://www.facebook.com/chefbillyparisi/posts/making-boiled-eggs-has-never-been-so-easy/1542901207196431/",
+                  "domain": "www.facebook.com",
+                  "date": "Apr 25, 2026",
+                  "source": "chefbillyparisi",
+                  "timestamp": "2026-04-25 00:00:00 +00:00"
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "related_searches",
+              "rank_group": 1,
+              "rank_absolute": 12,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[2]/div[1]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]",
+              "items": [
+                "How to cook a soft boiled egg on the stove",
+                "Perfect soft boiled egg time",
+                "How to cook a soft boiled egg from cold water",
+                "Soft boiled egg time chart",
+                "How long to cook soft boiled eggs room temperature",
+                "Soft boiled egg time from cold water",
+                "Soft boiled egg in shell",
+                "How to crack a soft boiled egg"
+              ],
+              "rectangle": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

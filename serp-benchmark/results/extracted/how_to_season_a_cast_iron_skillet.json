@@ -1,0 +1,319 @@
+{
+  "query": "how to season a cast iron skillet",
+  "intent": "informational",
+  "scores": {
+    "SearchApi": {
+      "extracted": {
+        "present": true,
+        "summary": "",
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "answer": "Wash the skillet with warm, soapy water, dry it completely on a stovetop burner, and rub a micro-thin layer of high-smoke-point oil (like canola, grapeseed, or Crisco) over the entire surface. Buff it thoroughly until it looks dry. Bake it upside down at 450\u00b0F for 1 hour, then let it cool completely in the oven.",
+            "reference_indexes": [
+              0,
+              4,
+              1,
+              6,
+              3
+            ]
+          },
+          {
+            "type": "header",
+            "answer": "The 5-Step Seasoning Process"
+          },
+          {
+            "type": "paragraph",
+            "answer": "Clean and Dry: Wash your skillet thoroughly using warm, soapy water and a sponge. (Yes, soap is fine!) Place it on the stovetop over medium heat for 2\u20133 minutes to ensure every trace of moisture is completely evaporated.",
+            "reference_indexes": [
+              1,
+              4,
+              2
+            ]
+          },
+          {
+            "type": "header",
+            "answer": "Best Maintenance Practices"
+          },
+          {
+            "type": "paragraph",
+            "answer": "To maintain your hard-earned seasoning layer, always hand-wash your skillet with warm water (and a little soap if needed) after cooking. Dry it thoroughly on the stove, and apply a drop of oil, rubbing it in with a paper towel while the pan is still slightly warm.",
+            "reference_indexes": [
+              2,
+              5
+            ]
+          },
+          {
+            "type": "video",
+            "link": "https://www.youtube.com/watch?v=EzV9CY8iS68&vl=en&t=563"
+          }
+        ],
+        "citations": [
+          {
+            "url": "https://www.seriouseats.com/how-to-season-cast-iron-pans-skillets-cookware",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.reddit.com/r/castiron/comments/7qp2tu/foolproof_cast_iron_seasoning_for_the_excessively/",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/shorts/KZNa5l2erzQ",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.lodgecastiron.com/pages/how-to-season",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/shorts/9kBzQ_74cMo",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=ZPsx3Saeuv4&vl=en&t=12",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/shorts/PWAkGOXLsKE",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=79vyiI89gpc&t=97",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/shorts/NYHgPb_LjYE",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/shorts/mAz8NbXD2Hk",
+            "title": "",
+            "snippet": ""
+          }
+        ],
+        "related_searches": []
+      }
+    },
+    "SerpApi": {
+      "extracted": {
+        "present": true,
+        "summary": "",
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "snippet": "Wash the skillet with warm, soapy water, dry it completely on a stovetop burner, and rub a micro-thin layer of high-smoke-point oil (like canola, grapeseed, or Crisco) over the entire surface. Buff it thoroughly until it looks dry. Bake it upside down at 450\u00b0F for 1 hour, then let it cool completely in the oven.",
+            "snippet_links": [
+              {
+                "link": "https://www.seriouseats.com/how-to-season-cast-iron-pans-skillets-cookware"
+              }
+            ],
+            "snippet_highlighted_words": [
+              "let it cool completely in the oven"
+            ],
+            "reference_indexes": [
+              0,
+              1,
+              2,
+              3,
+              4
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "The 5-Step Seasoning Process"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Clean and Dry: Wash your skillet thoroughly using warm, soapy water and a sponge. (Yes, soap is fine!) Place it on the stovetop over medium heat for 2\u20133 minutes to ensure every trace of moisture is completely evaporated.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.reddit.com/r/castiron/comments/7qp2tu/foolproof_cast_iron_seasoning_for_the_excessively/"
+                  }
+                ],
+                "reference_indexes": [
+                  2,
+                  5,
+                  12
+                ]
+              },
+              {
+                "snippet": "Apply the Oil: Pour a small amount (about a half-teaspoon) of high-smoke-point oil into the warm skillet. Oils like canola, vegetable, or grapeseed work best, as do solid shortenings like Crisco. Rub the oil over every single inch of the pan\u2014inside, outside, and the handle\u2014using a lint-free rag or paper towel."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "Best Maintenance Practices"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "To maintain your hard-earned seasoning layer, always hand-wash your skillet with warm water (and a little soap if needed) after cooking. Dry it thoroughly on the stove, and apply a drop of oil, rubbing it in with a paper towel while the pan is still slightly warm.",
+            "snippet_links": [
+              {
+                "link": "https://www.youtube.com/shorts/KZNa5l2erzQ"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "For a quick visual demonstration on how to clean, prep, and perfectly season your pan, watch this video:",
+            "video": {
+              "link": "https://www.youtube.com/watch?v=EzV9CY8iS68&vl=en&t=563",
+              "thumbnail": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTXidxSqhWKeQiAhq0uzfyQpzavDSgDmfue7amSXmUmaOIYkNyj"
+            }
+          }
+        ],
+        "citations": [
+          {
+            "url": "https://www.seriouseats.com/how-to-season-cast-iron-pans-skillets-cookware",
+            "title": "How to Season a Cast Iron Pan (It's Easier Than You Think!)",
+            "snippet": "According to Serious Eats, the editorial director of the site is Daniel Gritzer. Gritzer leads the site's editorial strategy and oversees recipe development and..."
+          },
+          {
+            "url": "https://www.youtube.com/shorts/9kBzQ_74cMo",
+            "title": "How to Season a Cast Iron Pan",
+            "snippet": "let's season that cast iron pan preheat oven to 450 to 500\u00b0. scrub with warm water and steel wool add a little diluted dish soap if really dirty rinse dry well"
+          },
+          {
+            "url": "https://www.reddit.com/r/castiron/comments/7qp2tu/foolproof_cast_iron_seasoning_for_the_excessively/",
+            "title": "Foolproof Cast Iron Seasoning for the excessively orderly and fussy cast ...",
+            "snippet": "Full Oven Method (4 hours) * Preheat oven to 450. * Place un-oiled, carefully cleaned, cold water rinsed and lint free towel dried pan into preheated o"
+          },
+          {
+            "url": "https://www.youtube.com/shorts/PWAkGOXLsKE",
+            "title": "How to season your cast iron!",
+            "snippet": "here's how to season your cast iron like a pro You could tell from the gorgeous patina that this skillet does not need to be seasoned. but I want to show you gu"
+          },
+          {
+            "url": "https://www.lodgecastiron.com/pages/how-to-season",
+            "title": "How to Season \u2013 Lodge Cast Iron",
+            "snippet": "Lodge cast iron cookware is seasoned and ready to use. However, you can also build seasoning each time you cook. Here are some tips for seasoning cast iron: * *"
+          },
+          {
+            "url": "https://www.youtube.com/shorts/KZNa5l2erzQ",
+            "title": "You Got New Cast Iron? Here's What to Do First!",
+            "snippet": "so you got some new cast iron. and you don't know what to do with it next i've got my top tips to help you get through this. process. first thing I need you to"
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=ZPsx3Saeuv4&vl=en",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=79vyiI89gpc",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/shorts/NYHgPb_LjYE",
+            "title": "How to Season Cast Iron Properly",
+            "snippet": "most cast iron pans aren't non-stick because they weren't seasoned properly this is the correct way to do it start by cleaning it back to bare metal heat it to"
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=fPWE2KV89_Y",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=ZPsx3Saeuv4&vl=en&t=12",
+            "title": "Cast Iron 101: The Ultimate Beginner's Step-By-Step Guide To Learning ...",
+            "snippet": "so I'm going to give you some of my favorite tips and tricks to have great results with cast iron in your own house my first do is probably one that people have"
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=79vyiI89gpc&t=97",
+            "title": "How To Cook With Cast Iron",
+            "snippet": "and fill that up that works too so you're going to cover it with equal. parts water and white distilled vinegar. so mix that around make sure that it's thorough"
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=fPWE2KV89_Y&t=139",
+            "title": "Cast Iron Seasoning 101: How to Season, Maintain & Restore Your ...",
+            "snippet": "but if that happens don't worry about a thing reeseeasoning is easy to do at home and your skillet will be back in business in no time. now let's talk about how"
+          }
+        ],
+        "related_searches": []
+      }
+    },
+    "Serper": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "DataForSEO": {
+      "extracted": {
+        "present": true,
+        "summary": "![How to Season a Cast Iron Pan (It&#39;s Easier Than You Think!)](https://api.dataforseo.com/cdn/i/07210057-2120-0139-0000-87bf5a15d8b3:6)\nWash the skillet with warm, soapy water, dry it completely on a stovetop burner, and rub a micro-thin layer of high-smoke-point oil (like canola, grapeseed, or Crisco) over the entire surface. Buff it thoroughly until it looks dry. Bake it upside down at 450\u00b0F for 1 hour, then `let it cool completely in the oven`.[](https://www.seriouseats.com/how-to-season-cast-iron-pans-skillets-cookware) [[1]](https://www.seriouseats.com/how-to-season-cast-iron-pans-skillets-cookware)[[2]](https://www.youtube.com/shorts/9kBzQ_74cMo)[[3]](https://www.reddit.com/r/castiron/comments/7qp2tu/foolproof_cast_iron_seasoning_for_the_excessively/)[[4]](https://www.youtube.com/shorts/PWAkGOXLsKE)[[5]](https://www.lodgecastiron.com/pages/how-to-season)\n\nThe 5-Step Seasoning Process\n\n1. **Clean and Dry:** Wash your skillet thoroughly using warm, soapy water and a sponge. (Yes, soap is fine!) Place it on the stovetop over medium heat for 2\u20133 minutes to ensure every trace of moisture is completely evaporated.[](https://www.reddit.com/r/castiron/comments/7qp2tu/foolproof_cast_iron_seasoning_for_the_excessively/) [[1]](https://www.reddit.com/r/castiron/comments/7qp2tu/foolproof_cast_iron_seasoning_for_the_excessively/)[[2]](https://www.youtube.com/shorts/9kBzQ_74cMo)[[3]](https://www.youtube.com/shorts/KZNa5l2erzQ)[[4]](https://www.youtube.com/watch?v=fPWE2KV89_Y&t=139)\n2. **Apply the Oil:** Pour a small amount (about a half-teaspoon) of high-smoke-point oil into the warm skillet. Oils like canola, vegetable, or grapeseed work best, as do solid shortenings like Crisco. Rub the oil over every single inch of the pan\u2014inside, outside, and the handle\u2014using a lint-free rag or paper towel.[](https://www.seriouseats.com/how-to-season-cast-iron-pans-skillets-cookware) [[1]](https://www.seriouseats.com/how-to-season-cast-iron-pans-skillets-cookware)[[2]](https://www.reddit.com/r/castiron/comments/7qp2tu/foolproof_cast_iron_seasoning_for_the_excessively/)[[3]](https://www.youtube.com/watch?v=ZPsx3Saeuv4&vl=en&t=12)[[4]](https://www.lodgecastiron.com/pages/how-to-season)[[5]](https://www.youtube.com/shorts/PWAkGOXLsKE)\n3. **Buff It Off:** This is the most critical step. Take a clean, dry paper towel or cloth and wipe off as much oil as you can. You want the pan to look entirely matte, not greasy, glistening, or wet. Leaving excess oil will result in a sticky, gummy, or blotchy finish.[](https://www.reddit.com/r/castiron/comments/7qp2tu/foolproof_cast_iron_seasoning_for_the_excessively/) [[1]](https://www.reddit.com/r/castiron/comments/7qp2tu/foolproof_cast_iron_seasoning_for_the_excessively/)[[2]](https://www.youtube.com/shorts/PWAkGOXLsKE)\n4. **Bake the Skillet:** Preheat your oven to 450\u00b0F or 500\u00b0F. Place a sheet of aluminum foil or a baking tray on the bottom rack to catch any potential drips. Place the oiled skillet upside down on the middle rack. Bake for 1 hour to allow the oil to polymerize and bond to the iron.[](https://www.lodgecastiron.com/pages/how-to-season) [[1]](https://www.lodgecastiron.com/pages/how-to-season)[[2]](https://www.youtube.com/shorts/9kBzQ_74cMo)[[3]](https://www.youtube.com/watch?v=79vyiI89gpc&t=97)[[4]](https://www.youtube.com/shorts/NYHgPb_LjYE)\n5. **Cool and Repeat:** Turn off the oven and leave the skillet inside until it has cooled completely. For a strong, shiny, non-stick base layer, repeat steps 2 through 4 an additional 3 to 4 times.[](https://www.seriouseats.com/how-to-season-cast-iron-pans-skillets-cookware) [[1]](https://www.seriouseats.com/how-to-season-cast-iron-pans-skillets-cookware)[[2]](https://www.reddit.com/r/castiron/comments/7qp2tu/foolproof_cast_iron_seasoning_for_the_excessively/)[[3]](https://www.youtube.com/shorts/KZNa5l2erzQ)[[4]](https://www.youtube.com/shorts/NYHgPb_LjYE)\n\nBest Maintenance Practices To maintain your hard-earned seasoning layer, always hand-wash your skillet with warm water (and a little soap if needed) after cooking. Dry it thoroughly on the stove, and apply a drop of oil, rubbing it in with a paper towel while the pan is still slightly warm.[](https://www.youtube.com/shorts/KZNa5l2erzQ) [[1]](https://www.youtube.com/shorts/KZNa5l2erzQ)[[2]](https://www.youtube.com/watch?v=ZPsx3Saeuv4&vl=en&t=12)For a quick visual demonstration on how to clean, prep, and perfectly season your pan, watch this video:![Related video thumbnail](https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTXidxSqhWKeQiAhq0uzfyQpzavDSgDmfue7amSXmUmaOIYkNyj)\n1m[Cast Iron Skillet Restoration | Clean, Season & Make It Nonstick Forever 1.7M views \u00a0\u00b7\u00a09 months ago![](https://api.dataforseo.com/cdn/i/07210057-2120-0139-0000-87bf5a15d8b3:7)\nYouTube\u00a0\u00b7\u00a0Smokin' & Grillin with AB](https://www.youtube.com/watch?v=EzV9CY8iS68&vl=en&t=563)",
+        "text_blocks": [
+          "![How to Season a Cast Iron Pan (It&#39;s Easier Than You Think!)](https://api.dataforseo.com/cdn/i/07210057-2120-0139-0000-87bf5a15d8b3:6)\nWash the skillet with warm, soapy water, dry it completely on a stovetop burner, and rub a micro-thin layer of high-smoke-point oil (like canola, grapeseed, or Crisco) over the entire surface. Buff it thoroughly until it looks dry. Bake it upside down at 450\u00b0F for 1 hour, then `let it cool completely in the oven`.[](https://www.seriouseats.com/how-to-season-cast-iron-pans-skillets-cookware) [[1]](https://www.seriouseats.com/how-to-season-cast-iron-pans-skillets-cookware)[[2]](https://www.youtube.com/shorts/9kBzQ_74cMo)[[3]](https://www.reddit.com/r/castiron/comments/7qp2tu/foolproof_cast_iron_seasoning_for_the_excessively/)[[4]](https://www.youtube.com/shorts/PWAkGOXLsKE)[[5]](https://www.lodgecastiron.com/pages/how-to-season)\n\nThe 5-Step Seasoning Process\n\n1. **Clean and Dry:** Wash your skillet thoroughly using warm, soapy water and a sponge. (Yes, soap is fine!) Place it on the stovetop over medium heat for 2\u20133 minutes to ensure every trace of moisture is completely evaporated.[](https://www.reddit.com/r/castiron/comments/7qp2tu/foolproof_cast_iron_seasoning_for_the_excessively/) [[1]](https://www.reddit.com/r/castiron/comments/7qp2tu/foolproof_cast_iron_seasoning_for_the_excessively/)[[2]](https://www.youtube.com/shorts/9kBzQ_74cMo)[[3]](https://www.youtube.com/shorts/KZNa5l2erzQ)[[4]](https://www.youtube.com/watch?v=fPWE2KV89_Y&t=139)\n2. **Apply the Oil:** Pour a small amount (about a half-teaspoon) of high-smoke-point oil into the warm skillet. Oils like canola, vegetable, or grapeseed work best, as do solid shortenings like Crisco. Rub the oil over every single inch of the pan\u2014inside, outside, and the handle\u2014using a lint-free rag or paper towel.[](https://www.seriouseats.com/how-to-season-cast-iron-pans-skillets-cookware) [[1]](https://www.seriouseats.com/how-to-season-cast-iron-pans-skillets-cookware)[[2]](https://www.reddit.com/r/castiron/comments/7qp2tu/foolproof_cast_iron_seasoning_for_the_excessively/)[[3]](https://www.youtube.com/watch?v=ZPsx3Saeuv4&vl=en&t=12)[[4]](https://www.lodgecastiron.com/pages/how-to-season)[[5]](https://www.youtube.com/shorts/PWAkGOXLsKE)\n3. **Buff It Off:** This is the most critical step. Take a clean, dry paper towel or cloth and wipe off as much oil as you can. You want the pan to look entirely matte, not greasy, glistening, or wet. Leaving excess oil will result in a sticky, gummy, or blotchy finish.[](https://www.reddit.com/r/castiron/comments/7qp2tu/foolproof_cast_iron_seasoning_for_the_excessively/) [[1]](https://www.reddit.com/r/castiron/comments/7qp2tu/foolproof_cast_iron_seasoning_for_the_excessively/)[[2]](https://www.youtube.com/shorts/PWAkGOXLsKE)\n4. **Bake the Skillet:** Preheat your oven to 450\u00b0F or 500\u00b0F. Place a sheet of aluminum foil or a baking tray on the bottom rack to catch any potential drips. Place the oiled skillet upside down on the middle rack. Bake for 1 hour to allow the oil to polymerize and bond to the iron.[](https://www.lodgecastiron.com/pages/how-to-season) [[1]](https://www.lodgecastiron.com/pages/how-to-season)[[2]](https://www.youtube.com/shorts/9kBzQ_74cMo)[[3]](https://www.youtube.com/watch?v=79vyiI89gpc&t=97)[[4]](https://www.youtube.com/shorts/NYHgPb_LjYE)\n5. **Cool and Repeat:** Turn off the oven and leave the skillet inside until it has cooled completely. For a strong, shiny, non-stick base layer, repeat steps 2 through 4 an additional 3 to 4 times.[](https://www.seriouseats.com/how-to-season-cast-iron-pans-skillets-cookware) [[1]](https://www.seriouseats.com/how-to-season-cast-iron-pans-skillets-cookware)[[2]](https://www.reddit.com/r/castiron/comments/7qp2tu/foolproof_cast_iron_seasoning_for_the_excessively/)[[3]](https://www.youtube.com/shorts/KZNa5l2erzQ)[[4]](https://www.youtube.com/shorts/NYHgPb_LjYE)\n\nBest Maintenance Practices To maintain your hard-earned seasoning layer, always hand-wash your skillet with warm water (and a little soap if needed) after cooking. Dry it thoroughly on the stove, and apply a drop of oil, rubbing it in with a paper towel while the pan is still slightly warm.[](https://www.youtube.com/shorts/KZNa5l2erzQ) [[1]](https://www.youtube.com/shorts/KZNa5l2erzQ)[[2]](https://www.youtube.com/watch?v=ZPsx3Saeuv4&vl=en&t=12)For a quick visual demonstration on how to clean, prep, and perfectly season your pan, watch this video:![Related video thumbnail](https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTXidxSqhWKeQiAhq0uzfyQpzavDSgDmfue7amSXmUmaOIYkNyj)\n1m[Cast Iron Skillet Restoration | Clean, Season & Make It Nonstick Forever 1.7M views \u00a0\u00b7\u00a09 months ago![](https://api.dataforseo.com/cdn/i/07210057-2120-0139-0000-87bf5a15d8b3:7)\nYouTube\u00a0\u00b7\u00a0Smokin' & Grillin with AB](https://www.youtube.com/watch?v=EzV9CY8iS68&vl=en&t=563)"
+        ],
+        "citations": [
+          {
+            "url": "https://www.seriouseats.com/how-to-season-cast-iron-pans-skillets-cookware",
+            "title": "How to Season a Cast Iron Pan (It's Easier Than You Think!)",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.reddit.com/r/castiron/comments/7qp2tu/foolproof_cast_iron_seasoning_for_the_excessively/",
+            "title": "Foolproof Cast Iron Seasoning for the excessively orderly and fussy cast ...",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/shorts/KZNa5l2erzQ",
+            "title": "You Got New Cast Iron? Here's What to Do First!",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.lodgecastiron.com/pages/how-to-season",
+            "title": "How to Season \u2013 Lodge Cast Iron",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/shorts/9kBzQ_74cMo",
+            "title": "How to Season a Cast Iron Pan",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=ZPsx3Saeuv4&vl=en&t=12",
+            "title": "Cast Iron 101: The Ultimate Beginner's Step-By-Step Guide To Learning ...",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/shorts/PWAkGOXLsKE",
+            "title": "How to season your cast iron!",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=79vyiI89gpc&t=97",
+            "title": "How To Cook With Cast Iron",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/shorts/NYHgPb_LjYE",
+            "title": "How to Season Cast Iron Properly",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/shorts/mAz8NbXD2Hk",
+            "title": "Top Tips for Seasoning Cast Iron",
+            "snippet": ""
+          }
+        ],
+        "related_searches": []
+      }
+    }
+  }
+}

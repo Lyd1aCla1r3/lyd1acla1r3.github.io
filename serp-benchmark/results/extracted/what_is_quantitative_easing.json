@@ -1,0 +1,298 @@
+{
+  "query": "what is quantitative easing",
+  "intent": "definition",
+  "scores": {
+    "SearchApi": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "SerpApi": {
+      "extracted": {
+        "present": true,
+        "summary": "",
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "snippet": "Quantitative easing (QE) is an unconventional monetary policy where a central bank creates new digital money to buy financial assets, such as government bonds and mortgage-backed securities, directly from commercial banks and private investors.",
+            "snippet_links": [
+              {
+                "link": "https://www.stlouisfed.org/on-the-economy/2017/november/quantitative-easing-how-used"
+              }
+            ],
+            "snippet_highlighted_words": [
+              "an unconventional monetary policy where a central bank creates new digital money to buy financial assets, such as government bonds and mortgage-backed securities, directly from commercial banks and private investors"
+            ],
+            "reference_indexes": [
+              0,
+              1
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "Why Central Banks Use It"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Central banks (like the U.S. Federal Reserve or the Bank of England) typically lower short-term interest rates to stimulate a sluggish economy. However, when interest rates are already near zero and cannot be lowered further, they turn to QE. The primary goals are to:",
+            "snippet_links": [
+              {
+                "link": "https://www.bankofengland.co.uk/monetary-policy/quantitative-easing"
+              }
+            ],
+            "reference_indexes": [
+              1,
+              2,
+              3,
+              4
+            ]
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Lower long-term interest rates: By buying large volumes of bonds, the central bank artificially drives their prices up and their yields (interest rates) down.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.bankofengland.co.uk/monetary-policy/quantitative-easing"
+                  }
+                ],
+                "reference_indexes": [
+                  2,
+                  5
+                ]
+              },
+              {
+                "snippet": "Inject liquidity: By purchasing these assets, the central bank replaces them with cash in the banking system, encouraging banks to lend more freely to businesses and consumers."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "How It Works (Step-by-Step)"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Creation of Reserves: The central bank digitally creates new reserves (money)."
+              },
+              {
+                "snippet": "Asset Purchases: It uses these reserves to buy securities (like Treasuries) from major financial institutions."
+              },
+              {
+                "snippet": "Multiplier Effect: The banks now have excess cash, making them more willing to issue loans to the broader economy.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.bankofengland.co.uk/monetary-policy/quantitative-easing"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              2,
+              1,
+              4
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "Potential Risks"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "While QE can stabilize markets during crises, it carries notable risks. If the money supply grows too fast and the economy cannot keep up, it can trigger high inflation or even devalue the national currency.",
+            "snippet_links": [
+              {
+                "link": "https://www.investopedia.com/terms/q/quantitative-easing.asp"
+              }
+            ],
+            "reference_indexes": [
+              4,
+              12
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "How It Ends: Quantitative Tightening (QT)"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "When the economy recovers and inflation becomes a concern, the central bank begins to reverse the process. This is known as quantitative tightening (QT). During QT, the central bank stops replacing the bonds that mature or actively sells them back to investors, which removes money from the economy and raises long-term interest rates.",
+            "snippet_links": [
+              {
+                "link": "https://en.wikipedia.org/wiki/Quantitative_easing"
+              }
+            ],
+            "reference_indexes": [
+              8,
+              9,
+              10
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "To explore current and historical QE/QT actions, you can track the Federal Reserve Balance Sheet.",
+            "snippet_links": [
+              {
+                "text": "Federal Reserve Balance Sheet",
+                "link": "https://www.federalreserve.gov/monetarypolicy/bst_recenttrends.htm"
+              }
+            ],
+            "reference_indexes": [
+              10
+            ]
+          }
+        ],
+        "citations": [
+          {
+            "url": "https://www.stlouisfed.org/on-the-economy/2017/november/quantitative-easing-how-used",
+            "title": "What Is Quantitative Easing, and How Has It Been Used?",
+            "snippet": "Quantitative easing (QE) is a monetary policy tool that involves large-scale asset purchases by central banks. These purchases are usually of long-maturity gove..."
+          },
+          {
+            "url": "https://www.stonex.com/en-us/business/financial-glossary/quantitative-easing/",
+            "title": "What is Quantitative Easing (QE): benefits and risks | StoneX US",
+            "snippet": "Quantitative easing (QE) is a nontraditional monetary policy tool used by central banks to increase the money supply and stimulate..."
+          },
+          {
+            "url": "https://www.bankofengland.co.uk/monetary-policy/quantitative-easing",
+            "title": "Quantitative easing | Bank of England",
+            "snippet": "Quantitative easing. Quantitative easing (QE) is one of the tools we use to meet our 2% inflation target. QE lowers long-term borrowing costs to support spendi"
+          },
+          {
+            "url": "https://www.ebsco.com/research-starters/business-and-management/quantitative-easing",
+            "title": "Quantitative Easing | Business and Management | Research Starters",
+            "snippet": "Quantitative easing (QE) is a monetary policy tool used by central banks to stimulate economic growth. QE is used when traditional..."
+          },
+          {
+            "url": "https://www.investopedia.com/terms/q/quantitative-easing.asp",
+            "title": "How Quantitative Easing Spurs Economic Recovery: A Detailed Guide",
+            "snippet": "Key Takeaways * Quantitative easing (QE) is a monetary policy tool used by central banks to stimulate the economy by purchasing securities and increasing t"
+          },
+          {
+            "url": "https://www.chicagobooth.edu/review/how-quantitative-easing-actually-works",
+            "title": "How Quantitative Easing Actually Works | Chicago Booth Review",
+            "snippet": "Quantitative easing (QE) is an unconventional Federal Reserve policy that involves buying large quantities of financial assets. The goal of QE is to prompt inve..."
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=llslyXPu6wI",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=O7g52EwkSGw",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://en.wikipedia.org/wiki/Quantitative_easing",
+            "title": "Quantitative easing - Wikipedia",
+            "snippet": "Quantitative easing (QE) is a monetary policy action where a central bank purchases predetermined amounts of government bonds, company shares, or other financia..."
+          },
+          {
+            "url": "https://www.bankofcanada.ca/2025/02/understanding-quantitative-easing/",
+            "title": "Understanding quantitative easing - Bank of Canada",
+            "snippet": "Understanding quantitative tightening. QE is not meant to be permanent. Once the economy is working as it should, we no longer need to hold all the bonds that h..."
+          },
+          {
+            "url": "https://www.investopedia.com/quantitative-tightening-6361478",
+            "title": "Understanding Quantitative Tightening: How the Fed Reduces ...",
+            "snippet": "Key Takeaways * Quantitative tightening (QT) reduces the Federal Reserve's balance sheet by removing liquidity from financial markets through selling or m"
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=llslyXPu6wI&t=3",
+            "title": "What is Quantitative Easing?",
+            "snippet": "the plain bagel 5 to get a free two-month premium trial quantitative easing is something we've seen pop up around the world ever since the 2008 financial crisis"
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=O7g52EwkSGw&t=7",
+            "title": "What is quantitative easing?",
+            "snippet": "quantitative easing also known as quantitative easing is an unconventional monetary policy used by central banks to stimulate the economy. this approach has gai"
+          }
+        ],
+        "related_searches": []
+      }
+    },
+    "Serper": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "DataForSEO": {
+      "extracted": {
+        "present": true,
+        "summary": "Quantitative easing (QE) is `an unconventional monetary policy where a central bank creates new digital money to buy financial assets, such as government bonds and mortgage-backed securities, directly from commercial banks and private investors`.[](https://www.stlouisfed.org/on-the-economy/2017/november/quantitative-easing-how-used) [[1]](https://www.stlouisfed.org/on-the-economy/2017/november/quantitative-easing-how-used)[[2]](https://www.stonex.com/en-us/business/financial-glossary/quantitative-easing/)\n\nWhy Central Banks Use It\n\nCentral banks (like the U.S. Federal Reserve or the Bank of England) typically lower short-term interest rates to stimulate a sluggish economy. However, when interest rates are already near zero and cannot be lowered further, they turn to QE. The primary goals are to:[](https://www.bankofengland.co.uk/monetary-policy/quantitative-easing) [[1]](https://www.bankofengland.co.uk/monetary-policy/quantitative-easing)[[2]](https://www.ebsco.com/research-starters/business-and-management/quantitative-easing)[[3]](https://www.stonex.com/en-us/business/financial-glossary/quantitative-easing/)[[4]](https://www.investopedia.com/terms/q/quantitative-easing.asp)\n\n- **Lower long-term interest rates:** By buying large volumes of bonds, the central bank artificially drives their prices up and their yields (interest rates) down.[](https://www.bankofengland.co.uk/monetary-policy/quantitative-easing) [[1]](https://www.bankofengland.co.uk/monetary-policy/quantitative-easing)[[2]](https://www.chicagobooth.edu/review/how-quantitative-easing-actually-works)\n- **Inject liquidity:** By purchasing these assets, the central bank replaces them with cash in the banking system, encouraging banks to lend more freely to businesses and consumers.[](https://www.investopedia.com/terms/q/quantitative-easing.asp) [[1]](https://www.investopedia.com/terms/q/quantitative-easing.asp)[[2]](https://www.youtube.com/watch?v=llslyXPu6wI&t=3)\n- **Boost asset prices:** The influx of cash pushes investors toward riskier assets (like stocks or corporate bonds), which can lift financial markets and support wealth creation.[](https://www.investopedia.com/terms/q/quantitative-easing.asp) [[1]](https://www.investopedia.com/terms/q/quantitative-easing.asp)[[2]](https://www.stonex.com/en-us/business/financial-glossary/quantitative-easing/)\n\nHow It Works (Step-by-Step)\n\n1. **Creation of Reserves:** The central bank digitally creates new reserves (money).\n2. **Asset Purchases:** It uses these reserves to buy securities (like Treasuries) from major financial institutions.\n3. **Multiplier Effect:** The banks now have excess cash, making them more willing to issue loans to the broader economy.[](https://www.bankofengland.co.uk/monetary-policy/quantitative-easing) [[1]](https://www.bankofengland.co.uk/monetary-policy/quantitative-easing)[[2]](https://www.stonex.com/en-us/business/financial-glossary/quantitative-easing/)[[3]](https://www.investopedia.com/terms/q/quantitative-easing.asp)[[4]](https://www.youtube.com/watch?v=llslyXPu6wI&t=3)\n\nPotential Risks While QE can stabilize markets during crises, it carries notable risks. If the money supply grows too fast and the economy cannot keep up, it can trigger high inflation or even devalue the national currency.[](https://www.investopedia.com/terms/q/quantitative-easing.asp) [[1]](https://www.investopedia.com/terms/q/quantitative-easing.asp)[[2]](https://www.youtube.com/watch?v=O7g52EwkSGw&t=7)[[3]](https://www.youtube.com/watch?v=llslyXPu6wI&t=3)How It Ends: Quantitative Tightening (QT)When the economy recovers and inflation becomes a concern, the central bank begins to reverse the process. This is known as **quantitative tightening (QT)** . During QT, the central bank stops replacing the bonds that mature or actively sells them back to investors, which removes money from the economy and raises long-term interest rates.[](https://en.wikipedia.org/wiki/Quantitative_easing) [[1]](https://en.wikipedia.org/wiki/Quantitative_easing)[[2]](https://www.bankofcanada.ca/2025/02/understanding-quantitative-easing/)[[3]](https://www.investopedia.com/quantitative-tightening-6361478)To explore current and historical QE/QT actions, you can track the [Federal Reserve Balance Sheet](https://www.federalreserve.gov/monetarypolicy/bst_recenttrends.htm).[[1]](https://www.investopedia.com/quantitative-tightening-6361478)",
+        "text_blocks": [
+          "Quantitative easing (QE) is `an unconventional monetary policy where a central bank creates new digital money to buy financial assets, such as government bonds and mortgage-backed securities, directly from commercial banks and private investors`.[](https://www.stlouisfed.org/on-the-economy/2017/november/quantitative-easing-how-used) [[1]](https://www.stlouisfed.org/on-the-economy/2017/november/quantitative-easing-how-used)[[2]](https://www.stonex.com/en-us/business/financial-glossary/quantitative-easing/)\n\nWhy Central Banks Use It\n\nCentral banks (like the U.S. Federal Reserve or the Bank of England) typically lower short-term interest rates to stimulate a sluggish economy. However, when interest rates are already near zero and cannot be lowered further, they turn to QE. The primary goals are to:[](https://www.bankofengland.co.uk/monetary-policy/quantitative-easing) [[1]](https://www.bankofengland.co.uk/monetary-policy/quantitative-easing)[[2]](https://www.ebsco.com/research-starters/business-and-management/quantitative-easing)[[3]](https://www.stonex.com/en-us/business/financial-glossary/quantitative-easing/)[[4]](https://www.investopedia.com/terms/q/quantitative-easing.asp)\n\n- **Lower long-term interest rates:** By buying large volumes of bonds, the central bank artificially drives their prices up and their yields (interest rates) down.[](https://www.bankofengland.co.uk/monetary-policy/quantitative-easing) [[1]](https://www.bankofengland.co.uk/monetary-policy/quantitative-easing)[[2]](https://www.chicagobooth.edu/review/how-quantitative-easing-actually-works)\n- **Inject liquidity:** By purchasing these assets, the central bank replaces them with cash in the banking system, encouraging banks to lend more freely to businesses and consumers.[](https://www.investopedia.com/terms/q/quantitative-easing.asp) [[1]](https://www.investopedia.com/terms/q/quantitative-easing.asp)[[2]](https://www.youtube.com/watch?v=llslyXPu6wI&t=3)\n- **Boost asset prices:** The influx of cash pushes investors toward riskier assets (like stocks or corporate bonds), which can lift financial markets and support wealth creation.[](https://www.investopedia.com/terms/q/quantitative-easing.asp) [[1]](https://www.investopedia.com/terms/q/quantitative-easing.asp)[[2]](https://www.stonex.com/en-us/business/financial-glossary/quantitative-easing/)\n\nHow It Works (Step-by-Step)\n\n1. **Creation of Reserves:** The central bank digitally creates new reserves (money).\n2. **Asset Purchases:** It uses these reserves to buy securities (like Treasuries) from major financial institutions.\n3. **Multiplier Effect:** The banks now have excess cash, making them more willing to issue loans to the broader economy.[](https://www.bankofengland.co.uk/monetary-policy/quantitative-easing) [[1]](https://www.bankofengland.co.uk/monetary-policy/quantitative-easing)[[2]](https://www.stonex.com/en-us/business/financial-glossary/quantitative-easing/)[[3]](https://www.investopedia.com/terms/q/quantitative-easing.asp)[[4]](https://www.youtube.com/watch?v=llslyXPu6wI&t=3)\n\nPotential Risks While QE can stabilize markets during crises, it carries notable risks. If the money supply grows too fast and the economy cannot keep up, it can trigger high inflation or even devalue the national currency.[](https://www.investopedia.com/terms/q/quantitative-easing.asp) [[1]](https://www.investopedia.com/terms/q/quantitative-easing.asp)[[2]](https://www.youtube.com/watch?v=O7g52EwkSGw&t=7)[[3]](https://www.youtube.com/watch?v=llslyXPu6wI&t=3)How It Ends: Quantitative Tightening (QT)When the economy recovers and inflation becomes a concern, the central bank begins to reverse the process. This is known as **quantitative tightening (QT)** . During QT, the central bank stops replacing the bonds that mature or actively sells them back to investors, which removes money from the economy and raises long-term interest rates.[](https://en.wikipedia.org/wiki/Quantitative_easing) [[1]](https://en.wikipedia.org/wiki/Quantitative_easing)[[2]](https://www.bankofcanada.ca/2025/02/understanding-quantitative-easing/)[[3]](https://www.investopedia.com/quantitative-tightening-6361478)To explore current and historical QE/QT actions, you can track the [Federal Reserve Balance Sheet](https://www.federalreserve.gov/monetarypolicy/bst_recenttrends.htm).[[1]](https://www.investopedia.com/quantitative-tightening-6361478)"
+        ],
+        "citations": [
+          {
+            "url": "https://www.stlouisfed.org/on-the-economy/2017/november/quantitative-easing-how-used",
+            "title": "What Is Quantitative Easing, and How Has It Been Used?",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.bankofengland.co.uk/monetary-policy/quantitative-easing",
+            "title": "Quantitative easing | Bank of England",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.chicagobooth.edu/review/how-quantitative-easing-actually-works",
+            "title": "How Quantitative Easing Actually Works | Chicago Booth Review",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.investopedia.com/terms/q/quantitative-easing.asp",
+            "title": "How Quantitative Easing Spurs Economic Recovery: A Detailed Guide",
+            "snippet": ""
+          },
+          {
+            "url": "https://en.wikipedia.org/wiki/Quantitative_easing",
+            "title": "Quantitative easing - Wikipedia",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=llslyXPu6wI&t=3",
+            "title": "What is Quantitative Easing?",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.bankofcanada.ca/2025/02/understanding-quantitative-easing/",
+            "title": "Understanding quantitative easing - Bank of Canada",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=O7g52EwkSGw&t=7",
+            "title": "What is quantitative easing?",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.ebsco.com/research-starters/business-and-management/quantitative-easing",
+            "title": "Quantitative Easing | Business and Management | Research Starters",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.stonex.com/en-us/business/financial-glossary/quantitative-easing/",
+            "title": "What is Quantitative Easing (QE): benefits and risks | StoneX US",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.investopedia.com/quantitative-tightening-6361478",
+            "title": "Understanding Quantitative Tightening: How the Fed Reduces ...",
+            "snippet": ""
+          }
+        ],
+        "related_searches": []
+      }
+    }
+  }
+}

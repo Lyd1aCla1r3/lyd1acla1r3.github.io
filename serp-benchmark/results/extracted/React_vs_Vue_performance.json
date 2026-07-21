@@ -1,0 +1,292 @@
+{
+  "query": "React vs Vue performance",
+  "intent": "comparison",
+  "scores": {
+    "SearchApi": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "SerpApi": {
+      "extracted": {
+        "present": true,
+        "summary": "",
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "snippet": "When comparing the performance of React and Vue, both are fast enough for almost any standard web application\n. However, they achieve their speed through completely different philosophies, giving each framework unique advantages.",
+            "snippet_links": [
+              {
+                "link": "https://www.youtube.com/watch?v=83WatME7_fw&t=28"
+              }
+            ],
+            "snippet_highlighted_words": [
+              "both are fast enough for almost any standard web application"
+            ],
+            "reference_indexes": [
+              0,
+              1,
+              11,
+              12,
+              13
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Here is how they stack up across key performance metrics:"
+          },
+          {
+            "type": "heading",
+            "snippet": "1. Reactivity and Re-rendering (The Core Difference)"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Vue (Opt-in Reactivity): Vue uses a fine-grained, proxy-based reactivity system. It automatically tracks which components depend on specific pieces of data\n\n. When state changes, Vue knows exactly which component needs to update, bypassing unnecessary re-renders across the rest of the component tree by default."
+              },
+              {
+                "snippet": "React (Opt-out Reactivity): React relies on an immutable state model. By default, when a component's state changes, the entire child component tree re-renders\nunless you manually \"opt-out\" using performance optimizations like React.memo, useMemo, or useCallback. (Note: The React Compiler introduced in React 19 helps automate much of this memoization to bridge this gap).",
+                "snippet_links": [
+                  {
+                    "link": "https://vuejs.org/v2/guide/comparison.html"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              2,
+              3,
+              4,
+              14
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "2. Raw DOM Manipulation and Memory"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Vue: Benchmarks regularly show Vue outperforming React in raw DOM speed and memory management. Thanks to features like Vue 3.5's Vapor Mode\n\u2014an experimental compilation strategy that bypasses the Virtual DOM entirely for eligible components\u2014Vue can manipulate DOM elements up to 36% faster than React and use significantly less idle memory."
+              },
+              {
+                "snippet": "React: While React's Virtual DOM diffing is highly optimized, it carries a larger memory footprint under heavy loads. React handles enterprise-scale complex data reasonably well via its Fiber architecture (which breaks rendering work into chunks), but it requires careful tuning to prevent lag in high-frequency update scenarios\n.",
+                "snippet_links": [
+                  {
+                    "link": "https://tech-insider.org/react-vs-vue-2026/"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              4,
+              10,
+              15,
+              16
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "3. Bundle Size and Initial Startup Time"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Vue: The core Vue library is lightweight, and its standard gzipped bundle size sits around 34KB. Because Vue includes built-in features like routing and state management (via Pinia) within its tightly engineered ecosystem, the end bundle stays compact. This leads to faster initial page loads, particularly on mobile devices\n."
+              },
+              {
+                "snippet": "React: The combined core react and react-dom gzipped bundle size is roughly 44KB. However, because React is purely a UI library, you almost always have to add third-party packages for routing, state management, and form handling, which can balloon the bundle size and slow down initial TTI (Time to Interactive) if not carefully code-split\n.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.reddit.com/r/vuejs/comments/1b9uori/why_do_people_think_that_react_is_better_than_vue/"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              4,
+              5,
+              6,
+              7,
+              8
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "4. Server-Side Rendering (SSR) & Advanced Paradigms"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "React: React shines in modern, architecture-heavy performance paradigms. React Server Components (RSCs) allow developers to offload massive chunks of JavaScript logic entirely to the server, resulting in zero-bundle-size components and significantly reduced client-side hydration costs\n. This makes React exceptionally performant for data-heavy apps utilizing edge computing or streaming UI components (like live AI responses)."
+              },
+              {
+                "snippet": "Vue: Vue has fantastic SSR capabilities via its premier meta-framework, Nuxt. Nuxt provides incredible out-of-the-box optimizations, automatic code-splitting, and fast server-side generation\n. However, Vue's architecture relies more heavily on client-side hydration compared to React's aggressive server-component model.",
+                "snippet_links": [
+                  {
+                    "link": "https://tech-insider.org/react-vs-vue-2026/"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              4,
+              6,
+              17,
+              18
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "Summary Verdict"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Choose Vue for performance if: You want excellent out-of-the-box speed, minimal memory overhead, fast mobile startup times, and you don't want to spend your days debugging unnecessary component re-renders."
+              },
+              {
+                "snippet": "Choose React for performance if:\nYou are building massive, deeply nested enterprise apps where you can leverage server-side architectures like React Server Components to keep client bundles microscopic.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.reddit.com/r/vuejs/comments/17h0g3u/vue_vs_react_productivity_question/"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              4,
+              9,
+              10
+            ]
+          }
+        ],
+        "citations": [
+          {
+            "url": "https://www.youtube.com/watch?v=83WatME7_fw&t=28",
+            "title": "React vs Vue.js - Which is better? Front-end frameworks ...",
+            "snippet": "and dive into that and you can decide which platform might be better for. you. and flexibility makes it an excellent choice for beginners. and small projects the f"
+          },
+          {
+            "url": "https://www.reddit.com/r/vuejs/comments/17yuhhc/the_difference_between_vue_and_react/",
+            "title": "The Difference Between Vue and React : r/vuejs",
+            "snippet": "whatsoever. so we've seen the two differences here between the reactivity. systems react emphasizes a deterministic functionalbased approach of waiting mutation. a"
+          },
+          {
+            "url": "https://vuejs.org/v2/guide/comparison.html",
+            "title": "Comparison with Other Frameworks - Vue.js",
+            "snippet": "In Vue, a component's dependencies are automatically tracked during its render, so the system knows precisely which components actually need to re-render when stat..."
+          },
+          {
+            "url": "https://outsourcify.net/vue-3-vs-react-the-quiet-revolution-in-front-end-development/",
+            "title": "Vue 3 vs React: The Quiet Revolution in Front-End Development",
+            "snippet": "Reactivity \\u0026 Rendering: Opt-In vs. Opt-Out. One of the biggest differences lies in how they handle re-renders on state changes. React follows an \u201copt-out\u201d model\u2014wh..."
+          },
+          {
+            "url": "https://tech-insider.org/react-vs-vue-2026/",
+            "title": "React vs Vue: 7 Benchmarks Show a Clear Winner [2026]",
+            "snippet": "* Updated April 2, 2026. React maintains its dominant position with 68% market share among frontend frameworks, while Vue holds steady at 18%. ... * Winner: Vue. E..."
+          },
+          {
+            "url": "https://www.reddit.com/r/vuejs/comments/1b9uori/why_do_people_think_that_react_is_better_than_vue/",
+            "title": "Why do people think that React is better than vue? : r/vuejs - Reddit",
+            "snippet": "in which case, diy is probably better anyway. * iamtheshoemaker. \u2022 2y ago. When your only experience is html maybe, * wapiwapigo. ..."
+          },
+          {
+            "url": "https://blog.logrocket.com/angular-vs-react-vs-vue-js-performance/",
+            "title": "Angular vs. React vs. Vue.js: A performance guide for 2026 - LogRocket Blog",
+            "snippet": "With Angular 20's move toward a zoneless model and a more mature Signals API, teams get clearer state flows and fewer global side effects. * The learning curve rem..."
+          },
+          {
+            "url": "https://www.mindk.com/blog/react-vs-vue/",
+            "title": "Vue vs React: What Is the Best Choice for 2025? \u2013 MindK Blog",
+            "snippet": "Here's some information about the differences between Vue and React: * **Ecosystem** Vue is a standalone framework, while React requires other libraries. * **Perfo..."
+          },
+          {
+            "url": "https://alokai.com/blog/vue-vs-react",
+            "title": "Vue vs React: Which one to choose in 2025? - Alokai",
+            "snippet": "Let's examine their most important differences to finally get closer to that decision. 1. Core library and application size. Verdict: Choose Vue. js for smaller an..."
+          },
+          {
+            "url": "https://www.reddit.com/r/vuejs/comments/17h0g3u/vue_vs_react_productivity_question/",
+            "title": "Vue vs React - productivity question : r/vuejs - Reddit",
+            "snippet": "Vue vs React - productivity question. We are evaluating React and Vue for a mobile application built on top of Capacitor. Research..."
+          },
+          {
+            "url": "https://www.browserstack.com/guide/angular-vs-react-vs-vue",
+            "title": "Angular vs React vs Vue: Core Differences - BrowserStack",
+            "snippet": "2. ... React uses a virtual DOM, which optimizes rendering by only updating the parts of the UI that need changes. This makes Reac..."
+          },
+          {
+            "url": "https://solguruz.com/blog/react-vs-vue/",
+            "title": "React vs Vue in 2026: Differences, Pros, Cons \\u0026 Use Cases",
+            "snippet": "Both deliver excellent runtime performance and are fast enough for nearly all applications. Vue is often slightly more efficient by default, and Vue 3.5's Vapor Mo..."
+          },
+          {
+            "url": "https://fireart.studio/blog/vue-vs-react/",
+            "title": "Vue vs. React in 2025: Which Framework is Right for You?",
+            "snippet": "Vue is very fast. It may not be the fastest, but its performance is more than enough for the vast majority of web projects."
+          },
+          {
+            "url": "https://medium.com/@rtsekov/react-js-in-2025-still-1-heres-why-fa78f5f7a95d",
+            "title": "React.js in 2025: Still #1. Here\u2019s Why | by Roman Tsekov",
+            "snippet": "But in real-world apps, the differences in raw rendering performance often have less impact on user experience than things like network requests, overall applicati..."
+          },
+          {
+            "url": "https://deliciousbrains.com/vue-vs-react-battle-javascript/",
+            "title": "Vue vs React: Battle of the Javascript Frameworks",
+            "snippet": "If you're familiar with React you'll know that application state is a key concept. There are even frameworks dedicated to managing large scale state objects like R..."
+          },
+          {
+            "url": "https://datafortune.com/preact-vs-react-performance-comparison-development-roadmap/",
+            "title": "Preact vs. React: Performance Comparison, Development \\u0026 Roadmap",
+            "snippet": "React, though more resource-intensive, excels in handling large-scale applications with complex state management and extensive component hierarchies. Its memory us..."
+          },
+          {
+            "url": "https://www.researchgate.net/publication/385737356_BENCHMARKING_FRONT-END_FRAMEWORKS_A_DEEP_DIVE_INTO_THE_PERFORMANCE_AND_SCALABILITY_OF_REACT_ANGULAR_AND_VUEJS",
+            "title": "(PDF) BENCHMARKING FRONT-END FRAMEWORKS: A DEEP DIVE INTO THE PERFORMANCE AND SCALABILITY OF REACT, ANGULAR, AND VUE.JS",
+            "snippet": "However, Vue does not optimiz e as aggressively as React in terms of virtual DOM rendering, which could result in slightly higher memory usage in larger applicatio..."
+          },
+          {
+            "url": "https://www.turbodocx.com/blog/react-performance-optimization",
+            "title": "React Performance Optimization Guide (2026)",
+            "snippet": "React Server Components (RSC) Server Components run entirely on the server, shipping zero JavaScript to the browser. No hooks, no re-renders, no bundle impact. The..."
+          },
+          {
+            "url": "https://sparkbox.com/foundry/the-react-rendering-landcape-in-2025",
+            "title": "The React Rendering Landscape in 2025",
+            "snippet": "React Server Components (RSC) shift more rendering to the server, reducing client-side JavaScript while complementing SSR, SSG, and ISR by minimizing hydration and..."
+          }
+        ],
+        "related_searches": []
+      }
+    },
+    "Serper": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "DataForSEO": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    }
+  }
+}

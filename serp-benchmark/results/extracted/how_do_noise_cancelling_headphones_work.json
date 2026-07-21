@@ -1,0 +1,296 @@
+{
+  "query": "how do noise cancelling headphones work",
+  "intent": "long-tail",
+  "scores": {
+    "SearchApi": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "SerpApi": {
+      "extracted": {
+        "present": true,
+        "summary": "",
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "snippet": "Noise-canceling headphones use a combination of physical sound-blocking (passive isolation) and electronic anti-noise. Tiny built-in microphones listen to ambient sounds, and a digital processor generates a mirrored, inverted sound wave. When these opposing waves collide, they cancel each other out, leaving only the audio you actually want to hear.",
+            "snippet_links": [
+              {
+                "link": "https://www.youtube.com/watch?v=U0QLo3DvIoo&t=77"
+              }
+            ],
+            "snippet_highlighted_words": [
+              "Tiny built-in microphones listen to ambient sounds, and a digital processor generates a mirrored, inverted sound wave. When these opposing waves collide, they cancel each other out, leaving only the audio you actually want to hear"
+            ],
+            "reference_indexes": [
+              9,
+              10
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "The Two Layers of Noise Cancellation"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Noise cancellation is achieved through two distinct mechanisms:",
+            "reference_indexes": [
+              9
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "1. Passive Noise Isolation"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Before any electronics turn on, the physical design of the headphones acts as a barrier. Earcups made of dense, sound-dampening foam or tight-fitting silicone ear tips act like physical walls, blocking high-frequency, unpredictable sounds like chattering, barking, or sirens.",
+            "snippet_links": [
+              {
+                "link": "https://www.youtube.com/watch?v=U0QLo3DvIoo&t=77"
+              }
+            ],
+            "reference_indexes": [
+              6,
+              7
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "2. Active Noise Cancellation (ANC)"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "While foam handles high frequencies, active electronics step in to tackle deep, continuous low-frequency noises like an airplane engine, an air conditioner hum, or the rumble of a train. This happens in a few milliseconds through a process called destructive interference:",
+            "snippet_links": [
+              {
+                "link": "https://www.youtube.com/watch?v=pVDvF343G9A&t=72"
+              }
+            ],
+            "reference_indexes": [
+              9,
+              11,
+              8,
+              3
+            ]
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "The Microphone: Outward-facing (and sometimes inward-facing) microphones continuously sample the sound waves in your environment.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.tiktok.com/@tiffintech/video/7534832293987355909"
+                  }
+                ],
+                "reference_indexes": [
+                  3
+                ]
+              },
+              {
+                "snippet": "The Processor: A digital signal processor (DSP) takes these waveforms and calculates their exact mirror image. This inverted wave is flipped by 180 degrees, meaning its peaks and troughs are the exact opposite of the ambient noise.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.tiktok.com/@tiffintech/video/7534832293987355909"
+                  }
+                ],
+                "reference_indexes": [
+                  4
+                ]
+              },
+              {
+                "snippet": "The Speaker: The headphone's speakers play this \"anti-noise\" wave alongside your music. When the ambient noise and the anti-noise collide in your ear canal, the two waves flatten each other out, resulting in silence.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.youtube.com/watch?v=pVDvF343G9A&t=72"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              4,
+              5
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "Why ANC Works Best on Certain Sounds"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Because sound waves travel through the air, active noise cancellation relies on precise math and processing speed.",
+            "snippet_links": [
+              {
+                "link": "https://www.tiktok.com/@tiffintech/video/7534832293987355909"
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Why it struggles with sudden noises: Sudden, sharp sounds like a glass dropping or a person clapping have very complex and erratic waveforms. By the time the microphone detects the sound and the processor creates the anti-noise wave, the sudden sound has already reached your ear.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.tiktok.com/@tiffintech/video/7534832293987355909"
+                  }
+                ]
+              },
+              {
+                "snippet": "Why it excels with drones and hums: Low-frequency rumbles have long, repetitive waveforms. This predictability gives the processor ample time to \"read,\" invert, and neutralize the sound perfectly.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.tiktok.com/@tiffintech/video/7534832293987355909"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "For a quick, visual breakdown of how the waves invert to create silence:",
+            "video": {
+              "link": "https://www.youtube.com/shorts/VRxb_Ni52Po?vl=en",
+              "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5_B7YaVWnpeWc_UnA9mh0Sqp4gJi1wPrLdTgJYfeEifOEcaO0XFHdetjXA4_lJ6q6MTNAIZ9Qfbrvregr0mSNpUgNIA"
+            }
+          }
+        ],
+        "citations": [
+          {
+            "url": "https://www.youtube.com/watch?v=U0QLo3DvIoo",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=VLdaBKjW-lc",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=pVDvF343G9A",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.tiktok.com/@tiffintech/video/7534832293987355909",
+            "title": "Understanding How Noise-Canceling Headphones Work",
+            "snippet": "how do noise cancelling headphones actually cancel sound see your headphones. don't just block out sound they actually delete it i mean this involves physics an"
+          },
+          {
+            "url": "https://www.reddit.com/r/explainlikeimfive/comments/135e55e/eli5_how_do_noisecancelling_headphones_work/",
+            "title": "eli5: How do \\\"noise-cancelling\\\" headphones work? : r/explainlikeimfive",
+            "snippet": "Noise-cancelling headphones work by: * **Capturing ambient noise** * **Calculating the direction of the noise** * **Predicting the sound at your ear canal** * *"
+          },
+          {
+            "url": "https://www.sonos.com/en-us/blog/how-does-noise-canceling-work",
+            "title": "How Do Noise-Canceling Headphones Work? | Sonos Blog",
+            "snippet": "Soundwaves work in a similar way: If one sound wave meets another soundwave that's the same in frequency and opposite in amplitude, the two sounds will cancel e..."
+          },
+          {
+            "url": "https://www.lg.com/ae/lg-story/helpful-guide/how-does-noise-cancelling-work",
+            "title": "How Does Active Noise Canceling (ANC) Work?",
+            "snippet": "Passive Isolation for Mid and High Frequencies Passive isolation comes from the earbud tip and shell, even before electronics are involved. A good silicone or f..."
+          },
+          {
+            "url": "https://www.soundcore.com/blogs/earbuds/how-does-active-noise-cancelling-work",
+            "title": "The Science Of Silence: A Complete Guide To Active Noise Cancelling Technology",
+            "snippet": "Higher-frequency, sudden sounds (like a dog barking or a door slamming) are more challenging to cancel because their unpredictable nature gives the processor le..."
+          },
+          {
+            "url": "https://www.linkedin.com/posts/tiffany-janzen_tech-techexplained-stem-activity-7359667261940383744-V5DF",
+            "title": "How do noise cancelling headphones work? | Tiffany Janzen posted on the topic | LinkedIn",
+            "snippet": "11mo. How did someone think to invent this?!? It's wild to me. In this video we're breaking down how do noise cancelling headphones actually cancel sound? Here'"
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=U0QLo3DvIoo&t=77",
+            "title": "How Noise-Cancelling Headphones Really Work (And Are They Worth It?)",
+            "snippet": "you're definitely not alone let's talk about how they work what they're good for and what they might not do as perfectly as you would. hope. all right let's get"
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=VLdaBKjW-lc&t=97",
+            "title": "How Does Noise-Cancelling Technology Work in Headphones?",
+            "snippet": "this doesn't eliminate sound completely but it does help to muffle. it. then we have active noise cancellation or ANC which is where the real magic happens unli"
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=pVDvF343G9A&t=72",
+            "title": "How Active Noise Cancelling Works (Explained Simply)",
+            "snippet": "so you can go as guy goes goes Bose you can go you can go and check that out also buying there helps me you know they know that you came from here. so that's re"
+          }
+        ],
+        "related_searches": []
+      }
+    },
+    "Serper": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "DataForSEO": {
+      "extracted": {
+        "present": true,
+        "summary": "![Explain How Noise-Cancelling Headphones Actually Work Easy 2026](https://api.dataforseo.com/cdn/i/07210111-2120-0139-0000-7e718cb79778:6)\nNoise-canceling headphones use a combination of physical sound-blocking (passive isolation) and electronic anti-noise. `Tiny built-in microphones listen to ambient sounds, and a digital processor generates a mirrored, inverted sound wave. When these opposing waves collide, they cancel each other out, leaving only the audio you actually want to hear`.[](https://www.youtube.com/watch?v=U0QLo3DvIoo&t=77) [[1]](https://www.youtube.com/watch?v=U0QLo3DvIoo&t=77)[[2]](https://www.youtube.com/watch?v=VLdaBKjW-lc&t=97)\n\nThe Two Layers of Noise Cancellation\n\nNoise cancellation is achieved through two distinct mechanisms:[[1]](https://www.youtube.com/watch?v=U0QLo3DvIoo&t=77)\n\n1. Passive Noise Isolation\n\nBefore any electronics turn on, the physical design of the headphones acts as a barrier. Earcups made of dense, sound-dampening foam or tight-fitting silicone ear tips act like physical walls, blocking high-frequency, unpredictable sounds like chattering, barking, or sirens.[](https://www.youtube.com/watch?v=U0QLo3DvIoo&t=77) [[1]](https://www.youtube.com/watch?v=U0QLo3DvIoo&t=77)[[2]](https://www.youtube.com/watch?v=VLdaBKjW-lc&t=97)[[3]](https://www.lg.com/ae/lg-story/helpful-guide/how-does-noise-cancelling-work)[[4]](https://www.soundcore.com/blogs/earbuds/how-does-active-noise-cancelling-work)\n\n2. Active Noise Cancellation (ANC)\n\nWhile foam handles high frequencies, active electronics step in to tackle deep, continuous low-frequency noises like an airplane engine, an air conditioner hum, or the rumble of a train. This happens in a few milliseconds through a process called **destructive interference**:[](https://www.youtube.com/watch?v=pVDvF343G9A&t=72) [[1]](https://www.youtube.com/watch?v=pVDvF343G9A&t=72)[[2]](https://www.youtube.com/watch?v=VLdaBKjW-lc&t=97)[[3]](https://www.linkedin.com/posts/tiffany-janzen_tech-techexplained-stem-activity-7359667261940383744-V5DF)[[4]](https://www.tiktok.com/@tiffintech/video/7534832293987355909)[[5]](https://www.youtube.com/watch?v=U0QLo3DvIoo&t=77)\n\n- **The Microphone:** Outward-facing (and sometimes inward-facing) microphones continuously sample the sound waves in your environment.[](https://www.tiktok.com/@tiffintech/video/7534832293987355909) [[1]](https://www.tiktok.com/@tiffintech/video/7534832293987355909)[[2]](https://www.youtube.com/watch?v=VLdaBKjW-lc&t=97)[[3]](https://www.reddit.com/r/explainlikeimfive/comments/135e55e/eli5_how_do_noisecancelling_headphones_work/)\n- **The Processor:** A digital signal processor (DSP) takes these waveforms and calculates their exact mirror image. This inverted wave is flipped by 180 degrees, meaning its peaks and troughs are the exact opposite of the ambient noise.[](https://www.tiktok.com/@tiffintech/video/7534832293987355909) [[1]](https://www.tiktok.com/@tiffintech/video/7534832293987355909)[[2]](https://www.youtube.com/watch?v=VLdaBKjW-lc&t=97)[[3]](https://www.youtube.com/watch?v=pVDvF343G9A&t=72)[[4]](https://www.reddit.com/r/explainlikeimfive/comments/135e55e/eli5_how_do_noisecancelling_headphones_work/)\n- **The Speaker:** The headphone's speakers play this \"anti-noise\" wave alongside your music. When the ambient noise and the anti-noise collide in your ear canal, the two waves flatten each other out, resulting in silence.[](https://www.youtube.com/watch?v=pVDvF343G9A&t=72) [[1]](https://www.youtube.com/watch?v=pVDvF343G9A&t=72)[[2]](https://www.youtube.com/watch?v=VLdaBKjW-lc&t=97)[[3]](https://www.reddit.com/r/explainlikeimfive/comments/135e55e/eli5_how_do_noisecancelling_headphones_work/)[[4]](https://www.sonos.com/en-us/blog/how-does-noise-canceling-work)\n\nWhy ANC Works Best on Certain Sounds Because sound waves travel through the air, active noise cancellation relies on precise math and processing speed.[](https://www.tiktok.com/@tiffintech/video/7534832293987355909) [[1]](https://www.tiktok.com/@tiffintech/video/7534832293987355909)\n\n- **Why it struggles with sudden noises:** Sudden, sharp sounds like a glass dropping or a person clapping have very complex and erratic waveforms. By the time the microphone detects the sound and the processor creates the anti-noise wave, the sudden sound has already reached your ear.[](https://www.tiktok.com/@tiffintech/video/7534832293987355909) [[1]](https://www.tiktok.com/@tiffintech/video/7534832293987355909)[[2]](https://www.youtube.com/watch?v=VLdaBKjW-lc&t=97)\n- **Why it excels with drones and hums:** Low-frequency rumbles have long, repetitive waveforms. This predictability gives the processor ample time to \"read,\" invert, and neutralize the sound perfectly.[](https://www.tiktok.com/@tiffintech/video/7534832293987355909) [[1]](https://www.tiktok.com/@tiffintech/video/7534832293987355909)[[2]](https://www.youtube.com/watch?v=VLdaBKjW-lc&t=97)\n\nFor a quick, visual breakdown of how the waves invert to create silence:![](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5_B7YaVWnpeWc_UnA9mh0Sqp4gJi1wPrLdTgJYfeEifOEcaO0XFHdetjXA4_lJ6q6MTNAIZ9Qfbrvregr0mSNpUgNIA)\n![Related video thumbnail](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOSauwChyLnBFvbwDa7TkZhenTJuzK1QyCrMf7jmS0w_K7Ft9pL_jPOfK_6ssxGKlF4WUt8Uw5JknLZFJvPE1hfrDY30o)\n1:26[How do noise cancelling headphones actually block out sound?!28K views \u00a0\u00b7\u00a011 months ago![](https://api.dataforseo.com/cdn/i/07210111-2120-0139-0000-7e718cb79778:7)\nYouTube\u00a0\u00b7\u00a0Tiff In Tech](https://www.youtube.com/shorts/VRxb_Ni52Po?vl=en)",
+        "text_blocks": [
+          "![Explain How Noise-Cancelling Headphones Actually Work Easy 2026](https://api.dataforseo.com/cdn/i/07210111-2120-0139-0000-7e718cb79778:6)\nNoise-canceling headphones use a combination of physical sound-blocking (passive isolation) and electronic anti-noise. `Tiny built-in microphones listen to ambient sounds, and a digital processor generates a mirrored, inverted sound wave. When these opposing waves collide, they cancel each other out, leaving only the audio you actually want to hear`.[](https://www.youtube.com/watch?v=U0QLo3DvIoo&t=77) [[1]](https://www.youtube.com/watch?v=U0QLo3DvIoo&t=77)[[2]](https://www.youtube.com/watch?v=VLdaBKjW-lc&t=97)\n\nThe Two Layers of Noise Cancellation\n\nNoise cancellation is achieved through two distinct mechanisms:[[1]](https://www.youtube.com/watch?v=U0QLo3DvIoo&t=77)\n\n1. Passive Noise Isolation\n\nBefore any electronics turn on, the physical design of the headphones acts as a barrier. Earcups made of dense, sound-dampening foam or tight-fitting silicone ear tips act like physical walls, blocking high-frequency, unpredictable sounds like chattering, barking, or sirens.[](https://www.youtube.com/watch?v=U0QLo3DvIoo&t=77) [[1]](https://www.youtube.com/watch?v=U0QLo3DvIoo&t=77)[[2]](https://www.youtube.com/watch?v=VLdaBKjW-lc&t=97)[[3]](https://www.lg.com/ae/lg-story/helpful-guide/how-does-noise-cancelling-work)[[4]](https://www.soundcore.com/blogs/earbuds/how-does-active-noise-cancelling-work)\n\n2. Active Noise Cancellation (ANC)\n\nWhile foam handles high frequencies, active electronics step in to tackle deep, continuous low-frequency noises like an airplane engine, an air conditioner hum, or the rumble of a train. This happens in a few milliseconds through a process called **destructive interference**:[](https://www.youtube.com/watch?v=pVDvF343G9A&t=72) [[1]](https://www.youtube.com/watch?v=pVDvF343G9A&t=72)[[2]](https://www.youtube.com/watch?v=VLdaBKjW-lc&t=97)[[3]](https://www.linkedin.com/posts/tiffany-janzen_tech-techexplained-stem-activity-7359667261940383744-V5DF)[[4]](https://www.tiktok.com/@tiffintech/video/7534832293987355909)[[5]](https://www.youtube.com/watch?v=U0QLo3DvIoo&t=77)\n\n- **The Microphone:** Outward-facing (and sometimes inward-facing) microphones continuously sample the sound waves in your environment.[](https://www.tiktok.com/@tiffintech/video/7534832293987355909) [[1]](https://www.tiktok.com/@tiffintech/video/7534832293987355909)[[2]](https://www.youtube.com/watch?v=VLdaBKjW-lc&t=97)[[3]](https://www.reddit.com/r/explainlikeimfive/comments/135e55e/eli5_how_do_noisecancelling_headphones_work/)\n- **The Processor:** A digital signal processor (DSP) takes these waveforms and calculates their exact mirror image. This inverted wave is flipped by 180 degrees, meaning its peaks and troughs are the exact opposite of the ambient noise.[](https://www.tiktok.com/@tiffintech/video/7534832293987355909) [[1]](https://www.tiktok.com/@tiffintech/video/7534832293987355909)[[2]](https://www.youtube.com/watch?v=VLdaBKjW-lc&t=97)[[3]](https://www.youtube.com/watch?v=pVDvF343G9A&t=72)[[4]](https://www.reddit.com/r/explainlikeimfive/comments/135e55e/eli5_how_do_noisecancelling_headphones_work/)\n- **The Speaker:** The headphone's speakers play this \"anti-noise\" wave alongside your music. When the ambient noise and the anti-noise collide in your ear canal, the two waves flatten each other out, resulting in silence.[](https://www.youtube.com/watch?v=pVDvF343G9A&t=72) [[1]](https://www.youtube.com/watch?v=pVDvF343G9A&t=72)[[2]](https://www.youtube.com/watch?v=VLdaBKjW-lc&t=97)[[3]](https://www.reddit.com/r/explainlikeimfive/comments/135e55e/eli5_how_do_noisecancelling_headphones_work/)[[4]](https://www.sonos.com/en-us/blog/how-does-noise-canceling-work)\n\nWhy ANC Works Best on Certain Sounds Because sound waves travel through the air, active noise cancellation relies on precise math and processing speed.[](https://www.tiktok.com/@tiffintech/video/7534832293987355909) [[1]](https://www.tiktok.com/@tiffintech/video/7534832293987355909)\n\n- **Why it struggles with sudden noises:** Sudden, sharp sounds like a glass dropping or a person clapping have very complex and erratic waveforms. By the time the microphone detects the sound and the processor creates the anti-noise wave, the sudden sound has already reached your ear.[](https://www.tiktok.com/@tiffintech/video/7534832293987355909) [[1]](https://www.tiktok.com/@tiffintech/video/7534832293987355909)[[2]](https://www.youtube.com/watch?v=VLdaBKjW-lc&t=97)\n- **Why it excels with drones and hums:** Low-frequency rumbles have long, repetitive waveforms. This predictability gives the processor ample time to \"read,\" invert, and neutralize the sound perfectly.[](https://www.tiktok.com/@tiffintech/video/7534832293987355909) [[1]](https://www.tiktok.com/@tiffintech/video/7534832293987355909)[[2]](https://www.youtube.com/watch?v=VLdaBKjW-lc&t=97)\n\nFor a quick, visual breakdown of how the waves invert to create silence:![](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5_B7YaVWnpeWc_UnA9mh0Sqp4gJi1wPrLdTgJYfeEifOEcaO0XFHdetjXA4_lJ6q6MTNAIZ9Qfbrvregr0mSNpUgNIA)\n![Related video thumbnail](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOSauwChyLnBFvbwDa7TkZhenTJuzK1QyCrMf7jmS0w_K7Ft9pL_jPOfK_6ssxGKlF4WUt8Uw5JknLZFJvPE1hfrDY30o)\n1:26[How do noise cancelling headphones actually block out sound?!28K views \u00a0\u00b7\u00a011 months ago![](https://api.dataforseo.com/cdn/i/07210111-2120-0139-0000-7e718cb79778:7)\nYouTube\u00a0\u00b7\u00a0Tiff In Tech](https://www.youtube.com/shorts/VRxb_Ni52Po?vl=en)"
+        ],
+        "citations": [
+          {
+            "url": "https://www.linkedin.com/posts/tiffany-janzen_tech-techexplained-stem-activity-7359667261940383744-V5DF",
+            "title": "How do noise cancelling headphones work? | Tiffany Janzen posted on ...",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.tiktok.com/@tiffintech/video/7534832293987355909",
+            "title": "Understanding How Noise-Canceling Headphones Work",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=U0QLo3DvIoo&t=77",
+            "title": "How Noise-Cancelling Headphones Really Work (And Are They Worth It?)",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=pVDvF343G9A&t=72",
+            "title": "How Active Noise Cancelling Works (Explained Simply)",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.reddit.com/r/explainlikeimfive/comments/135e55e/eli5_how_do_noisecancelling_headphones_work/",
+            "title": "eli5: How do \"noise-cancelling\" headphones work? : r/explainlikeimfive",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=VLdaBKjW-lc&t=97",
+            "title": "How Does Noise-Cancelling Technology Work in Headphones?",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.sonos.com/en-us/blog/how-does-noise-canceling-work",
+            "title": "How Do Noise-Canceling Headphones Work? | Sonos Blog",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/shorts/a1qOQZNbPBo",
+            "title": "How do noise cancelling headphones work? #science #technology",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/shorts/VRxb_Ni52Po?vl=en",
+            "title": "How do noise cancelling headphones actually block out sound?!",
+            "snippet": ""
+          }
+        ],
+        "related_searches": []
+      }
+    }
+  }
+}

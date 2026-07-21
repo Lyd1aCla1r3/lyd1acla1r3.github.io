@@ -1,0 +1,895 @@
+{
+  "version": "0.1.20260717",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "1.8508 sec.",
+  "cost": 0.002,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "07210103-2120-0139-0000-6e7ed9981a0b",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "1.7107 sec.",
+      "cost": 0.002,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "serp",
+        "google",
+        "organic",
+        "live",
+        "advanced"
+      ],
+      "data": {
+        "api": "serp",
+        "function": "live",
+        "se": "google",
+        "se_type": "organic",
+        "keyword": "Spotify vs Apple Music audio quality",
+        "location_code": 2840,
+        "language_code": "en",
+        "device": "desktop",
+        "expand_ai_overview": true,
+        "os": "windows"
+      },
+      "result": [
+        {
+          "keyword": "Spotify vs Apple Music audio quality",
+          "type": "organic",
+          "se_domain": "google.com",
+          "location_code": 2840,
+          "language_code": "en",
+          "check_url": "https://www.google.com/search?q=Spotify%20vs%20Apple%20Music%20audio%20quality&hl=en&gl=US&ie=UTF-8&uule=w+CAIQIFISCQs2MuSEtepUEUK33kOSuTsc",
+          "datetime": "2026-07-20 22:04:00 +00:00",
+          "spell": null,
+          "refinement_chips": null,
+          "item_types": [
+            "ai_overview",
+            "organic",
+            "people_also_ask",
+            "video",
+            "perspectives",
+            "related_searches"
+          ],
+          "se_results_count": 117,
+          "pages_count": 1,
+          "items_count": 12,
+          "items": [
+            {
+              "type": "ai_overview",
+              "rank_group": 1,
+              "rank_absolute": 1,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]",
+              "asynchronous_ai_overview": false,
+              "markdown": "`Apple Music significantly outperforms Spotify in sound quality` by offering CD-quality and Hi-Res Lossless audio (up to 24-bit/192 kHz) at no extra cost. Spotify Premium maxes out at lossy 320 kbps using Ogg Vorbis compression. Apple Music also includes immersive Dolby Atmos Spatial Audio.[](https://medium.com/@iamtimbaker/spotify-vs-apple-music-which-is-better-7b1aecb23039) [[1]](https://medium.com/@iamtimbaker/spotify-vs-apple-music-which-is-better-7b1aecb23039)[[2]](https://www.whathifi.com/features/apple-music-vs-spotify-which-better)[[3]](https://www.theindianaudiophileforum.com/c/ask-the-community/sound-quality-spotify-vs-apple-music)\n\nFormat and Resolution\n\n- **Apple Music:** Streams in ALAC (Apple Lossless Audio Codec), offering bit-perfect copies of the studio master up to 24-bit/192 kHz.\n- **Spotify:** Uses Ogg Vorbis format maxing out at 320 kbps. While Spotify has announced a Lossless tier (up to 24-bit/44.1 kHz), Apple currently offers a wider array of Hi-Res options.[](https://www.moon-audio.com/blogs/expert-advice/apple-music-vs-spotify-sound-quality) [[1]](https://www.moon-audio.com/blogs/expert-advice/apple-music-vs-spotify-sound-quality)[[2]](https://www.whathifi.com/features/apple-music-vs-spotify-which-better)[[3]](https://www.theindianaudiophileforum.com/c/ask-the-community/sound-quality-spotify-vs-apple-music)[[4]](https://musicfab.dvdfab.cn/general/apple-music-vs-spotify-sound-quality.htm)\n\nSpatial Audio\n\nApple Music heavily features **Dolby Atmos** , creating an immersive surround-sound experience for compatible tracks . Spotify does not support Spatial Audio or Dolby Atmos mixes.[](https://www.youtube.com/watch?v=JPXgCGaqreA&t=144) [[1]](https://www.youtube.com/watch?v=JPXgCGaqreA&t=144)[[2]](https://www.theindianaudiophileforum.com/c/ask-the-community/sound-quality-spotify-vs-apple-music)[[3]](https://www.whathifi.com/features/apple-music-vs-spotify-which-better)\n\nHardware Limitations To hear the difference between the two, you need the right equipment. Lossless audio provides better dynamic range, but casual listeners using Bluetooth headphones (which compress audio) will struggle to tell the difference. To experience Apple Music's Hi-Res files, you will need wired headphones and a dedicated DAC (Digital-to-Analog Converter).[](https://www.moon-audio.com/blogs/expert-advice/apple-music-vs-spotify-sound-quality) [[1]](https://www.moon-audio.com/blogs/expert-advice/apple-music-vs-spotify-sound-quality)[[2]](https://www.youtube.com/watch?v=-xMxKuI5x-4&t=459)[[3]](https://www.pocket-lint.com/review-spotify-lossless-audio-option/)[[4]](https://www.theindianaudiophileforum.com/c/ask-the-community/sound-quality-spotify-vs-apple-music)[[5]](https://www.youtube.com/shorts/UEfzClzSLUU)",
+              "items": [
+                {
+                  "type": "ai_overview_element",
+                  "position": "left",
+                  "title": null,
+                  "text": "Apple Music significantly outperforms Spotify in sound quality by offering CD-quality and Hi-Res Lossless audio (up to 24-bit/192 kHz) at no extra cost. Spotify Premium maxes out at lossy 320 kbps using Ogg Vorbis compression. Apple Music also includes immersive Dolby Atmos Spatial Audio. Medium \u00b7 Tim Baker +2",
+                  "markdown": "`Apple Music significantly outperforms Spotify in sound quality` by offering CD-quality and Hi-Res Lossless audio (up to 24-bit/192 kHz) at no extra cost. Spotify Premium maxes out at lossy 320 kbps using Ogg Vorbis compression. Apple Music also includes immersive Dolby Atmos Spatial Audio.[](https://medium.com/@iamtimbaker/spotify-vs-apple-music-which-is-better-7b1aecb23039) [[1]](https://medium.com/@iamtimbaker/spotify-vs-apple-music-which-is-better-7b1aecb23039)[[2]](https://www.whathifi.com/features/apple-music-vs-spotify-which-better)[[3]](https://www.theindianaudiophileforum.com/c/ask-the-community/sound-quality-spotify-vs-apple-music)",
+                  "links": null,
+                  "images": null,
+                  "references": [
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "Medium",
+                      "domain": "medium.com",
+                      "url": "https://medium.com/@iamtimbaker/spotify-vs-apple-music-which-is-better-7b1aecb23039",
+                      "title": "Spotify vs. Apple Music: Which is better? | by Tim Baker | Medium",
+                      "text": "In terms of audio quality, Apple emerges as the clear champion. In fact, not only does Apple offer better audio quality than Spoti..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "What Hi-Fi?",
+                      "domain": "www.whathifi.com",
+                      "url": "https://www.whathifi.com/features/apple-music-vs-spotify-which-better",
+                      "title": "Apple Music vs Spotify: which is better? - What Hi-Fi?",
+                      "text": "Apple Music set the industry standard in 2021 when it offered hi-res tracks at no additional fee. Which prompted rivals to drop th..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "The Indian Audiophile Forum",
+                      "domain": "www.theindianaudiophileforum.com",
+                      "url": "https://www.theindianaudiophileforum.com/c/ask-the-community/sound-quality-spotify-vs-apple-music",
+                      "title": "Sound quality - Spotify vs Apple Music | The Indian Audiophile Forum",
+                      "text": "When it comes to sound quality, Apple Music has a clear edge over Spotify, especially for audiophiles: Apple Music offers lossless..."
+                    }
+                  ]
+                },
+                {
+                  "type": "ai_overview_element",
+                  "position": "left",
+                  "title": "Format and Resolution",
+                  "text": null,
+                  "markdown": "Format and Resolution",
+                  "links": null,
+                  "images": null,
+                  "references": null
+                },
+                {
+                  "type": "ai_overview_element",
+                  "position": "left",
+                  "title": "Spatial Audio",
+                  "text": "Apple Music heavily features Dolby Atmos, creating an immersive surround-sound experience for compatible tracks. Spotify does not support Spatial Audio or Dolby Atmos mixes. YouTube \u00b7 Jimmy Tries World +2",
+                  "markdown": "Apple Music heavily features **Dolby Atmos** , creating an immersive surround-sound experience for compatible tracks . Spotify does not support Spatial Audio or Dolby Atmos mixes.[](https://www.youtube.com/watch?v=JPXgCGaqreA&t=144) [[1]](https://www.youtube.com/watch?v=JPXgCGaqreA&t=144)[[2]](https://www.theindianaudiophileforum.com/c/ask-the-community/sound-quality-spotify-vs-apple-music)[[3]](https://www.whathifi.com/features/apple-music-vs-spotify-which-better)",
+                  "links": null,
+                  "images": null,
+                  "references": [
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "YouTube",
+                      "domain": "www.youtube.com",
+                      "url": "https://www.youtube.com/watch?v=JPXgCGaqreA&t=144",
+                      "title": "I Switched From Spotify To Apple Music - Here's What's Different",
+                      "text": "and that's fine too that's closer to what Apple Music offers a more simple solely music focused. experience but if you're looking ..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "The Indian Audiophile Forum",
+                      "domain": "www.theindianaudiophileforum.com",
+                      "url": "https://www.theindianaudiophileforum.com/c/ask-the-community/sound-quality-spotify-vs-apple-music",
+                      "title": "Sound quality - Spotify vs Apple Music | The Indian Audiophile Forum",
+                      "text": "When it comes to sound quality, Apple Music has a clear edge over Spotify, especially for audiophiles: Apple Music offers lossless..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "What Hi-Fi?",
+                      "domain": "www.whathifi.com",
+                      "url": "https://www.whathifi.com/features/apple-music-vs-spotify-which-better",
+                      "title": "Apple Music vs Spotify: which is better? - What Hi-Fi?",
+                      "text": "Apple Music set the industry standard in 2021 when it offered hi-res tracks at no additional fee. Which prompted rivals to drop th..."
+                    }
+                  ]
+                },
+                {
+                  "type": "ai_overview_element",
+                  "position": "left",
+                  "title": "Hardware Limitations",
+                  "text": "To hear the difference between the two, you need the right equipment. Lossless audio provides better dynamic range, but casual listeners using Bluetooth headphones (which compress audio) will struggle to tell the difference. To experience Apple Music's Hi-Res files, you will need wired headphones and a dedicated DAC (Digital-to-Analog Converter). Moon Audio +2",
+                  "markdown": "To hear the difference between the two, you need the right equipment. Lossless audio provides better dynamic range, but casual listeners using Bluetooth headphones (which compress audio) will struggle to tell the difference. To experience Apple Music's Hi-Res files, you will need wired headphones and a dedicated DAC (Digital-to-Analog Converter).[](https://www.moon-audio.com/blogs/expert-advice/apple-music-vs-spotify-sound-quality) [[1]](https://www.moon-audio.com/blogs/expert-advice/apple-music-vs-spotify-sound-quality)[[2]](https://www.youtube.com/watch?v=-xMxKuI5x-4&t=459)[[3]](https://www.pocket-lint.com/review-spotify-lossless-audio-option/)[[4]](https://www.theindianaudiophileforum.com/c/ask-the-community/sound-quality-spotify-vs-apple-music)[[5]](https://www.youtube.com/shorts/UEfzClzSLUU)",
+                  "links": null,
+                  "images": null,
+                  "references": [
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "Moon Audio",
+                      "domain": "www.moon-audio.com",
+                      "url": "https://www.moon-audio.com/blogs/expert-advice/apple-music-vs-spotify-sound-quality",
+                      "title": "Apple Music vs Spotify: An Audiophile's Perspective",
+                      "text": "Lossy vs. Lossless: Apple Music offers lossless (ALAC), while Spotify remains lossy (Ogg Vorbis). Technical Specs Matter: Bitrate,"
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "YouTube",
+                      "domain": "www.youtube.com",
+                      "url": "https://www.youtube.com/watch?v=-xMxKuI5x-4&t=459",
+                      "title": "Apple Music vs. Spotify in 2025: Which streaming service is best for you?",
+                      "text": "I got to give the W to Spotify here okay moving on from recommendations. let's take a look at streaming. quality for years now Spo..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "Pocket-lint",
+                      "domain": "www.pocket-lint.com",
+                      "url": "https://www.pocket-lint.com/review-spotify-lossless-audio-option/",
+                      "title": "I compared Spotify lossless to Apple Music and Tidal and the loser is clear",
+                      "text": "Spotify has some serious competition. I talked about the difference, in numbers, between the file specifications that Spotify chos..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "The Indian Audiophile Forum",
+                      "domain": "www.theindianaudiophileforum.com",
+                      "url": "https://www.theindianaudiophileforum.com/c/ask-the-community/sound-quality-spotify-vs-apple-music",
+                      "title": "Sound quality - Spotify vs Apple Music | The Indian Audiophile Forum",
+                      "text": "When it comes to sound quality, Apple Music has a clear edge over Spotify, especially for audiophiles: Apple Music offers lossless..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "YouTube",
+                      "domain": "www.youtube.com",
+                      "url": "https://www.youtube.com/shorts/UEfzClzSLUU",
+                      "title": "Spotify is BETTER than Apple Music",
+                      "text": "if there is one hill. I will die on it's that Spotify. has always been better than Apple Music oh but Nathan Spotify doesn't have ..."
+                    }
+                  ]
+                }
+              ],
+              "references": [
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "Medium",
+                  "domain": "medium.com",
+                  "url": "https://medium.com/@iamtimbaker/spotify-vs-apple-music-which-is-better-7b1aecb23039",
+                  "title": "Spotify vs. Apple Music: Which is better? | by Tim Baker | Medium",
+                  "text": "In terms of audio quality, Apple emerges as the clear champion. In fact, not only does Apple offer better audio quality than Spoti..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "YouTube",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/watch?v=JPXgCGaqreA&t=144",
+                  "title": "I Switched From Spotify To Apple Music - Here's What's Different",
+                  "text": "and that's fine too that's closer to what Apple Music offers a more simple solely music focused. experience but if you're looking ..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "Moon Audio",
+                  "domain": "www.moon-audio.com",
+                  "url": "https://www.moon-audio.com/blogs/expert-advice/apple-music-vs-spotify-sound-quality",
+                  "title": "Apple Music vs Spotify: An Audiophile's Perspective",
+                  "text": "Lossy vs. Lossless: Apple Music offers lossless (ALAC), while Spotify remains lossy (Ogg Vorbis). Technical Specs Matter: Bitrate,"
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "Pocket-lint",
+                  "domain": "www.pocket-lint.com",
+                  "url": "https://www.pocket-lint.com/review-spotify-lossless-audio-option/",
+                  "title": "I compared Spotify lossless to Apple Music and Tidal and the loser is clear",
+                  "text": "Spotify has some serious competition. I talked about the difference, in numbers, between the file specifications that Spotify chos..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "YouTube",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/watch?v=-xMxKuI5x-4&t=459",
+                  "title": "Apple Music vs. Spotify in 2025: Which streaming service is best for you?",
+                  "text": "I got to give the W to Spotify here okay moving on from recommendations. let's take a look at streaming. quality for years now Spo..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "What Hi-Fi?",
+                  "domain": "www.whathifi.com",
+                  "url": "https://www.whathifi.com/features/apple-music-vs-spotify-which-better",
+                  "title": "Apple Music vs Spotify: which is better? - What Hi-Fi?",
+                  "text": "Apple Music set the industry standard in 2021 when it offered hi-res tracks at no additional fee. Which prompted rivals to drop th..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "The Indian Audiophile Forum",
+                  "domain": "www.theindianaudiophileforum.com",
+                  "url": "https://www.theindianaudiophileforum.com/c/ask-the-community/sound-quality-spotify-vs-apple-music",
+                  "title": "Sound quality - Spotify vs Apple Music | The Indian Audiophile Forum",
+                  "text": "When it comes to sound quality, Apple Music has a clear edge over Spotify, especially for audiophiles: Apple Music offers lossless..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "DVDFab",
+                  "domain": "musicfab.dvdfab.cn",
+                  "url": "https://musicfab.dvdfab.cn/general/apple-music-vs-spotify-sound-quality.htm",
+                  "title": "Apple Music vs Spotify Sound Quality (2026): Specs, Lossless & ...",
+                  "text": "FAQs * Which has better audio quality in 2026, Apple Music or Spotify? On specs, Apple Music goes up to 24-bit/192 kHz Hi-Res Loss..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "www.youtube.com",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/watch?v=l-vosYtL_z8",
+                  "title": "Apple Music vs Spotify vs Youtube Music: WHAT'S BETTER?",
+                  "text": "and it's hard to nitpick a difference apple Music sounds slightly better with wireless earphones due to it sampling from a higher ..."
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 2,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]",
+              "domain": "www.reddit.com",
+              "title": "Apple Music v. Spotify Audio Quality : r/AppleMusic",
+              "url": "https://www.reddit.com/r/AppleMusic/comments/1hkbm2l/apple_music_v_spotify_audio_quality/",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "140+ comments  \u00b7  1 year ago",
+              "website_name": "Reddit\u00a0\u00b7\u00a0r/AppleMusic",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Apple Music sounds cleaner than Spotify even at 256 kbps. Spotify re-encodes its 320 kbps OGG files to 256 kbps AAC.",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "Apple Music sounds cleaner than Spotify"
+              ],
+              "links": [
+                {
+                  "type": "link_element",
+                  "title": "Apple Music 'High Quality' vs Spotify 'Very High' (not ...",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/AppleMusic/comments/1rzr4rx/apple_music_high_quality_vs_spotify_very_high_not/",
+                  "domain": "www.reddit.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "Apple Music v Spotify: audio quality : r/AppleMusic",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/AppleMusic/comments/1dk9noy/apple_music_v_spotify_audio_quality/",
+                  "domain": "www.reddit.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "More results from www.reddit.com",
+                  "description": null,
+                  "url": "https://www.google.com/search?q=Spotify+vs+Apple+Music+audio+quality+site:www.reddit.com&sca_esv=3271cc0dab4982ea&hl=en&gl=US&sa=X&ved=2ahUKEwj22PWqoeKVAxWidUEAHc8BH6kQrQIoAnoECCkQAw",
+                  "domain": "www.google.com"
+                }
+              ],
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "people_also_ask",
+              "rank_group": 1,
+              "rank_absolute": 3,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[3]/div[1]/div[1]/div[1]",
+              "items": [
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Which music quality is best, Spotify or Apple Music?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_expanded_element",
+                      "featured_title": null,
+                      "url": "https://freeyourmusic.com/blog/spotify-vs-apple-music",
+                      "domain": "freeyourmusic.com",
+                      "title": "Spotify or Apple Music: Which is Best for You in 2025? - FreeYourMusic",
+                      "description": "Which is better: Spotify vs Apple Music? Spotify is stronger for music discovery, playlists, and social features. Apple Music wins on audio quality, artist payouts, and deep iOS integration.",
+                      "images": null,
+                      "timestamp": null,
+                      "table": null
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Why are people leaving Spotify for Apple Music?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Which music app has the best sound quality?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]/div[3]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Is Apple Music better than Spotify?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]/div[4]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 4,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[5]/div[1]/div[1]",
+              "domain": "medium.com",
+              "title": "Spotify vs. Apple Music: Which is better? | by Tim Baker",
+              "url": "https://medium.com/@iamtimbaker/spotify-vs-apple-music-which-is-better-7b1aecb23039",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "590+ likes  \u00b7  2 years ago",
+              "website_name": "Medium\u00a0\u00b7\u00a0Tim Baker",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "In terms of audio quality, Apple emerges as the clear champion. In fact, not only does Apple offer better audio quality than Spotify, the same\u00a0... Read more",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "Apple emerges as the clear champion"
+              ],
+              "links": [
+                {
+                  "type": "link_element",
+                  "title": "Music Catalog",
+                  "description": null,
+                  "url": "https://medium.com/@iamtimbaker/spotify-vs-apple-music-which-is-better-7b1aecb23039#f3f7",
+                  "domain": "medium.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "Mobile App Design",
+                  "description": null,
+                  "url": "https://medium.com/@iamtimbaker/spotify-vs-apple-music-which-is-better-7b1aecb23039#07a2",
+                  "domain": "medium.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "Sound Quality",
+                  "description": null,
+                  "url": "https://medium.com/@iamtimbaker/spotify-vs-apple-music-which-is-better-7b1aecb23039#4d23",
+                  "domain": "medium.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "Music Recommendations",
+                  "description": null,
+                  "url": "https://medium.com/@iamtimbaker/spotify-vs-apple-music-which-is-better-7b1aecb23039#dece",
+                  "domain": "medium.com"
+                }
+              ],
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 5,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[7]/div[1]/div[1]",
+              "domain": "www.pocket-lint.com",
+              "title": "I compared Spotify lossless to Apple Music and Tidal ...",
+              "url": "https://www.pocket-lint.com/review-spotify-lossless-audio-option/",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.pocket-lint.com \u203a Apps \u203a App Editorials",
+              "website_name": "Pocket-lint",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Oct 20, 2025 \u2014 Apple and Tidal tracks sound audibly better than Spotify's tracks. resolutions is streams of 9,216kbps versus Spotify's 2,116kbps. extension is\u00a0...",
+              "pre_snippet": "10/20/2025 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "Apple and Tidal tracks sound audibly better than Spotify's tracks"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2025-10-20 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 6,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[9]/div[1]/div[1]",
+              "domain": "www.moon-audio.com",
+              "title": "Apple Music vs Spotify: An Audiophile's Perspective",
+              "url": "https://www.moon-audio.com/blogs/expert-advice/apple-music-vs-spotify-sound-quality?srsltid=AfmBOoqXa2SMfnYVndRd-bVEGmuyrkCDOS5fcemwfILdBX5AbcPL4OEH",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.moon-audio.com \u203a Expert Advice",
+              "website_name": "Moon Audio",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Apr 25, 2025 \u2014 Spotify Streaming Quality: Maxes at 320 kbps with no lossless tier (yet). Apple Music Streaming Quality: Supports Hi-Res Lossless up to 24-bit/\u00a0...",
+              "pre_snippet": "04/25/2025 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "Spotify Streaming Quality: Maxes at 320 kbps"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2025-04-25 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "video",
+              "rank_group": 1,
+              "rank_absolute": 7,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[11]/div[1]",
+              "items": [
+                {
+                  "type": "video_element",
+                  "source": "YouTube \u00b7 Apple Explained",
+                  "title": "Why Apple Music Sounds Better Than Spotify",
+                  "timestamp": "2024-07-20 00:00:00 +00:00",
+                  "url": "https://www.youtube.com/watch?v=7P1RpPgk_18"
+                },
+                {
+                  "type": "video_element",
+                  "source": "YouTube \u00b7 SoundGuys",
+                  "title": "Apple Music vs. Spotify in 2026: It's NEVER Been So Close!",
+                  "timestamp": "2025-12-13 00:00:00 +00:00",
+                  "url": "https://www.youtube.com/watch?v=-T9d2jXGiQM"
+                },
+                {
+                  "type": "video_element",
+                  "source": "YouTube \u00b7 Jimmy Tries World",
+                  "title": "I Switched From Spotify To Apple Music - Here's What's Different",
+                  "timestamp": "2025-05-17 00:00:00 +00:00",
+                  "url": "https://www.youtube.com/watch?v=JPXgCGaqreA"
+                },
+                {
+                  "type": "video_element",
+                  "source": "Reddit \u00b7 hangingsliders",
+                  "title": "Major difference in audio quality between Spotify and Apple ...",
+                  "timestamp": "2023-10-17 00:00:00 +00:00",
+                  "url": "https://www.reddit.com/r/sonos/comments/179r4ho/major_difference_in_audio_quality_between_spotify/"
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 8,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[13]/div[1]/div[1]",
+              "domain": "www.facebook.com",
+              "title": "Spotify vs Apple Music sound quality comparison",
+              "url": "https://www.facebook.com/groups/caraudioamplified/posts/1192371515772284/",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "70+ comments  \u00b7  1 year ago",
+              "website_name": "Facebook\u00a0\u00b7\u00a0Car Audio Amplified| Free for all Car Audio Community",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "My installer mentioned Spotify it sounding as good as Apple Music. What\u2019s everyone\u2019s thoughts? I reallly can\u2019t switch",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": null,
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 9,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[15]/div[1]/div[1]",
+              "domain": "www.theindianaudiophileforum.com",
+              "title": "Sound quality - Spotify vs Apple Music",
+              "url": "https://www.theindianaudiophileforum.com/c/ask-the-community/sound-quality-spotify-vs-apple-music",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.theindianaudiophileforum.com \u203a sound-qual...",
+              "website_name": "The Indian Audiophile Forum",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "When it comes to sound quality, Apple Music has a clear edge over Spotify, especially for audiophiles: Apple Music offers lossless and Hi-Res Lossless audio\u00a0... Read more",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "Apple Music has a clear edge over Spotify"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 10,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[17]/div[1]/div[1]",
+              "domain": "www.whathifi.com",
+              "title": "Apple Music vs Spotify: which is better?",
+              "url": "https://www.whathifi.com/features/apple-music-vs-spotify-which-better",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.whathifi.com \u203a ... \u203a Music Streaming",
+              "website_name": "What Hi-Fi?",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Dec 8, 2025 \u2014 Even taking a step down in quality, Apple Music still wins out. Its 256kbps AAC files sound more open and involving than Spotify's 320kbps MP3\u00a0... Read more",
+              "pre_snippet": "12/08/2025 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "Apple Music still wins out"
+              ],
+              "links": [
+                {
+                  "type": "link_element",
+                  "title": "Subscription Plans",
+                  "description": null,
+                  "url": "https://www.whathifi.com/features/apple-music-vs-spotify-which-better",
+                  "domain": "www.whathifi.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "User Experience",
+                  "description": null,
+                  "url": "https://www.whathifi.com/features/apple-music-vs-spotify-which-better",
+                  "domain": "www.whathifi.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "Sound Quality",
+                  "description": null,
+                  "url": "https://www.whathifi.com/features/apple-music-vs-spotify-which-better",
+                  "domain": "www.whathifi.com"
+                }
+              ],
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2025-12-08 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "perspectives",
+              "rank_group": 1,
+              "rank_absolute": 11,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[19]/div[1]",
+              "title": "What people are saying",
+              "items": [
+                {
+                  "type": "perspectives_element",
+                  "title": "I just switched to Apple Music from Spotify and I feel like my life has started over",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/audiophile/comments/1uyig4c/i_just_switched_to_apple_music_from_spotify_and_i/",
+                  "domain": "www.reddit.com",
+                  "date": "3 days ago",
+                  "source": "r/audiophile",
+                  "timestamp": "2026-07-17 22:04:00 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Is Apple Music Beating Spotify? I Switched for 30 Days",
+                  "description": null,
+                  "url": "https://www.youtube.com/watch?v=fV8VUGwJo-o",
+                  "domain": "www.youtube.com",
+                  "date": "2 weeks ago",
+                  "source": "Mike O'Brien",
+                  "timestamp": "2026-07-06 22:04:00 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "It\u2019s always a heated debate whether Apple Music or Spotify is the better choice! Which one are using and why? Share it with us in the comments!\n_______\n#applemusic #spotify #musicstreaming #apple #appledsign",
+                  "description": null,
+                  "url": "https://www.instagram.com/reel/DZIKdPUMoty/?hl=en",
+                  "domain": "www.instagram.com",
+                  "date": "1 month ago",
+                  "source": "appledsign",
+                  "timestamp": "2026-06-20 22:04:00 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "the quality difference of Spotify and Apple Music is insane \ud83d\ude2d",
+                  "description": null,
+                  "url": "https://x.com/lisathebeauty1/status/2075907963072500063?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Etweet",
+                  "domain": "x.com",
+                  "date": "1 week ago",
+                  "source": "lisathebeauty1",
+                  "timestamp": "2026-07-13 22:04:00 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Best Music Streaming Service of 2026",
+                  "description": null,
+                  "url": "https://www.cnet.com/tech/services-and-software/best-music-streaming-service/",
+                  "domain": "www.cnet.com",
+                  "date": "1 month ago",
+                  "source": "Ty Pendlebury",
+                  "timestamp": "2026-06-20 22:04:00 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Why does Spotify sound like trash, even after they updated to lossless? It seems all lossless are not equal, most songs sound louder and clearer on Apple Music, a very few sound better on Spotify, so it does vary\u2026.",
+                  "description": null,
+                  "url": "https://www.facebook.com/groups/1545461535508890/posts/26902564229371938/",
+                  "domain": "www.facebook.com",
+                  "date": "May 21, 2026",
+                  "source": "Richard Jackson",
+                  "timestamp": "2026-05-21 00:00:00 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Apple Music, Spotify, or YouTube Music? Here's Which One You Should Pick \ud83d\ude31",
+                  "description": null,
+                  "url": "https://www.youtube.com/watch?v=IR8qa10rxd4",
+                  "domain": "www.youtube.com",
+                  "date": "1 day ago",
+                  "source": "TechFacts in Telugu",
+                  "timestamp": "2026-07-19 22:04:00 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "The difference in sound quality between spotify and apple music is actually wild\u2026 it feels like two completely different listening experiences.",
+                  "description": null,
+                  "url": "https://www.threads.com/@mayorsoj/post/DYiwWa2Cly_/the-difference-in-sound-quality-between-spotify-and-apple-music-is-actually/?hl=en",
+                  "domain": "www.threads.com",
+                  "date": "May 19, 2026",
+                  "source": "mayorsoj",
+                  "timestamp": "2026-05-19 00:00:00 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Spotify vs Apple Music App",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/headphones/comments/1t5zbu1/spotify_vs_apple_music_app/",
+                  "domain": "www.reddit.com",
+                  "date": "May 7, 2026",
+                  "source": "r/headphones",
+                  "timestamp": "2026-05-07 00:00:00 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Choosing a Music Streaming Service in 2026 Isn\u2019t Easy. Here\u2019s Which One You Should Pick.",
+                  "description": null,
+                  "url": "https://www.esquire.com/entertainment/music/g65972387/best-music-streaming-services/",
+                  "domain": "www.esquire.com",
+                  "date": "1 month ago",
+                  "source": "Bryn Gelbart",
+                  "timestamp": "2026-06-20 22:04:00 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Apple Music or Spotify premium?",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/Music/comments/1u18ml9/apple_music_or_spotify_premium/",
+                  "domain": "www.reddit.com",
+                  "date": "1 month ago",
+                  "source": "r/Music",
+                  "timestamp": "2026-06-20 22:04:00 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Spotify VS Apple Music - Which one do you prefer? \ud83d\udc40 #applemusic #spotify #iphonetricks #techtok",
+                  "description": null,
+                  "url": "https://www.instagram.com/reel/DauYmV6M-tf/",
+                  "domain": "www.instagram.com",
+                  "date": "1 week ago",
+                  "source": "itricksmark",
+                  "timestamp": "2026-07-13 22:04:00 +00:00"
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "related_searches",
+              "rank_group": 1,
+              "rank_absolute": 12,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[2]/div[1]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]",
+              "items": [
+                "Spotify vs apple music audio quality reddit",
+                "Apple Music vs Spotify sound quality Bluetooth",
+                "Audio quality spotify vs apple music vs youtube music",
+                "Apple Music vs Spotify sound quality 2026",
+                "Sound quality Spotify vs Apple Music vs Tidal",
+                "Spotify or Apple Music which has more users",
+                "Is Apple Music quality better than Spotify with AirPods",
+                "Apple Music vs Spotify sound quality AirPods Pro 2"
+              ],
+              "rectangle": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

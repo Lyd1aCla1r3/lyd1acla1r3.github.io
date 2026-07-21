@@ -1,0 +1,372 @@
+{
+  "query": "best practices for Kubernetes pod disruption budgets",
+  "intent": "long-tail",
+  "scores": {
+    "SearchApi": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "SerpApi": {
+      "extracted": {
+        "present": true,
+        "summary": "",
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "snippet": "Setting up Pod Disruption Budgets (PDBs) is critical for keeping production applications highly available during cluster maintenance (like node upgrades and scale-downs). However, poor configuration can completely freeze cluster operations or cause unexpected downtime.",
+            "snippet_links": [
+              {
+                "link": "https://oneuptime.com/blog/post/2026-02-02-kubernetes-pod-disruption-budgets/view"
+              }
+            ],
+            "snippet_highlighted_words": [
+              "keeping production applications highly available during cluster maintenance"
+            ],
+            "reference_indexes": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Here are the industry best practices for configuring and managing PDBs:"
+          },
+          {
+            "type": "heading",
+            "snippet": "1. Never Allow a \"Zero Disruption\" Deadlock"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "The most common mistake is setting up a budget that leaves no room for disruptions. If your PDB leaves zero buffer, commands like kubectl drain will hang indefinitely, stalling cluster updates and autoscaling.",
+            "snippet_links": [
+              {
+                "link": "https://oneuptime.com/blog/post/2026-01-30-kubernetes-pdb-strategies/view"
+              }
+            ],
+            "snippet_inline_code": [
+              "kubectl drain"
+            ],
+            "reference_indexes": [
+              3,
+              2,
+              4
+            ]
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Avoid matching total replicas: If a deployment has 3 replicas, setting minAvailable: 3 means 0 pods can be disrupted. Ensure that\nminAvailable is strictly less than your replica count, or that maxUnavailable is at least 1."
+              },
+              {
+                "snippet": "Watch out for single-replica apps:\nNever use minAvailable: 1 or minAvailable: 100% on a deployment with only 1 replica. This makes the node hosting it completely undrainable.",
+                "snippet_links": [
+                  {
+                    "link": "https://oneuptime.com/blog/post/2026-01-30-kubernetes-pdb-strategies/view"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              4,
+              0,
+              3,
+              5
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "2. Choose the Right Strategy for Your Workload Type"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Match your PDB configuration style to how your specific application behaves:",
+            "snippet_links": [
+              {
+                "link": "https://oneuptime.com/blog/post/2026-03-13-pod-disruption-budgets-cost-efficiency-flux/view"
+              }
+            ],
+            "reference_indexes": [
+              3,
+              16
+            ]
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Use minAvailable for Quorum/Consensus Systems: For stateful apps like databases, etcd, or ZooKeeper, explicit counts matter\n. Set minAvailable to match the exact number required to maintain a healthy quorum."
+              },
+              {
+                "snippet": "Use maxUnavailable: 1 as a Safe Default: For typical replicated stateless services, restricting eviction to one pod at a time is usually the safest approach to maintain performance while allowing upgrades to progress smoothly\n."
+              },
+              {
+                "snippet": "Use Percentages for Dynamic/Autoscaling Apps: If a workload uses a Horizontal Pod Autoscaler (HPA), its replica count changes constantly. Hardcoded numbers will break as it scales. Instead, use percentage-based budgets (e.g., maxUnavailable: 25%) so the budget scales dynamically with the application\n.",
+                "snippet_links": [
+                  {
+                    "link": "https://scaleops.com/blog/pod-disruption-budget/"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              4,
+              3,
+              6,
+              7,
+              8,
+              9
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "3. Always Pair PDBs with Robust Health Checks"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "A PDB determines if a pod can be safely evicted by checking how many \"healthy\" pods are running.",
+            "snippet_links": [
+              {
+                "link": "https://docs.cloud.google.com/kubernetes-engine/docs/how-to/workload-disruption-readiness"
+              }
+            ],
+            "reference_indexes": [
+              10
+            ]
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Implement Readiness Probes: If your pods lack readinessProbes, Kubernetes only looks at whether the container is running, not if it's actually ready to handle traffic\n. A replacement pod might look \"ready\" to the PDB, but traffic will drop as soon as the old pod gets evicted."
+              },
+              {
+                "snippet": "Align with Deployment Update Strategies: Make sure your deployment's rollingUpdate strategy (maxSurge\nand maxUnavailable) doesn't fight against your PDB constraints, which can stall routine rolling deployments.",
+                "snippet_links": [
+                  {
+                    "link": "https://oneuptime.com/blog/post/2026-02-02-kubernetes-pod-disruption-budgets/view"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              0,
+              10,
+              7,
+              11
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "4. Distribute Pods Across Nodes (Anti-Affinity)"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "A PDB protects your application from being torn down all at once, but it cannot prevent a single hardware node failure from taking out multiple pods.",
+            "snippet_links": [
+              {
+                "link": "https://www.youtube.com/watch?v=PnoEqjdyESc"
+              }
+            ],
+            "reference_indexes": [
+              12
+            ]
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Combine your PDBs with podAntiAffinity or topologySpreadConstraints. Spreading your replicas across different nodes or availability zones ensures that when a single node is drained, only one replica is impacted, easily satisfying your PDB\n.",
+                "snippet_links": [
+                  {
+                    "link": "https://oneuptime.com/blog/post/2026-01-30-kubernetes-pdb-strategies/view"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              4,
+              11,
+              7
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "5. Set an Unhealthy Pod Eviction Policy"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "By default, if your application enters an unhealthy state (e.g., a bug causes pods to crash), a node drain will block indefinitely because the PDB is trying to wait for them to become healthy again.",
+            "snippet_links": [
+              {
+                "link": "https://www.cloudbolt.io/kubernetes-pod-scheduling/pod-disruption-budgets/"
+              }
+            ],
+            "reference_indexes": [
+              13,
+              14
+            ]
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "For Kubernetes clusters running newer versions, utilize the unhealthyPodEvictionPolicy: AlwaysAllow feature in your PDB spec. This ensures that if pods are already broken or misbehaving, they won't hold up node maintenance or cluster scaling.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.cloudbolt.io/kubernetes-pod-scheduling/pod-disruption-budgets/"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              13,
+              14,
+              17
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "6. Keep Target Selectors Precise"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Always ensure your PDB's matchLabels selector precisely mirrors the pod label selector used in your Deployment or StatefulSet. Accidental overlaps can result in one PDB locking down unrelated applications, while a selector mismatch will leave your intended app completely unprotected during an upgrade.",
+            "snippet_links": [
+              {
+                "link": "https://scaleops.com/blog/pod-disruption-budget/"
+              }
+            ],
+            "snippet_inline_code": [
+              "matchLabels"
+            ],
+            "reference_indexes": [
+              6,
+              9,
+              14,
+              15
+            ]
+          }
+        ],
+        "citations": [
+          {
+            "url": "https://oneuptime.com/blog/post/2026-02-02-kubernetes-pod-disruption-budgets/view",
+            "title": "How to Handle Kubernetes Pod Disruption Budgets - OneUptime",
+            "snippet": "* Yes. No. Yes. No. Yes. No. Check PDB Status. Allowed Disruptions \\u003e 0? Safe to drain. Current \\u003e\\u003d Desired? Check if pods are healthy. Pods are missing/pending. All..."
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=PnoEqjdyESc",
+            "title": "kubernetes tutorial | Pod Disruption Budgets (PDB)",
+            "snippet": "foreign good day in this video we are going to see the concepts of part disruption budgets part destruction budgets is also called as pdbs. if you like this video "
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=_V2Olzu2cOU",
+            "title": "Harness the Power of Kubernetes with Pod Disruption ...",
+            "snippet": "hello and welcome to this short Kubernetes tutorial today we're going to talk about pot disruption budgets what are they and what function do they perform. so I ha"
+          },
+          {
+            "url": "https://oneuptime.com/blog/post/2026-03-13-pod-disruption-budgets-cost-efficiency-flux/view",
+            "title": "How to Configure Pod Disruption Budgets for Cost Efficiency with Flux",
+            "snippet": "* Step 1: Understand PDB Impact on Cost. Before creating PDBs, understand how they interact with cost-optimization mechanisms. Wants to drain node. Check PDB. Yes ..."
+          },
+          {
+            "url": "https://oneuptime.com/blog/post/2026-01-30-kubernetes-pdb-strategies/view",
+            "title": "How to Create Kubernetes Pod Disruption Budget Strategies",
+            "snippet": "Best Practices Summary * Always create PDBs for production workloads - Even if permissive, they document intent. * Use maxUnavailable for dynamic workloads - Pairs..."
+          },
+          {
+            "url": "https://oneuptime.com/blog/post/2026-01-06-kubernetes-pod-disruption-budgets/view",
+            "title": "How to Implement Pod Disruption Budgets for Zero-Downtime Updates",
+            "snippet": "Best Practices * Always Create PDBs for Production Workloads. YAML Copy. # Even if just allowing all disruptions spec: maxUnavailable: \\\"100%\\\" # Documents that disr..."
+          },
+          {
+            "url": "https://scaleops.com/blog/pod-disruption-budget/",
+            "title": "Pod Disruption Budget: Complete Guide with Real Examples",
+            "snippet": "Best Practices for Using Pod Disruption Budgets. Following these best practices helps effectively use PDBs to maintain stability and availability: ; Set Accurate S..."
+          },
+          {
+            "url": "https://oneuptime.com/blog/post/2026-02-20-kubernetes-pod-disruption-budgets/view",
+            "title": "How to Use Kubernetes Pod Disruption Budgets for Safe Maintenance",
+            "snippet": "Best Practices * Always create a PDB for production workloads that need high availability. * Use maxUnavailable: 1 as a safe default for most replicated applicatio..."
+          },
+          {
+            "url": "https://www.anantacloud.com/post/understanding-pod-disruption-budget-pdb-in-kubernetes-with-examples",
+            "title": "Understanding Pod Disruption Budget (PDB) in Kubernetes with ...",
+            "snippet": "Best Practices for Using PDBs * Use PDBs in production environments: For production-grade applications, always define Pod Disruption Budgets to ensure that your se..."
+          },
+          {
+            "url": "https://cast.ai/blog/pod-disruption-budgets-in-your-deployment/",
+            "title": "Pod Disruption Budgets: Why and How to Use PDBs - Cast AI",
+            "snippet": "Best practices for using pod disruption budgets. Effectively using PDBs is crucial for maintaining high availability and minimizing downtime in Kubernetes deployme..."
+          },
+          {
+            "url": "https://docs.cloud.google.com/kubernetes-engine/docs/how-to/workload-disruption-readiness",
+            "title": "Ensure workloads are disruption-ready | Google Kubernetes Engine ...",
+            "snippet": "Ensure workloads are disruption-ready Stay organized with collections Save and categorize content based on your preferences. Dismi..."
+          },
+          {
+            "url": "https://oneuptime.com/blog/post/2026-01-19-kubernetes-pod-disruption-budgets-ha/view",
+            "title": "How to Set Up Pod Disruption Budgets for High Availability",
+            "snippet": "Best Practices * Always Have PDBs for Production Workloads. YAML Copy. # Every production deployment should have a PDB apiVersion: apps/v1 kind: Deployment metadat..."
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=6jk_Rkd9S8I&t=434",
+            "title": "Kubernetes PodDisruptionBudget Tutorial | Prevent ...",
+            "snippet": "because you will only succeed in blocking all of your own maintenance drains specifically that includes use PDBs for critical web services that cannot tolerate zer"
+          },
+          {
+            "url": "https://www.cloudbolt.io/kubernetes-pod-scheduling/pod-disruption-budgets/",
+            "title": "Understanding Pod Disruption Budgets - CloudBolt Software",
+            "snippet": "Best practices for using PDBs * Understand your applications: Be sure to understand your applications' availability requirements. Determine how many pod replicas c..."
+          },
+          {
+            "url": "https://kubernetes.io/docs/concepts/workloads/pods/disruptions/",
+            "title": "Disruptions - Kubernetes",
+            "snippet": "The group of pods that comprise the application is specified using a label selector, the same as the one used by the application's..."
+          },
+          {
+            "url": "https://medium.com/@sridharcloud/why-your-kubernetes-apps-keep-going-down-during-updates-and-how-pod-disruption-budgets-can-save-2e63aada46fd",
+            "title": "Why Your Kubernetes Apps Keep Going Down During Updates (And ...",
+            "snippet": "* The Problem Every Kubernetes Admin Faces. * Enter Pod Disruption Budgets: Your Application's Safety Net. * Real-World PDB Examples from Production. * Critical In..."
+          },
+          {
+            "url": "https://www.chkk.io/blog/pod-disruption-budgets",
+            "title": "Pod Disruption Budgets: Pitfalls, Evictions \\u0026 Kubernetes Upgrades",
+            "snippet": "How to Define and Apply a PDB Identify the application you want to protect with a PDB. Assess how your application reacts to disruptions to determine the appropria..."
+          },
+          {
+            "url": "https://kubernetes.io/docs/tasks/run-application/configure-pdb/",
+            "title": "Specifying a Disruption Budget for your Application",
+            "snippet": "This policy ensures that running pods of an already disrupted application have the best chance to become healthy. This has negativ..."
+          }
+        ],
+        "related_searches": []
+      }
+    },
+    "Serper": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "DataForSEO": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    }
+  }
+}

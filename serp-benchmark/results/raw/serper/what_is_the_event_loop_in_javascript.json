@@ -1,0 +1,138 @@
+{
+  "searchParameters": {
+    "q": "what is the event loop in javascript",
+    "gl": "us",
+    "hl": "en",
+    "type": "search",
+    "engine": "google"
+  },
+  "answerBox": {
+    "snippet": "In JavaScript, an event loop is a mechanism that allows the execution of code to be scheduled in a non-blocking way. That means the code can continue to run and handle new events as they occur without being stopped or blocked by long-running operations.",
+    "snippetHighlighted": [
+      "a mechanism that allows the execution of code to be scheduled in a non-blocking way"
+    ],
+    "title": "Event Loop in JavaScript - Rapidops",
+    "link": "https://www.rapidops.com/blog/event-loop-with-javascript/"
+  },
+  "organic": [
+    {
+      "title": "Event Loop in JavaScript",
+      "link": "https://www.geeksforgeeks.org/javascript/what-is-an-event-loop-in-javascript/",
+      "snippet": "The event loop is an important concept in JavaScript that enables asynchronous programming by handling tasks efficiently.",
+      "date": "May 5, 2026",
+      "position": 1
+    },
+    {
+      "title": "The JavaScript Event Loop Explained with Examples",
+      "link": "https://medium.com/@ignatovich.dm/the-javascript-event-loop-explained-with-examples-d8f7ddf0861d",
+      "snippet": "The JavaScript event loop is responsible for managing the execution of code, collecting and processing events, and executing queued tasks.",
+      "date": "1 year ago",
+      "position": 2
+    },
+    {
+      "title": "What really is the event loop ? : r/learnjavascript",
+      "link": "https://www.reddit.com/r/learnjavascript/comments/n14pg4/what_really_is_the_event_loop/",
+      "snippet": "Is it a function ?some other peice of code ? Or is it literally a loop (like while and for loops). When someone asks me what is the event loop .. what ...",
+      "date": "5 years ago",
+      "sitelinks": [
+        {
+          "title": "12 answers",
+          "link": "https://www.reddit.com/r/learnjavascript/comments/n14pg4/what_really_is_the_event_loop/gwas7de/"
+        }
+      ],
+      "position": 3
+    },
+    {
+      "title": "The Node.js Event Loop",
+      "link": "https://nodejs.org/learn/asynchronous-work/event-loop-timers-and-nexttick",
+      "snippet": "The event loop is what allows Node.js to perform non-blocking I/O operations \u2014 despite the fact that a single JavaScript thread is used by default",
+      "position": 4
+    },
+    {
+      "title": "What the heck is the event loop anyway? | Philip Roberts ...",
+      "link": "https://www.youtube.com/watch?v=8aGhZQkoFbQ",
+      "snippet": "JavaScript programmers like to use words like, \u201cevent-loop\u201d, of what happens when JavaScript runs.",
+      "date": "11 years ago",
+      "position": 5
+    },
+    {
+      "title": "JavaScript Event Loop Explained: A Beginner's Guide With ...",
+      "link": "https://dev.to/buildwithgagan/javascript-event-loop-explained-a-beginners-guide-with-examples-4kae",
+      "snippet": "The event loop is a mechanism in JavaScript that continuously monitors the call stack and the task queue, ensuring that asynchronous operations like API calls, ...",
+      "date": "Mar 19, 2025",
+      "position": 6
+    },
+    {
+      "title": "JavaScript Event Loop: How it Works and Why it Matters in 5 ...",
+      "link": "https://www.youtube.com/watch?v=lqLSNG_79lI",
+      "snippet": "One of the most important concepts to learn in JavaScript! The Event Loop is core to how JavaScript handles asynchronous code.",
+      "date": "3 years ago",
+      "position": 7
+    },
+    {
+      "title": "Event loop",
+      "link": "https://en.wikipedia.org/wiki/Event_loop",
+      "snippet": "In JavaScript, the event loop allows non-blocking handling of tasks such as user interactions, timers, and I/O operations despite the language being single- ...",
+      "position": 8
+    },
+    {
+      "title": "Node.js Event Loop",
+      "link": "https://www.w3schools.com/nodejs/nodejs_event_loop.asp",
+      "snippet": "The event loop is what makes Node.js non-blocking and efficient. It handles asynchronous operations by delegating tasks to the system and processing their ...",
+      "position": 9
+    }
+  ],
+  "peopleAlsoAsk": [
+    {
+      "question": "What is event loop in js with example?",
+      "title": "The JavaScript Event Loop Explained with Examples - Medium",
+      "snippet": "The event loop ensures that tasks are executed in the correct order, enabling asynchronous programming. To explain it in simple terms, imagine you're running a to-do list. The event loop is like a manager that ensures tasks are completed in the right order, depending on their type and urgency.Dec 16, 2024",
+      "link": "https://medium.com/@ignatovich.dm/the-javascript-event-loop-explained-with-examples-d8f7ddf0861d#:~:text=The%20event%20loop%20ensures%20that,on%20their%20type%20and%20urgency."
+    },
+    {
+      "question": "What is a loop event?",
+      "title": "Event loop - Wikipedia",
+      "snippet": "In software, an event loop is an algorithm that continually dispatches control flow for events. The loop requests the next event from an event provider (which generally blocks the loop until an event occurs), and when an event is received, invokes its associated event handler.",
+      "link": "https://en.wikipedia.org/wiki/Event_loop#:~:text=In%20software%2C%20an%20event%20loop,invokes%20its%20associated%20event%20handler."
+    },
+    {
+      "question": "What is event loop in JavaScript interview questions?",
+      "title": "What is the event loop in JavaScript runtimes? - GreatFrontEnd",
+      "snippet": "The event loop continuously monitors the call stack and executes items on the call stack. If/when the call stack is empty: Microtask queue is processed. The event loop takes the first callback from the microtask queue and pushes it to the call stack for execution.",
+      "link": "https://www.greatfrontend.com/questions/quiz/what-is-event-loop-what-is-the-difference-between-call-stack-and-task-queue#:~:text=the%20microtask%20queue.-,The%20event%20loop%20continuously%20monitors%20the%20call%20stack%20and%20executes,the%20call%20stack%20for%20execution."
+    },
+    {
+      "question": "What are the 6 phases of event loop?",
+      "title": "How the Event Loop Works in Node.js - HeyNode",
+      "snippet": "The Event Loop contains six main phases: timers, I/O callbacks, preparation / idle phase, I/O polling, setImmediate() callbacks execution, and close events callbacks.",
+      "link": "https://heynode.com/tutorial/how-event-loop-works-nodejs/#:~:text=The%20Event%20Loop%20contains%20six,execution%2C%20and%20close%20events%20callbacks."
+    }
+  ],
+  "relatedSearches": [
+    {
+      "query": "What is the event loop in javascript with example"
+    },
+    {
+      "query": "What is the event loop in javascript w3schools"
+    },
+    {
+      "query": "What is event loop in Node JS"
+    },
+    {
+      "query": "What is the event loop in javascript geeksforgeeks"
+    },
+    {
+      "query": "Event loop in JavaScript visualizer"
+    },
+    {
+      "query": "How does event loop work in JavaScript"
+    },
+    {
+      "query": "Event loop in JavaScript online"
+    },
+    {
+      "query": "Event loop in browser"
+    }
+  ],
+  "credits": 1
+}

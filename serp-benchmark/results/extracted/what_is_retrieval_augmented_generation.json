@@ -1,0 +1,376 @@
+{
+  "query": "what is retrieval augmented generation",
+  "intent": "definition",
+  "scores": {
+    "SearchApi": {
+      "extracted": {
+        "present": true,
+        "summary": "",
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "answer": "Retrieval-Augmented Generation (RAG) is an AI technique that improves Large Language Models (LLMs) by fetching facts from external knowledge bases before generating a response. Instead of relying solely on their static training data, models use RAG to \"open book test,\" reducing hallucinations and providing highly accurate, up-to-date answers.",
+            "reference_indexes": [
+              0,
+              2,
+              3
+            ]
+          },
+          {
+            "type": "header",
+            "answer": "How RAG Works"
+          },
+          {
+            "type": "paragraph",
+            "answer": "RAG operates in a series of steps to bridge the gap between user questions and external information:",
+            "reference_indexes": [
+              6,
+              9
+            ]
+          },
+          {
+            "type": "header",
+            "answer": "Why RAG is Used"
+          },
+          {
+            "type": "paragraph",
+            "answer": "RAG solves several inherent limitations of traditional generative AI:",
+            "reference_indexes": [
+              3,
+              5
+            ]
+          },
+          {
+            "type": "paragraph",
+            "answer": "Access to New Knowledge: Models have a knowledge cutoff based on when they were trained. RAG allows them to access real-time information.",
+            "reference_indexes": [
+              4,
+              3
+            ]
+          },
+          {
+            "type": "paragraph",
+            "answer": "For more details on implementation, you can read the IBM RAG Overview or the AWS RAG Explanation.",
+            "reference_indexes": [
+              8
+            ]
+          }
+        ],
+        "citations": [
+          {
+            "url": "https://aws.amazon.com/what-is/retrieval-augmented-generation/",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://blogs.nvidia.com/blog/what-is-retrieval-augmented-generation/",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.ibm.com/think/topics/retrieval-augmented-generation",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.reddit.com/r/explainlikeimfive/comments/1p39v3g/eli5_what_is_a_is_retrievalaugmented_generation/",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://cloud.google.com/use-cases/retrieval-augmented-generation",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.databricks.com/blog/what-is-retrieval-augmented-generation",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.pinecone.io/learn/retrieval-augmented-generation/",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=xPMQ2cVbUTI&t=444",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=dDkynerzV-Q",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/shorts/OHz_MjBqFRY",
+            "title": "",
+            "snippet": ""
+          }
+        ],
+        "related_searches": []
+      }
+    },
+    "SerpApi": {
+      "extracted": {
+        "present": true,
+        "summary": "",
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "snippet": "Retrieval-Augmented Generation (RAG) is an AI framework that improves Large Language Model (LLM) responses by grounding them on external, authoritative knowledge bases before generating an answer. It fetches relevant facts to ensure accuracy, reduce \"hallucinations,\" and access up-to-date information without requiring costly model retraining.",
+            "snippet_links": [
+              {
+                "link": "https://research.ibm.com/blog/retrieval-augmented-generation-RAG?utm_source=ts2.tech"
+              }
+            ],
+            "snippet_highlighted_words": [
+              "an AI framework that improves Large Language Model (LLM) responses by grounding them on external, authoritative knowledge bases before generating an answer"
+            ],
+            "reference_indexes": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "How It Works"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Instead of relying solely on the fixed data a model was initially trained on, a RAG system follows a specific sequence:",
+            "snippet_links": [
+              {
+                "link": "https://cloud.google.com/use-cases/retrieval-augmented-generation"
+              }
+            ],
+            "reference_indexes": [
+              1,
+              3
+            ]
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Retrieval: When you ask a question, the system scans an external repository or database (like company documents, a vector database, or the web) for the most relevant information."
+              },
+              {
+                "snippet": "Augmentation:\n\nThe system combines your original query with the retrieved documents to provide rich, accurate context."
+              },
+              {
+                "snippet": "Generation: The language model synthesizes this combined information to generate a precise, factual, and context-aware final response.",
+                "snippet_links": [
+                  {
+                    "link": "https://blogs.nvidia.com/blog/what-is-retrieval-augmented-generation/"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              1,
+              4,
+              5,
+              6,
+              7
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "Why RAG is Used"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Factual Grounding: It reduces the likelihood of an AI making up false information (\"hallucinations\") by forcing it to cite specific external sources.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.youtube.com/watch?v=T-D1OfcDW1M"
+                  }
+                ],
+                "reference_indexes": [
+                  2,
+                  8
+                ]
+              },
+              {
+                "snippet": "Real-time Updates: Static AI models have cutoff dates for their training data, but RAG systems can access the most current, up-to-date data available.",
+                "snippet_links": [
+                  {
+                    "link": "https://cloud.google.com/use-cases/retrieval-augmented-generation"
+                  }
+                ],
+                "reference_indexes": [
+                  1,
+                  6
+                ]
+              },
+              {
+                "snippet": "Domain Specificity: It allows generic models to answer highly specialized questions (e.g., medical or legal documents) by pulling from custom databases.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.geeksforgeeks.org/nlp/what-is-retrieval-augmented-generation-rag/"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              6
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "Common Applications"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "RAG is widely used across many modern AI systems, including:",
+            "snippet_links": [
+              {
+                "link": "https://www.geeksforgeeks.org/nlp/what-is-retrieval-augmented-generation-rag/"
+              }
+            ],
+            "reference_indexes": [
+              6
+            ]
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Enterprise Search: Allowing employees to search internal company wikis, databases, or PDFs using natural language."
+              },
+              {
+                "snippet": "Customer Support Chatbots:\nProviding accurate answers drawn directly from a brand's support documentation or FAQ pages."
+              },
+              {
+                "snippet": "Research Assistants: Summarizing multiple external articles or research papers with verifiable citations."
+              }
+            ],
+            "reference_indexes": [
+              2,
+              9,
+              10,
+              11,
+              12
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "For a deeper dive into how this framework is implemented technically, you can review\nIBM Research's RAG overview\nor explore AWS's guide on RAG\n.",
+            "snippet_links": [
+              {
+                "text": "IBM Research's RAG overview",
+                "link": "https://research.ibm.com/blog/retrieval-augmented-generation-RAG?utm_source=ts2.tech"
+              },
+              {
+                "text": "AWS's guide on RAG",
+                "link": "https://aws.amazon.com/what-is/retrieval-augmented-generation/"
+              }
+            ],
+            "reference_indexes": [
+              13
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Are you looking to build a RAG system, or would you like to explore popular tools and vector databases used to implement this technology?"
+          }
+        ],
+        "citations": [
+          {
+            "url": "https://research.ibm.com/blog/retrieval-augmented-generation-RAG?utm_source=ts2.tech",
+            "title": "What is retrieval-augmented generation (RAG)? - IBM Research",
+            "snippet": "Retrieval-augmented generation (RAG) is an AI framework for improving the quality of LLM-generated responses by grounding the model on external sources of knowledg..."
+          },
+          {
+            "url": "https://cloud.google.com/use-cases/retrieval-augmented-generation",
+            "title": "What is Retrieval-Augmented Generation (RAG)? | Google Cloud",
+            "snippet": "RAG, or Retrieval-Augmented Generation, is an AI framework that combines traditional information retrieval systems with generative large language models (LLMs). RA..."
+          },
+          {
+            "url": "https://www.databricks.com/blog/what-is-retrieval-augmented-generation",
+            "title": "What is Retrieval Augmented Generation (RAG)? - Databricks",
+            "snippet": "What is Retrieval Augmented Generation (RAG)?. Technique enhancing LLM responses by retrieving relevant info from external knowledge bases before generation, groun..."
+          },
+          {
+            "url": "https://en.wikipedia.org/wiki/Retrieval-augmented_generation",
+            "title": "Retrieval-augmented generation - Wikipedia",
+            "snippet": "Retrieval-augmented generation (RAG) is a technique that enables large language models (LLMs) to retrieve and incorporate new information from external data source..."
+          },
+          {
+            "url": "https://blogs.nvidia.com/blog/what-is-retrieval-augmented-generation/",
+            "title": "What Is Retrieval-Augmented Generation aka RAG",
+            "snippet": "At a high level, here's how RAG works. When users ask an LLM a question, the AI model sends the query to another model that converts it into a numeric format so ma..."
+          },
+          {
+            "url": "https://www.redhat.com/en/topics/ai/what-is-retrieval-augmented-generation",
+            "title": "What is retrieval-augmented generation? - Red Hat",
+            "snippet": "Retrieval-augmented generation (RAG) is a technique that improves the quality and relevance of answers from a generative AI application. It works by linking the pr..."
+          },
+          {
+            "url": "https://www.geeksforgeeks.org/nlp/what-is-retrieval-augmented-generation-rag/",
+            "title": "What is Retrieval-Augmented Generation (RAG)",
+            "snippet": "What is Retrieval-Augmented Generation (RAG) * Retrieval-Augmented Generation (RAG) is a way to make AI answers more reliable by combining searching for relevant i..."
+          },
+          {
+            "url": "https://azure.microsoft.com/en-us/resources/cloud-computing-dictionary/what-is-retrieval-augmented-generation-rag",
+            "title": "What Is RAG (Retrieval-Augmented Generation)? - Microsoft Azure",
+            "snippet": "RAG: How it works and why it's important ... Retrieval-augmented generation combines two techniques. First, it retrieves information from sources such as databases..."
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=T-D1OfcDW1M",
+            "title": "What is Retrieval-Augmented Generation (RAG)?",
+            "snippet": "large language models they are everywhere. they get some things amazingly right and other things very interestingly. wrong my name is Marina Denalki. i am a senior"
+          },
+          {
+            "url": "https://www.meilisearch.com/blog/what-is-rag",
+            "title": "What is RAG (Retrieval-Augmented Generation) \\u0026 how it works?",
+            "snippet": "Internal company search: Most organizations have information scattered across different systems, making information retrieval difficult. RAG can be used to develop..."
+          },
+          {
+            "url": "https://www.glean.com/blog/rag-examples",
+            "title": "Top 7 examples of retrieval-augmented generation",
+            "snippet": "Enterprise Q\\u0026A systems. RAG makes enterprise search more powerful by enabling natural language queries with grounded responses. Instead of scanning multiple system..."
+          },
+          {
+            "url": "https://www.upgrad.com/blog/rag-in-generative-ai/",
+            "title": "RAG in Generative AI: Complete Practical Guide 2026",
+            "snippet": "1. Enterprise Search Systems Generative AI RAG enables employees to search internal company data using natural language. Instead of manually browsing through files..."
+          },
+          {
+            "url": "https://n8n.io/workflows/4400-build-a-pdf-document-rag-system-with-mistral-ocr-qdrant-and-gemini-ai/",
+            "title": "Build a PDF Document RAG System with Mistral OCR, Qdrant and Gemini AI | n8n workflow template",
+            "snippet": "With RAG integration, users can query document content through natural language and receive accurate responses grounded in the PDF data."
+          },
+          {
+            "url": "https://omnimind.ai/blog/retrieval-augmented-generation/",
+            "title": "What is Retrieval-Augmented Generation (RAG)? [Everything You ...",
+            "snippet": "Retrieval-Augmented Generation (RAG) is an AI framework that improves LLM performance. Instead of relying solely on pre-trained knowledge, RAG enables models to pu..."
+          }
+        ],
+        "related_searches": []
+      }
+    },
+    "Serper": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "DataForSEO": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    }
+  }
+}

@@ -1,0 +1,280 @@
+{
+  "query": "TCP vs UDP",
+  "intent": "comparison",
+  "scores": {
+    "SearchApi": {
+      "extracted": {
+        "present": true,
+        "summary": "",
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "answer": "TCP is a reliable, connection-oriented protocol that guarantees data delivery in the correct order, making it ideal for web browsing, emails, and file transfers where accuracy is essential. UDP is a faster, connectionless protocol that sends data continuously without waiting for confirmations, making it perfect for live streaming, gaming, and VoIP.",
+            "reference_indexes": [
+              0,
+              1,
+              3,
+              2
+            ]
+          },
+          {
+            "type": "header",
+            "answer": "Key Differences"
+          },
+          {
+            "type": "paragraph",
+            "answer": "Connection State: TCP establishes a dedicated connection using a \"three-way handshake\" before sending data. UDP requires no handshake and simply transmits data packets (\"datagrams\") to the destination.",
+            "reference_indexes": [
+              3
+            ]
+          },
+          {
+            "type": "video",
+            "link": "https://www.youtube.com/shorts/8B2trNb2vWk"
+          },
+          {
+            "type": "header",
+            "answer": "When to Use Which"
+          },
+          {
+            "type": "paragraph",
+            "answer": "Use TCP for:"
+          },
+          {
+            "type": "paragraph",
+            "answer": "Use UDP for:"
+          }
+        ],
+        "citations": [
+          {
+            "url": "https://www.reddit.com/r/explainlikeimfive/comments/66i0ta/eli5_the_difference_between_tcp_vs_udp/",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.geeksforgeeks.org/computer-networks/differences-between-tcp-and-udp/",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=jE_FcgpQ7Co&t=31",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.avg.com/en/signal/tcp-vs-udp",
+            "title": "",
+            "snippet": ""
+          }
+        ],
+        "related_searches": []
+      }
+    },
+    "SerpApi": {
+      "extracted": {
+        "present": true,
+        "summary": "",
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "snippet": "TCP is a reliable, connection-oriented protocol that guarantees data delivery in the correct order, making it ideal for web browsing, emails, and file transfers where accuracy is essential. UDP is a faster, connectionless protocol that sends data continuously without waiting for confirmations, making it perfect for live streaming, gaming, and VoIP.",
+            "snippet_links": [
+              {
+                "link": "https://www.reddit.com/r/explainlikeimfive/comments/66i0ta/eli5_the_difference_between_tcp_vs_udp/"
+              }
+            ],
+            "snippet_highlighted_words": [
+              "TCP is a reliable, connection-oriented protocol that guarantees data delivery in the correct order, making it ideal for web browsing, emails, and file transfers where accuracy is essential. UDP is a faster, connectionless protocol that sends data continuously without waiting for confirmations, making it perfect for live streaming, gaming, and VoIP"
+            ],
+            "reference_indexes": [
+              0,
+              1,
+              2,
+              9
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "Key Differences"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Connection State: TCP establishes a dedicated connection using a \"three-way handshake\" before sending data. UDP requires no handshake and simply transmits data packets (\"datagrams\") to the destination.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.avg.com/en/signal/tcp-vs-udp"
+                  }
+                ],
+                "reference_indexes": [
+                  2
+                ]
+              },
+              {
+                "snippet": "Reliability: TCP tracks packets, ensuring none are lost, duplicated, or out of order by requesting retransmissions. UDP sends data and assumes it arrives; it does not resend lost packets."
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "For a clear and simple comparison of how TCP and UDP handle data packets in the real world:",
+            "video": {
+              "link": "https://www.youtube.com/shorts/8B2trNb2vWk",
+              "thumbnail": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRjXz4uIVhrhCI0KuSoM29dXChDvWJ2QYnjBdGs9aTDjf6VoFMdLEc_8hUY1hDEoJm8bCGXD8lc0xcvaqWZcaZZP7zixg"
+            }
+          },
+          {
+            "type": "heading",
+            "snippet": "When to Use Which"
+          },
+          {
+            "type": "heading",
+            "snippet": "Use TCP for:"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Web browsing (HTTP/HTTPS)"
+              },
+              {
+                "snippet": "Sending or receiving emails (SMTP/IMAP)"
+              },
+              {
+                "snippet": "File transfers (FTP)"
+              },
+              {
+                "snippet": "Financial transactions and database access"
+              }
+            ],
+            "reference_indexes": [
+              6,
+              7
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "Use UDP for:"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Voice and Video calls (e.g., Zoom, VoIP)"
+              },
+              {
+                "snippet": "Live streaming (Twitch, YouTube Live)"
+              },
+              {
+                "snippet": "Online multiplayer gaming"
+              },
+              {
+                "snippet": "Domain Name System (DNS) lookups"
+              }
+            ],
+            "reference_indexes": [
+              4,
+              6,
+              8
+            ]
+          }
+        ],
+        "citations": [
+          {
+            "url": "https://www.reddit.com/r/explainlikeimfive/comments/66i0ta/eli5_the_difference_between_tcp_vs_udp/",
+            "title": "ELI5: The difference between TCP vs UDP",
+            "snippet": "UDP is a packet protocol that doesn't check to make sure all data arrived. **TCP**: * **Advantages**: * Built-in checks to ensure data arrives in the correct or..."
+          },
+          {
+            "url": "https://www.geeksforgeeks.org/computer-networks/differences-between-tcp-and-udp/",
+            "title": "TCP vs. UDP - GeeksforGeeks",
+            "snippet": "TCP (Transmission Control Protocol) and UDP (User Datagram Protocol) are two core protocols of the Transport Layer of the OSI and TCP/IP models. Both are respon..."
+          },
+          {
+            "url": "https://www.avg.com/en/signal/tcp-vs-udp",
+            "title": "TCP vs. UDP: Key Differences and Uses - AVG AntiVirus",
+            "snippet": "What are TCP and UDP? * How TCP works (Transmission Control Protocol) TCP works by establishing a connection between two devices using a three-way handsh"
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=jE_FcgpQ7Co",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://digilent.com/blog/udp-vs-tcp/",
+            "title": "TCP vs UDP: Header Size, Packet Size, and Differences \u2013 Digilent Blog",
+            "snippet": "UDP is lightweight and fast, making it great for things like audio and video files. Here's some information about TCP and UDP headers: * **TCP** TCP packets hav..."
+          },
+          {
+            "url": "https://algomaster.io/learn/system-design/tcp-vs-udp",
+            "title": "TCP vs UDP | System Design - AlgoMaster.io",
+            "snippet": "Summary. TCP and UDP are transport-layer tools with different promises. TCP gives a reliable, ordered byte stream. It keeps bytes in order, but it does not pres..."
+          },
+          {
+            "url": "https://www.avast.com/c-tcp-vs-udp-difference",
+            "title": "TCP vs UDP: What\u2019s the Difference and Which Protocol Is Better?",
+            "snippet": "What are three differences between TCP and UDP? * TCP requires a reliable connection between server and recipient, which can slow down data transfer. UD"
+          },
+          {
+            "url": "https://www.youtube.com/shorts/8B2trNb2vWk",
+            "title": "Simplest explanation of TCP and UDP",
+            "snippet": "here is the simplest way to explain TCP. and UDP tcp and UDP are two core transport layer protocols that control how data travels across the internet tcp is rel"
+          },
+          {
+            "url": "https://builtin.com/articles/tcp-vs-udp",
+            "title": "TCP vs. UDP: Differences Between the Two Protocols",
+            "snippet": "Applications like YouTube Live and Twitch use UDP to minimize latency and ensure smooth streaming."
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=jE_FcgpQ7Co&t=31",
+            "title": "TCP vs UDP - Explaining Facts and Debunking Myths - TCP Masterclass",
+            "snippet": "we have to start on the same page so in this video we're going to be covering TCP. and UDP specifically we're going to be talking about what TCP and UDP are and"
+          }
+        ],
+        "related_searches": []
+      }
+    },
+    "Serper": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "DataForSEO": {
+      "extracted": {
+        "present": true,
+        "summary": "![TCP vs. UDP: Difference between TCP and UDP | by Let&#39;s Decode ...](https://api.dataforseo.com/cdn/i/07210102-2120-0139-0000-8fe31ab207e8:6)\n`TCP is a reliable, connection-oriented protocol that guarantees data delivery in the correct order, making it ideal for web browsing, emails, and file transfers where accuracy is essential. UDP is a faster, connectionless protocol that sends data continuously without waiting for confirmations, making it perfect for live streaming, gaming, and VoIP`.[](https://www.reddit.com/r/explainlikeimfive/comments/66i0ta/eli5_the_difference_between_tcp_vs_udp/) [[1]](https://www.reddit.com/r/explainlikeimfive/comments/66i0ta/eli5_the_difference_between_tcp_vs_udp/)[[2]](https://www.geeksforgeeks.org/computer-networks/differences-between-tcp-and-udp/)[[3]](https://www.avg.com/en/signal/tcp-vs-udp)[[4]](https://www.youtube.com/watch?v=jE_FcgpQ7Co&t=31)\n\nKey Differences\n\n- **Connection State:** TCP establishes a dedicated connection using a \"three-way handshake\" before sending data. UDP requires no handshake and simply transmits data packets (\"datagrams\") to the destination.[](https://www.avg.com/en/signal/tcp-vs-udp) [[1]](https://www.avg.com/en/signal/tcp-vs-udp)\n- **Reliability:** TCP tracks packets, ensuring none are lost, duplicated, or out of order by requesting retransmissions . UDP sends data and assumes it arrives; it does not resend lost packets.[](https://www.reddit.com/r/explainlikeimfive/comments/66i0ta/eli5_the_difference_between_tcp_vs_udp/) [[1]](https://www.reddit.com/r/explainlikeimfive/comments/66i0ta/eli5_the_difference_between_tcp_vs_udp/)[[2]](https://www.youtube.com/watch?v=jE_FcgpQ7Co&t=31)[[3]](https://www.avg.com/en/signal/tcp-vs-udp)\n- **Speed & Overhead:** TCP has a larger header (20-60 bytes) and requires more processing power to manage sequencing and congestion control. UDP has a tiny, 8-byte header and uses fewer network resources.[](https://www.geeksforgeeks.org/computer-networks/differences-between-tcp-and-udp/) [[1]](https://www.geeksforgeeks.org/computer-networks/differences-between-tcp-and-udp/)[[2]](https://www.youtube.com/watch?v=jE_FcgpQ7Co&t=31)[[3]](https://digilent.com/blog/udp-vs-tcp/)[[4]](https://algomaster.io/learn/system-design/tcp-vs-udp)[[5]](https://www.avast.com/c-tcp-vs-udp-difference)\n\nFor a clear and simple comparison of how TCP and UDP handle data packets in the real world:![](https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRjXz4uIVhrhCI0KuSoM29dXChDvWJ2QYnjBdGs9aTDjf6VoFMdLEc_8hUY1hDEoJm8bCGXD8lc0xcvaqWZcaZZP7zixg)\n![Related video thumbnail](https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcT7pt6hicmboU3zX2YfoWJBKWNnmYVzxZ8_uLGQGIkbPI4UUIlg_i1j7YzwusivN6WyL2saG2EXD3xcTFDM9m3TgTslNcQ)\n1:36[Simplest explanation of TCP and UDP 18K views \u00a0\u00b7\u00a07 months ago![](https://api.dataforseo.com/cdn/i/07210102-2120-0139-0000-8fe31ab207e8:7)\nYouTube\u00a0\u00b7\u00a0KodeKloud](https://www.youtube.com/shorts/8B2trNb2vWk) When to Use Which**Use TCP for:** \n\n- Web browsing (HTTP/HTTPS)\n- Sending or receiving emails (SMTP/IMAP)\n- File transfers (FTP)\n- Financial transactions and database access[[1]](https://www.youtube.com/shorts/8B2trNb2vWk)[[2]](https://www.avast.com/c-tcp-vs-udp-difference)\n\n**Use UDP for:** \n\n- Voice and Video calls (e.g., Zoom, VoIP)\n- Live streaming (Twitch, YouTube Live)\n- Online multiplayer gaming\n- Domain Name System (DNS) lookups[[1]](https://digilent.com/blog/udp-vs-tcp/)[[2]](https://www.avast.com/c-tcp-vs-udp-difference)[[3]](https://builtin.com/articles/tcp-vs-udp)",
+        "text_blocks": [
+          "![TCP vs. UDP: Difference between TCP and UDP | by Let&#39;s Decode ...](https://api.dataforseo.com/cdn/i/07210102-2120-0139-0000-8fe31ab207e8:6)\n`TCP is a reliable, connection-oriented protocol that guarantees data delivery in the correct order, making it ideal for web browsing, emails, and file transfers where accuracy is essential. UDP is a faster, connectionless protocol that sends data continuously without waiting for confirmations, making it perfect for live streaming, gaming, and VoIP`.[](https://www.reddit.com/r/explainlikeimfive/comments/66i0ta/eli5_the_difference_between_tcp_vs_udp/) [[1]](https://www.reddit.com/r/explainlikeimfive/comments/66i0ta/eli5_the_difference_between_tcp_vs_udp/)[[2]](https://www.geeksforgeeks.org/computer-networks/differences-between-tcp-and-udp/)[[3]](https://www.avg.com/en/signal/tcp-vs-udp)[[4]](https://www.youtube.com/watch?v=jE_FcgpQ7Co&t=31)\n\nKey Differences\n\n- **Connection State:** TCP establishes a dedicated connection using a \"three-way handshake\" before sending data. UDP requires no handshake and simply transmits data packets (\"datagrams\") to the destination.[](https://www.avg.com/en/signal/tcp-vs-udp) [[1]](https://www.avg.com/en/signal/tcp-vs-udp)\n- **Reliability:** TCP tracks packets, ensuring none are lost, duplicated, or out of order by requesting retransmissions . UDP sends data and assumes it arrives; it does not resend lost packets.[](https://www.reddit.com/r/explainlikeimfive/comments/66i0ta/eli5_the_difference_between_tcp_vs_udp/) [[1]](https://www.reddit.com/r/explainlikeimfive/comments/66i0ta/eli5_the_difference_between_tcp_vs_udp/)[[2]](https://www.youtube.com/watch?v=jE_FcgpQ7Co&t=31)[[3]](https://www.avg.com/en/signal/tcp-vs-udp)\n- **Speed & Overhead:** TCP has a larger header (20-60 bytes) and requires more processing power to manage sequencing and congestion control. UDP has a tiny, 8-byte header and uses fewer network resources.[](https://www.geeksforgeeks.org/computer-networks/differences-between-tcp-and-udp/) [[1]](https://www.geeksforgeeks.org/computer-networks/differences-between-tcp-and-udp/)[[2]](https://www.youtube.com/watch?v=jE_FcgpQ7Co&t=31)[[3]](https://digilent.com/blog/udp-vs-tcp/)[[4]](https://algomaster.io/learn/system-design/tcp-vs-udp)[[5]](https://www.avast.com/c-tcp-vs-udp-difference)\n\nFor a clear and simple comparison of how TCP and UDP handle data packets in the real world:![](https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRjXz4uIVhrhCI0KuSoM29dXChDvWJ2QYnjBdGs9aTDjf6VoFMdLEc_8hUY1hDEoJm8bCGXD8lc0xcvaqWZcaZZP7zixg)\n![Related video thumbnail](https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcT7pt6hicmboU3zX2YfoWJBKWNnmYVzxZ8_uLGQGIkbPI4UUIlg_i1j7YzwusivN6WyL2saG2EXD3xcTFDM9m3TgTslNcQ)\n1:36[Simplest explanation of TCP and UDP 18K views \u00a0\u00b7\u00a07 months ago![](https://api.dataforseo.com/cdn/i/07210102-2120-0139-0000-8fe31ab207e8:7)\nYouTube\u00a0\u00b7\u00a0KodeKloud](https://www.youtube.com/shorts/8B2trNb2vWk) When to Use Which**Use TCP for:** \n\n- Web browsing (HTTP/HTTPS)\n- Sending or receiving emails (SMTP/IMAP)\n- File transfers (FTP)\n- Financial transactions and database access[[1]](https://www.youtube.com/shorts/8B2trNb2vWk)[[2]](https://www.avast.com/c-tcp-vs-udp-difference)\n\n**Use UDP for:** \n\n- Voice and Video calls (e.g., Zoom, VoIP)\n- Live streaming (Twitch, YouTube Live)\n- Online multiplayer gaming\n- Domain Name System (DNS) lookups[[1]](https://digilent.com/blog/udp-vs-tcp/)[[2]](https://www.avast.com/c-tcp-vs-udp-difference)[[3]](https://builtin.com/articles/tcp-vs-udp)"
+        ],
+        "citations": [
+          {
+            "url": "https://www.reddit.com/r/explainlikeimfive/comments/66i0ta/eli5_the_difference_between_tcp_vs_udp/",
+            "title": "ELI5: The difference between TCP vs UDP",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.geeksforgeeks.org/computer-networks/differences-between-tcp-and-udp/",
+            "title": "TCP vs. UDP - GeeksforGeeks",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=jE_FcgpQ7Co&t=31",
+            "title": "TCP vs UDP - Explaining Facts and Debunking Myths - TCP Masterclass",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.avg.com/en/signal/tcp-vs-udp",
+            "title": "TCP vs. UDP: Key Differences and Uses - AVG AntiVirus",
+            "snippet": ""
+          }
+        ],
+        "related_searches": []
+      }
+    }
+  }
+}

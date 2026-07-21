@@ -1,0 +1,702 @@
+{
+  "version": "0.1.20260717",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "1.9992 sec.",
+  "cost": 0.002,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "07210107-2120-0139-0000-3b047198bf4e",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "1.8741 sec.",
+      "cost": 0.002,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "serp",
+        "google",
+        "organic",
+        "live",
+        "advanced"
+      ],
+      "data": {
+        "api": "serp",
+        "function": "live",
+        "se": "google",
+        "se_type": "organic",
+        "keyword": "what is a blockchain consensus mechanism",
+        "location_code": 2840,
+        "language_code": "en",
+        "device": "desktop",
+        "expand_ai_overview": true,
+        "os": "windows"
+      },
+      "result": [
+        {
+          "keyword": "what is a blockchain consensus mechanism",
+          "type": "organic",
+          "se_domain": "google.com",
+          "location_code": 2840,
+          "language_code": "en",
+          "check_url": "https://www.google.com/search?q=what%20is%20a%20blockchain%20consensus%20mechanism&hl=en&gl=US&ie=UTF-8&uule=w+CAIQIFISCQs2MuSEtepUEUK33kOSuTsc",
+          "datetime": "2026-07-20 22:07:14 +00:00",
+          "spell": null,
+          "refinement_chips": null,
+          "item_types": [
+            "ai_overview",
+            "organic",
+            "people_also_ask",
+            "perspectives",
+            "related_searches"
+          ],
+          "se_results_count": 42,
+          "pages_count": 1,
+          "items_count": 12,
+          "items": [
+            {
+              "type": "ai_overview",
+              "rank_group": 1,
+              "rank_absolute": 1,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]",
+              "asynchronous_ai_overview": false,
+              "markdown": "![Cryptographic Consensus Mechanisms in Blockchain - GeeksforGeeks](https://api.dataforseo.com/cdn/i/07210107-2120-0139-0000-3b047198bf4e:4)\nA consensus mechanism is a set of programmed rules and protocols that allows a distributed network of independent computers (nodes) to agree on the state of a blockchain. It automates trust, prevents double-spending, and ensures malicious actors cannot manipulate the digital ledger without requiring a central authority.[](https://hacken.io/discover/consensus-mechanisms/) [[1]](https://hacken.io/discover/consensus-mechanisms/)[[2]](https://chain.link/article/what-is-a-consensus-mechanism)[[3]](https://builtin.com/blockchain/consensus-mechanism)[[4]](https://minddeft.com/blog/what-is-a-consensus-mechanism-in-blockchain)\n\nWhile there are many variations, networks rely on a few dominant mechanisms to validate transactions:[[1]](https://builtin.com/blockchain/consensus-mechanism)[[2]](https://minddeft.com/blog/what-is-a-consensus-mechanism-in-blockchain)\n\n- **Proof of Work (PoW):** Used by Bitcoin, PoW requires miners to compete in solving energy-intensive mathematical puzzles to validate blocks. This guarantees security through high computational costs but is criticized for slow speeds and massive energy consumption.[](https://hacken.io/discover/consensus-mechanisms/) [[1]](https://hacken.io/discover/consensus-mechanisms/)[[2]](https://www.sciencedirect.com/science/article/pii/S2096720925000296)\n- **Proof of Stake (PoS):** Used by Ethereum, PoS replaces miners with validators who lock up (stake) their tokens as collateral to secure the network. It is highly energy-efficient and allows for faster scaling.[](https://hacken.io/discover/consensus-mechanisms/) [[1]](https://hacken.io/discover/consensus-mechanisms/)[[2]](https://www.sciencedirect.com/science/article/pii/S2096720925000296)\n- **Proof of Authority (PoA):** Often used in private or enterprise blockchains, PoA relies on a set of pre-approved, trusted validators rather than raw computing power. This provides blazing-fast transaction speeds at the expense of true decentralization.[](https://hacken.io/discover/consensus-mechanisms/) [[1]](https://hacken.io/discover/consensus-mechanisms/)[[2]](https://www.geeksforgeeks.org/computer-networks/cryptographic-consensus-mechanisms-in-blockchain/)\n- **Delegated Proof of Stake (DPoS):** Utilizes a democratic voting system where token holders elect a select group of delegates to validate blocks and manage the blockchain on their behalf.[](https://hacken.io/discover/consensus-mechanisms/) [[1]](https://hacken.io/discover/consensus-mechanisms/)[[2]](https://www.geeksforgeeks.org/computer-networks/cryptographic-consensus-mechanisms-in-blockchain/)\n\nTo explore the exact trade-offs of security and decentralization across these systems, you can review the detailed [Visa Consensus Mechanisms Guide](https://usa.visa.com/solutions/crypto/consensus-mechanisms.html) or dive into the [Ethereum Consensus Documentation](https://ethereum.org/developers/docs/consensus-mechanisms/).[[1]](https://chain.link/article/what-is-a-consensus-mechanism)[[2]](https://ethereum-magicians.org/t/community-consensus-fork-headliners-acd-working-groups/24088)",
+              "items": [
+                {
+                  "type": "ai_overview_element",
+                  "position": "left",
+                  "title": null,
+                  "text": "A consensus mechanism is a set of programmed rules and protocols that allows a distributed network of independent computers (nodes) to agree on the state of a blockchain. It automates trust, prevents double-spending, and ensures malicious actors cannot manipulate the digital ledger without requiring a central authority. Hacken +3",
+                  "markdown": "![Cryptographic Consensus Mechanisms in Blockchain - GeeksforGeeks](https://api.dataforseo.com/cdn/i/07210107-2120-0139-0000-3b047198bf4e:2)\nA consensus mechanism is a set of programmed rules and protocols that allows a distributed network of independent computers (nodes) to agree on the state of a blockchain. It automates trust, prevents double-spending, and ensures malicious actors cannot manipulate the digital ledger without requiring a central authority.[](https://hacken.io/discover/consensus-mechanisms/) [[1]](https://hacken.io/discover/consensus-mechanisms/)[[2]](https://chain.link/article/what-is-a-consensus-mechanism)[[3]](https://builtin.com/blockchain/consensus-mechanism)[[4]](https://minddeft.com/blog/what-is-a-consensus-mechanism-in-blockchain)",
+                  "links": null,
+                  "images": [
+                    {
+                      "type": "images_element",
+                      "alt": "Cryptographic Consensus Mechanisms in Blockchain - GeeksforGeeks",
+                      "url": null,
+                      "image_url": "https://api.dataforseo.com/cdn/i/07210107-2120-0139-0000-3b047198bf4e:3"
+                    }
+                  ],
+                  "references": [
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "Hacken",
+                      "domain": "hacken.io",
+                      "url": "https://hacken.io/discover/consensus-mechanisms/",
+                      "title": "Consensus Mechanisms In Blockchain: A Deep Dive Into The ...",
+                      "text": "Consensus Mechanisms In Blockchain: A Deep Dive Into The Different Types. Updated on: June 9, 2026. 15 min read. By Oleh Malanii. ..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "Chainlink",
+                      "domain": "chain.link",
+                      "url": "https://chain.link/article/what-is-a-consensus-mechanism",
+                      "title": "What Is a Consensus Mechanism? | Chainlink",
+                      "text": "At the foundation of every blockchain network lies a critical challenge known as the Byzantine Generals Problem. This logical dile..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "Built In",
+                      "domain": "builtin.com",
+                      "url": "https://builtin.com/blockchain/consensus-mechanism",
+                      "title": "What Is a Consensus Mechanism? - Built In",
+                      "text": "A consensus mechanism is a self-regulatory stack of software protocols written into a blockchain's code that synchronizes a networ..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "Minddeft Technologies Pvt Ltd",
+                      "domain": "minddeft.com",
+                      "url": "https://minddeft.com/blog/what-is-a-consensus-mechanism-in-blockchain",
+                      "title": "What Is a Consensus Mechanism in Blockchain?",
+                      "text": "A consensus mechanism is a protocol used in blockchain development companies to validate and agree on transactions across a distri..."
+                    }
+                  ]
+                },
+                {
+                  "type": "ai_overview_element",
+                  "position": "left",
+                  "title": null,
+                  "text": "While there are many variations, networks rely on a few dominant mechanisms to validate transactions:",
+                  "markdown": "While there are many variations, networks rely on a few dominant mechanisms to validate transactions:[[1]](https://builtin.com/blockchain/consensus-mechanism)[[2]](https://minddeft.com/blog/what-is-a-consensus-mechanism-in-blockchain)",
+                  "links": null,
+                  "images": null,
+                  "references": [
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "Built In",
+                      "domain": "builtin.com",
+                      "url": "https://builtin.com/blockchain/consensus-mechanism",
+                      "title": "What Is a Consensus Mechanism? - Built In",
+                      "text": "A consensus mechanism is a self-regulatory stack of software protocols written into a blockchain's code that synchronizes a networ..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "Minddeft Technologies Pvt Ltd",
+                      "domain": "minddeft.com",
+                      "url": "https://minddeft.com/blog/what-is-a-consensus-mechanism-in-blockchain",
+                      "title": "What Is a Consensus Mechanism in Blockchain?",
+                      "text": "A consensus mechanism is a protocol used in blockchain development companies to validate and agree on transactions across a distri..."
+                    }
+                  ]
+                },
+                {
+                  "type": "ai_overview_element",
+                  "position": "left",
+                  "title": null,
+                  "text": "To explore the exact trade-offs of security and decentralization across these systems, you can review the detailed Visa Consensus Mechanisms Guide or dive into the Ethereum Consensus Documentation.",
+                  "markdown": "To explore the exact trade-offs of security and decentralization across these systems, you can review the detailed [Visa Consensus Mechanisms Guide](https://usa.visa.com/solutions/crypto/consensus-mechanisms.html) or dive into the [Ethereum Consensus Documentation](https://ethereum.org/developers/docs/consensus-mechanisms/).[[1]](https://chain.link/article/what-is-a-consensus-mechanism)[[2]](https://ethereum-magicians.org/t/community-consensus-fork-headliners-acd-working-groups/24088)",
+                  "links": [
+                    {
+                      "type": "link_element",
+                      "title": "Visa Consensus Mechanisms Guide",
+                      "description": null,
+                      "url": "https://usa.visa.com/solutions/crypto/consensus-mechanisms.html",
+                      "domain": "usa.visa.com"
+                    },
+                    {
+                      "type": "link_element",
+                      "title": "Ethereum Consensus Documentation",
+                      "description": null,
+                      "url": "https://ethereum.org/developers/docs/consensus-mechanisms/",
+                      "domain": "ethereum.org"
+                    }
+                  ],
+                  "images": null,
+                  "references": [
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "Chainlink",
+                      "domain": "chain.link",
+                      "url": "https://chain.link/article/what-is-a-consensus-mechanism",
+                      "title": "What Is a Consensus Mechanism? | Chainlink",
+                      "text": "At the foundation of every blockchain network lies a critical challenge known as the Byzantine Generals Problem. This logical dile..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "Fellowship of Ethereum Magicians",
+                      "domain": "ethereum-magicians.org",
+                      "url": "https://ethereum-magicians.org/t/community-consensus-fork-headliners-acd-working-groups/24088",
+                      "title": "Community Consensus, Fork Headliners & ACD Working Groups",
+                      "text": "For major protocol changes, we need clear, documented consensus from affected stakeholders across Ethereum. If complete consensus ..."
+                    }
+                  ]
+                }
+              ],
+              "references": [
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "Hacken",
+                  "domain": "hacken.io",
+                  "url": "https://hacken.io/discover/consensus-mechanisms/",
+                  "title": "Consensus Mechanisms In Blockchain: A Deep Dive Into The ...",
+                  "text": "Consensus Mechanisms In Blockchain: A Deep Dive Into The Different Types. Updated on: June 9, 2026. 15 min read. By Oleh Malanii. ..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "GeeksforGeeks",
+                  "domain": "www.geeksforgeeks.org",
+                  "url": "https://www.geeksforgeeks.org/computer-networks/cryptographic-consensus-mechanisms-in-blockchain/",
+                  "title": "Cryptographic Consensus Mechanisms in Blockchain - GeeksforGeeks",
+                  "text": "Cryptographic Consensus Mechanisms in Blockchain * A consensus mechanism is basically the method that keeps everyone in a blockcha..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "Chainlink",
+                  "domain": "chain.link",
+                  "url": "https://chain.link/article/what-is-a-consensus-mechanism",
+                  "title": "What Is a Consensus Mechanism? | Chainlink",
+                  "text": "At the foundation of every blockchain network lies a critical challenge known as the Byzantine Generals Problem. This logical dile..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "ScienceDirect.com",
+                  "domain": "www.sciencedirect.com",
+                  "url": "https://www.sciencedirect.com/science/article/pii/S2096720925000296",
+                  "title": "Enhancing blockchain consensus mechanisms - ScienceDirect.com",
+                  "text": "2.2. Consensus algorithm * Proof of work. PoW is widely recognized as a consensus algorithm that was popularized by Bitcoin and is..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "Built In",
+                  "domain": "builtin.com",
+                  "url": "https://builtin.com/blockchain/consensus-mechanism",
+                  "title": "What Is a Consensus Mechanism? - Built In",
+                  "text": "A consensus mechanism is a self-regulatory stack of software protocols written into a blockchain's code that synchronizes a networ..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "Minddeft Technologies Pvt Ltd",
+                  "domain": "minddeft.com",
+                  "url": "https://minddeft.com/blog/what-is-a-consensus-mechanism-in-blockchain",
+                  "title": "What Is a Consensus Mechanism in Blockchain?",
+                  "text": "A consensus mechanism is a protocol used in blockchain development companies to validate and agree on transactions across a distri..."
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 2,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]",
+              "domain": "www.kraken.com",
+              "title": "What is a Blockchain Consensus Mechanism?",
+              "url": "https://www.kraken.com/learn/what-is-blockchain-consensus-mechanism",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.kraken.com \u203a Learn",
+              "website_name": "Kraken",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Consensus mechanisms ensure all people in a network can unanimously agree on and verify data that's added to the blockchain.",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "ensure all people in a network can unanimously agree on and verify data"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 3,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[4]/div[1]/div[1]",
+              "domain": "hacken.io",
+              "title": "Consensus Mechanisms In Blockchain: A Deep Dive Into ...",
+              "url": "https://hacken.io/discover/consensus-mechanisms/",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://hacken.io \u203a discover \u203a consensus-mechanisms",
+              "website_name": "Hacken",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Jun 9, 2026 \u2014 A consensus mechanism is what keeps decentralized networks secure. Nodes must agree on the current state before updating the blockchain. This\u00a0... Read more",
+              "pre_snippet": "06/09/2026 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "what keeps decentralized networks secure"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2026-06-09 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "people_also_ask",
+              "rank_group": 1,
+              "rank_absolute": 4,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[6]/div[1]/div[1]/div[1]",
+              "items": [
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Which consensus mechanism does BTC use?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[6]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "What consensus mechanism does XRP use?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[6]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_expanded_element",
+                      "featured_title": null,
+                      "url": "https://ripple.com/xrp/",
+                      "domain": "ripple.com",
+                      "title": "XRP Digital Asset for Global Crypto Utility - Ripple",
+                      "description": "Unlike proof-of-work or proof-of-stake blockchains, XRP utilizes a unique Proof of Association (PoA) consensus mechanism, in which servers called validators come to an agreement on the order and outcome of transactions every 3-5 seconds.",
+                      "images": null,
+                      "timestamp": null,
+                      "table": null
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "What are the disadvantages of blockchain consensus?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[6]/div[1]/div[1]/div[1]/div[1]/div[2]/div[3]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_expanded_element",
+                      "featured_title": null,
+                      "url": "https://www.delubac.com/en/faq/crypto-en/definitions-and-functioning/what-are-the-advantages-and-disadvantages-of-blockchain/",
+                      "domain": "www.delubac.com",
+                      "title": "FAQ Crypto - What are the advantages and disadvantages of blockchain?",
+                      "description": "The disadvantages: Complexity: blockchain technology can be difficult to understand for widespread adoption. Immutability: once data has been added to the blockchain, it is very difficult to modify. This can be an advantage for some uses, but is not always suitable for others.",
+                      "images": null,
+                      "timestamp": null,
+                      "table": null
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "How does blockchain reach a consensus?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[6]/div[1]/div[1]/div[1]/div[1]/div[2]/div[4]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_expanded_element",
+                      "featured_title": null,
+                      "url": "https://www.persistent.com/wp-content/uploads/2017/04/WP-Understanding-Blockchain-Consensus-Models.pdf",
+                      "domain": "www.persistent.com",
+                      "title": "Understanding Blockchain Consensus Models | Persistent Systems",
+                      "description": "The bitcoin blockchain is replicated on multiple nodes and the nodes order the transactions based on a proof-of-work (PoW) consensus mechanism. To add blocks to the blockchain, each node has to show that it has performed some amount of work also known as proof-of-work (PoW).",
+                      "images": null,
+                      "timestamp": null,
+                      "table": null
+                    }
+                  ]
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 5,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[8]/div[1]/div[1]",
+              "domain": "www.geeksforgeeks.org",
+              "title": "Cryptographic Consensus Mechanisms in Blockchain",
+              "url": "https://www.geeksforgeeks.org/computer-networks/cryptographic-consensus-mechanisms-in-blockchain/",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.geeksforgeeks.org \u203a computer-networks",
+              "website_name": "GeeksforGeeks",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Sep 8, 2025 \u2014 A consensus mechanism is basically the method that keeps everyone in a blockchain network on the same page.",
+              "pre_snippet": "09/08/2025 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "consensus mechanism",
+                "blockchain"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2025-09-08 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 6,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[10]/div[1]/div[1]",
+              "domain": "usa.visa.com",
+              "title": "What are Consensus Mechanisms? - Visa",
+              "url": "https://usa.visa.com/solutions/crypto/consensus-mechanisms.html",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://usa.visa.com \u203a solutions \u203a crypto \u203a consensus-m...",
+              "website_name": "visa.com",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Jan 17, 2023 \u2014 By achieving consensus, a blockchain network may be sure that every node in the network agrees with the same global state of the blockchain. A\u00a0... Read more",
+              "pre_snippet": "01/17/2023 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "every node in the network agrees with the same global state of the blockchain"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2023-01-17 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 7,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[12]/div[1]/div[1]",
+              "domain": "www.canterburyconsulting.com",
+              "title": "Blockchain Consensus Mechanisms",
+              "url": "https://www.canterburyconsulting.com/blog/blockchain-consensus-mechanisms/",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.canterburyconsulting.com \u203a blog \u203a blockcha...",
+              "website_name": "Canterbury Consulting",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "A consensus mechanism is an algorithm that allows computers (nodes) to work together and remain secure. As its name implies, it relies on network consensus",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "an algorithm that allows computers (nodes) to work together and remain secure"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 8,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[14]/div[1]/div[1]",
+              "domain": "www.investopedia.com",
+              "title": "Understanding Consensus Mechanisms - Blockchain",
+              "url": "https://www.investopedia.com/terms/c/consensus-mechanism-cryptocurrency.asp",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.investopedia.com \u203a ... \u203a Blockchain",
+              "website_name": "Investopedia",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Consensus mechanisms are processes in blockchain systems that ensure network agreement, trust, and security without human intervention.",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "Consensus mechanisms",
+                "blockchain"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 9,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[16]/div[1]/div[1]",
+              "domain": "builtin.com",
+              "title": "What Is a Consensus Mechanism?",
+              "url": "https://builtin.com/blockchain/consensus-mechanism",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://builtin.com \u203a blockchain \u203a consensus-mechanism",
+              "website_name": "Built In",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "A consensus mechanism is a protocol that brings all nodes of a distributed blockchain network into agreement on a single data set.",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "consensus mechanism",
+                "blockchain"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 8,
+              "rank_absolute": 10,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[18]/div[1]/div[1]",
+              "domain": "www.osl.com",
+              "title": "What is a Blockchain Consensus Mechanism? How Does It ...",
+              "url": "https://www.osl.com/hk-en/academy/article/what-is-a-blockchain-consensus-mechanism-how-does-it-work",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.osl.com \u203a hk-en \u203a academy \u203a article \u203a what-...",
+              "website_name": "osl.com",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Mar 21, 2025 \u2014 Consensus mechanisms are the algorithms used in blockchain networks to achieve agreement on a single data value among distributed processes or systems. Read more",
+              "pre_snippet": "03/21/2025 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "algorithms used in blockchain networks"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2025-03-21 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "perspectives",
+              "rank_group": 1,
+              "rank_absolute": 11,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[20]/div[1]",
+              "title": "What people are saying",
+              "items": [
+                {
+                  "type": "perspectives_element",
+                  "title": "Blockchain consensus mechanisms and fragmentation - BIS126",
+                  "description": null,
+                  "url": "https://www.linkedin.com/posts/daniel-eidan_blockchain-consensus-mechanisms-and-fragmentation-activity-7480161029629530112-gyYK",
+                  "domain": "www.linkedin.com",
+                  "date": "2 weeks ago",
+                  "source": "Daniel Eidan",
+                  "timestamp": "2026-07-06 22:07:14 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "#Consensus mechanisms are key to determine how #Blockchains function, and how they manage trade-offs between #Scalability, #Security and #Decentralization. In a new Bank for International Settlements \u2013 BIS bulletin, Daniel Eidan, Rudraksh Kansal, Ulf",
+                  "description": null,
+                  "url": "https://www.linkedin.com/posts/jonfrost1_consensus-blockchains-scalability-activity-7479851147164332032-Ef9B",
+                  "domain": "www.linkedin.com",
+                  "date": "2 weeks ago",
+                  "source": "Jon Frost",
+                  "timestamp": "2026-07-06 22:07:14 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "BIS: Blockchain consensus mechanisms and fragmentation",
+                  "description": null,
+                  "url": "https://www.linkedin.com/posts/sirahmad_bis-blockchain-consensus-mechanisms-and-activity-7481334511679574016-4eZ8",
+                  "domain": "www.linkedin.com",
+                  "date": "1 week ago",
+                  "source": "Umair Ahmad",
+                  "timestamp": "2026-07-13 22:07:14 +00:00"
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "related_searches",
+              "rank_group": 1,
+              "rank_absolute": 12,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[2]/div[1]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]",
+              "items": [
+                "Types of consensus mechanism in blockchain",
+                "What is a blockchain consensus mechanism explain",
+                "What is consensus mechanism",
+                "What is consensus in blockchain",
+                "What is the main purpose of a consensus mechanism in blockchain",
+                "Consensus mechanism examples",
+                "Pow consensus mechanism",
+                "What is consensus Mechanism in blockchain in simple words"
+              ],
+              "rectangle": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

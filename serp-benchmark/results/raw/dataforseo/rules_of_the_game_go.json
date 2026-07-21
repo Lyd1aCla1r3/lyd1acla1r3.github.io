@@ -1,0 +1,777 @@
+{
+  "version": "0.1.20260717",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "8.9592 sec.",
+  "cost": 0.002,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "07210110-2120-0139-0000-7df23cf9bb0e",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "8.7913 sec.",
+      "cost": 0.002,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "serp",
+        "google",
+        "organic",
+        "live",
+        "advanced"
+      ],
+      "data": {
+        "api": "serp",
+        "function": "live",
+        "se": "google",
+        "se_type": "organic",
+        "keyword": "rules of the game go",
+        "location_code": 2840,
+        "language_code": "en",
+        "device": "desktop",
+        "expand_ai_overview": true,
+        "os": "windows"
+      },
+      "result": [
+        {
+          "keyword": "rules of the game go",
+          "type": "organic",
+          "se_domain": "google.com",
+          "location_code": 2840,
+          "language_code": "en",
+          "check_url": "https://www.google.com/search?q=rules%20of%20the%20game%20go&hl=en&gl=US&ie=UTF-8&uule=w+CAIQIFISCQs2MuSEtepUEUK33kOSuTsc",
+          "datetime": "2026-07-20 22:10:31 +00:00",
+          "spell": null,
+          "refinement_chips": null,
+          "item_types": [
+            "ai_overview",
+            "organic",
+            "people_also_ask",
+            "video",
+            "images",
+            "related_searches"
+          ],
+          "se_results_count": 107,
+          "pages_count": 1,
+          "items_count": 12,
+          "items": [
+            {
+              "type": "ai_overview",
+              "rank_group": 1,
+              "rank_absolute": 1,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]",
+              "asynchronous_ai_overview": false,
+              "markdown": "![How to Play Go: Setup, Strategy &amp; Gameplay Explained](https://api.dataforseo.com/cdn/i/07210110-2120-0139-0000-7df23cf9bb0e:6)\nGo is a strategy game played on a grid. `Black moves first, placing one stone on an intersection. Players take turns claiming territory and capturing enemy stones. The player with the most territory and captured pieces at the end of the game wins`.[](https://www.youtube.com/watch?v=6VSIf7sAGSU) [[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)[[2]](https://www.youtube.com/watch?v=Lh-_4fh5plI)[[3]](https://www.britgo.org/intro/intro2.html)[[4]](https://woodexpressions.com/pages/how-to-play-go-rules-setup-and-strategy)\n\nHere are the essential rules:\n\n1. The Board and Pieces\n\n- Go is played on a grid of intersections. While traditional boards are 19 \u00d7 19, beginners often start on 9 \u00d7 9 or 13 \u00d7 13 boards.\n- Players use two colors of stones: Black and White. Black always goes first, placing the first stone on any empty intersection.\n- Once played, stones do not move . They are only removed if they are captured.[](https://www.youtube.com/watch?v=6VSIf7sAGSU) [[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)[[2]](https://en.wikipedia.org/wiki/Rules_of_Go)[[3]](https://www.britgo.org/intro/intro2.html)[[4]](https://woodexpressions.com/pages/how-to-play-go-rules-setup-and-strategy)\n\n2. Liberties\n\n- Liberties are the empty intersections immediately adjacent (vertically or horizontally) to a stone.[](https://www.youtube.com/watch?v=6VSIf7sAGSU) [[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)[[2]](https://en.wikipedia.org/wiki/Go_%28game%29)\n- Stones of the same color connected along the lines are considered a single group. They share all the liberties of the individual stones in that group.[](https://www.youtube.com/watch?v=6VSIf7sAGSU) [[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)[[2]](https://www.youtube.com/watch?v=cFVM_hwh56s)\n- If all the liberties of a stone or group are blocked by the opponent, the stones are captured and removed from the board as \"prisoners\".[](https://www.youtube.com/watch?v=6VSIf7sAGSU) [[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)[[2]](https://woodexpressions.com/pages/how-to-play-go-rules-setup-and-strategy)\n- A stone or group with only one liberty remaining is in `Atari` (similar to \"check\" in chess).[](https://www.youtube.com/watch?v=6VSIf7sAGSU) [[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)[[2]](https://woodexpressions.com/pages/how-to-play-go-rules-setup-and-strategy)\n\n3. The Ko Rule (No Repetition)\n\n- You are not allowed to make a move that would exactly repeat a previous board position.\n- This specifically prevents the situation called `Ko` , where two stones endlessly capture each other back and forth. If a stone is captured in a Ko, the capturing player must play elsewhere on the board for at least one turn before their opponent can recapture it.[](https://www.youtube.com/watch?v=6VSIf7sAGSU) [[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)[[2]](https://www.mastersofgames.com/rules/go-rules.htm)[[3]](https://en.wikipedia.org/wiki/Go_%28game%29)\n\n4. Eyes and Life\n\n- To keep your groups safe from being captured, they must have two \"eyes\". An eye is an isolated, empty space completely enclosed by your stones.[](https://www.youtube.com/watch?v=Lh-_4fh5plI) [[1]](https://www.youtube.com/watch?v=Lh-_4fh5plI)\n- If a group has two separate eyes, the opponent can never capture it because they can only play in one eye at a time, which is not an illegal self-capture.[[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)[[2]](https://www.youtube.com/watch?v=oZTdT8MQexk)\n\n5. Winning and Scoring\n\n- The game ends when both players pass consecutively (indicating there are no more profitable or safe moves to make).[](https://www.youtube.com/watch?v=6VSIf7sAGSU) [[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)[[2]](https://woodexpressions.com/pages/how-to-play-go-rules-setup-and-strategy)\n- A player's score is calculated by the total number of empty intersections they successfully enclosed (their territory) plus the number of opponent stones they captured.[](https://www.youtube.com/watch?v=6VSIf7sAGSU) [[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)[[2]](https://woodexpressions.com/pages/how-to-play-go-rules-setup-and-strategy)\n- Because Black has the advantage of going first, White is usually awarded bonus points called `Komi` (typically 6.5 or 7.5 points) to prevent ties.[](https://www.youtube.com/watch?v=6VSIf7sAGSU) [[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)\n\nFor a quick, visual demonstration of the game's core concepts in action:![Related video thumbnail](https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRAMDleIh2TE2sPmdn9arS6_LziUJ0aXKmpeu8ovavlaYmw4XlM)\n3:19[How to Play Go - Learn In 5 Minutes!26K views \u00a0\u00b7\u00a04 years ago![](https://api.dataforseo.com/cdn/i/07210110-2120-0139-0000-7df23cf9bb0e:7)\nYouTube\u00a0\u00b7\u00a0Shawn Ray](https://www.youtube.com/watch?v=6VSIf7sAGSU)",
+              "items": [
+                {
+                  "type": "ai_overview_element",
+                  "position": "left",
+                  "title": null,
+                  "text": "Go is a strategy game played on a grid. Black moves first, placing one stone on an intersection. Players take turns claiming territory and capturing enemy stones. The player with the most territory and captured pieces at the end of the game wins. YouTube \u00b7 Shawn Ray +3",
+                  "markdown": "![How to Play Go: Setup, Strategy &amp; Gameplay Explained](https://api.dataforseo.com/cdn/i/07210110-2120-0139-0000-7df23cf9bb0e:3)\nGo is a strategy game played on a grid. `Black moves first, placing one stone on an intersection. Players take turns claiming territory and capturing enemy stones. The player with the most territory and captured pieces at the end of the game wins`.[](https://www.youtube.com/watch?v=6VSIf7sAGSU) [[1]](https://www.youtube.com/watch?v=6VSIf7sAGSU)[[2]](https://www.youtube.com/watch?v=Lh-_4fh5plI)[[3]](https://www.britgo.org/intro/intro2.html)[[4]](https://woodexpressions.com/pages/how-to-play-go-rules-setup-and-strategy)",
+                  "links": null,
+                  "images": [
+                    {
+                      "type": "images_element",
+                      "alt": "How to Play Go: Setup, Strategy & Gameplay Explained",
+                      "url": null,
+                      "image_url": "https://api.dataforseo.com/cdn/i/07210110-2120-0139-0000-7df23cf9bb0e:4"
+                    }
+                  ],
+                  "references": [
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "YouTube",
+                      "domain": "www.youtube.com",
+                      "url": "https://www.youtube.com/watch?v=6VSIf7sAGSU",
+                      "title": "How to Play Go - Learn In 5 Minutes!",
+                      "text": "hello everyone this is Colossus. and today we're going to be learning how to play Go in under five. minutes go is a two-player gam..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "YouTube",
+                      "domain": "www.youtube.com",
+                      "url": "https://www.youtube.com/watch?v=Lh-_4fh5plI",
+                      "title": "How to Play Go | Learn to Play Board Games #WEGames",
+                      "text": "and today I'm going to be going over Go a game where your brain will feel like it's doing gymnastics on a trampoline it's easy to ..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "British Go Association",
+                      "domain": "www.britgo.org",
+                      "url": "https://www.britgo.org/intro/intro2.html",
+                      "title": "How to Play | British Go Association",
+                      "text": "The rules. A game of Go starts with an empty board. Each player has an effectively unlimited supply of pieces (called stones), one..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "Wood Expressions",
+                      "domain": "woodexpressions.com",
+                      "url": "https://woodexpressions.com/pages/how-to-play-go-rules-setup-and-strategy",
+                      "title": "How to Play Go: Rules, Setup, and Strategy - Wood Expressions",
+                      "text": "Go Setup. Place the board between two players. One player takes black stones, and the other takes white stones. The board starts e..."
+                    }
+                  ]
+                },
+                {
+                  "type": "ai_overview_element",
+                  "position": "left",
+                  "title": null,
+                  "text": "Here are the essential rules:",
+                  "markdown": "Here are the essential rules:",
+                  "links": null,
+                  "images": null,
+                  "references": null
+                },
+                {
+                  "type": "ai_overview_element",
+                  "position": "left",
+                  "title": "1. The Board and Pieces",
+                  "text": null,
+                  "markdown": "1. The Board and Pieces",
+                  "links": null,
+                  "images": null,
+                  "references": null
+                },
+                {
+                  "type": "ai_overview_element",
+                  "position": "left",
+                  "title": "2. Liberties",
+                  "text": null,
+                  "markdown": "2. Liberties",
+                  "links": null,
+                  "images": null,
+                  "references": null
+                },
+                {
+                  "type": "ai_overview_element",
+                  "position": "left",
+                  "title": "3. The Ko Rule (No Repetition)",
+                  "text": null,
+                  "markdown": "3. The Ko Rule (No Repetition)",
+                  "links": null,
+                  "images": null,
+                  "references": null
+                },
+                {
+                  "type": "ai_overview_element",
+                  "position": "left",
+                  "title": "4. Eyes and Life",
+                  "text": null,
+                  "markdown": "4. Eyes and Life",
+                  "links": null,
+                  "images": null,
+                  "references": null
+                },
+                {
+                  "type": "ai_overview_element",
+                  "position": "left",
+                  "title": "5. Winning and Scoring",
+                  "text": "For a quick, visual demonstration of the game's core concepts in action: 3:19 How to Play Go - Learn In 5 Minutes! 26K views \u00b7\u00a04 years ago YouTube\u00a0\u00b7\u00a0Shawn Ray",
+                  "markdown": "For a quick, visual demonstration of the game's core concepts in action:![Related video thumbnail](https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRAMDleIh2TE2sPmdn9arS6_LziUJ0aXKmpeu8ovavlaYmw4XlM)\n3:19[How to Play Go - Learn In 5 Minutes!26K views \u00a0\u00b7\u00a04 years ago![](https://api.dataforseo.com/cdn/i/07210110-2120-0139-0000-7df23cf9bb0e:5)\nYouTube\u00a0\u00b7\u00a0Shawn Ray](https://www.youtube.com/watch?v=6VSIf7sAGSU)",
+                  "links": null,
+                  "images": null,
+                  "references": null
+                }
+              ],
+              "references": [
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "YouTube",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/watch?v=6VSIf7sAGSU",
+                  "title": "How to Play Go - Learn In 5 Minutes!",
+                  "text": "hello everyone this is Colossus. and today we're going to be learning how to play Go in under five. minutes go is a two-player gam..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "British Go Association",
+                  "domain": "www.britgo.org",
+                  "url": "https://www.britgo.org/intro/intro2.html",
+                  "title": "How to Play | British Go Association",
+                  "text": "The rules. A game of Go starts with an empty board. Each player has an effectively unlimited supply of pieces (called stones), one..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "Masters Traditional Games",
+                  "domain": "www.mastersofgames.com",
+                  "url": "https://www.mastersofgames.com/rules/go-rules.htm",
+                  "title": "The Rules / Instructions of Go or Wei Chi",
+                  "text": "To play the game of Go, you need: * **Board** A flat table or a traditional floor-board with legs * **Pieces** Black and white len..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "Wikipedia",
+                  "domain": "en.wikipedia.org",
+                  "url": "https://en.wikipedia.org/wiki/Rules_of_Go",
+                  "title": "Rules of Go - Wikipedia",
+                  "text": "Players and equipment * Rule 1. Players: Go is a game between two players, called Black and White. * Rule 2. Board: Go is played o..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "YouTube",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/watch?v=Lh-_4fh5plI",
+                  "title": "How to Play Go | Learn to Play Board Games #WEGames",
+                  "text": "and today I'm going to be going over Go a game where your brain will feel like it's doing gymnastics on a trampoline it's easy to ..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "Wood Expressions",
+                  "domain": "woodexpressions.com",
+                  "url": "https://woodexpressions.com/pages/how-to-play-go-rules-setup-and-strategy",
+                  "title": "How to Play Go: Rules, Setup, and Strategy - Wood Expressions",
+                  "text": "Go Setup. Place the board between two players. One player takes black stones, and the other takes white stones. The board starts e..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "YouTube",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/watch?v=cFVM_hwh56s",
+                  "title": "How To Play Go (Beginner Tutorial)",
+                  "text": "board there are 81 intersections. the player of the black markers is the first to take a turn black plays a marker on the board. a..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "Wikipedia",
+                  "domain": "en.wikipedia.org",
+                  "url": "https://en.wikipedia.org/wiki/Go_%28game%29",
+                  "title": "Go (game) - Wikipedia",
+                  "text": "Rules. ... Aside from the order of play (alternating moves, Black moves first or takes a handicap) and scoring rules, there are es..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "www.youtube.com",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/shorts/tL1VUla6Vpk",
+                  "title": "How to Play Game of Go | Go Game Rules \ud83c\udf8b #GoGame #BoardGame ...",
+                  "text": "i just finished watching the Apothecary Diaries and it made me really curious about the game of Go. also known as Wui. I started l..."
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 2,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]",
+              "domain": "www.reddit.com",
+              "title": "I have created an image to help you understand the rules ...",
+              "url": "https://www.reddit.com/r/baduk/comments/vn936i/i_have_created_an_image_to_help_you_understand/",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "30+ comments  \u00b7  4 years ago",
+              "website_name": "Reddit\u00a0\u00b7\u00a0r/baduk",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Pure Go rules count only stones on the board as points, regardless of whether they are alive or dead. (There is no concept of territory). Read more",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "Go rules count only stones on the board as points"
+              ],
+              "links": [
+                {
+                  "type": "link_element",
+                  "title": "The simplest and most concise rules of Go I could ...",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/baduk/comments/1k4k7h7/the_simplest_and_most_concise_rules_of_go_i_could/",
+                  "domain": "www.reddit.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "Full Go rules in the shortest and most concise way? - Reddit",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/baduk/comments/ysmrmw/full_go_rules_in_the_shortest_and_most_concise_way/",
+                  "domain": "www.reddit.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "More results from www.reddit.com",
+                  "description": null,
+                  "url": "https://www.google.com/search?q=rules+of+the+game+go+site:www.reddit.com&sca_esv=3271cc0dab4982ea&hl=en&gl=US&sa=X&ved=2ahUKEwjEjJPlouKVAxX6LPsDHWRHAzwQrQIoAnoECCMQAw",
+                  "domain": "www.google.com"
+                }
+              ],
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 3,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[3]/div[1]/div[1]",
+              "domain": "en.wikipedia.org",
+              "title": "Rules of Go",
+              "url": "https://en.wikipedia.org/wiki/Rules_of_Go",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://en.wikipedia.org \u203a wiki \u203a Rules_of_Go",
+              "website_name": "Wikipedia",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "The rules of Go govern the play of the game of Go, a two-player board game. The rules have seen some variation over time and from place to place. Read more",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "The rules of Go govern the play of the game of Go"
+              ],
+              "links": [
+                {
+                  "type": "link_element",
+                  "title": "Basic rules",
+                  "description": null,
+                  "url": "https://en.wikipedia.org/wiki/Rules_of_Go#Basic_rules",
+                  "domain": "en.wikipedia.org"
+                },
+                {
+                  "type": "link_element",
+                  "title": "Explanation of the basic rules",
+                  "description": null,
+                  "url": "https://en.wikipedia.org/wiki/Rules_of_Go#Explanation_of_the_basic_rules",
+                  "domain": "en.wikipedia.org"
+                },
+                {
+                  "type": "link_element",
+                  "title": "Optional rules",
+                  "description": null,
+                  "url": "https://en.wikipedia.org/wiki/Rules_of_Go#Optional_rules",
+                  "domain": "en.wikipedia.org"
+                },
+                {
+                  "type": "link_element",
+                  "title": "Variations",
+                  "description": null,
+                  "url": "https://en.wikipedia.org/wiki/Rules_of_Go#Variations",
+                  "domain": "en.wikipedia.org"
+                }
+              ],
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "people_also_ask",
+              "rank_group": 1,
+              "rank_absolute": 4,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[5]/div[1]/div[1]/div[1]",
+              "items": [
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Is Go actually harder than chess?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[5]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "What are the basic rules of the game?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[5]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Is Go the hardest board game?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[5]/div[1]/div[1]/div[1]/div[1]/div[2]/div[3]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "What are illegal moves in Go?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[5]/div[1]/div[1]/div[1]/div[1]/div[2]/div[4]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_expanded_element",
+                      "featured_title": null,
+                      "url": "https://senseis.xmp.net/?IllegalMove",
+                      "domain": "senseis.xmp.net",
+                      "title": "Illegal Move at Sensei's Library",
+                      "description": "An illegal move is a move which violates the rules of go. The ruleset in use will specify how illegal moves are handled. Typically a illegal move will result in either a forfeited game or a reconstruction of the position preceding the illegal move followed by an involuntary pass by the offending player.",
+                      "images": null,
+                      "timestamp": null,
+                      "table": null
+                    }
+                  ]
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "video",
+              "rank_group": 1,
+              "rank_absolute": 5,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[7]/div[1]",
+              "items": [
+                {
+                  "type": "video_element",
+                  "source": "YouTube \u00b7 Go Magic",
+                  "title": "How to Play Go: Rules Explained | Beginner Tutorial on Go ...",
+                  "timestamp": "2022-09-20 00:00:00 +00:00",
+                  "url": "https://www.youtube.com/watch?v=oZTdT8MQexk&vl=en"
+                },
+                {
+                  "type": "video_element",
+                  "source": "YouTube \u00b7 Go Magic",
+                  "title": "How to play the Game of Go #GoGame Ready to train your ...",
+                  "timestamp": "2025-05-19 00:00:00 +00:00",
+                  "url": "https://www.youtube.com/shorts/M6UCjoNU9EA"
+                },
+                {
+                  "type": "video_element",
+                  "source": "YouTube \u00b7 Shawn Ray",
+                  "title": "How to Play Go - Learn In 5 Minutes!",
+                  "timestamp": "2021-09-30 00:00:00 +00:00",
+                  "url": "https://www.youtube.com/watch?v=6VSIf7sAGSU"
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 6,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[9]/div[1]/div[1]",
+              "domain": "www.mastersofgames.com",
+              "title": "The Rules / Instructions of Go or Wei Chi",
+              "url": "https://www.mastersofgames.com/rules/go-rules.htm?srsltid=AfmBOorxRrbcUEvWSeJc08I9WRBKfmylqRK5rlxzv2gWBl8KSW2S8WXF",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.mastersofgames.com \u203a rules \u203a go-rules",
+              "website_name": "Masters Traditional Games",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Go is a game of territorial capture - the primary objective is to encircle as much territory as possible. In doing so, opposing stones may be captured. Read more",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "Go",
+                "game"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 7,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[11]/div[1]/div[1]",
+              "domain": "www.cs.cmu.edu",
+              "title": "The Japanese Rules of Go",
+              "url": "https://www.cs.cmu.edu/~wjh/go/rules/Japanese.html",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.cs.cmu.edu \u203a ~wjh \u203a go \u203a rules \u203a Japanese",
+              "website_name": "CMU School of Computer Science",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "1. The players have the right to play alternately. 2. To declare that the game should stop, a player passes. If his opponent passes in succession\u00a0... Read more",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "The players have the right to play alternately"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 8,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[13]/div[1]/div[1]",
+              "domain": "www.pandanet.co.jp",
+              "title": "How To Play Go - Introduction",
+              "url": "https://www.pandanet.co.jp/English/learning_go/learning_go_1.html",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.pandanet.co.jp \u203a learning_go \u203a learning_go_1",
+              "website_name": "\u30d1\u30f3\u30c0\u30cd\u30c3\u30c8",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "The rules are very simple, and you can learn them in a few minutes - but they lead to a countless number of intriguing patterns and clever maneuvers. The\u00a0... Read more",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "The rules are very simple, and you can learn them in a few minutes"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 9,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[15]/div[1]/div[1]",
+              "domain": "online-go.com",
+              "title": "Learn to play Go",
+              "url": "https://online-go.com/learn-to-play-go",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://online-go.com \u203a learn-to-play-go",
+              "website_name": "online-go.com",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "1.1The Game of Go. Build territory one stone at a time. play! A B C. 1.2Self-capture. Do not capture your own stones. Read more",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "Build territory one stone at a time"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 10,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[17]/div[1]/div[1]",
+              "domain": "www.britgo.org",
+              "title": "GO RULES QUICK REFERENCE",
+              "url": "https://www.britgo.org/files/rules/GoQuickRef.pdf",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.britgo.org \u203a files \u203a rules \u203a GoQuickRef",
+              "website_name": "British Go Association",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Basics. The board starts empty. The board can be any size of grid, usually 13x13, 9x9 or 19x19. One player has black pieces and the other has white. Read more",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "The board starts empty"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "images",
+              "rank_group": 1,
+              "rank_absolute": 11,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[19]/div[1]",
+              "title": "Images",
+              "url": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&hl=en&gl=US&q=rules+of+the+game+go&udm=2&source=univ&fir=nH9e35O5pAr0EM%252CK8OqkLljT2h2WM%252C_%253B0Eh4gL3DC-cf7M%252Cb_f_OHEuUo2ybM%252C_%253Bcex_kPhlsMhH0M%252CwIba_Z77NIWxBM%252C_%253B3lfXijiuSqh62M%252CG3uEmF7B_ug-yM%252C_%253BL9oWWgy55O_Q1M%252CY-F_aLNuFGS6gM%252C_%253BA5YrII23GRm9GM%252C8dcVuF5AFJCvvM%252C_%253B7PC3oBQlgWXPEM%252Cw8NYNEu2h8ZWhM%252C_%253BQm_FS4KTTtZKYM%252CkaqMZqDz-QNFPM%252C_%253BVki81ir5nmxfCM%252Cb_f_OHEuUo2ybM%252C_&usg=AI4_-kT6gPhgG2GHHVqvWZKmDPQX5bm_kg&sa=X&ved=2ahUKEwjEjJPlouKVAxX6LPsDHWRHAzwQ7Al6BAhXEAU",
+              "items": [
+                {
+                  "type": "images_element",
+                  "alt": "How to Play Go: Setup, Strategy & Gameplay Explained",
+                  "url": "https://www.wikihow.com/Play-Go",
+                  "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpdhbTFJMe4Zc9NK1EN_ezg26FjGqRgQuG6uXPBvM0a6PFefnNIiThVWQ&s"
+                },
+                {
+                  "type": "images_element",
+                  "alt": "How to Play Go",
+                  "url": "https://www.youtube.com/watch?v=4Q9iCZkzTUk",
+                  "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDeK1kRgJIrmAtH9WJB3YEccVCvKyLzW2qmDw_3PQN&s"
+                },
+                {
+                  "type": "images_element",
+                  "alt": "Go | History & Rules | Britannica",
+                  "url": "https://www.britannica.com/topic/go-game",
+                  "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFhp2Cp7PfRQ5AKlBc83tbWqmozN2PnN06FIu8Y6D1GbXNhfqJmqZfkOg&s"
+                },
+                {
+                  "type": "images_element",
+                  "alt": "HOW TO PLAY GO",
+                  "url": "https://www.kiseidopublishing.com/ff.htm",
+                  "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQH9e26tMFcd-PK4-_4YB9ml_9zapzykoKUazhxNk17TCi9xddclqbtTPo&s"
+                },
+                {
+                  "type": "images_element",
+                  "alt": "Go (game) - Wikipedia",
+                  "url": "https://en.wikipedia.org/wiki/Go_(game)",
+                  "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQG-dJlxTTNqA6FsXmFFIT-s3ePIL5-L0oR4VXndCjx_-FAfNcIMP3LXv0&s"
+                },
+                {
+                  "type": "images_element",
+                  "alt": "How To Play Go \u2013 Irish Go Association",
+                  "url": "https://www.irish-go.org/how-to-play-go/",
+                  "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjwOM5flA4g5xDhudaQGKOY06oXl3TxQEHqt9SAEnMvzUcjOa7ekFWEZ8&s"
+                },
+                {
+                  "type": "images_element",
+                  "alt": "Article 1. The game of go",
+                  "url": "https://www.cs.cmu.edu/~wjh/go/rules/Japanese.html",
+                  "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTujKXOkAZEwi6tnBdNSG_i9Sz5vBLYQjy44pj0hiE84JvabG-z2TKsZyA&s"
+                },
+                {
+                  "type": "images_element",
+                  "alt": "Area or territory \u2013 A brief history of go rules",
+                  "url": "https://www.nordicgodojo.eu/post/228/area-or-territory-a-brief-history-of-go-rules",
+                  "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEWhizvsyixD2EZWsAlQ9TUExqHnTwhJr4maTkcFBuls_sBbVqo_xUUEk&s"
+                },
+                {
+                  "type": "images_element",
+                  "alt": "How to Play Go - YouTube",
+                  "url": "https://www.youtube.com/watch?v=4Q9iCZkzTUk",
+                  "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRW7z_J92CfZ7tzeMW8AgE77998z3Pb7a0ujipaEHPN0Q3CRd9caEZNyVk&s"
+                }
+              ],
+              "related_image_searches": null,
+              "rectangle": null
+            },
+            {
+              "type": "related_searches",
+              "rank_group": 1,
+              "rank_absolute": 12,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[2]/div[1]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]",
+              "items": [
+                "Go game rules pdf",
+                "Rules of the game go board game",
+                "Go game rules for beginners",
+                "When does a game of Go end",
+                "Go game how to win",
+                "Go game play",
+                "Go game app",
+                "Go ko rule"
+              ],
+              "rectangle": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

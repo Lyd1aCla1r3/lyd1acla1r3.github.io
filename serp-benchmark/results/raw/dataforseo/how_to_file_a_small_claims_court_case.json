@@ -1,0 +1,610 @@
+{
+  "version": "0.1.20260717",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "1.3548 sec.",
+  "cost": 0.002,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "07210052-2120-0139-0000-34ed56787ceb",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "1.2222 sec.",
+      "cost": 0.002,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "serp",
+        "google",
+        "organic",
+        "live",
+        "advanced"
+      ],
+      "data": {
+        "api": "serp",
+        "function": "live",
+        "se": "google",
+        "se_type": "organic",
+        "keyword": "how to file a small claims court case",
+        "location_code": 2840,
+        "language_code": "en",
+        "device": "desktop",
+        "expand_ai_overview": true,
+        "os": "windows"
+      },
+      "result": [
+        {
+          "keyword": "how to file a small claims court case",
+          "type": "organic",
+          "se_domain": "google.com",
+          "location_code": 2840,
+          "language_code": "en",
+          "check_url": "https://www.google.com/search?q=how%20to%20file%20a%20small%20claims%20court%20case&hl=en&gl=US&ie=UTF-8&uule=w+CAIQIFISCQs2MuSEtepUEUK33kOSuTsc",
+          "datetime": "2026-07-20 21:52:47 +00:00",
+          "spell": null,
+          "refinement_chips": null,
+          "item_types": [
+            "ai_overview",
+            "organic",
+            "people_also_ask",
+            "video",
+            "perspectives",
+            "related_searches"
+          ],
+          "se_results_count": 184,
+          "pages_count": 1,
+          "items_count": 12,
+          "items": [
+            {
+              "type": "ai_overview",
+              "rank_group": 1,
+              "rank_absolute": 1,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]",
+              "asynchronous_ai_overview": true,
+              "markdown": null,
+              "items": null,
+              "references": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 2,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]",
+              "domain": "www.nycourts.gov",
+              "title": "New York City Small Claims Court Starting a Case in NYC ...",
+              "url": "https://www.nycourts.gov/new-york-city-small-claims-court/starting-case-nyc-small-claims-court",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.nycourts.gov \u203a starting-case-nyc-small-claim...",
+              "website_name": "New York Courts (.gov)",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Contact the Small Claims Court Clerk's office in the county where the defendant lives, works or has a place of business to obtain the necessary form. Electronic\u00a0... Read more",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "Small Claims Court",
+                "form"
+              ],
+              "links": [
+                {
+                  "type": "link_element",
+                  "title": "In General",
+                  "description": null,
+                  "url": "https://www.nycourts.gov/new-york-city-small-claims-court/starting-case-nyc-small-claims-court#in-general",
+                  "domain": "www.nycourts.gov"
+                },
+                {
+                  "type": "link_element",
+                  "title": "Where to Sue (Venue)",
+                  "description": null,
+                  "url": "https://www.nycourts.gov/new-york-city-small-claims-court/starting-case-nyc-small-claims-court#where-to-sue-venue",
+                  "domain": "www.nycourts.gov"
+                },
+                {
+                  "type": "link_element",
+                  "title": "Starting the Case",
+                  "description": null,
+                  "url": "https://www.nycourts.gov/new-york-city-small-claims-court/starting-case-nyc-small-claims-court#starting-the-case",
+                  "domain": "www.nycourts.gov"
+                }
+              ],
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "people_also_ask",
+              "rank_group": 1,
+              "rank_absolute": 3,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[4]/div[1]/div[1]/div[1]",
+              "items": [
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Is it hard to win in small claims court?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "How much does it cost to file a small claims case in California?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "What qualifies for small claims court in Texas?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[2]/div[3]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "How to file a motion with the court without an attorney?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[2]/div[4]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 4,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[6]/div[1]/div[1]",
+              "domain": "selfhelp.courts.ca.gov",
+              "title": "Small claims in California",
+              "url": "https://selfhelp.courts.ca.gov/small-claims-california",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://selfhelp.courts.ca.gov \u203a small-claims-california",
+              "website_name": "California Courts Self-Help (.gov)",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "The filing fee for a small claims case is between $30-$100. in about 1-2 months. Get step-by-step instructions Start a small claims case",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "Get step-by-step instructions"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 5,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[8]/div[1]/div[1]",
+              "domain": "www.nccourts.gov",
+              "title": "Small Claims | North Carolina Judicial Branch",
+              "url": "https://www.nccourts.gov/help-topics/lawsuits-and-small-claims/small-claims",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.nccourts.gov \u203a lawsuits-and-small-claims \u203a s...",
+              "website_name": "NC Courts (.gov)",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "A small claims case is filed in the clerk of superior court's office in the appropriate county. The forms may be printed and completed in advance. Read more",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "is filed in the clerk of superior court's office in the appropriate county"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 6,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[10]/div[1]/div[1]",
+              "domain": "www.tjctc.org",
+              "title": "Filing a Small Claims Case",
+              "url": "https://www.tjctc.org/srl/small-claim-plaintiff.html",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.tjctc.org \u203a srl \u203a small-claim-plaintiff",
+              "website_name": "Texas Justice Court Training Center",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Click here for information on filing a small claims case (lawsuit for $20,000 or less of personal property or money). begin your small claims case.",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "begin your small claims case"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 7,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[12]/div[1]/div[1]",
+              "domain": "www.mdcourts.gov",
+              "title": "Small Claims",
+              "url": "http://www.mdcourts.gov/legalhelp/smallclaims",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "http://www.mdcourts.gov \u203a legalhelp \u203a smallclaims",
+              "website_name": "Maryland Courts",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "There are four basic steps to starting a small claims case: File a Complaint form (DC-CV-001) with the court. Pay the filing fee. Check the District Court's\u00a0...",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "File a Complaint form (DC-CV-001) with the court"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "video",
+              "rank_group": 1,
+              "rank_absolute": 8,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[14]/div[1]",
+              "items": [
+                {
+                  "type": "video_element",
+                  "source": "YouTube \u00b7 The Justice Center",
+                  "title": "Small Claims 101",
+                  "timestamp": "2025-10-05 00:00:00 +00:00",
+                  "url": "https://www.youtube.com/watch?v=KuAX8ocB4wA"
+                },
+                {
+                  "type": "video_element",
+                  "source": "YouTube \u00b7 Lee Clerk Communications",
+                  "title": "How To File a Small Claims Case",
+                  "timestamp": "2023-06-16 00:00:00 +00:00",
+                  "url": "https://www.youtube.com/watch?v=hAofax9ifL8"
+                },
+                {
+                  "type": "video_element",
+                  "source": "YouTube \u00b7 Cobb County Government",
+                  "title": "Filing a Small Claims Case in Magistrate Court",
+                  "timestamp": "2026-06-20 21:52:47 +00:00",
+                  "url": "https://www.youtube.com/watch?v=wFppRHeoBI8"
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 9,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[16]/div[1]/div[1]",
+              "domain": "michiganlegalhelp.org",
+              "title": "Taking a Small Claims Case to Court",
+              "url": "https://michiganlegalhelp.org/resources/money-debt-and-consumer-issues/taking-small-claims-case-court",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://michiganlegalhelp.org \u203a resources \u203a taking-small-...",
+              "website_name": "Michigan Legal Help",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "To start a case in Small Claims Court, you must file an Affidavit and Claim in the Small Claims Court. Use our Do-It-Yourself Small Claims Suit tool get these \u00a0...",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "file an Affidavit and Claim in the Small Claims Court"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "perspectives",
+              "rank_group": 1,
+              "rank_absolute": 10,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[18]/div[1]",
+              "title": "What people are saying",
+              "items": [
+                {
+                  "type": "perspectives_element",
+                  "title": "AtlCody - Georgia\u2019s Lawyer. . Ask a Lawyer Understanding Contract Disputes and Small Claims Court in Georgia",
+                  "description": null,
+                  "url": "https://www.facebook.com/Atlcody/videos/ask-a-lawyer-understanding-contract-disputes-and-small-claims-court-in-georgia/2058015508196156/",
+                  "domain": "www.facebook.com",
+                  "date": "1 week ago",
+                  "source": "Atlcody",
+                  "timestamp": "2026-07-13 21:52:47 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Filed a small claims lawsuit for the first time, actually got paid.",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/smallbusiness/comments/1ueyck9/filed_a_small_claims_lawsuit_for_the_first_time/",
+                  "domain": "www.reddit.com",
+                  "date": "3 weeks ago",
+                  "source": "r/smallbusiness",
+                  "timestamp": "2026-06-29 21:52:47 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "How to take a company to a small claims court\n#smallclaimscourt\n#refunds\n#consumerlaw\n#consumerrights\n#consumeradvice",
+                  "description": null,
+                  "url": "https://www.instagram.com/reel/DZPq-DqM4D6/",
+                  "domain": "www.instagram.com",
+                  "date": "1 month ago",
+                  "source": "thecomplainingcow",
+                  "timestamp": "2026-06-20 21:52:47 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Who has filed a small claims case in Franklin County? What was the process like and what did you need to provide?",
+                  "description": null,
+                  "url": "https://www.facebook.com/groups/1444255972274842/posts/27666354752971606/",
+                  "domain": "www.facebook.com",
+                  "date": "1 month ago",
+                  "source": "Jamie Liggett",
+                  "timestamp": "2026-06-20 21:52:47 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Does anyone know where I could file an affidavit on a small claims. I\u2019ve already called the justice court system and told me to call the self help line but I can never get through to them.",
+                  "description": null,
+                  "url": "https://www.facebook.com/groups/131635646926724/posts/27458643057132614/",
+                  "domain": "www.facebook.com",
+                  "date": "2 weeks ago",
+                  "source": "You know your from Ogden if",
+                  "timestamp": "2026-07-06 21:52:47 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "How do I eFile a small claim in LA as an individual (not a law firm)?",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/AskLosAngeles/comments/1t8sha2/how_do_i_efile_a_small_claim_in_la_as_an/",
+                  "domain": "www.reddit.com",
+                  "date": "May 10, 2026",
+                  "source": "r/AskLosAngeles",
+                  "timestamp": "2026-05-10 00:00:00 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "I'm a traveling sales person and did an event in another state. Someone is not following through on her payment. Do I file for small claims where she is, or where I live? Thanks in advance.",
+                  "description": null,
+                  "url": "https://www.facebook.com/groups/freelegaladvice/posts/28011371325154373/",
+                  "domain": "www.facebook.com",
+                  "date": "1 week ago",
+                  "source": "Free Legal Advice",
+                  "timestamp": "2026-07-13 21:52:47 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "How do I file a small claims suit if I don't know the person's phone number or address?",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/legaladvice/comments/1tgo3mr/how_do_i_file_a_small_claims_suit_if_i_dont_know/",
+                  "domain": "www.reddit.com",
+                  "date": "May 18, 2026",
+                  "source": "r/legaladvice",
+                  "timestamp": "2026-05-18 00:00:00 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "I have a question. Has anyone taken someone to smalls claiming court here in Clarksville? Where do I go to file? When I file do I bring the proof I have with me? What is the court process like? Feel free to PM me if you don\u2019t want ti share publicly. Thanks. And al",
+                  "description": null,
+                  "url": "https://www.facebook.com/groups/agapechurchnakurukenya/posts/26836191996012631/",
+                  "domain": "www.facebook.com",
+                  "date": "May 6, 2026",
+                  "source": "Isaiah Saiz, Allie Barrientos",
+                  "timestamp": "2026-05-06 00:00:00 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Looking for direction on filling out small claims court paperwork, the process etc. Is this something a lawyer could help with? If so any recommendations? Thank you in advance.",
+                  "description": null,
+                  "url": "https://www.facebook.com/groups/853306045042912/posts/2725119967861501/",
+                  "domain": "www.facebook.com",
+                  "date": "May 20, 2026",
+                  "source": "Bisman Recommendations",
+                  "timestamp": "2026-05-20 00:00:00 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Who do I talk to about a small claims case ? I need to sue an individual for money give for a service that was never done and I was never given the money back for the service they didn\u2019t do ?",
+                  "description": null,
+                  "url": "https://www.facebook.com/groups/1532230520328493/posts/4259577610927090/",
+                  "domain": "www.facebook.com",
+                  "date": "1 month ago",
+                  "source": "OKEECHOBEE BARTERING",
+                  "timestamp": "2026-06-20 21:52:47 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Small Claims Anyone here know how to sue in Small Claims Court? I got a General Contractor that owes quite a bit and is ducking me for a job my company did for him.",
+                  "description": null,
+                  "url": "https://www.facebook.com/groups/livingintemplebeltontx/posts/955842357448253/",
+                  "domain": "www.facebook.com",
+                  "date": "May 20, 2026",
+                  "source": "Michael Martin",
+                  "timestamp": "2026-05-20 00:00:00 +00:00"
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 11,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[20]/div[1]/div[1]",
+              "domain": "a.arlawhelp.org",
+              "title": "Small Claims Process - Self-Representation in Court",
+              "url": "https://a.arlawhelp.org/self-representation/small-claims-court/process-and-forms",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://a.arlawhelp.org \u203a process-and-forms",
+              "website_name": "AR Law Help",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Mar 6, 2026 \u2014 Small Claims Process \u00b7 Plaintiff files a CLAIM FORM. Must visit District Court Clerk in the county where the Defendant lives or where the\u00a0... Read more",
+              "pre_snippet": "03/06/2026 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "Plaintiff files a CLAIM FORM"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2026-03-06 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "related_searches",
+              "rank_group": 1,
+              "rank_absolute": 12,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[2]/div[1]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]",
+              "items": [
+                "Is it worth going to small claims court for $2,000",
+                "How to submit evidence in Small Claims court",
+                "What kind of damages can you sue for in small claims court",
+                "Ca small claims court",
+                "Small Claims Court NYC maximum amount",
+                "File Small Claims Court Los Angeles online",
+                "Is it worth going to small claims court for $5,000",
+                "Can i file a small claims case online in california"
+              ],
+              "rectangle": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

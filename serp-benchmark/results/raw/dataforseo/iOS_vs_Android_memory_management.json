@@ -1,0 +1,549 @@
+{
+  "version": "0.1.20260717",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "16.3824 sec.",
+  "cost": 0.002,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "07210059-2120-0139-0000-996644b96faf",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "16.2588 sec.",
+      "cost": 0.002,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "serp",
+        "google",
+        "organic",
+        "live",
+        "advanced"
+      ],
+      "data": {
+        "api": "serp",
+        "function": "live",
+        "se": "google",
+        "se_type": "organic",
+        "keyword": "iOS vs Android memory management",
+        "location_code": 2840,
+        "language_code": "en",
+        "device": "desktop",
+        "expand_ai_overview": true,
+        "os": "windows"
+      },
+      "result": [
+        {
+          "keyword": "iOS vs Android memory management",
+          "type": "organic",
+          "se_domain": "google.com",
+          "location_code": 2840,
+          "language_code": "en",
+          "check_url": "https://www.google.com/search?q=iOS%20vs%20Android%20memory%20management&hl=en&gl=US&ie=UTF-8&uule=w+CAIQIFISCQs2MuSEtepUEUK33kOSuTsc",
+          "datetime": "2026-07-20 21:59:50 +00:00",
+          "spell": null,
+          "refinement_chips": null,
+          "item_types": [
+            "ai_overview",
+            "people_also_ask",
+            "organic",
+            "video",
+            "related_searches"
+          ],
+          "se_results_count": 122,
+          "pages_count": 1,
+          "items_count": 12,
+          "items": [
+            {
+              "type": "ai_overview",
+              "rank_group": 1,
+              "rank_absolute": 1,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]",
+              "asynchronous_ai_overview": true,
+              "markdown": null,
+              "items": null,
+              "references": null,
+              "rectangle": null
+            },
+            {
+              "type": "people_also_ask",
+              "rank_group": 1,
+              "rank_absolute": 2,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]",
+              "items": [
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Does iOS manage RAM better than Android?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_expanded_element",
+                      "featured_title": null,
+                      "url": "https://medium.com/@esatkaraosmanoglu02/why-apple-devices-feel-smooth-even-with-lower-ram-a774c059b607",
+                      "domain": "medium.com",
+                      "title": "Why Apple Devices Feel Smooth Even With Lower RAM?",
+                      "description": "On average, iOS apps actually use far less memory than their Android counterparts \u2014 testing shows roughly 40% less RAM needed for the same apps on iPhone. One reason is language overhead: Android apps often run on a Java virtual machine (JVM), which adds memory overhead, whereas iOS apps are compiled to native code.",
+                      "images": null,
+                      "timestamp": null,
+                      "table": null
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Which phone has better RAM management?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_expanded_element",
+                      "featured_title": "Top 5 Phones with Highest RAM with Prices & Specs",
+                      "url": "https://www.91mobiles.com/list-of-phones/phones-with-highest-ram",
+                      "domain": "www.91mobiles.com",
+                      "title": "Phones with Highest RAM in India with Price July 2026 | 91mobiles.com",
+                      "description": null,
+                      "images": null,
+                      "timestamp": null,
+                      "table": {
+                        "table_header": [
+                          "Product Name",
+                          "RAM",
+                          "Processor"
+                        ],
+                        "table_content": [
+                          [
+                            "Xiaomi 17 Ultra",
+                            "16 GB RAM | 512 GB Storage",
+                            "Snapdragon 8 Elite Gen 5"
+                          ],
+                          [
+                            "Motorola Signature 512GB, 16GB RAM",
+                            "16 GB RAM | 512 GB Storage",
+                            "Snapdragon 8 Gen 5"
+                          ],
+                          [
+                            "Motorola Signature 1TB, 16GB RAM",
+                            "16 GB RAM | 1 TB Storage",
+                            "Snapdragon 8 Gen 5"
+                          ]
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Is iPhone or Android better for storage?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[2]/div[3]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "What can iOS do that Android can't?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[2]/div[4]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 3,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[4]/div[1]/div[1]",
+              "domain": "levelup.gitconnected.com",
+              "title": "Why iPhone Never Talks About RAM \u2014 and Why Android Can ...",
+              "url": "https://levelup.gitconnected.com/why-iphone-never-talks-about-ram-and-why-android-cant-stop-2bb0f4098f69",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://levelup.gitconnected.com \u203a why-iphone-never-ta...",
+              "website_name": "Level Up Coding",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Nov 6, 2025 \u2014 iOS doesn't let apps hoard memory. iOS handles memory fundamentally differently than Android, is basically the word \"suspend\"",
+              "pre_snippet": "11/06/2025 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "iOS handles memory fundamentally differently than Android"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2025-11-06 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 4,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[6]/div[1]/div[1]",
+              "domain": "www.quora.com",
+              "title": "If Android is based on Linux, why is RAM Management still ...",
+              "url": "https://www.quora.com/If-Android-is-based-on-Linux-why-is-RAM-Management-still-bad-compared-to-iOS-having-a-better-RAM-Management",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "7 answers  \u00b7  5 years ago",
+              "website_name": "Quora",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "If Android is based on Linux, why is RAM Management still bad compared to iOS having a better RAM Management?",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": null,
+              "links": [
+                {
+                  "type": "link_element",
+                  "title": "Is iOS RAM better than Android? - Quora",
+                  "description": null,
+                  "url": "https://www.quora.com/Is-iOS-RAM-better-than-Android",
+                  "domain": "www.quora.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "Do iOS devices use less RAM than Android devices ...",
+                  "description": null,
+                  "url": "https://www.quora.com/Do-iOS-devices-use-less-RAM-than-Android-devices",
+                  "domain": "www.quora.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "More results from www.quora.com",
+                  "description": null,
+                  "url": "https://www.google.com/search?q=iOS+vs+Android+memory+management+site:www.quora.com&sca_esv=3271cc0dab4982ea&hl=en&gl=US&sa=X&ved=2ahUKEwitsK6zoOKVAxUGCoYAHbjZHzkQrQIoAnoECCoQAw",
+                  "domain": "www.google.com"
+                }
+              ],
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 5,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[8]/div[1]/div[1]",
+              "domain": "medium.com",
+              "title": "Why Apple Devices Feel Smooth Even With Lower RAM?",
+              "url": "https://medium.com/@esatkaraosmanoglu02/why-apple-devices-feel-smooth-even-with-lower-ram-a774c059b607",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "1 like  \u00b7  6 months ago",
+              "website_name": "Medium\u00a0\u00b7\u00a0Esat Karaosmano\u011flu",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "On average, iOS apps actually use far less memory than their Android counterparts \u2014 testing shows roughly 40% less RAM needed for the same apps\u00a0...",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "iOS apps actually use far less memory than their Android counterparts"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 6,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[10]/div[1]/div[1]",
+              "domain": "www.androidauthority.com",
+              "title": "Apple vs Android RAM management: Who does it better?",
+              "url": "https://www.androidauthority.com/apple-vs-android-ram-management-3100032/",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.androidauthority.com \u203a Mobile",
+              "website_name": "Android Authority",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Feb 19, 2022 \u2014 On average, iOS games use 10% less RAM than the Android versions. This shows the difference between using the JVM and the Android UI, compared\u00a0... Read more",
+              "pre_snippet": "02/19/2022 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "iOS games use 10% less RAM than the Android versions"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2022-02-19 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "video",
+              "rank_group": 1,
+              "rank_absolute": 7,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[12]/div[1]",
+              "items": [
+                {
+                  "type": "video_element",
+                  "source": "Reddit \u00b7 Gary Explains",
+                  "title": "Android vs iOS RAM management - Who does it better? [Gary ...",
+                  "timestamp": "2022-02-07 00:00:00 +00:00",
+                  "url": "https://www.reddit.com/r/Android/comments/smqger/android_vs_ios_ram_management_who_does_it_better/"
+                },
+                {
+                  "type": "video_element",
+                  "source": "YouTube \u00b7 Android Authority",
+                  "title": "Does Android use more memory than iOS? \u2013 Gary explains",
+                  "timestamp": "2017-02-02 00:00:00 +00:00",
+                  "url": "https://www.youtube.com/watch?v=lCFpgknkqRE"
+                },
+                {
+                  "type": "video_element",
+                  "source": "YouTube \u00b7 History of Gadgets",
+                  "title": "YouTube",
+                  "timestamp": "2025-09-11 00:00:00 +00:00",
+                  "url": "https://www.youtube.com/watch?v=8CQi8qivwDs"
+                },
+                {
+                  "type": "video_element",
+                  "source": "YouTube \u00b7 The Cut",
+                  "title": "Why do iPhones Require less ram than Android Phones",
+                  "timestamp": "2023-01-22 00:00:00 +00:00",
+                  "url": "https://www.youtube.com/watch?v=DSGL2S2XdcE"
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 8,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[14]/div[1]/div[1]",
+              "domain": "developer.android.com",
+              "title": "Overview of memory management | App quality",
+              "url": "https://developer.android.com/topic/performance/memory-overview",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://developer.android.com \u203a topic \u203a performance",
+              "website_name": "Android Developers",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "May 19, 2026 \u2014 This page explains how Android manages app processes and memory allocation. For more information about how to manage memory more efficiently in your app, see\u00a0... Read more",
+              "pre_snippet": "05/19/2026 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "how Android manages app processes and memory allocation"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2026-05-19 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 9,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[16]/div[1]/div[1]",
+              "domain": "www.researchgate.net",
+              "title": "Comparison of android, iOS and windows OS Parameters ...",
+              "url": "https://www.researchgate.net/figure/Comparison-of-android-iOS-and-windows-OS-Parameters-Memory-Management-Security-and_tbl1_345691012",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.researchgate.net \u203a figure \u203a Comparison-of-...",
+              "website_name": "ResearchGate",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "iOS is much better OS when we talk about memory management, security and performance in mobile phones as compare to android and windows OS. Read more",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "iOS is much better OS"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 10,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[18]/div[1]/div[1]",
+              "domain": "www.linkedin.com",
+              "title": "Why do iPhones need less RAM than Android devices?",
+              "url": "https://www.linkedin.com/posts/overcout_ios-android-ram-activity-7308154400286396418-Co5g",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "100+ reactions  \u00b7  1 year ago",
+              "website_name": "LinkedIn\u00a0\u00b7\u00a0Roman M.",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "iOS has more strict rules on memory usage. It has better OS-level optimization. Android relies on JVM which consumes a significant amount of ram\u00a0... Read more",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "iOS has more strict rules on memory usage"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 8,
+              "rank_absolute": 11,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[19]/div[1]/div[1]/div[1]",
+              "domain": "www.youtube.com",
+              "title": "Android vs iOS RAM management - Who does it better?",
+              "url": "https://www.youtube.com/watch?v=7fvgJ0PJg3U",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "64.2K+ views  \u00b7  4 years ago",
+              "website_name": "YouTube\u00a0\u00b7\u00a0Gary Explains",
+              "is_image": false,
+              "is_video": true,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": null,
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": null,
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2022-02-07 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "related_searches",
+              "rank_group": 1,
+              "rank_absolute": 12,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[2]/div[1]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]",
+              "items": [
+                "Ios vs android memory management reddit",
+                "iPhone 3GB RAM vs Android 8gb RAM",
+                "Iphone 4gb ram vs android 8gb ram",
+                "How much RAM in iPhone 17",
+                "iPhone 1GB RAM is equal to how many GB in Android",
+                "iPhone 4GB RAM equal to Android",
+                "iPhone RAM size",
+                "How to check RAM of iPhone 13"
+              ],
+              "rectangle": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

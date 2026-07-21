@@ -1,0 +1,623 @@
+{
+  "version": "0.1.20260717",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "3.5318 sec.",
+  "cost": 0.002,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "07210103-2120-0139-0000-6461383386ce",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "3.4035 sec.",
+      "cost": 0.002,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "serp",
+        "google",
+        "organic",
+        "live",
+        "advanced"
+      ],
+      "data": {
+        "api": "serp",
+        "function": "live",
+        "se": "google",
+        "se_type": "organic",
+        "keyword": "Docker vs Podman",
+        "location_code": 2840,
+        "language_code": "en",
+        "device": "desktop",
+        "expand_ai_overview": true,
+        "os": "windows"
+      },
+      "result": [
+        {
+          "keyword": "Docker vs Podman",
+          "type": "organic",
+          "se_domain": "google.com",
+          "location_code": 2840,
+          "language_code": "en",
+          "check_url": "https://www.google.com/search?q=Docker%20vs%20Podman&hl=en&gl=US&ie=UTF-8&uule=w+CAIQIFISCQs2MuSEtepUEUK33kOSuTsc",
+          "datetime": "2026-07-20 22:03:20 +00:00",
+          "spell": null,
+          "refinement_chips": null,
+          "item_types": [
+            "ai_overview",
+            "organic",
+            "people_also_ask",
+            "images",
+            "perspectives",
+            "related_searches"
+          ],
+          "se_results_count": 77,
+          "pages_count": 1,
+          "items_count": 12,
+          "items": [
+            {
+              "type": "ai_overview",
+              "rank_group": 1,
+              "rank_absolute": 1,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]",
+              "asynchronous_ai_overview": true,
+              "markdown": null,
+              "items": null,
+              "references": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 2,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]",
+              "domain": "www.xurrent.com",
+              "title": "Podman vs Docker: Complete 2026 Comparison Guide for ...",
+              "url": "https://www.xurrent.com/blog/podman-vs-docker-complete-2025-comparison-guide-for-devops-teams",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.xurrent.com \u203a blog \u203a podman-vs-docker-c...",
+              "website_name": "Xurrent",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Aug 8, 2025 \u2014 Podman shines in areas like security, startup speed, and cost. Docker still leads when legacy support, ecosystem breadth, or team familiarity\u00a0...",
+              "pre_snippet": "08/08/2025 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 4.5,
+                "votes_count": 87,
+                "rating_max": 5
+              },
+              "price": null,
+              "highlighted": [
+                "Podman shines in areas like security, startup speed, and cost"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2025-08-08 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 3,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[4]/div[1]/div[1]",
+              "domain": "www.reddit.com",
+              "title": "What are the biggest differences between docker and pod ...",
+              "url": "https://www.reddit.com/r/podman/comments/1orzhvd/what_are_the_biggest_differences_between_docker/",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "30+ comments  \u00b7  8 months ago",
+              "website_name": "Reddit\u00a0\u00b7\u00a0r/podman",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "At work we have started to use podman instead of docker. Current I hate it, since the documentation is terrible. And I am used to docker and k8. But I ...",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": null,
+              "links": [
+                {
+                  "type": "link_element",
+                  "title": "How many of you use podman instead of docker ...",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/selfhosted/comments/1itxtp5/how_many_of_you_use_podman_instead_of_docker/",
+                  "domain": "www.reddit.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "Podman vs Docker - Which one to choose? - Reddit",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/docker/comments/yxp3ep/podman_vs_docker_which_one_to_choose/",
+                  "domain": "www.reddit.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "More results from www.reddit.com",
+                  "description": null,
+                  "url": "https://www.google.com/search?q=Docker+vs+Podman+site:www.reddit.com&sca_esv=3271cc0dab4982ea&hl=en&gl=US&sa=X&ved=2ahUKEwigqYWYoeKVAxWp2QIHHe7rJH0QrQIoAnoECCQQAw",
+                  "domain": "www.google.com"
+                }
+              ],
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 4,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[6]/div[1]/div[1]",
+              "domain": "www.geeksforgeeks.org",
+              "title": "Podman vs Docker: What Are the Key Differences ...",
+              "url": "https://www.geeksforgeeks.org/devops/podman-vs-docker/",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.geeksforgeeks.org \u203a devops \u203a podman-vs-...",
+              "website_name": "GeeksforGeeks",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Jul 23, 2025 \u2014 Podman and Docker are both popular and powerful containerization tools. Each of these tools has different key features and advantages it\u00a0...",
+              "pre_snippet": "07/23/2025 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "both popular and powerful containerization tools"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2025-07-23 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "people_also_ask",
+              "rank_group": 1,
+              "rank_absolute": 5,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[8]/div[1]/div[1]/div[1]",
+              "items": [
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Is Podman better than Docker?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[8]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Is Docker still relevant in 2026?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[8]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Can Podman do everything Docker does?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[8]/div[1]/div[1]/div[1]/div[1]/div[2]/div[3]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_expanded_element",
+                      "featured_title": null,
+                      "url": "https://www.redhat.com/en/topics/containers/what-is-podman",
+                      "domain": "www.redhat.com",
+                      "title": "What is Podman? - Red Hat",
+                      "description": "Podman vs.\n Docker is an all-in-1 tool for container creation and management, whereas Podman and its associated tools like Buildah and Skopeo are more specialized for specific aspects of containerization. This makes it possible to customize your environments with only the tools you need.",
+                      "images": null,
+                      "timestamp": null,
+                      "table": null
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Why are people moving away from Docker?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[8]/div[1]/div[1]/div[1]/div[1]/div[2]/div[4]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 6,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[10]/div[1]/div[1]",
+              "domain": "last9.io",
+              "title": "Podman vs Docker 2026: Security, Performance & ...",
+              "url": "https://last9.io/blog/podman-vs-docker/",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://last9.io \u203a blog \u203a podman-vs-docker",
+              "website_name": "Last9",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Jan 2, 2026 \u2014 One of the major differences between Docker and Podman is that Podman operates daemonless. Docker relies on a central daemon that manages\u00a0... Read more",
+              "pre_snippet": "01/02/2026 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "Podman operates daemonless"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2026-01-02 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 7,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[12]/div[1]/div[1]",
+              "domain": "www.datacamp.com",
+              "title": "Docker vs. Podman: Which Containerization Tool is Right ...",
+              "url": "https://www.datacamp.com/blog/docker-vs-podman",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.datacamp.com \u203a Blog \u203a Data Engineering",
+              "website_name": "DataCamp",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Nov 20, 2024 \u2014 The biggest difference between Docker and Podman is the underlying architecture each is built on. Docker heavily relies on a daemon, while\u00a0... Read more",
+              "pre_snippet": "11/20/2024 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "Docker heavily relies on a daemon"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2024-11-20 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 8,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[14]/div[1]/div[1]",
+              "domain": "dev.to",
+              "title": "Docker vs Podman: An In-Depth Comparison (2026)",
+              "url": "https://dev.to/mechcloud_academy/docker-vs-podman-an-in-depth-comparison-2025-2eia",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://dev.to \u203a mechcloud_academy \u203a docker-vs-podm...",
+              "website_name": "DEV Community",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Jun 8, 2025 \u2014 This report provides a comprehensive comparison of Docker and Podman, focusing on key differences relevant to DevOps workflows. Read more",
+              "pre_snippet": "06/08/2025 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "Docker and Podman"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2025-06-08 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "images",
+              "rank_group": 1,
+              "rank_absolute": 9,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[16]/div[1]",
+              "title": "Images",
+              "url": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&hl=en&gl=US&q=Docker+vs+Podman&udm=2&source=univ&fir=QKon5xoRtUXJGM%252C_AnNrQiS0P7oyM%252C_%253Brz9YqumTjfGS9M%252CTrhCr7WisL4ICM%252C_%253B32HMW0kNlQ_OOM%252CcR9mnN5hJy_vzM%252C_%253B6eSvyds2EVmNQM%252C4XopabBaP8FGiM%252C_%253Bwrx6qe50Op1t_M%252CGo_BYkaJ__VjkM%252C_%253BI218y0tNrKi5QM%252CHpGPVd88hdLKKM%252C_%253BIGANp2Q7_yu31M%252CPRmlKEitVVKEzM%252C_%253B-DswFR_5ozl17M%252C0GV_ko5cC6krAM%252C_%253BBODxSqMM_QaqoM%252CZHf5bCoTQrH0uM%252C_&usg=AI4_-kQCjBk4U862USA69TerPl7VprpKtw&sa=X&ved=2ahUKEwigqYWYoeKVAxWp2QIHHe7rJH0Q7Al6BAhXEAU",
+              "items": [
+                {
+                  "type": "images_element",
+                  "alt": "Docker vs Podman: A New Era in Secure Orchestration | by ...",
+                  "url": "https://levelup.gitconnected.com/docker-vs-podman-a-new-era-in-secure-orchestration-957ea2123098",
+                  "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbkZ7LEQvraPOUPCe-8YpYoMfHYQLHE9S6lBkSRg65hDRga0-KQ0yhuwg&s"
+                },
+                {
+                  "type": "images_element",
+                  "alt": "Geekknowledge: Differences between podman and docker",
+                  "url": "https://kubeops.net/blog/differences-between-podman-and-docker-geekknowledge",
+                  "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUcR7VKwj2Hmc1nomJwoSPFBq1Iod0IPLoOV_geZ2s5-u0BtewMd8TudU&s"
+                },
+                {
+                  "type": "images_element",
+                  "alt": "Podman vs Docker: A Fun, Interactive Dive into ...",
+                  "url": "https://keploy.io/blog/community/podman-vs-docker",
+                  "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqfptpVH5uonZ2J-JaXmngCEfh16jITTRbP2OCqHqsduhcVx4se94pfbI&s"
+                },
+                {
+                  "type": "images_element",
+                  "alt": "Choosing the Right Container Runtime: Docker vs. Podman vs ...",
+                  "url": "https://blog.devops.dev/choosing-the-right-container-runtime-docker-vs-podman-vs-containers-vs-cri-o-0634e2389337",
+                  "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIPvIRj4dMfNIkqfQcX1rAybgZlLIF6D1SV5GqJg7py8Eh5WP8Ec_fHvM&s"
+                },
+                {
+                  "type": "images_element",
+                  "alt": "Podman vs Docker: 6 Reasons why I am HAPPY I switched ...",
+                  "url": "https://www.simplehomelab.com/podman-vs-docker/",
+                  "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4QKet6feDp5PbzYoo857N6JEHyhMJFNAXqJACCCtosnadMnHtJOJnYcs&s"
+                },
+                {
+                  "type": "images_element",
+                  "alt": "Podman vs Docker: Which Container Engine Wins in 2026?",
+                  "url": "https://www.imaginarycloud.com/blog/podman-vs-docker",
+                  "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAjL1HNNY_i8oXuoJja3QGqrtxN-xjE2coT1Y9dcNVXOmo53TkAUqa3qI&s"
+                },
+                {
+                  "type": "images_element",
+                  "alt": "Podman vs Docker in 2026: What's Really Different?",
+                  "url": "https://www.youtube.com/watch?v=SIvoAOpXZPg",
+                  "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0D5QyeOiSRIbiYwRsO0dk6i9niWzorU_tu8kye1hY&s"
+                },
+                {
+                  "type": "images_element",
+                  "alt": "Docker or Podman",
+                  "url": "https://www.linkedin.com/pulse/docker-podman-hamida-rebai-trabelsi",
+                  "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRvB6jtffTOPda4D086-F5msTBdYSMntXuFpQpmASi4aO6T18llwcnQCE&s"
+                },
+                {
+                  "type": "images_element",
+                  "alt": "Podman vs Docker: Which is Better? - SOLID FUTURE",
+                  "url": "https://solid-future.com/podman-vs-docker-vs-kubernetes/",
+                  "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdqXFBUG1sm0NPpIGjREZUAFEWzg7jJr4-qr1vXUIELaP47Y5wrnytrBs&s"
+                }
+              ],
+              "related_image_searches": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 10,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[18]/div[1]/div[1]",
+              "domain": "www.imaginarycloud.com",
+              "title": "Podman vs Docker: Which Container Engine Wins in 2026?",
+              "url": "https://www.imaginarycloud.com/blog/podman-vs-docker",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.imaginarycloud.com \u203a blog \u203a podman-vs-...",
+              "website_name": "Imaginary Cloud",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Docker uses a daemon-based client-server model, while Podman runs containers daemonless as user processes. Podman is rootless by default,",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "Docker uses a daemon-based client-server model"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "perspectives",
+              "rank_group": 1,
+              "rank_absolute": 11,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[20]/div[1]",
+              "title": "What people are saying",
+              "items": [
+                {
+                  "type": "perspectives_element",
+                  "title": "Is it worth moving from docker to podman? Where can I find good resourced to learn podman?",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/selfhosted/comments/1uykiu5/is_it_worth_moving_from_docker_to_podman_where/",
+                  "domain": "www.reddit.com",
+                  "date": "3 days ago",
+                  "source": "r/selfhosted",
+                  "timestamp": "2026-07-17 22:03:20 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Podman 6.0 just dropped. On the merits it's the better design, rootless, daemonless, safer. And it'll still lose to Docker. I've watched this movie enough times to call the ending. Someone summed up the tradeoff perfectly: \"Docker makes things easy by running a",
+                  "description": null,
+                  "url": "https://www.linkedin.com/posts/joseph-benguira-28264b2_devops-docker-podman-activity-7478700255958704128-Z54V",
+                  "domain": "www.linkedin.com",
+                  "date": "2 weeks ago",
+                  "source": "Joseph Benguira",
+                  "timestamp": "2026-07-06 22:03:20 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Podman - a Daemonless Docker Alternative \ud83d\udee0\ufe0f \n\nPodman is a container runtime that \"mimics\" Docker for the key commands (run, exec, kill, etc.) but uses a daemonless architecture under the hood. This approach has its upsides (e.g., fewer moving parts, simpler rootless setup) and downsides (e.g., without a daemon, some container operations require extra help from systemd). \n\nI put together a couple of hands-on challenges in case you want to give Podman a shot and compare it with Docker: \n\n- Start and Inspect a Container With Podman  labs.iximiuz.com/challenges/sta\u2026\n\n- Make a Podman Container Restart Automatically On Reboot  labs.iximiuz.com/challenges/pod\u2026\n\n- Start and Inspect a Container With Docker (for comparison)  labs.iximiuz.com/challenges/sta\u2026",
+                  "description": null,
+                  "url": "https://x.com/iximiuz/status/2052086678085353639?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Etweet",
+                  "domain": "x.com",
+                  "date": "May 6, 2026",
+                  "source": "iximiuz",
+                  "timestamp": "2026-05-06 00:00:00 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "I'm a little tired of people sh*tting on Docker for its daemon-based architecture and presenting Podman as the \"better\" alternative. There is a reason the daemon exists. Managing containers en masse without a central controlling component is brittle. This is why",
+                  "description": null,
+                  "url": "https://www.linkedin.com/posts/iximiuz_im-a-little-tired-of-people-shtting-on-activity-7471163058283945984-0xzx",
+                  "domain": "www.linkedin.com",
+                  "date": "1 month ago",
+                  "source": "Ivan Velichko",
+                  "timestamp": "2026-06-20 22:03:20 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "If you're using containers for your projects, chances are you're using Docker. But depending on your use case and requirements, other options may be worth exploring. In this guide, Destiny walks you through three container runtimes - Docker, Podman, and Co",
+                  "description": null,
+                  "url": "https://www.facebook.com/freecodecamp/posts/if-youre-using-containers-for-your-projects-chances-are-youre-using-docker-but-d/1056606700285430/",
+                  "domain": "www.facebook.com",
+                  "date": "1 month ago",
+                  "source": "freecodecamp",
+                  "timestamp": "2026-06-20 22:03:20 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Docker quietly created its biggest competitor. \n\nIt\u2019s called Podman. \n\nAnd a lot of Linux developers are switching fast. \n\nWhy? \n\nBecause Podman removes one of Docker\u2019s biggest architectural problems: \n\nthe daemon. \n\nNo central background service. \nNo always-running root process. \nNo giant privileged attack surface. \n\nInstead you get: \n\n\u2022 rootless containers \n\u2022 Docker-compatible CLI \n\u2022 Kubernetes integration \n\u2022 OCI support \n\u2022 pods \n\u2022 systemd integration \n\u2022 lower idle resource usage \n\nAnd most Docker commands still work almost identically. \n\nThe bigger trend here is fascinating: \n\ndevelopers are moving toward infrastructure that is: \n\u2022 lighter \n\u2022 rootless \n\u2022 open \n\u2022 daemonless \n\u2022 easier to secure \n\nModern Linux tooling is evolving incredibly fast.",
+                  "description": null,
+                  "url": "https://x.com/Techjunkie_Aman/status/2061807827472253035?lang=en&ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Etweet",
+                  "domain": "x.com",
+                  "date": "1 month ago",
+                  "source": "Techjunkie_Aman",
+                  "timestamp": "2026-06-20 22:03:20 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Has your company switched to podman from docker? Docker is becoming an enterprise.",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/developersIndia/comments/1twuhxs/has_your_company_switched_to_podman_from_docker/",
+                  "domain": "www.reddit.com",
+                  "date": "1 month ago",
+                  "source": "r/developersIndia",
+                  "timestamp": "2026-06-20 22:03:20 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "UniFi OS Server in Docker (instead of Podman)",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/UNIFI/comments/1us16bp/unifi_os_server_in_docker_instead_of_podman/",
+                  "domain": "www.reddit.com",
+                  "date": "1 week ago",
+                  "source": "r/UNIFI",
+                  "timestamp": "2026-07-13 22:03:20 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "NPM docker command not override by alias podman (2 Solutions!!)",
+                  "description": null,
+                  "url": "https://www.youtube.com/watch?v=inKVfV2eANE",
+                  "domain": "www.youtube.com",
+                  "date": "May 1, 2026",
+                  "source": "Roel Van de Paar",
+                  "timestamp": "2026-05-01 00:00:00 +00:00"
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "related_searches",
+              "rank_group": 1,
+              "rank_absolute": 12,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[2]/div[1]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]",
+              "items": [
+                "Docker vs podman reddit",
+                "Docker vs Podman vs containerd",
+                "Docker vs Podman vs Kubernetes",
+                "Docker vs Podman performance",
+                "Docker vs podman windows",
+                "Docker vs podman mac",
+                "Docker vs podman market share",
+                "Docker vs Podman resource usage"
+              ],
+              "rectangle": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

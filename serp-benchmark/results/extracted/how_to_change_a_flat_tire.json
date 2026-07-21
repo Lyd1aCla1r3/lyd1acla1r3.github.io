@@ -1,0 +1,312 @@
+{
+  "query": "how to change a flat tire",
+  "intent": "informational",
+  "scores": {
+    "SearchApi": {
+      "extracted": {
+        "present": true,
+        "summary": "",
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "answer": "Changing a flat tire involves safely securing the vehicle, loosening the lug nuts, lifting the car with a jack, swapping the tires, and tightening the nuts. Pull to a level, safe area, engage the parking brake, and turn on your hazard lights.",
+            "reference_indexes": [
+              3,
+              4
+            ]
+          },
+          {
+            "type": "paragraph",
+            "answer": "Here is the step-by-step process:",
+            "reference_indexes": [
+              0,
+              3
+            ]
+          },
+          {
+            "type": "paragraph",
+            "answer": "Secure the car: Turn on your hazard lights, engage the parking brake, and place heavy objects (like rocks or wheel chocks) in front of and behind the tires on the opposite end of the flat to prevent the car from rolling.",
+            "reference_indexes": [
+              0,
+              5
+            ]
+          },
+          {
+            "type": "video",
+            "link": "https://www.youtube.com/watch?v=7B6j7mUGbFI"
+          },
+          {
+            "type": "paragraph",
+            "answer": "Remember that a compact spare tire is meant to be a temporary fix. Avoid driving faster than 50 mph or further than 50 miles, and visit a tire repair shop as soon as possible.",
+            "reference_indexes": [
+              4
+            ]
+          }
+        ],
+        "citations": [
+          {
+            "url": "https://www.allstate.com/resources/car-insurance/how-to-change-a-flat-tire",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=-fXXwZKDL9s&t=5",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.reddit.com/r/selfreliance/comments/10risqa/how_to_change_a_flat_tire_101/",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=7B6j7mUGbFI",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.consumerreports.org/cars/tire-buying-maintenance/how-to-change-a-car-tire-a2760414554/",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/shorts/BpfZYV_WOnI",
+            "title": "",
+            "snippet": ""
+          }
+        ],
+        "related_searches": []
+      }
+    },
+    "SerpApi": {
+      "extracted": {
+        "present": true,
+        "summary": "",
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "snippet": "Safely change your flat tire by finding a flat, solid surface away from traffic, turning on your hazard lights, and applying the parking brake. Loosen the lug nuts slightly, jack up the car, and replace the flat with your spare.",
+            "snippet_links": [
+              {
+                "link": "https://www.consumerreports.org/cars/tire-buying-maintenance/how-to-change-a-car-tire-a2760414554/"
+              }
+            ],
+            "snippet_highlighted_words": [
+              "finding a flat, solid surface away from traffic, turning on your hazard lights, and applying the parking brake"
+            ],
+            "reference_indexes": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "Step-by-Step Guide"
+          },
+          {
+            "type": "heading",
+            "snippet": "1. Secure the Vehicle"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Pull over to a safe, level area. Turn on your hazard lights, engage the parking brake, and put the car in \"Park\" (or reverse for manual transmissions). If you have heavy objects or wheel chocks, place them behind and in front of the tires to prevent rolling.",
+            "snippet_links": [
+              {
+                "link": "https://www.goodyear.com/en-us/learn/how-to-fix-a-flat-tire"
+              }
+            ],
+            "reference_indexes": [
+              0,
+              1,
+              4
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "2. Loosen the Lug Nuts"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Locate your jack, lug wrench, and spare tire (usually in the trunk). Before raising the car, use your wrench to loosen the lug nuts on the flat tire by turning them counterclockwise. Do not remove them entirely; just break the resistance so they can turn easily. You may need to press down on the wrench with your foot if they are stuck.",
+            "snippet_links": [
+              {
+                "link": "https://www.reddit.com/r/selfreliance/comments/10risqa/how_to_change_a_flat_tire_101/"
+              }
+            ],
+            "reference_indexes": [
+              0,
+              3,
+              1,
+              2,
+              5
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "3. Raise the Car"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Check your owner's manual for the exact designated jacking points on your car\u2019s frame. Place the jack under this point and crank it until the flat tire is about 6 inches off the ground.",
+            "snippet_links": [
+              {
+                "link": "https://www.youtube.com/watch?v=-fXXwZKDL9s&t=5"
+              }
+            ],
+            "reference_indexes": [
+              0,
+              6,
+              7
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "4. Swap the Tires"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Unscrew and fully remove the loosened lug nuts, and place them in a safe spot. Pull the flat tire straight off the wheel studs, then lift your spare tire into place.",
+            "snippet_links": [
+              {
+                "link": "https://www.youtube.com/watch?v=7B6j7mUGbFI"
+              }
+            ],
+            "reference_indexes": [
+              0,
+              2
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "5. Tighten by Hand"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Put the lug nuts back onto the studs and hand-tighten them as much as you can.",
+            "snippet_links": [
+              {
+                "link": "https://www.youtube.com/watch?v=-fXXwZKDL9s&t=5"
+              }
+            ],
+            "reference_indexes": [
+              2
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "6. Lower and Secure"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Lower the jack slowly until the tire touches the ground (but do not rest the full weight of the car on it yet). Use your wrench to firmly tighten the lug nuts in a star pattern (tighten one, then the one opposite to it) to ensure the wheel is properly centered.",
+            "snippet_links": [
+              {
+                "link": "https://www.youtube.com/shorts/eVtytg89T84"
+              }
+            ],
+            "reference_indexes": [
+              0,
+              8
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "7. Final Lowering"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Lower the jack completely and remove it from under the car. Give the lug nuts one final check with the wrench to ensure they are as tight as possible.",
+            "snippet_links": [
+              {
+                "link": "https://www.youtube.com/watch?v=-fXXwZKDL9s&t=5"
+              }
+            ],
+            "reference_indexes": [
+              0
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "For a visual breakdown of where to safely place your jack and how to loosen stuck lug nuts:",
+            "video": {
+              "link": "https://www.youtube.com/watch?v=joBmbh0AGSQ&t=38",
+              "thumbnail": "https://serpapi.com/images/i/R0lGODlhAQABAIAAAP_______yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw.gif"
+            }
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Could you tell me the make and model of your vehicle, or what kind of tool kit you have in the trunk? I can check if your specific vehicle requires any special steps (such as a wheel lock key or specific spare tire limits) to get you moving safely."
+          }
+        ],
+        "citations": [
+          {
+            "url": "https://www.consumerreports.org/cars/tire-buying-maintenance/how-to-change-a-car-tire-a2760414554/",
+            "title": "How to Change a Car Tire | Flat Tire - Consumer Reports",
+            "snippet": "What to Do if Your Tire Goes Flat * If you hit something on the road that causes a complete blowout or loss of air, the vehicle will pull in the direction of that ..."
+          },
+          {
+            "url": "https://www.discounttire.com/learn/change-a-tire",
+            "title": "How To Change A Tire Step By Step | Discount Tire",
+            "snippet": "STEP-BY-STEP: HOW TO CHANGE A FLAT TIRE. Below are the eight steps to change your tire: \u00b7 Find a safe spot. Turn on your hazard lights. Find flat ground as far fro..."
+          },
+          {
+            "url": "https://www.coopertire.com/en_US/tire-education/learn-tire-maintenance/how-to-change-a-tire.html",
+            "title": "How to change a flat tire, step-by-step - Cooper Tires",
+            "snippet": "Step 6: Remove your flat tire. Finish taking the loosened wheel nuts off by hand. Then, using both hands, take the tire by its sides and pull it toward you. It sho..."
+          },
+          {
+            "url": "https://www.aaa.com/autorepair/articles/how-to-change-a-tire-in-11-easy-steps",
+            "title": "How To Change a Tire in 11 Easy Steps | AAA Automotive",
+            "snippet": "How To Change a Tire in 11 Easy Steps * Pull Over Somewhere Safe. * Take Safety Precautions. * Gather Your Tools. * Remove the Hubcap and Loosen the Lug Nuts on th..."
+          },
+          {
+            "url": "https://www.goodyear.com/en-us/learn/how-to-fix-a-flat-tire",
+            "title": "How to Change Your Tire | Flat Tire Replacement - Goodyear",
+            "snippet": "How To Change A Flat Tire. Use our step-by-step guide if the need for a tire change arises: Park the Vehicle. \u00b7 Change A Flat Tire..."
+          },
+          {
+            "url": "https://www.reddit.com/r/selfreliance/comments/10risqa/how_to_change_a_flat_tire_101/",
+            "title": "How to Change a Flat Tire 101 : r/selfreliance",
+            "snippet": "According to a Reddit user, here are some tips for changing a flat tire: * **Loosen lug nuts** Slightly loosen the lug nuts about a half turn before jacking up the..."
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=-fXXwZKDL9s&t=5",
+            "title": "How To Change a Flat Tire",
+            "snippet": "let's take a look at the basic steps of changing a tire. this is just a quick video using one vehicle as an example the detailed steps of changing your vehicle's t"
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=7B6j7mUGbFI",
+            "title": "How To EASILY Change a Flat Tire | Roadside Fix",
+            "snippet": "in this video we're going to show you how to quickly change a flat tire and get you on the road again in no time let's get to. it the first thing you need to do is"
+          },
+          {
+            "url": "https://www.youtube.com/shorts/eVtytg89T84",
+            "title": "How to change a tire. Love, Dad",
+            "snippet": "and if I asked you to go outside. and change a tire right now would you be able to do it. if not let me show you how the first thing you want to do is locate your "
+          }
+        ],
+        "related_searches": []
+      }
+    },
+    "Serper": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "DataForSEO": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    }
+  }
+}

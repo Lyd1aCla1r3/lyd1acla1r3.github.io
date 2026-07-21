@@ -1,0 +1,726 @@
+{
+  "search_metadata": {
+    "id": "search_mMjwVJvBznT5Pr5Rrvynp5OY",
+    "status": "Success",
+    "created_at": "2026-07-20T22:04:23Z",
+    "request_time_taken": 3.64,
+    "parsing_time_taken": 0.1,
+    "total_time_taken": 3.74,
+    "request_url": "https://www.google.com/search?q=what+is+retrieval+augmented+generation&oq=what+is+retrieval+augmented+generation&gl=us&hl=en",
+    "html_url": "https://www.searchapi.io/api/v1/searches/search_mMjwVJvBznT5Pr5Rrvynp5OY.html",
+    "json_url": "https://www.searchapi.io/api/v1/searches/search_mMjwVJvBznT5Pr5Rrvynp5OY"
+  },
+  "search_parameters": {
+    "engine": "google",
+    "q": "what is retrieval augmented generation",
+    "device": "desktop",
+    "hl": "en",
+    "gl": "us"
+  },
+  "search_information": {
+    "query_displayed": "what is retrieval augmented generation",
+    "total_results": 20,
+    "time_taken_displayed": 0.17,
+    "detected_location": "Unknown",
+    "has_no_results_for": false
+  },
+  "ai_overview": {
+    "text_blocks": [
+      {
+        "type": "paragraph",
+        "answer": "Retrieval-Augmented Generation (RAG) is an AI technique that improves Large Language Models (LLMs) by fetching facts from external knowledge bases before generating a response. Instead of relying solely on their static training data, models use RAG to \"open book test,\" reducing hallucinations and providing highly accurate, up-to-date answers.",
+        "reference_indexes": [
+          0,
+          2,
+          3
+        ]
+      },
+      {
+        "type": "header",
+        "answer": "How RAG Works"
+      },
+      {
+        "type": "paragraph",
+        "answer": "RAG operates in a series of steps to bridge the gap between user questions and external information:",
+        "reference_indexes": [
+          6,
+          9
+        ]
+      },
+      {
+        "type": "header",
+        "answer": "Why RAG is Used"
+      },
+      {
+        "type": "paragraph",
+        "answer": "RAG solves several inherent limitations of traditional generative AI:",
+        "reference_indexes": [
+          3,
+          5
+        ]
+      },
+      {
+        "type": "paragraph",
+        "answer": "Access to New Knowledge: Models have a knowledge cutoff based on when they were trained. RAG allows them to access real-time information.",
+        "reference_indexes": [
+          4,
+          3
+        ]
+      },
+      {
+        "type": "paragraph",
+        "answer": "For more details on implementation, you can read the IBM RAG Overview or the AWS RAG Explanation.",
+        "reference_indexes": [
+          8
+        ]
+      }
+    ],
+    "markdown": "Retrieval-Augmented Generation (RAG) is an AI technique that improves Large Language Models (LLMs) by fetching facts from external knowledge bases before generating a response. Instead of relying solely on their static training data, models use RAG to \"open book test,\" reducing hallucinations and providing highly accurate, up-to-date answers. [0](https://aws.amazon.com/what-is/retrieval-augmented-generation/) [2](https://www.ibm.com/think/topics/retrieval-augmented-generation) [3](https://www.reddit.com/r/explainlikeimfive/comments/1p39v3g/eli5_what_is_a_is_retrievalaugmented_generation/)\n\n## How RAG Works\n\nRAG operates in a series of steps to bridge the gap between user questions and external information: [6](https://www.pinecone.io/learn/retrieval-augmented-generation/) [9](https://www.youtube.com/shorts/OHz_MjBqFRY)\n\n## Why RAG is Used\n\nRAG solves several inherent limitations of traditional generative AI: [3](https://www.reddit.com/r/explainlikeimfive/comments/1p39v3g/eli5_what_is_a_is_retrievalaugmented_generation/) [5](https://www.databricks.com/blog/what-is-retrieval-augmented-generation)\n\nAccess to New Knowledge: Models have a knowledge cutoff based on when they were trained. RAG allows them to access real-time information. [4](https://cloud.google.com/use-cases/retrieval-augmented-generation) [3](https://www.reddit.com/r/explainlikeimfive/comments/1p39v3g/eli5_what_is_a_is_retrievalaugmented_generation/)\n\nFor more details on implementation, you can read the IBM RAG Overview or the AWS RAG Explanation. [8](https://www.youtube.com/watch?v=dDkynerzV-Q)\n\n[[0] - ](https://aws.amazon.com/what-is/retrieval-augmented-generation/)\n[[1] - ](https://blogs.nvidia.com/blog/what-is-retrieval-augmented-generation/)\n[[2] - ](https://www.ibm.com/think/topics/retrieval-augmented-generation)\n[[3] - ](https://www.reddit.com/r/explainlikeimfive/comments/1p39v3g/eli5_what_is_a_is_retrievalaugmented_generation/)\n[[4] - ](https://cloud.google.com/use-cases/retrieval-augmented-generation)\n[[5] - ](https://www.databricks.com/blog/what-is-retrieval-augmented-generation)\n[[6] - ](https://www.pinecone.io/learn/retrieval-augmented-generation/)\n[[7] - ](https://www.youtube.com/watch?v=xPMQ2cVbUTI&t=444)\n[[8] - ](https://www.youtube.com/watch?v=dDkynerzV-Q)\n[[9] - ](https://www.youtube.com/shorts/OHz_MjBqFRY)",
+    "reference_links": [
+      {
+        "index": 0,
+        "link": "https://aws.amazon.com/what-is/retrieval-augmented-generation/",
+        "favicon": "https://encrypted-tbn0.gstatic.com/faviconV2?url=https://aws.amazon.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+      },
+      {
+        "index": 1,
+        "link": "https://blogs.nvidia.com/blog/what-is-retrieval-augmented-generation/",
+        "favicon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://blogs.nvidia.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+      },
+      {
+        "index": 2,
+        "link": "https://www.ibm.com/think/topics/retrieval-augmented-generation",
+        "favicon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.ibm.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+      },
+      {
+        "index": 3,
+        "link": "https://www.reddit.com/r/explainlikeimfive/comments/1p39v3g/eli5_what_is_a_is_retrievalaugmented_generation/",
+        "favicon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.reddit.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+      },
+      {
+        "index": 4,
+        "link": "https://cloud.google.com/use-cases/retrieval-augmented-generation",
+        "favicon": "https://encrypted-tbn0.gstatic.com/faviconV2?url=https://cloud.google.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+      },
+      {
+        "index": 5,
+        "link": "https://www.databricks.com/blog/what-is-retrieval-augmented-generation",
+        "favicon": "https://encrypted-tbn0.gstatic.com/faviconV2?url=https://www.databricks.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+      },
+      {
+        "index": 6,
+        "link": "https://www.pinecone.io/learn/retrieval-augmented-generation/",
+        "favicon": "https://encrypted-tbn1.gstatic.com/faviconV2?url=https://www.pinecone.io&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+      },
+      {
+        "index": 7,
+        "link": "https://www.youtube.com/watch?v=xPMQ2cVbUTI&t=444",
+        "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAhUlEQVR4AWNwL/ChCFPHgP8MxqxA7ArEKVBcCcUNIAznI+RdQXrABgAZpv8ZjP6Tg0F6QQbsosCAXSADHmGVVPIC0jKEDHgAMuAbmgRE445D///feYzXIJBeBigH04BVW/9DAcgwqEGYaik2gGIvUByIlEbjDooTEiwps5GRlNmolpkowgBVP9wMSzSKGAAAAABJRU5ErkJggg=="
+      },
+      {
+        "index": 8,
+        "link": "https://www.youtube.com/watch?v=dDkynerzV-Q",
+        "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAhUlEQVR4AWNwL/ChCFPHgP8MxqxA7ArEKVBcCcUNIAznI+RdQXrABgAZpv8ZjP6Tg0F6QQbsosCAXSADHmGVVPIC0jKEDHgAMuAbmgRE445D///feYzXIJBeBigH04BVW/9DAcgwqEGYaik2gGIvUByIlEbjDooTEiwps5GRlNmolpkowgBVP9wMSzSKGAAAAABJRU5ErkJggg=="
+      },
+      {
+        "index": 9,
+        "link": "https://www.youtube.com/shorts/OHz_MjBqFRY",
+        "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAhUlEQVR4AWNwL/ChCFPHgP8MxqxA7ArEKVBcCcUNIAznI+RdQXrABgAZpv8ZjP6Tg0F6QQbsosCAXSADHmGVVPIC0jKEDHgAMuAbmgRE445D///feYzXIJBeBigH04BVW/9DAcgwqEGYaik2gGIvUByIlEbjDooTEiwps5GRlNmolpkowgBVP9wMSzSKGAAAAABJRU5ErkJggg=="
+      }
+    ]
+  },
+  "organic_results": [
+    {
+      "position": 1,
+      "title": "What is RAG (Retrieval-Augmented Generation)?",
+      "link": "https://aws.amazon.com/what-is/retrieval-augmented-generation/",
+      "source": "Amazon Web Services (AWS)",
+      "domain": "aws.amazon.com",
+      "displayed_link": "https://aws.amazon.com \u203a ... \u203a Generative AI",
+      "snippet": "RAG is the process of optimizing the output of a large language model, so it references an authoritative knowledge base outside of its training data sources ...",
+      "snippet_highlighted_words": [
+        "RAG is the process of optimizing the output of a large language model"
+      ],
+      "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAflBMVEUjLz4dKjohLT0NHzFQV2FKUlwAFywnM0IaKDgzPUpWXGUVJDbq6+3i4+X29/jLzc99gogAABubnqP///9yd393fIPY2twAAAAAAB8AACK1t7ujpqsADicAFitiaHGGi5GUmJ1pb3cAFCqJjpQ8RlIuOUZDS1errrEGHC/DxslAWrmhAAAA1UlEQVR4Ad2OhWGFMBBAI0iIlhzuTth/wHqLjPBf5FzQ64Hx10++H8H3GPX8IMQEE8JCGnFC0ImQSps3GVuIE5lCpii6EOQFhFAaHVV1ZvPm1rWSGbSqk3UvvQ70cKlkI8QFUGtMZ3QzxRz4uRPmMBvoFrAlVEVlB4jIpW1S8W6l/SLSjfF93xw6IZPDDCFBvi52Sd2zs+1haSB+OxHhzz2Is3KycKRomtp2mthYyTFr0YlbKwCtTJZp0LWbO4YuEBd09WHMYXlDCWPoAaMuCBzF6BX5AC2JD1u/hbEIAAAAAElFTkSuQmCC"
+    },
+    {
+      "position": 2,
+      "title": "What is RAG (Retrieval Augmented Generation)?",
+      "link": "https://www.ibm.com/think/topics/retrieval-augmented-generation",
+      "source": "IBM",
+      "domain": "www.ibm.com",
+      "displayed_link": "https://www.ibm.com \u203a think \u203a topics \u203a retrieval-augme...",
+      "snippet": "RAG is an architecture for optimizing the performance of an artificial intelligence (AI) model by connecting it with external knowledge bases.",
+      "snippet_highlighted_words": [
+        "RAG"
+      ],
+      "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAKlBMVEWHjZZHcEyHjZaHjZaHjZaHjZaHjZaHjZaHjZaHjZaHjZaHjZaHjZaHjZb1o+AuAAAADnRSTlP+AAoZ6YuxMkJgxZx00nACI7QAAAEASURBVCiRjZLrdsQgCISHizeM7/+6BbRNN92zp/yICZ/BYRD0IfAvOIHKRFyB+YQTdcKIDLP+0AMZlahABIWogl///AgnZtlly3yWTSEmRGJb2KMVccS81zd9jgWs8d6ECp1TQ9kDer0rhIbkK6vfUJaw2s6YMi+5oSi44Zw20Bgq37ABAa1mGDp5om3YoTWgnghY4+nQmZSA3YW4lB6wSO5pUf/AjA1DR8NSpnfQB7X2aBOWkVEOjPHr8nVpSj7RKZMubcAuc1e8T8nwPt0tu5Yjf4Ezku1ejpxOMkzYThrSFcG2kV+m4ocO5rG9+TOypqFGb/Z6qXsp/ff3xxv/BVLvB4QqKcy9AAAAAElFTkSuQmCC"
+    },
+    {
+      "position": 3,
+      "title": "Retrieval-augmented generation",
+      "link": "https://en.wikipedia.org/wiki/Retrieval-augmented_generation",
+      "source": "Wikipedia",
+      "domain": "en.wikipedia.org",
+      "displayed_link": "https://en.wikipedia.org \u203a wiki \u203a Retrieval-augmented_...",
+      "snippet": "Retrieval-augmented generation (RAG) is a technique that enables large language models (LLMs) to retrieve and incorporate new information.",
+      "snippet_highlighted_words": [
+        "a technique that enables large language models (LLMs"
+      ],
+      "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAAAAABXZoBIAAAAnklEQVR4AeTNIQiDQABG4b+u17X1aF6PK3YEO9iMJqPVau82y4FgMezS0oVLhqsHtrcqeqzDXv3CEz/6L4yTtZM3dnHmPTtjzXZAXKYVo4agkU2GI2Lloc6JDez1+flswMu1EQZ3xlE7lK8eKDkjtwE+crBMV+wesKmCiisGGepZIfQJpMj9SNb2MYWrChjVkULuCyCfRvsdmBieyQQAsoDk/9ryhFMAAAAASUVORK5CYII="
+    },
+    {
+      "position": 4,
+      "title": "What is Retrieval-Augmented Generation (RAG)?",
+      "link": "https://cloud.google.com/use-cases/retrieval-augmented-generation",
+      "source": "Google Cloud",
+      "domain": "cloud.google.com",
+      "displayed_link": "https://cloud.google.com \u203a use-cases \u203a retrieval-augment...",
+      "snippet": "Retrieval-Augmented Generation, is an AI framework that combines the strengths of traditional information retrieval systems (such as search and databases)",
+      "snippet_highlighted_words": [
+        "an AI framework that combines the strengths of traditional information retrieval systems"
+      ],
+      "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACjUlEQVR4AWKgBIyCV86mHCBMZ0tNALTVQ4AdQRSF4WCwiW3btm3btr2JzW1s27btLLPJ2OxodPPXGFXDzuJ7fnXObXYidAXO4EqsM1ihvvtfk5aJDf0OSQO/abRE/ceu8Da4hwhIOkXgHtpkZVM7sUA//IFklGvn1nJs9NqwDuutfh3WWU6ZmbwHXCCZcXjsRum9ykMo4IIemdnnPhADCx/YSvcU9RpW3OSEq+DEfFAmveEO3h0bb0sl/BFGeHdoVAkFYlVSn+FRosmTWmdt49khPQWa+XRu5OI3pLYETK4qQXMqSvDi8hI4o7IEzqz07PfBfOXC7znmMF0X+q1020WQBUnGBc3SLBAwrvqy0PUl5M/J3BJ2w1kIixZ2N5ofrx9gnun/TFoE51SoxjJjcNg9BycW7hF22ylIBaaBMg63eK6jLcH+NmwFH/TQnhUqHC6QDHiDfIYS9zQF9GcFi5SBDySD3rDlihgKrEocbDwrWMSBRbZlJhz11BqGApMShxrPChapwf78pgmwcAFNUA1j+N0r0+SaAvnQAhdgaQp867A+tIYq0IPFLE2BCwQWSHag1uKze4bJDWdFaIHYEpKMhR6qwBCIRgu77qaxW0I0hhgLqGltK7DOqmUswCYdZNgC45DDhulzYJzhQByktkAH+GkKvEIdGwrUwStIUqF+6KAOrCIE3Ute4C+X3nc3i1qNTg3ch1VaJ4ZvUOe7WegOnkMgGvfUZTvuWjAveYFPNwvL8LOdhKBUsVBmJb2fqGt73OQqvNPpXsZQGwrc0t0L6uDNZ/PkdhV4A/2xRYF8vc90P9Hw1EA/+wuog846gnypHrWE50EHFj8FLxsKeOGUOuLxb3zo9o2CUQAAQTP7qwJoUEkAAAAASUVORK5CYII="
+    },
+    {
+      "position": 5,
+      "title": "What Is Retrieval-Augmented Generation aka RAG",
+      "link": "https://blogs.nvidia.com/blog/what-is-retrieval-augmented-generation/",
+      "source": "NVIDIA Blog",
+      "domain": "blogs.nvidia.com",
+      "displayed_link": "https://blogs.nvidia.com \u203a blog \u203a what-is-retrieval-augme...",
+      "snippet": "Retrieval-augmented generation is a technique for enhancing the accuracy and reliability of generative AI models with information fetched from specific and ...",
+      "snippet_highlighted_words": [
+        "Retrieval-augmented generation"
+      ],
+      "date": "Jan 31, 2025",
+      "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACLElEQVR4Ae3WA4wlQRSF4bVt27YRrG3btm3bRrC2bds2xjZ75k9yk9yM7Uq+h1vV1ee9ViVKaKFpCS2hTb6UaAJuRpA+YQmwDT4RZE5od54MG2EJZ3hHegAGlcAM3IQVRkg9BYqgJ47BJUID0NkQl+Apk9/ASrEdc9EUKWV8fmyEe7gCUCyMM/CGGSYiWyDngAETGZNC+qvgXagD8CUxhsMRBvYhk/SlQ3fswnhUQ2tshJ1M9gLFZXxaHIMRogCywUEY8MYEdZwnwkLq3zEKKVTw3DgPHxlXVZ2we2GEJMB1VZwrtVy4K7XXqIXE2IY/aOzn6ngoY82QXurJ8TEkAbaq4gCpDZHvXsjl9xyAHQojMRaqS3KpGjslpP9AIThL8R2SICMspTbEbwBxHofVCbkNicUMFcpL+oM8CeeqjsFSGwoDZsjnN4DihUUSPAW2qB3+QnWMhFlQAVLisXTYoCgSY6/U3qCEDiA+oZm6aT1Qfdf9HL7MWA1PHUCHKIj/6sTLiqRYKhs5Yz3WYAlaIDkyYj6cZFs3zEIyPb/MNRkeQd2IysFE/epiUi8t6UdJ0JJoj+3qXuCNiyjjZ87EaIrnIboVy9n9RAbZYxqyBHEO2GA/avuZJx16y1xGaJ8FKTFFXQmOuIxlWIK5GIzaSK22y4C22AfriHgaZsBAnIIJhqu+tCiDzliKO3CJtPWA7HQTbOAII+LXAzF5RSQB6qBfBKmUKKEltJjQfAHHiLcdp8EE6gAAAABJRU5ErkJggg=="
+    },
+    {
+      "position": 6,
+      "title": "What is Retrieval Augmented Generation (RAG)?",
+      "link": "https://www.databricks.com/blog/what-is-retrieval-augmented-generation",
+      "source": "Databricks",
+      "domain": "www.databricks.com",
+      "displayed_link": "https://www.databricks.com \u203a ... \u203a Data + AI Foundations",
+      "snippet": "Retrieval augmented generation is an AI pattern that improves large language model answers by first retrieving relevant documents from external data sources",
+      "snippet_highlighted_words": [
+        "an AI pattern that improves large language model answers"
+      ],
+      "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAJFBMVEVHcEz/NR7/Mx3/NB7/Mxz/NR7/NR7/NB7/NB3/NB7/NR7/MBoNAmK0AAAADHRSTlMAuyN7FJSrTDdiyQkdQjbUAAABAklEQVQokY1SWZKFMAiUnST3v+8AQX06b6omH5aGll7gOP57kMTW9xKbgk7xL6VlOokPjye+ayZTsEHwLDuB2MU8QAdfZATwEIIEo8kewLOMB2dv1jl+6+cxqVACb4GpakrrkTk+yssDziT1yom8eUN6dpIsImhI5aE7OiRNV0gzBePcmYV+8cAkNBxAdUJw3/FEeWb3ZV3KP31nFreeugKanL59QnFGStWIioSpfV6fatFZ8z2gcPtsSZHkqsGO9ml4zak4rRJb5ZNlcwa6fHYXKZ/JqbZ57JN/nYGdnHHHwfkY4urV8XTTPh9D6lT8XKbXeKNZLtO33Wyff211c97nBxkoCFbo7bCOAAAAAElFTkSuQmCC"
+    },
+    {
+      "position": 7,
+      "title": "What is retrieval-augmented generation?",
+      "link": "https://www.redhat.com/en/topics/ai/what-is-retrieval-augmented-generation",
+      "source": "Red Hat",
+      "domain": "www.redhat.com",
+      "displayed_link": "https://www.redhat.com \u203a topics \u203a what-is-retrieval-augm...",
+      "snippet": "Retrieval-augmented generation (RAG) is a technique that improves the quality and relevance of answers from a generative AI application.",
+      "snippet_highlighted_words": [
+        "a technique that improves the quality and relevance of answers"
+      ],
+      "date": "Apr 15, 2026",
+      "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACh0lEQVR4AWIYEmAUvGNgYATQXg9hckRRGIZPxoqziW3btm3bySa2bdu2bW1i2xx3T5x05uZbVAdtLt7n3rqF85erkAhhJuOpUAGZEeDNAHVwEefQHzlQDmfxFS+xAx2QFgk8WTwNbkJpDHiPGCgTBjzAZOSBjycCtIMByklvMBYp3Cnuj21QLorHMgS6GiAn3kC5IRx5XQ3QG8pNv9Da6eKrRYIiRA64HQCY6VRxxdWbVaT0JpFIvWcCnESIrUPth/zohUVxIru7iNzOxkV0Gh4I8QqZrRVPhikIRzxULDpz7oQ2J2M7tHGd6wG+RYvUthZgEn5CGemxgAB+tILkBBiIe9C7ECQat0RGWgtwH+pfsXhBsXoQLYQP8jI9HXfAMirOgTCxeI8xXAeHRTJaCvAIypQOtylUEwnoi8YXWRnrgW24g3DotED/0mk7MgElRQwPRe5xBHuy/dB/A6yAshbiCSv3QxJoIQAEIhPjVTld3TGa/izauZzSSfR70i9K689y6egTlqDynW0vRwpjgEJ4bCtEFPawci2EaUHsMFumBmNvEas9orEYocYQbaCDskaPd1qQDuxNZtoAe0GQAIVY9hRMrpfP6GwM4IseiLZ3QekRjTtscAsGE6Y+itDPSptBk5vp2rTTcM+0uAaX/r0WfNAQD6Ds0SEOekTiFUUe4q5QEE/pRzBu57aNsHRX5MIGfIFyVKxGB9Bn3L4X1p4NwWiGC/gB5SUb7L2Ok6MDzuALlAc9RylHvwsSoxZW4il+QrnhDZq58oHiiwxoiaW4gmgYHPw8C8cmlEACdz9WfZAUBdAMw7AEO3EUp3AE2zALnZEPgd7+ifFDIH6PA0ozMwxmMAoAeMXZ15G46mMAAAAASUVORK5CYII="
+    },
+    {
+      "position": 8,
+      "title": "What is Retrieval-Augmented Generation (RAG)",
+      "link": "https://www.geeksforgeeks.org/nlp/what-is-retrieval-augmented-generation-rag/",
+      "source": "GeeksforGeeks",
+      "domain": "www.geeksforgeeks.org",
+      "displayed_link": "https://www.geeksforgeeks.org \u203a nlp \u203a what-is-retrieval...",
+      "snippet": "Retrieval-Augmented Generation (RAG) is a way to make AI answers more reliable by combining searching for relevant information and then ...",
+      "snippet_highlighted_words": [
+        "Retrieval-Augmented Generation (RAG"
+      ],
+      "date": "May 1, 2026",
+      "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAM1BMVEVHcEwujUQvjUUujEUvjUUujUUujUUujUUvjUYvjUYvjUYujUUvjUUvjUYwi0MvjUYvjUaDgY7PAAAAEXRSTlMACRRIe7hrNKX/21qN6SD0zVxKFHYAAACqSURBVHgB3Y8FkgMgEASxlcGW/7/2sPPkAUmjXei4t8N7/0RCTETEclZkSZK7HhSbXJbUI43PaiejxHWgzVUFpqRh9R6V0levaD7C0pYS3C9kgAc0uIdUEIx/hRh4As9FQssHg+GHrEWF9kWYb9Z8pceBlYzR4o5bDZ1X2kUy6yvmQK5RmAzVBUKrRYoaTtCY10uGrTKOfEUKqQGg4rdwnpLZ/0zkfskr8gHhwgjM82lwXwAAAABJRU5ErkJggg=="
+    }
+  ],
+  "related_questions": [
+    {
+      "is_ai_overview": true,
+      "question": "Does ChatGPT use retrieval augmented generation?",
+      "text_blocks": [
+        {
+          "type": "paragraph",
+          "answer": "Retrieval-Augmented Generation (RAG) is an AI technique that improves Large Language Models (LLMs) by fetching facts from external knowledge bases before generating a response. Instead of relying solely on their static training data, models use RAG to \"open book test,\" reducing hallucinations and providing highly accurate, up-to-date answers.",
+          "reference_indexes": [
+            0,
+            2,
+            3
+          ]
+        },
+        {
+          "type": "header",
+          "answer": "How RAG Works"
+        },
+        {
+          "type": "paragraph",
+          "answer": "RAG operates in a series of steps to bridge the gap between user questions and external information:",
+          "reference_indexes": [
+            6,
+            9
+          ]
+        },
+        {
+          "type": "header",
+          "answer": "Why RAG is Used"
+        },
+        {
+          "type": "paragraph",
+          "answer": "RAG solves several inherent limitations of traditional generative AI:",
+          "reference_indexes": [
+            3,
+            5
+          ]
+        },
+        {
+          "type": "paragraph",
+          "answer": "Access to New Knowledge: Models have a knowledge cutoff based on when they were trained. RAG allows them to access real-time information.",
+          "reference_indexes": [
+            4,
+            3
+          ]
+        },
+        {
+          "type": "paragraph",
+          "answer": "For more details on implementation, you can read the IBM RAG Overview or the AWS RAG Explanation.",
+          "reference_indexes": [
+            8
+          ]
+        }
+      ],
+      "markdown": "Retrieval-Augmented Generation (RAG) is an AI technique that improves Large Language Models (LLMs) by fetching facts from external knowledge bases before generating a response. Instead of relying solely on their static training data, models use RAG to \"open book test,\" reducing hallucinations and providing highly accurate, up-to-date answers. [0](https://aws.amazon.com/what-is/retrieval-augmented-generation/) [2](https://www.ibm.com/think/topics/retrieval-augmented-generation) [3](https://www.reddit.com/r/explainlikeimfive/comments/1p39v3g/eli5_what_is_a_is_retrievalaugmented_generation/)\n\n## How RAG Works\n\nRAG operates in a series of steps to bridge the gap between user questions and external information: [6](https://www.pinecone.io/learn/retrieval-augmented-generation/) [9](https://www.youtube.com/shorts/OHz_MjBqFRY)\n\n## Why RAG is Used\n\nRAG solves several inherent limitations of traditional generative AI: [3](https://www.reddit.com/r/explainlikeimfive/comments/1p39v3g/eli5_what_is_a_is_retrievalaugmented_generation/) [5](https://www.databricks.com/blog/what-is-retrieval-augmented-generation)\n\nAccess to New Knowledge: Models have a knowledge cutoff based on when they were trained. RAG allows them to access real-time information. [4](https://cloud.google.com/use-cases/retrieval-augmented-generation) [3](https://www.reddit.com/r/explainlikeimfive/comments/1p39v3g/eli5_what_is_a_is_retrievalaugmented_generation/)\n\nFor more details on implementation, you can read the IBM RAG Overview or the AWS RAG Explanation. [8](https://www.youtube.com/watch?v=dDkynerzV-Q)\n\n[[0] - ](https://aws.amazon.com/what-is/retrieval-augmented-generation/)\n[[1] - ](https://blogs.nvidia.com/blog/what-is-retrieval-augmented-generation/)\n[[2] - ](https://www.ibm.com/think/topics/retrieval-augmented-generation)\n[[3] - ](https://www.reddit.com/r/explainlikeimfive/comments/1p39v3g/eli5_what_is_a_is_retrievalaugmented_generation/)\n[[4] - ](https://cloud.google.com/use-cases/retrieval-augmented-generation)\n[[5] - ](https://www.databricks.com/blog/what-is-retrieval-augmented-generation)\n[[6] - ](https://www.pinecone.io/learn/retrieval-augmented-generation/)\n[[7] - ](https://www.youtube.com/watch?v=xPMQ2cVbUTI&t=444)\n[[8] - ](https://www.youtube.com/watch?v=dDkynerzV-Q)\n[[9] - ](https://www.youtube.com/shorts/OHz_MjBqFRY)",
+      "reference_links": [
+        {
+          "index": 0,
+          "link": "https://aws.amazon.com/what-is/retrieval-augmented-generation/",
+          "favicon": "https://encrypted-tbn0.gstatic.com/faviconV2?url=https://aws.amazon.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 1,
+          "link": "https://blogs.nvidia.com/blog/what-is-retrieval-augmented-generation/",
+          "favicon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://blogs.nvidia.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 2,
+          "link": "https://www.ibm.com/think/topics/retrieval-augmented-generation",
+          "favicon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.ibm.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 3,
+          "link": "https://www.reddit.com/r/explainlikeimfive/comments/1p39v3g/eli5_what_is_a_is_retrievalaugmented_generation/",
+          "favicon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.reddit.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 4,
+          "link": "https://cloud.google.com/use-cases/retrieval-augmented-generation",
+          "favicon": "https://encrypted-tbn0.gstatic.com/faviconV2?url=https://cloud.google.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 5,
+          "link": "https://www.databricks.com/blog/what-is-retrieval-augmented-generation",
+          "favicon": "https://encrypted-tbn0.gstatic.com/faviconV2?url=https://www.databricks.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 6,
+          "link": "https://www.pinecone.io/learn/retrieval-augmented-generation/",
+          "favicon": "https://encrypted-tbn1.gstatic.com/faviconV2?url=https://www.pinecone.io&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 7,
+          "link": "https://www.youtube.com/watch?v=xPMQ2cVbUTI&t=444",
+          "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAhUlEQVR4AWNwL/ChCFPHgP8MxqxA7ArEKVBcCcUNIAznI+RdQXrABgAZpv8ZjP6Tg0F6QQbsosCAXSADHmGVVPIC0jKEDHgAMuAbmgRE445D///feYzXIJBeBigH04BVW/9DAcgwqEGYaik2gGIvUByIlEbjDooTEiwps5GRlNmolpkowgBVP9wMSzSKGAAAAABJRU5ErkJggg=="
+        },
+        {
+          "index": 8,
+          "link": "https://www.youtube.com/watch?v=dDkynerzV-Q",
+          "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAhUlEQVR4AWNwL/ChCFPHgP8MxqxA7ArEKVBcCcUNIAznI+RdQXrABgAZpv8ZjP6Tg0F6QQbsosCAXSADHmGVVPIC0jKEDHgAMuAbmgRE445D///feYzXIJBeBigH04BVW/9DAcgwqEGYaik2gGIvUByIlEbjDooTEiwps5GRlNmolpkowgBVP9wMSzSKGAAAAABJRU5ErkJggg=="
+        },
+        {
+          "index": 9,
+          "link": "https://www.youtube.com/shorts/OHz_MjBqFRY",
+          "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAhUlEQVR4AWNwL/ChCFPHgP8MxqxA7ArEKVBcCcUNIAznI+RdQXrABgAZpv8ZjP6Tg0F6QQbsosCAXSADHmGVVPIC0jKEDHgAMuAbmgRE445D///feYzXIJBeBigH04BVW/9DAcgwqEGYaik2gGIvUByIlEbjDooTEiwps5GRlNmolpkowgBVP9wMSzSKGAAAAABJRU5ErkJggg=="
+        }
+      ],
+      "next_page_token": "eyJmYyI6IkVxRUJDbUpCU21sVU5IUktTMVZUV0VsU1NuUjFhVGR6TVZCVk5IaDZRa3B6Umpoc2JXWlJZa1kxVDI0d1ZVdEtTRUZhY2tOb2EyVkpZVFJXTjNwMFpFbEpUMnhKTkhKc1NGZGtSazlYUVVnemExRTVaVm90YW1adldGSjZYelpwVVZGSlZtWnZaeElYWVVwMFpXRjBjVnBFVUV0NWNIUlJVREZ6YVVoM1VUQWFJa0ZFYzNJNVpsUjFNa05xZEV0RlprcFpiVk00YUV4ZldXRXdaa1ZuYkVwSWRuYyIsImZjdiI6IjMiLCJ2ZXQiOiIyYWhVS0V3amE3Y3Eyb2VLVkF4VnltWWtFSFZia0lkZ1FxN2tCS0FCNkJBZzlFQUEiLCJxIjoiRG9lcyBDaGF0R1BUIHVzZSByZXRyaWV2YWwgYXVnbWVudGVkIGdlbmVyYXRpb24_IiwibGsiOiJHaTlrYjJWeklHTm9ZWFJuY0hRZ2RYTmxJSEpsZEhKcFpYWmhiQ0JoZFdkdFpXNTBaV1FnWjJWdVpYSmhkR2x2YmciLCJxYyI6IkNpWjNhR0YwSUdseklISmxkSEpwWlhaaGJDQmhkV2R0Wlc1MFpXUWdaMlZ1WlhKaGRHbHZiaEFBZmJoOFFqOCIsImdsIjoidXMiLCJobCI6ImVuIn0"
+    },
+    {
+      "is_ai_overview": true,
+      "question": "What is the difference between a RAG and an LLM?",
+      "text_blocks": [
+        {
+          "type": "paragraph",
+          "answer": "Retrieval-Augmented Generation (RAG) is an AI technique that improves Large Language Models (LLMs) by fetching facts from external knowledge bases before generating a response. Instead of relying solely on their static training data, models use RAG to \"open book test,\" reducing hallucinations and providing highly accurate, up-to-date answers.",
+          "reference_indexes": [
+            0,
+            2,
+            3
+          ]
+        },
+        {
+          "type": "header",
+          "answer": "How RAG Works"
+        },
+        {
+          "type": "paragraph",
+          "answer": "RAG operates in a series of steps to bridge the gap between user questions and external information:",
+          "reference_indexes": [
+            6,
+            9
+          ]
+        },
+        {
+          "type": "header",
+          "answer": "Why RAG is Used"
+        },
+        {
+          "type": "paragraph",
+          "answer": "RAG solves several inherent limitations of traditional generative AI:",
+          "reference_indexes": [
+            3,
+            5
+          ]
+        },
+        {
+          "type": "paragraph",
+          "answer": "Access to New Knowledge: Models have a knowledge cutoff based on when they were trained. RAG allows them to access real-time information.",
+          "reference_indexes": [
+            4,
+            3
+          ]
+        },
+        {
+          "type": "paragraph",
+          "answer": "For more details on implementation, you can read the IBM RAG Overview or the AWS RAG Explanation.",
+          "reference_indexes": [
+            8
+          ]
+        }
+      ],
+      "markdown": "Retrieval-Augmented Generation (RAG) is an AI technique that improves Large Language Models (LLMs) by fetching facts from external knowledge bases before generating a response. Instead of relying solely on their static training data, models use RAG to \"open book test,\" reducing hallucinations and providing highly accurate, up-to-date answers. [0](https://aws.amazon.com/what-is/retrieval-augmented-generation/) [2](https://www.ibm.com/think/topics/retrieval-augmented-generation) [3](https://www.reddit.com/r/explainlikeimfive/comments/1p39v3g/eli5_what_is_a_is_retrievalaugmented_generation/)\n\n## How RAG Works\n\nRAG operates in a series of steps to bridge the gap between user questions and external information: [6](https://www.pinecone.io/learn/retrieval-augmented-generation/) [9](https://www.youtube.com/shorts/OHz_MjBqFRY)\n\n## Why RAG is Used\n\nRAG solves several inherent limitations of traditional generative AI: [3](https://www.reddit.com/r/explainlikeimfive/comments/1p39v3g/eli5_what_is_a_is_retrievalaugmented_generation/) [5](https://www.databricks.com/blog/what-is-retrieval-augmented-generation)\n\nAccess to New Knowledge: Models have a knowledge cutoff based on when they were trained. RAG allows them to access real-time information. [4](https://cloud.google.com/use-cases/retrieval-augmented-generation) [3](https://www.reddit.com/r/explainlikeimfive/comments/1p39v3g/eli5_what_is_a_is_retrievalaugmented_generation/)\n\nFor more details on implementation, you can read the IBM RAG Overview or the AWS RAG Explanation. [8](https://www.youtube.com/watch?v=dDkynerzV-Q)\n\n[[0] - ](https://aws.amazon.com/what-is/retrieval-augmented-generation/)\n[[1] - ](https://blogs.nvidia.com/blog/what-is-retrieval-augmented-generation/)\n[[2] - ](https://www.ibm.com/think/topics/retrieval-augmented-generation)\n[[3] - ](https://www.reddit.com/r/explainlikeimfive/comments/1p39v3g/eli5_what_is_a_is_retrievalaugmented_generation/)\n[[4] - ](https://cloud.google.com/use-cases/retrieval-augmented-generation)\n[[5] - ](https://www.databricks.com/blog/what-is-retrieval-augmented-generation)\n[[6] - ](https://www.pinecone.io/learn/retrieval-augmented-generation/)\n[[7] - ](https://www.youtube.com/watch?v=xPMQ2cVbUTI&t=444)\n[[8] - ](https://www.youtube.com/watch?v=dDkynerzV-Q)\n[[9] - ](https://www.youtube.com/shorts/OHz_MjBqFRY)",
+      "reference_links": [
+        {
+          "index": 0,
+          "link": "https://aws.amazon.com/what-is/retrieval-augmented-generation/",
+          "favicon": "https://encrypted-tbn0.gstatic.com/faviconV2?url=https://aws.amazon.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 1,
+          "link": "https://blogs.nvidia.com/blog/what-is-retrieval-augmented-generation/",
+          "favicon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://blogs.nvidia.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 2,
+          "link": "https://www.ibm.com/think/topics/retrieval-augmented-generation",
+          "favicon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.ibm.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 3,
+          "link": "https://www.reddit.com/r/explainlikeimfive/comments/1p39v3g/eli5_what_is_a_is_retrievalaugmented_generation/",
+          "favicon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.reddit.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 4,
+          "link": "https://cloud.google.com/use-cases/retrieval-augmented-generation",
+          "favicon": "https://encrypted-tbn0.gstatic.com/faviconV2?url=https://cloud.google.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 5,
+          "link": "https://www.databricks.com/blog/what-is-retrieval-augmented-generation",
+          "favicon": "https://encrypted-tbn0.gstatic.com/faviconV2?url=https://www.databricks.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 6,
+          "link": "https://www.pinecone.io/learn/retrieval-augmented-generation/",
+          "favicon": "https://encrypted-tbn1.gstatic.com/faviconV2?url=https://www.pinecone.io&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 7,
+          "link": "https://www.youtube.com/watch?v=xPMQ2cVbUTI&t=444",
+          "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAhUlEQVR4AWNwL/ChCFPHgP8MxqxA7ArEKVBcCcUNIAznI+RdQXrABgAZpv8ZjP6Tg0F6QQbsosCAXSADHmGVVPIC0jKEDHgAMuAbmgRE445D///feYzXIJBeBigH04BVW/9DAcgwqEGYaik2gGIvUByIlEbjDooTEiwps5GRlNmolpkowgBVP9wMSzSKGAAAAABJRU5ErkJggg=="
+        },
+        {
+          "index": 8,
+          "link": "https://www.youtube.com/watch?v=dDkynerzV-Q",
+          "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAhUlEQVR4AWNwL/ChCFPHgP8MxqxA7ArEKVBcCcUNIAznI+RdQXrABgAZpv8ZjP6Tg0F6QQbsosCAXSADHmGVVPIC0jKEDHgAMuAbmgRE445D///feYzXIJBeBigH04BVW/9DAcgwqEGYaik2gGIvUByIlEbjDooTEiwps5GRlNmolpkowgBVP9wMSzSKGAAAAABJRU5ErkJggg=="
+        },
+        {
+          "index": 9,
+          "link": "https://www.youtube.com/shorts/OHz_MjBqFRY",
+          "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAhUlEQVR4AWNwL/ChCFPHgP8MxqxA7ArEKVBcCcUNIAznI+RdQXrABgAZpv8ZjP6Tg0F6QQbsosCAXSADHmGVVPIC0jKEDHgAMuAbmgRE445D///feYzXIJBeBigH04BVW/9DAcgwqEGYaik2gGIvUByIlEbjDooTEiwps5GRlNmolpkowgBVP9wMSzSKGAAAAABJRU5ErkJggg=="
+        }
+      ],
+      "next_page_token": "eyJmYyI6IkVxRUJDbUpCU21sVU5IUktTMVZUV0VsU1NuUjFhVGR6TVZCVk5IaDZRa3B6Umpoc2JXWlJZa1kxVDI0d1ZVdEtTRUZhY2tOb2EyVkpZVFJXTjNwMFpFbEpUMnhKTkhKc1NGZGtSazlYUVVnemExRTVaVm90YW1adldGSjZYelpwVVZGSlZtWnZaeElYWVVwMFpXRjBjVnBFVUV0NWNIUlJVREZ6YVVoM1VUQWFJa0ZFYzNJNVpsUjFNa05xZEV0RlprcFpiVk00YUV4ZldXRXdaa1ZuYkVwSWRuYyIsImZjdiI6IjMiLCJ2ZXQiOiIyYWhVS0V3amE3Y3Eyb2VLVkF4VnltWWtFSFZia0lkZ1FxN2tCS0FCNkJBaERFQUEiLCJxIjoiV2hhdCBpcyB0aGUgZGlmZmVyZW5jZSBiZXR3ZWVuIGEgUkFHIGFuZCBhbiBMTE0_IiwibGsiOiJHZ3BzYkcwZ2RuTWdjbUZuIiwicWMiOiJDaVozYUdGMElHbHpJSEpsZEhKcFpYWmhiQ0JoZFdkdFpXNTBaV1FnWjJWdVpYSmhkR2x2YmhBQWZiaDhRajgiLCJnbCI6InVzIiwiaGwiOiJlbiJ9"
+    },
+    {
+      "is_ai_overview": true,
+      "question": "What is RAG in LLM with example?",
+      "text_blocks": [
+        {
+          "type": "paragraph",
+          "answer": "Retrieval-Augmented Generation (RAG) is an AI technique that improves Large Language Models (LLMs) by fetching facts from external knowledge bases before generating a response. Instead of relying solely on their static training data, models use RAG to \"open book test,\" reducing hallucinations and providing highly accurate, up-to-date answers.",
+          "reference_indexes": [
+            0,
+            2,
+            3
+          ]
+        },
+        {
+          "type": "header",
+          "answer": "How RAG Works"
+        },
+        {
+          "type": "paragraph",
+          "answer": "RAG operates in a series of steps to bridge the gap between user questions and external information:",
+          "reference_indexes": [
+            6,
+            9
+          ]
+        },
+        {
+          "type": "header",
+          "answer": "Why RAG is Used"
+        },
+        {
+          "type": "paragraph",
+          "answer": "RAG solves several inherent limitations of traditional generative AI:",
+          "reference_indexes": [
+            3,
+            5
+          ]
+        },
+        {
+          "type": "paragraph",
+          "answer": "Access to New Knowledge: Models have a knowledge cutoff based on when they were trained. RAG allows them to access real-time information.",
+          "reference_indexes": [
+            4,
+            3
+          ]
+        },
+        {
+          "type": "paragraph",
+          "answer": "For more details on implementation, you can read the IBM RAG Overview or the AWS RAG Explanation.",
+          "reference_indexes": [
+            8
+          ]
+        }
+      ],
+      "markdown": "Retrieval-Augmented Generation (RAG) is an AI technique that improves Large Language Models (LLMs) by fetching facts from external knowledge bases before generating a response. Instead of relying solely on their static training data, models use RAG to \"open book test,\" reducing hallucinations and providing highly accurate, up-to-date answers. [0](https://aws.amazon.com/what-is/retrieval-augmented-generation/) [2](https://www.ibm.com/think/topics/retrieval-augmented-generation) [3](https://www.reddit.com/r/explainlikeimfive/comments/1p39v3g/eli5_what_is_a_is_retrievalaugmented_generation/)\n\n## How RAG Works\n\nRAG operates in a series of steps to bridge the gap between user questions and external information: [6](https://www.pinecone.io/learn/retrieval-augmented-generation/) [9](https://www.youtube.com/shorts/OHz_MjBqFRY)\n\n## Why RAG is Used\n\nRAG solves several inherent limitations of traditional generative AI: [3](https://www.reddit.com/r/explainlikeimfive/comments/1p39v3g/eli5_what_is_a_is_retrievalaugmented_generation/) [5](https://www.databricks.com/blog/what-is-retrieval-augmented-generation)\n\nAccess to New Knowledge: Models have a knowledge cutoff based on when they were trained. RAG allows them to access real-time information. [4](https://cloud.google.com/use-cases/retrieval-augmented-generation) [3](https://www.reddit.com/r/explainlikeimfive/comments/1p39v3g/eli5_what_is_a_is_retrievalaugmented_generation/)\n\nFor more details on implementation, you can read the IBM RAG Overview or the AWS RAG Explanation. [8](https://www.youtube.com/watch?v=dDkynerzV-Q)\n\n[[0] - ](https://aws.amazon.com/what-is/retrieval-augmented-generation/)\n[[1] - ](https://blogs.nvidia.com/blog/what-is-retrieval-augmented-generation/)\n[[2] - ](https://www.ibm.com/think/topics/retrieval-augmented-generation)\n[[3] - ](https://www.reddit.com/r/explainlikeimfive/comments/1p39v3g/eli5_what_is_a_is_retrievalaugmented_generation/)\n[[4] - ](https://cloud.google.com/use-cases/retrieval-augmented-generation)\n[[5] - ](https://www.databricks.com/blog/what-is-retrieval-augmented-generation)\n[[6] - ](https://www.pinecone.io/learn/retrieval-augmented-generation/)\n[[7] - ](https://www.youtube.com/watch?v=xPMQ2cVbUTI&t=444)\n[[8] - ](https://www.youtube.com/watch?v=dDkynerzV-Q)\n[[9] - ](https://www.youtube.com/shorts/OHz_MjBqFRY)",
+      "reference_links": [
+        {
+          "index": 0,
+          "link": "https://aws.amazon.com/what-is/retrieval-augmented-generation/",
+          "favicon": "https://encrypted-tbn0.gstatic.com/faviconV2?url=https://aws.amazon.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 1,
+          "link": "https://blogs.nvidia.com/blog/what-is-retrieval-augmented-generation/",
+          "favicon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://blogs.nvidia.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 2,
+          "link": "https://www.ibm.com/think/topics/retrieval-augmented-generation",
+          "favicon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.ibm.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 3,
+          "link": "https://www.reddit.com/r/explainlikeimfive/comments/1p39v3g/eli5_what_is_a_is_retrievalaugmented_generation/",
+          "favicon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.reddit.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 4,
+          "link": "https://cloud.google.com/use-cases/retrieval-augmented-generation",
+          "favicon": "https://encrypted-tbn0.gstatic.com/faviconV2?url=https://cloud.google.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 5,
+          "link": "https://www.databricks.com/blog/what-is-retrieval-augmented-generation",
+          "favicon": "https://encrypted-tbn0.gstatic.com/faviconV2?url=https://www.databricks.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 6,
+          "link": "https://www.pinecone.io/learn/retrieval-augmented-generation/",
+          "favicon": "https://encrypted-tbn1.gstatic.com/faviconV2?url=https://www.pinecone.io&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 7,
+          "link": "https://www.youtube.com/watch?v=xPMQ2cVbUTI&t=444",
+          "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAhUlEQVR4AWNwL/ChCFPHgP8MxqxA7ArEKVBcCcUNIAznI+RdQXrABgAZpv8ZjP6Tg0F6QQbsosCAXSADHmGVVPIC0jKEDHgAMuAbmgRE445D///feYzXIJBeBigH04BVW/9DAcgwqEGYaik2gGIvUByIlEbjDooTEiwps5GRlNmolpkowgBVP9wMSzSKGAAAAABJRU5ErkJggg=="
+        },
+        {
+          "index": 8,
+          "link": "https://www.youtube.com/watch?v=dDkynerzV-Q",
+          "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAhUlEQVR4AWNwL/ChCFPHgP8MxqxA7ArEKVBcCcUNIAznI+RdQXrABgAZpv8ZjP6Tg0F6QQbsosCAXSADHmGVVPIC0jKEDHgAMuAbmgRE445D///feYzXIJBeBigH04BVW/9DAcgwqEGYaik2gGIvUByIlEbjDooTEiwps5GRlNmolpkowgBVP9wMSzSKGAAAAABJRU5ErkJggg=="
+        },
+        {
+          "index": 9,
+          "link": "https://www.youtube.com/shorts/OHz_MjBqFRY",
+          "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAhUlEQVR4AWNwL/ChCFPHgP8MxqxA7ArEKVBcCcUNIAznI+RdQXrABgAZpv8ZjP6Tg0F6QQbsosCAXSADHmGVVPIC0jKEDHgAMuAbmgRE445D///feYzXIJBeBigH04BVW/9DAcgwqEGYaik2gGIvUByIlEbjDooTEiwps5GRlNmolpkowgBVP9wMSzSKGAAAAABJRU5ErkJggg=="
+        }
+      ],
+      "next_page_token": "eyJmYyI6IkVxRUJDbUpCU21sVU5IUktTMVZUV0VsU1NuUjFhVGR6TVZCVk5IaDZRa3B6Umpoc2JXWlJZa1kxVDI0d1ZVdEtTRUZhY2tOb2EyVkpZVFJXTjNwMFpFbEpUMnhKTkhKc1NGZGtSazlYUVVnemExRTVaVm90YW1adldGSjZYelpwVVZGSlZtWnZaeElYWVVwMFpXRjBjVnBFVUV0NWNIUlJVREZ6YVVoM1VUQWFJa0ZFYzNJNVpsUjFNa05xZEV0RlprcFpiVk00YUV4ZldXRXdaa1ZuYkVwSWRuYyIsImZjdiI6IjMiLCJ2ZXQiOiIyYWhVS0V3amE3Y3Eyb2VLVkF4VnltWWtFSFZia0lkZ1FxN2tCS0FCNkJBaEVFQUEiLCJxIjoiV2hhdCBpcyBSQUcgaW4gTExNIHdpdGggZXhhbXBsZT8iLCJsayI6IkdoOTNhR0YwSUdseklISmhaeUJwYmlCc2JHMGdkMmwwYUNCbGVHRnRjR3hsIiwicWMiOiJDaVozYUdGMElHbHpJSEpsZEhKcFpYWmhiQ0JoZFdkdFpXNTBaV1FnWjJWdVpYSmhkR2x2YmhBQWZiaDhRajgiLCJnbCI6InVzIiwiaGwiOiJlbiJ9"
+    },
+    {
+      "question": "What are the 4 stages of RAG?",
+      "answer": "RAG pipelines typically involve four steps: document preparation and chunking, vector indexing, retrieval and prompt augmentation.",
+      "answer_highlight": "document preparation and chunking, vector indexing, retrieval and prompt augmentation",
+      "source": {
+        "title": "What is Retrieval Augmented Generation (RAG)? - Databricks",
+        "link": "https://www.databricks.com/blog/what-is-retrieval-augmented-generation#:~:text=RAG%20pipelines%20typically%20involve%20four,indexing%2C%20retrieval%20and%20prompt%20augmentation.",
+        "source": "Databricks",
+        "domain": "www.databricks.com",
+        "displayed_link": "https://www.databricks.com \u203a ... \u203a Data + AI Foundations",
+        "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAJFBMVEVHcEz/NR7/Mx3/NB7/Mxz/NR7/NR7/NB7/NB3/NB7/NR7/MBoNAmK0AAAADHRSTlMAuyN7FJSrTDdiyQkdQjbUAAABAklEQVQokY1SWZKFMAiUnST3v+8AQX06b6omH5aGll7gOP57kMTW9xKbgk7xL6VlOokPjye+ayZTsEHwLDuB2MU8QAdfZATwEIIEo8kewLOMB2dv1jl+6+cxqVACb4GpakrrkTk+yssDziT1yom8eUN6dpIsImhI5aE7OiRNV0gzBePcmYV+8cAkNBxAdUJw3/FEeWb3ZV3KP31nFreeugKanL59QnFGStWIioSpfV6fatFZ8z2gcPtsSZHkqsGO9ml4zak4rRJb5ZNlcwa6fHYXKZ/JqbZ57JN/nYGdnHHHwfkY4urV8XTTPh9D6lT8XKbXeKNZLtO33Wyff211c97nBxkoCFbo7bCOAAAAAElFTkSuQmCC"
+      },
+      "next_page_token": "eyJmYyI6IkVxRUJDbUpCU21sVU5IUktTMVZUV0VsU1NuUjFhVGR6TVZCVk5IaDZRa3B6Umpoc2JXWlJZa1kxVDI0d1ZVdEtTRUZhY2tOb2EyVkpZVFJXTjNwMFpFbEpUMnhKTkhKc1NGZGtSazlYUVVnemExRTVaVm90YW1adldGSjZYelpwVVZGSlZtWnZaeElYWVVwMFpXRjBjVnBFVUV0NWNIUlJVREZ6YVVoM1VUQWFJa0ZFYzNJNVpsUjFNa05xZEV0RlprcFpiVk00YUV4ZldXRXdaa1ZuYkVwSWRuYyIsImZjdiI6IjMiLCJ2ZXQiOiIyYWhVS0V3amE3Y3Eyb2VLVkF4VnltWWtFSFZia0lkZ1FxN2tCS0FCNkJBaEdFQUEiLCJxIjoiV2hhdCBhcmUgdGhlIDQgc3RhZ2VzIG9mIFJBRz8iLCJsayI6IkdnODBJSE4wWVdkbGN5QnZaaUJ5WVdjIiwicWMiOiJDaVozYUdGMElHbHpJSEpsZEhKcFpYWmhiQ0JoZFdkdFpXNTBaV1FnWjJWdVpYSmhkR2x2YmhBQWZiaDhRajgiLCJnbCI6InVzIiwiaGwiOiJlbiJ9"
+    }
+  ],
+  "perspectives": [
+    {
+      "position": 1,
+      "title": "Why RAG Solutions Fail with Complex Documents & Vector Databases",
+      "author": "IBM Technology \u00b7 YouTube",
+      "source": "Educational content on IBM tech",
+      "date": "1 day ago",
+      "iso_date": "2026-07-19T11:00:37Z",
+      "reactions": "9K+ views",
+      "thumbnail": "https://img.youtube.com/vi/xc63tFIIfeA/hqdefault.jpg"
+    },
+    {
+      "position": 2,
+      "title": "Everyone learning AI should know these RAG systems. I've explained each in simple. \ud835\udde6\ud835\ude01\ud835\uddee\ud835\uddfb\ud835\uddf1\ud835\uddee\ud835\uddff\ud835\uddf1 \ud835\udde5\ud835\uddd4\ud835\uddda (\ud835\udde5\ud835\uddf2\ud835\ude01\ud835\uddff\ud835\uddf6\ud835\uddf2\ud835\ude03\ud835\uddee\ud835\uddf9-\ud835\uddd4\ud835\ude02\ud835\uddf4\ud835\uddfa\ud835\uddf2\ud835\uddfb\ud835\ude01\ud835\uddf2\ud835\uddf1 \ud835\uddda\ud835\uddf2\ud835\uddfb\ud835\uddf2\ud835\uddff\ud835\uddee\ud835\ude01\ud835\uddf6\ud835\uddfc\ud835\uddfb) It helps AI models \ud835\uddff\ud835\uddf2\ud835\ude01\ud835\uddff\ud835\uddf6\ud835\uddf2\ud835\ude03\ud835\uddf2 \ud835\uddff\ud835\uddf2\ud835\uddf9\ud835\uddf2\ud835\ude03\ud835\uddee\ud835\uddfb\ud835\ude01 \ud835\uddf6\ud835\uddfb\ud835\uddf3\ud835\uddfc\ud835\uddff\ud835\uddfa\ud835\uddee\ud835\ude01\ud835\uddf6\ud835\uddfc\ud835\uddfb before answering. \u2022 Converts queries i",
+      "author": "Rahul Agarwal",
+      "source": "LinkedIn",
+      "iso_date": "2026-07-17T04:30:07Z",
+      "reactions": "3 days ago"
+    },
+    {
+      "position": 3,
+      "title": "What is RAG?\ud83d\udcbb",
+      "author": "codecrookshanks \u00b7 Instagram",
+      "source": "Tech enthusiast & creator",
+      "date": "7 hours ago",
+      "iso_date": "2026-07-20T14:54:15Z",
+      "reactions": "170+ likes",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSNdhNRvqgnFBhLzTjmvR4gsuhEWkWkwNZsLzTbbEXpeiv6GZmWmPJpdOHpg&usqp=CAI&s=10"
+    },
+    {
+      "position": 4,
+      "title": "RAG Explained | All about RAG - Retrieval Augmented Generation",
+      "author": "codebasics \u00b7 YouTube",
+      "source": "Data analytics & AI instructor",
+      "date": "May 4, 2026",
+      "iso_date": "2026-05-04T13:30:06Z",
+      "reactions": "65.5K+ views",
+      "thumbnail": "https://img.youtube.com/vi/dDkynerzV-Q/hqdefault.jpg"
+    },
+    {
+      "position": 5,
+      "title": "Few people actually understand how RAG works. Most AI apps fail for one simple reason: they don\u2019t know your data. That\u2019s where Retrieval-Augmented Generation (RAG) changes everything. Instead of relying only on what a model was trained on, RAG gives",
+      "author": "Usman Shahbaz",
+      "source": "LinkedIn",
+      "iso_date": "2026-07-15T03:30:40Z",
+      "reactions": "5 days ago",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOBmxMPuw7cSQXVBrdkFYszQbMYx97VSYJZimEW0iab-5MeOG2nQAIVpDdQA&usqp=CAI&s"
+    },
+    {
+      "position": 7,
+      "title": "What is RAG? | Completely Explained in 14 Min...",
+      "author": "The Cloud Girl \u00b7 YouTube",
+      "source": "Cloud & AI content creator",
+      "date": "3 weeks ago",
+      "iso_date": "2026-07-01T15:34:29Z",
+      "reactions": "4.7K+ views",
+      "thumbnail": "https://img.youtube.com/vi/KhLJ7CbJZqU/hqdefault.jpg"
+    },
+    {
+      "position": 8,
+      "title": "Still confused about RAG? Here's a simple workflow for you. Read the post to learn more. When we ask an LLM a question, it often struggles if it has not seen the right data during training - like business specific data. That\u2019s where \ud835\udc11\ud835\udc00\ud835\udc06 (\ud835\udc11\ud835\udc1e\ud835\udc2d\ud835\udc2b\ud835\udc22\ud835\udc1e\ud835\udc2f\ud835\udc1a\ud835\udc25-\ud835\udc00\ud835\udc2e\ud835\udc20\ud835\udc26\ud835\udc1e",
+      "author": "Sandipan Bhaumik \u00b7 LinkedIn",
+      "source": "Data & AI tech leader",
+      "iso_date": "2026-07-15T07:30:01Z",
+      "reactions": "5 days ago",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYytgahxqHEqps9x2uARXgmb8KlqUSRiwU-0VEwUBYvj3bNrGQDL2Zmb8g8g&usqp=CAI&s"
+    },
+    {
+      "position": 9,
+      "title": "What is RAG in AI? (Retrieval-Augmented Generation Explained)",
+      "author": "Paras Thakur \u00b7 YouTube",
+      "source": "Cloud engineer at Google",
+      "date": "3 weeks ago",
+      "iso_date": "2026-06-29T14:45:07Z",
+      "reactions": "160+ views",
+      "thumbnail": "https://img.youtube.com/vi/aEF9ECLpAjk/hqdefault.jpg"
+    },
+    {
+      "position": 10,
+      "title": "Understanding RAG (Retrieval-Augmented Generation) in Simple Terms",
+      "author": "Sookriti Mishra",
+      "source": "LinkedIn",
+      "iso_date": "2026-05-30T07:00:00Z",
+      "reactions": "1 month ago",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrLP6KMvlUNc6WE8hCSq9kNsm5H6lxBIF8AbdhAAG7wITDenpDONHBw13htA&usqp=CAI&s"
+    },
+    {
+      "position": 11,
+      "title": "Comment \u201cTOPICS\u201d to get a full guide on what you actually need to learn. RAG is the first thing everyone learns. It\u2019s also where most people stop. And I get why. It\u2019s the topic all over your feed right now, so it feels like the whole job. But when 1,700+ real AI engineering job descriptions were reverse-engineered, RAG was one line item in a much longer list. If you already know how to build software, here\u2019s the AI-specific layer that actually gets you hired: Agents and orchestration. Chaining tools, managing state, and building workflows that survive production. LangGraph, MCP, the full stack. Evaluation. If you can\u2019t measure whether your system got better or worse, you\u2019re guessing. This is what separates a demo from a real product. LLMOps. Deployment, monitoring, versioning, cost control. The unglamorous work that keeps you employed. Safety and guardrails. Companies won\u2019t ship what they can\u2019t trust, so knowing how to handle this is a hiring signal on its own. ML foundations.",
+      "author": "bashi_fuirkashi \u00b7 Instagram",
+      "source": "AI engineer",
+      "date": "1 day ago",
+      "iso_date": "2026-07-19T16:11:00Z",
+      "reactions": "220+ likes",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjkQ71VrG3f7kKXesnf3mypbnsqZWLyGRpFDxHMuqpQLHhgYkNmrqhrt9x8g&usqp=CAI&s=10"
+    },
+    {
+      "position": 12,
+      "title": "What is RAG Architecture? Very Important Skill for Agentic AI",
+      "author": "Rajeev Kanth | BEPEC \u00b7 YouTube",
+      "source": "AI consultant",
+      "date": "3 days ago",
+      "iso_date": "2026-07-17T12:00:01Z",
+      "reactions": "110+ views",
+      "thumbnail": "https://img.youtube.com/vi/b4QVt8RZ4us/hqdefault.jpg"
+    }
+  ],
+  "related_searches": [
+    {
+      "query": "What is retrieval augmented generation rag ai",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&hl=en&pws=0&gl=us&q=What+is+retrieval+augmented+generation+rag+ai&sa=X&ved=2ahUKEwja7cq2oeKVAxVymYkEHVbkIdgQ1QJ6BAguEAE"
+    },
+    {
+      "query": "Retrieval-augmented generation example",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&hl=en&pws=0&gl=us&q=Retrieval-augmented+generation+example&sa=X&ved=2ahUKEwja7cq2oeKVAxVymYkEHVbkIdgQ1QJ6BAg3EAE"
+    },
+    {
+      "query": "What is RAG in AI",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&hl=en&pws=0&gl=us&q=What+is+RAG+in+AI&sa=X&ved=2ahUKEwja7cq2oeKVAxVymYkEHVbkIdgQ1QJ6BAg4EAE"
+    },
+    {
+      "query": "Retrieval Augmented Generation tutorial",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&hl=en&pws=0&gl=us&q=Retrieval+Augmented+Generation+tutorial&sa=X&ved=2ahUKEwja7cq2oeKVAxVymYkEHVbkIdgQ1QJ6BAg2EAE"
+    },
+    {
+      "query": "Retrieval Augmented Generation Pronunciation",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&hl=en&pws=0&gl=us&q=Retrieval+Augmented+Generation+Pronunciation&sa=X&ved=2ahUKEwja7cq2oeKVAxVymYkEHVbkIdgQ1QJ6BAg0EAE"
+    },
+    {
+      "query": "How does retrieval augmented generation enhance the responses of a large language model",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&hl=en&pws=0&gl=us&q=How+does+retrieval+augmented+generation+enhance+the+responses+of+a+large+language+model&sa=X&ved=2ahUKEwja7cq2oeKVAxVymYkEHVbkIdgQ1QJ6BAgwEAE"
+    },
+    {
+      "query": "Introduction to retrieval-Augmented generation",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&hl=en&pws=0&gl=us&q=Introduction+to+retrieval-Augmented+generation&sa=X&ved=2ahUKEwja7cq2oeKVAxVymYkEHVbkIdgQ1QJ6BAgvEAE"
+    },
+    {
+      "query": "How does retrieval augmented generation work",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&hl=en&pws=0&gl=us&q=How+does+retrieval+augmented+generation+work&sa=X&ved=2ahUKEwja7cq2oeKVAxVymYkEHVbkIdgQ1QJ6BAgtEAE"
+    }
+  ],
+  "pagination": {
+    "current": 1,
+    "next": "https://www.google.com/search?q=what+is+retrieval+augmented+generation&oq=what+is+retrieval+augmented+generation&gl=us&hl=en&pws=0&start=10"
+  }
+}

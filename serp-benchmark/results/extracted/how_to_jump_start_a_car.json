@@ -1,0 +1,304 @@
+{
+  "query": "how to jump start a car",
+  "intent": "informational",
+  "scores": {
+    "SearchApi": {
+      "extracted": {
+        "present": true,
+        "summary": "",
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "answer": "Jump-starting a car requires a working vehicle and a set of jumper cables. Park the cars face-to-face without letting them touch, and turn both ignitions off. Connect the cables in this exact order: positive (red) to the dead battery, positive (red) to the good battery, negative (black) to the good battery, and negative (black) to unpainted metal on the dead car.",
+            "reference_indexes": [
+              5
+            ]
+          },
+          {
+            "type": "video",
+            "link": "https://www.instagram.com/reel/DM0fl_BRLES/?hl=en"
+          },
+          {
+            "type": "header",
+            "answer": "The Step-by-Step Process"
+          },
+          {
+            "type": "paragraph",
+            "answer": "Position the cars: Park the two cars close enough so the jumper cables can reach between both batteries, but ensure the vehicles are not touching each other.",
+            "reference_indexes": [
+              5
+            ]
+          },
+          {
+            "type": "header",
+            "answer": "Important Tips"
+          },
+          {
+            "type": "video",
+            "link": "https://www.youtube.com/watch?v=XvQoWEwxg2M&t=101"
+          }
+        ],
+        "citations": [
+          {
+            "url": "https://www.youtube.com/watch?v=YFFn5mYy16s&t=11",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.kbb.com/car-advice/how-to-jump-start-battery/",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/shorts/k2ZD4AwnqKQ",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=gff7qXZWhaU&t=7",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/shorts/8Y7NOw15zVo",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.consumerreports.org/cars/car-batteries/jump-start-car-with-dead-battery-a1028630350/",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/shorts/wGkDaxONt4I",
+            "title": "",
+            "snippet": ""
+          }
+        ],
+        "related_searches": []
+      }
+    },
+    "SerpApi": {
+      "extracted": {
+        "present": true,
+        "summary": "",
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "snippet": "To jump-start a car, park a working vehicle close enough for the jumper cables to reach, but do not let the cars touch. Turn off both ignitions, engage the parking brakes, and turn off all accessories.",
+            "snippet_links": [
+              {
+                "link": "https://www.kbb.com/car-advice/how-to-jump-start-battery/"
+              }
+            ],
+            "snippet_highlighted_words": [
+              "park a working vehicle close enough for the jumper cables to reach, but do not let the cars touch. Turn off both ignitions, engage the parking brakes, and turn off all accessories"
+            ],
+            "reference_indexes": [
+              0,
+              1,
+              6
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Before proceeding, ensure the dead battery is not frozen, leaking, or bulging, as attempting to jump-start a damaged battery can cause an explosion. It is highly recommended to wear safety glasses and gloves, remove all metal jewelry, and ensure no one is smoking near the vehicles.",
+            "snippet_links": [
+              {
+                "link": "https://www.caaquebec.com/en/advices/maintaining-a-vehicle/boosting-a-car-battery-follow-the-guide"
+              }
+            ],
+            "reference_indexes": [
+              1
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Connect the jumper cables exactly in this order to minimize the risk of sparks:",
+            "snippet_links": [
+              {
+                "link": "https://www.youtube.com/watch?v=gff7qXZWhaU&t=7"
+              }
+            ],
+            "reference_indexes": [
+              9,
+              3
+            ]
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Red (+) to Dead: Attach one red (positive) clamp to the positive terminal of the dead battery."
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Once everything is secure:"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Start the engine of the working car and let it idle for 2 to 5 minutes."
+              },
+              {
+                "snippet": "Attempt to start the car with the dead battery."
+              },
+              {
+                "snippet": "Once the dead car is running, carefully remove the cables in the exact reverse order they were connected: start by removing the black clamp from the unpainted metal, then the black clamp from the good battery, then the red clamp from the good battery, and finally the red clamp from the dead battery.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.youtube.com/watch?v=wjvZw9jZCaE&t=14"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              0,
+              5
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "This video demonstrates the connection sequence and safety protocols:",
+            "video": {
+              "link": "https://www.youtube.com/watch?v=gff7qXZWhaU&t=7",
+              "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWElcgaCAT8KerSZHT9h4mRiyeSEIRkEnfEh7EB46IBGV5urr5"
+            }
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Drive the vehicle for at least 20 to 30 minutes to allow the alternator to recharge the battery. If the car fails to start again later, consult a licensed mechanic to check the battery and alternator.",
+            "snippet_links": [
+              {
+                "link": "https://www.youtube.com/watch?v=wjvZw9jZCaE&t=14"
+              }
+            ],
+            "reference_indexes": [
+              0,
+              6,
+              7,
+              8
+            ]
+          }
+        ],
+        "citations": [
+          {
+            "url": "https://www.kbb.com/car-advice/how-to-jump-start-battery/",
+            "title": "How to Jump Start a Car in 6 Steps - Kelley Blue Book",
+            "snippet": "Park the vehicle with a good battery in front of the one that needs a jump-start. Turn the ignition off and engage the parking brake on both cars. Open the hood..."
+          },
+          {
+            "url": "https://www.caaquebec.com/en/advices/maintaining-a-vehicle/boosting-a-car-battery-follow-the-guide",
+            "title": "How to safely jump-start a car battery | CAA-Quebec",
+            "snippet": "What to check before jump-starting a car battery * Make sure the two vehicles don't touch. * Check that the dead battery isn't frozen or swollen. Av"
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=gff7qXZWhaU",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/shorts/DLabzJRt5yA",
+            "title": "How To Jumpstart A Car \u26a1 #cars24",
+            "snippet": "\u092e\u0948\u0902 \u092e\u093e\u0928\u0924\u093e \u0939\u0942\u0902 \u0917\u093e\u0921\u093c\u0940 \u091a\u0932\u093e\u0928\u093e \u090f\u0915 \u092a\u094d\u0930\u093f\u0935\u093f\u0932\u0947\u091c \u0939\u094b\u0924\u093e \u0939\u0948 \u092a\u0930 \u0917\u093e\u0921\u093c\u0940 \u0930\u0916\u0928\u0947 \u0915\u0947 \u0938\u093e\u0925-\u0938\u093e\u0925 \u0906\u092a\u0915\u094b \u0915\u0941\u091b \u092c\u0947\u0938\u093f\u0915 \u0938\u094d\u0915\u093f\u0932\u094d\u0938 \u0906\u0928\u0947 \u091a\u093e\u0939\u093f\u090f \u091c\u094b \u0915\u0932 \u0915\u094b \u0906\u092a\u0915\u094b \u092e\u0941\u0938\u0940\u092c\u0924 \u0938\u0947 \u092c\u091a\u093e\u090f\u0902. \u0938\u094d\u0915\u093f\u0932\u094d\u0938. \u091c\u0948\u0938\u0947 \u0917\u093e\u0921\u093c\u0940 \u091c\u0902\u092a"
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=wjvZw9jZCaE",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/shorts/Bu9k4062hUY",
+            "title": "How to Jump Start a Car the RIGHT Way \u26a1#mechanic #battery",
+            "snippet": "hey guys Garrett Brian if you're ever trying to start a car with a pretty weak battery like. this. here's what you do now obviously we're going to get some jump"
+          },
+          {
+            "url": "https://www.youtube.com/shorts/8Y7NOw15zVo",
+            "title": "Here's how to jump-start your car in less than one minute. #howto #jumpstart ...",
+            "snippet": "there are a lot of wrong ways to jump start a car but here's the proper way to do it. position the cars close enough for the jumper cables to reach but not so c"
+          },
+          {
+            "url": "https://www.instagram.com/reel/DM0fl_BRLES/?hl=en",
+            "title": "Jump Start Car \ud83d\ude97\u26a1\ufe0f #MACKanics",
+            "snippet": "nothing worse than a dead car welcome back to the mechanics. and I'm here to get you out of a pickle if you've tried to start your vehicle. and it just won't st"
+          },
+          {
+            "url": "https://www.auto4export.com/blog/5-reasons-your-car-won-t-start-quick-fixes-and-solutions",
+            "title": "The Main Reasons Why a Car Won't Start: Common Faults and How to Fix Them",
+            "snippet": "Test the alternator: If the car starts after a jump but soon dies again, the alternator may not be charging the battery properly. A mechanic can test this for y..."
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=gff7qXZWhaU&t=7",
+            "title": "Behind the Wheel: How to jump start your car",
+            "snippet": "but if your battery dies before you replace it you might end up having to jump start your car tony shows us how in today's allnew Behind the Wheel. when it come"
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=wjvZw9jZCaE&t=14",
+            "title": "How to Jump Start A Car | The Art of Manliness",
+            "snippet": "come on here's your step-by-step guide to jump starting a car. well first you always want to make sure you have jumper cables in your car because you never know"
+          }
+        ],
+        "related_searches": []
+      }
+    },
+    "Serper": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "DataForSEO": {
+      "extracted": {
+        "present": true,
+        "summary": "![Dead battery? Be careful your jumpstart isn&#39;t going to make ...](https://api.dataforseo.com/cdn/i/07210054-2120-0139-0000-54d27b283c60:12)\nJump-starting a car `requires a working vehicle and a set of jumper cables` . Park the cars face-to-face without letting them touch, and turn both ignitions off. Connect the cables in this exact order: positive (red) to the dead battery, positive (red) to the good battery, negative (black) to the good battery, and negative (black) to unpainted metal on the dead car.[](https://www.consumerreports.org/cars/car-batteries/jump-start-car-with-dead-battery-a1028630350/) [[1]](https://www.consumerreports.org/cars/car-batteries/jump-start-car-with-dead-battery-a1028630350/)\n\nFor a clear, step-by-step visual demonstration on how to attach the jumper cables safely and avoid sparks, watch this short tutorial:[![](https://api.dataforseo.com/cdn/i/07210054-2120-0139-0000-54d27b283c60:13)\n![Related video thumbnail](https://api.dataforseo.com/cdn/i/07210054-2120-0139-0000-54d27b283c60:14)\n1m](https://www.instagram.com/reel/DM0fl_BRLES/?hl=en) [Jump Start Car \ud83d\ude97\u26a1\ufe0f #MACKanics 120K views \u00a0\u00b7\u00a011 months ago![](https://api.dataforseo.com/cdn/i/07210054-2120-0139-0000-54d27b283c60:15)\nInstagram\u00a0\u00b7\u00a0Mack Hollins](https://www.instagram.com/reel/DM0fl_BRLES/?hl=en) \n\nThe Step-by-Step Process\n\n1. **Position the cars:** Park the two cars close enough so the jumper cables can reach between both batteries, but ensure the vehicles are not touching each other.[](https://www.consumerreports.org/cars/car-batteries/jump-start-car-with-dead-battery-a1028630350/) [[1]](https://www.consumerreports.org/cars/car-batteries/jump-start-car-with-dead-battery-a1028630350/)\n2. **Turn off the engines:** Turn off the ignition in both vehicles and engage the parking brake . Pop the hoods and locate the batteries.[](https://www.kbb.com/car-advice/how-to-jump-start-battery/) [[1]](https://www.kbb.com/car-advice/how-to-jump-start-battery/)[[2]](https://www.consumerreports.org/cars/car-batteries/jump-start-car-with-dead-battery-a1028630350/)\n3. **Red on Dead:** Attach one red (positive) clamp to the positive terminal (+) of the dead battery.[](https://www.kbb.com/car-advice/how-to-jump-start-battery/) [[1]](https://www.kbb.com/car-advice/how-to-jump-start-battery/)\n4. **Red on Good:** Attach the other red (positive) clamp to the positive terminal (+) of the working (donor) battery.[](https://www.kbb.com/car-advice/how-to-jump-start-battery/) [[1]](https://www.kbb.com/car-advice/how-to-jump-start-battery/)\n5. **Black on Good:** Connect one black (negative) clamp to the negative terminal (-) of the working battery.[](https://www.kbb.com/car-advice/how-to-jump-start-battery/) [[1]](https://www.kbb.com/car-advice/how-to-jump-start-battery/)\n6. **Ground on Dead:** Connect the final black (negative) clamp to an unpainted, solid metal part of the dead car\u2019s engine block or chassis (this acts as a ground and minimizes sparks). *Never connect this to the negative terminal of the dead battery.* [](https://www.consumerreports.org/cars/car-batteries/jump-start-car-with-dead-battery-a1028630350/) [[1]](https://www.consumerreports.org/cars/car-batteries/jump-start-car-with-dead-battery-a1028630350/)[[2]](https://www.kbb.com/car-advice/how-to-jump-start-battery/)[[3]](https://www.youtube.com/shorts/8Y7NOw15zVo)[[4]](https://www.youtube.com/shorts/Bu9k4062hUY)\n7. **Start the working car:** Start the engine of the vehicle with the good battery and let it run for 1 to 3 minutes.[](https://www.youtube.com/watch?v=YFFn5mYy16s&t=11) [[1]](https://www.youtube.com/watch?v=YFFn5mYy16s&t=11)[[2]](https://www.youtube.com/watch?v=gff7qXZWhaU&t=7)[[3]](https://www.youtube.com/shorts/8Y7NOw15zVo)\n8. **Start the dead car:** Attempt to start the vehicle with the dead battery.[](https://www.youtube.com/shorts/8Y7NOw15zVo) [[1]](https://www.youtube.com/shorts/8Y7NOw15zVo)\n9. **Remove the cables:** Once the dead car is running, remove the cables in the exact **reverse** order that you put them on (Black off the dead car, Black off the good car, Red off the good car, Red off the dead car). Make sure the clamps do not touch each other while you are doing this.[](https://www.youtube.com/watch?v=YFFn5mYy16s&t=11) [[1]](https://www.youtube.com/watch?v=YFFn5mYy16s&t=11)[[2]](https://www.youtube.com/shorts/k2ZD4AwnqKQ)\n\nImportant Tips\n\n- Do not immediately turn your engine off. Leave the newly started car running and drive it around for at least 15 to 30 minutes to allow the alternator to properly recharge the battery.\n- If your car doesn't start, double-check your cable connections to ensure they are secure, and wait a few more minutes with the working car's engine running before trying again.\n- For safety instructions specific to your make and model, it is always a good idea to consult your vehicle's owner manual.[](https://www.youtube.com/watch?v=YFFn5mYy16s&t=11) [[1]](https://www.youtube.com/watch?v=YFFn5mYy16s&t=11)[[2]](https://www.youtube.com/watch?v=gff7qXZWhaU&t=7)[[3]](https://www.youtube.com/shorts/wGkDaxONt4I)[[4]](https://www.youtube.com/shorts/8Y7NOw15zVo)[[5]](https://www.kbb.com/car-advice/how-to-jump-start-battery/)\n\nIf you prefer using a portable jump starter pack instead of relying on a donor vehicle, this video covers exactly how to do that safely:![Related video thumbnail](https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSBBGxLUEYrmOM-OyS2OtYGaIg7uH1cVlLs05JkXhBrbkWY01H1)\n1m[Jumping a Car Battery? Here's How 64K views \u00a0\u00b7\u00a01 year ago![](https://api.dataforseo.com/cdn/i/07210054-2120-0139-0000-54d27b283c60:16)\nYouTube\u00a0\u00b7\u00a0CNMsuncats](https://www.youtube.com/watch?v=XvQoWEwxg2M&t=101)",
+        "text_blocks": [
+          "![Dead battery? Be careful your jumpstart isn&#39;t going to make ...](https://api.dataforseo.com/cdn/i/07210054-2120-0139-0000-54d27b283c60:12)\nJump-starting a car `requires a working vehicle and a set of jumper cables` . Park the cars face-to-face without letting them touch, and turn both ignitions off. Connect the cables in this exact order: positive (red) to the dead battery, positive (red) to the good battery, negative (black) to the good battery, and negative (black) to unpainted metal on the dead car.[](https://www.consumerreports.org/cars/car-batteries/jump-start-car-with-dead-battery-a1028630350/) [[1]](https://www.consumerreports.org/cars/car-batteries/jump-start-car-with-dead-battery-a1028630350/)\n\nFor a clear, step-by-step visual demonstration on how to attach the jumper cables safely and avoid sparks, watch this short tutorial:[![](https://api.dataforseo.com/cdn/i/07210054-2120-0139-0000-54d27b283c60:13)\n![Related video thumbnail](https://api.dataforseo.com/cdn/i/07210054-2120-0139-0000-54d27b283c60:14)\n1m](https://www.instagram.com/reel/DM0fl_BRLES/?hl=en) [Jump Start Car \ud83d\ude97\u26a1\ufe0f #MACKanics 120K views \u00a0\u00b7\u00a011 months ago![](https://api.dataforseo.com/cdn/i/07210054-2120-0139-0000-54d27b283c60:15)\nInstagram\u00a0\u00b7\u00a0Mack Hollins](https://www.instagram.com/reel/DM0fl_BRLES/?hl=en) \n\nThe Step-by-Step Process\n\n1. **Position the cars:** Park the two cars close enough so the jumper cables can reach between both batteries, but ensure the vehicles are not touching each other.[](https://www.consumerreports.org/cars/car-batteries/jump-start-car-with-dead-battery-a1028630350/) [[1]](https://www.consumerreports.org/cars/car-batteries/jump-start-car-with-dead-battery-a1028630350/)\n2. **Turn off the engines:** Turn off the ignition in both vehicles and engage the parking brake . Pop the hoods and locate the batteries.[](https://www.kbb.com/car-advice/how-to-jump-start-battery/) [[1]](https://www.kbb.com/car-advice/how-to-jump-start-battery/)[[2]](https://www.consumerreports.org/cars/car-batteries/jump-start-car-with-dead-battery-a1028630350/)\n3. **Red on Dead:** Attach one red (positive) clamp to the positive terminal (+) of the dead battery.[](https://www.kbb.com/car-advice/how-to-jump-start-battery/) [[1]](https://www.kbb.com/car-advice/how-to-jump-start-battery/)\n4. **Red on Good:** Attach the other red (positive) clamp to the positive terminal (+) of the working (donor) battery.[](https://www.kbb.com/car-advice/how-to-jump-start-battery/) [[1]](https://www.kbb.com/car-advice/how-to-jump-start-battery/)\n5. **Black on Good:** Connect one black (negative) clamp to the negative terminal (-) of the working battery.[](https://www.kbb.com/car-advice/how-to-jump-start-battery/) [[1]](https://www.kbb.com/car-advice/how-to-jump-start-battery/)\n6. **Ground on Dead:** Connect the final black (negative) clamp to an unpainted, solid metal part of the dead car\u2019s engine block or chassis (this acts as a ground and minimizes sparks). *Never connect this to the negative terminal of the dead battery.* [](https://www.consumerreports.org/cars/car-batteries/jump-start-car-with-dead-battery-a1028630350/) [[1]](https://www.consumerreports.org/cars/car-batteries/jump-start-car-with-dead-battery-a1028630350/)[[2]](https://www.kbb.com/car-advice/how-to-jump-start-battery/)[[3]](https://www.youtube.com/shorts/8Y7NOw15zVo)[[4]](https://www.youtube.com/shorts/Bu9k4062hUY)\n7. **Start the working car:** Start the engine of the vehicle with the good battery and let it run for 1 to 3 minutes.[](https://www.youtube.com/watch?v=YFFn5mYy16s&t=11) [[1]](https://www.youtube.com/watch?v=YFFn5mYy16s&t=11)[[2]](https://www.youtube.com/watch?v=gff7qXZWhaU&t=7)[[3]](https://www.youtube.com/shorts/8Y7NOw15zVo)\n8. **Start the dead car:** Attempt to start the vehicle with the dead battery.[](https://www.youtube.com/shorts/8Y7NOw15zVo) [[1]](https://www.youtube.com/shorts/8Y7NOw15zVo)\n9. **Remove the cables:** Once the dead car is running, remove the cables in the exact **reverse** order that you put them on (Black off the dead car, Black off the good car, Red off the good car, Red off the dead car). Make sure the clamps do not touch each other while you are doing this.[](https://www.youtube.com/watch?v=YFFn5mYy16s&t=11) [[1]](https://www.youtube.com/watch?v=YFFn5mYy16s&t=11)[[2]](https://www.youtube.com/shorts/k2ZD4AwnqKQ)\n\nImportant Tips\n\n- Do not immediately turn your engine off. Leave the newly started car running and drive it around for at least 15 to 30 minutes to allow the alternator to properly recharge the battery.\n- If your car doesn't start, double-check your cable connections to ensure they are secure, and wait a few more minutes with the working car's engine running before trying again.\n- For safety instructions specific to your make and model, it is always a good idea to consult your vehicle's owner manual.[](https://www.youtube.com/watch?v=YFFn5mYy16s&t=11) [[1]](https://www.youtube.com/watch?v=YFFn5mYy16s&t=11)[[2]](https://www.youtube.com/watch?v=gff7qXZWhaU&t=7)[[3]](https://www.youtube.com/shorts/wGkDaxONt4I)[[4]](https://www.youtube.com/shorts/8Y7NOw15zVo)[[5]](https://www.kbb.com/car-advice/how-to-jump-start-battery/)\n\nIf you prefer using a portable jump starter pack instead of relying on a donor vehicle, this video covers exactly how to do that safely:![Related video thumbnail](https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSBBGxLUEYrmOM-OyS2OtYGaIg7uH1cVlLs05JkXhBrbkWY01H1)\n1m[Jumping a Car Battery? Here's How 64K views \u00a0\u00b7\u00a01 year ago![](https://api.dataforseo.com/cdn/i/07210054-2120-0139-0000-54d27b283c60:16)\nYouTube\u00a0\u00b7\u00a0CNMsuncats](https://www.youtube.com/watch?v=XvQoWEwxg2M&t=101)"
+        ],
+        "citations": [
+          {
+            "url": "https://www.youtube.com/watch?v=YFFn5mYy16s&t=11",
+            "title": "How to Jump Start a Car (With Jumper Cables or a Jump Box)",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.kbb.com/car-advice/how-to-jump-start-battery/",
+            "title": "How to Jump Start a Car in 6 Steps - Kelley Blue Book",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/shorts/k2ZD4AwnqKQ",
+            "title": "How to jump start a car #diy #automotive #carmaintenance",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=gff7qXZWhaU&t=7",
+            "title": "Behind the Wheel: How to jump start your car",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/shorts/8Y7NOw15zVo",
+            "title": "Here's how to jump-start your car in less than one minute. #howto #jumpstart ...",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.consumerreports.org/cars/car-batteries/jump-start-car-with-dead-battery-a1028630350/",
+            "title": "How to Jump-Start a Car With a Dead Battery - Consumer Reports",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/shorts/wGkDaxONt4I",
+            "title": "How to Start a Dead Car Battery Using Jumper Cables",
+            "snippet": ""
+          }
+        ],
+        "related_searches": []
+      }
+    }
+  }
+}

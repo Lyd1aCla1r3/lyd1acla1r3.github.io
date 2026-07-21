@@ -1,0 +1,767 @@
+{
+  "search_metadata": {
+    "id": "6a5e99ff6e223751cea9abb8",
+    "status": "Success",
+    "json_endpoint": "https://serpapi.com/searches/mIqExUSWSep0qlONQadVPw/6a5e99ff6e223751cea9abb8.json",
+    "pixel_position_endpoint": "https://serpapi.com/searches/mIqExUSWSep0qlONQadVPw/6a5e99ff6e223751cea9abb8.json_with_pixel_position",
+    "created_at": "2026-07-20 21:58:23 UTC",
+    "processed_at": "2026-07-20 21:58:23 UTC",
+    "google_url": "https://www.google.com/search?q=React+vs+Vue+performance&oq=React+vs+Vue+performance&sourceid=chrome&ie=UTF-8",
+    "raw_html_file": "https://serpapi.com/searches/mIqExUSWSep0qlONQadVPw/6a5e99ff6e223751cea9abb8.html",
+    "total_time_taken": 7.17
+  },
+  "search_parameters": {
+    "engine": "google",
+    "q": "React vs Vue performance",
+    "google_domain": "google.com",
+    "device": "desktop"
+  },
+  "search_information": {
+    "query_displayed": "React vs Vue performance",
+    "total_results": 130,
+    "time_taken_displayed": 0.22,
+    "organic_results_state": "Results for exact spelling"
+  },
+  "inline_videos": [
+    {
+      "position": 1,
+      "title": "React vs Vue State Management Performance Comparison ...",
+      "link": "https://www.youtube.com/watch?v=hCyv92mHJPM",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrysU_PGbadvwDlNwBIGCkOeZjyNALpdfaBVKHbD2lAHZs0XLGJR4JhQ&s",
+      "channel": "Computer Science For Everyone",
+      "duration": "10:47",
+      "platform": "YouTube",
+      "date": "1 month ago",
+      "snippet": "React with Redux Toolkit is heavier than Vue with Pina. React 19 with Zustand gains ground against Vue with Pina."
+    },
+    {
+      "position": 2,
+      "title": "Vue vs React (2025) - Make a RIGHT Choice (Difference ...",
+      "link": "https://www.youtube.com/watch?v=GjtGM1luyfA",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh8lFqWGc8Bxj1jwz_jklj7nI-_AKhm6GLyxAgK08FyBaUKk3OV6ggrA&s",
+      "channel": "Daniel | Tech & Data",
+      "duration": "10:31",
+      "platform": "YouTube",
+      "date": "Nov 3, 2023",
+      "key_moments": [
+        {
+          "time": "00:00",
+          "title": "Vue js vs React js",
+          "link": "https://www.youtube.com/watch?v=GjtGM1luyfA&t=0"
+        },
+        {
+          "time": "00:39",
+          "title": "Advantages of React vs Vue",
+          "link": "https://www.youtube.com/watch?v=GjtGM1luyfA&t=39"
+        },
+        {
+          "time": "04:12",
+          "title": "Disadvantages of Vue vs React",
+          "link": "https://www.youtube.com/watch?v=GjtGM1luyfA&t=252"
+        },
+        {
+          "time": "04:53",
+          "title": "Vue vs React Comparison",
+          "link": "https://www.youtube.com/watch?v=GjtGM1luyfA&t=293"
+        },
+        {
+          "time": "08:07",
+          "title": "React vs Vue Summary",
+          "link": "https://www.youtube.com/watch?v=GjtGM1luyfA&t=487"
+        },
+        {
+          "time": "09:09",
+          "title": "Career Opportunities for Vue and React Developers",
+          "link": "https://www.youtube.com/watch?v=GjtGM1luyfA&t=549"
+        }
+      ]
+    },
+    {
+      "position": 3,
+      "title": "React.js vs Vue.js \u2013 Which One is Better for Your Next Project ...",
+      "link": "https://www.youtube.com/watch?v=2j-63x_EkNc",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJGEWydCwHQ54eQkebKbT7wLs0X8rwl1nxhBOmiXArvc8vSQGADIu9Gg&s",
+      "channel": "STALLYONS TECHNOLOGIES",
+      "duration": "3:11",
+      "platform": "YouTube",
+      "date": "Feb 28, 2025",
+      "snippet": "In 2025, Vue.js is a good choice for beginners and simpler, fast-loading apps due to its easy learning curve and built-in features.",
+      "short_clip": "https://encrypted-vtbn0.gstatic.com/video?q=tbn:ANd9GcRf1eIT91Al9nrTK7BxYu8KlOwdJxoOtU7lOA"
+    }
+  ],
+  "ai_overview": {
+    "text_blocks": [
+      {
+        "type": "paragraph",
+        "snippet": "When comparing the performance of React and Vue, both are fast enough for almost any standard web application\n. However, they achieve their speed through completely different philosophies, giving each framework unique advantages.",
+        "snippet_links": [
+          {
+            "link": "https://www.youtube.com/watch?v=83WatME7_fw&t=28"
+          }
+        ],
+        "snippet_highlighted_words": [
+          "both are fast enough for almost any standard web application"
+        ],
+        "reference_indexes": [
+          0,
+          1,
+          11,
+          12,
+          13
+        ]
+      },
+      {
+        "type": "paragraph",
+        "snippet": "Here is how they stack up across key performance metrics:"
+      },
+      {
+        "type": "heading",
+        "snippet": "1. Reactivity and Re-rendering (The Core Difference)"
+      },
+      {
+        "type": "list",
+        "list": [
+          {
+            "snippet": "Vue (Opt-in Reactivity): Vue uses a fine-grained, proxy-based reactivity system. It automatically tracks which components depend on specific pieces of data\n\n. When state changes, Vue knows exactly which component needs to update, bypassing unnecessary re-renders across the rest of the component tree by default."
+          },
+          {
+            "snippet": "React (Opt-out Reactivity): React relies on an immutable state model. By default, when a component's state changes, the entire child component tree re-renders\nunless you manually \"opt-out\" using performance optimizations like React.memo, useMemo, or useCallback. (Note: The React Compiler introduced in React 19 helps automate much of this memoization to bridge this gap).",
+            "snippet_links": [
+              {
+                "link": "https://vuejs.org/v2/guide/comparison.html"
+              }
+            ]
+          }
+        ],
+        "reference_indexes": [
+          2,
+          3,
+          4,
+          14
+        ]
+      },
+      {
+        "type": "heading",
+        "snippet": "2. Raw DOM Manipulation and Memory"
+      },
+      {
+        "type": "list",
+        "list": [
+          {
+            "snippet": "Vue: Benchmarks regularly show Vue outperforming React in raw DOM speed and memory management. Thanks to features like Vue 3.5's Vapor Mode\n\u2014an experimental compilation strategy that bypasses the Virtual DOM entirely for eligible components\u2014Vue can manipulate DOM elements up to 36% faster than React and use significantly less idle memory."
+          },
+          {
+            "snippet": "React: While React's Virtual DOM diffing is highly optimized, it carries a larger memory footprint under heavy loads. React handles enterprise-scale complex data reasonably well via its Fiber architecture (which breaks rendering work into chunks), but it requires careful tuning to prevent lag in high-frequency update scenarios\n.",
+            "snippet_links": [
+              {
+                "link": "https://tech-insider.org/react-vs-vue-2026/"
+              }
+            ]
+          }
+        ],
+        "reference_indexes": [
+          4,
+          10,
+          15,
+          16
+        ]
+      },
+      {
+        "type": "heading",
+        "snippet": "3. Bundle Size and Initial Startup Time"
+      },
+      {
+        "type": "list",
+        "list": [
+          {
+            "snippet": "Vue: The core Vue library is lightweight, and its standard gzipped bundle size sits around 34KB. Because Vue includes built-in features like routing and state management (via Pinia) within its tightly engineered ecosystem, the end bundle stays compact. This leads to faster initial page loads, particularly on mobile devices\n."
+          },
+          {
+            "snippet": "React: The combined core react and react-dom gzipped bundle size is roughly 44KB. However, because React is purely a UI library, you almost always have to add third-party packages for routing, state management, and form handling, which can balloon the bundle size and slow down initial TTI (Time to Interactive) if not carefully code-split\n.",
+            "snippet_links": [
+              {
+                "link": "https://www.reddit.com/r/vuejs/comments/1b9uori/why_do_people_think_that_react_is_better_than_vue/"
+              }
+            ]
+          }
+        ],
+        "reference_indexes": [
+          4,
+          5,
+          6,
+          7,
+          8
+        ]
+      },
+      {
+        "type": "heading",
+        "snippet": "4. Server-Side Rendering (SSR) & Advanced Paradigms"
+      },
+      {
+        "type": "list",
+        "list": [
+          {
+            "snippet": "React: React shines in modern, architecture-heavy performance paradigms. React Server Components (RSCs) allow developers to offload massive chunks of JavaScript logic entirely to the server, resulting in zero-bundle-size components and significantly reduced client-side hydration costs\n. This makes React exceptionally performant for data-heavy apps utilizing edge computing or streaming UI components (like live AI responses)."
+          },
+          {
+            "snippet": "Vue: Vue has fantastic SSR capabilities via its premier meta-framework, Nuxt. Nuxt provides incredible out-of-the-box optimizations, automatic code-splitting, and fast server-side generation\n. However, Vue's architecture relies more heavily on client-side hydration compared to React's aggressive server-component model.",
+            "snippet_links": [
+              {
+                "link": "https://tech-insider.org/react-vs-vue-2026/"
+              }
+            ]
+          }
+        ],
+        "reference_indexes": [
+          4,
+          6,
+          17,
+          18
+        ]
+      },
+      {
+        "type": "heading",
+        "snippet": "Summary Verdict"
+      },
+      {
+        "type": "list",
+        "list": [
+          {
+            "snippet": "Choose Vue for performance if: You want excellent out-of-the-box speed, minimal memory overhead, fast mobile startup times, and you don't want to spend your days debugging unnecessary component re-renders."
+          },
+          {
+            "snippet": "Choose React for performance if:\nYou are building massive, deeply nested enterprise apps where you can leverage server-side architectures like React Server Components to keep client bundles microscopic.",
+            "snippet_links": [
+              {
+                "link": "https://www.reddit.com/r/vuejs/comments/17h0g3u/vue_vs_react_productivity_question/"
+              }
+            ]
+          }
+        ],
+        "reference_indexes": [
+          4,
+          9,
+          10
+        ]
+      }
+    ],
+    "references": [
+      {
+        "title": "React vs Vue.js - Which is better? Front-end frameworks ...",
+        "link": "https://www.youtube.com/watch?v=83WatME7_fw&t=28",
+        "snippet": "and dive into that and you can decide which platform might be better for. you. and flexibility makes it an excellent choice for beginners. and small projects the f",
+        "source": "YouTube",
+        "thumbnail": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSIoKjMa_nd4CVKOwNYKyWV7ysyRQH9R93xdjE-iueLCOi320YB8TYnWmJH06LaGKlBUrju_CCRVGuq7mc",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.youtube.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 0
+      },
+      {
+        "title": "The Difference Between Vue and React : r/vuejs",
+        "link": "https://www.reddit.com/r/vuejs/comments/17yuhhc/the_difference_between_vue_and_react/",
+        "snippet": "whatsoever. so we've seen the two differences here between the reactivity. systems react emphasizes a deterministic functionalbased approach of waiting mutation. a",
+        "source": "Reddit",
+        "thumbnail": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTgXW69vKdStOLJSKQe9HZZ1dJCPfCUHruYWzpe0yaeWOFmwGSD2Ivnp7jPZrqI3EAtqwlSlWx2thcz2aU",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.reddit.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 1
+      },
+      {
+        "title": "Comparison with Other Frameworks - Vue.js",
+        "link": "https://vuejs.org/v2/guide/comparison.html",
+        "snippet": "In Vue, a component's dependencies are automatically tracked during its render, so the system knows precisely which components actually need to re-render when stat...",
+        "source": "Vue.js",
+        "thumbnail": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQFFy1jMXfN_qmUX58WJTndC0x-Td-8DPBroGMdSxZcoEW-KmJ0fgJ6vUNA7ohbSBCFR3OCtPisXqXE-0g",
+        "source_icon": "https://encrypted-tbn3.gstatic.com/faviconV2?url=https://vuejs.org&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 2
+      },
+      {
+        "title": "Vue 3 vs React: The Quiet Revolution in Front-End Development",
+        "link": "https://outsourcify.net/vue-3-vs-react-the-quiet-revolution-in-front-end-development/",
+        "snippet": "Reactivity \\u0026 Rendering: Opt-In vs. Opt-Out. One of the biggest differences lies in how they handle re-renders on state changes. React follows an \u201copt-out\u201d model\u2014wh...",
+        "source": "Outsourcify",
+        "thumbnail": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSOrCsXPAiWzKoL7hADfBSn1x_E9DBZmxfgMjek1sXmZyOAsLQaM1qdOkeX53SCtAJasN_m1wQ_C0L6JpQ",
+        "source_icon": "https://encrypted-tbn3.gstatic.com/faviconV2?url=https://outsourcify.net&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 3
+      },
+      {
+        "title": "React vs Vue: 7 Benchmarks Show a Clear Winner [2026]",
+        "link": "https://tech-insider.org/react-vs-vue-2026/",
+        "snippet": "* Updated April 2, 2026. React maintains its dominant position with 68% market share among frontend frameworks, while Vue holds steady at 18%. ... * Winner: Vue. E...",
+        "source": "tech-insider.org",
+        "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLL5aSwGecPLZkfj8xb827WX4HdSNQi9s3daWTJniGlyJVbfUxQEzVIQCvRdXJMaxo0rEIbzdOdjbnyZo",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://tech-insider.org&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 4
+      },
+      {
+        "title": "Why do people think that React is better than vue? : r/vuejs - Reddit",
+        "link": "https://www.reddit.com/r/vuejs/comments/1b9uori/why_do_people_think_that_react_is_better_than_vue/",
+        "snippet": "in which case, diy is probably better anyway. * iamtheshoemaker. \u2022 2y ago. When your only experience is html maybe, * wapiwapigo. ...",
+        "source": "Reddit",
+        "thumbnail": "https://www.reddit.com/r/vuejs/comments/1b9uori/why_do_people_think_that_react_is_better_than_vue/",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.reddit.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 5
+      },
+      {
+        "title": "Angular vs. React vs. Vue.js: A performance guide for 2026 - LogRocket Blog",
+        "link": "https://blog.logrocket.com/angular-vs-react-vs-vue-js-performance/",
+        "snippet": "With Angular 20's move toward a zoneless model and a more mature Signals API, teams get clearer state flows and fewer global side effects. * The learning curve rem...",
+        "source": "LogRocket Blog",
+        "thumbnail": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTWfh0s7DMN5fgeaGgLIk6G8Pz0PNQ23GYoLu9lQef3wyOVW4imZokhGlPeWk-i5b0pcnIzYGopJzvYXsU",
+        "source_icon": "https://encrypted-tbn1.gstatic.com/faviconV2?url=https://blog.logrocket.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 6
+      },
+      {
+        "title": "Vue vs React: What Is the Best Choice for 2025? \u2013 MindK Blog",
+        "link": "https://www.mindk.com/blog/react-vs-vue/",
+        "snippet": "Here's some information about the differences between Vue and React: * **Ecosystem** Vue is a standalone framework, while React requires other libraries. * **Perfo...",
+        "source": "MindK.com",
+        "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFDYSap59UnuhAgj3_tKRnb8EanNHnwyqglWdJXxmoNDrrJW52r4cod_BtAG9NnwjKpaw22tt4QvHTMPo",
+        "source_icon": "https://encrypted-tbn3.gstatic.com/faviconV2?url=https://www.mindk.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 7
+      },
+      {
+        "title": "Vue vs React: Which one to choose in 2025? - Alokai",
+        "link": "https://alokai.com/blog/vue-vs-react",
+        "snippet": "Let's examine their most important differences to finally get closer to that decision. 1. Core library and application size. Verdict: Choose Vue. js for smaller an...",
+        "source": "Alokai",
+        "thumbnail": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQFkzt9FSotAeBIVRMf-jAhFzcrZacGOPn7ZoQ_brXvwU0ko4WnLoz1XW-Sl02xAFmdxQ1Wn0APK5c51BQ",
+        "source_icon": "https://encrypted-tbn1.gstatic.com/faviconV2?url=https://alokai.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 8
+      },
+      {
+        "title": "Vue vs React - productivity question : r/vuejs - Reddit",
+        "link": "https://www.reddit.com/r/vuejs/comments/17h0g3u/vue_vs_react_productivity_question/",
+        "snippet": "Vue vs React - productivity question. We are evaluating React and Vue for a mobile application built on top of Capacitor. Research...",
+        "source": "Reddit",
+        "thumbnail": "https://www.reddit.com/r/vuejs/comments/17h0g3u/vue_vs_react_productivity_question/",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.reddit.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 9
+      },
+      {
+        "title": "Angular vs React vs Vue: Core Differences - BrowserStack",
+        "link": "https://www.browserstack.com/guide/angular-vs-react-vs-vue",
+        "snippet": "2. ... React uses a virtual DOM, which optimizes rendering by only updating the parts of the UI that need changes. This makes Reac...",
+        "source": "BrowserStack",
+        "thumbnail": "https://www.browserstack.com/guide/angular-vs-react-vs-vue",
+        "source_icon": "https://encrypted-tbn0.gstatic.com/faviconV2?url=https://www.browserstack.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 10
+      },
+      {
+        "title": "React vs Vue in 2026: Differences, Pros, Cons \\u0026 Use Cases",
+        "link": "https://solguruz.com/blog/react-vs-vue/",
+        "snippet": "Both deliver excellent runtime performance and are fast enough for nearly all applications. Vue is often slightly more efficient by default, and Vue 3.5's Vapor Mo...",
+        "source": "SolGuruz",
+        "thumbnail": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQ9BHNDAh7vw7jCgYgXukHoECR42Y1UQ1oztFi3zTQAvIw2VsWJNyY8KpPxIz2nTlLxtCY63LvPi5dEp_I",
+        "source_icon": "https://encrypted-tbn1.gstatic.com/faviconV2?url=https://solguruz.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 11
+      },
+      {
+        "title": "Vue vs. React in 2025: Which Framework is Right for You?",
+        "link": "https://fireart.studio/blog/vue-vs-react/",
+        "snippet": "Vue is very fast. It may not be the fastest, but its performance is more than enough for the vast majority of web projects.",
+        "source": "Fireart Studio",
+        "thumbnail": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRYJdzvT1FgqYHvciTyjlY-1Jt05GmZ-wr3dR01BhS7yLcm6A7ehI_uFGNClSvix8fBTzFU70luBdsZSG8",
+        "source_icon": "https://encrypted-tbn1.gstatic.com/faviconV2?url=https://fireart.studio&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 12
+      },
+      {
+        "title": "React.js in 2025: Still #1. Here\u2019s Why | by Roman Tsekov",
+        "link": "https://medium.com/@rtsekov/react-js-in-2025-still-1-heres-why-fa78f5f7a95d",
+        "snippet": "But in real-world apps, the differences in raw rendering performance often have less impact on user experience than things like network requests, overall applicati...",
+        "source": "Medium",
+        "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtdD2qvhRu3pWpwB9SFhKHksoquW2rb9hmdGCsCr8tL5rEGNdrygVbsSs2-QmO7Cszh0qGcv2vNWyNAxs",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://medium.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 13
+      },
+      {
+        "title": "Vue vs React: Battle of the Javascript Frameworks",
+        "link": "https://deliciousbrains.com/vue-vs-react-battle-javascript/",
+        "snippet": "If you're familiar with React you'll know that application state is a key concept. There are even frameworks dedicated to managing large scale state objects like R...",
+        "source": "Delicious Brains",
+        "thumbnail": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSqKxvRDMGqSRI1QHd0-MyUDh3SJJ6isJEQJxPK_s4oSn_8tygadLHq9TBDj2cokIqLItFtJHBLSQCNc5g",
+        "source_icon": "https://encrypted-tbn0.gstatic.com/faviconV2?url=https://deliciousbrains.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 14
+      },
+      {
+        "title": "Preact vs. React: Performance Comparison, Development \\u0026 Roadmap",
+        "link": "https://datafortune.com/preact-vs-react-performance-comparison-development-roadmap/",
+        "snippet": "React, though more resource-intensive, excels in handling large-scale applications with complex state management and extensive component hierarchies. Its memory us...",
+        "source": "Datafortune",
+        "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrZZGYouUQLn23LOFC4MYVp_WwtVf7W-gFCn7GxXoteauzY-EEugnhHHGfymAtN6LTqCgV3t-uyfCFuLk",
+        "source_icon": "https://encrypted-tbn1.gstatic.com/faviconV2?url=https://datafortune.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 15
+      },
+      {
+        "title": "(PDF) BENCHMARKING FRONT-END FRAMEWORKS: A DEEP DIVE INTO THE PERFORMANCE AND SCALABILITY OF REACT, ANGULAR, AND VUE.JS",
+        "link": "https://www.researchgate.net/publication/385737356_BENCHMARKING_FRONT-END_FRAMEWORKS_A_DEEP_DIVE_INTO_THE_PERFORMANCE_AND_SCALABILITY_OF_REACT_ANGULAR_AND_VUEJS",
+        "snippet": "However, Vue does not optimiz e as aggressively as React in terms of virtual DOM rendering, which could result in slightly higher memory usage in larger applicatio...",
+        "source": "ResearchGate",
+        "thumbnail": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTdy7-kcxHBgGTbd2dMOcTqyBdTaBelp7g_9-MwpKYOxis0RxZ4VyFNrL1wWlnv3zmY3yk-lK2ONmVzqmA",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.researchgate.net&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 16
+      },
+      {
+        "title": "React Performance Optimization Guide (2026)",
+        "link": "https://www.turbodocx.com/blog/react-performance-optimization",
+        "snippet": "React Server Components (RSC) Server Components run entirely on the server, shipping zero JavaScript to the browser. No hooks, no re-renders, no bundle impact. The...",
+        "source": "TurboDocx",
+        "thumbnail": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcT8XaUMDQwZ6UfV8lKeNQHcfojfxH4u7qkF0nplHJkh5cKHo4uZKjwlK_Xzceoty-waKfT_eA-uuhaEzZo",
+        "source_icon": "https://encrypted-tbn3.gstatic.com/faviconV2?url=https://www.turbodocx.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 17
+      },
+      {
+        "title": "The React Rendering Landscape in 2025",
+        "link": "https://sparkbox.com/foundry/the-react-rendering-landcape-in-2025",
+        "snippet": "React Server Components (RSC) shift more rendering to the server, reducing client-side JavaScript while complementing SSR, SSG, and ISR by minimizing hydration and...",
+        "source": "Sparkbox",
+        "thumbnail": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcT_UfjHGAaVS9jUGQ5OH9HGKcEbCXdHpu_qVM8LV9XIHPJcJA9kcmfRWpz1wtDHqnxMMwyfJDkTQAkArAU",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://sparkbox.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 18
+      }
+    ]
+  },
+  "organic_results": [
+    {
+      "position": 1,
+      "title": "Is Vue performance really better than React? : r/vuejs",
+      "link": "https://www.reddit.com/r/vuejs/comments/1iutymw/is_vue_performance_really_better_than_react/",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.reddit.com/r/vuejs/comments/1iutymw/is_vue_performance_really_better_than_react/&ved=2ahUKEwjin5mNoOKVAxWdS3ADHZ7_Oz8QFnoECBkQAQ",
+      "displayed_link": "30+ comments \u00b7 1 year ago",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAhFBMVEVHcEz_RQD_RQD_RQD_RQD_RQD_RQD_RQD_RQD_PQD_NgD-XS32dlf5vK3____64dusLADUz9H-jXLOPAoSHiFrLBm3uLn3_f7jVS_b6e77pJDJo6H718__RQDw9ffs5-jm8fPIXlHqKwD5-PjolIP_VgP_SQLQ2uAyODvQ4ekABAhqcHK4ptuCAAAAHnRSTlMAPobB7P9mHdb__________________________8J6YdtgAAABWUlEQVR4AWySYZNDMBCGWyw2SI9TGnWqILT____dm6Enc-MZH8Qz2V3Je_rj7Lgekec659N_fIgPnn-yCULaYaYwsCqShYhiQXQ-dJxIedltQDZfqZQyY6K1st3vO78WsiyNDI3zySK_caJUygTMzN7eTnxdBXMcb3-0TsMC30RUJfciqSIs8JCZycHwWV1n2UVuXDKzxsDOySWu5AGVoB_TUh5imhJFpQTNfav7uDcSlBERJLUN9LOLewn6LnpCNS0EyvKg-vLRjVRLUIuxe8hSDYyyLqatyr68jdO6cxpvWGIeDOQQujagNs7YuumbJmYiZz0E3aJvMc95Ps8F-rV6PQQ0JY4XpVqVv0Cu2lYps9HbDp6HRS9Kv1-vt1Z4HeDI_1yZiFMNFIzWqYkChftl8zSkegE6HSYmENgxYYQHRGzUHiLHyh3ModvZo7nHxA71ofwdSnYAAPpVIo4RUPiIAAAAAElFTkSuQmCC.png",
+      "snippet": "Hello everyone, Trying to setup for the next project most performant app and from my friends and colleagues, I've heard that Vue can beat react without ...",
+      "sitelinks": {
+        "list": [
+          {
+            "title": "Vue vs React - productivity question : r/vuejs",
+            "link": "https://www.reddit.com/r/vuejs/comments/17h0g3u/vue_vs_react_productivity_question/",
+            "answer_count": 53,
+            "date": "Oct 26, 2023"
+          },
+          {
+            "title": "React vs Vue - productivity question : r/reactjs",
+            "link": "https://www.reddit.com/r/reactjs/comments/17h0g4i/react_vs_vue_productivity_question/",
+            "answer_count": 10,
+            "date": "Oct 26, 2023"
+          }
+        ]
+      },
+      "about_this_result": {
+        "source": {
+          "description": "Vue pretty handily beats React in nearly (if not all) measurements. If you are going for pure speed, also look at Solid (and as always, Vanilla)",
+          "source_info_link": "https://www.reddit.com/r/vuejs/comments/1iutymw/is_vue_performance_really_better_than_react/",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAhFBMVEVHcEz_RQD_RQD_RQD_RQD_RQD_RQD_RQD_RQD_PQD_NgD-XS32dlf5vK3____64dusLADUz9H-jXLOPAoSHiFrLBm3uLn3_f7jVS_b6e77pJDJo6H718__RQDw9ffs5-jm8fPIXlHqKwD5-PjolIP_VgP_SQLQ2uAyODvQ4ekABAhqcHK4ptuCAAAAHnRSTlMAPobB7P9mHdb__________________________8J6YdtgAAABWUlEQVR4AWySYZNDMBCGWyw2SI9TGnWqILT____dm6Enc-MZH8Qz2V3Je_rj7Lgekec659N_fIgPnn-yCULaYaYwsCqShYhiQXQ-dJxIedltQDZfqZQyY6K1st3vO78WsiyNDI3zySK_caJUygTMzN7eTnxdBXMcb3-0TsMC30RUJfciqSIs8JCZycHwWV1n2UVuXDKzxsDOySWu5AGVoB_TUh5imhJFpQTNfav7uDcSlBERJLUN9LOLewn6LnpCNS0EyvKg-vLRjVRLUIuxe8hSDYyyLqatyr68jdO6cxpvWGIeDOQQujagNs7YuumbJmYiZz0E3aJvMc95Ps8F-rV6PQQ0JY4XpVqVv0Cu2lYps9HbDp6HRS9Kv1-vt1Z4HeDI_1yZiFMNFIzWqYkChftl8zSkegE6HSYmENgxYYQHRGzUHiLHyh3ModvZo7nHxA71ofwdSnYAAPpVIo4RUPiIAAAAAElFTkSuQmCC.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://www.reddit.com/r/vuejs/comments/1iutymw/is_vue_performance_really_better_than_react/&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fwww.reddit.com%2Fr%2Fvuejs%2Fcomments%2F1iutymw%2Fis_vue_performance_really_better_than_react%2F",
+      "source": "Reddit \u00b7 r/vuejs"
+    },
+    {
+      "position": 2,
+      "title": "Comparison with Other Frameworks",
+      "link": "https://vuejs.org/v2/guide/comparison.html",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://vuejs.org/v2/guide/comparison.html&ved=2ahUKEwjin5mNoOKVAxWdS3ADHZ7_Oz8QFnoECDQQAQ",
+      "displayed_link": "https://vuejs.org \u203a guide \u203a comparison",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAhFBMVEX___-44Myw3cetyL-rsbjh4-XB5NIlsnY1tX0lOVQmPlUhOlNFV2lewJI-t4FCuINCu4Q9kHQ0P1s1SV6zub_f8edDvoU2VWGDzKg_pHs0PFuLlJ4rs3k5bGg1RV0ML0rp6-0vRFpteYY7hHDT699wxZ0-mXfr9vA3X2SZ1LdAq346d2zD7XyeAAABIklEQVR4Aa3RBbaDUAxF0Vt_aCh1N-rzn99Pgua77XqBLLIO_q7VFp2u6EH19EenLVroD5zwfN8PQqgw4B-eE4M-EMVElAzT0WgUjMHGAX9Nhwn_HUcAJgNi09mIBWDBiM2mxAYTsLmTEYsl_-2vgJXPX5YLGeDmUGsdsdnygd1-v-OP7UYHrJFrOxJyF4fj8SB3QMK1USCRnLZyhhzfnhISKGVrPWNU0ePrDJWzrnpJRyq96Ipn1K75qrftiG1v-YpXNNwdscdyxJYPYu4Ow8Uy4skjtk8ZEDtY_TUJOYHEug-rSlJHsKokzQjWPF81X3EOq06SJHkEyyQxESyqwLJJbARLkmgEyybRCJZNohEsm0QifKK1XrfwqSjC57IM_-0FV60eh_8r7TcAAAAASUVORK5CYII.png",
+      "snippet": "Runtime Performance Both React and Vue are exceptionally and similarly fast, Vue has better performance and is much, much easier to optimize because it doesn't ...",
+      "snippet_highlighted_words": [
+        "React and Vue are exceptionally and similarly fast"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "Runtime Performance Both React and Vue are exceptionally and similarly fast, Vue has better performance and is much, much easier to optimize because it doesn't ...",
+          "source_info_link": "https://vuejs.org/v2/guide/comparison.html",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAhFBMVEX___-44Myw3cetyL-rsbjh4-XB5NIlsnY1tX0lOVQmPlUhOlNFV2lewJI-t4FCuINCu4Q9kHQ0P1s1SV6zub_f8edDvoU2VWGDzKg_pHs0PFuLlJ4rs3k5bGg1RV0ML0rp6-0vRFpteYY7hHDT699wxZ0-mXfr9vA3X2SZ1LdAq346d2zD7XyeAAABIklEQVR4Aa3RBbaDUAxF0Vt_aCh1N-rzn99Pgua77XqBLLIO_q7VFp2u6EH19EenLVroD5zwfN8PQqgw4B-eE4M-EMVElAzT0WgUjMHGAX9Nhwn_HUcAJgNi09mIBWDBiM2mxAYTsLmTEYsl_-2vgJXPX5YLGeDmUGsdsdnygd1-v-OP7UYHrJFrOxJyF4fj8SB3QMK1USCRnLZyhhzfnhISKGVrPWNU0ePrDJWzrnpJRyq96Ipn1K75qrftiG1v-YpXNNwdscdyxJYPYu4Ow8Uy4skjtk8ZEDtY_TUJOYHEug-rSlJHsKokzQjWPF81X3EOq06SJHkEyyQxESyqwLJJbARLkmgEyybRCJZNohEsm0QifKK1XrfwqSjC57IM_-0FV60eh_8r7TcAAAAASUVORK5CYII.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://vuejs.org/v2/guide/comparison.html&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fvuejs.org%2Fv2%2Fguide%2Fcomparison.html",
+      "source": "Vue.js"
+    },
+    {
+      "position": 3,
+      "title": "React vs Vue: 7 Benchmarks Show a Clear Winner [2026]",
+      "link": "https://tech-insider.org/react-vs-vue-2026/",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://tech-insider.org/react-vs-vue-2026/&ved=2ahUKEwjin5mNoOKVAxWdS3ADHZ7_Oz8QFnoECDcQAQ",
+      "displayed_link": "https://tech-insider.org \u203a Software",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAArlBMVEUAAAAAAAEAAAUxPUdGWGpMYndRaoBIXXE8S1sqMzwaJC4tPEoZKDUdVF40dYJKkJ8eKDIiOUUYLjgLICgobHQdRlA1anhGeoUuQ1IMFCA_U2YwbXc0UF8tcXoSOEImZGstU2A9Y3MaQUxCX3AlM0IMGCcSJTIAGyNfmKhNfYwJFR1EgIxDbnxjf5cVR047cnwfXmcGJzAXGh4EFRkgNUArPkwKLzk1Z3INDxUTHSfEE-2hAAABGUlEQVR4Ae1PhXHDQBC0zHRispg5Yuy_sbwmolAH3odj2N0Wb2AjRmW_n02EX2mH4-l8vlxv_3S5P56AEwQO9we5_x0mKZphOV4QeI5laPHwI_ySnrKiarphmoZs4bbsnN0liHZxzp4fhDxORSwbWXESBr734aDQlEBeGD9N4jDM8qLIsyQRzNT3L_cpYVeKURXltZw3UOz3BVC5XOdVtX-U85C6qSqg2ZyGFtv7KIGlUULzwJYdatFPOR0AjWjRiC4zUr95LDsgQYq-CqAjpixjZV0S--K445yAZC_iFsvpnGUZOqfauHhHgTnhK7U2axYgzwHY2qR65JwTFpVu-Dgm4q6p-8k5b7noWD8MfY8t4ZXGrP-HNz4BSWEdjwsgmoAAAAAASUVORK5CYII.png",
+      "date": "Mar 22, 2026",
+      "snippet": "In most benchmarks, Vue 3.5 with Vapor Mode outperforms React 19.2 in DOM manipulation speed, memory usage, and mobile startup time. Standard ...",
+      "snippet_highlighted_words": [
+        "React 19.2"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "In most benchmarks, Vue 3.5 with Vapor Mode outperforms React 19.2 in DOM manipulation speed, memory usage, and mobile startup time. Standard ...",
+          "source_info_link": "https://tech-insider.org/react-vs-vue-2026/",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAArlBMVEUAAAAAAAEAAAUxPUdGWGpMYndRaoBIXXE8S1sqMzwaJC4tPEoZKDUdVF40dYJKkJ8eKDIiOUUYLjgLICgobHQdRlA1anhGeoUuQ1IMFCA_U2YwbXc0UF8tcXoSOEImZGstU2A9Y3MaQUxCX3AlM0IMGCcSJTIAGyNfmKhNfYwJFR1EgIxDbnxjf5cVR047cnwfXmcGJzAXGh4EFRkgNUArPkwKLzk1Z3INDxUTHSfEE-2hAAABGUlEQVR4Ae1PhXHDQBC0zHRispg5Yuy_sbwmolAH3odj2N0Wb2AjRmW_n02EX2mH4-l8vlxv_3S5P56AEwQO9we5_x0mKZphOV4QeI5laPHwI_ySnrKiarphmoZs4bbsnN0liHZxzp4fhDxORSwbWXESBr734aDQlEBeGD9N4jDM8qLIsyQRzNT3L_cpYVeKURXltZw3UOz3BVC5XOdVtX-U85C6qSqg2ZyGFtv7KIGlUULzwJYdatFPOR0AjWjRiC4zUr95LDsgQYq-CqAjpixjZV0S--K445yAZC_iFsvpnGUZOqfauHhHgTnhK7U2axYgzwHY2qR65JwTFpVu-Dgm4q6p-8k5b7noWD8MfY8t4ZXGrP-HNz4BSWEdjwsgmoAAAAAASUVORK5CYII.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://tech-insider.org/react-vs-vue-2026/&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Ftech-insider.org%2Freact-vs-vue-2026%2F",
+      "source": "tech-insider.org",
+      "read_more_link": "https://tech-insider.org/react-vs-vue-2026/#:~:text=In%20most%20benchmarks%2C%20Vue%203.5,slight%20advantages%20in%20memory%20efficiency."
+    },
+    {
+      "position": 4,
+      "title": "Vue vs React: Which is Better for Developers?",
+      "link": "https://strapi.io/blog/vue-vs-react",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://strapi.io/blog/vue-vs-react&ved=2ahUKEwjin5mNoOKVAxWdS3ADHZ7_Oz8QFnoECDMQAQ",
+      "displayed_link": "https://strapi.io \u203a blog \u203a vue-vs-react",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAP1BMVEVJRf9HQ_8-Of9EP_9TT_-3tv-ysP-1tP-Bf_-Tkf____-Vk_-Sj_9YVP-Zl_9eW_9iXv-tq__BwP9NSf-dnP-TzuHjAAAAcklEQVR4AdzJQQ6EIAwFUEDF6RQ_IN7_rNYYYkLTjUvf9rkv8qGb9M1LvK2_SR39uzWMx0_GMB4nI_0GgK3MRcRa665SVjgQpTpk_wZmepcHgHjlIqm2NVc4Ec3e6RUZzP3UF1xnppyVeZMz158b6GQFAOOZBmXdHPodAAAAAElFTkSuQmCC.png",
+      "date": "Mar 7, 2025",
+      "snippet": "Vue showed a 36% performance advantage over React in DOM manipulation tasks. React did excel in one area\u2014it was 26ms faster than Vue when ...",
+      "snippet_highlighted_words": [
+        "React did excel in one area\u2014it was 26ms faster than Vue"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "Vue showed a 36% performance advantage over React in DOM manipulation tasks. React did excel in one area\u2014it was 26ms faster than Vue when ...",
+          "source_info_link": "https://strapi.io/blog/vue-vs-react",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAP1BMVEVJRf9HQ_8-Of9EP_9TT_-3tv-ysP-1tP-Bf_-Tkf____-Vk_-Sj_9YVP-Zl_9eW_9iXv-tq__BwP9NSf-dnP-TzuHjAAAAcklEQVR4AdzJQQ6EIAwFUEDF6RQ_IN7_rNYYYkLTjUvf9rkv8qGb9M1LvK2_SR39uzWMx0_GMB4nI_0GgK3MRcRa665SVjgQpTpk_wZmepcHgHjlIqm2NVc4Ec3e6RUZzP3UF1xnppyVeZMz158b6GQFAOOZBmXdHPodAAAAAElFTkSuQmCC.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://strapi.io/blog/vue-vs-react&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fstrapi.io%2Fblog%2Fvue-vs-react",
+      "source": "Strapi"
+    },
+    {
+      "position": 5,
+      "title": "Main differences between ReactJS and VueJS, in my opinion",
+      "link": "https://dev.to/rem0nfawzi/main-differences-between-reactjs-and-vuejs-in-my-opinion-178a",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://dev.to/rem0nfawzi/main-differences-between-reactjs-and-vuejs-in-my-opinion-178a&ved=2ahUKEwjin5mNoOKVAxWdS3ADHZ7_Oz8QFnoECDYQAQ",
+      "displayed_link": "https://dev.to \u203a main-differences-between-reactjs-and-v...",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAbCAMAAABY1h8eAAAAS1BMVEUAAAAAAAAAAAAAAAAGBgYAAAC6urr39_f19fXT09NKSkrj4-P___-wsLCdnZ1cXFzHx8cXFxdlZWV4eHgfHx-RkZGHh4empqYmJiaIq-h1AAAABnRSTlMl6f_T_v6d86gKAAAAp0lEQVR4AcXSRQKEMBAF0VCD9w9u97_ouKFbavsg7lzAToFzl3APw8CF7Oc4wugcjJM0zXJCS9NUeBWAqXxhpUd1o0e0MugkPpgTq28UA4QSDMq-WDKoeCGYGir1SzRfAKM8ifIlSgaUskkpS6zKHEAqFLM552v17Q_7xtTe_2yaNoT-juEP7xnla7vPTWZ8cPDeD0Dv74VA6evzrowjDI_w8N0evfgbpM4OMGs0DpUAAAAASUVORK5CYII.png",
+      "date": "May 17, 2025",
+      "snippet": "VueJS handles Reactivity out of the box. While React makes it easier to mess with Performance. Vue has a smarter reactivity system than React, ...",
+      "snippet_highlighted_words": [
+        "React makes it easier to mess with Performance"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "VueJS handles Reactivity out of the box. While React makes it easier to mess with Performance. Vue has a smarter reactivity system than React, ...",
+          "source_info_link": "https://dev.to/rem0nfawzi/main-differences-between-reactjs-and-vuejs-in-my-opinion-178a",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAbCAMAAABY1h8eAAAAS1BMVEUAAAAAAAAAAAAAAAAGBgYAAAC6urr39_f19fXT09NKSkrj4-P___-wsLCdnZ1cXFzHx8cXFxdlZWV4eHgfHx-RkZGHh4empqYmJiaIq-h1AAAABnRSTlMl6f_T_v6d86gKAAAAp0lEQVR4AcXSRQKEMBAF0VCD9w9u97_ouKFbavsg7lzAToFzl3APw8CF7Oc4wugcjJM0zXJCS9NUeBWAqXxhpUd1o0e0MugkPpgTq28UA4QSDMq-WDKoeCGYGir1SzRfAKM8ifIlSgaUskkpS6zKHEAqFLM552v17Q_7xtTe_2yaNoT-juEP7xnla7vPTWZ8cPDeD0Dv74VA6evzrowjDI_w8N0evfgbpM4OMGs0DpUAAAAASUVORK5CYII.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://dev.to/rem0nfawzi/main-differences-between-reactjs-and-vuejs-in-my-opinion-178a&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fdev.to%2Frem0nfawzi%2Fmain-differences-between-reactjs-and-vuejs-in-my-opinion-178a",
+      "source": "DEV Community"
+    },
+    {
+      "position": 6,
+      "title": "Angular vs. React vs. Vue.js: A performance guide for 2026",
+      "link": "https://blog.logrocket.com/angular-vs-react-vs-vue-js-performance/",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://blog.logrocket.com/angular-vs-react-vs-vue-js-performance/&ved=2ahUKEwjin5mNoOKVAxWdS3ADHZ7_Oz8QFnoECDIQAQ",
+      "displayed_link": "https://blog.logrocket.com \u203a angular-vs-react-vs-vue-js-...",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAACAAAAAgBAMAAACBVGfHAAAAJFBMVEV1Sbx1SbxxQbqAWMHz8Pn___9rN7jh2e-iiNDJu-SRcci_rt-cu6iHAAAAAnRSTlP__FG8jn0AAADFSURBVHgBjNCxCoJAHMdxu6jnOAKjcE2IVjFo1p-nTtIi1XwOTS2-gGAPUFh7hM8XJmf_u6nf-OE3fS1jo_-BG8BWnvHwQ65BDhQUWAnEnMDUB0RGYIGkxo1Ajs0dVwK2sCO5JeCGhxYBgQbnJ9IfsAYAUj4Alx2I2QAuvvMUTGUPIlPg9xAqYOaD1T0kXEGJHfBGrMCaiPn6speBpcBpncfxdaoGYNwGIsZJwg60pssyrjRgeZFpYI0_M0CLFybccSuIBgAnWTXdgLg_4wAAAABJRU5ErkJggg.png",
+      "date": "Dec 16, 2025",
+      "snippet": "React takes first place with 0.8s, with Angular coming second at 1.1s, and Vue coming last at 1.2s Total blocking time",
+      "snippet_highlighted_words": [
+        "React takes first place with 0.8s"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "React takes first place with 0.8s, with Angular coming second at 1.1s, and Vue coming last at 1.2s Total blocking time",
+          "source_info_link": "https://blog.logrocket.com/angular-vs-react-vs-vue-js-performance/",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAACAAAAAgBAMAAACBVGfHAAAAJFBMVEV1Sbx1SbxxQbqAWMHz8Pn___9rN7jh2e-iiNDJu-SRcci_rt-cu6iHAAAAAnRSTlP__FG8jn0AAADFSURBVHgBjNCxCoJAHMdxu6jnOAKjcE2IVjFo1p-nTtIi1XwOTS2-gGAPUFh7hM8XJmf_u6nf-OE3fS1jo_-BG8BWnvHwQ65BDhQUWAnEnMDUB0RGYIGkxo1Ajs0dVwK2sCO5JeCGhxYBgQbnJ9IfsAYAUj4Alx2I2QAuvvMUTGUPIlPg9xAqYOaD1T0kXEGJHfBGrMCaiPn6speBpcBpncfxdaoGYNwGIsZJwg60pssyrjRgeZFpYI0_M0CLFybccSuIBgAnWTXdgLg_4wAAAABJRU5ErkJggg.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://blog.logrocket.com/angular-vs-react-vs-vue-js-performance/&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fblog.logrocket.com%2Fangular-vs-react-vs-vue-js-performance%2F",
+      "source": "LogRocket Blog"
+    },
+    {
+      "position": 7,
+      "title": "Benchmarking of Vue and React by Danial Eshete",
+      "link": "https://medium.com/@danialeshete/comparative-web-performance-evaluation-benchmarking-of-vue-react-using-jswfb-a76982097225",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://medium.com/%40danialeshete/comparative-web-performance-evaluation-benchmarking-of-vue-react-using-jswfb-a76982097225&ved=2ahUKEwjin5mNoOKVAxWdS3ADHZ7_Oz8QFnoECDUQAQ",
+      "displayed_link": "130+ likes \u00b7 4 years ago",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAARVBMVEVHcEwAAAAAAAAAAAAAAAAAAABwcHCoqKifn58bGxt8fHzKysr___8rKyv5-fnW1tbp6emQkJCsrKxaWlq0tLTBwcE-Pj777dpoAAAABnRSTlMAS8D5_5mXKh4CAAAA3ElEQVR4AXzRUQ6EIAwEUNRZClgFQb3_UbfQEDUbd76qL5WMGGOGccJPpnEwkg9e8pE9vGYw4zuOZnrHyeBPFC055zw0wTkKN8TMzEHHZWWOuCMJJh03QXpgrlr0IzLmB-6L4KzHZ0Ub947-EF3q4rI3zByuzSLogDOiYeCICxGZVxmsYuR8x9DaJFQkL3UoX-iTvNg2xbPVvrB37ZgfeGr7_tl0Q_2HXjEjSe0HWnlWJGz1DEXEAsla2lyXcIj2K6O6Wvr1kQXCnL7DG9l4kwneBIY3aeJN1HizAwDOfRO3mlC3PQAAAABJRU5ErkJggg.png",
+      "snippet": "Vue is therefore 36% faster at DOM manipulation than React. Furthermore, Vue was faster by 19% at startup time and 21% better at memory ...",
+      "snippet_highlighted_words": [
+        "Vue",
+        "React",
+        "Vue"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "Vue is therefore 36% faster at DOM manipulation than React. Furthermore, Vue was faster by 19% at startup time and 21% better at memory ...",
+          "source_info_link": "https://medium.com/@danialeshete/comparative-web-performance-evaluation-benchmarking-of-vue-react-using-jswfb-a76982097225",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAARVBMVEVHcEwAAAAAAAAAAAAAAAAAAABwcHCoqKifn58bGxt8fHzKysr___8rKyv5-fnW1tbp6emQkJCsrKxaWlq0tLTBwcE-Pj777dpoAAAABnRSTlMAS8D5_5mXKh4CAAAA3ElEQVR4AXzRUQ6EIAwEUNRZClgFQb3_UbfQEDUbd76qL5WMGGOGccJPpnEwkg9e8pE9vGYw4zuOZnrHyeBPFC055zw0wTkKN8TMzEHHZWWOuCMJJh03QXpgrlr0IzLmB-6L4KzHZ0Ub947-EF3q4rI3zByuzSLogDOiYeCICxGZVxmsYuR8x9DaJFQkL3UoX-iTvNg2xbPVvrB37ZgfeGr7_tl0Q_2HXjEjSe0HWnlWJGz1DEXEAsla2lyXcIj2K6O6Wvr1kQXCnL7DG9l4kwneBIY3aeJN1HizAwDOfRO3mlC3PQAAAABJRU5ErkJggg.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://medium.com/@danialeshete/comparative-web-performance-evaluation-benchmarking-of-vue-react-using-jswfb-a76982097225&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fmedium.com%2F%40danialeshete%2Fcomparative-web-performance-evaluation-benchmarking-of-vue-react-using-jswfb-a76982097225",
+      "source": "Medium \u00b7 Danial Eshete",
+      "read_more_link": "https://medium.com/@danialeshete/comparative-web-performance-evaluation-benchmarking-of-vue-react-using-jswfb-a76982097225#:~:text=Vue%20is%20therefore%2036%25%20faster,21%25%20better%20at%20memory%20allocation."
+    }
+  ],
+  "related_searches": [
+    {
+      "block_position": 1,
+      "query": "React vs vue performance reddit",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&gl=us&hl=en&q=React+vs+vue+performance+reddit&sa=X&ved=2ahUKEwjin5mNoOKVAxWdS3ADHZ7_Oz8Q1QJ6BAgwEAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&gl=us&google_domain=google.com&hl=en&q=React+vs+vue+performance+reddit"
+    },
+    {
+      "block_position": 1,
+      "query": "React vs vue performance github",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&gl=us&hl=en&q=React+vs+vue+performance+github&sa=X&ved=2ahUKEwjin5mNoOKVAxWdS3ADHZ7_Oz8Q1QJ6BAhHEAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&gl=us&google_domain=google.com&hl=en&q=React+vs+vue+performance+github"
+    },
+    {
+      "block_position": 1,
+      "query": "Vue vs React",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&gl=us&hl=en&q=Vue+vs+React&sa=X&ved=2ahUKEwjin5mNoOKVAxWdS3ADHZ7_Oz8Q1QJ6BAhAEAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&gl=us&google_domain=google.com&hl=en&q=Vue+vs+React"
+    },
+    {
+      "block_position": 1,
+      "query": "Vue vs React popularity",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&gl=us&hl=en&q=Vue+vs+React+popularity&sa=X&ved=2ahUKEwjin5mNoOKVAxWdS3ADHZ7_Oz8Q1QJ6BAg7EAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&gl=us&google_domain=google.com&hl=en&q=Vue+vs+React+popularity"
+    },
+    {
+      "block_position": 1,
+      "query": "Vue vs React reddit",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&gl=us&hl=en&q=Vue+vs+React+reddit&sa=X&ved=2ahUKEwjin5mNoOKVAxWdS3ADHZ7_Oz8Q1QJ6BAg6EAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&gl=us&google_domain=google.com&hl=en&q=Vue+vs+React+reddit"
+    },
+    {
+      "block_position": 1,
+      "query": "React vs Svelte",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&gl=us&hl=en&q=React+vs+Svelte&sa=X&ved=2ahUKEwjin5mNoOKVAxWdS3ADHZ7_Oz8Q1QJ6BAg5EAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&gl=us&google_domain=google.com&hl=en&q=React+vs+Svelte"
+    },
+    {
+      "block_position": 1,
+      "query": "Vue vs React vs Angular",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&gl=us&hl=en&q=Vue+vs+React+vs+Angular&sa=X&ved=2ahUKEwjin5mNoOKVAxWdS3ADHZ7_Oz8Q1QJ6BAg4EAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&gl=us&google_domain=google.com&hl=en&q=Vue+vs+React+vs+Angular"
+    },
+    {
+      "block_position": 1,
+      "query": "Vue vs react vs next",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&gl=us&hl=en&q=Vue+vs+react+vs+next&sa=X&ved=2ahUKEwjin5mNoOKVAxWdS3ADHZ7_Oz8Q1QJ6BAgxEAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&gl=us&google_domain=google.com&hl=en&q=Vue+vs+react+vs+next"
+    }
+  ],
+  "discussions_and_forums": [
+    {
+      "title": "Vue vs React - productivity question",
+      "link": "https://www.reddit.com/r/vuejs/comments/17h0g3u/vue_vs_react_productivity_question/",
+      "date": "2 years ago",
+      "extensions": [
+        "r/vuejs",
+        "50+ comments"
+      ],
+      "source": "Reddit",
+      "answers": [
+        {
+          "link": "https://www.reddit.com/r/vuejs/comments/17h0g3u/vue_vs_react_productivity_question/"
+        }
+      ]
+    },
+    {
+      "title": "Why do people use Vue.js instead of React.js?",
+      "link": "https://www.quora.com/Why-do-people-use-Vue-js-instead-of-React-js",
+      "date": "2 years ago",
+      "extensions": [
+        "1 answer"
+      ],
+      "source": "Quora",
+      "answers": [
+        {
+          "link": "https://www.quora.com/Why-do-people-use-Vue-js-instead-of-React-js"
+        }
+      ]
+    },
+    {
+      "title": "In terms of performance, is Vue.js better than React?",
+      "link": "https://www.quora.com/In-terms-of-performance-is-Vue-js-better-than-React",
+      "date": "8 years ago",
+      "extensions": [
+        "5 answers"
+      ],
+      "source": "Quora",
+      "answers": [
+        {
+          "link": "https://www.quora.com/In-terms-of-performance-is-Vue-js-better-than-React"
+        }
+      ]
+    }
+  ],
+  "pagination": {
+    "current": 1,
+    "next": "https://www.google.com/search?q=React+vs+Vue+performance&sca_esv=3271cc0dab4982ea&gl=us&hl=en&ei=BJpeauKNO52XwcsPnv_v-QM&start=10&sa=N&sstk=AU9db-Ax7j72lY5tRhSFoBENjMYOvNoD68iziZ0I83StrGdR9XQwl10YOL3RWAdRCaKAM3XqsFU5RozW_cbxUUJKJJEU1q8ayISNNg&ved=2ahUKEwjin5mNoOKVAxWdS3ADHZ7_Oz8Q8NMDegQITxAW",
+    "other_pages": {
+      "2": "https://www.google.com/search?q=React+vs+Vue+performance&sca_esv=3271cc0dab4982ea&gl=us&hl=en&ei=BJpeauKNO52XwcsPnv_v-QM&start=10&sa=N&sstk=AU9db-Ax7j72lY5tRhSFoBENjMYOvNoD68iziZ0I83StrGdR9XQwl10YOL3RWAdRCaKAM3XqsFU5RozW_cbxUUJKJJEU1q8ayISNNg&ved=2ahUKEwjin5mNoOKVAxWdS3ADHZ7_Oz8Q8tMDegQITxAE",
+      "3": "https://www.google.com/search?q=React+vs+Vue+performance&sca_esv=3271cc0dab4982ea&gl=us&hl=en&ei=BJpeauKNO52XwcsPnv_v-QM&start=20&sa=N&sstk=AU9db-Ax7j72lY5tRhSFoBENjMYOvNoD68iziZ0I83StrGdR9XQwl10YOL3RWAdRCaKAM3XqsFU5RozW_cbxUUJKJJEU1q8ayISNNg&ved=2ahUKEwjin5mNoOKVAxWdS3ADHZ7_Oz8Q8tMDegQITxAG",
+      "4": "https://www.google.com/search?q=React+vs+Vue+performance&sca_esv=3271cc0dab4982ea&gl=us&hl=en&ei=BJpeauKNO52XwcsPnv_v-QM&start=30&sa=N&sstk=AU9db-Ax7j72lY5tRhSFoBENjMYOvNoD68iziZ0I83StrGdR9XQwl10YOL3RWAdRCaKAM3XqsFU5RozW_cbxUUJKJJEU1q8ayISNNg&ved=2ahUKEwjin5mNoOKVAxWdS3ADHZ7_Oz8Q8tMDegQITxAI",
+      "5": "https://www.google.com/search?q=React+vs+Vue+performance&sca_esv=3271cc0dab4982ea&gl=us&hl=en&ei=BJpeauKNO52XwcsPnv_v-QM&start=40&sa=N&sstk=AU9db-Ax7j72lY5tRhSFoBENjMYOvNoD68iziZ0I83StrGdR9XQwl10YOL3RWAdRCaKAM3XqsFU5RozW_cbxUUJKJJEU1q8ayISNNg&ved=2ahUKEwjin5mNoOKVAxWdS3ADHZ7_Oz8Q8tMDegQITxAK",
+      "6": "https://www.google.com/search?q=React+vs+Vue+performance&sca_esv=3271cc0dab4982ea&gl=us&hl=en&ei=BJpeauKNO52XwcsPnv_v-QM&start=50&sa=N&sstk=AU9db-Ax7j72lY5tRhSFoBENjMYOvNoD68iziZ0I83StrGdR9XQwl10YOL3RWAdRCaKAM3XqsFU5RozW_cbxUUJKJJEU1q8ayISNNg&ved=2ahUKEwjin5mNoOKVAxWdS3ADHZ7_Oz8Q8tMDegQITxAM",
+      "7": "https://www.google.com/search?q=React+vs+Vue+performance&sca_esv=3271cc0dab4982ea&gl=us&hl=en&ei=BJpeauKNO52XwcsPnv_v-QM&start=60&sa=N&sstk=AU9db-Ax7j72lY5tRhSFoBENjMYOvNoD68iziZ0I83StrGdR9XQwl10YOL3RWAdRCaKAM3XqsFU5RozW_cbxUUJKJJEU1q8ayISNNg&ved=2ahUKEwjin5mNoOKVAxWdS3ADHZ7_Oz8Q8tMDegQITxAO",
+      "8": "https://www.google.com/search?q=React+vs+Vue+performance&sca_esv=3271cc0dab4982ea&gl=us&hl=en&ei=BJpeauKNO52XwcsPnv_v-QM&start=70&sa=N&sstk=AU9db-Ax7j72lY5tRhSFoBENjMYOvNoD68iziZ0I83StrGdR9XQwl10YOL3RWAdRCaKAM3XqsFU5RozW_cbxUUJKJJEU1q8ayISNNg&ved=2ahUKEwjin5mNoOKVAxWdS3ADHZ7_Oz8Q8tMDegQITxAQ",
+      "9": "https://www.google.com/search?q=React+vs+Vue+performance&sca_esv=3271cc0dab4982ea&gl=us&hl=en&ei=BJpeauKNO52XwcsPnv_v-QM&start=80&sa=N&sstk=AU9db-Ax7j72lY5tRhSFoBENjMYOvNoD68iziZ0I83StrGdR9XQwl10YOL3RWAdRCaKAM3XqsFU5RozW_cbxUUJKJJEU1q8ayISNNg&ved=2ahUKEwjin5mNoOKVAxWdS3ADHZ7_Oz8Q8tMDegQITxAS",
+      "10": "https://www.google.com/search?q=React+vs+Vue+performance&sca_esv=3271cc0dab4982ea&gl=us&hl=en&ei=BJpeauKNO52XwcsPnv_v-QM&start=90&sa=N&sstk=AU9db-Ax7j72lY5tRhSFoBENjMYOvNoD68iziZ0I83StrGdR9XQwl10YOL3RWAdRCaKAM3XqsFU5RozW_cbxUUJKJJEU1q8ayISNNg&ved=2ahUKEwjin5mNoOKVAxWdS3ADHZ7_Oz8Q8tMDegQITxAU"
+    }
+  },
+  "serpapi_pagination": {
+    "current": 1,
+    "next_link": "https://serpapi.com/search.json?device=desktop&engine=google&gl=us&google_domain=google.com&hl=en&q=React+vs+Vue+performance&start=10",
+    "next": "https://serpapi.com/search.json?device=desktop&engine=google&gl=us&google_domain=google.com&hl=en&q=React+vs+Vue+performance&start=10",
+    "other_pages": {
+      "2": "https://serpapi.com/search.json?device=desktop&engine=google&gl=us&google_domain=google.com&hl=en&q=React+vs+Vue+performance&start=10",
+      "3": "https://serpapi.com/search.json?device=desktop&engine=google&gl=us&google_domain=google.com&hl=en&q=React+vs+Vue+performance&start=20",
+      "4": "https://serpapi.com/search.json?device=desktop&engine=google&gl=us&google_domain=google.com&hl=en&q=React+vs+Vue+performance&start=30",
+      "5": "https://serpapi.com/search.json?device=desktop&engine=google&gl=us&google_domain=google.com&hl=en&q=React+vs+Vue+performance&start=40",
+      "6": "https://serpapi.com/search.json?device=desktop&engine=google&gl=us&google_domain=google.com&hl=en&q=React+vs+Vue+performance&start=50",
+      "7": "https://serpapi.com/search.json?device=desktop&engine=google&gl=us&google_domain=google.com&hl=en&q=React+vs+Vue+performance&start=60",
+      "8": "https://serpapi.com/search.json?device=desktop&engine=google&gl=us&google_domain=google.com&hl=en&q=React+vs+Vue+performance&start=70",
+      "9": "https://serpapi.com/search.json?device=desktop&engine=google&gl=us&google_domain=google.com&hl=en&q=React+vs+Vue+performance&start=80",
+      "10": "https://serpapi.com/search.json?device=desktop&engine=google&gl=us&google_domain=google.com&hl=en&q=React+vs+Vue+performance&start=90"
+    }
+  }
+}

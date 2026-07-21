@@ -1,0 +1,527 @@
+{
+  "search_metadata": {
+    "id": "6a5e9bc7a4817c565359bb19",
+    "status": "Success",
+    "json_endpoint": "https://serpapi.com/searches/X6D443uAoO0ZGc3nbpuWtQ/6a5e9bc7a4817c565359bb19.json",
+    "pixel_position_endpoint": "https://serpapi.com/searches/X6D443uAoO0ZGc3nbpuWtQ/6a5e9bc7a4817c565359bb19.json_with_pixel_position",
+    "created_at": "2026-07-20 22:05:59 UTC",
+    "processed_at": "2026-07-20 22:05:59 UTC",
+    "google_url": "https://www.google.com/search?q=what+is+a+Roth+conversion+ladder&oq=what+is+a+Roth+conversion+ladder&sourceid=chrome&ie=UTF-8",
+    "raw_html_file": "https://serpapi.com/searches/X6D443uAoO0ZGc3nbpuWtQ/6a5e9bc7a4817c565359bb19.html",
+    "total_time_taken": 9.79
+  },
+  "search_parameters": {
+    "engine": "google",
+    "q": "what is a Roth conversion ladder",
+    "google_domain": "google.com",
+    "device": "desktop"
+  },
+  "search_information": {
+    "query_displayed": "what is a Roth conversion ladder",
+    "total_results": 20,
+    "time_taken_displayed": 0.12,
+    "organic_results_state": "Results for exact spelling"
+  },
+  "related_questions": [
+    {
+      "question": "Is a Roth conversion ladder worth it?",
+      "type": "ai_overview",
+      "page_token": "RG6y43icHdDdbpswGABQ7WV62QBRuzVSVIlCIGg4xYbP4JvJmBAnfAY3zcLP3d5lT7Wn2bQHODfn1288992fL3d9u9nPzWo1juPjaRhOeHxUg1nJz7lXKyURa6m6zfPXZ_e1Vdvw595_-9j7WWEtBNRhgCO9pPN3sGfO6a70iCscN6Xm29SU-CFyfT2GT4zmEDAP1-XSLYUjDpWrA-mBlLluCbcTWWsLEQVmGj8vbaL6JuJG3MFDqYx2yQVQrZPpEGtQXjengZCM7-bMJFJdSMwKi9LsGFv0TFwd5bHg9ZJca4cSAS-tylHkDoEmIlWFyTvs_LeiT5_q3vfrGADCpkw50FCrkfUUqxKQFbeWONO1CDGrQ7fKeuLLaThnBV3UBU3RifYQak7ibhGBfj8izP-M5NHLQDrY1zntxPjQqvt2_fD_c_ujNbeNvQ6nv7P1hi0",
+      "serpapi_ai_overview_link": "https://serpapi.com/search.json?engine=google_ai_overview&page_token=RG6y43icHdDdbpswGABQ7WV62QBRuzVSVIlCIGg4xYbP4JvJmBAnfAY3zcLP3d5lT7Wn2bQHODfn1288992fL3d9u9nPzWo1juPjaRhOeHxUg1nJz7lXKyURa6m6zfPXZ_e1Vdvw595_-9j7WWEtBNRhgCO9pPN3sGfO6a70iCscN6Xm29SU-CFyfT2GT4zmEDAP1-XSLYUjDpWrA-mBlLluCbcTWWsLEQVmGj8vbaL6JuJG3MFDqYx2yQVQrZPpEGtQXjengZCM7-bMJFJdSMwKi9LsGFv0TFwd5bHg9ZJca4cSAS-tylHkDoEmIlWFyTvs_LeiT5_q3vfrGADCpkw50FCrkfUUqxKQFbeWONO1CDGrQ7fKeuLLaThnBV3UBU3RifYQak7ibhGBfj8izP-M5NHLQDrY1zntxPjQqvt2_fD_c_ujNbeNvQ6nv7P1hi0",
+      "next_page_token": "eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSS09XMU1WRll3Ym1WNlVUTlBNbmgwVTBsVGIzUXlhMHR2ZEdOVVFtdExTMnhWWm5sT1ExSk1ia2RTYnpWMFdDMVRZV2MxUVVob1NVUTVRa013VEV4dVMwaHdOVTVrYVdOcWFtbERlbWRqUmw5M2VqTmtZbGxFYlhoaWR4SVhNRXAwWldGMVpVbExYemRNYTFCSlVHeE5XRUp6UVdzYUlrRkVjM0k1WmxGdFF6UmpOVXM1VW1Wbk5qRk9kME5NTTNRMmRreGpjVmxMWm5jIiwiZmN2IjoiMyIsImVpIjoiMEp0ZWF1ZUlLXzdMa1BJUGxNWEJzQWsiLCJxYyI6IkNpQjNhR0YwSUdseklHRWdjbTkwYUNCamIyNTJaWEp6YVc5dUlHeGhaR1JsY2hBQWZiUkdGajgiLCJxdWVzdGlvbiI6IklzIGEgUm90aCBjb252ZXJzaW9uIGxhZGRlciB3b3J0aCBpdD8iLCJsayI6IkdpUnBjeUJoSUhKdmRHZ2dZMjl1ZG1WeWMybHZiaUJzWVdSa1pYSWdkMjl5ZEdnZ2FYUSIsImJzIjoiYzMyUVBRc0NNUkJFc2QzS1VsTElGbjZpSXFRV1Vsc0pnbHBaUkxOM0Z6eXprZ1NEUDlOXzVBbFh5T25aRG84M3c4QUdodXVBR3JjY0N6eXp1NU1QbGgyVzJoanltTmhYdVkxS2pzVEF2a0hfSDRRZFRBNkZqbGpCc1NBMG5GeXdocEN6Wm9lU1V6Rk9MV3lqQm80d185U2ViSjVUaUYtenJ6WkVmU0VsRjJLV2Z2RE45VFVQZTFoLTZtX2tkQmtmbUxGdmVVYjFuaXVKb3Q5eVJ5M29kbDQiLCJpZCI6ImZjXzBKdGVhdWVJS183TGtQSVBsTVhCc0FrXzQifQ==",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google_related_questions&google_domain=google.com&next_page_token=eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSS09XMU1WRll3Ym1WNlVUTlBNbmgwVTBsVGIzUXlhMHR2ZEdOVVFtdExTMnhWWm5sT1ExSk1ia2RTYnpWMFdDMVRZV2MxUVVob1NVUTVRa013VEV4dVMwaHdOVTVrYVdOcWFtbERlbWRqUmw5M2VqTmtZbGxFYlhoaWR4SVhNRXAwWldGMVpVbExYemRNYTFCSlVHeE5XRUp6UVdzYUlrRkVjM0k1WmxGdFF6UmpOVXM1VW1Wbk5qRk9kME5NTTNRMmRreGpjVmxMWm5jIiwiZmN2IjoiMyIsImVpIjoiMEp0ZWF1ZUlLXzdMa1BJUGxNWEJzQWsiLCJxYyI6IkNpQjNhR0YwSUdseklHRWdjbTkwYUNCamIyNTJaWEp6YVc5dUlHeGhaR1JsY2hBQWZiUkdGajgiLCJxdWVzdGlvbiI6IklzIGEgUm90aCBjb252ZXJzaW9uIGxhZGRlciB3b3J0aCBpdD8iLCJsayI6IkdpUnBjeUJoSUhKdmRHZ2dZMjl1ZG1WeWMybHZiaUJzWVdSa1pYSWdkMjl5ZEdnZ2FYUSIsImJzIjoiYzMyUVBRc0NNUkJFc2QzS1VsTElGbjZpSXFRV1Vsc0pnbHBaUkxOM0Z6eXprZ1NEUDlOXzVBbFh5T25aRG84M3c4QUdodXVBR3JjY0N6eXp1NU1QbGgyVzJoanltTmhYdVkxS2pzVEF2a0hfSDRRZFRBNkZqbGpCc1NBMG5GeXdocEN6Wm9lU1V6Rk9MV3lqQm80d185U2ViSjVUaUYtenJ6WkVmU0VsRjJLV2Z2RE45VFVQZTFoLTZtX2tkQmtmbUxGdmVVYjFuaXVKb3Q5eVJ5M29kbDQiLCJpZCI6ImZjXzBKdGVhdWVJS183TGtQSVBsTVhCc0FrXzQifQ%3D%3D"
+    },
+    {
+      "question": "What is the downside of Roth conversion?",
+      "type": "ai_overview",
+      "page_token": "P_157HicHdDLUoMwGEDh8WVcWlJqHTvTcYYanKKgSchPYeOEpBRJgNhiuex8F5_Kp_GyP9_mfH6Zt0Z_X5zLrrOn1WzW9_3VoW0PZn8l23omTmMjZ1IYkwupV8ubJbor5Bp_bL3N-9Yj3Fq4pw7Tdq4aOqZJds43jhNXhkHsd7xG03NigqihjyFk3Z5Hcwl6fEoGqmJ4SPVipPi0YCho5T0l3A88OlET7nzyzJDYOWon3ewjrUoRJlkdVlkVub7NkdKi8hs5DzYKdzhGQZG7pSDJEHOObOqShQJzVNhO8QSBTK4rguwLBT8lTdSDc7sBPbj0obPwm6egRqoNALfLFIIGl7JnDTXpDgzjXRE5w5FjQ3KM_rwnhvaNcDrJytScZyisgu0-ppPA1GOOdaKpZNL1WTYfNIGIqf6ykOe1e_n_c_1a1N3KHtvDD1qchSI",
+      "serpapi_ai_overview_link": "https://serpapi.com/search.json?engine=google_ai_overview&page_token=P_157HicHdDLUoMwGEDh8WVcWlJqHTvTcYYanKKgSchPYeOEpBRJgNhiuex8F5_Kp_GyP9_mfH6Zt0Z_X5zLrrOn1WzW9_3VoW0PZn8l23omTmMjZ1IYkwupV8ubJbor5Bp_bL3N-9Yj3Fq4pw7Tdq4aOqZJds43jhNXhkHsd7xG03NigqihjyFk3Z5Hcwl6fEoGqmJ4SPVipPi0YCho5T0l3A88OlET7nzyzJDYOWon3ewjrUoRJlkdVlkVub7NkdKi8hs5DzYKdzhGQZG7pSDJEHOObOqShQJzVNhO8QSBTK4rguwLBT8lTdSDc7sBPbj0obPwm6egRqoNALfLFIIGl7JnDTXpDgzjXRE5w5FjQ3KM_rwnhvaNcDrJytScZyisgu0-ppPA1GOOdaKpZNL1WTYfNIGIqf6ykOe1e_n_c_1a1N3KHtvDD1qchSI",
+      "next_page_token": "eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSS09XMU1WRll3Ym1WNlVUTlBNbmgwVTBsVGIzUXlhMHR2ZEdOVVFtdExTMnhWWm5sT1ExSk1ia2RTYnpWMFdDMVRZV2MxUVVob1NVUTVRa013VEV4dVMwaHdOVTVrYVdOcWFtbERlbWRqUmw5M2VqTmtZbGxFYlhoaWR4SVhNRXAwWldGMVpVbExYemRNYTFCSlVHeE5XRUp6UVdzYUlrRkVjM0k1WmxGdFF6UmpOVXM1VW1Wbk5qRk9kME5NTTNRMmRreGpjVmxMWm5jIiwiZmN2IjoiMyIsImVpIjoiMEp0ZWF1ZUlLXzdMa1BJUGxNWEJzQWsiLCJxYyI6IkNpQjNhR0YwSUdseklHRWdjbTkwYUNCamIyNTJaWEp6YVc5dUlHeGhaR1JsY2hBQWZiUkdGajgiLCJxdWVzdGlvbiI6IldoYXQgaXMgdGhlIGRvd25zaWRlIG9mIFJvdGggY29udmVyc2lvbj8iLCJsayI6IkdpZDNhR0YwSUdseklIUm9aU0JrYjNkdWMybGtaU0J2WmlCeWIzUm9JR052Ym5abGNuTnBiMjQiLCJicyI6ImMzMlFQUXNDTVJCRXNkM0tVbExJRm42aUlxUVdVbHNKZ2xwWlJMTjNGenl6a2dTRFA5Tl81QWxYeU9uWkRvODN3OEFHaHV1QUdyY2NDenl6dTVNUGxoMlcyaGp5bU5oWHVZMUtqc1RBdmtIX0g0UWRUQTZGamxqQnNTQTBuRnl3aHBDelpvZVNVekZPTFd5akJvNHdfOVNlYko1VGlGLXpyelpFZlNFbEYyS1dmdkROOVRVUGUxaC02bV9rZEJrZm1MRnZlVWIxbml1Sm90OXlSeTNvZGw0IiwiaWQiOiJmY18wSnRlYXVlSUtfN0xrUElQbE1YQnNBa180In0=",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google_related_questions&google_domain=google.com&next_page_token=eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSS09XMU1WRll3Ym1WNlVUTlBNbmgwVTBsVGIzUXlhMHR2ZEdOVVFtdExTMnhWWm5sT1ExSk1ia2RTYnpWMFdDMVRZV2MxUVVob1NVUTVRa013VEV4dVMwaHdOVTVrYVdOcWFtbERlbWRqUmw5M2VqTmtZbGxFYlhoaWR4SVhNRXAwWldGMVpVbExYemRNYTFCSlVHeE5XRUp6UVdzYUlrRkVjM0k1WmxGdFF6UmpOVXM1VW1Wbk5qRk9kME5NTTNRMmRreGpjVmxMWm5jIiwiZmN2IjoiMyIsImVpIjoiMEp0ZWF1ZUlLXzdMa1BJUGxNWEJzQWsiLCJxYyI6IkNpQjNhR0YwSUdseklHRWdjbTkwYUNCamIyNTJaWEp6YVc5dUlHeGhaR1JsY2hBQWZiUkdGajgiLCJxdWVzdGlvbiI6IldoYXQgaXMgdGhlIGRvd25zaWRlIG9mIFJvdGggY29udmVyc2lvbj8iLCJsayI6IkdpZDNhR0YwSUdseklIUm9aU0JrYjNkdWMybGtaU0J2WmlCeWIzUm9JR052Ym5abGNuTnBiMjQiLCJicyI6ImMzMlFQUXNDTVJCRXNkM0tVbExJRm42aUlxUVdVbHNKZ2xwWlJMTjNGenl6a2dTRFA5Tl81QWxYeU9uWkRvODN3OEFHaHV1QUdyY2NDenl6dTVNUGxoMlcyaGp5bU5oWHVZMUtqc1RBdmtIX0g0UWRUQTZGamxqQnNTQTBuRnl3aHBDelpvZVNVekZPTFd5akJvNHdfOVNlYko1VGlGLXpyelpFZlNFbEYyS1dmdkROOVRVUGUxaC02bV9rZEJrZm1MRnZlVWIxbml1Sm90OXlSeTNvZGw0IiwiaWQiOiJmY18wSnRlYXVlSUtfN0xrUElQbE1YQnNBa180In0%3D"
+    },
+    {
+      "question": "What is the biggest Roth conversion mistake?",
+      "type": "ai_overview",
+      "page_token": "JozEdnicHdBRbpswGABg7TJ9bGwSujZSVIkEJ6HFzMDvEF4mbEogNjZrvZDxtrv0VD1Nq17ge_j-v-vOqI8fl9a54W05m43jeHuy9qRfbqXtZ9XbPyNnstJaVFIt737e4cdGrsK_-2D9Zx8wGAa-SVFWlFTAoOqQlMxTTk7xQuAoircRjnfSFZMmCUkt7XkTE55ku3IvgM7jg53yXl9SGDDdOgtof2XofpF7_jrhJOSbaEfxAy1J-lR5RJU97ktEkqqoLfD2mGxbnxseHsjwi-fkQg3DVV4q4YEP6iEUio5s4iNF4-LlECEB-Imbk6sn8lxu0q7eXqHAkUsO2s9QralOOzGPgrCVY2ZSfSy4zsA1FF1fIdRMhPjIDA2qq-0YpJM86x7UEVUGvmzfwdQCnw87INww3nb5OThLj7l6vGnkZTW_-f5c_W56txxe7ekTYjyDSw",
+      "serpapi_ai_overview_link": "https://serpapi.com/search.json?engine=google_ai_overview&page_token=JozEdnicHdBRbpswGABg7TJ9bGwSujZSVIkEJ6HFzMDvEF4mbEogNjZrvZDxtrv0VD1Nq17ge_j-v-vOqI8fl9a54W05m43jeHuy9qRfbqXtZ9XbPyNnstJaVFIt737e4cdGrsK_-2D9Zx8wGAa-SVFWlFTAoOqQlMxTTk7xQuAoircRjnfSFZMmCUkt7XkTE55ku3IvgM7jg53yXl9SGDDdOgtof2XofpF7_jrhJOSbaEfxAy1J-lR5RJU97ktEkqqoLfD2mGxbnxseHsjwi-fkQg3DVV4q4YEP6iEUio5s4iNF4-LlECEB-Imbk6sn8lxu0q7eXqHAkUsO2s9QralOOzGPgrCVY2ZSfSy4zsA1FF1fIdRMhPjIDA2qq-0YpJM86x7UEVUGvmzfwdQCnw87INww3nb5OThLj7l6vGnkZTW_-f5c_W56txxe7ekTYjyDSw",
+      "next_page_token": "eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSS09XMU1WRll3Ym1WNlVUTlBNbmgwVTBsVGIzUXlhMHR2ZEdOVVFtdExTMnhWWm5sT1ExSk1ia2RTYnpWMFdDMVRZV2MxUVVob1NVUTVRa013VEV4dVMwaHdOVTVrYVdOcWFtbERlbWRqUmw5M2VqTmtZbGxFYlhoaWR4SVhNRXAwWldGMVpVbExYemRNYTFCSlVHeE5XRUp6UVdzYUlrRkVjM0k1WmxGdFF6UmpOVXM1VW1Wbk5qRk9kME5NTTNRMmRreGpjVmxMWm5jIiwiZmN2IjoiMyIsImVpIjoiMEp0ZWF1ZUlLXzdMa1BJUGxNWEJzQWsiLCJxYyI6IkNpQjNhR0YwSUdseklHRWdjbTkwYUNCamIyNTJaWEp6YVc5dUlHeGhaR1JsY2hBQWZiUkdGajgiLCJxdWVzdGlvbiI6IldoYXQgaXMgdGhlIGJpZ2dlc3QgUm90aCBjb252ZXJzaW9uIG1pc3Rha2U/IiwibGsiOiJHaXQzYUdGMElHbHpJSFJvWlNCaWFXZG5aWE4wSUhKdmRHZ2dZMjl1ZG1WeWMybHZiaUJ0YVhOMFlXdGwiLCJicyI6ImMzMlFQUXNDTVJCRXNkM0tVbExJRm42aUlxUVdVbHNKZ2xwWlJMTjNGenl6a2dTRFA5Tl81QWxYeU9uWkRvODN3OEFHaHV1QUdyY2NDenl6dTVNUGxoMlcyaGp5bU5oWHVZMUtqc1RBdmtIX0g0UWRUQTZGamxqQnNTQTBuRnl3aHBDelpvZVNVekZPTFd5akJvNHdfOVNlYko1VGlGLXpyelpFZlNFbEYyS1dmdkROOVRVUGUxaC02bV9rZEJrZm1MRnZlVWIxbml1Sm90OXlSeTNvZGw0IiwiaWQiOiJmY18wSnRlYXVlSUtfN0xrUElQbE1YQnNBa180In0=",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google_related_questions&google_domain=google.com&next_page_token=eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSS09XMU1WRll3Ym1WNlVUTlBNbmgwVTBsVGIzUXlhMHR2ZEdOVVFtdExTMnhWWm5sT1ExSk1ia2RTYnpWMFdDMVRZV2MxUVVob1NVUTVRa013VEV4dVMwaHdOVTVrYVdOcWFtbERlbWRqUmw5M2VqTmtZbGxFYlhoaWR4SVhNRXAwWldGMVpVbExYemRNYTFCSlVHeE5XRUp6UVdzYUlrRkVjM0k1WmxGdFF6UmpOVXM1VW1Wbk5qRk9kME5NTTNRMmRreGpjVmxMWm5jIiwiZmN2IjoiMyIsImVpIjoiMEp0ZWF1ZUlLXzdMa1BJUGxNWEJzQWsiLCJxYyI6IkNpQjNhR0YwSUdseklHRWdjbTkwYUNCamIyNTJaWEp6YVc5dUlHeGhaR1JsY2hBQWZiUkdGajgiLCJxdWVzdGlvbiI6IldoYXQgaXMgdGhlIGJpZ2dlc3QgUm90aCBjb252ZXJzaW9uIG1pc3Rha2U%2FIiwibGsiOiJHaXQzYUdGMElHbHpJSFJvWlNCaWFXZG5aWE4wSUhKdmRHZ2dZMjl1ZG1WeWMybHZiaUJ0YVhOMFlXdGwiLCJicyI6ImMzMlFQUXNDTVJCRXNkM0tVbExJRm42aUlxUVdVbHNKZ2xwWlJMTjNGenl6a2dTRFA5Tl81QWxYeU9uWkRvODN3OEFHaHV1QUdyY2NDenl6dTVNUGxoMlcyaGp5bU5oWHVZMUtqc1RBdmtIX0g0UWRUQTZGamxqQnNTQTBuRnl3aHBDelpvZVNVekZPTFd5akJvNHdfOVNlYko1VGlGLXpyelpFZlNFbEYyS1dmdkROOVRVUGUxaC02bV9rZEJrZm1MRnZlVWIxbml1Sm90OXlSeTNvZGw0IiwiaWQiOiJmY18wSnRlYXVlSUtfN0xrUElQbE1YQnNBa180In0%3D"
+    },
+    {
+      "question": "What is the penalty for Roth conversion ladder?",
+      "type": "featured_snippet",
+      "snippet": "Roth conversion five-year rule Under this rule, if you withdraw converted funds before the five years have passed and you're under age 59\u00bd, you will generally have to pay a 10% penalty on any pre-tax assets that were converted\u2014not just the earnings\u2014as well as income taxes on the earnings.",
+      "title": "a 10% penalty",
+      "link": "https://www.schwab.com/learn/story/what-to-know-about-five-year-rule-roths#:~:text=Roth%20conversion%20five%2Dyear%20rule,-This%20is%20a&text=Under%20this%20rule%2C%20if%20you,income%20taxes%20on%20the%20earnings.",
+      "displayed_link": "https://www.schwab.com \u203a learn \u203a story \u203a what-to-know-...",
+      "source_logo": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAARVBMVEUAndsxsOJPu-YIoNxGuOU_teRnxeqv4PQcqN-k3PIZp98jq-CK0u59ze1cwOjN7PjV7_lxyOuQ1O-45PWb2fHA5_Z3y-xopSnkAAAAbklEQVR4AZxMtQHEMBCzdeaj8P6bPkPqqBKHS4iIhIRcqKSXUan1EThK0PwyzPP0LFb0t8GtO50bMzLPyZKS4qlJYuMxZyZB-TRs4az6eF_fH1vaMWYP1TZ6OXs81IbkSp1fBkLLhXJR4D6yfAYA0r0DpWi2wzMAAAAASUVORK5CYII.png",
+      "next_page_token": "eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSS09XMU1WRll3Ym1WNlVUTlBNbmgwVTBsVGIzUXlhMHR2ZEdOVVFtdExTMnhWWm5sT1ExSk1ia2RTYnpWMFdDMVRZV2MxUVVob1NVUTVRa013VEV4dVMwaHdOVTVrYVdOcWFtbERlbWRqUmw5M2VqTmtZbGxFYlhoaWR4SVhNRXAwWldGMVpVbExYemRNYTFCSlVHeE5XRUp6UVdzYUlrRkVjM0k1WmxGdFF6UmpOVXM1VW1Wbk5qRk9kME5NTTNRMmRreGpjVmxMWm5jIiwiZmN2IjoiMyIsImVpIjoiMEp0ZWF1ZUlLXzdMa1BJUGxNWEJzQWsiLCJxYyI6IkNpQjNhR0YwSUdseklHRWdjbTkwYUNCamIyNTJaWEp6YVc5dUlHeGhaR1JsY2hBQWZiUkdGajgiLCJxdWVzdGlvbiI6IldoYXQgaXMgdGhlIHBlbmFsdHkgZm9yIFJvdGggY29udmVyc2lvbiBsYWRkZXI/IiwibGsiOiJHaDV5YjNSb0lHTnZiblpsY25OcGIyNGdiR0ZrWkdWeUlIQmxibUZzZEhrIiwiYnMiOiJjMzJRUFFzQ01SQkVzZDNLVWxMSUZuNmlJcVFXVWxzSmdscFpSTE4zRnp5emtnU0RQOU5fNUFsWHlPblpEbzgzdzhBR2h1dUFHcmNjQ3p5enU1TVBsaDJXMmhqeW1OaFh1WTFLanNUQXZrSF9INFFkVEE2RmpsakJzU0EwbkZ5d2hwQ3pab2VTVXpGT0xXeWpCbzR3XzlTZWJKNVRpRi16cnpaRWZTRWxGMktXZnZETjlUVVBlMWgtNm1fa2RCa2ZtTEZ2ZVViMW5pdUpvdDl5Unkzb2RsNCIsImlkIjoiZmNfMEp0ZWF1ZUlLXzdMa1BJUGxNWEJzQWtfNCJ9",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google_related_questions&google_domain=google.com&next_page_token=eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSS09XMU1WRll3Ym1WNlVUTlBNbmgwVTBsVGIzUXlhMHR2ZEdOVVFtdExTMnhWWm5sT1ExSk1ia2RTYnpWMFdDMVRZV2MxUVVob1NVUTVRa013VEV4dVMwaHdOVTVrYVdOcWFtbERlbWRqUmw5M2VqTmtZbGxFYlhoaWR4SVhNRXAwWldGMVpVbExYemRNYTFCSlVHeE5XRUp6UVdzYUlrRkVjM0k1WmxGdFF6UmpOVXM1VW1Wbk5qRk9kME5NTTNRMmRreGpjVmxMWm5jIiwiZmN2IjoiMyIsImVpIjoiMEp0ZWF1ZUlLXzdMa1BJUGxNWEJzQWsiLCJxYyI6IkNpQjNhR0YwSUdseklHRWdjbTkwYUNCamIyNTJaWEp6YVc5dUlHeGhaR1JsY2hBQWZiUkdGajgiLCJxdWVzdGlvbiI6IldoYXQgaXMgdGhlIHBlbmFsdHkgZm9yIFJvdGggY29udmVyc2lvbiBsYWRkZXI%2FIiwibGsiOiJHaDV5YjNSb0lHTnZiblpsY25OcGIyNGdiR0ZrWkdWeUlIQmxibUZzZEhrIiwiYnMiOiJjMzJRUFFzQ01SQkVzZDNLVWxMSUZuNmlJcVFXVWxzSmdscFpSTE4zRnp5emtnU0RQOU5fNUFsWHlPblpEbzgzdzhBR2h1dUFHcmNjQ3p5enU1TVBsaDJXMmhqeW1OaFh1WTFLanNUQXZrSF9INFFkVEE2RmpsakJzU0EwbkZ5d2hwQ3pab2VTVXpGT0xXeWpCbzR3XzlTZWJKNVRpRi16cnpaRWZTRWxGMktXZnZETjlUVVBlMWgtNm1fa2RCa2ZtTEZ2ZVViMW5pdUpvdDl5Unkzb2RsNCIsImlkIjoiZmNfMEp0ZWF1ZUlLXzdMa1BJUGxNWEJzQWtfNCJ9"
+    }
+  ],
+  "ai_overview": {
+    "text_blocks": [
+      {
+        "type": "paragraph",
+        "snippet": "A Roth conversion ladder is a multiyear strategy used primarily by early retirees to access tax-deferred retirement funds (like a Traditional IRA or 401k) before age $59\\frac{1}{2}$ without paying the IRS's 10% early withdrawal penalty.",
+        "snippet_links": [
+          {
+            "link": "https://www.investopedia.com/how-roth-conversion-ladder-works-5214808"
+          }
+        ],
+        "snippet_latex": [
+          "59\\frac{1}{2}"
+        ],
+        "reference_indexes": [
+          0,
+          1
+        ]
+      },
+      {
+        "type": "paragraph",
+        "snippet": "Here is how the strategy works:"
+      },
+      {
+        "type": "list",
+        "list": [
+          {
+            "snippet": "The Conversion (\"The Rungs\"): You roll money from a pre-tax 401k into a Traditional IRA. Each year, you convert a portion of this Traditional IRA into a Roth IRA. Each annual conversion acts as a new \"rung\" on a ladder.",
+            "snippet_links": [
+              {
+                "link": "https://www.investopedia.com/how-roth-conversion-ladder-works-5214808"
+              }
+            ],
+            "reference_indexes": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "snippet": "The Tax Hit: Because the converted money was never taxed, you pay ordinary income tax on the amount converted in the year the conversion takes place. You want to carefully manage the amount converted each year to avoid bumping into higher tax brackets."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "snippet": "For an example of how a Roth conversion ladder creates an annual flow of funds in early retirement:",
+        "video": {
+          "link": "https://www.youtube.com/shorts/pt7Gp-IReoM",
+          "thumbnail": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTDvCfIDSEiNRxsZj3ZKySPJFJ_0FGrMxVhSofDpMhBd2nD2LLrS57CzWgRXdrd7J65iVIM648QP-NitadmEA7Ittz2SQ"
+        }
+      }
+    ],
+    "references": [
+      {
+        "title": "How the Roth Conversion Ladder Works - Investopedia",
+        "link": "https://www.investopedia.com/how-roth-conversion-ladder-works-5214808",
+        "snippet": "A Roth conversion ladder is a multiyear strategy designed to give you tax-free and penalty-free IRA withdrawals before you reach the standard age (59 \u00bd) for dis...",
+        "source": "investopedia.com",
+        "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmvkPYEXaoO8V5f-x7X3qK1UthYwKDIitt2THZvBNqap-h9mPM6w-ZzlGsVoOBjuL1bYS0sWM-ofiNUkA",
+        "source_icon": "https://encrypted-tbn1.gstatic.com/faviconV2?url=https://www.investopedia.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 0
+      },
+      {
+        "title": "Roth Conversion Ladder: Access Retirement Funds Early Without Penalties",
+        "link": "https://choosefi.com/tax-strategies/roth-conversion-ladder",
+        "snippet": "Roth Conversion Ladder Simplified * A Roth conversion ladder lets early retirees access traditional retirement funds before age 59\u00bd without the 10% penalty",
+        "source": "choosefi.com",
+        "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVeph8clmJv66hNNUhiAiQH1cedvBLsXW2y3y3syP1o7AJUkt150tXoQ4SuQBFmgAVIwlEh0d7EXd-JFs",
+        "source_icon": "https://encrypted-tbn1.gstatic.com/faviconV2?url=https://choosefi.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 1
+      },
+      {
+        "title": "Roth Conversion Ladder: A Smart Retirement Income Strategy",
+        "link": "https://www.associatedbank.com/education/articles/personal-finance/investing/roth-conversion-ladder",
+        "snippet": "Roth Conversion Ladder: A Retirement Income Strategy. Summary: A Roth conversion ladder lets you convert IRA funds in steps, manage taxes and create long-term a...",
+        "source": "associatedbank.com",
+        "thumbnail": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTmngIneBj4vyWMjtrTQuvekjat0pv-6fNP14g_b6KhdkWm9Q2iNNq-qzNG1KHRiRCYd23VECwBdRT6zKU",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.associatedbank.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 2
+      },
+      {
+        "title": "Roth Conversion Ladders: Why Fall is Prime Planning Time",
+        "link": "https://www.entrustwp.com/blog/roth-conversion-ladders-why-fall-prime-planning-time",
+        "snippet": "Think of a Roth conversion ladder like building a staircase to tax-free retirement income. Instead of making one massive conversion that could push you into hig...",
+        "source": "entrustwp.com",
+        "thumbnail": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRvuPeFHisLdm317oWQUA0OZKH-gqED1X2dCkYRE7nWDB1ZsPxH59Sr79YVTqMJSJfADW-nKSCbqsQTaAc",
+        "source_icon": "https://encrypted-tbn1.gstatic.com/faviconV2?url=https://www.entrustwp.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 3
+      },
+      {
+        "title": "A guide to Roth IRA conversion ladders - MassMutual Blog",
+        "link": "https://blog.massmutual.com/retiring-investing/roth-ira-conversion-ladder",
+        "snippet": "What is a Roth IRA conversion ladder? A Roth IRA conversion ladder describes the strategy of moving funds from a pretax retirement account to a Roth IRA in smal...",
+        "source": "blog.massmutual.com",
+        "thumbnail": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTcPGr1Nt3QXJvsay4POLdS6z6NyyGzcytheSqVGrhg4MlsRn2nDCwO8ck_tjJtB9VhquKluUTdeA793RE",
+        "source_icon": "https://encrypted-tbn1.gstatic.com/faviconV2?url=https://blog.massmutual.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 4
+      },
+      {
+        "title": "Roth Conversion Ladder: How It Works, How to Do One - NerdWallet",
+        "link": "https://www.nerdwallet.com/retirement/learn/roth-conversion-ladder",
+        "snippet": "Considering an early retirement or want to potentially lower the amount of taxes you'll have to pay on your retirement savings? A Roth conversion ladder is a ta...",
+        "source": "nerdwallet.com",
+        "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTg_wrJ-yNHdNfDZcsUjtC12FUTNctkKc7AxioMgfpM3U8pofrOXugbnBq-n537gFj5Rl8teTNSFFoZmgA",
+        "source_icon": "https://encrypted-tbn3.gstatic.com/faviconV2?url=https://www.nerdwallet.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 5
+      },
+      {
+        "title": "What is a Roth Conversion and how the ...",
+        "link": "https://projectionlab.com/financial-terms/roth-ira-conversion",
+        "snippet": "How It Works: * Initial Conversion: Funds are converted from a traditional IRA to a Roth IRA. Taxes are paid on the converted amount. * Five-Year Wa",
+        "source": "projectionlab.com",
+        "thumbnail": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQ2gbBooYzp79awh0YTDIbbCr_0yOLy3KTNkuB5CXxprVxL0G5I7hvDRhnQAY5dW_ZO--TCigynzIHYPdk",
+        "source_icon": "https://encrypted-tbn1.gstatic.com/faviconV2?url=https://projectionlab.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 6
+      }
+    ]
+  },
+  "organic_results": [
+    {
+      "position": 1,
+      "title": "Help Me Understand the Roth Conversion Ladder",
+      "link": "https://www.reddit.com/r/financialindependence/comments/1d7k00s/help_me_understand_the_roth_conversion_ladder/",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.reddit.com/r/financialindependence/comments/1d7k00s/help_me_understand_the_roth_conversion_ladder/&ved=2ahUKEwjnsLXooeKVAxX-JUQIHZRiEJYQFnoECBsQAQ",
+      "displayed_link": "40+ comments \u00b7 2 years ago",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAhFBMVEVHcEz_RQD_RQD_RQD_RQD_RQD_RQD_RQD_RQD_PQD_NgD-XS32dlf5vK3____64dusLADUz9H-jXLOPAoSHiFrLBm3uLn3_f7jVS_b6e77pJDJo6H718__RQDw9ffs5-jm8fPIXlHqKwD5-PjolIP_VgP_SQLQ2uAyODvQ4ekABAhqcHK4ptuCAAAAHnRSTlMAPobB7P9mHdb__________________________8J6YdtgAAABWUlEQVR4AWySYZNDMBCGWyw2SI9TGnWqILT____dm6Enc-MZH8Qz2V3Je_rj7Lgekec659N_fIgPnn-yCULaYaYwsCqShYhiQXQ-dJxIedltQDZfqZQyY6K1st3vO78WsiyNDI3zySK_caJUygTMzN7eTnxdBXMcb3-0TsMC30RUJfciqSIs8JCZycHwWV1n2UVuXDKzxsDOySWu5AGVoB_TUh5imhJFpQTNfav7uDcSlBERJLUN9LOLewn6LnpCNS0EyvKg-vLRjVRLUIuxe8hSDYyyLqatyr68jdO6cxpvWGIeDOQQujagNs7YuumbJmYiZz0E3aJvMc95Ps8F-rV6PQQ0JY4XpVqVv0Cu2lYps9HbDp6HRS9Kv1-vt1Z4HeDI_1yZiFMNFIzWqYkChftl8zSkegE6HSYmENgxYYQHRGzUHiLHyh3ModvZo7nHxA71ofwdSnYAAPpVIo4RUPiIAAAAAElFTkSuQmCC.png",
+      "snippet": "The ladder is simply a series of pairs of Roth conversions and Roth withdrawals, separated by five tax years. It literally takes like 3-4 minutes a year to ...",
+      "snippet_highlighted_words": [
+        "a series of pairs of Roth conversions and Roth withdrawals, separated by five tax years"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "The ladder is simply a series of pairs of Roth conversions and Roth withdrawals, separated by five tax years. It literally takes like 3-4 minutes a year to ...",
+          "source_info_link": "https://www.reddit.com/r/financialindependence/comments/1d7k00s/help_me_understand_the_roth_conversion_ladder/",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAhFBMVEVHcEz_RQD_RQD_RQD_RQD_RQD_RQD_RQD_RQD_PQD_NgD-XS32dlf5vK3____64dusLADUz9H-jXLOPAoSHiFrLBm3uLn3_f7jVS_b6e77pJDJo6H718__RQDw9ffs5-jm8fPIXlHqKwD5-PjolIP_VgP_SQLQ2uAyODvQ4ekABAhqcHK4ptuCAAAAHnRSTlMAPobB7P9mHdb__________________________8J6YdtgAAABWUlEQVR4AWySYZNDMBCGWyw2SI9TGnWqILT____dm6Enc-MZH8Qz2V3Je_rj7Lgekec659N_fIgPnn-yCULaYaYwsCqShYhiQXQ-dJxIedltQDZfqZQyY6K1st3vO78WsiyNDI3zySK_caJUygTMzN7eTnxdBXMcb3-0TsMC30RUJfciqSIs8JCZycHwWV1n2UVuXDKzxsDOySWu5AGVoB_TUh5imhJFpQTNfav7uDcSlBERJLUN9LOLewn6LnpCNS0EyvKg-vLRjVRLUIuxe8hSDYyyLqatyr68jdO6cxpvWGIeDOQQujagNs7YuumbJmYiZz0E3aJvMc95Ps8F-rV6PQQ0JY4XpVqVv0Cu2lYps9HbDp6HRS9Kv1-vt1Z4HeDI_1yZiFMNFIzWqYkChftl8zSkegE6HSYmENgxYYQHRGzUHiLHyh3ModvZo7nHxA71ofwdSnYAAPpVIo4RUPiIAAAAAElFTkSuQmCC.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://www.reddit.com/r/financialindependence/comments/1d7k00s/help_me_understand_the_roth_conversion_ladder/&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fwww.reddit.com%2Fr%2Ffinancialindependence%2Fcomments%2F1d7k00s%2Fhelp_me_understand_the_roth_conversion_ladder%2F",
+      "source": "Reddit \u00b7 r/financialindependence",
+      "read_more_link": "https://www.reddit.com/r/financialindependence/comments/1d7k00s/help_me_understand_the_roth_conversion_ladder/#:~:text=The%20ladder%20is%20simply%20a,It%20literally%20takes%20like%203%2D4"
+    },
+    {
+      "position": 2,
+      "title": "How the Roth Conversion Ladder Works",
+      "link": "https://www.investopedia.com/how-roth-conversion-ladder-works-5214808",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.investopedia.com/how-roth-conversion-ladder-works-5214808&ved=2ahUKEwjnsLXooeKVAxX-JUQIHZRiEJYQFnoECCUQAQ",
+      "displayed_link": "https://www.investopedia.com \u203a ... \u203a IRAs \u203a Roth IRAs",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAjVBMVEX____s7e-nqrRma38yO1kbJ0ro6ex6f48UIUYiLEwrNFIwOFUyOla7vcUnME8sOFURH0UuN1Q2PVhtXGpDRFzeiHb_kWz6lHpPSV7CxMtkVWT_lnd8XGbWhnbri3Q8Q12XmqZDTWbZ2t_39_m0tr5wdIWJjZsdKEtcYnbP0dZQVmwABTkAFj_Ky9KPkqBNES8MAAABNElEQVR4Aa2SVYLEMAhAkzqQpjLu7nL_4y2U8fnceZXgxMwPsEEYxXEUBsm3K80AyREhZKl99-XgHUOF_D3kr76gJLFWdastbiqDl7zSCVR3ur1-JWI5ePTz5IRiOOp2x01l8ve-KffTzMlo2lbZp-pLtCgD0JpVTsk0NQBVEeeDhX8EBkYIUZQKwqUxK1YUHxohIgmcrY2wUedDz7gibKXFowzu7npW7fYHEQaJMXt2UrznDoqnpneS1tbYReV8rboR5k2FgGDPFsQ4VT00dw7HHSGry9Px0Oj7c2AUuwVuhRs2zlc3PbPqu1RAsrKrUdYz0O0Tkp0uTVe23EPlCOz7kYEc02rr8XFkSiBe4iXkMxApC96uyc6zzde-kuZS4_2ClYDEIJTp9_1LghDLkuRq_p8_NDMW4C5bXRoAAAAASUVORK5CYII.png",
+      "snippet": "A Roth IRA conversion ladder is a multiyear savings strategy that lets you tap your retirement account before reaching age 59\u00bd\u2014without taxes or penalties.",
+      "snippet_highlighted_words": [
+        "a multiyear savings strategy"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "A Roth IRA conversion ladder is a multiyear savings strategy that lets you tap your retirement account before reaching age 59\u00bd\u2014without taxes or penalties.",
+          "source_info_link": "https://www.investopedia.com/how-roth-conversion-ladder-works-5214808",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAjVBMVEX____s7e-nqrRma38yO1kbJ0ro6ex6f48UIUYiLEwrNFIwOFUyOla7vcUnME8sOFURH0UuN1Q2PVhtXGpDRFzeiHb_kWz6lHpPSV7CxMtkVWT_lnd8XGbWhnbri3Q8Q12XmqZDTWbZ2t_39_m0tr5wdIWJjZsdKEtcYnbP0dZQVmwABTkAFj_Ky9KPkqBNES8MAAABNElEQVR4Aa2SVYLEMAhAkzqQpjLu7nL_4y2U8fnceZXgxMwPsEEYxXEUBsm3K80AyREhZKl99-XgHUOF_D3kr76gJLFWdastbiqDl7zSCVR3ur1-JWI5ePTz5IRiOOp2x01l8ve-KffTzMlo2lbZp-pLtCgD0JpVTsk0NQBVEeeDhX8EBkYIUZQKwqUxK1YUHxohIgmcrY2wUedDz7gibKXFowzu7npW7fYHEQaJMXt2UrznDoqnpneS1tbYReV8rboR5k2FgGDPFsQ4VT00dw7HHSGry9Px0Oj7c2AUuwVuhRs2zlc3PbPqu1RAsrKrUdYz0O0Tkp0uTVe23EPlCOz7kYEc02rr8XFkSiBe4iXkMxApC96uyc6zzde-kuZS4_2ClYDEIJTp9_1LghDLkuRq_p8_NDMW4C5bXRoAAAAASUVORK5CYII.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://www.investopedia.com/how-roth-conversion-ladder-works-5214808&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fwww.investopedia.com%2Fhow-roth-conversion-ladder-works-5214808",
+      "source": "Investopedia"
+    },
+    {
+      "position": 3,
+      "title": "Roth Conversion Ladder: A Retirement Income Strategy",
+      "link": "https://www.associatedbank.com/education/articles/personal-finance/investing/roth-conversion-ladder",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.associatedbank.com/education/articles/personal-finance/investing/roth-conversion-ladder&ved=2ahUKEwjnsLXooeKVAxX-JUQIHZRiEJYQFnoECB4QAQ",
+      "displayed_link": "https://www.associatedbank.com \u203a articles \u203a investing",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcBAMAAACAI8KnAAAAMFBMVEVHcEwOqE0OqE0OqE0OqE0OqE0OqUwOqE0OqE0OqE0OqE0OqE0OqE0OqE0NqE0OqE3FaUeHAAAAEHRSTlMAE-T_sMoIRaOPdFAyIV_wwe_XJQAAAKlJREFUeAFVzyEIwkAYhuFXGM7hHLMXm32fS4oIdhAWVTDa7aCs9856Wgeb1V7Xk7Bi0eM4bveGH57ywwe2nKBFyFVI7UKWl4BahtTDK2kCt5GktVMsqgFbEXkmEjSOaSWZazmrpTKH7IvpJqnvgTH2j_QsARw36OBZvFGR43gHaet4wlBnyxcw6byBJhlOyEQ9YCMSz6sEneP0YzjaW8aVDEmPdtH8H7YfFSwosW4ClzkAAAAASUVORK5CYII.png",
+      "date": "Apr 1, 2026",
+      "snippet": "A Roth conversion ladder is a strategy that gradually moves money from a traditional IRA into a Roth IRA over the course of several years.",
+      "snippet_highlighted_words": [
+        "a strategy that gradually moves money from a traditional IRA into a Roth IRA"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "A Roth conversion ladder is a strategy that gradually moves money from a traditional IRA into a Roth IRA over the course of several years.",
+          "source_info_link": "https://www.associatedbank.com/education/articles/personal-finance/investing/roth-conversion-ladder",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcBAMAAACAI8KnAAAAMFBMVEVHcEwOqE0OqE0OqE0OqE0OqE0OqUwOqE0OqE0OqE0OqE0OqE0OqE0OqE0NqE0OqE3FaUeHAAAAEHRSTlMAE-T_sMoIRaOPdFAyIV_wwe_XJQAAAKlJREFUeAFVzyEIwkAYhuFXGM7hHLMXm32fS4oIdhAWVTDa7aCs9856Wgeb1V7Xk7Bi0eM4bveGH57ywwe2nKBFyFVI7UKWl4BahtTDK2kCt5GktVMsqgFbEXkmEjSOaSWZazmrpTKH7IvpJqnvgTH2j_QsARw36OBZvFGR43gHaet4wlBnyxcw6byBJhlOyEQ9YCMSz6sEneP0YzjaW8aVDEmPdtH8H7YfFSwosW4ClzkAAAAASUVORK5CYII.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://www.associatedbank.com/education/articles/personal-finance/investing/roth-conversion-ladder&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fwww.associatedbank.com%2Feducation%2Farticles%2Fpersonal-finance%2Finvesting%2Froth-conversion-ladder",
+      "source": "Associated Bank",
+      "read_more_link": "https://www.associatedbank.com/education/articles/personal-finance/investing/roth-conversion-ladder#:~:text=Cookies%20%26%20Privacy"
+    },
+    {
+      "position": 4,
+      "title": "What Is a Roth IRA Conversion Ladder?",
+      "link": "https://www.northwesternmutual.com/life-and-money/roth-conversion-ladder/",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.northwesternmutual.com/life-and-money/roth-conversion-ladder/&ved=2ahUKEwjnsLXooeKVAxX-JUQIHZRiEJYQFnoECCIQAQ",
+      "displayed_link": "https://www.northwesternmutual.com \u203a life-and-money",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcBAMAAACAI8KnAAAAD1BMVEUARn0AOYL_xgD_wAD_uRWkby-OAAAAGUlEQVR4AWNkQAFDmSuIwmVUEkDhGg9dLgCeRgPVGXsA-QAAAABJRU5ErkJggg.png",
+      "date": "Jul 30, 2024",
+      "snippet": "A Roth IRA conversion ladder is a savings strategy where you make several smaller Roth IRA conversions over several years.",
+      "snippet_highlighted_words": [
+        "make several smaller Roth IRA conversions over several years"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "A Roth IRA conversion ladder is a savings strategy where you make several smaller Roth IRA conversions over several years.",
+          "source_info_link": "https://www.northwesternmutual.com/life-and-money/roth-conversion-ladder/",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcBAMAAACAI8KnAAAAD1BMVEUARn0AOYL_xgD_wAD_uRWkby-OAAAAGUlEQVR4AWNkQAFDmSuIwmVUEkDhGg9dLgCeRgPVGXsA-QAAAABJRU5ErkJggg.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://www.northwesternmutual.com/life-and-money/roth-conversion-ladder/&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fwww.northwesternmutual.com%2Flife-and-money%2Froth-conversion-ladder%2F",
+      "source": "Northwestern Mutual",
+      "read_more_link": "https://www.northwesternmutual.com/life-and-money/roth-conversion-ladder/#:~:text=A%20Roth%20IRA%20conversion%20ladder,IRA%20conversions%20over%20several%20years."
+    },
+    {
+      "position": 5,
+      "title": "Roth Conversion Ladder: How It Works, How to Do One",
+      "link": "https://www.nerdwallet.com/retirement/learn/roth-conversion-ladder",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.nerdwallet.com/retirement/learn/roth-conversion-ladder&ved=2ahUKEwjnsLXooeKVAxX-JUQIHZRiEJYQFnoECCAQAQ",
+      "displayed_link": "https://www.nerdwallet.com \u203a Retirement",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAe1BMVEX29_j4-Pv5-Pvz9vPF4s3M5tPs9O_e7NIApycAqztZtzE_tEbm8N55vQODwizV5sX4-PwNsEsArkxhu0aZyDw4tUqBwSaLxT_X58iRxj4OqEqLvzwGYTQHaDYys0EAYCJfuTa64clEiihqvUROjTqNyi-TzEAAWTNUth7XK_77AAAAvUlEQVR4AcTRNQLEMAwAwRjDzMzw_xeefBxss40tTSnpthAWoddf9G-EMsYox2KQReSHmCqqqmo6KDJMy7JM2_khU13PD0KXY2REcRxbyQo9P01DF_QI_TQGBD1ALY1f6MnWBpHYCISy_AqLSywvsbzE8gCrL9YJWmPatN4bi852Vpj2KiMvLIYxWWHaeyrDXGAxTNYae88FBM3mYYrXuKiqqjAsYZ514_pkiLQUIkgCtROIoMfwJBMgc4AAAIG5Fzk1nAsjAAAAAElFTkSuQmCC.png",
+      "date": "Feb 5, 2026",
+      "snippet": "A Roth conversion ladder is a tax-efficient strategy that allows you to access certain funds before age 59 1\u20442 without paying early withdrawal ...",
+      "snippet_highlighted_words": [
+        "a tax-efficient strategy that allows you to access certain funds"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "A Roth conversion ladder is a tax-efficient strategy that allows you to access certain funds before age 59 1\u20442 without paying early withdrawal ...",
+          "source_info_link": "https://www.nerdwallet.com/retirement/learn/roth-conversion-ladder",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAe1BMVEX29_j4-Pv5-Pvz9vPF4s3M5tPs9O_e7NIApycAqztZtzE_tEbm8N55vQODwizV5sX4-PwNsEsArkxhu0aZyDw4tUqBwSaLxT_X58iRxj4OqEqLvzwGYTQHaDYys0EAYCJfuTa64clEiihqvUROjTqNyi-TzEAAWTNUth7XK_77AAAAvUlEQVR4AcTRNQLEMAwAwRjDzMzw_xeefBxss40tTSnpthAWoddf9G-EMsYox2KQReSHmCqqqmo6KDJMy7JM2_khU13PD0KXY2REcRxbyQo9P01DF_QI_TQGBD1ALY1f6MnWBpHYCISy_AqLSywvsbzE8gCrL9YJWmPatN4bi852Vpj2KiMvLIYxWWHaeyrDXGAxTNYae88FBM3mYYrXuKiqqjAsYZ514_pkiLQUIkgCtROIoMfwJBMgc4AAAIG5Fzk1nAsjAAAAAElFTkSuQmCC.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://www.nerdwallet.com/retirement/learn/roth-conversion-ladder&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fwww.nerdwallet.com%2Fretirement%2Flearn%2Froth-conversion-ladder",
+      "source": "NerdWallet"
+    },
+    {
+      "position": 6,
+      "title": "Roth IRA Conversion Ladder: How Does It Work?",
+      "link": "https://www.farther.com/foundations/roth-ira-conversion-ladder-how-does-it-work",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.farther.com/foundations/roth-ira-conversion-ladder-how-does-it-work&ved=2ahUKEwjnsLXooeKVAxX-JUQIHZRiEJYQFnoECCQQAQ",
+      "displayed_link": "https://www.farther.com \u203a foundations \u203a roth-ira-conve...",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAYFBMVEU7Wmk0VmUrUGEnTmB1ho7___7____w7er___t7i5NpfYZkeIKrsrWapKgwU2PBxcX9-fXh4N7Mzs4APFEQQ1cAOlC3vL5_jpUeSVulrbBNZ3NVbXg4WGfV1tWPm6BYb3t3HGB9AAAAgklEQVR4AdXQwwEAMRBA0WhtK-i_yrWiAvKvLxzgZhDhJ6QZ8Z78AGsYRvFdAvWdIEqvstyARVmd1diEVXPWAiN2ZbgXYAv20TAQaMFszPNcOzb2jzvLaV6Wmao6snlmIw_PIRh3dvtOIRZquxNRSoENz9doGJ4POlHXkSIMxtPcbAO76QkZJ9iBbQAAAABJRU5ErkJggg.png",
+      "snippet": "A Roth IRA conversion ladder moves money from a traditional IRA to a Roth IRA over years, allowing tax-free growth. You must wait five years after each ...",
+      "snippet_highlighted_words": [
+        "moves money from a traditional IRA to a Roth IRA over years"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "A Roth IRA conversion ladder moves money from a traditional IRA to a Roth IRA over years, allowing tax-free growth. You must wait five years after each  ...",
+          "source_info_link": "https://www.farther.com/foundations/roth-ira-conversion-ladder-how-does-it-work",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAYFBMVEU7Wmk0VmUrUGEnTmB1ho7___7____w7er___t7i5NpfYZkeIKrsrWapKgwU2PBxcX9-fXh4N7Mzs4APFEQQ1cAOlC3vL5_jpUeSVulrbBNZ3NVbXg4WGfV1tWPm6BYb3t3HGB9AAAAgklEQVR4AdXQwwEAMRBA0WhtK-i_yrWiAvKvLxzgZhDhJ6QZ8Z78AGsYRvFdAvWdIEqvstyARVmd1diEVXPWAiN2ZbgXYAv20TAQaMFszPNcOzb2jzvLaV6Wmao6snlmIw_PIRh3dvtOIRZquxNRSoENz9doGJ4POlHXkSIMxtPcbAO76QkZJ9iBbQAAAABJRU5ErkJggg.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://www.farther.com/foundations/roth-ira-conversion-ladder-how-does-it-work&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fwww.farther.com%2Ffoundations%2Froth-ira-conversion-ladder-how-does-it-work",
+      "source": "Farther Financial"
+    },
+    {
+      "position": 7,
+      "title": "Roth Conversion Ladder: Access Retirement Funds Early ...",
+      "link": "https://choosefi.com/tax-strategies/roth-conversion-ladder",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://choosefi.com/tax-strategies/roth-conversion-ladder&ved=2ahUKEwjnsLXooeKVAxX-JUQIHZRiEJYQFnoECB8QAQ",
+      "displayed_link": "https://choosefi.com \u203a Tax Strategies",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAPFBMVEVHcExIlOb___9MnPIAAABCiNQ8fcNJlulIk-VIlOZBmPI7lO-80_L8_PpImvKuyvFopeyEs-0rj-729vRBQ5vsAAAACnRSTlMAtf__CU0ax4ueJsbUoQAAAIlJREFUKJHFktEOwyAIRV2Z3YqFovv_f61sZnUJ-ODLzsOV5CRCxBD-w_owWJt8gsF2ScYGgCb3kvPeQNTM3Ek8lkZKmjs6kibku6cnpZQCg2tprue8zCLCrkRmc1oiWqS-N6RXLY9eAqbKZ1da4c_K_H1GNmT8fpT7RWCIetjwzREKDlyII9lxAlqWC07z1NkqAAAAAElFTkSuQmCC.png",
+      "date": "Jun 7, 2025",
+      "snippet": "A Roth conversion ladder lets early retirees access traditional retirement funds before age 591\u20442 without the 10% penalty. Each conversion must ...",
+      "snippet_highlighted_words": [
+        "lets early retirees access traditional retirement funds"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "A Roth conversion ladder lets early retirees access traditional retirement funds before age 591\u20442 without the 10% penalty. Each conversion must ...",
+          "source_info_link": "https://choosefi.com/tax-strategies/roth-conversion-ladder",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAPFBMVEVHcExIlOb___9MnPIAAABCiNQ8fcNJlulIk-VIlOZBmPI7lO-80_L8_PpImvKuyvFopeyEs-0rj-729vRBQ5vsAAAACnRSTlMAtf__CU0ax4ueJsbUoQAAAIlJREFUKJHFktEOwyAIRV2Z3YqFovv_f61sZnUJ-ODLzsOV5CRCxBD-w_owWJt8gsF2ScYGgCb3kvPeQNTM3Ek8lkZKmjs6kibku6cnpZQCg2tprue8zCLCrkRmc1oiWqS-N6RXLY9eAqbKZ1da4c_K_H1GNmT8fpT7RWCIetjwzREKDlyII9lxAlqWC07z1NkqAAAAAElFTkSuQmCC.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://choosefi.com/tax-strategies/roth-conversion-ladder&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fchoosefi.com%2Ftax-strategies%2Froth-conversion-ladder",
+      "source": "ChooseFI"
+    },
+    {
+      "position": 8,
+      "title": "Roth Conversion Ladders Explained: What You Need to ...",
+      "link": "https://libertygroupllc.com/blog/roth-conversion-ladders-explained-what-you-need-to-know-for-tax-free-growth/",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://libertygroupllc.com/blog/roth-conversion-ladders-explained-what-you-need-to-know-for-tax-free-growth/&ved=2ahUKEwjnsLXooeKVAxX-JUQIHZRiEJYQFnoECCYQAQ",
+      "displayed_link": "https://libertygroupllc.com \u203a blog \u203a roth-conversion-lad...",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAALVBMVEVHcEwGUHEGUHEGUHEGUHEGUHEGUHEGUHEGUHEGUHEGUHEGUHEGUHEGUHEGUHF9mRxaAAAADnRSTlMA1mQYlTbqdqcJS7wogqw-IJEAAAEJSURBVDiNdVNbtsQgCOMhYLVl_8sd7PROe9Hy5ZFgIEGAOeri7hn2ChCmSGu3tzxWp-J2vOVd3Ul25HWe1M1Mayn7GrChORYi0r4GRHYDsYKusGTRDYpfgXO6KDS_AykDDjF_RsmASv4_0ihoKe9JbsYM0CTCH_UO9TqmF76XEoL29aRX6_yjyI6ede1Lx-3AxACwp6otA-Ccs9lxvkImPEFCqR4esYyZQuk2qc21MjbYgmggYa8y8YCEB4b1cqJOjkTVmOi3lKTTYkTNgfe-sOZOaKdS9WHE9EdiXH2sA09tDBMCcbUhfZLDG3Z1aaeqvPhDTTCWI_Z7SLoQAk5bhtezG3fj-lzID2WZDSOFZjM6AAAAAElFTkSuQmCC.png",
+      "date": "May 3, 2024",
+      "snippet": "A Roth conversion ladder is a strategic financial planning tool used to transfer funds from a traditional IRA, which is taxed upon withdrawal, to a Roth IRA.",
+      "snippet_highlighted_words": [
+        "a strategic financial planning tool used to transfer funds"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "A Roth conversion ladder is a strategic financial planning tool used to transfer funds from a traditional IRA, which is taxed upon withdrawal, to a Roth IRA.",
+          "source_info_link": "https://libertygroupllc.com/blog/roth-conversion-ladders-explained-what-you-need-to-know-for-tax-free-growth/",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAALVBMVEVHcEwGUHEGUHEGUHEGUHEGUHEGUHEGUHEGUHEGUHEGUHEGUHEGUHEGUHEGUHF9mRxaAAAADnRSTlMA1mQYlTbqdqcJS7wogqw-IJEAAAEJSURBVDiNdVNbtsQgCOMhYLVl_8sd7PROe9Hy5ZFgIEGAOeri7hn2ChCmSGu3tzxWp-J2vOVd3Ul25HWe1M1Mayn7GrChORYi0r4GRHYDsYKusGTRDYpfgXO6KDS_AykDDjF_RsmASv4_0ihoKe9JbsYM0CTCH_UO9TqmF76XEoL29aRX6_yjyI6ede1Lx-3AxACwp6otA-Ccs9lxvkImPEFCqR4esYyZQuk2qc21MjbYgmggYa8y8YCEB4b1cqJOjkTVmOi3lKTTYkTNgfe-sOZOaKdS9WHE9EdiXH2sA09tDBMCcbUhfZLDG3Z1aaeqvPhDTTCWI_Z7SLoQAk5bhtezG3fj-lzID2WZDSOFZjM6AAAAAElFTkSuQmCC.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://libertygroupllc.com/blog/roth-conversion-ladders-explained-what-you-need-to-know-for-tax-free-growth/&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Flibertygroupllc.com%2Fblog%2Froth-conversion-ladders-explained-what-you-need-to-know-for-tax-free-growth%2F",
+      "source": "Liberty Group, LLC",
+      "read_more_link": "https://libertygroupllc.com/blog/roth-conversion-ladders-explained-what-you-need-to-know-for-tax-free-growth/#:~:text=A%20Roth%20conversion%20ladder%20is,where%20withdrawals%20can%20be%20tax%2Dfree."
+    }
+  ],
+  "perspectives": [
+    {
+      "author": "Max Pashman",
+      "source": "LinkedIn",
+      "thumbnails": [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnzEwi3ofHRHuuoEabW3SH6d3yDJksGeNYu4kYlqcZZ-fgd042vVQ2fQBuTw&usqp=CAI&s"
+      ],
+      "title": "Worried you can't access your $1+ million 401(k) until 60? Here\u2019s how you can access it early AND penalty-free: There are several ways to access retirement funds early. One of the most unique strategies applies to pre-tax accounts. Here\u2019s how the Roth Conv",
+      "date": "Apr 29, 2026"
+    },
+    {
+      "author": "r/Fire",
+      "source": "Reddit",
+      "extensions": [
+        "10+ comments "
+      ],
+      "title": "RMDs and Roth Conversion Ladder Planning",
+      "date": "1 month ago"
+    },
+    {
+      "author": "Ari Taublieb, CFP\u00ae",
+      "source": "YouTube",
+      "duration": "3:00",
+      "extensions": [
+        "420+ views "
+      ],
+      "thumbnails": [
+        "https://img.youtube.com/vi/migxlnjTRtA/hqdefault.jpg"
+      ],
+      "title": "Roth Conversions EXPLAINED",
+      "date": "May 24, 2026",
+      "video": "https://encrypted-vtbn0.gstatic.com/video?q=tbn:ANd9GcQTICOnXnnH5x8jtTelg4jEZsVUU0CqnnVCIQ"
+    },
+    {
+      "author": "FranWalsh73",
+      "source": "X",
+      "title": "TL;DR - The Roth Conversion Ladder: - Convert traditional IRA to Roth in your lowest-income years - Each conversion needs its own 5 years to season - Seasoned conversions come out with $0 tax, $0 penalty - Build a 5-year expense bridge before converting anything - Converting $60k in a retirement gap year can cost ~80% less tax than converting the same amount while working (illustrative) - Watch ACA subsidy phase-outs, not just tax brackets - This is a multi-year plan, not a one-time move",
+      "date": "2 weeks ago"
+    },
+    {
+      "author": "felixprehn",
+      "source": "X",
+      "title": "There's a way to legally pay $0 income tax on $200,000 of your retirement money. It's been law since 2010. Almost nobody uses it because it requires planning 5 years ahead. My students who started in 2018 are retiring tax-free at 45 right now\u2026 Most people have no idea what's happening with retirement taxes in 2026. Your traditional 401(k) is taxed when you take it out. Your Roth IRA is tax-free when you take it out. The IRS lets you move money from traditional to Roth at any time, with no income limit. The move (called a \"conversion\") is taxed in the year you do it. If you do the conversion in a low-income year (sabbatical, between jobs, business loss year, early retirement), you pay almost nothing in taxes. Then after a 5-year wait, the converted amount can be withdrawn tax-free even before age 59.5. This is the Roth conversion ladder. It's been law since 2010. Almost nobody uses it because the strategy requires a 5-year planning horizon and one 14-minute calculation. Th",
+      "date": "May 10, 2026"
+    }
+  ],
+  "related_searches": [
+    {
+      "block_position": 1,
+      "query": "What is a roth conversion ladder reddit",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&q=What+is+a+roth+conversion+ladder+reddit&sa=X&ved=2ahUKEwjnsLXooeKVAxX-JUQIHZRiEJYQ1QJ6BAhGEAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=What+is+a+roth+conversion+ladder+reddit"
+    },
+    {
+      "block_position": 1,
+      "query": "Roth conversion ladder calculator",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&q=Roth+conversion+ladder+calculator&sa=X&ved=2ahUKEwjnsLXooeKVAxX-JUQIHZRiEJYQ1QJ6BAhSEAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Roth+conversion+ladder+calculator"
+    },
+    {
+      "block_position": 1,
+      "query": "What is a roth conversion ladder fidelity",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&q=What+is+a+roth+conversion+ladder+fidelity&sa=X&ved=2ahUKEwjnsLXooeKVAxX-JUQIHZRiEJYQ1QJ6BAhVEAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=What+is+a+roth+conversion+ladder+fidelity"
+    },
+    {
+      "block_position": 1,
+      "query": "Roth conversion ladder example",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&q=Roth+conversion+ladder+example&sa=X&ved=2ahUKEwjnsLXooeKVAxX-JUQIHZRiEJYQ1QJ6BAhTEAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Roth+conversion+ladder+example"
+    },
+    {
+      "block_position": 1,
+      "query": "Roth conversion ladder vs 72t",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&q=Roth+conversion+ladder+vs+72t&sa=X&ved=2ahUKEwjnsLXooeKVAxX-JUQIHZRiEJYQ1QJ6BAhUEAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Roth+conversion+ladder+vs+72t"
+    },
+    {
+      "block_position": 1,
+      "query": "Roth conversion ladder after 59 1 2",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&q=Roth+conversion+ladder+after+59+1+2&sa=X&ved=2ahUKEwjnsLXooeKVAxX-JUQIHZRiEJYQ1QJ6BAhNEAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Roth+conversion+ladder+after+59+1+2"
+    },
+    {
+      "block_position": 1,
+      "query": "Roth conversion ladder while working",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&q=Roth+conversion+ladder+while+working&sa=X&ved=2ahUKEwjnsLXooeKVAxX-JUQIHZRiEJYQ1QJ6BAhLEAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Roth+conversion+ladder+while+working"
+    },
+    {
+      "block_position": 1,
+      "query": "Roth conversion ladder limits",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&q=Roth+conversion+ladder+limits&sa=X&ved=2ahUKEwjnsLXooeKVAxX-JUQIHZRiEJYQ1QJ6BAhKEAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Roth+conversion+ladder+limits"
+    }
+  ],
+  "pagination": {
+    "current": 1,
+    "next": "https://www.google.com/search?q=what+is+a+Roth+conversion+ladder&sca_esv=3271cc0dab4982ea&ei=0JteaueIK_7LkPIPlMXBsAk&start=10&sa=N&sstk=AU9db-DpLD4MDnxoBzLzXwRL36nAYRJiFfB-CMMkM6VmEnb9LadSbyJpvphsuhmWiwdBZUoTH2y2xt7s1ZIy6QiB36ldvWG5VBssww&ved=2ahUKEwjnsLXooeKVAxX-JUQIHZRiEJYQ8NMDegQIORAG",
+    "other_pages": {
+      "2": "https://www.google.com/search?q=what+is+a+Roth+conversion+ladder&sca_esv=3271cc0dab4982ea&ei=0JteaueIK_7LkPIPlMXBsAk&start=10&sa=N&sstk=AU9db-DpLD4MDnxoBzLzXwRL36nAYRJiFfB-CMMkM6VmEnb9LadSbyJpvphsuhmWiwdBZUoTH2y2xt7s1ZIy6QiB36ldvWG5VBssww&ved=2ahUKEwjnsLXooeKVAxX-JUQIHZRiEJYQ8tMDegQIORAE"
+    }
+  },
+  "serpapi_pagination": {
+    "current": 1,
+    "next_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=what+is+a+Roth+conversion+ladder&start=10",
+    "next": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=what+is+a+Roth+conversion+ladder&start=10",
+    "other_pages": {
+      "2": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=what+is+a+Roth+conversion+ladder&start=10"
+    }
+  }
+}

@@ -1,0 +1,868 @@
+{
+  "version": "0.1.20260717",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "9.7006 sec.",
+  "cost": 0.002,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "07210103-2120-0139-0000-affacc00feb7",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "9.6041 sec.",
+      "cost": 0.002,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "serp",
+        "google",
+        "organic",
+        "live",
+        "advanced"
+      ],
+      "data": {
+        "api": "serp",
+        "function": "live",
+        "se": "google",
+        "se_type": "organic",
+        "keyword": "MacBook Air vs Pro for programming",
+        "location_code": 2840,
+        "language_code": "en",
+        "device": "desktop",
+        "expand_ai_overview": true,
+        "os": "windows"
+      },
+      "result": [
+        {
+          "keyword": "MacBook Air vs Pro for programming",
+          "type": "organic",
+          "se_domain": "google.com",
+          "location_code": 2840,
+          "language_code": "en",
+          "check_url": "https://www.google.com/search?q=MacBook%20Air%20vs%20Pro%20for%20programming&hl=en&gl=US&ie=UTF-8&uule=w+CAIQIFISCQs2MuSEtepUEUK33kOSuTsc",
+          "datetime": "2026-07-20 22:03:45 +00:00",
+          "spell": null,
+          "refinement_chips": null,
+          "item_types": [
+            "ai_overview",
+            "organic",
+            "perspectives",
+            "video",
+            "people_also_ask",
+            "related_searches"
+          ],
+          "se_results_count": 148,
+          "pages_count": 1,
+          "items_count": 12,
+          "items": [
+            {
+              "type": "ai_overview",
+              "rank_group": 1,
+              "rank_absolute": 1,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]",
+              "asynchronous_ai_overview": false,
+              "markdown": "Choose a **MacBook Air** for maximum portability, all-day battery life, and excellent performance for general web development. Opt for a **MacBook Pro** if you need active cooling for sustained heavy workloads (like compiling massive codebases or running local AI models), extra ports, or support for multiple external displays right out of the box.[](https://www.reddit.com/r/macbook/comments/1q5myrj/macbook_air_vs_macbook_pro_for_a_software/) [[1]](https://www.reddit.com/r/macbook/comments/1q5myrj/macbook_air_vs_macbook_pro_for_a_software/)[[2]](https://www.creativebloq.com/buying-guides/best-macbook-for-programming)[[3]](https://forum.freecodecamp.org/t/macbook-pro-vs-macbook-air/7122)[[4]](https://discussions.apple.com/thread/255298442)[[5]](https://www.youtube.com/watch?v=xb19sZW7fHg&t=22)\n\nWhen to Choose the MacBook Air\n\nThe MacBook Air is an exceptional machine for most software engineers, frontend developers, and students.[[1]](https://leaseloop.co/news/which-macbook-is-best-for-coding/)[[2]](https://jo-cell.com/blogs/news/macbook-air-vs-macbook-pro-a-complete-comparison)[[3]](https://forum.freecodecamp.org/t/macbook-pro-vs-macbook-air/7122)\n\n- **Portability:** Weighing about 2.7 to 3.3 pounds (depending on the 13-inch or 15-inch model), it is much easier to carry in a backpack for commuting or travel.[](https://www.youtube.com/watch?v=Ph9nzJxRlkY&t=10) [[1]](https://www.youtube.com/watch?v=Ph9nzJxRlkY&t=10)[[2]](https://www.youtube.com/watch?v=xb19sZW7fHg&t=22)\n- **Everyday Coding:** It easily handles code editors like VS Code, multiple browser tabs, and local development servers without breaking a sweat.[](https://www.youtube.com/watch?v=Z5-TfHbO58Y&t=59) [[1]](https://www.youtube.com/watch?v=Z5-TfHbO58Y&t=59)[[2]](https://www.youtube.com/watch?v=xb19sZW7fHg&t=22)[[3]](https://www.reddit.com/r/macbookair/comments/1mfh0n3/macbook_air_for_programming_with_vs_code/)[[4]](https://www.reddit.com/r/webdev/comments/1rdfj5w/which_mac_for_webdev/)\n- **Value:** Highly cost-effective for general development.[](https://www.youtube.com/watch?v=Ph9nzJxRlkY&t=10) [[1]](https://www.youtube.com/watch?v=Ph9nzJxRlkY&t=10)\n\nWhen to Choose the MacBook Pro The MacBook Pro is built for power users who push their machines to the limit.\n\n- **Sustained Heavy Loads:** If you run Docker containers, multiple backend APIs, and iOS simulators simultaneously, the Pro\u2019s built-in fan (active cooling) prevents thermal throttling.[](https://www.reddit.com/r/macbook/comments/1q5myrj/macbook_air_vs_macbook_pro_for_a_software/) [[1]](https://www.reddit.com/r/macbook/comments/1q5myrj/macbook_air_vs_macbook_pro_for_a_software/)[[2]](https://www.youtube.com/watch?v=Z5-TfHbO58Y&t=59)\n- **Display and Ports:** It features a brighter Liquid Retina XDR display with ProMotion (120Hz), and includes an HDMI port and SD card slot, saving you from needing dongles.[](https://www.youtube.com/watch?v=Ph9nzJxRlkY&t=10) [[1]](https://www.youtube.com/watch?v=Ph9nzJxRlkY&t=10)[[2]](https://www.youtube.com/watch?v=xb19sZW7fHg&t=22)\n- **Multi-Monitor Support:** The base MacBook Pro natively supports two external displays, whereas base Air models are more limited in their native multi-monitor setups.[](https://www.reddit.com/r/macbook/comments/1q5myrj/macbook_air_vs_macbook_pro_for_a_software/) [[1]](https://www.reddit.com/r/macbook/comments/1q5myrj/macbook_air_vs_macbook_pro_for_a_software/)[[2]](https://discussions.apple.com/thread/255298442)[[3]](https://www.youtube.com/watch?v=xb19sZW7fHg&t=22)\n\nCrucial Specs for Programming Regardless of which model you choose, spec appropriately for development:\n\n- **RAM (Unified Memory):** Get a minimum of **24GB to 32GB** if you plan to use resource-heavy tools like Docker, local LLMs, or multiple IDE instances simultaneously. 16GB is considered the absolute baseline for modern development tasks and can easily max out during intensive workflows.[](https://www.reddit.com/r/macbook/comments/1q5myrj/macbook_air_vs_macbook_pro_for_a_software/) [[1]](https://www.reddit.com/r/macbook/comments/1q5myrj/macbook_air_vs_macbook_pro_for_a_software/)[[2]](https://www.quora.com/Is-any-MacBook-pro-or-air-good-for-programming-if-so-which-one-and-any-other-good-recommendations)\n- **Storage:** Aim for at least **512GB to 1TB** ; your node_modules folders, virtual machines, and project files will quickly eat up a 256GB drive.[[1]](https://www.youtube.com/watch?v=Ph9nzJxRlkY&t=10)[[2]](https://www.asus.com/in/content/best-laptop-for-programming/)[[3]](https://www.reddit.com/r/developersIndia/comments/1kwgbeq/macbook_m4_air_256_gb_ssd_enough_for_college/)[[4]](https://www.obsbot.com/blog/music-production/best-macbook-for-music-production)\n\nFor an in-depth comparison of real-world workloads, including compiling code and running AI models:![Related video thumbnail](https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSaLcPScAoA72odOAB6ykXwi83L_Jkw1iQb8mb3-VJ3j_ryKcFm)\n9m[M4 MacBook Air vs M4 MacBook Pro For Programming, Content Creation ...286K views \u00a0\u00b7\u00a01 year ago![](https://api.dataforseo.com/cdn/i/07210103-2120-0139-0000-affacc00feb7:2)\nYouTube\u00a0\u00b7\u00a0Luke Made It](https://www.youtube.com/watch?v=Ph9nzJxRlkY&t=10)",
+              "items": [
+                {
+                  "type": "ai_overview_element",
+                  "position": "left",
+                  "title": null,
+                  "text": "Choose a MacBook Air for maximum portability, all-day battery life, and excellent performance for general web development. Opt for a MacBook Pro if you need active cooling for sustained heavy workloads (like compiling massive codebases or running local AI models), extra ports, or support for multiple external displays right out of the box. Reddit +4",
+                  "markdown": "Choose a **MacBook Air** for maximum portability, all-day battery life, and excellent performance for general web development. Opt for a **MacBook Pro** if you need active cooling for sustained heavy workloads (like compiling massive codebases or running local AI models), extra ports, or support for multiple external displays right out of the box.[](https://www.reddit.com/r/macbook/comments/1q5myrj/macbook_air_vs_macbook_pro_for_a_software/) [[1]](https://www.reddit.com/r/macbook/comments/1q5myrj/macbook_air_vs_macbook_pro_for_a_software/)[[2]](https://www.creativebloq.com/buying-guides/best-macbook-for-programming)[[3]](https://forum.freecodecamp.org/t/macbook-pro-vs-macbook-air/7122)[[4]](https://discussions.apple.com/thread/255298442)[[5]](https://www.youtube.com/watch?v=xb19sZW7fHg&t=22)",
+                  "links": null,
+                  "images": null,
+                  "references": [
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "Reddit",
+                      "domain": "www.reddit.com",
+                      "url": "https://www.reddit.com/r/macbook/comments/1q5myrj/macbook_air_vs_macbook_pro_for_a_software/",
+                      "title": "MacBook Air vs MacBook Pro for a Software Engineer (Personal Use)",
+                      "text": "Comments Section. Connect_Cat_2045. \u2022 6mo ago. \u2022 Edited 6mo ago. There's barely any difference with the M4 and M5. It exists for s..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "Creative Bloq",
+                      "domain": "www.creativebloq.com",
+                      "url": "https://www.creativebloq.com/buying-guides/best-macbook-for-programming",
+                      "title": "The best MacBooks for programming: Large screens, portable and ...",
+                      "text": "But what is the best MacBook for programming? Based on our testing, the MacBook Pro 14-inch (M5) remains the best overall option f..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "The freeCodeCamp Forum",
+                      "domain": "forum.freecodecamp.org",
+                      "url": "https://forum.freecodecamp.org/t/macbook-pro-vs-macbook-air/7122",
+                      "title": "Macbook Pro vs. Macbook Air - The freeCodeCamp Forum",
+                      "text": "MacBook Pro Recommendation: The MacBook Pro is widely recommended for software engineering due to its stronger CPU, GPU, and brigh..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "Apple Support Community",
+                      "domain": "discussions.apple.com",
+                      "url": "https://discussions.apple.com/thread/255298442",
+                      "title": "Macbook Pro vs Macbook Air - Apple Support Community",
+                      "text": "MacBook Recommendation: For heavy software development, especially with Xcode, a MacBook Pro is recommended due to its active cool..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "YouTube",
+                      "domain": "www.youtube.com",
+                      "url": "https://www.youtube.com/watch?v=xb19sZW7fHg&t=22",
+                      "title": "MacBook Air vs Pro: Which One Actually Makes Sense?",
+                      "text": "and the Pro are powerful enough regardless of who you are and what your role is which makes the choice. even more difficult so in ..."
+                    }
+                  ]
+                },
+                {
+                  "type": "ai_overview_element",
+                  "position": "left",
+                  "title": "When to Choose the MacBook Air",
+                  "text": "The MacBook Air is an exceptional machine for most software engineers, frontend developers, and students.",
+                  "markdown": "The MacBook Air is an exceptional machine for most software engineers, frontend developers, and students.[[1]](https://leaseloop.co/news/which-macbook-is-best-for-coding/)[[2]](https://jo-cell.com/blogs/news/macbook-air-vs-macbook-pro-a-complete-comparison)[[3]](https://forum.freecodecamp.org/t/macbook-pro-vs-macbook-air/7122)",
+                  "links": null,
+                  "images": null,
+                  "references": [
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "Lease Loop",
+                      "domain": "leaseloop.co",
+                      "url": "https://leaseloop.co/news/which-macbook-is-best-for-coding/",
+                      "title": "Which MacBook is best for coding?",
+                      "text": "MacBook Air: The MacBook Air uses Apple's base-level M-series chips, delivering strong CPU (Central Processing Unit) and GPU (Grap..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "JoCell \u062c\u0648\u0633\u064a\u0644",
+                      "domain": "jo-cell.com",
+                      "url": "https://jo-cell.com/blogs/news/macbook-air-vs-macbook-pro-a-complete-comparison",
+                      "title": "MacBook Air vs. MacBook Pro: A Complete Comparison",
+                      "text": "MacBook Air: Best suited for most students, especially in general or theoretical majors. It's light, long-lasting, and affordable."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "The freeCodeCamp Forum",
+                      "domain": "forum.freecodecamp.org",
+                      "url": "https://forum.freecodecamp.org/t/macbook-pro-vs-macbook-air/7122",
+                      "title": "Macbook Pro vs. Macbook Air - The freeCodeCamp Forum",
+                      "text": "MacBook Pro Recommendation: The MacBook Pro is widely recommended for software engineering due to its stronger CPU, GPU, and brigh..."
+                    }
+                  ]
+                },
+                {
+                  "type": "ai_overview_element",
+                  "position": "left",
+                  "title": "When to Choose the MacBook Pro",
+                  "text": "The MacBook Pro is built for power users who push their machines to the limit.",
+                  "markdown": "The MacBook Pro is built for power users who push their machines to the limit.",
+                  "links": null,
+                  "images": null,
+                  "references": null
+                },
+                {
+                  "type": "ai_overview_element",
+                  "position": "left",
+                  "title": "Crucial Specs for Programming",
+                  "text": "Regardless of which model you choose, spec appropriately for development:",
+                  "markdown": "Regardless of which model you choose, spec appropriately for development:",
+                  "links": null,
+                  "images": null,
+                  "references": null
+                },
+                {
+                  "type": "ai_overview_element",
+                  "position": "left",
+                  "title": null,
+                  "text": "For an in-depth comparison of real-world workloads, including compiling code and running AI models: 9m M4 MacBook Air vs M4 MacBook Pro For Programming, Content Creation ... 286K views \u00b7\u00a01 year ago YouTube\u00a0\u00b7\u00a0Luke Made It",
+                  "markdown": "For an in-depth comparison of real-world workloads, including compiling code and running AI models:![Related video thumbnail](https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSaLcPScAoA72odOAB6ykXwi83L_Jkw1iQb8mb3-VJ3j_ryKcFm)\n9m[M4 MacBook Air vs M4 MacBook Pro For Programming, Content Creation ...286K views \u00a0\u00b7\u00a01 year ago![](https://api.dataforseo.com/cdn/i/07210103-2120-0139-0000-affacc00feb7:1)\nYouTube\u00a0\u00b7\u00a0Luke Made It](https://www.youtube.com/watch?v=Ph9nzJxRlkY&t=10)",
+                  "links": null,
+                  "images": null,
+                  "references": null
+                }
+              ],
+              "references": [
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "Reddit",
+                  "domain": "www.reddit.com",
+                  "url": "https://www.reddit.com/r/macbook/comments/1q5myrj/macbook_air_vs_macbook_pro_for_a_software/",
+                  "title": "MacBook Air vs MacBook Pro for a Software Engineer (Personal Use)",
+                  "text": "Comments Section. Connect_Cat_2045. \u2022 6mo ago. \u2022 Edited 6mo ago. There's barely any difference with the M4 and M5. It exists for s..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "YouTube",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/watch?v=Ph9nzJxRlkY&t=10",
+                  "title": "M4 MacBook Air vs M4 MacBook Pro For Programming, Content Creation ...",
+                  "text": "and needed to check in my suitcase for the flight. because it was just above the weight limit which I'm pretty sure the MacBook Ai..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "Apple Support Community",
+                  "domain": "discussions.apple.com",
+                  "url": "https://discussions.apple.com/thread/255298442",
+                  "title": "Macbook Pro vs Macbook Air - Apple Support Community",
+                  "text": "MacBook Recommendation: For heavy software development, especially with Xcode, a MacBook Pro is recommended due to its active cool..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "Quora",
+                  "domain": "www.quora.com",
+                  "url": "https://www.quora.com/Is-any-MacBook-pro-or-air-good-for-programming-if-so-which-one-and-any-other-good-recommendations",
+                  "title": "Is any MacBook (pro or air) good for programming, if so which one and ...",
+                  "text": "Impact of Apple Silicon: With Apple Silicon (M1, M2, and later), the raw speed difference between MacBook Pro and Air models has s..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "YouTube",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/watch?v=xb19sZW7fHg&t=22",
+                  "title": "MacBook Air vs Pro: Which One Actually Makes Sense?",
+                  "text": "and the Pro are powerful enough regardless of who you are and what your role is which makes the choice. even more difficult so in ..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "YouTube",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/watch?v=Z5-TfHbO58Y&t=59",
+                  "title": "Do You Really Need a MacBook Pro? | M5 MacBook Air Review",
+                  "text": "is I do a lot of software engineering throughout the day. I actually have this uh 16-in MacBook Pro that I use for work Uh. I do a..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "Creative Bloq",
+                  "domain": "www.creativebloq.com",
+                  "url": "https://www.creativebloq.com/buying-guides/best-macbook-for-programming",
+                  "title": "The best MacBooks for programming: Large screens, portable and ...",
+                  "text": "But what is the best MacBook for programming? Based on our testing, the MacBook Pro 14-inch (M5) remains the best overall option f..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "The freeCodeCamp Forum",
+                  "domain": "forum.freecodecamp.org",
+                  "url": "https://forum.freecodecamp.org/t/macbook-pro-vs-macbook-air/7122",
+                  "title": "Macbook Pro vs. Macbook Air - The freeCodeCamp Forum",
+                  "text": "MacBook Pro Recommendation: The MacBook Pro is widely recommended for software engineering due to its stronger CPU, GPU, and brigh..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "www.youtube.com",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/watch?v=Ph9nzJxRlkY",
+                  "title": "M4 MacBook Air vs M4 MacBook Pro For Programming, Content Creation ...",
+                  "text": "performance on the Air is really good i was able to keep the timeline resolution at 4K now for this project I didn't apply any com..."
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 2,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]",
+              "domain": "www.reddit.com",
+              "title": "MacBook Air vs MacBook Pro for a Software Engineer ...",
+              "url": "https://www.reddit.com/r/macbook/comments/1q5myrj/macbook_air_vs_macbook_pro_for_a_software/",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "30+ comments  \u00b7  6 months ago",
+              "website_name": "Reddit\u00a0\u00b7\u00a0r/macbook",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "With chips aside, the main advantage the pro has over the air is that it has a fan. So it's better at sustained performance compared to the air,\u00a0... Read more",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "pro",
+                "air"
+              ],
+              "links": [
+                {
+                  "type": "link_element",
+                  "title": "Should I get a Macbook Air or a Pro : r/AskProgramming",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/AskProgramming/comments/1bxt3me/should_i_get_a_macbook_air_or_a_pro/",
+                  "domain": "www.reddit.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "Should I get an macbook air or the pro for coding?",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/macbookpro/comments/1kqcpwz/should_i_get_an_macbook_air_or_the_pro_for_coding/",
+                  "domain": "www.reddit.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "More results from www.reddit.com",
+                  "description": null,
+                  "url": "https://www.google.com/search?q=MacBook+Air+vs+Pro+for+programming+site:www.reddit.com&sca_esv=3271cc0dab4982ea&hl=en&gl=US&sa=X&ved=2ahUKEwj6ssyioeKVAxUKUFUIHcVfOzoQrQIoAnoECCMQAw",
+                  "domain": "www.google.com"
+                }
+              ],
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 3,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[4]/div[1]/div[1]",
+              "domain": "medium.com",
+              "title": "MacBook Pro vs. MacBook Air: A Developer's Take from ...",
+              "url": "https://medium.com/@universe3523/macbook-pro-vs-macbook-air-a-developers-take-from-daily-use-e9dc59dd1d56",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "10+ likes  \u00b7  1 year ago",
+              "website_name": "Medium\u00a0\u00b7\u00a0Wataru Takahashi",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "16\" MacBook Pro for heavy lifting and a 13\" MacBook Air for ultra-light portability. handles video calls and Google Docs. Air's passive cooling\u00a0...",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "MacBook Pro",
+                "MacBook Air",
+                "Air's"
+              ],
+              "links": [
+                {
+                  "type": "link_element",
+                  "title": "\ud83d\udd2c A Real Test: Running...",
+                  "description": null,
+                  "url": "https://medium.com/@universe3523/macbook-pro-vs-macbook-air-a-developers-take-from-daily-use-e9dc59dd1d56#5e4c",
+                  "domain": "medium.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "\ud83c\udfa8 Display & Sound: Pro Takes...",
+                  "description": null,
+                  "url": "https://medium.com/@universe3523/macbook-pro-vs-macbook-air-a-developers-take-from-daily-use-e9dc59dd1d56#ed98",
+                  "domain": "medium.com"
+                }
+              ],
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 4,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[6]/div[1]/div[1]",
+              "domain": "naumanahmad86.medium.com",
+              "title": "Best MacBook for Coding: A Developer's Choice - Faizan Saghir",
+              "url": "https://naumanahmad86.medium.com/best-macbook-for-coding-a-developers-choice-8a001fbb10c4",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "110+ likes  \u00b7  1 year ago",
+              "website_name": "Medium\u00a0\u00b7\u00a0Faizan Saghir",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "The MacBook Air M3 is arguably the best MacBook for coding because it strikes an ideal balance between power, portability, and battery life. Read more",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "The MacBook Air M3 is arguably the best MacBook for coding"
+              ],
+              "links": [
+                {
+                  "type": "link_element",
+                  "title": "The M3 MacBook Air: A...",
+                  "description": null,
+                  "url": "https://naumanahmad86.medium.com/best-macbook-for-coding-a-developers-choice-8a001fbb10c4#883f",
+                  "domain": "naumanahmad86.medium.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "Real-World Developer...",
+                  "description": null,
+                  "url": "https://naumanahmad86.medium.com/best-macbook-for-coding-a-developers-choice-8a001fbb10c4#4a1c",
+                  "domain": "naumanahmad86.medium.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "Xcode Benchmark (Large...",
+                  "description": null,
+                  "url": "https://naumanahmad86.medium.com/best-macbook-for-coding-a-developers-choice-8a001fbb10c4#4e2e",
+                  "domain": "naumanahmad86.medium.com"
+                }
+              ],
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "perspectives",
+              "rank_group": 1,
+              "rank_absolute": 5,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[8]/div[1]",
+              "title": "What people are saying",
+              "items": [
+                {
+                  "type": "perspectives_element",
+                  "title": "MacBook Air vs MacBook Pro for coding/web development?",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/macbook/comments/1tkr9ec/macbook_air_vs_macbook_pro_for_codingweb/",
+                  "domain": "www.reddit.com",
+                  "date": "May 22, 2026",
+                  "source": "r/macbook",
+                  "timestamp": "2026-05-22 00:00:00 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "MacBook Air vs Pro for iOS Development",
+                  "description": null,
+                  "url": "https://www.youtube.com/watch?v=z8zQnU3MJug",
+                  "domain": "www.youtube.com",
+                  "date": "1 month ago",
+                  "source": "Aivars Meijers",
+                  "timestamp": "2026-06-20 22:03:44 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Be honest, which one is best for coding ? MacBook or ThinkPad",
+                  "description": null,
+                  "url": "https://www.facebook.com/Wetechsavvy/posts/be-honest-which-one-is-best-for-coding-macbook-or-thinkpad/1640024968123834/",
+                  "domain": "www.facebook.com",
+                  "date": "6 days ago",
+                  "source": "Wetechsavvy",
+                  "timestamp": "2026-07-14 22:03:44 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "How do junior developers choose between MacBook Air and MacBook Pro?",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/macbookpro/comments/1t435jg/how_do_junior_developers_choose_between_macbook/",
+                  "domain": "www.reddit.com",
+                  "date": "May 5, 2026",
+                  "source": "r/macbookpro",
+                  "timestamp": "2026-05-05 00:00:00 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "M5 MacBook Air For Programming & Productivity - 3 Months Later Review",
+                  "description": null,
+                  "url": "https://www.youtube.com/watch?v=EMkmAD9nhg8",
+                  "domain": "www.youtube.com",
+                  "date": "3 weeks ago",
+                  "source": "Luke Made It",
+                  "timestamp": "2026-06-29 22:03:44 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Software Engineer buying a new MacBook for long-term use: Air 24GB vs Pro",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/mac/comments/1trt9cz/software_engineer_buying_a_new_macbook_for/",
+                  "domain": "www.reddit.com",
+                  "date": "1 month ago",
+                  "source": "r/mac",
+                  "timestamp": "2026-06-20 22:03:44 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Hi guys, I\u2019m planning to buy a new laptop with a budget of \u20b91.2 lakh. I\u2019m a CS graduate and I want a laptop that will be useful for studying and also for my future job in the tech field, especially for coding. I\u2019m confused between Mac and Windows. For Mac, I\u2019m thi",
+                  "description": null,
+                  "url": "https://www.facebook.com/groups/vibecodinglife/posts/2012113932710467/",
+                  "domain": "www.facebook.com",
+                  "date": "Apr 22, 2026",
+                  "source": "Vibe Coding is Life",
+                  "timestamp": "2026-04-22 00:00:00 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Macbook Air M5 16/512 Or Macbook Air M4 24/512. Which is better for a developer?",
+                  "description": null,
+                  "url": "https://www.facebook.com/groups/3558639664446686/posts/4232464453730867/",
+                  "domain": "www.facebook.com",
+                  "date": "May 9, 2026",
+                  "source": "Programming | Coding",
+                  "timestamp": "2026-05-09 00:00:00 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Hi everyone, I\u2019m seriously considering changing my workflow setup and I\u2019d appreciate some opinions from people with real-world experience. My typical daily workflow includes: Python / VSCode / PyCharm remote development / SSH Office / Zoom / browsing l",
+                  "description": null,
+                  "url": "https://www.facebook.com/groups/479756101547805/posts/948831011306976/",
+                  "domain": "www.facebook.com",
+                  "date": "May 6, 2026",
+                  "source": "Macbook Community",
+                  "timestamp": "2026-05-06 00:00:00 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Be honest, As a Developer which laptop is better for coding Macbook Gaming",
+                  "description": null,
+                  "url": "https://www.facebook.com/groups/pypcom/posts/2923298531340530/",
+                  "domain": "www.facebook.com",
+                  "date": "1 month ago",
+                  "source": "Python Projects Community",
+                  "timestamp": "2026-06-20 22:03:44 +00:00"
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "video",
+              "rank_group": 1,
+              "rank_absolute": 6,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[10]/div[1]",
+              "items": [
+                {
+                  "type": "video_element",
+                  "source": "YouTube \u00b7 Luke Made It",
+                  "title": "M4 MacBook Air vs M4 MacBook Pro For Programming ...",
+                  "timestamp": "2025-03-16 00:00:00 +00:00",
+                  "url": "https://www.youtube.com/watch?v=Ph9nzJxRlkY"
+                },
+                {
+                  "type": "video_element",
+                  "source": "YouTube \u00b7 Luke Made It",
+                  "title": "M5 MacBook Air For Programming & Productivity - 3 Months ...",
+                  "timestamp": "2026-06-29 22:03:44 +00:00",
+                  "url": "https://www.youtube.com/watch?v=EMkmAD9nhg8"
+                },
+                {
+                  "type": "video_element",
+                  "source": "YouTube \u00b7 Simon Lee",
+                  "title": "M5 MacBook Air Review | 95% of Developers Should Buy This",
+                  "timestamp": "2026-07-15 22:03:44 +00:00",
+                  "url": "https://www.youtube.com/watch?v=Z5-TfHbO58Y"
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "people_also_ask",
+              "rank_group": 1,
+              "rank_absolute": 7,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[12]/div[1]/div[1]/div[1]",
+              "items": [
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Which MacBook is best for coders?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[12]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "What can a MacBook Pro do that a MacBook Air can't?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[12]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Is the MacBook Air worth it for developers?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[12]/div[1]/div[1]/div[1]/div[1]/div[2]/div[3]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_expanded_element",
+                      "featured_title": null,
+                      "url": "https://naumanahmad86.medium.com/best-macbook-for-coding-a-developers-choice-8a001fbb10c4",
+                      "domain": "naumanahmad86.medium.com",
+                      "title": "Best MacBook for Coding: A Developer's Choice - Faizan Saghir",
+                      "description": "The MacBook Air M3 is arguably the best MacBook for coding because it strikes an ideal balance between power, portability, and battery life. It's fast enough to handle most coding tasks, including development in multiple environments like Xcode, Android Studio, and Docker.",
+                      "images": null,
+                      "timestamp": null,
+                      "table": null
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Can I do Python coding on a MacBook Air?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[12]/div[1]/div[1]/div[1]/div[1]/div[2]/div[4]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 8,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[14]/div[1]/div[1]",
+              "domain": "discussions.apple.com",
+              "title": "Macbook Pro vs Macbook Air",
+              "url": "https://discussions.apple.com/thread/255298442",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://discussions.apple.com \u203a thread",
+              "website_name": "Apple Support Community",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Nov 24, 2023 \u2014 Hi,\nI am new here and want to buy a Macbook. I'm a Software Engineer working as a Hybrid Mobile Application developer for Android and iOS. I want ...",
+              "pre_snippet": "11/24/2023 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": null,
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2023-11-24 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 9,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[16]/div[1]/div[1]",
+              "domain": "www.quora.com",
+              "title": "Do coders need a MacBook Pro (MBP) or can they use ...",
+              "url": "https://www.quora.com/Do-coders-need-a-MacBook-Pro-MBP-or-can-they-use-something-else-like-an-air",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "4 answers  \u00b7  2 years ago",
+              "website_name": "Quora",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "The MacBook Pro is made for a programmer and heavy user. The Pro always is far more powerful. MacBook Air can be used for any kind of \u00a0...",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "MacBook Pro is made for a programmer and heavy user"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 10,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[18]/div[1]/div[1]",
+              "domain": "www.creativebloq.com",
+              "title": "The best MacBooks for programming: Large screens ...",
+              "url": "https://www.creativebloq.com/buying-guides/best-macbook-for-programming",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.creativebloq.com \u203a ... \u203a Laptops",
+              "website_name": "Creative Bloq",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "May 21, 2026 \u2014 Overall, we recommend MacBook Airs as the best MacBooks for programming because they're cheaper, lighter and still have more than enough power. Read more",
+              "pre_snippet": "05/21/2026 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "MacBook Airs"
+              ],
+              "links": [
+                {
+                  "type": "link_element",
+                  "title": "Best overall",
+                  "description": null,
+                  "url": "https://www.creativebloq.com/buying-guides/best-macbook-for-programming#section-the-best-macbook-pro-for-programming-overall",
+                  "domain": "www.creativebloq.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "Best budget",
+                  "description": null,
+                  "url": "https://www.creativebloq.com/buying-guides/best-macbook-for-programming#section-the-best-budget-macbook-for-programming",
+                  "domain": "www.creativebloq.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "Most portable",
+                  "description": null,
+                  "url": "https://www.creativebloq.com/buying-guides/best-macbook-for-programming#section-the-best-macbook-for-programming-on-the-move",
+                  "domain": "www.creativebloq.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "Best value",
+                  "description": null,
+                  "url": "https://www.creativebloq.com/buying-guides/best-macbook-for-programming#section-the-best-value-macbook-for-programming",
+                  "domain": "www.creativebloq.com"
+                }
+              ],
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2026-05-21 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 11,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[20]/div[1]/div[1]",
+              "domain": "forum.freecodecamp.org",
+              "title": "Macbook Pro vs. Macbook Air",
+              "url": "https://forum.freecodecamp.org/t/macbook-pro-vs-macbook-air/7122",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://forum.freecodecamp.org \u203a macbook-pro-vs-mac...",
+              "website_name": "The freeCodeCamp Forum",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Jun 1, 2016 \u2014 The 13 inch Pro has a better display than the same size Air, it also has a faster processor, and some extra ports. The Pro comes with a DVD player. Read more",
+              "pre_snippet": "06/01/2016 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "The 13 inch Pro has a better display than the same size Air"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2016-06-01 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "related_searches",
+              "rank_group": 1,
+              "rank_absolute": 12,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[2]/div[1]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]",
+              "items": [
+                "Macbook air vs pro for programming reddit",
+                "Performance difference between MacBook Air and Pro",
+                "MacBook Air vs MacBook Pro: which is better",
+                "MacBook Air for programming reddit",
+                "Is MacBook Air or Pro better for students",
+                "MacBook Air M4 for programming",
+                "Price difference between MacBook Air and Pro",
+                "MacBook Air vs Pro engineering"
+              ],
+              "rectangle": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

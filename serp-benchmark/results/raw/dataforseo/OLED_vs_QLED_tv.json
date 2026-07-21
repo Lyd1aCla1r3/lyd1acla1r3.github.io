@@ -1,0 +1,710 @@
+{
+  "version": "0.1.20260717",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "5.9571 sec.",
+  "cost": 0.002,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "07210100-2120-0139-0000-3eae199871a0",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "5.8317 sec.",
+      "cost": 0.002,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "serp",
+        "google",
+        "organic",
+        "live",
+        "advanced"
+      ],
+      "data": {
+        "api": "serp",
+        "function": "live",
+        "se": "google",
+        "se_type": "organic",
+        "keyword": "OLED vs QLED tv",
+        "location_code": 2840,
+        "language_code": "en",
+        "device": "desktop",
+        "expand_ai_overview": true,
+        "os": "windows"
+      },
+      "result": [
+        {
+          "keyword": "OLED vs QLED tv",
+          "type": "organic",
+          "se_domain": "google.com",
+          "location_code": 2840,
+          "language_code": "en",
+          "check_url": "https://www.google.com/search?q=OLED%20vs%20QLED%20tv&hl=en&gl=US&ie=UTF-8&uule=w+CAIQIFISCQs2MuSEtepUEUK33kOSuTsc",
+          "datetime": "2026-07-20 22:00:56 +00:00",
+          "spell": null,
+          "refinement_chips": null,
+          "item_types": [
+            "ai_overview",
+            "people_also_ask",
+            "video",
+            "organic",
+            "perspectives",
+            "related_searches"
+          ],
+          "se_results_count": 103,
+          "pages_count": 1,
+          "items_count": 12,
+          "items": [
+            {
+              "type": "ai_overview",
+              "rank_group": 1,
+              "rank_absolute": 1,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]",
+              "asynchronous_ai_overview": false,
+              "markdown": "`OLED TVs are emissive, meaning every pixel lights up individually and can turn off entirely to produce perfect blacks and infinite contrast, making them ideal for dark rooms and cinematic viewing. QLED TVs use an LED backlight shining through a quantum dot layer, allowing them to achieve significantly higher brightness, making them perfect for sunlit living rooms`.[](https://www.youtube.com/watch?v=WMX_8CbnqdU&t=56) [[1]](https://www.youtube.com/watch?v=WMX_8CbnqdU&t=56)[[2]](https://www.youtube.com/watch?v=CX_g8po88cQ&t=39)[[3]](https://www.cnet.com/tech/home-entertainment/qled-vs-oled-whats-better/)[[4]](https://www.smarthomesounds.co.uk/blog/faqs/qled-vs-oled-everything-you-need-to-know)\n\nKey Differences\n\n- **Black Levels & Contrast:** OLEDs dominate here. Because OLED pixels turn off completely, they deliver \"true black\" and immersive HDR performance in dim environments. While high-end QLEDs (like Mini-LEDs) have great local dimming, they cannot match the absolute black levels of OLED.[](https://www.youtube.com/watch?v=WMX_8CbnqdU&t=56) [[1]](https://www.youtube.com/watch?v=WMX_8CbnqdU&t=56)[[2]](https://www.youtube.com/watch?v=CX_g8po88cQ&t=39)[[3]](https://www.cnet.com/tech/home-entertainment/qled-vs-oled-whats-better/)\n- **Brightness:** QLED is the clear winner for peak brightness. If you watch TV in a bright room with lots of windows, a bright QLED can overcome harsh glare much better than an OLED.[](https://www.reddit.com/r/4kTV/comments/1h9jx4u/whats_the_full_and_simplified_difference_between/) [[1]](https://www.reddit.com/r/4kTV/comments/1h9jx4u/whats_the_full_and_simplified_difference_between/)[[2]](https://thebigscreenstore.com/blogs/news/oled-vs-qled-whats-the-difference-and-which-is-better)\n- **Burn-In:** QLEDs are essentially immune to burn-in, making them highly durable for static elements like news tickers, sports scores, or video game HUDs. While modern OLEDs have built-in safety features that make burn-in rare under typical use, it remains a theoretical risk.[](https://www.youtube.com/watch?v=WMX_8CbnqdU&t=56) [[1]](https://www.youtube.com/watch?v=WMX_8CbnqdU&t=56)[[2]](https://www.youtube.com/watch?v=Yx1B793hD5g&vl=en)[[3]](https://www.bdiusa.com/blog/difference-between-qled-oled-televisions)[[4]](https://www.smarthomesounds.co.uk/blog/faqs/qled-vs-oled-everything-you-need-to-know)\n- **Viewing Angles:** OLED provides exceptional color and contrast at extreme viewing angles without fading. QLED panels usually need you to sit somewhat centered for the best picture quality.[](https://www.youtube.com/watch?v=CX_g8po88cQ&t=39) [[1]](https://www.youtube.com/watch?v=CX_g8po88cQ&t=39)[[2]](https://www.youtube.com/watch?v=Yx1B793hD5g&vl=en)[[3]](https://www.smarthomesounds.co.uk/blog/faqs/qled-vs-oled-everything-you-need-to-know)\n- **Price & Sizes:** QLEDs offer a much wider range of budget-friendly options and massive screen sizes (often exceeding 85 inches) at more accessible price points. OLEDs carry a premium, especially in sizes 77 inches and above.[](https://www.cnet.com/tech/home-entertainment/qled-vs-oled-whats-better/) [[1]](https://www.cnet.com/tech/home-entertainment/qled-vs-oled-whats-better/)[[2]](https://www.youtube.com/watch?v=Yx1B793hD5g&vl=en)\n- **Gaming:** OLEDs provide near-instantaneous pixel response times and perfect contrast, which is a major advantage for fast-paced, dark-room gaming. However, if you are gaming in a bright room, the higher brightness ceiling of a QLED might be more practical.[](https://www.youtube.com/watch?v=WMX_8CbnqdU&t=56) [[1]](https://www.youtube.com/watch?v=WMX_8CbnqdU&t=56)[[2]](https://www.youtube.com/watch?v=CX_g8po88cQ&t=39)\n\nWhich Should You Choose?\n\n- **Choose OLED if:** You prioritize premium picture quality, have a dedicated home theater or a dim room, and watch mostly movies and high-end streaming.[](https://www.youtube.com/watch?v=CX_g8po88cQ&t=39) [[1]](https://www.youtube.com/watch?v=CX_g8po88cQ&t=39)[[2]](https://www.youtube.com/watch?v=Yx1B793hD5g&vl=en)[[3]](https://www.youtube.com/watch?v=WMX_8CbnqdU&t=56)[[4]](https://www.smarthomesounds.co.uk/blog/faqs/qled-vs-oled-everything-you-need-to-know)\n- **Choose QLED if:** You have a bright living room, enjoy sports or daytime TV, have children or a crowd watching from various angles, or want a larger TV on a budget.[](https://www.youtube.com/watch?v=Yx1B793hD5g&vl=en) [[1]](https://www.youtube.com/watch?v=Yx1B793hD5g&vl=en)\n\nFor a visual breakdown of how these differences look side-by-side in real-world testing:![Related video thumbnail](https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTnfkBfWbs3ZA2eDRn6JuJcpDBOhC48bXQstR2zeDSyqFsvPtnN)\n14:12[OLED vs QLED in 2025! The NEW Winner!463K views \u00a0\u00b7\u00a01 year ago![](https://api.dataforseo.com/cdn/i/07210100-2120-0139-0000-3eae199871a0:2)\nYouTube\u00a0\u00b7\u00a0Jon Rettinger](https://www.youtube.com/watch?v=Yx1B793hD5g&vl=en)",
+              "items": [
+                {
+                  "type": "ai_overview_element",
+                  "position": "left",
+                  "title": null,
+                  "text": "OLED TVs are emissive, meaning every pixel lights up individually and can turn off entirely to produce perfect blacks and infinite contrast, making them ideal for dark rooms and cinematic viewing. QLED TVs use an LED backlight shining through a quantum dot layer, allowing them to achieve significantly higher brightness, making them perfect for sunlit living rooms. YouTube \u00b7 Ultimate Tech Hub +3",
+                  "markdown": "`OLED TVs are emissive, meaning every pixel lights up individually and can turn off entirely to produce perfect blacks and infinite contrast, making them ideal for dark rooms and cinematic viewing. QLED TVs use an LED backlight shining through a quantum dot layer, allowing them to achieve significantly higher brightness, making them perfect for sunlit living rooms`.[](https://www.youtube.com/watch?v=WMX_8CbnqdU&t=56) [[1]](https://www.youtube.com/watch?v=WMX_8CbnqdU&t=56)[[2]](https://www.youtube.com/watch?v=CX_g8po88cQ&t=39)[[3]](https://www.cnet.com/tech/home-entertainment/qled-vs-oled-whats-better/)[[4]](https://www.smarthomesounds.co.uk/blog/faqs/qled-vs-oled-everything-you-need-to-know)",
+                  "links": null,
+                  "images": null,
+                  "references": [
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "YouTube",
+                      "domain": "www.youtube.com",
+                      "url": "https://www.youtube.com/watch?v=WMX_8CbnqdU&t=56",
+                      "title": "OLED Fully Explained - QLED or OLED | Which one is Better in 2026?",
+                      "text": "question with some real data not fear and lastly I'm going to give you three questions that will tell you which technology is righ..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "YouTube",
+                      "domain": "www.youtube.com",
+                      "url": "https://www.youtube.com/watch?v=CX_g8po88cQ&t=39",
+                      "title": "OLED VS QLED TVs: The 2026 Winner",
+                      "text": "and how much you're going to spend one of them is going to make a lot more sense than the other. so in this video we're going to b..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "CNET",
+                      "domain": "www.cnet.com",
+                      "url": "https://www.cnet.com/tech/home-entertainment/qled-vs-oled-whats-better/",
+                      "title": "QLED vs. OLED: What's the Difference? - CNET",
+                      "text": "Let's start with a quick breakdown. * OLED stands for \"organic light-emitting diode.\" * QLED (according to Samsung) stands for \"qu..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "Smart Home Sounds",
+                      "domain": "www.smarthomesounds.co.uk",
+                      "url": "https://www.smarthomesounds.co.uk/blog/faqs/qled-vs-oled-everything-you-need-to-know",
+                      "title": "QLED vs OLED: The Differences That Actually Matter - Smart Home Sounds",
+                      "text": "Unlike OLED, which uses self-emissive pixels, QLED TVs rely on a backlight to illuminate an LCD panel. The key difference between ..."
+                    }
+                  ]
+                },
+                {
+                  "type": "ai_overview_element",
+                  "position": "left",
+                  "title": "Key Differences",
+                  "text": null,
+                  "markdown": "Key Differences",
+                  "links": null,
+                  "images": null,
+                  "references": null
+                },
+                {
+                  "type": "ai_overview_element",
+                  "position": "left",
+                  "title": "Which Should You Choose?",
+                  "text": "For a visual breakdown of how these differences look side-by-side in real-world testing: 14:12 OLED vs QLED in 2025! The NEW Winner! 463K views \u00b7\u00a01 year ago YouTube\u00a0\u00b7\u00a0Jon Rettinger",
+                  "markdown": "For a visual breakdown of how these differences look side-by-side in real-world testing:![Related video thumbnail](https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTnfkBfWbs3ZA2eDRn6JuJcpDBOhC48bXQstR2zeDSyqFsvPtnN)\n14:12[OLED vs QLED in 2025! The NEW Winner!463K views \u00a0\u00b7\u00a01 year ago![](https://api.dataforseo.com/cdn/i/07210100-2120-0139-0000-3eae199871a0:1)\nYouTube\u00a0\u00b7\u00a0Jon Rettinger](https://www.youtube.com/watch?v=Yx1B793hD5g&vl=en)",
+                  "links": null,
+                  "images": null,
+                  "references": null
+                }
+              ],
+              "references": [
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "Reddit",
+                  "domain": "www.reddit.com",
+                  "url": "https://www.reddit.com/r/4kTV/comments/1h9jx4u/whats_the_full_and_simplified_difference_between/",
+                  "title": "What's the full and simplified difference between QLED and OLED",
+                  "text": "Viewing Environment: OLED TVs are generally recommended for darker rooms, while QLED TVs, especially those with Mini-LED backlight..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "YouTube",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/watch?v=WMX_8CbnqdU&t=56",
+                  "title": "OLED Fully Explained - QLED or OLED | Which one is Better in 2026?",
+                  "text": "question with some real data not fear and lastly I'm going to give you three questions that will tell you which technology is righ..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "YouTube",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/watch?v=CX_g8po88cQ&t=39",
+                  "title": "OLED VS QLED TVs: The 2026 Winner",
+                  "text": "and how much you're going to spend one of them is going to make a lot more sense than the other. so in this video we're going to b..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "CNET",
+                  "domain": "www.cnet.com",
+                  "url": "https://www.cnet.com/tech/home-entertainment/qled-vs-oled-whats-better/",
+                  "title": "QLED vs. OLED: What's the Difference? - CNET",
+                  "text": "Let's start with a quick breakdown. * OLED stands for \"organic light-emitting diode.\" * QLED (according to Samsung) stands for \"qu..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "YouTube",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/watch?v=Yx1B793hD5g&vl=en",
+                  "title": "OLED vs QLED in 2025! The NEW Winner!",
+                  "text": "porsche's video is sponsored by Kinsa. so if you Google which is better OLED or QLED. you get 94 million results and learning the ..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "The Big Screen Store",
+                  "domain": "thebigscreenstore.com",
+                  "url": "https://thebigscreenstore.com/blogs/news/oled-vs-qled-whats-the-difference-and-which-is-better",
+                  "title": "OLED vs. QLED vs. QD-OLED: What's the Difference and Which Is Right fo",
+                  "text": "Each pixel turns off independently, giving you true black. Neo QLED is excellent and has closed the gap significantly, but in a da..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "Smart Home Sounds",
+                  "domain": "www.smarthomesounds.co.uk",
+                  "url": "https://www.smarthomesounds.co.uk/blog/faqs/qled-vs-oled-everything-you-need-to-know",
+                  "title": "QLED vs OLED: The Differences That Actually Matter - Smart Home Sounds",
+                  "text": "Unlike OLED, which uses self-emissive pixels, QLED TVs rely on a backlight to illuminate an LCD panel. The key difference between ..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "www.youtube.com",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/watch?v=WMX_8CbnqdU",
+                  "title": "OLED Fully Explained - QLED or OLED | Which one is Better in 2026?",
+                  "text": "works in its favor. here fast motion on a high brightness QLED panel in a bright room watched casually that experience is very goo..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "www.youtube.com",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/shorts/bWOf1jparZw",
+                  "title": "OLED vs QLED: Almost Everyone Chooses the Wrong TV",
+                  "text": "so if your TV sits in a bright room QLED might actually look better oled best contrast wide viewing angles lightning fast response..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "www.youtube.com",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/watch?v=jLRxdG84cAc",
+                  "title": "QLED vs OLED TVs: The 2026 winner!",
+                  "text": "if you put them both side by side the split is actually going to start being pretty clean oled will give you the depth uh the QLED..."
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "people_also_ask",
+              "rank_group": 1,
+              "rank_absolute": 2,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]",
+              "items": [
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Who is better, QLED or OLED?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Which TV will last longer, QLED or OLED?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Is OLED worth the extra money over QLED?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[3]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Which is better for eyes, OLED or QLED?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[4]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "video",
+              "rank_group": 1,
+              "rank_absolute": 3,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[3]/div[1]",
+              "items": [
+                {
+                  "type": "video_element",
+                  "source": "YouTube \u00b7 The Viewing Angle",
+                  "title": "QLED vs OLED TVs: The 2026 winner!",
+                  "timestamp": "2026-07-16 22:00:56 +00:00",
+                  "url": "https://www.youtube.com/watch?v=jLRxdG84cAc"
+                },
+                {
+                  "type": "video_element",
+                  "source": "YouTube \u00b7 Ultimate Tech Hub",
+                  "title": "OLED Fully Explained - QLED or OLED | Which one is Better ...",
+                  "timestamp": "2026-06-20 22:00:56 +00:00",
+                  "url": "https://www.youtube.com/watch?v=WMX_8CbnqdU"
+                },
+                {
+                  "type": "video_element",
+                  "source": "YouTube \u00b7 Yuri Brus",
+                  "title": "OLED vs QLED: Almost Everyone Chooses the Wrong TV",
+                  "timestamp": "2026-03-15 00:00:00 +00:00",
+                  "url": "https://www.youtube.com/shorts/bWOf1jparZw"
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 4,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[5]/div[1]/div[1]",
+              "domain": "www.bdiusa.com",
+              "title": "Understanding the Difference Between QLED and OLED ...",
+              "url": "https://www.bdiusa.com/blog/difference-between-qled-oled-televisions",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.bdiusa.com \u203a blog \u203a difference-between-ql...",
+              "website_name": "BDI Furniture",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "QLED typically provides a bright, vibrant picture at a more accessible price, while OLED commands a premium for its cinematic image quality. Choosing the right\u00a0... Read more",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "QLED typically provides a bright, vibrant picture at a more accessible price"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 5,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[7]/div[1]/div[1]",
+              "domain": "www.reddit.com",
+              "title": "Which TV would you rather get? OLED vs QLED : r/samsung",
+              "url": "https://www.reddit.com/r/samsung/comments/1en1hmo/which_tv_would_you_rather_get_oled_vs_qled/",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "190+ comments  \u00b7  1 year ago",
+              "website_name": "Reddit\u00a0\u00b7\u00a0r/samsung",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "With OLED you get faster response time and pure blacks. With QLED you get reliability (no burn in, no damaged pixels and cheaper repair costs)\u00a0... Read more",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "With OLED you get faster response time and pure blacks"
+              ],
+              "links": [
+                {
+                  "type": "link_element",
+                  "title": "What's the full and simplified difference between QLED ...",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/4kTV/comments/1h9jx4u/whats_the_full_and_simplified_difference_between/",
+                  "domain": "www.reddit.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "OLED vs QLED? : r/hometheater - Reddit",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/hometheater/comments/1ifc5em/oled_vs_qled/",
+                  "domain": "www.reddit.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "More results from www.reddit.com",
+                  "description": null,
+                  "url": "https://www.google.com/search?q=OLED+vs+QLED+tv+site:www.reddit.com&sca_esv=3271cc0dab4982ea&hl=en&gl=US&sa=X&ved=2ahUKEwjy6JPToOKVAxUfSPEDHSd-KWkQrQIoAnoECCsQAw",
+                  "domain": "www.google.com"
+                }
+              ],
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 6,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[9]/div[1]/div[1]",
+              "domain": "www.samsung.com",
+              "title": "LED vs. OLED vs. QLED TVs \u2013 What's the Difference?",
+              "url": "https://www.samsung.com/us/tvs/tv-buying-guide/led-vs-oled-vs-qled-vs-neo-qled/",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.samsung.com \u203a tvs \u203a tv-buying-guide \u203a led...",
+              "website_name": "Samsung",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "LED screens use a backlight to illuminate their pixels while OLED's self-illuminating pixels produce their own light with no separate backlight.",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "LED screens use a backlight to illuminate their pixels"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 7,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[11]/div[1]/div[1]",
+              "domain": "www.cnet.com",
+              "title": "QLED vs. OLED: What's the Difference?",
+              "url": "https://www.cnet.com/tech/home-entertainment/qled-vs-oled-whats-better/",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.cnet.com \u203a ... \u203a Home Entertainment \u203a TVs",
+              "website_name": "CNET",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Feb 26, 2026 \u2014 QLED TVs tend to be brighter, which is good in rooms with a lot of natural light. OLED TVs typically have better contrast, so their images\u00a0...",
+              "pre_snippet": "02/26/2026 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "QLED TVs tend to be brighter"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2026-02-26 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 8,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[13]/div[1]/div[1]",
+              "domain": "www.smarthomesounds.co.uk",
+              "title": "QLED vs OLED: The Differences That Actually Matter",
+              "url": "https://www.smarthomesounds.co.uk/blog/faqs/qled-vs-oled-everything-you-need-to-know",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.smarthomesounds.co.uk \u203a blog \u203a faqs \u203a qle...",
+              "website_name": "Smart Home Sounds",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Unlike OLED, which uses self-emissive pixels, QLED TVs rely on a backlight to illuminate an LCD panel.",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "QLED TVs rely on a backlight"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 9,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[15]/div[1]/div[1]",
+              "domain": "www.rtings.com",
+              "title": "QLED vs OLED: Which One Is The Best?",
+              "url": "https://www.rtings.com/tv/learn/qled-vs-oled",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.rtings.com \u203a TV \u203a Guide",
+              "website_name": "RTINGS.com",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Mar 16, 2026 \u2014 QLEDs are typically known for their bright, vivid colors, whereas OLEDs are adored for their deep blacks and perfect motion.",
+              "pre_snippet": "03/16/2026 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "QLEDs are typically known for their bright, vivid colors"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2026-03-16 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 10,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[17]/div[1]/div[1]",
+              "domain": "www.whathifi.com",
+              "title": "OLED vs QLED: which is the best TV technology?",
+              "url": "https://www.whathifi.com/advice/oled-vs-qled-which-best-tv-technology",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.whathifi.com \u203a ... \u203a Televisions",
+              "website_name": "What Hi-Fi?",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Mar 12, 2026 \u2014 If you have a living room with a number of sitting positions, an OLED TV may be better since they generally have more near-perfect viewing\u00a0... Read more",
+              "pre_snippet": "03/12/2026 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "an OLED TV may be better"
+              ],
+              "links": [
+                {
+                  "type": "link_element",
+                  "title": "What Is Qled?",
+                  "description": null,
+                  "url": "https://www.whathifi.com/advice/oled-vs-qled-which-best-tv-technology",
+                  "domain": "www.whathifi.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "Perfect Contrast Performance",
+                  "description": null,
+                  "url": "https://www.whathifi.com/advice/oled-vs-qled-which-best-tv-technology",
+                  "domain": "www.whathifi.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "Qled Can Go Brighter",
+                  "description": null,
+                  "url": "https://www.whathifi.com/advice/oled-vs-qled-which-best-tv-technology",
+                  "domain": "www.whathifi.com"
+                }
+              ],
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2026-03-12 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "perspectives",
+              "rank_group": 1,
+              "rank_absolute": 11,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[19]/div[1]",
+              "title": "What people are saying",
+              "items": [
+                {
+                  "type": "perspectives_element",
+                  "title": "QLED vs OLED TVs: The 2026 winner!",
+                  "description": null,
+                  "url": "https://www.youtube.com/watch?v=jLRxdG84cAc",
+                  "domain": "www.youtube.com",
+                  "date": "4 days ago",
+                  "source": "The Viewing Angle",
+                  "timestamp": "2026-07-16 22:00:56 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Question : OLED or QLED? I am a casual gamer but I want the best possible experience.",
+                  "description": null,
+                  "url": "https://www.facebook.com/groups/503950066450377/posts/3513417388836948/",
+                  "domain": "www.facebook.com",
+                  "date": "2 weeks ago",
+                  "source": "PS5 Gamers",
+                  "timestamp": "2026-07-06 22:00:56 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Oled vs qled?",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/pcmasterrace/comments/1ul0e32/oled_vs_qled/",
+                  "domain": "www.reddit.com",
+                  "date": "3 weeks ago",
+                  "source": "r/pcmasterrace",
+                  "timestamp": "2026-06-29 22:00:56 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Hey guy wich one is better QD-oled or Woled?",
+                  "description": null,
+                  "url": "https://www.facebook.com/groups/372119787729533/posts/1386240339650801/",
+                  "domain": "www.facebook.com",
+                  "date": "1 month ago",
+                  "source": "Samuel Santos",
+                  "timestamp": "2026-06-20 22:00:56 +00:00"
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "related_searches",
+              "rank_group": 1,
+              "rank_absolute": 12,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[2]/div[1]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]",
+              "items": [
+                "Oled vs qled tv reddit",
+                "OLED vs QLED pros and cons",
+                "OLED vs QLED lifespan",
+                "OLED or QLED: which is latest",
+                "OLED vs QLED which is better for eyes",
+                "QLED or OLED which is expensive",
+                "OLED vs QLED side by side",
+                "OLED vs QLED TV for gaming"
+              ],
+              "rectangle": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

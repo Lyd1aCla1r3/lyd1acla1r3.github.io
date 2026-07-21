@@ -1,0 +1,689 @@
+{
+  "search_metadata": {
+    "id": "6a5e99946feec4319bec5a77",
+    "status": "Success",
+    "json_endpoint": "https://serpapi.com/searches/J_euM0tRWktLaVcPSQbEyg/6a5e99946feec4319bec5a77.json",
+    "pixel_position_endpoint": "https://serpapi.com/searches/J_euM0tRWktLaVcPSQbEyg/6a5e99946feec4319bec5a77.json_with_pixel_position",
+    "created_at": "2026-07-20 21:56:36 UTC",
+    "processed_at": "2026-07-20 21:56:36 UTC",
+    "google_url": "https://www.google.com/search?q=how+to+write+a+cover+letter&oq=how+to+write+a+cover+letter&sourceid=chrome&ie=UTF-8",
+    "raw_html_file": "https://serpapi.com/searches/J_euM0tRWktLaVcPSQbEyg/6a5e99946feec4319bec5a77.html",
+    "total_time_taken": 12.71
+  },
+  "search_parameters": {
+    "engine": "google",
+    "q": "how to write a cover letter",
+    "google_domain": "google.com",
+    "device": "desktop"
+  },
+  "search_information": {
+    "query_displayed": "how to write a cover letter",
+    "total_results": 838000,
+    "time_taken_displayed": 0.2,
+    "organic_results_state": "Results for exact spelling"
+  },
+  "related_questions": [
+    {
+      "question": "What is an example of a cover letter?",
+      "type": "ai_overview",
+      "page_token": "ia3DpXicHZDdToMwGEDjy3jp2k1UlixGXMfPLFk_aBncGFbcD20BNxyDO9_Fp_JpXLw9F-ck5_tHHyr1e3Pet21zmo5GXdfd7ep6pz_uZG1G-amv5EjmWm9yqaYPjw_4eStn5Mt3Xj99h_GmEXNAkd6j0LUQeAsSK3ucDs6KK4z4IETYI0wJ9FEJnnQbHC2CywZpKxMFpt7iUCyYtUb2gYmnVpqsl4N_YaLpIcH3uWm3FDs1U_hEE9HHrpXmV09s6i4quZUkIeNjaxmLosxIkFIPKqagoRXcC7Tn8ThUMAmW0tgQz5VFFVwJXkbj0wQI0Ixg8uFl842wj7xqHBaHb6IUFdkX58RcdLp-GQAFLCLZkRPN1qj16BA4MdQHxmGQpTbC87tU62PuBn6qHRdEeObaXkXXfmHqPq9YX3S3W3meTW7_f87et6adNsd69weZcIJ5",
+      "serpapi_ai_overview_link": "https://serpapi.com/search.json?engine=google_ai_overview&page_token=ia3DpXicHZDdToMwGEDjy3jp2k1UlixGXMfPLFk_aBncGFbcD20BNxyDO9_Fp_JpXLw9F-ck5_tHHyr1e3Pet21zmo5GXdfd7ep6pz_uZG1G-amv5EjmWm9yqaYPjw_4eStn5Mt3Xj99h_GmEXNAkd6j0LUQeAsSK3ucDs6KK4z4IETYI0wJ9FEJnnQbHC2CywZpKxMFpt7iUCyYtUb2gYmnVpqsl4N_YaLpIcH3uWm3FDs1U_hEE9HHrpXmV09s6i4quZUkIeNjaxmLosxIkFIPKqagoRXcC7Tn8ThUMAmW0tgQz5VFFVwJXkbj0wQI0Ixg8uFl842wj7xqHBaHb6IUFdkX58RcdLp-GQAFLCLZkRPN1qj16BA4MdQHxmGQpTbC87tU62PuBn6qHRdEeObaXkXXfmHqPq9YX3S3W3meTW7_f87et6adNsd69weZcIJ5",
+      "next_page_token": "eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSTVgzRmFSa0l3UkVSYVZtZDBNRGx0Vm1obVJYQjNSVkJOVFZCb05uUkVRVlJ1VDBoMVV6WlpORTlwUjA1dFJXeEJPVlIxTVMxd1dYUm1aVkkxZWtST2NFRjJRWEpIZVhFMVF6TkJNM3BYWkZwa1VGVlVhRTFQYjFsMFVSSVhiMXBzWldGd00wZENVRWhHYTFCSlVGOUxSek15UVUwYUlrRkVjM0k1WmxKcmRGODNXbUo1UlZCVU5GTTJPR1pCU21OclMzVnpXRzFXU25jIiwiZmN2IjoiMyIsImVpIjoib1psZWFwM0dCUEhGa1BJUF9LRzMyQU0iLCJxYyI6IkNodG9iM2NnZEc4Z2QzSnBkR1VnWVNCamIzWmxjaUJzWlhSMFpYSVFBSDJjdGtBXyIsInF1ZXN0aW9uIjoiV2hhdCBpcyBhbiBleGFtcGxlIG9mIGEgY292ZXIgbGV0dGVyPyIsImxrIjoiR2lSM2FHRjBJR2x6SUdGdUlHVjRZVzF3YkdVZ2IyWWdZU0JqYjNabGNpQnNaWFIwWlhJIiwiYnMiOiJjNTJRdXc3Q01BeEZ4ZXFKRVdYeXdITnRWUWtKVUQtQkNURkh4TFFSZWFBa2tDNThFSDlKMmdGUnhGQXhXTExzYzMxdHd4NW14NW9IbEI2NVFXcTR2aXBDZTBhT0ozc25oNHBDSUZkbWN6YU5BMEFJc080R2NrY1k2alljRVdvdVRVcWxxVHdhSWtFQ1UtSExZX0pzc29MbDhWT2VENUxDQVpadjF5SzF0TGFtUjZDV1B2QUwtVEpic1VVY3hzSUR0ai1PcWF3U1pORGRGUGwybC1oa1NPdDFSUDlwTzdhSl8tdkhveGMiLCJpZCI6ImZjX29abGVhcDNHQlBIRmtQSVBfS0czMkFNXzQifQ==",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google_related_questions&google_domain=google.com&next_page_token=eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSTVgzRmFSa0l3UkVSYVZtZDBNRGx0Vm1obVJYQjNSVkJOVFZCb05uUkVRVlJ1VDBoMVV6WlpORTlwUjA1dFJXeEJPVlIxTVMxd1dYUm1aVkkxZWtST2NFRjJRWEpIZVhFMVF6TkJNM3BYWkZwa1VGVlVhRTFQYjFsMFVSSVhiMXBzWldGd00wZENVRWhHYTFCSlVGOUxSek15UVUwYUlrRkVjM0k1WmxKcmRGODNXbUo1UlZCVU5GTTJPR1pCU21OclMzVnpXRzFXU25jIiwiZmN2IjoiMyIsImVpIjoib1psZWFwM0dCUEhGa1BJUF9LRzMyQU0iLCJxYyI6IkNodG9iM2NnZEc4Z2QzSnBkR1VnWVNCamIzWmxjaUJzWlhSMFpYSVFBSDJjdGtBXyIsInF1ZXN0aW9uIjoiV2hhdCBpcyBhbiBleGFtcGxlIG9mIGEgY292ZXIgbGV0dGVyPyIsImxrIjoiR2lSM2FHRjBJR2x6SUdGdUlHVjRZVzF3YkdVZ2IyWWdZU0JqYjNabGNpQnNaWFIwWlhJIiwiYnMiOiJjNTJRdXc3Q01BeEZ4ZXFKRVdYeXdITnRWUWtKVUQtQkNURkh4TFFSZWFBa2tDNThFSDlKMmdGUnhGQXhXTExzYzMxdHd4NW14NW9IbEI2NVFXcTR2aXBDZTBhT0ozc25oNHBDSUZkbWN6YU5BMEFJc080R2NrY1k2alljRVdvdVRVcWxxVHdhSWtFQ1UtSExZX0pzc29MbDhWT2VENUxDQVpadjF5SzF0TGFtUjZDV1B2QUwtVEpic1VVY3hzSUR0ai1PcWF3U1pORGRGUGwybC1oa1NPdDFSUDlwTzdhSl8tdkhveGMiLCJpZCI6ImZjX29abGVhcDNHQlBIRmtQSVBfS0czMkFNXzQifQ%3D%3D"
+    },
+    {
+      "question": "What are the three main things needed in a cover letter?",
+      "type": "featured_snippet",
+      "title": "Elements of a Cover Letter",
+      "link": "https://business.purdue.edu/careers/resources/cover-letter.php",
+      "list": [
+        "FIRST PARAGRAPH OR INTRODUCTION: ACTS AS BASIS OR PURPOSE OF THE LETTER.",
+        "SECOND PARAGRAPH OR BODY: SUPPORTS YOUR CLAIMS FOR BEING THE RIGHT CANDIDATE FOR THIS POSITION/ORGANIZATION.",
+        "THIRD PARAGRAPH OR CLOSING: REITERATES YOUR INTEREST IN THE POSITION/ORGANIZATION."
+      ],
+      "displayed_link": "https://business.purdue.edu \u203a careers \u203a resources \u203a cover-...",
+      "source_logo": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8_9hAAABGUlEQVR4AWMYfkALiBOIwLFAbA7EjCi6JcXFd09sK_k_pR0_ntha9D87OeK_AD__XGT9mlEhvv9Obp34_-yOif_P74TgM9sn_geKgfGpbSAxBLa3sfyGbEC2nKzsSSd7O6BihKKU2ND_8nKyYOzu4vT_NNSQY5sn_leQlz-OHgZe5XkJcM1ngbZvWdL1f-PCdjA-vGECXK6qMOU_UH0Eim4xUdFt-9f2wxUd2TTx_6ENyHjS_23Luv8XZMT85-Pjmw8LRCYpSclrzg7WPwqz4v9BNYOdmpYY_d_Bxuo_Nzf3BaCGJby8vIuZmJh6gXrccDgbEyfHBIGcaogz4llYWLYnxYQAoyUMKwa67jChxKMNxLp4sDjD8AYA_W_jFF_3up0AAAAASUVORK5CYII.png",
+      "next_page_token": "eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSTVgzRmFSa0l3UkVSYVZtZDBNRGx0Vm1obVJYQjNSVkJOVFZCb05uUkVRVlJ1VDBoMVV6WlpORTlwUjA1dFJXeEJPVlIxTVMxd1dYUm1aVkkxZWtST2NFRjJRWEpIZVhFMVF6TkJNM3BYWkZwa1VGVlVhRTFQYjFsMFVSSVhiMXBzWldGd00wZENVRWhHYTFCSlVGOUxSek15UVUwYUlrRkVjM0k1WmxKcmRGODNXbUo1UlZCVU5GTTJPR1pCU21OclMzVnpXRzFXU25jIiwiZmN2IjoiMyIsImVpIjoib1psZWFwM0dCUEhGa1BJUF9LRzMyQU0iLCJxYyI6IkNodG9iM2NnZEc4Z2QzSnBkR1VnWVNCamIzWmxjaUJzWlhSMFpYSVFBSDJjdGtBXyIsInF1ZXN0aW9uIjoiV2hhdCBhcmUgdGhlIHRocmVlIG1haW4gdGhpbmdzIG5lZWRlZCBpbiBhIGNvdmVyIGxldHRlcj8iLCJsayI6ImN3M0l3UWtBSUF3RXNEMTgzUTVPVlBTd2dsYW9SZGZYWDBqS1Z5VWdUb1FTR1ZPNmZYWnJHMFpXVnZ3UWxIWG9HSXlnUHciLCJicyI6ImM1MlF1dzdDTUF4RnhlcUpFV1h5d0hOdFZRa0pVRC1CQ1RGSHhMUVJlYUFra0M1OEVIOUoyZ0ZSeEZBeFdMTHNjMzF0d3g1bXg1b0hsQjY1UVdxNHZpcENlMGFPSjNzbmg0cENJRmRtY3phTkEwQUlzTzRHY2tjWTZqWWNFV291VFVxbHFUd2FJa0VDVS1ITFlfSnNzb0xsOFZPZUQ1TENBWlp2MXlLMXRMYW1SNkNXUHZBTC1USmJzVVVjeHNJRHRqLU9xYXdTWk5EZEZQbDJsLWhrU090MVJQOXBPN2FKXy12SG94YyIsImlkIjoiZmNfb1psZWFwM0dCUEhGa1BJUF9LRzMyQU1fNCJ9",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google_related_questions&google_domain=google.com&next_page_token=eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSTVgzRmFSa0l3UkVSYVZtZDBNRGx0Vm1obVJYQjNSVkJOVFZCb05uUkVRVlJ1VDBoMVV6WlpORTlwUjA1dFJXeEJPVlIxTVMxd1dYUm1aVkkxZWtST2NFRjJRWEpIZVhFMVF6TkJNM3BYWkZwa1VGVlVhRTFQYjFsMFVSSVhiMXBzWldGd00wZENVRWhHYTFCSlVGOUxSek15UVUwYUlrRkVjM0k1WmxKcmRGODNXbUo1UlZCVU5GTTJPR1pCU21OclMzVnpXRzFXU25jIiwiZmN2IjoiMyIsImVpIjoib1psZWFwM0dCUEhGa1BJUF9LRzMyQU0iLCJxYyI6IkNodG9iM2NnZEc4Z2QzSnBkR1VnWVNCamIzWmxjaUJzWlhSMFpYSVFBSDJjdGtBXyIsInF1ZXN0aW9uIjoiV2hhdCBhcmUgdGhlIHRocmVlIG1haW4gdGhpbmdzIG5lZWRlZCBpbiBhIGNvdmVyIGxldHRlcj8iLCJsayI6ImN3M0l3UWtBSUF3RXNEMTgzUTVPVlBTd2dsYW9SZGZYWDBqS1Z5VWdUb1FTR1ZPNmZYWnJHMFpXVnZ3UWxIWG9HSXlnUHciLCJicyI6ImM1MlF1dzdDTUF4RnhlcUpFV1h5d0hOdFZRa0pVRC1CQ1RGSHhMUVJlYUFra0M1OEVIOUoyZ0ZSeEZBeFdMTHNjMzF0d3g1bXg1b0hsQjY1UVdxNHZpcENlMGFPSjNzbmg0cENJRmRtY3phTkEwQUlzTzRHY2tjWTZqWWNFV291VFVxbHFUd2FJa0VDVS1ITFlfSnNzb0xsOFZPZUQ1TENBWlp2MXlLMXRMYW1SNkNXUHZBTC1USmJzVVVjeHNJRHRqLU9xYXdTWk5EZEZQbDJsLWhrU090MVJQOXBPN2FKXy12SG94YyIsImlkIjoiZmNfb1psZWFwM0dCUEhGa1BJUF9LRzMyQU1fNCJ9"
+    },
+    {
+      "question": "What are 5 common cover letter mistakes?",
+      "type": "ai_overview",
+      "page_token": "IE8_ZXicHdDdTrMwAADQ-DJeupYOv2zJYsS1CHFou9Ky3hgoMLaWn0-7DbnzXXwqn0bjI5zz-WUPnfm-OjfODe_L2exyudzs-35vqxvdt7P8_aPTM51bW-TaLG__3cK7Wq_wKQoe_kcBTYdBrBnYToEnOKNFCBEV6Vwb8JEe4Eli4TadGrWxLD9uRk4wZGHD1ZrByij_WQ5JmTonPBcrFNMqU67kGm0yUSuyALkXr3OywDojKIGLqOoGkQNRF8CdCru_qI7wbRsBNYknFUJfTXiUIkCFGXeK0HkiCeUpeeHGn3OkXiiyB45LU9gdfJKKS9JEOmxqNdlO_VqotJJ5MMBNeZbtaHfZ_cRATLdYvaXY0gy4x80UB5z1B5qySR9tK0LgkrZ0jAegajXIkJkLZPwEJn7uwU7I5kjpda3PK3T997l6rVu3HN76_Q97ooIf",
+      "serpapi_ai_overview_link": "https://serpapi.com/search.json?engine=google_ai_overview&page_token=IE8_ZXicHdDdTrMwAADQ-DJeupYOv2zJYsS1CHFou9Ky3hgoMLaWn0-7DbnzXXwqn0bjI5zz-WUPnfm-OjfODe_L2exyudzs-35vqxvdt7P8_aPTM51bW-TaLG__3cK7Wq_wKQoe_kcBTYdBrBnYToEnOKNFCBEV6Vwb8JEe4Eli4TadGrWxLD9uRk4wZGHD1ZrByij_WQ5JmTonPBcrFNMqU67kGm0yUSuyALkXr3OywDojKIGLqOoGkQNRF8CdCru_qI7wbRsBNYknFUJfTXiUIkCFGXeK0HkiCeUpeeHGn3OkXiiyB45LU9gdfJKKS9JEOmxqNdlO_VqotJJ5MMBNeZbtaHfZ_cRATLdYvaXY0gy4x80UB5z1B5qySR9tK0LgkrZ0jAegajXIkJkLZPwEJn7uwU7I5kjpda3PK3T997l6rVu3HN76_Q97ooIf",
+      "next_page_token": "eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSTVgzRmFSa0l3UkVSYVZtZDBNRGx0Vm1obVJYQjNSVkJOVFZCb05uUkVRVlJ1VDBoMVV6WlpORTlwUjA1dFJXeEJPVlIxTVMxd1dYUm1aVkkxZWtST2NFRjJRWEpIZVhFMVF6TkJNM3BYWkZwa1VGVlVhRTFQYjFsMFVSSVhiMXBzWldGd00wZENVRWhHYTFCSlVGOUxSek15UVUwYUlrRkVjM0k1WmxKcmRGODNXbUo1UlZCVU5GTTJPR1pCU21OclMzVnpXRzFXU25jIiwiZmN2IjoiMyIsImVpIjoib1psZWFwM0dCUEhGa1BJUF9LRzMyQU0iLCJxYyI6IkNodG9iM2NnZEc4Z2QzSnBkR1VnWVNCamIzWmxjaUJzWlhSMFpYSVFBSDJjdGtBXyIsInF1ZXN0aW9uIjoiV2hhdCBhcmUgNSBjb21tb24gY292ZXIgbGV0dGVyIG1pc3Rha2VzPyIsImxrIjoiYzVOU0w4OUlMRkZJTEVwVk1GVkl6c19OemM4RFVtV3BSUW81cVNVbFFDbzNzN2drTVR1MUdBQSIsImJzIjoiYzUyUXV3N0NNQXhGeGVxSkVXWHl3SE50VlFrSlVELUJDVEZIeExRUmVhQWtrQzU4RUg5SjJnRlJ4RkF4V0xMc2MzMXR3eDVteDVvSGxCNjVRV3E0dmlwQ2UwYU9KM3NuaDRwQ0lGZG1jemFOQTBBSXNPNEdja2NZNmpZY0VXb3VUVXFscVR3YUlrRUNVLUhMWV9Kc3NvTGw4Vk9lRDVMQ0FaWnYxeUsxdExhbVI2Q1dQdkFMLVRKYnNVVWN4c0lEdGotT3Fhd1NaTkRkRlBsMmwtaGtTT3QxUlA5cE83YUpfLXZIb3hjIiwiaWQiOiJmY19vWmxlYXAzR0JQSEZrUElQX0tHMzJBTV80In0=",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google_related_questions&google_domain=google.com&next_page_token=eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSTVgzRmFSa0l3UkVSYVZtZDBNRGx0Vm1obVJYQjNSVkJOVFZCb05uUkVRVlJ1VDBoMVV6WlpORTlwUjA1dFJXeEJPVlIxTVMxd1dYUm1aVkkxZWtST2NFRjJRWEpIZVhFMVF6TkJNM3BYWkZwa1VGVlVhRTFQYjFsMFVSSVhiMXBzWldGd00wZENVRWhHYTFCSlVGOUxSek15UVUwYUlrRkVjM0k1WmxKcmRGODNXbUo1UlZCVU5GTTJPR1pCU21OclMzVnpXRzFXU25jIiwiZmN2IjoiMyIsImVpIjoib1psZWFwM0dCUEhGa1BJUF9LRzMyQU0iLCJxYyI6IkNodG9iM2NnZEc4Z2QzSnBkR1VnWVNCamIzWmxjaUJzWlhSMFpYSVFBSDJjdGtBXyIsInF1ZXN0aW9uIjoiV2hhdCBhcmUgNSBjb21tb24gY292ZXIgbGV0dGVyIG1pc3Rha2VzPyIsImxrIjoiYzVOU0w4OUlMRkZJTEVwVk1GVkl6c19OemM4RFVtV3BSUW81cVNVbFFDbzNzN2drTVR1MUdBQSIsImJzIjoiYzUyUXV3N0NNQXhGeGVxSkVXWHl3SE50VlFrSlVELUJDVEZIeExRUmVhQWtrQzU4RUg5SjJnRlJ4RkF4V0xMc2MzMXR3eDVteDVvSGxCNjVRV3E0dmlwQ2UwYU9KM3NuaDRwQ0lGZG1jemFOQTBBSXNPNEdja2NZNmpZY0VXb3VUVXFscVR3YUlrRUNVLUhMWV9Kc3NvTGw4Vk9lRDVMQ0FaWnYxeUsxdExhbVI2Q1dQdkFMLVRKYnNVVWN4c0lEdGotT3Fhd1NaTkRkRlBsMmwtaGtTT3QxUlA5cE83YUpfLXZIb3hjIiwiaWQiOiJmY19vWmxlYXAzR0JQSEZrUElQX0tHMzJBTV80In0%3D"
+    },
+    {
+      "question": "What are the three golden rules in writing the cover letter?",
+      "type": "ai_overview",
+      "page_token": "dsG-5nicHdBtbpswGABg7TL92WBnydRI0TQWuxQNq7xgG_xnIi9NCJgPJQ5Q_u0KO8NO1dNU2nOE588_e-majy9_K-eG2261mqbp8dz3Z_v2iH27Km7vHa6wsPZYYLPbftuS7yfcsxH9n1f0YzkM6gBe0pJ3wYGiRnKUxP2Sxhae-ooMBm25w4OdC1otMjN-QnieBmWEqdwUurpma9MX5MWhBpqRgSIZxpyUa6PCQlByz5uSQldR0w73tONKHdikgjCI19EG65KnzHr47Ma0DhU00KY6X0CDjdXTi6A2zEgZlfzpgp6yZql8dVA9UHDAzGvRzE7UwKUa6FH38xvb1ErPc6LFa57lU5LyFgIloANi2g3T1nJWlaNuZ5tnPxbwwjhh5iqZjTPPBdES-in0l1jCgrVtFatIKcMkIso3z_M98sgkeHUDLbaSiCaqDZPxwwnH_frh__X-96l1u-Hanz8BUsGNAg",
+      "serpapi_ai_overview_link": "https://serpapi.com/search.json?engine=google_ai_overview&page_token=dsG-5nicHdBtbpswGABg7TL92WBnydRI0TQWuxQNq7xgG_xnIi9NCJgPJQ5Q_u0KO8NO1dNU2nOE588_e-majy9_K-eG2261mqbp8dz3Z_v2iH27Km7vHa6wsPZYYLPbftuS7yfcsxH9n1f0YzkM6gBe0pJ3wYGiRnKUxP2Sxhae-ooMBm25w4OdC1otMjN-QnieBmWEqdwUurpma9MX5MWhBpqRgSIZxpyUa6PCQlByz5uSQldR0w73tONKHdikgjCI19EG65KnzHr47Ma0DhU00KY6X0CDjdXTi6A2zEgZlfzpgp6yZql8dVA9UHDAzGvRzE7UwKUa6FH38xvb1ErPc6LFa57lU5LyFgIloANi2g3T1nJWlaNuZ5tnPxbwwjhh5iqZjTPPBdES-in0l1jCgrVtFatIKcMkIso3z_M98sgkeHUDLbaSiCaqDZPxwwnH_frh__X-96l1u-Hanz8BUsGNAg",
+      "next_page_token": "eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSTVgzRmFSa0l3UkVSYVZtZDBNRGx0Vm1obVJYQjNSVkJOVFZCb05uUkVRVlJ1VDBoMVV6WlpORTlwUjA1dFJXeEJPVlIxTVMxd1dYUm1aVkkxZWtST2NFRjJRWEpIZVhFMVF6TkJNM3BYWkZwa1VGVlVhRTFQYjFsMFVSSVhiMXBzWldGd00wZENVRWhHYTFCSlVGOUxSek15UVUwYUlrRkVjM0k1WmxKcmRGODNXbUo1UlZCVU5GTTJPR1pCU21OclMzVnpXRzFXU25jIiwiZmN2IjoiMyIsImVpIjoib1psZWFwM0dCUEhGa1BJUF9LRzMyQU0iLCJxYyI6IkNodG9iM2NnZEc4Z2QzSnBkR1VnWVNCamIzWmxjaUJzWlhSMFpYSVFBSDJjdGtBXyIsInF1ZXN0aW9uIjoiV2hhdCBhcmUgdGhlIHRocmVlIGdvbGRlbiBydWxlcyBpbiB3cml0aW5nIHRoZSBjb3ZlciBsZXR0ZXI/IiwibGsiOiJjNU95THM5SUxGRklMRXBWS01rQTRhTFVWSVgwX0p5VTFEeUZvdEtjMUdLRnpEeUY4cUxNa3N5OGRMQ0s1UHl5MUNLRm5OU1NrdFFpQUEiLCJicyI6ImM1MlF1dzdDTUF4RnhlcUpFV1h5d0hOdFZRa0pVRC1CQ1RGSHhMUVJlYUFra0M1OEVIOUoyZ0ZSeEZBeFdMTHNjMzF0d3g1bXg1b0hsQjY1UVdxNHZpcENlMGFPSjNzbmg0cENJRmRtY3phTkEwQUlzTzRHY2tjWTZqWWNFV291VFVxbHFUd2FJa0VDVS1ITFlfSnNzb0xsOFZPZUQ1TENBWlp2MXlLMXRMYW1SNkNXUHZBTC1USmJzVVVjeHNJRHRqLU9xYXdTWk5EZEZQbDJsLWhrU090MVJQOXBPN2FKXy12SG94YyIsImlkIjoiZmNfb1psZWFwM0dCUEhGa1BJUF9LRzMyQU1fNCJ9",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google_related_questions&google_domain=google.com&next_page_token=eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSTVgzRmFSa0l3UkVSYVZtZDBNRGx0Vm1obVJYQjNSVkJOVFZCb05uUkVRVlJ1VDBoMVV6WlpORTlwUjA1dFJXeEJPVlIxTVMxd1dYUm1aVkkxZWtST2NFRjJRWEpIZVhFMVF6TkJNM3BYWkZwa1VGVlVhRTFQYjFsMFVSSVhiMXBzWldGd00wZENVRWhHYTFCSlVGOUxSek15UVUwYUlrRkVjM0k1WmxKcmRGODNXbUo1UlZCVU5GTTJPR1pCU21OclMzVnpXRzFXU25jIiwiZmN2IjoiMyIsImVpIjoib1psZWFwM0dCUEhGa1BJUF9LRzMyQU0iLCJxYyI6IkNodG9iM2NnZEc4Z2QzSnBkR1VnWVNCamIzWmxjaUJzWlhSMFpYSVFBSDJjdGtBXyIsInF1ZXN0aW9uIjoiV2hhdCBhcmUgdGhlIHRocmVlIGdvbGRlbiBydWxlcyBpbiB3cml0aW5nIHRoZSBjb3ZlciBsZXR0ZXI%2FIiwibGsiOiJjNU95THM5SUxGRklMRXBWS01rQTRhTFVWSVgwX0p5VTFEeUZvdEtjMUdLRnpEeUY4cUxNa3N5OGRMQ0s1UHl5MUNLRm5OU1NrdFFpQUEiLCJicyI6ImM1MlF1dzdDTUF4RnhlcUpFV1h5d0hOdFZRa0pVRC1CQ1RGSHhMUVJlYUFra0M1OEVIOUoyZ0ZSeEZBeFdMTHNjMzF0d3g1bXg1b0hsQjY1UVdxNHZpcENlMGFPSjNzbmg0cENJRmRtY3phTkEwQUlzTzRHY2tjWTZqWWNFV291VFVxbHFUd2FJa0VDVS1ITFlfSnNzb0xsOFZPZUQ1TENBWlp2MXlLMXRMYW1SNkNXUHZBTC1USmJzVVVjeHNJRHRqLU9xYXdTWk5EZEZQbDJsLWhrU090MVJQOXBPN2FKXy12SG94YyIsImlkIjoiZmNfb1psZWFwM0dCUEhGa1BJUF9LRzMyQU1fNCJ9"
+    }
+  ],
+  "ai_overview": {
+    "text_blocks": [
+      {
+        "type": "paragraph",
+        "snippet": "A great cover letter acts as your professional introduction and pitch. It should be kept to a single page and organized into three to four key paragraphs: an engaging introduction, a body that highlights your most relevant skills and measurable achievements, and a concluding call to action.",
+        "snippet_links": [
+          {
+            "link": "https://careercenter.umich.edu/content/cover-letter-resources"
+          }
+        ],
+        "snippet_highlighted_words": [
+          "It should be kept to a single page and organized into three to four key paragraphs: an engaging introduction, a body that highlights your most relevant skills and measurable achievements, and a concluding call to action"
+        ],
+        "reference_indexes": [
+          0,
+          1,
+          8,
+          9,
+          10
+        ]
+      },
+      {
+        "type": "paragraph",
+        "snippet": "Writing an effective cover letter involves a few essential steps to grab a hiring manager's attention:"
+      },
+      {
+        "type": "list",
+        "list": [
+          {
+            "snippet": "Header and Salutation: Include your contact information. Always address the letter to a specific person (like the hiring manager) rather than a generic greeting.",
+            "snippet_links": [
+              {
+                "link": "https://www.indeed.com/career-advice/resumes-cover-letters/how-to-write-a-cover-letter"
+              }
+            ],
+            "reference_indexes": [
+              2,
+              3
+            ]
+          },
+          {
+            "snippet": "The Hook: Start by expressing genuine enthusiasm for the company and explaining why you are applying for the specific role.",
+            "snippet_links": [
+              {
+                "link": "https://www.indeed.com/career-advice/resumes-cover-letters/how-to-write-a-cover-letter"
+              }
+            ],
+            "reference_indexes": [
+              2,
+              4
+            ]
+          },
+          {
+            "snippet": "The Pitch: Instead of just summarizing your resume, focus on one or two key achievements. Use concrete examples to show how your background makes you the best fit for the job.",
+            "snippet_links": [
+              {
+                "link": "https://www.indeed.com/career-advice/resumes-cover-letters/how-to-write-a-cover-letter"
+              }
+            ],
+            "reference_indexes": [
+              2,
+              5,
+              6,
+              7
+            ]
+          },
+          {
+            "snippet": "Call to Action: Wrap up by reiterating your enthusiasm, mentioning the specific value you bring, and requesting an interview.",
+            "snippet_links": [
+              {
+                "link": "https://www.grammarly.com/blog/resumes-cover-letters/cover-letter-format/"
+              }
+            ]
+          }
+        ],
+        "reference_indexes": [
+          4
+        ]
+      },
+      {
+        "type": "paragraph",
+        "snippet": "If you'd like to get started, tell me:"
+      },
+      {
+        "type": "list",
+        "list": [
+          {
+            "snippet": "What job title\nare you applying for?"
+          },
+          {
+            "snippet": "What is the company name?"
+          },
+          {
+            "snippet": "What is the industry\n?"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "snippet": "I can help draft a custom introduction or brainstorm specific examples to highlight in your letter!"
+      }
+    ],
+    "references": [
+      {
+        "title": "Cover Letter Resources | University Career Center",
+        "link": "https://careercenter.umich.edu/content/cover-letter-resources",
+        "snippet": "Here are some tips for writing your cover letter: * Keep it short and sweet, do not exceed one page. * Be persuasive and show enthusiasm. * Emphasize both your har...",
+        "source": "UMich Career Center",
+        "thumbnail": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQRu1APlw0DInWXQghSBWhueih-zzWjgTv3_VgWW8yUYZfKdxWBViHcQDI3XGMOVUazfDLYQbnOMudjwVM",
+        "source_icon": "https://encrypted-tbn3.gstatic.com/faviconV2?url=https://careercenter.umich.edu&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 0
+      },
+      {
+        "title": "Free cover letter template - SEEK",
+        "link": "https://au.seek.com/career-advice/article/free-cover-letter-template",
+        "snippet": "A well-written cover letter will encourage a potential employer to read through to your resum\u00e9 and get in touch to find out more or set up an interview. We've come...",
+        "source": "SEEK",
+        "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkYM8FWTJ9pL2igVPF3HE4JH31vdD25cNLJomAAy2yMDX-plOk2obAczAGRqPGVlgFWncnai9TL4NYZNw",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://au.seek.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 1
+      },
+      {
+        "title": "How to Write a Cover Letter (With Examples and Tips) - Indeed",
+        "link": "https://www.indeed.com/career-advice/resumes-cover-letters/how-to-write-a-cover-letter",
+        "snippet": "Here are six simple steps to writing an effective cover letter: * 1. Start with your header. As with any standard business letter header, include your personal con...",
+        "source": "Indeed",
+        "thumbnail": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTJTDjlPm1m2wzKOLe2nFQSQKki-uIlBrZm6Bi9Lr7Iufb5jL40iX16zFYS0QYn4JYd6Y81XtsyUcu1gyY",
+        "source_icon": "https://encrypted-tbn0.gstatic.com/faviconV2?url=https://www.indeed.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 2
+      },
+      {
+        "title": "Cover Letter Advice \\u0026 Samples - Yale Law School",
+        "link": "https://law.yale.edu/student-life/career-development/students/toolkit-student-job-seekers/cover-letter-advice-samples",
+        "snippet": "Toolkit for Student Job Seekers. Self-Assessment. Choosing the Right Employer for You. Employment Eligibility. Resume Advice \\u0026 Samples. Cover Letter Advice \\u0026 Sampl...",
+        "source": "Yale Law School",
+        "thumbnail": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcROOPmawYAKqieiCWZV6upOv953acQhQwAsBtVNBalPrLz7e4VX5hgizb8b32Ke8m5sMGroAGER6zO0tKQ",
+        "source_icon": "https://encrypted-tbn1.gstatic.com/faviconV2?url=https://law.yale.edu&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 3
+      },
+      {
+        "title": "How to Format a Cover Letter: A Step-by-Step Guide for Job Seekers",
+        "link": "https://www.grammarly.com/blog/resumes-cover-letters/cover-letter-format/",
+        "snippet": "How to write a cover letter: template. Here's a cover letter template you can use to write your own cover letter. Simply plug in your information to the correspond...",
+        "source": "Grammarly",
+        "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnjjfQlbK7-PPps1UKP2h8CVpuhgIMfE0eHu0NkURxNHNn441s940cZyJs7ZmbkDpWzF7Hy6TvpqSWbsU",
+        "source_icon": "https://encrypted-tbn0.gstatic.com/faviconV2?url=https://www.grammarly.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 4
+      },
+      {
+        "title": "How to Write a Cover Letter: 31 Tips You Need to Know - TIME",
+        "link": "https://time.com/3537369/how-to-write-cover-letter/",
+        "snippet": "1. Don't Regurgitate Your Resume. Instead of just repeating yourself (\u201cI was in charge of reviewing invoice disputes\u201d), use your cover letter to describe additiona...",
+        "source": "Time Magazine",
+        "thumbnail": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQcBzL0v9EO7vbeYNMHU2lD2LmVH0P0USyuTIhEXhdl-wj3EVRCe0yg2vYuxWpAxFzL1-Rk7HFWpjnQuUY",
+        "source_icon": "https://encrypted-tbn1.gstatic.com/faviconV2?url=https://time.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 5
+      },
+      {
+        "title": "How to write a cover letter | National Careers Service",
+        "link": "https://nationalcareers.service.gov.uk/careers-advice/covering-letter",
+        "snippet": "use the right language and tone: keep it professional and match the keywords used by the employer in their job advert. show you've done your research into the job ...",
+        "source": "GOV.UK",
+        "thumbnail": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQosii_2sW5hS6HYfy9EFETTb7u2YfzFB8O7ZRqTiXPidtxmDuhH-1z78qcVJuS5pRahRxjmfSTVHD1wHM",
+        "source_icon": "https://encrypted-tbn0.gstatic.com/faviconV2?url=https://nationalcareers.service.gov.uk&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 6
+      },
+      {
+        "title": "Cover Letter Samples and Templates | Indeed.com",
+        "link": "https://www.indeed.com/career-advice/cover-letter-samples",
+        "snippet": "When you're applying for a job, a cover letter lets you show a personal side and demonstrate why hiring you is a smart decision. Cover letters should be around thr...",
+        "source": "Indeed",
+        "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLjP-n2UFyWqznsp7SPhgojLIQO13dZSNANI3en9egOpWVhISVjTJuyNuCKGI_yRqBdye3qEmsSSv0HAA",
+        "source_icon": "https://encrypted-tbn0.gstatic.com/faviconV2?url=https://www.indeed.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 7
+      },
+      {
+        "title": "How and Why to Write a Great Cover Letter - Columbia CCE",
+        "link": "https://www.careereducation.columbia.edu/resources/how-and-why-write-great-cover-letter",
+        "snippet": "Body Paragraphs: Discuss your experiences, interests, and skills to show the employer how you can add value to their team. See the section below for more guidance.",
+        "source": "Columbia Career Education",
+        "thumbnail": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTClzzBV0g75QQ86xPCk4nxB_616q2WMFocxz1JAYM-ntAmUNyumPR6cmVs0NDqug2p-HgL9CfrHktQrUg",
+        "source_icon": "https://encrypted-tbn0.gstatic.com/faviconV2?url=https://www.careereducation.columbia.edu&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 8
+      },
+      {
+        "title": "How to write a cover letter | Transform your job search - Prospects",
+        "link": "https://www.prospects.ac.uk/careers-advice/cvs-and-cover-letters/cover-letters/",
+        "snippet": "What should I include in my cover letter? When writing your cover letter, keep it brief and ensure it emphasises your suitability for the job. Cover letters can be...",
+        "source": "Prospects",
+        "thumbnail": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQc5o8Loe3pWZPnWeVxa7N9Hw9BkVXdAi1042gDlp6_VKeVVrlUVCvs0OZLLmonnTtYN9bM0C7kxQoFCdM",
+        "source_icon": "https://encrypted-tbn0.gstatic.com/faviconV2?url=https://www.prospects.ac.uk&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 9
+      },
+      {
+        "title": "What to Put on a Cover Letter for a Resume",
+        "link": "https://www.frontlinesourcegroup.com/blog-what-to-put-on-a-cover-letter-for-a-resume.html",
+        "snippet": "Closing Paragraph: Strong Finish and Call to Action The closing paragraph should leave a strong impression. Express your desire for an interview. Thank the reader ...",
+        "source": "Frontline Source Group",
+        "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7eGMG63PBX_qC5hhiYqNMS92LuZSotj8t2-lQFeZqrxYRhL4Pz3PKb4t3QnRyZTD4bIODXPg6jRws93E",
+        "source_icon": "https://encrypted-tbn3.gstatic.com/faviconV2?url=https://www.frontlinesourcegroup.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 10
+      }
+    ]
+  },
+  "organic_results": [
+    {
+      "position": 1,
+      "title": "Cover Letter Resources - University Career Center",
+      "link": "https://careercenter.umich.edu/content/cover-letter-resources",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://careercenter.umich.edu/content/cover-letter-resources&ved=2ahUKEwjdmsjdn-KVAxXxIkQIHfzQDTsQFnoECBgQAQ",
+      "displayed_link": "https://careercenter.umich.edu \u203a content \u203a cover-letter-r...",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAjVBMVEUQKEsAFk0AI0wOJ0sAIEzRqiLGoifMpiVVUEQAIkxJSEYcLUoAG03_2wD_zwD_0QD4xw4AGU0AEU7xwRP_1AAgL0r_zAQAB08ADU68miyAbjwAHUxwYj__0wArNUlfV0J6aj3ouxkAAE_asB6GcjuliTOWfjdNS0afhTUAFU1kW0J1Zj6xki8-QUdDREbTLM6GAAAA50lEQVR4AcWQVQLCUAzAus4dd5_r_Y_H89k_BCZp5vAfNA5KRzHQyb5hWhTbcUXzbD7wddCDMKLEq7VOm77Zxmyw29O4OzBi60jj6RxzV5HbJQC43rjKGN6Fxg_U_UhKSCLg8yVq9D5-kki09AmUqydPvWe52n0GLGLBJhFd2IpHdxTjUpx0L-NF3G347aL3Z7eMPvKn2lfjaHgsglaT6a7RNjxeadOL251aUZzae3z-FB3Tl0eb_Aj30D2-t5uj0unnc7F38Kh0FnUdYR4jDokAcFRKo5GYnARp1JT6RPVKogNlpr_mC8yHJE0Qfe1EAAAAAElFTkSuQmCC.png",
+      "snippet": "Keep it short and sweet, do not exceed one page. Be persuasive and show enthusiasm. Emphasize both your hard and soft skills. Avoid To Whom it May Concern.",
+      "snippet_highlighted_words": [
+        "Keep it short and sweet, do not exceed one page"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "Keep it short and sweet, do not exceed one page. Be persuasive and show enthusiasm. Emphasize both your hard and soft skills. Avoid To Whom it May Concern.",
+          "source_info_link": "https://careercenter.umich.edu/content/cover-letter-resources",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAjVBMVEUQKEsAFk0AI0wOJ0sAIEzRqiLGoifMpiVVUEQAIkxJSEYcLUoAG03_2wD_zwD_0QD4xw4AGU0AEU7xwRP_1AAgL0r_zAQAB08ADU68miyAbjwAHUxwYj__0wArNUlfV0J6aj3ouxkAAE_asB6GcjuliTOWfjdNS0afhTUAFU1kW0J1Zj6xki8-QUdDREbTLM6GAAAA50lEQVR4AcWQVQLCUAzAus4dd5_r_Y_H89k_BCZp5vAfNA5KRzHQyb5hWhTbcUXzbD7wddCDMKLEq7VOm77Zxmyw29O4OzBi60jj6RxzV5HbJQC43rjKGN6Fxg_U_UhKSCLg8yVq9D5-kki09AmUqydPvWe52n0GLGLBJhFd2IpHdxTjUpx0L-NF3G347aL3Z7eMPvKn2lfjaHgsglaT6a7RNjxeadOL251aUZzae3z-FB3Tl0eb_Aj30D2-t5uj0unnc7F38Kh0FnUdYR4jDokAcFRKo5GYnARp1JT6RPVKogNlpr_mC8yHJE0Qfe1EAAAAAElFTkSuQmCC.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://careercenter.umich.edu/content/cover-letter-resources&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fcareercenter.umich.edu%2Fcontent%2Fcover-letter-resources",
+      "source": "UMich Career Center"
+    },
+    {
+      "position": 2,
+      "title": "How to Write a Cover Letter (With Examples and Tips)",
+      "link": "https://www.indeed.com/career-advice/resumes-cover-letters/how-to-write-a-cover-letter",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.indeed.com/career-advice/resumes-cover-letters/how-to-write-a-cover-letter&ved=2ahUKEwjdmsjdn-KVAxXxIkQIHfzQDTsQFnoECCIQAQ",
+      "displayed_link": "https://www.indeed.com \u203a ... \u203a Resumes & cover letters",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAflBMVEUAAAD_______________________________________________-_zuZvkMZQd7pAa7Sgtdnv8_gAOptgg8AgUqcgU6evweCAnc0QRqF_nc3v8vhwkMcwXq3f5vLP2uz____f5_JfhMB_nM0wX66AnM1PeLqPqdOftdrv8_mN6_jEAAAAIXRSTlMAEGCfz-__XyCQj98w_________________________6AQ1BAWAAABD0lEQVR4AYWThRZCIQxAR-11h939_z-oHECHGNd4sbvR8IJxIRWikiJiEBInCl-IGHxYim-kfnqGARkpkj_jRVnVVdMaIw_yi7qr-7IaxolXg7n4dDZfGHEojGFG4_q3XK3RsSE9jV3-SqevC6ToRrbmdjc84m3ddeOOCAkAQ8Oo6--7BzURFANuB3DQ_8dOgwTuWjjpAnjW8YEKAqS5KU0dLVyoIEGZYdnOr8veH4YCN-5vWGGBVtxc68IXFFLqrus8QYH8LUjY_hYE8N9CBEz9FBhA8ksQZLmpQJeblAiFxNtyoZCxYNMvu252CzY-2fa3fVU84_nfg0NgyXs8YeATb0lUJTGEML61x5-T7DuGyRy8BcS3-wAAAABJRU5ErkJggg.png",
+      "date": "2 days ago",
+      "snippet": "How to write a cover letter in 6 steps \u00b7 1. Start with your header \u00b7 2. Include a greeting \u00b7 3. Write an opening paragraph \u00b7 4. Add body ...",
+      "snippet_highlighted_words": [
+        "1. Start with your header"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "How to write a cover letter in 6 steps \u00b7 1. Start with your header \u00b7 2. Include a greeting \u00b7 3. Write an opening paragraph \u00b7 4. Add body ...",
+          "source_info_link": "https://www.indeed.com/career-advice/resumes-cover-letters/how-to-write-a-cover-letter",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAflBMVEUAAAD_______________________________________________-_zuZvkMZQd7pAa7Sgtdnv8_gAOptgg8AgUqcgU6evweCAnc0QRqF_nc3v8vhwkMcwXq3f5vLP2uz____f5_JfhMB_nM0wX66AnM1PeLqPqdOftdrv8_mN6_jEAAAAIXRSTlMAEGCfz-__XyCQj98w_________________________6AQ1BAWAAABD0lEQVR4AYWThRZCIQxAR-11h939_z-oHECHGNd4sbvR8IJxIRWikiJiEBInCl-IGHxYim-kfnqGARkpkj_jRVnVVdMaIw_yi7qr-7IaxolXg7n4dDZfGHEojGFG4_q3XK3RsSE9jV3-SqevC6ToRrbmdjc84m3ddeOOCAkAQ8Oo6--7BzURFANuB3DQ_8dOgwTuWjjpAnjW8YEKAqS5KU0dLVyoIEGZYdnOr8veH4YCN-5vWGGBVtxc68IXFFLqrus8QYH8LUjY_hYE8N9CBEz9FBhA8ksQZLmpQJeblAiFxNtyoZCxYNMvu252CzY-2fa3fVU84_nfg0NgyXs8YeATb0lUJTGEML61x5-T7DuGyRy8BcS3-wAAAABJRU5ErkJggg.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://www.indeed.com/career-advice/resumes-cover-letters/how-to-write-a-cover-letter&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fwww.indeed.com%2Fcareer-advice%2Fresumes-cover-letters%2Fhow-to-write-a-cover-letter",
+      "source": "Indeed",
+      "read_more_link": "https://www.indeed.com/career-advice/resumes-cover-letters/how-to-write-a-cover-letter#:~:text=How%20to%20write%20a%20cover,letter%20in%206%20steps&text=1.%20Start%20with%20your%20header&text=2.%20Include%20a%20greeting&text=3.%20Write%20an%20opening%20paragraph&text=4.%20Add%20body%20paragraphs"
+    },
+    {
+      "position": 3,
+      "title": "Cover Letter Samples - Academic Success Coaching",
+      "link": "https://academicsuccess.ucf.edu/explearning/wp-content/uploads/sites/12/2021/09/Cover-Letter-Samples.pdf",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://academicsuccess.ucf.edu/explearning/wp-content/uploads/sites/12/2021/09/Cover-Letter-Samples.pdf&ved=2ahUKEwjdmsjdn-KVAxXxIkQIHfzQDTsQFnoECB0QAQ",
+      "displayed_link": "https://academicsuccess.ucf.edu \u203a sites \u203a 2021/09",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAA_1BMVEX___-6urpMTExWVlaamprS0tL6-voAAABYWFi8vLzIyMj8_Px4eHgeHh5ycnKIiIhgYGBoaGguLi4ICAgMDAzi4uL09PTy8vLQ0NAKCgpEREQgICD29va4uLhkZGRwcHDGxsbu7u4CAgKYmJisrKyqqqpcXFwaGhpiYmLExMQ0NDR8fHyAgIBGRkYkJCRaWlp2dnZCQkI4ODhqamqysrI6OjpQUFBeXl5SUlIQEBBKSkoEBAQODg5mZmYoKCgSEhIyMjIYGBiMjIykpKQ-Pj4iIiJ-fn7w8PAcHBxAQEBISEjCwsLKyso2NjY8PDzU1NQsLCy-vr7k5OSgoKDm5uaPyMWQAAAAVXRSTlMARLOoZCsD_6dCNQGH4I11n5fQ9_McCgwu9bveB0abjjgP_WVSVKPlnDrKg36526WJvceUTMWuoa3utfrwmdftzedxWsHdgQ7jv7Y8M8nCKtM_GV4YSxn7zwAAAMdJREFUeAE1zgMWA0EQBNAKK7Zt27at-58ly_8waEKm0er0BqiMGi1NZgtUVpudDjhdULk9Xp8fgaAQskIQCkcYjQHxhC6ZApC20c1MCFkKcsJHPsJCkaUy6auwKnzU6mw0yVabHbi6th4S_QYHdXoTHeYMHQ7R9RV8HBXG1E04nTXmMC-WwxXXo3p4sGJ7owe2nO4Sk_1-0NHxUBI-jqMTaT_rzoPI5VoSN7ndH6Vz4xQZFZ6QWV7ese_UfH-gin0v9-ZPvv8Bd_EYku1mGjsAAAAASUVORK5CYII.png",
+      "snippet": "Your cover letter should not be a restatement of the entire resume. Instead, it should be an introduction of your resume, highlighting those skills and ...",
+      "snippet_highlighted_words": [
+        "Your cover letter should not be a restatement of the entire resume"
+      ],
+      "rich_snippet": {
+        "top": {
+          "detected_extensions": {
+            "pages": 6
+          },
+          "extensions": [
+            "6 pages"
+          ]
+        }
+      },
+      "about_this_result": {
+        "source": {
+          "description": "Your cover letter should not be a restatement of the entire resume. Instead, it should be an introduction of your resume, highlighting those skills and ...",
+          "source_info_link": "https://academicsuccess.ucf.edu/explearning/wp-content/uploads/sites/12/2021/09/Cover-Letter-Samples.pdf",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAA_1BMVEX___-6urpMTExWVlaamprS0tL6-voAAABYWFi8vLzIyMj8_Px4eHgeHh5ycnKIiIhgYGBoaGguLi4ICAgMDAzi4uL09PTy8vLQ0NAKCgpEREQgICD29va4uLhkZGRwcHDGxsbu7u4CAgKYmJisrKyqqqpcXFwaGhpiYmLExMQ0NDR8fHyAgIBGRkYkJCRaWlp2dnZCQkI4ODhqamqysrI6OjpQUFBeXl5SUlIQEBBKSkoEBAQODg5mZmYoKCgSEhIyMjIYGBiMjIykpKQ-Pj4iIiJ-fn7w8PAcHBxAQEBISEjCwsLKyso2NjY8PDzU1NQsLCy-vr7k5OSgoKDm5uaPyMWQAAAAVXRSTlMARLOoZCsD_6dCNQGH4I11n5fQ9_McCgwu9bveB0abjjgP_WVSVKPlnDrKg36526WJvceUTMWuoa3utfrwmdftzedxWsHdgQ7jv7Y8M8nCKtM_GV4YSxn7zwAAAMdJREFUeAE1zgMWA0EQBNAKK7Zt27at-58ly_8waEKm0er0BqiMGi1NZgtUVpudDjhdULk9Xp8fgaAQskIQCkcYjQHxhC6ZApC20c1MCFkKcsJHPsJCkaUy6auwKnzU6mw0yVabHbi6th4S_QYHdXoTHeYMHQ7R9RV8HBXG1E04nTXmMC-WwxXXo3p4sGJ7owe2nO4Sk_1-0NHxUBI-jqMTaT_rzoPI5VoSN7ndH6Vz4xQZFZ6QWV7ese_UfH-gin0v9-ZPvv8Bd_EYku1mGjsAAAAASUVORK5CYII.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://academicsuccess.ucf.edu/explearning/wp-content/uploads/sites/12/2021/09/Cover-Letter-Samples.pdf&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Facademicsuccess.ucf.edu%2Fexplearning%2Fwp-content%2Fuploads%2Fsites%2F12%2F2021%2F09%2FCover-Letter-Samples.pdf",
+      "source": "University of Central Florida"
+    },
+    {
+      "position": 4,
+      "title": "Free Cover Letter Maker - Create a Cover Letter Online",
+      "link": "https://www.canva.com/create/cover-letters/",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.canva.com/create/cover-letters/&ved=2ahUKEwjdmsjdn-KVAxXxIkQIHfzQDTsQFnoECB8QAQ",
+      "displayed_link": "https://www.canva.com \u203a create \u203a cover-letters",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAdVBMVEUBw8wDv80Gus4Jtc8NsNASq9IUpNMcndUhlNcqjNk1hNkcw8-a3uby-P3___-B0eLi7_lmzNw8ets9ceBitd9OY97U4PhZVOEohN610fBiSOVsOugoeuE7Y-h9h-ykq_JAVet7KuhHRfBUOPR1J-9bL_dnJPpJkXEcAAABNklEQVR4AZ3OBZaEQAwE0MZhoMM47nL_I24lWffdwvkveWXexXEc1_X8IAijOPkKw3-hB4TFh3eSpqkHE0zeYJpZIrK5GqODQ8dyouMpPRHlgQ6ejQMVy4gyF2VystJGUGKcE5sDxEsYyeBFESGyLsgLMjqqAV0hF0tz6RkSXdkweDOuxENPCGoG92usBvTEXDQNUJKrPBuQ46PFnSWKQE9WGJ8T5OgqAirRRawwgWwDVipKYrUJZdsVWDKVIPQUa0wk2yIUasu2bTHU3XumummMLEtaS3QQ6brBjmqTwS6kHVC344w99Y82mVKXdUfWeR4rGmYlIACEiTsRWWwfFhCMEQBB5v5u7XGoF9AKYVSakWXZcCwgjuAjSMDbEwk-ySZZdxwwZaO_dz4QkEYn5a8GJApSfABGijDBj_eaJAAAAABJRU5ErkJggg.png",
+      "snippet": "Our free online cover letter maker gives you many aesthetic layouts you can easily customize. From subtle styles to bold, our design options cater to various ...",
+      "snippet_highlighted_words": [
+        "easily customize"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "Our free online cover letter maker gives you many aesthetic layouts you can easily customize. From subtle styles to bold, our design options cater to various ...",
+          "source_info_link": "https://www.canva.com/create/cover-letters/",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAdVBMVEUBw8wDv80Gus4Jtc8NsNASq9IUpNMcndUhlNcqjNk1hNkcw8-a3uby-P3___-B0eLi7_lmzNw8ets9ceBitd9OY97U4PhZVOEohN610fBiSOVsOugoeuE7Y-h9h-ykq_JAVet7KuhHRfBUOPR1J-9bL_dnJPpJkXEcAAABNklEQVR4AZ3OBZaEQAwE0MZhoMM47nL_I24lWffdwvkveWXexXEc1_X8IAijOPkKw3-hB4TFh3eSpqkHE0zeYJpZIrK5GqODQ8dyouMpPRHlgQ6ejQMVy4gyF2VystJGUGKcE5sDxEsYyeBFESGyLsgLMjqqAV0hF0tz6RkSXdkweDOuxENPCGoG92usBvTEXDQNUJKrPBuQ46PFnSWKQE9WGJ8T5OgqAirRRawwgWwDVipKYrUJZdsVWDKVIPQUa0wk2yIUasu2bTHU3XumummMLEtaS3QQ6brBjmqTwS6kHVC344w99Y82mVKXdUfWeR4rGmYlIACEiTsRWWwfFhCMEQBB5v5u7XGoF9AKYVSakWXZcCwgjuAjSMDbEwk-ySZZdxwwZaO_dz4QkEYn5a8GJApSfABGijDBj_eaJAAAAABJRU5ErkJggg.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://www.canva.com/create/cover-letters/&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fwww.canva.com%2Fcreate%2Fcover-letters%2F",
+      "source": "Canva",
+      "read_more_link": "https://www.canva.com/create/cover-letters/#:~:text=Our%20free%20online%20cover%20letter,to%20various%20preferences%20and%20themes."
+    },
+    {
+      "position": 5,
+      "title": "How to write a cover letter",
+      "link": "https://nationalcareers.service.gov.uk/careers-advice/covering-letter",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://nationalcareers.service.gov.uk/careers-advice/covering-letter&ved=2ahUKEwjdmsjdn-KVAxXxIkQIHfzQDTsQFnoECB4QAQ",
+      "displayed_link": "https://nationalcareers.service.gov.uk \u203a careers-advice",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAYFBMVEULDAwAAAC8vLw2Nja4uLj29vb___8DBQV5enqysrIPEBDj4-OkpKQfHx89PT3d3d03NzfMzMzy8vLU1NQkJSVUVFSYmJhsbGw_Pz9nZ2crKyuDhITFxcXq6uqZmZmLi4u-AZROAAAAy0lEQVR4AdXQRWLEMBBEUf9pqWVmxvufMrAxBXaBKaP0xN5vBL6xx4MvTYwRvkKraj9HB34Q-OA-oTCKsZY4Cu_sEkk1E1WJVCS5KlbJHUWBJ56WXIygAkdd4yALOCmN4b2M6vsbTHMolfq8lTEGjwZfixPmLZ2G9MPQE2pHK2ccaHR0lCVu1IYhPWFbxZ0te80yTUvbxVV7XlEZt1VXx9MU113Vxpe90BqCuZZlkXoOMO0ZHXrJ9QCZ52DdJt-ftjWYZ7xLuMR7xrwCx3EJp4l9MnUAAAAASUVORK5CYII.png",
+      "snippet": "A cover letter introduces you to an employer and asks them to think about your application. It's a short letter, usually 3 to 5 paragraphs long.",
+      "snippet_highlighted_words": [
+        "introduces you to an employer and asks them to think about your application"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "A cover letter introduces you to an employer and asks them to think about your application. It's a short letter, usually 3 to 5 paragraphs long.",
+          "source_info_link": "https://nationalcareers.service.gov.uk/careers-advice/covering-letter",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAYFBMVEULDAwAAAC8vLw2Nja4uLj29vb___8DBQV5enqysrIPEBDj4-OkpKQfHx89PT3d3d03NzfMzMzy8vLU1NQkJSVUVFSYmJhsbGw_Pz9nZ2crKyuDhITFxcXq6uqZmZmLi4u-AZROAAAAy0lEQVR4AdXQRWLEMBBEUf9pqWVmxvufMrAxBXaBKaP0xN5vBL6xx4MvTYwRvkKraj9HB34Q-OA-oTCKsZY4Cu_sEkk1E1WJVCS5KlbJHUWBJ56WXIygAkdd4yALOCmN4b2M6vsbTHMolfq8lTEGjwZfixPmLZ2G9MPQE2pHK2ccaHR0lCVu1IYhPWFbxZ0te80yTUvbxVV7XlEZt1VXx9MU113Vxpe90BqCuZZlkXoOMO0ZHXrJ9QCZ52DdJt-ftjWYZ7xLuMR7xrwCx3EJp4l9MnUAAAAASUVORK5CYII.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://nationalcareers.service.gov.uk/careers-advice/covering-letter&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fnationalcareers.service.gov.uk%2Fcareers-advice%2Fcovering-letter",
+      "source": "GOV.UK",
+      "read_more_link": "https://nationalcareers.service.gov.uk/careers-advice/covering-letter#:~:text=A%20cover%20letter%20introduces%20you,to%20think%20about%20your%20application.&text=It's%20a%20short%20letter%2C%20usually,3%20to%205%20paragraphs%20long."
+    },
+    {
+      "position": 6,
+      "title": "How to Write a Cover Letter That Sounds Like YOU (and Gets ...",
+      "link": "https://www.youtube.com/watch?v=3etzKSdtvxE",
+      "displayed_link": "278.9K+ views \u00b7 2 years ago",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSxmLOSbN--zyRezWwtblhY0HfvXakjgjBrKsUyEd3C9kQZxWHDP30Ng&s",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8_9hAAAAhUlEQVR4AWNwL_ChCFPHgP8MxqxA7ArEKVBcCcUNIAznI-RdQXrABgAZpv8ZjP6Tg0F6QQbsosCAXSADHmGVVPIC0jKEDHgAMuAbmgRE445D___feYzXIJBeBigH04BVW_9DAcgwqEGYaik2gGIvUByIlEbjDooTEiwps5GRlNmolpkowgBVP9wMSzSKGAAAAABJRU5ErkJggg.png",
+      "snippet": "From doing the research, to starting off strong, to emphasizing your value \u2014 Gallo taught me exactly what I need to do to get my cover letters ...",
+      "duration": "8:01",
+      "key_moments": [
+        {
+          "time": "00:00",
+          "title": "The pain is real...",
+          "link": "https://www.youtube.com/watch?v=3etzKSdtvxE&t=0",
+          "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWT7PFN0O3QHp7Jd0_rZ_wjRHWIM3EsnSaXc3GXgJ2WA&s"
+        },
+        {
+          "time": "00:40",
+          "title": "How it Usually Goes",
+          "link": "https://www.youtube.com/watch?v=3etzKSdtvxE&t=40",
+          "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRz6_aAOEvyEBpjsa5k6g3xXKLGjNrsX6VG3SuLDvS7vg&s"
+        },
+        {
+          "time": "01:18",
+          "title": "Meet our Expert, Amy Gallo",
+          "link": "https://www.youtube.com/watch?v=3etzKSdtvxE&t=78",
+          "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLqJm5Yg085RTcHSMJAFC84HUjpq5Tb3cu8_Bxswnt7g&s"
+        },
+        {
+          "time": "01:36",
+          "title": "Length",
+          "link": "https://www.youtube.com/watch?v=3etzKSdtvxE&t=96",
+          "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRidlMfC8PC_s18GKJ5d_gaIyWhBGUNujk9EnLCSckMDg&s"
+        },
+        {
+          "time": "01:53",
+          "title": "Do the Research",
+          "link": "https://www.youtube.com/watch?v=3etzKSdtvxE&t=113",
+          "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuKAUdgl87jXPmI6URaGZoBaijR33PQjdPpOT4ebBG_g&s"
+        },
+        {
+          "time": "02:12",
+          "title": "Keep it Current",
+          "link": "https://www.youtube.com/watch?v=3etzKSdtvxE&t=132",
+          "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7nR-ySN32j9oER456mGVrFHYCeD5SDEMJYn22xg6mKg&s"
+        },
+        {
+          "time": "02:30",
+          "title": "Find a Name",
+          "link": "https://www.youtube.com/watch?v=3etzKSdtvxE&t=150",
+          "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQp6r46KAL5M4jCXDAJcNmqERR3jKXQXUPLYZ3AChktQQ&s"
+        },
+        {
+          "time": "03:10",
+          "title": "Start Strong",
+          "link": "https://www.youtube.com/watch?v=3etzKSdtvxE&t=190",
+          "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlw_gfD4eg43dYy-oZUXvpReKe4Wml2fbRrNrFJkZoMQ&s"
+        },
+        {
+          "time": "03:28",
+          "title": "STEAL THIS OPENER",
+          "link": "https://www.youtube.com/watch?v=3etzKSdtvxE&t=208",
+          "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSa6dXqjJw9swzBej8o1X78BGfUUT-_1_ABDW6xLcyFhg&s"
+        },
+        {
+          "time": "03:59",
+          "title": "Emphasize Your Value",
+          "link": "https://www.youtube.com/watch?v=3etzKSdtvxE&t=239",
+          "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxeXnb0l-l6vVZzh3wVrtdFucFWdq7cxTgjKu5rH1fiw&s"
+        },
+        {
+          "time": "04:10",
+          "title": "Two Qualities to Mention",
+          "link": "https://www.youtube.com/watch?v=3etzKSdtvxE&t=250",
+          "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVp4Si0Ibc_AQdhh7qaPAp1g5M9kjcn8nQ-4OClYDO5w&s"
+        },
+        {
+          "time": "04:25",
+          "title": "What if I don't have enough experience??",
+          "link": "https://www.youtube.com/watch?v=3etzKSdtvxE&t=265",
+          "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxXjxRWrA1LZMxnY-QOirpNN6eCXBCfYwxlLW3NCnZCQ&s"
+        },
+        {
+          "time": "04:49",
+          "title": "Convey Enthusiasm, Not Desperation",
+          "link": "https://www.youtube.com/watch?v=3etzKSdtvxE&t=289",
+          "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoZGolUw7J4SeYRPr19f2U1xt6O4dkJ157kYOcHF41yA&s"
+        },
+        {
+          "time": "05:19",
+          "title": "Find a Proofreader",
+          "link": "https://www.youtube.com/watch?v=3etzKSdtvxE&t=319",
+          "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgknA499VI6C9BvBi3W0dJEmbuG9vBd4_JZnC-heWgQQ&s"
+        },
+        {
+          "time": "06:03",
+          "title": "OK, here I go...",
+          "link": "https://www.youtube.com/watch?v=3etzKSdtvxE&t=363",
+          "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzmRoInK5KwghJCAn4gs-hlltm4yEHawplW2f4CzPScw&s"
+        },
+        {
+          "time": "06:37",
+          "title": "Feedback Sesh",
+          "link": "https://www.youtube.com/watch?v=3etzKSdtvxE&t=397",
+          "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSj3zq-XLK5DpA0YjELQZKSrCQbp3kv_91FrrTH7g10Ug&s"
+        },
+        {
+          "time": "07:46",
+          "title": "See the Improvement!",
+          "link": "https://www.youtube.com/watch?v=3etzKSdtvxE&t=466",
+          "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNSYbzPhzhlbyft1RO1y8EVETK1AU0uedJByU-M1ir9g&s"
+        }
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "From doing the research, to starting off strong, to emphasizing your value \u2014 Gallo taught me exactly what I need to do to get my cover letters ...",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8_9hAAAAhUlEQVR4AWNwL_ChCFPHgP8MxqxA7ArEKVBcCcUNIAznI-RdQXrABgAZpv8ZjP6Tg0F6QQbsosCAXSADHmGVVPIC0jKEDHgAMuAbmgRE445D___feYzXIJBeBigH04BVW_9DAcgwqEGYaik2gGIvUByIlEbjDooTEiwps5GRlNmolpkowgBVP9wMSzSKGAAAAABJRU5ErkJggg.png"
+        }
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://www.youtube.com/watch?v=3etzKSdtvxE&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D3etzKSdtvxE",
+      "video_link": "https://encrypted-vtbn0.gstatic.com/video?q=tbn:ANd9GcS5QKVt44NhW7O294UtR2rGu03LAxzaZeLRzw",
+      "source": "YouTube \u00b7 Harvard Business Review"
+    },
+    {
+      "position": 7,
+      "title": "Cover Letter Advice & Samples - Yale Law School",
+      "link": "https://law.yale.edu/student-life/career-development/students/toolkit-student-job-seekers/cover-letter-advice-samples",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://law.yale.edu/student-life/career-development/students/toolkit-student-job-seekers/cover-letter-advice-samples&ved=2ahUKEwjdmsjdn-KVAxXxIkQIHfzQDTsQFnoECCEQAQ",
+      "displayed_link": "https://law.yale.edu \u203a toolkit-student-job-seekers \u203a cove...",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAA4VBMVEX____d5O3P2ufU3-rl6vGlutOuwtjD0eHG1OSIor1rj7N4lbOltsq6y97w9Pj08_Df397t6-m5vcKCkqRog5-Yqb22wMu8zuCVoKx8gIOLkZp3fIRwhZyClqyHl6fGzdVLbZFreorQ1t6Pj5A3PENUaoEyTWkeSXdTgK0_cqgXTIEPTpEWVpZKVGFeaHJSX3FXV1s-SFY4ODlIRkZ4eHmqqan09_vA0eOWr82Fnb9jjbgARYwAR40AO4gAM2AhWpg4a6JDVWwbO1gAIlJ6hZNOYHsALmSrsblgga0ASo8AK1WmAgehAAABc0lEQVR4AaTQhXKDQBRA0RdYiKNx90BfXHC61Ev__3_iLmO9A2NnHf5XhGGvirAsQ47I8dFdsW3RWDyRTHHpI6YF2CVKkiQDKGomm2OOmC8US4ViWVUrVVWtZRW53miesdXudHv9hqbpLzhoZJrdYe2Mymg8mXQ6096sM51P5vO5QmKnPUldBGmxrCvFRbt1uMAJI4YgCEQwjFaLGLuY2Pkq-XzejJl507IPOfwReYYQkqvUiaC5Aw8HLg781AkJgKy-KgDOQKdURz1wuQssdN_e6zsMAg21APkLhNbH6xZxMBhQpIMgdkQ2LX82v75_BHC8AeLmc38JHLM2v_TWU5TtnoGOGNpwimcBlPFHqZwYBFsMqXlGw5ZKn59_P5KDlNIAQ8eAc2ZKFn9K4mbPEBHDAQOX2Zvb_GyvolFEPw5XGXZuY7tHCD0NbiIW2SGl4a8Bt0U4ZoOuN7AFuI_wvOH4AWfAowyG1xMsPItEBFiPWAAAJ440ZZjmkVsAAAAASUVORK5CYII.png",
+      "snippet": "Keep your cover letter to one page. \u00b7 Use the font style and point size that match your resume. \u00b7 Remember that the reader is busy: less is more. \u00b7 Ensure your ...",
+      "snippet_highlighted_words": [
+        "Keep your cover letter to one page"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "Keep your cover letter to one page. \u00b7 Use the font style and point size that match your resume. \u00b7 Remember that the reader is busy: less is more. \u00b7 Ensure your ...",
+          "source_info_link": "https://law.yale.edu/student-life/career-development/students/toolkit-student-job-seekers/cover-letter-advice-samples",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAA4VBMVEX____d5O3P2ufU3-rl6vGlutOuwtjD0eHG1OSIor1rj7N4lbOltsq6y97w9Pj08_Df397t6-m5vcKCkqRog5-Yqb22wMu8zuCVoKx8gIOLkZp3fIRwhZyClqyHl6fGzdVLbZFreorQ1t6Pj5A3PENUaoEyTWkeSXdTgK0_cqgXTIEPTpEWVpZKVGFeaHJSX3FXV1s-SFY4ODlIRkZ4eHmqqan09_vA0eOWr82Fnb9jjbgARYwAR40AO4gAM2AhWpg4a6JDVWwbO1gAIlJ6hZNOYHsALmSrsblgga0ASo8AK1WmAgehAAABc0lEQVR4AaTQhXKDQBRA0RdYiKNx90BfXHC61Ev__3_iLmO9A2NnHf5XhGGvirAsQ47I8dFdsW3RWDyRTHHpI6YF2CVKkiQDKGomm2OOmC8US4ViWVUrVVWtZRW53miesdXudHv9hqbpLzhoZJrdYe2Mymg8mXQ6096sM51P5vO5QmKnPUldBGmxrCvFRbt1uMAJI4YgCEQwjFaLGLuY2Pkq-XzejJl507IPOfwReYYQkqvUiaC5Aw8HLg781AkJgKy-KgDOQKdURz1wuQssdN_e6zsMAg21APkLhNbH6xZxMBhQpIMgdkQ2LX82v75_BHC8AeLmc38JHLM2v_TWU5TtnoGOGNpwimcBlPFHqZwYBFsMqXlGw5ZKn59_P5KDlNIAQ8eAc2ZKFn9K4mbPEBHDAQOX2Zvb_GyvolFEPw5XGXZuY7tHCD0NbiIW2SGl4a8Bt0U4ZoOuN7AFuI_wvOH4AWfAowyG1xMsPItEBFiPWAAAJ440ZZjmkVsAAAAASUVORK5CYII.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://law.yale.edu/student-life/career-development/students/toolkit-student-job-seekers/cover-letter-advice-samples&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Flaw.yale.edu%2Fstudent-life%2Fcareer-development%2Fstudents%2Ftoolkit-student-job-seekers%2Fcover-letter-advice-samples",
+      "source": "Yale Law School",
+      "read_more_link": "https://law.yale.edu/student-life/career-development/students/toolkit-student-job-seekers/cover-letter-advice-samples#:~:text=Keep%20your%20cover%20letter%20to,one%20page.&text=Use%20the%20font%20style%20and,size%20that%20match%20your%20resume.&text=Remember%20that%20the%20reader%20is,busy%3A%20less%20is%20more.&text=Ensure%20your%20cover%20letter%20is,error%20free."
+    },
+    {
+      "position": 8,
+      "title": "Free cover letter templates",
+      "link": "https://word.cloud.microsoft/create/en/cover-letter-templates/",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://word.cloud.microsoft/create/en/cover-letter-templates/&ved=2ahUKEwjdmsjdn-KVAxXxIkQIHfzQDTsQFnoECBwQAQ",
+      "displayed_link": "https://word.cloud.microsoft \u203a create \u203a cover-letter-templ...",
+      "favicon": "https://serpapi.com/searches/6a5e99946feec4319bec5a77/images/XeWgdlfBAi3OH1JVxmvEKYCMcrRoR8MSYoj5ZBLFLqk.png",
+      "snippet": "Create a cover letter with a simplistic format and layout to make a good first impression. Easily customize fonts, color schemes, and design. Simple UI/UX ...",
+      "snippet_highlighted_words": [
+        "Create a cover letter with a simplistic format and layout"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "Create a cover letter with a simplistic format and layout to make a good first impression. Easily customize fonts, color schemes, and design. Simple UI/UX ...",
+          "source_info_link": "https://word.cloud.microsoft/create/en/cover-letter-templates/",
+          "icon": "https://serpapi.com/searches/6a5e99946feec4319bec5a77/images/XeWgdlfBAi3OH1JVxmvEKWD0eXCt1HGxfMUId6dTurQG6aLzuxxJaMsQ9Ai7wesu.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://word.cloud.microsoft/create/en/cover-letter-templates/&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fword.cloud.microsoft%2Fcreate%2Fen%2Fcover-letter-templates%2F",
+      "source": "Microsoft Word",
+      "read_more_link": "https://word.cloud.microsoft/create/en/cover-letter-templates/#:~:text=Create%20a%20cover%20letter%20with,Simple%20UI%2FUX%20designer%20cover%20letter"
+    }
+  ],
+  "related_searches": [
+    {
+      "block_position": 1,
+      "query": "How to write a cover letter examples",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&q=How+to+write+a+cover+letter+examples&sa=X&ved=2ahUKEwjdmsjdn-KVAxXxIkQIHfzQDTsQ1QJ6BAg7EAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=How+to+write+a+cover+letter+examples"
+    },
+    {
+      "block_position": 1,
+      "query": "Sample cover letter for job application",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&q=Sample+cover+letter+for+job+application&sa=X&ved=2ahUKEwjdmsjdn-KVAxXxIkQIHfzQDTsQ1QJ6BAhIEAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Sample+cover+letter+for+job+application"
+    },
+    {
+      "block_position": 1,
+      "query": "Cover letter template",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&q=Cover+letter+template&sa=X&ved=2ahUKEwjdmsjdn-KVAxXxIkQIHfzQDTsQ1QJ6BAhHEAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Cover+letter+template"
+    },
+    {
+      "block_position": 1,
+      "query": "How to write a cover letter for an internship",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&q=How+to+write+a+cover+letter+for+an+internship&sa=X&ved=2ahUKEwjdmsjdn-KVAxXxIkQIHfzQDTsQ1QJ6BAhFEAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=How+to+write+a+cover+letter+for+an+internship"
+    },
+    {
+      "block_position": 1,
+      "query": "How to write a cover letter for a job with no experience",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&q=How+to+write+a+cover+letter+for+a+job+with+no+experience&sa=X&ved=2ahUKEwjdmsjdn-KVAxXxIkQIHfzQDTsQ1QJ6BAhCEAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=How+to+write+a+cover+letter+for+a+job+with+no+experience"
+    },
+    {
+      "block_position": 1,
+      "query": "Cover letter for CV",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&q=Cover+letter+for+CV&sa=X&ved=2ahUKEwjdmsjdn-KVAxXxIkQIHfzQDTsQ1QJ6BAhBEAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Cover+letter+for+CV"
+    },
+    {
+      "block_position": 1,
+      "query": "How to write a cover letter reddit",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&q=How+to+write+a+cover+letter+reddit&sa=X&ved=2ahUKEwjdmsjdn-KVAxXxIkQIHfzQDTsQ1QJ6BAg-EAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=How+to+write+a+cover+letter+reddit"
+    },
+    {
+      "block_position": 1,
+      "query": "ChatGPT cover letter",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&q=ChatGPT+cover+letter&sa=X&ved=2ahUKEwjdmsjdn-KVAxXxIkQIHfzQDTsQ1QJ6BAg8EAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=ChatGPT+cover+letter"
+    }
+  ],
+  "pagination": {
+    "current": 1,
+    "next": "https://www.google.com/search?q=how+to+write+a+cover+letter&sca_esv=3271cc0dab4982ea&ei=oZleap3GBPHFkPIP_KG32AM&start=10&sa=N&sstk=AU9db-Dz3W9dNkzMkkStokYeueM6sp55hQhJ4tvaccR7d79zR9iVXCzC5tQt-5uMdZ-dxfVbDiQqyKLSZnfsEs-wsIrSUzLyv3DlHQ&ved=2ahUKEwjdmsjdn-KVAxXxIkQIHfzQDTsQ8NMDegQISRAW",
+    "other_pages": {
+      "2": "https://www.google.com/search?q=how+to+write+a+cover+letter&sca_esv=3271cc0dab4982ea&ei=oZleap3GBPHFkPIP_KG32AM&start=10&sa=N&sstk=AU9db-Dz3W9dNkzMkkStokYeueM6sp55hQhJ4tvaccR7d79zR9iVXCzC5tQt-5uMdZ-dxfVbDiQqyKLSZnfsEs-wsIrSUzLyv3DlHQ&ved=2ahUKEwjdmsjdn-KVAxXxIkQIHfzQDTsQ8tMDegQISRAE",
+      "3": "https://www.google.com/search?q=how+to+write+a+cover+letter&sca_esv=3271cc0dab4982ea&ei=oZleap3GBPHFkPIP_KG32AM&start=20&sa=N&sstk=AU9db-Dz3W9dNkzMkkStokYeueM6sp55hQhJ4tvaccR7d79zR9iVXCzC5tQt-5uMdZ-dxfVbDiQqyKLSZnfsEs-wsIrSUzLyv3DlHQ&ved=2ahUKEwjdmsjdn-KVAxXxIkQIHfzQDTsQ8tMDegQISRAG",
+      "4": "https://www.google.com/search?q=how+to+write+a+cover+letter&sca_esv=3271cc0dab4982ea&ei=oZleap3GBPHFkPIP_KG32AM&start=30&sa=N&sstk=AU9db-Dz3W9dNkzMkkStokYeueM6sp55hQhJ4tvaccR7d79zR9iVXCzC5tQt-5uMdZ-dxfVbDiQqyKLSZnfsEs-wsIrSUzLyv3DlHQ&ved=2ahUKEwjdmsjdn-KVAxXxIkQIHfzQDTsQ8tMDegQISRAI",
+      "5": "https://www.google.com/search?q=how+to+write+a+cover+letter&sca_esv=3271cc0dab4982ea&ei=oZleap3GBPHFkPIP_KG32AM&start=40&sa=N&sstk=AU9db-Dz3W9dNkzMkkStokYeueM6sp55hQhJ4tvaccR7d79zR9iVXCzC5tQt-5uMdZ-dxfVbDiQqyKLSZnfsEs-wsIrSUzLyv3DlHQ&ved=2ahUKEwjdmsjdn-KVAxXxIkQIHfzQDTsQ8tMDegQISRAK",
+      "6": "https://www.google.com/search?q=how+to+write+a+cover+letter&sca_esv=3271cc0dab4982ea&ei=oZleap3GBPHFkPIP_KG32AM&start=50&sa=N&sstk=AU9db-Dz3W9dNkzMkkStokYeueM6sp55hQhJ4tvaccR7d79zR9iVXCzC5tQt-5uMdZ-dxfVbDiQqyKLSZnfsEs-wsIrSUzLyv3DlHQ&ved=2ahUKEwjdmsjdn-KVAxXxIkQIHfzQDTsQ8tMDegQISRAM",
+      "7": "https://www.google.com/search?q=how+to+write+a+cover+letter&sca_esv=3271cc0dab4982ea&ei=oZleap3GBPHFkPIP_KG32AM&start=60&sa=N&sstk=AU9db-Dz3W9dNkzMkkStokYeueM6sp55hQhJ4tvaccR7d79zR9iVXCzC5tQt-5uMdZ-dxfVbDiQqyKLSZnfsEs-wsIrSUzLyv3DlHQ&ved=2ahUKEwjdmsjdn-KVAxXxIkQIHfzQDTsQ8tMDegQISRAO",
+      "8": "https://www.google.com/search?q=how+to+write+a+cover+letter&sca_esv=3271cc0dab4982ea&ei=oZleap3GBPHFkPIP_KG32AM&start=70&sa=N&sstk=AU9db-Dz3W9dNkzMkkStokYeueM6sp55hQhJ4tvaccR7d79zR9iVXCzC5tQt-5uMdZ-dxfVbDiQqyKLSZnfsEs-wsIrSUzLyv3DlHQ&ved=2ahUKEwjdmsjdn-KVAxXxIkQIHfzQDTsQ8tMDegQISRAQ",
+      "9": "https://www.google.com/search?q=how+to+write+a+cover+letter&sca_esv=3271cc0dab4982ea&ei=oZleap3GBPHFkPIP_KG32AM&start=80&sa=N&sstk=AU9db-Dz3W9dNkzMkkStokYeueM6sp55hQhJ4tvaccR7d79zR9iVXCzC5tQt-5uMdZ-dxfVbDiQqyKLSZnfsEs-wsIrSUzLyv3DlHQ&ved=2ahUKEwjdmsjdn-KVAxXxIkQIHfzQDTsQ8tMDegQISRAS",
+      "10": "https://www.google.com/search?q=how+to+write+a+cover+letter&sca_esv=3271cc0dab4982ea&ei=oZleap3GBPHFkPIP_KG32AM&start=90&sa=N&sstk=AU9db-Dz3W9dNkzMkkStokYeueM6sp55hQhJ4tvaccR7d79zR9iVXCzC5tQt-5uMdZ-dxfVbDiQqyKLSZnfsEs-wsIrSUzLyv3DlHQ&ved=2ahUKEwjdmsjdn-KVAxXxIkQIHfzQDTsQ8tMDegQISRAU"
+    }
+  },
+  "serpapi_pagination": {
+    "current": 1,
+    "next_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=how+to+write+a+cover+letter&start=10",
+    "next": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=how+to+write+a+cover+letter&start=10",
+    "other_pages": {
+      "2": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=how+to+write+a+cover+letter&start=10",
+      "3": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=how+to+write+a+cover+letter&start=20",
+      "4": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=how+to+write+a+cover+letter&start=30",
+      "5": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=how+to+write+a+cover+letter&start=40",
+      "6": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=how+to+write+a+cover+letter&start=50",
+      "7": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=how+to+write+a+cover+letter&start=60",
+      "8": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=how+to+write+a+cover+letter&start=70",
+      "9": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=how+to+write+a+cover+letter&start=80",
+      "10": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=how+to+write+a+cover+letter&start=90"
+    }
+  }
+}

@@ -1,0 +1,694 @@
+{
+  "search_metadata": {
+    "id": "search_JBAO2bkaoPugNRVgY4n7XajE",
+    "status": "Success",
+    "created_at": "2026-07-20T22:03:24Z",
+    "request_time_taken": 2.16,
+    "parsing_time_taken": 0.16,
+    "total_time_taken": 2.32,
+    "request_url": "https://www.google.com/search?q=MacBook+Air+vs+Pro+for+programming&oq=MacBook+Air+vs+Pro+for+programming&gl=us&hl=en",
+    "html_url": "https://www.searchapi.io/api/v1/searches/search_JBAO2bkaoPugNRVgY4n7XajE.html",
+    "json_url": "https://www.searchapi.io/api/v1/searches/search_JBAO2bkaoPugNRVgY4n7XajE"
+  },
+  "search_parameters": {
+    "engine": "google",
+    "q": "MacBook Air vs Pro for programming",
+    "device": "desktop",
+    "hl": "en",
+    "gl": "us"
+  },
+  "search_information": {
+    "query_displayed": "MacBook Air vs Pro for programming",
+    "total_results": 162,
+    "time_taken_displayed": 0.36,
+    "detected_location": "Unknown",
+    "has_no_results_for": false
+  },
+  "ai_overview": {
+    "text_blocks": [
+      {
+        "type": "paragraph",
+        "answer": "Choose a MacBook Air for maximum portability, all-day battery life, and excellent performance for general web development. Opt for a MacBook Pro if you need active cooling for sustained heavy workloads (like compiling massive codebases or running local AI models), extra ports, or support for multiple external displays right out of the box.",
+        "reference_indexes": [
+          0,
+          6,
+          7,
+          2,
+          4
+        ]
+      },
+      {
+        "type": "header",
+        "answer": "When to Choose the MacBook Air"
+      },
+      {
+        "type": "paragraph",
+        "answer": "The MacBook Air is an exceptional machine for most software engineers, frontend developers, and students.",
+        "reference_indexes": [
+          7
+        ]
+      },
+      {
+        "type": "paragraph",
+        "answer": "Portability: Weighing about 2.7 to 3.3 pounds (depending on the 13-inch or 15-inch model), it is much easier to carry in a backpack for commuting or travel.",
+        "reference_indexes": [
+          1,
+          4
+        ]
+      },
+      {
+        "type": "header",
+        "answer": "When to Choose the MacBook Pro"
+      },
+      {
+        "type": "paragraph",
+        "answer": "The MacBook Pro is built for power users who push their machines to the limit."
+      },
+      {
+        "type": "paragraph",
+        "answer": "Sustained Heavy Loads: If you run Docker containers, multiple backend APIs, and iOS simulators simultaneously, the Pro\u2019s built-in fan (active cooling) prevents thermal throttling.",
+        "reference_indexes": [
+          0,
+          5
+        ]
+      },
+      {
+        "type": "header",
+        "answer": "Crucial Specs for Programming"
+      },
+      {
+        "type": "paragraph",
+        "answer": "Regardless of which model you choose, spec appropriately for development:"
+      },
+      {
+        "type": "paragraph",
+        "answer": "RAM (Unified Memory): Get a minimum of 24GB to 32GB if you plan to use resource-heavy tools like Docker, local LLMs, or multiple IDE instances simultaneously. 16GB is considered the absolute baseline for modern development tasks and can easily max out during intensive workflows.",
+        "reference_indexes": [
+          0,
+          3
+        ]
+      },
+      {
+        "type": "video",
+        "link": "https://www.youtube.com/watch?v=Ph9nzJxRlkY&t=10"
+      }
+    ],
+    "markdown": "Choose a MacBook Air for maximum portability, all-day battery life, and excellent performance for general web development. Opt for a MacBook Pro if you need active cooling for sustained heavy workloads (like compiling massive codebases or running local AI models), extra ports, or support for multiple external displays right out of the box. [0](https://www.reddit.com/r/macbook/comments/1q5myrj/macbook_air_vs_macbook_pro_for_a_software/) [6](https://www.creativebloq.com/buying-guides/best-macbook-for-programming) [7](https://forum.freecodecamp.org/t/macbook-pro-vs-macbook-air/7122) [2](https://discussions.apple.com/thread/255298442) [4](https://www.youtube.com/watch?v=xb19sZW7fHg&t=22)\n\n## When to Choose the MacBook Air\n\nThe MacBook Air is an exceptional machine for most software engineers, frontend developers, and students. [7](https://forum.freecodecamp.org/t/macbook-pro-vs-macbook-air/7122)\n\nPortability: Weighing about 2.7 to 3.3 pounds (depending on the 13-inch or 15-inch model), it is much easier to carry in a backpack for commuting or travel. [1](https://www.youtube.com/watch?v=Ph9nzJxRlkY&t=10) [4](https://www.youtube.com/watch?v=xb19sZW7fHg&t=22)\n\n## When to Choose the MacBook Pro\n\nThe MacBook Pro is built for power users who push their machines to the limit.\n\nSustained Heavy Loads: If you run Docker containers, multiple backend APIs, and iOS simulators simultaneously, the Pro\u2019s built-in fan (active cooling) prevents thermal throttling. [0](https://www.reddit.com/r/macbook/comments/1q5myrj/macbook_air_vs_macbook_pro_for_a_software/) [5](https://www.youtube.com/watch?v=Z5-TfHbO58Y&t=59)\n\n## Crucial Specs for Programming\n\nRegardless of which model you choose, spec appropriately for development:\n\nRAM (Unified Memory): Get a minimum of 24GB to 32GB if you plan to use resource-heavy tools like Docker, local LLMs, or multiple IDE instances simultaneously. 16GB is considered the absolute baseline for modern development tasks and can easily max out during intensive workflows. [0](https://www.reddit.com/r/macbook/comments/1q5myrj/macbook_air_vs_macbook_pro_for_a_software/) [3](https://www.quora.com/Is-any-MacBook-pro-or-air-good-for-programming-if-so-which-one-and-any-other-good-recommendations)\n\n[[0] - ](https://www.reddit.com/r/macbook/comments/1q5myrj/macbook_air_vs_macbook_pro_for_a_software/)\n[[1] - ](https://www.youtube.com/watch?v=Ph9nzJxRlkY&t=10)\n[[2] - ](https://discussions.apple.com/thread/255298442)\n[[3] - ](https://www.quora.com/Is-any-MacBook-pro-or-air-good-for-programming-if-so-which-one-and-any-other-good-recommendations)\n[[4] - ](https://www.youtube.com/watch?v=xb19sZW7fHg&t=22)\n[[5] - ](https://www.youtube.com/watch?v=Z5-TfHbO58Y&t=59)\n[[6] - ](https://www.creativebloq.com/buying-guides/best-macbook-for-programming)\n[[7] - ](https://forum.freecodecamp.org/t/macbook-pro-vs-macbook-air/7122)\n[[8] - ](https://www.youtube.com/watch?v=Ph9nzJxRlkY)",
+    "reference_links": [
+      {
+        "index": 0,
+        "link": "https://www.reddit.com/r/macbook/comments/1q5myrj/macbook_air_vs_macbook_pro_for_a_software/",
+        "favicon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.reddit.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+      },
+      {
+        "index": 1,
+        "link": "https://www.youtube.com/watch?v=Ph9nzJxRlkY&t=10",
+        "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAhUlEQVR4AWNwL/ChCFPHgP8MxqxA7ArEKVBcCcUNIAznI+RdQXrABgAZpv8ZjP6Tg0F6QQbsosCAXSADHmGVVPIC0jKEDHgAMuAbmgRE445D///feYzXIJBeBigH04BVW/9DAcgwqEGYaik2gGIvUByIlEbjDooTEiwps5GRlNmolpkowgBVP9wMSzSKGAAAAABJRU5ErkJggg=="
+      },
+      {
+        "index": 2,
+        "link": "https://discussions.apple.com/thread/255298442",
+        "favicon": "https://encrypted-tbn3.gstatic.com/faviconV2?url=https://discussions.apple.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+      },
+      {
+        "index": 3,
+        "link": "https://www.quora.com/Is-any-MacBook-pro-or-air-good-for-programming-if-so-which-one-and-any-other-good-recommendations",
+        "favicon": "https://encrypted-tbn3.gstatic.com/faviconV2?url=https://www.quora.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+      },
+      {
+        "index": 4,
+        "link": "https://www.youtube.com/watch?v=xb19sZW7fHg&t=22",
+        "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAhUlEQVR4AWNwL/ChCFPHgP8MxqxA7ArEKVBcCcUNIAznI+RdQXrABgAZpv8ZjP6Tg0F6QQbsosCAXSADHmGVVPIC0jKEDHgAMuAbmgRE445D///feYzXIJBeBigH04BVW/9DAcgwqEGYaik2gGIvUByIlEbjDooTEiwps5GRlNmolpkowgBVP9wMSzSKGAAAAABJRU5ErkJggg=="
+      },
+      {
+        "index": 5,
+        "link": "https://www.youtube.com/watch?v=Z5-TfHbO58Y&t=59",
+        "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAhUlEQVR4AWNwL/ChCFPHgP8MxqxA7ArEKVBcCcUNIAznI+RdQXrABgAZpv8ZjP6Tg0F6QQbsosCAXSADHmGVVPIC0jKEDHgAMuAbmgRE445D///feYzXIJBeBigH04BVW/9DAcgwqEGYaik2gGIvUByIlEbjDooTEiwps5GRlNmolpkowgBVP9wMSzSKGAAAAABJRU5ErkJggg=="
+      },
+      {
+        "index": 6,
+        "link": "https://www.creativebloq.com/buying-guides/best-macbook-for-programming",
+        "favicon": "https://encrypted-tbn1.gstatic.com/faviconV2?url=https://www.creativebloq.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+      },
+      {
+        "index": 7,
+        "link": "https://forum.freecodecamp.org/t/macbook-pro-vs-macbook-air/7122",
+        "favicon": "https://encrypted-tbn1.gstatic.com/faviconV2?url=https://forum.freecodecamp.org&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+      },
+      {
+        "index": 8,
+        "link": "https://www.youtube.com/watch?v=Ph9nzJxRlkY",
+        "favicon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.youtube.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+      }
+    ]
+  },
+  "organic_results": [
+    {
+      "position": 1,
+      "title": "MacBook Air vs MacBook Pro for a Software Engineer ...",
+      "link": "https://www.reddit.com/r/macbook/comments/1q5myrj/macbook_air_vs_macbook_pro_for_a_software/",
+      "source": "Reddit \u00b7 r/macbook",
+      "domain": "www.reddit.com",
+      "displayed_link": "30+ comments  \u00b7  6 months ago",
+      "snippet": "With chips aside, the main advantage the pro has over the air is that it has a fan. So it's better at sustained performance compared to the air, ...",
+      "snippet_highlighted_words": [
+        "pro",
+        "air",
+        "air"
+      ],
+      "sitelinks": {
+        "list": [
+          {
+            "title": "Should I get a Macbook Air or a Pro : r/AskProgramming",
+            "link": "https://www.reddit.com/r/AskProgramming/comments/1bxt3me/should_i_get_a_macbook_air_or_a_pro/",
+            "answer_count": 25,
+            "date": "Apr 7, 2024"
+          },
+          {
+            "title": "Should I get an macbook air or the pro for coding?",
+            "link": "https://www.reddit.com/r/macbookpro/comments/1kqcpwz/should_i_get_an_macbook_air_or_the_pro_for_coding/",
+            "answer_count": 57,
+            "date": "May 19, 2025"
+          }
+        ]
+      },
+      "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAhFBMVEVHcEz/RQD/RQD/RQD/RQD/RQD/RQD/RQD/RQD/PQD/NgD+XS32dlf5vK3////64dusLADUz9H+jXLOPAoSHiFrLBm3uLn3/f7jVS/b6e77pJDJo6H718//RQDw9ffs5+jm8fPIXlHqKwD5+PjolIP/VgP/SQLQ2uAyODvQ4ekABAhqcHK4ptuCAAAAHnRSTlMAPobB7P9mHdb//////////////////////////8J6YdtgAAABWUlEQVR4AWySYZNDMBCGWyw2SI9TGnWqILT////dm6Enc+MZH8Qz2V3Je/rj7Lgekec659N/fIgPnn+yCULaYaYwsCqShYhiQXQ+dJxIedltQDZfqZQyY6K1st3vO78WsiyNDI3zySK/caJUygTMzN7eTnxdBXMcb3+0TsMC30RUJfciqSIs8JCZycHwWV1n2UVuXDKzxsDOySWu5AGVoB/TUh5imhJFpQTNfav7uDcSlBERJLUN9LOLewn6LnpCNS0EyvKg+vLRjVRLUIuxe8hSDYyyLqatyr68jdO6cxpvWGIeDOQQujagNs7YuumbJmYiZz0E3aJvMc95Ps8F+rV6PQQ0JY4XpVqVv0Cu2lYps9HbDp6HRS9Kv1+vt1Z4HeDI/1yZiFMNFIzWqYkChftl8zSkegE6HSYmENgxYYQHRGzUHiLHyh3ModvZo7nHxA71ofwdSnYAAPpVIo4RUPiIAAAAAElFTkSuQmCC"
+    },
+    {
+      "position": 2,
+      "title": "MacBook Pro vs. MacBook Air: A Developer's Take from ...",
+      "link": "https://medium.com/@universe3523/macbook-pro-vs-macbook-air-a-developers-take-from-daily-use-e9dc59dd1d56",
+      "source": "Medium \u00b7 Wataru Takahashi",
+      "domain": "medium.com",
+      "displayed_link": "10+ likes  \u00b7  1 year ago",
+      "snippet": "16\" MacBook Pro for heavy lifting and a 13\" MacBook Air for ultra-light portability. handles video calls and Google Docs. Air's passive cooling ...",
+      "snippet_highlighted_words": [
+        "MacBook Pro",
+        "MacBook Air",
+        "Air's"
+      ],
+      "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAARVBMVEVHcEwAAAAAAAAAAAAAAAAAAABwcHCoqKifn58bGxt8fHzKysr///8rKyv5+fnW1tbp6emQkJCsrKxaWlq0tLTBwcE+Pj777dpoAAAABnRSTlMAS8D5/5mXKh4CAAAA3ElEQVR4AXzRUQ6EIAwEUNRZClgFQb3/UbfQEDUbd76qL5WMGGOGccJPpnEwkg9e8pE9vGYw4zuOZnrHyeBPFC055zw0wTkKN8TMzEHHZWWOuCMJJh03QXpgrlr0IzLmB+6L4KzHZ0Ub947+EF3q4rI3zByuzSLogDOiYeCICxGZVxmsYuR8x9DaJFQkL3UoX+iTvNg2xbPVvrB37ZgfeGr7/tl0Q/2HXjEjSe0HWnlWJGz1DEXEAsla2lyXcIj2K6O6Wvr1kQXCnL7DG9l4kwneBIY3aeJN1HizAwDOfRO3mlC3PQAAAABJRU5ErkJggg=="
+    },
+    {
+      "position": 3,
+      "title": "Best MacBook for Coding: A Developer's Choice - Faizan Saghir",
+      "link": "https://naumanahmad86.medium.com/best-macbook-for-coding-a-developers-choice-8a001fbb10c4",
+      "source": "Medium \u00b7 Faizan Saghir",
+      "domain": "naumanahmad86.medium.com",
+      "displayed_link": "110+ likes  \u00b7  1 year ago",
+      "snippet": "The MacBook Air M3 is arguably the best MacBook for coding because it strikes an ideal balance between power, portability, and battery life.",
+      "snippet_highlighted_words": [
+        "The MacBook Air M3 is arguably the best MacBook for coding"
+      ],
+      "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAARVBMVEVHcEwAAAAAAAAAAAAAAAAAAABwcHCoqKifn58bGxt8fHzKysr///8rKyv5+fnW1tbp6emQkJCsrKxaWlq0tLTBwcE+Pj777dpoAAAABnRSTlMAS8D5/5mXKh4CAAAA3ElEQVR4AXzRUQ6EIAwEUNRZClgFQb3/UbfQEDUbd76qL5WMGGOGccJPpnEwkg9e8pE9vGYw4zuOZnrHyeBPFC055zw0wTkKN8TMzEHHZWWOuCMJJh03QXpgrlr0IzLmB+6L4KzHZ0Ub947+EF3q4rI3zByuzSLogDOiYeCICxGZVxmsYuR8x9DaJFQkL3UoX+iTvNg2xbPVvrB37ZgfeGr7/tl0Q/2HXjEjSe0HWnlWJGz1DEXEAsla2lyXcIj2K6O6Wvr1kQXCnL7DG9l4kwneBIY3aeJN1HizAwDOfRO3mlC3PQAAAABJRU5ErkJggg=="
+    },
+    {
+      "position": 4,
+      "title": "Macbook Pro vs Macbook Air",
+      "link": "https://discussions.apple.com/thread/255298442",
+      "source": "Apple Support Community",
+      "domain": "discussions.apple.com",
+      "displayed_link": "https://discussions.apple.com \u203a thread",
+      "snippet": "Hi, I am new here and want to buy a Macbook. I'm a Software Engineer working as a Hybrid Mobile Application developer for Android and iOS. I want ...",
+      "date": "Nov 24, 2023",
+      "rich_snippet": {
+        "detected_extensions": {
+          "answer_link": "https://discussions.apple.com/thread/255298442?answerId=259863736022#259863736022",
+          "answer_count": 9,
+          "top_answer": "Hi techzohaib, What you're referring to as memory is actually storage. The RAM inside your Mac is its real memory. If you're planning to use a Mac for ..."
+        }
+      },
+      "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcBAMAAACAI8KnAAAAJFBMVEVHcEyIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIg4b+mqAAAADHRSTlMAG3lfCyvB/6bmQ482zWjNAAAAiElEQVR4AWPAAYRMkHms6S3IXLFyA2SuepkAMnd6KoLNEshgxbgQxmNsL58UNL18FpQrWQ4GMMPSIbyyBWAeF1SyFCLJDeU2QLgcqFrZoNwFqLIbUPVOgHCZodxqAYijpqOqbodyEyDccKxmVQpA/QdxdBXMh2Hl09qmVyrAw017CUPQLgYKAQBqUUNCpQHnnQAAAABJRU5ErkJggg=="
+    },
+    {
+      "position": 5,
+      "title": "Is any MacBook (pro or air) good for programming, if so ...",
+      "link": "https://www.quora.com/Is-any-MacBook-pro-or-air-good-for-programming-if-so-which-one-and-any-other-good-recommendations",
+      "source": "Quora",
+      "domain": "www.quora.com",
+      "displayed_link": "7 answers  \u00b7  2 years ago",
+      "snippet": "Is any MacBook (pro or air) good for programming, if so which one and any other good recommendations?",
+      "rich_snippet": {
+        "detected_extensions": {
+          "answer_link": "https://www.quora.com/Is-any-MacBook-pro-or-air-good-for-programming-if-so-which-one-and-any-other-good-recommendations?top_ans=14345145",
+          "answer_count": 7,
+          "top_answer": "I'd strongly recommend the MacBook Pro. Although the MacBook Air is a solid package, ..."
+        }
+      },
+      "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcBAMAAACAI8KnAAAAMFBMVEVHcEy4Kia5Kie5Kie5Kia5Kie5Kye5Kya5Kia5Kya5Kye5Kye5Kia5Kie5Kye4KybpLYg9AAAAEHRSTlMADBsoY5+1xoDS+f/mdeg3NaD4rAAAALBJREFUeAFjIAIwKhsJIHjMrullIQZwuc7Vu3fvmgGTFwfygPxCqOTs3WCwUwAiuXv3ntirp3fvhkh37d7XyMAg8Xr3CrCxs3cfAdF+u3eCDGdZvbsBxOXYvcsBSInu3iMANvH07kAgpbZ7K8SG6N1JQNJ8914I9/buYjQummI0o9AsgjjjCcwZEEfugToS1QuJKB7cPR/mfaiHP8ADBwyS4EFXDgKN8IA1BgEBAuEPAM0eYq2VgXsvAAAAAElFTkSuQmCC"
+    },
+    {
+      "position": 6,
+      "title": "The best MacBooks for programming: Large screens ...",
+      "link": "https://www.creativebloq.com/buying-guides/best-macbook-for-programming",
+      "source": "Creative Bloq",
+      "domain": "www.creativebloq.com",
+      "displayed_link": "https://www.creativebloq.com \u203a ... \u203a Laptops",
+      "snippet": "Overall, we recommend MacBook Airs as the best MacBooks for programming because they're cheaper, lighter and still have more than enough power.",
+      "snippet_highlighted_words": [
+        "MacBook Airs"
+      ],
+      "date": "May 21, 2026",
+      "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAeFBMVEXpThvpThrpTRboQQDkOwDoRQDkSSTwuLL55+f77+744uHtpZ3lQATjSyn////99vbkRx/219XlW0DpSQvpgXHvq6PjQxjzyMTywLvlVjjnb1rpShDoOQDwt7HsnZPpg3PmJgDlVDXfLgD1z8vslorrj4Lrk4foeGYChMNTAAAA3UlEQVR4AaWSBZbAIAwFS0Ld3d3uf8Ml9XWb2n8dHKR/wxg7v8TDAHJCFv/4DsLlFFXTdd0wLbAdl9BV77CMG86OirZz4PO9aQicE0u5or1XDSOR4yQVb4VklmfiXZS3jCrzlHXVvJEtXlL9s6w7kjk8ZGj3fS/RVLTUdRyDs6cEgiSRDiA9ZYmIp3xbU47SdOypz7Ed3w1oolHs85y3pj6U6iajn8oIl6vZd9JM1FNmOcW1fLtlinLFHt5s9sjfbbYEdqqLs6HVSWm7OiEivDlgCO8P2HUiz0Dpn7wAedwdMqfKC+kAAAAASUVORK5CYII="
+    },
+    {
+      "position": 7,
+      "title": "MacBook Air or MacBook Pro for software d\u2026",
+      "link": "https://discussions.apple.com/thread/256268189",
+      "source": "Apple Support Community",
+      "domain": "discussions.apple.com",
+      "displayed_link": "https://discussions.apple.com \u203a thread",
+      "snippet": "So, a 15\" M5 MacBook Air should not be much of a problem. You would get faster builds with a MacBook Pro with an M5 Pro chip but depending on ...",
+      "snippet_highlighted_words": [
+        "MacBook Air",
+        "Pro",
+        "Pro"
+      ],
+      "date": "Mar 24, 2026",
+      "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcBAMAAACAI8KnAAAAJFBMVEVHcEyIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIg4b+mqAAAADHRSTlMAG3lfCyvB/6bmQ482zWjNAAAAiElEQVR4AWPAAYRMkHms6S3IXLFyA2SuepkAMnd6KoLNEshgxbgQxmNsL58UNL18FpQrWQ4GMMPSIbyyBWAeF1SyFCLJDeU2QLgcqFrZoNwFqLIbUPVOgHCZodxqAYijpqOqbodyEyDccKxmVQpA/QdxdBXMh2Hl09qmVyrAw017CUPQLgYKAQBqUUNCpQHnnQAAAABJRU5ErkJggg=="
+    }
+  ],
+  "related_questions": [
+    {
+      "is_ai_overview": true,
+      "question": "Which MacBook is best for coders?",
+      "text_blocks": [
+        {
+          "type": "paragraph",
+          "answer": "Choose a MacBook Air for maximum portability, all-day battery life, and excellent performance for general web development. Opt for a MacBook Pro if you need active cooling for sustained heavy workloads (like compiling massive codebases or running local AI models), extra ports, or support for multiple external displays right out of the box.",
+          "reference_indexes": [
+            0,
+            6,
+            7,
+            2,
+            4
+          ]
+        },
+        {
+          "type": "header",
+          "answer": "When to Choose the MacBook Air"
+        },
+        {
+          "type": "paragraph",
+          "answer": "The MacBook Air is an exceptional machine for most software engineers, frontend developers, and students.",
+          "reference_indexes": [
+            7
+          ]
+        },
+        {
+          "type": "paragraph",
+          "answer": "Portability: Weighing about 2.7 to 3.3 pounds (depending on the 13-inch or 15-inch model), it is much easier to carry in a backpack for commuting or travel.",
+          "reference_indexes": [
+            1,
+            4
+          ]
+        },
+        {
+          "type": "header",
+          "answer": "When to Choose the MacBook Pro"
+        },
+        {
+          "type": "paragraph",
+          "answer": "The MacBook Pro is built for power users who push their machines to the limit."
+        },
+        {
+          "type": "paragraph",
+          "answer": "Sustained Heavy Loads: If you run Docker containers, multiple backend APIs, and iOS simulators simultaneously, the Pro\u2019s built-in fan (active cooling) prevents thermal throttling.",
+          "reference_indexes": [
+            0,
+            5
+          ]
+        },
+        {
+          "type": "header",
+          "answer": "Crucial Specs for Programming"
+        },
+        {
+          "type": "paragraph",
+          "answer": "Regardless of which model you choose, spec appropriately for development:"
+        },
+        {
+          "type": "paragraph",
+          "answer": "RAM (Unified Memory): Get a minimum of 24GB to 32GB if you plan to use resource-heavy tools like Docker, local LLMs, or multiple IDE instances simultaneously. 16GB is considered the absolute baseline for modern development tasks and can easily max out during intensive workflows.",
+          "reference_indexes": [
+            0,
+            3
+          ]
+        },
+        {
+          "type": "video",
+          "link": "https://www.youtube.com/watch?v=Ph9nzJxRlkY&t=10"
+        }
+      ],
+      "markdown": "Choose a MacBook Air for maximum portability, all-day battery life, and excellent performance for general web development. Opt for a MacBook Pro if you need active cooling for sustained heavy workloads (like compiling massive codebases or running local AI models), extra ports, or support for multiple external displays right out of the box. [0](https://www.reddit.com/r/macbook/comments/1q5myrj/macbook_air_vs_macbook_pro_for_a_software/) [6](https://www.creativebloq.com/buying-guides/best-macbook-for-programming) [7](https://forum.freecodecamp.org/t/macbook-pro-vs-macbook-air/7122) [2](https://discussions.apple.com/thread/255298442) [4](https://www.youtube.com/watch?v=xb19sZW7fHg&t=22)\n\n## When to Choose the MacBook Air\n\nThe MacBook Air is an exceptional machine for most software engineers, frontend developers, and students. [7](https://forum.freecodecamp.org/t/macbook-pro-vs-macbook-air/7122)\n\nPortability: Weighing about 2.7 to 3.3 pounds (depending on the 13-inch or 15-inch model), it is much easier to carry in a backpack for commuting or travel. [1](https://www.youtube.com/watch?v=Ph9nzJxRlkY&t=10) [4](https://www.youtube.com/watch?v=xb19sZW7fHg&t=22)\n\n## When to Choose the MacBook Pro\n\nThe MacBook Pro is built for power users who push their machines to the limit.\n\nSustained Heavy Loads: If you run Docker containers, multiple backend APIs, and iOS simulators simultaneously, the Pro\u2019s built-in fan (active cooling) prevents thermal throttling. [0](https://www.reddit.com/r/macbook/comments/1q5myrj/macbook_air_vs_macbook_pro_for_a_software/) [5](https://www.youtube.com/watch?v=Z5-TfHbO58Y&t=59)\n\n## Crucial Specs for Programming\n\nRegardless of which model you choose, spec appropriately for development:\n\nRAM (Unified Memory): Get a minimum of 24GB to 32GB if you plan to use resource-heavy tools like Docker, local LLMs, or multiple IDE instances simultaneously. 16GB is considered the absolute baseline for modern development tasks and can easily max out during intensive workflows. [0](https://www.reddit.com/r/macbook/comments/1q5myrj/macbook_air_vs_macbook_pro_for_a_software/) [3](https://www.quora.com/Is-any-MacBook-pro-or-air-good-for-programming-if-so-which-one-and-any-other-good-recommendations)\n\n[[0] - ](https://www.reddit.com/r/macbook/comments/1q5myrj/macbook_air_vs_macbook_pro_for_a_software/)\n[[1] - ](https://www.youtube.com/watch?v=Ph9nzJxRlkY&t=10)\n[[2] - ](https://discussions.apple.com/thread/255298442)\n[[3] - ](https://www.quora.com/Is-any-MacBook-pro-or-air-good-for-programming-if-so-which-one-and-any-other-good-recommendations)\n[[4] - ](https://www.youtube.com/watch?v=xb19sZW7fHg&t=22)\n[[5] - ](https://www.youtube.com/watch?v=Z5-TfHbO58Y&t=59)\n[[6] - ](https://www.creativebloq.com/buying-guides/best-macbook-for-programming)\n[[7] - ](https://forum.freecodecamp.org/t/macbook-pro-vs-macbook-air/7122)\n[[8] - ](https://www.youtube.com/watch?v=Ph9nzJxRlkY)",
+      "reference_links": [
+        {
+          "index": 0,
+          "link": "https://www.reddit.com/r/macbook/comments/1q5myrj/macbook_air_vs_macbook_pro_for_a_software/",
+          "favicon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.reddit.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 1,
+          "link": "https://www.youtube.com/watch?v=Ph9nzJxRlkY&t=10",
+          "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAhUlEQVR4AWNwL/ChCFPHgP8MxqxA7ArEKVBcCcUNIAznI+RdQXrABgAZpv8ZjP6Tg0F6QQbsosCAXSADHmGVVPIC0jKEDHgAMuAbmgRE445D///feYzXIJBeBigH04BVW/9DAcgwqEGYaik2gGIvUByIlEbjDooTEiwps5GRlNmolpkowgBVP9wMSzSKGAAAAABJRU5ErkJggg=="
+        },
+        {
+          "index": 2,
+          "link": "https://discussions.apple.com/thread/255298442",
+          "favicon": "https://encrypted-tbn3.gstatic.com/faviconV2?url=https://discussions.apple.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 3,
+          "link": "https://www.quora.com/Is-any-MacBook-pro-or-air-good-for-programming-if-so-which-one-and-any-other-good-recommendations",
+          "favicon": "https://encrypted-tbn3.gstatic.com/faviconV2?url=https://www.quora.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 4,
+          "link": "https://www.youtube.com/watch?v=xb19sZW7fHg&t=22",
+          "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAhUlEQVR4AWNwL/ChCFPHgP8MxqxA7ArEKVBcCcUNIAznI+RdQXrABgAZpv8ZjP6Tg0F6QQbsosCAXSADHmGVVPIC0jKEDHgAMuAbmgRE445D///feYzXIJBeBigH04BVW/9DAcgwqEGYaik2gGIvUByIlEbjDooTEiwps5GRlNmolpkowgBVP9wMSzSKGAAAAABJRU5ErkJggg=="
+        },
+        {
+          "index": 5,
+          "link": "https://www.youtube.com/watch?v=Z5-TfHbO58Y&t=59",
+          "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAhUlEQVR4AWNwL/ChCFPHgP8MxqxA7ArEKVBcCcUNIAznI+RdQXrABgAZpv8ZjP6Tg0F6QQbsosCAXSADHmGVVPIC0jKEDHgAMuAbmgRE445D///feYzXIJBeBigH04BVW/9DAcgwqEGYaik2gGIvUByIlEbjDooTEiwps5GRlNmolpkowgBVP9wMSzSKGAAAAABJRU5ErkJggg=="
+        },
+        {
+          "index": 6,
+          "link": "https://www.creativebloq.com/buying-guides/best-macbook-for-programming",
+          "favicon": "https://encrypted-tbn1.gstatic.com/faviconV2?url=https://www.creativebloq.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 7,
+          "link": "https://forum.freecodecamp.org/t/macbook-pro-vs-macbook-air/7122",
+          "favicon": "https://encrypted-tbn1.gstatic.com/faviconV2?url=https://forum.freecodecamp.org&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 8,
+          "link": "https://www.youtube.com/watch?v=Ph9nzJxRlkY",
+          "favicon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.youtube.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        }
+      ],
+      "next_page_token": "eyJmYyI6IkVxRUJDbUpCU21sVU5IUkxlVTh0VkU1UVF6ZEVXbTFDUTB4RVRXeEdSM1J4YzJkZlZYSnZaMlJXZUVGSlNreE9UVkJ1YlMxWFRXcHZUMGh3WWw5SlYwTjZZVTFLTWxGNE1raFpaelpvWTA5WFFVdDJPRTh0V0ZkbE5WVnNURmxGU0dGdlREQlhVUklYVEZwMFpXRjBWR0ZITkZSSGNEZzBVRGRNU0hjd1VYTWFJa0ZFYzNJNVpsRnlTR3hXTFhkMFNWaEJRa3gzT1hWSlNsWjZSVlp0UkRjemFtYyIsImZjdiI6IjMiLCJ2ZXQiOiIyYWhVS0V3aVVwY21hb2VLVkF4VUU0OGtESGV3WVBMb1FxN2tCS0FCNkJBaEtFQUEiLCJxIjoiV2hpY2ggTWFjQm9vayBpcyBiZXN0IGZvciBjb2RlcnM_IiwibGsiOiJHaUIzYUdsamFDQnRZV05pYjI5cklHbHpJR0psYzNRZ1ptOXlJR052WkdWeWN3IiwicWMiOiJjLU5TeWsxTVRzclB6MVpJekN4U0tDdFdLQ2pLVjBqTEx3TFI2VVdKdWJtWmVla0NETFVodk16MkFBIiwiZ2wiOiJ1cyIsImhsIjoiZW4ifQ"
+    },
+    {
+      "is_ai_overview": true,
+      "question": "What can a MacBook Pro do that a MacBook Air can't?",
+      "text_blocks": [
+        {
+          "type": "paragraph",
+          "answer": "Choose a MacBook Air for maximum portability, all-day battery life, and excellent performance for general web development. Opt for a MacBook Pro if you need active cooling for sustained heavy workloads (like compiling massive codebases or running local AI models), extra ports, or support for multiple external displays right out of the box.",
+          "reference_indexes": [
+            0,
+            6,
+            7,
+            2,
+            4
+          ]
+        },
+        {
+          "type": "header",
+          "answer": "When to Choose the MacBook Air"
+        },
+        {
+          "type": "paragraph",
+          "answer": "The MacBook Air is an exceptional machine for most software engineers, frontend developers, and students.",
+          "reference_indexes": [
+            7
+          ]
+        },
+        {
+          "type": "paragraph",
+          "answer": "Portability: Weighing about 2.7 to 3.3 pounds (depending on the 13-inch or 15-inch model), it is much easier to carry in a backpack for commuting or travel.",
+          "reference_indexes": [
+            1,
+            4
+          ]
+        },
+        {
+          "type": "header",
+          "answer": "When to Choose the MacBook Pro"
+        },
+        {
+          "type": "paragraph",
+          "answer": "The MacBook Pro is built for power users who push their machines to the limit."
+        },
+        {
+          "type": "paragraph",
+          "answer": "Sustained Heavy Loads: If you run Docker containers, multiple backend APIs, and iOS simulators simultaneously, the Pro\u2019s built-in fan (active cooling) prevents thermal throttling.",
+          "reference_indexes": [
+            0,
+            5
+          ]
+        },
+        {
+          "type": "header",
+          "answer": "Crucial Specs for Programming"
+        },
+        {
+          "type": "paragraph",
+          "answer": "Regardless of which model you choose, spec appropriately for development:"
+        },
+        {
+          "type": "paragraph",
+          "answer": "RAM (Unified Memory): Get a minimum of 24GB to 32GB if you plan to use resource-heavy tools like Docker, local LLMs, or multiple IDE instances simultaneously. 16GB is considered the absolute baseline for modern development tasks and can easily max out during intensive workflows.",
+          "reference_indexes": [
+            0,
+            3
+          ]
+        },
+        {
+          "type": "video",
+          "link": "https://www.youtube.com/watch?v=Ph9nzJxRlkY&t=10"
+        }
+      ],
+      "markdown": "Choose a MacBook Air for maximum portability, all-day battery life, and excellent performance for general web development. Opt for a MacBook Pro if you need active cooling for sustained heavy workloads (like compiling massive codebases or running local AI models), extra ports, or support for multiple external displays right out of the box. [0](https://www.reddit.com/r/macbook/comments/1q5myrj/macbook_air_vs_macbook_pro_for_a_software/) [6](https://www.creativebloq.com/buying-guides/best-macbook-for-programming) [7](https://forum.freecodecamp.org/t/macbook-pro-vs-macbook-air/7122) [2](https://discussions.apple.com/thread/255298442) [4](https://www.youtube.com/watch?v=xb19sZW7fHg&t=22)\n\n## When to Choose the MacBook Air\n\nThe MacBook Air is an exceptional machine for most software engineers, frontend developers, and students. [7](https://forum.freecodecamp.org/t/macbook-pro-vs-macbook-air/7122)\n\nPortability: Weighing about 2.7 to 3.3 pounds (depending on the 13-inch or 15-inch model), it is much easier to carry in a backpack for commuting or travel. [1](https://www.youtube.com/watch?v=Ph9nzJxRlkY&t=10) [4](https://www.youtube.com/watch?v=xb19sZW7fHg&t=22)\n\n## When to Choose the MacBook Pro\n\nThe MacBook Pro is built for power users who push their machines to the limit.\n\nSustained Heavy Loads: If you run Docker containers, multiple backend APIs, and iOS simulators simultaneously, the Pro\u2019s built-in fan (active cooling) prevents thermal throttling. [0](https://www.reddit.com/r/macbook/comments/1q5myrj/macbook_air_vs_macbook_pro_for_a_software/) [5](https://www.youtube.com/watch?v=Z5-TfHbO58Y&t=59)\n\n## Crucial Specs for Programming\n\nRegardless of which model you choose, spec appropriately for development:\n\nRAM (Unified Memory): Get a minimum of 24GB to 32GB if you plan to use resource-heavy tools like Docker, local LLMs, or multiple IDE instances simultaneously. 16GB is considered the absolute baseline for modern development tasks and can easily max out during intensive workflows. [0](https://www.reddit.com/r/macbook/comments/1q5myrj/macbook_air_vs_macbook_pro_for_a_software/) [3](https://www.quora.com/Is-any-MacBook-pro-or-air-good-for-programming-if-so-which-one-and-any-other-good-recommendations)\n\n[[0] - ](https://www.reddit.com/r/macbook/comments/1q5myrj/macbook_air_vs_macbook_pro_for_a_software/)\n[[1] - ](https://www.youtube.com/watch?v=Ph9nzJxRlkY&t=10)\n[[2] - ](https://discussions.apple.com/thread/255298442)\n[[3] - ](https://www.quora.com/Is-any-MacBook-pro-or-air-good-for-programming-if-so-which-one-and-any-other-good-recommendations)\n[[4] - ](https://www.youtube.com/watch?v=xb19sZW7fHg&t=22)\n[[5] - ](https://www.youtube.com/watch?v=Z5-TfHbO58Y&t=59)\n[[6] - ](https://www.creativebloq.com/buying-guides/best-macbook-for-programming)\n[[7] - ](https://forum.freecodecamp.org/t/macbook-pro-vs-macbook-air/7122)\n[[8] - ](https://www.youtube.com/watch?v=Ph9nzJxRlkY)",
+      "reference_links": [
+        {
+          "index": 0,
+          "link": "https://www.reddit.com/r/macbook/comments/1q5myrj/macbook_air_vs_macbook_pro_for_a_software/",
+          "favicon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.reddit.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 1,
+          "link": "https://www.youtube.com/watch?v=Ph9nzJxRlkY&t=10",
+          "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAhUlEQVR4AWNwL/ChCFPHgP8MxqxA7ArEKVBcCcUNIAznI+RdQXrABgAZpv8ZjP6Tg0F6QQbsosCAXSADHmGVVPIC0jKEDHgAMuAbmgRE445D///feYzXIJBeBigH04BVW/9DAcgwqEGYaik2gGIvUByIlEbjDooTEiwps5GRlNmolpkowgBVP9wMSzSKGAAAAABJRU5ErkJggg=="
+        },
+        {
+          "index": 2,
+          "link": "https://discussions.apple.com/thread/255298442",
+          "favicon": "https://encrypted-tbn3.gstatic.com/faviconV2?url=https://discussions.apple.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 3,
+          "link": "https://www.quora.com/Is-any-MacBook-pro-or-air-good-for-programming-if-so-which-one-and-any-other-good-recommendations",
+          "favicon": "https://encrypted-tbn3.gstatic.com/faviconV2?url=https://www.quora.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 4,
+          "link": "https://www.youtube.com/watch?v=xb19sZW7fHg&t=22",
+          "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAhUlEQVR4AWNwL/ChCFPHgP8MxqxA7ArEKVBcCcUNIAznI+RdQXrABgAZpv8ZjP6Tg0F6QQbsosCAXSADHmGVVPIC0jKEDHgAMuAbmgRE445D///feYzXIJBeBigH04BVW/9DAcgwqEGYaik2gGIvUByIlEbjDooTEiwps5GRlNmolpkowgBVP9wMSzSKGAAAAABJRU5ErkJggg=="
+        },
+        {
+          "index": 5,
+          "link": "https://www.youtube.com/watch?v=Z5-TfHbO58Y&t=59",
+          "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAhUlEQVR4AWNwL/ChCFPHgP8MxqxA7ArEKVBcCcUNIAznI+RdQXrABgAZpv8ZjP6Tg0F6QQbsosCAXSADHmGVVPIC0jKEDHgAMuAbmgRE445D///feYzXIJBeBigH04BVW/9DAcgwqEGYaik2gGIvUByIlEbjDooTEiwps5GRlNmolpkowgBVP9wMSzSKGAAAAABJRU5ErkJggg=="
+        },
+        {
+          "index": 6,
+          "link": "https://www.creativebloq.com/buying-guides/best-macbook-for-programming",
+          "favicon": "https://encrypted-tbn1.gstatic.com/faviconV2?url=https://www.creativebloq.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 7,
+          "link": "https://forum.freecodecamp.org/t/macbook-pro-vs-macbook-air/7122",
+          "favicon": "https://encrypted-tbn1.gstatic.com/faviconV2?url=https://forum.freecodecamp.org&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 8,
+          "link": "https://www.youtube.com/watch?v=Ph9nzJxRlkY",
+          "favicon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.youtube.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        }
+      ],
+      "next_page_token": "eyJmYyI6IkVxRUJDbUpCU21sVU5IUkxlVTh0VkU1UVF6ZEVXbTFDUTB4RVRXeEdSM1J4YzJkZlZYSnZaMlJXZUVGSlNreE9UVkJ1YlMxWFRXcHZUMGh3WWw5SlYwTjZZVTFLTWxGNE1raFpaelpvWTA5WFFVdDJPRTh0V0ZkbE5WVnNURmxGU0dGdlREQlhVUklYVEZwMFpXRjBWR0ZITkZSSGNEZzBVRGRNU0hjd1VYTWFJa0ZFYzNJNVpsRnlTR3hXTFhkMFNWaEJRa3gzT1hWSlNsWjZSVlp0UkRjemFtYyIsImZjdiI6IjMiLCJ2ZXQiOiIyYWhVS0V3aVVwY21hb2VLVkF4VUU0OGtESGV3WVBMb1FxN2tCS0FCNkJBaFRFQUEiLCJxIjoiV2hhdCBjYW4gYSBNYWNCb29rIFBybyBkbyB0aGF0IGEgTWFjQm9vayBBaXIgY2FuJ3Q_IiwibGsiOiJjNVBTTGM5SUxGRklUc3hUeUUxTVRzclB6MVlvS01wWFNNbFhLQUdKdzhRU000dEFha29BIiwicWMiOiJjLU5TeWsxTVRzclB6MVpJekN4U0tDdFdLQ2pLVjBqTEx3TFI2VVdKdWJtWmVla0NETFVodk16MkFBIiwiZ2wiOiJ1cyIsImhsIjoiZW4ifQ"
+    },
+    {
+      "question": "Is the MacBook Air worth it for developers?",
+      "answer": "The MacBook Air M3 is arguably the best MacBook for coding because it strikes an ideal balance between power, portability, and battery life. It's fast enough to handle most coding tasks, including development in multiple environments like Xcode, Android Studio, and Docker.Mar 4, 2025",
+      "answer_highlight": "The MacBook Air M3 is arguably the best MacBook for coding",
+      "date": "Mar 4, 2025",
+      "source": {
+        "title": "Best MacBook for Coding: A Developer's Choice - Faizan Saghir",
+        "link": "https://naumanahmad86.medium.com/best-macbook-for-coding-a-developers-choice-8a001fbb10c4#:~:text=The%20MacBook%20Air%20M3%20is,%2C%20Android%20Studio%2C%20and%20Docker.",
+        "source": "Medium",
+        "domain": "naumanahmad86.medium.com",
+        "displayed_link": "https://naumanahmad86.medium.com \u203a best-macbook-f...",
+        "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAARVBMVEVHcEwAAAAAAAAAAAAAAAAAAABwcHCoqKifn58bGxt8fHzKysr///8rKyv5+fnW1tbp6emQkJCsrKxaWlq0tLTBwcE+Pj777dpoAAAABnRSTlMAS8D5/5mXKh4CAAAA3ElEQVR4AXzRUQ6EIAwEUNRZClgFQb3/UbfQEDUbd76qL5WMGGOGccJPpnEwkg9e8pE9vGYw4zuOZnrHyeBPFC055zw0wTkKN8TMzEHHZWWOuCMJJh03QXpgrlr0IzLmB+6L4KzHZ0Ub947+EF3q4rI3zByuzSLogDOiYeCICxGZVxmsYuR8x9DaJFQkL3UoX+iTvNg2xbPVvrB37ZgfeGr7/tl0Q/2HXjEjSe0HWnlWJGz1DEXEAsla2lyXcIj2K6O6Wvr1kQXCnL7DG9l4kwneBIY3aeJN1HizAwDOfRO3mlC3PQAAAABJRU5ErkJggg=="
+      },
+      "next_page_token": "eyJmYyI6IkVxRUJDbUpCU21sVU5IUkxlVTh0VkU1UVF6ZEVXbTFDUTB4RVRXeEdSM1J4YzJkZlZYSnZaMlJXZUVGSlNreE9UVkJ1YlMxWFRXcHZUMGh3WWw5SlYwTjZZVTFLTWxGNE1raFpaelpvWTA5WFFVdDJPRTh0V0ZkbE5WVnNURmxGU0dGdlREQlhVUklYVEZwMFpXRjBWR0ZITkZSSGNEZzBVRGRNU0hjd1VYTWFJa0ZFYzNJNVpsRnlTR3hXTFhkMFNWaEJRa3gzT1hWSlNsWjZSVlp0UkRjemFtYyIsImZjdiI6IjMiLCJ2ZXQiOiIyYWhVS0V3aVVwY21hb2VLVkF4VUU0OGtESGV3WVBMb1FxN2tCS0FCNkJBaGdFQUEiLCJxIjoiSXMgdGhlIE1hY0Jvb2sgQWlyIHdvcnRoIGl0IGZvciBkZXZlbG9wZXJzPyIsImxrIjoiR2lacGN5QnRZV05pYjI5cklHRnBjaUIzYjNKMGFDQnBkQ0JtYjNJZ1pHVjJaV3h2Y0dWeWN3IiwicWMiOiJjLU5TeWsxTVRzclB6MVpJekN4U0tDdFdLQ2pLVjBqTEx3TFI2VVdKdWJtWmVla0NETFVodk16MkFBIiwiZ2wiOiJ1cyIsImhsIjoiZW4ifQ"
+    }
+  ],
+  "perspectives": [
+    {
+      "position": 1,
+      "title": "MacBook Air vs MacBook Pro for coding/web development?",
+      "author": "r/macbook",
+      "source": "Reddit",
+      "date": "May 22, 2026",
+      "iso_date": "2026-05-22T07:00:00Z",
+      "reactions": "10+ comments"
+    },
+    {
+      "position": 2,
+      "title": "MacBook Air vs Pro for iOS Development",
+      "author": "Aivars Meijers \u00b7 YouTube",
+      "source": "Indie app developer",
+      "date": "1 month ago",
+      "iso_date": "2026-05-28T12:45:08Z",
+      "reactions": "3.5K+ views",
+      "thumbnail": "data:image/jpeg;base64,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"
+    },
+    {
+      "position": 3,
+      "title": "How do junior developers choose between MacBook Air and MacBook Pro?",
+      "author": "r/macbookpro",
+      "source": "Reddit",
+      "date": "May 5, 2026",
+      "iso_date": "2026-05-05T07:00:00Z",
+      "reactions": "10+ comments"
+    },
+    {
+      "position": 4,
+      "title": "Is MacBook good for programming?",
+      "author": "Wetechsavvy \u00b7 Facebook",
+      "source": "Tech commentator",
+      "date": "6 days ago",
+      "iso_date": "2026-07-14T18:23:49Z",
+      "reactions": "4 reactions",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZ4rqKtYlQVs_l-WMZg92wK0_XokzVXE_HnhhuCW33e3RIXcPsTn-q6dTEWg&usqp=CAI&s"
+    },
+    {
+      "position": 5,
+      "title": "M5 MacBook Air For Programming & Productivity - 3 Months Later Review",
+      "author": "Luke Made It \u00b7 YouTube",
+      "source": "Tech & lifestyle commentator",
+      "date": "3 weeks ago",
+      "iso_date": "2026-06-27T14:42:45Z",
+      "reactions": "43K+ views",
+      "thumbnail": "https://img.youtube.com/vi/EMkmAD9nhg8/hqdefault.jpg"
+    },
+    {
+      "position": 6,
+      "title": "Software Engineer buying a new MacBook for long-term use: Air 24GB vs Pro",
+      "author": "r/mac",
+      "source": "Reddit",
+      "date": "1 month ago",
+      "iso_date": "2026-05-30T07:00:00Z",
+      "reactions": "10+ comments"
+    },
+    {
+      "position": 7,
+      "title": "Hi guys, I\u2019m planning to buy a new laptop with a budget of \u20b91.2 lakh. I\u2019m a CS graduate and I want a laptop that will be useful for studying and also for my future job in the tech field, especially for coding. I\u2019m confused between Mac and Windows. For Mac, I\u2019m thi",
+      "author": "Vibe Coding is Life",
+      "source": "Facebook",
+      "date": "Apr 22, 2026",
+      "iso_date": "2026-04-22T07:00:00Z",
+      "reactions": "4 reactions",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSSRHBTGVlFs6Vw3d4NQ7-ScJkUcE-c39F8xDnoPx85SbABeAr1RWsvRfsNw&usqp=CAI&s"
+    },
+    {
+      "position": 8,
+      "title": "Macbook Air M5 16/512 Or Macbook Air M4 24/512. Which is better for a developer?",
+      "author": "Programming | Coding",
+      "source": "Facebook",
+      "iso_date": "2026-05-09T07:00:00Z",
+      "reactions": "May 9, 2026",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_aPQFXt2FuCCmgLUq6Sz9zIWG_vhaT9Pp9_8bnOA2w4Q5MfU1Gnx0FySHkw&usqp=CAI&s"
+    },
+    {
+      "position": 9,
+      "title": "Hi everyone, I\u2019m seriously considering changing my workflow setup and I\u2019d appreciate some opinions from people with real-world experience. My typical daily workflow includes: Python / VSCode / PyCharm remote development / SSH Office / Zoom / browsing l",
+      "author": "Macbook Community - Macbook Air / Pro help group",
+      "source": "Facebook",
+      "iso_date": "2026-05-06T07:00:00Z",
+      "reactions": "May 6, 2026",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdTiJwHuOyR4K_eSCBRON0rfChTd2xTZUTPPk_xp7GTmED0dXF5jap0XZZJQ&usqp=CAI&s"
+    },
+    {
+      "position": 10,
+      "title": "Be honest, As a Developer which laptop is better for coding Macbook Gaming",
+      "author": "Python Projects Community",
+      "source": "Facebook",
+      "date": "1 month ago",
+      "iso_date": "2026-05-27T07:00:00Z",
+      "reactions": "30+ reactions",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7547vzANB9lb8QuRHy6aygzV13l_D9Rt_F_oJUqHp2ROg4IxVITcalgKSLg&usqp=CAI&s"
+    }
+  ],
+  "inline_videos": [
+    {
+      "position": 1,
+      "title": "M4 MacBook Air vs M4 MacBook Pro For Programming ...",
+      "link": "https://www.youtube.com/watch?v=Ph9nzJxRlkY",
+      "source": "YouTube",
+      "channel": "Luke Made It",
+      "length": "10:01",
+      "image": "data:image/jpeg;base64,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"
+    },
+    {
+      "position": 2,
+      "title": "M5 MacBook Air For Programming & Productivity - 3 Months ...",
+      "link": "https://www.youtube.com/watch?v=EMkmAD9nhg8",
+      "source": "YouTube",
+      "channel": "Luke Made It",
+      "length": "13:37",
+      "image": "data:image/jpeg;base64,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"
+    },
+    {
+      "position": 3,
+      "title": "MacBook Air vs Pro for iOS Development",
+      "link": "https://www.youtube.com/watch?v=z8zQnU3MJug",
+      "source": "YouTube",
+      "channel": "Aivars Meijers",
+      "length": "6:44",
+      "image": "data:image/jpeg;base64,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"
+    }
+  ],
+  "related_searches": [
+    {
+      "query": "Macbook air vs pro for programming reddit",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&gl=us&hl=en&pws=0&q=Macbook+air+vs+pro+for+programming+reddit&sa=X&ved=2ahUKEwiUpcmaoeKVAxUE48kDHewYPLoQ1QJ6BAg8EAE"
+    },
+    {
+      "query": "Performance difference between MacBook Air and Pro",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&gl=us&hl=en&pws=0&q=Performance+difference+between+MacBook+Air+and+Pro&sa=X&ved=2ahUKEwiUpcmaoeKVAxUE48kDHewYPLoQ1QJ6BAhUEAE"
+    },
+    {
+      "query": "MacBook Air vs MacBook Pro: which is better",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&gl=us&hl=en&pws=0&q=MacBook+Air+vs+MacBook+Pro:+which+is+better&sa=X&ved=2ahUKEwiUpcmaoeKVAxUE48kDHewYPLoQ1QJ6BAhPEAE"
+    },
+    {
+      "query": "MacBook Air for programming reddit",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&gl=us&hl=en&pws=0&q=MacBook+Air+for+programming+reddit&sa=X&ved=2ahUKEwiUpcmaoeKVAxUE48kDHewYPLoQ1QJ6BAhLEAE"
+    },
+    {
+      "query": "Is MacBook Air or Pro better for students",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&gl=us&hl=en&pws=0&q=Is+MacBook+Air+or+Pro+better+for+students&sa=X&ved=2ahUKEwiUpcmaoeKVAxUE48kDHewYPLoQ1QJ6BAhJEAE"
+    },
+    {
+      "query": "MacBook Air M4 for programming",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&gl=us&hl=en&pws=0&q=MacBook+Air+M4+for+programming&sa=X&ved=2ahUKEwiUpcmaoeKVAxUE48kDHewYPLoQ1QJ6BAhIEAE"
+    },
+    {
+      "query": "Price difference between MacBook Air and Pro",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&gl=us&hl=en&pws=0&q=Price+difference+between+MacBook+Air+and+Pro&sa=X&ved=2ahUKEwiUpcmaoeKVAxUE48kDHewYPLoQ1QJ6BAhFEAE"
+    },
+    {
+      "query": "MacBook for coding reddit",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&gl=us&hl=en&pws=0&q=MacBook+for+coding+reddit&sa=X&ved=2ahUKEwiUpcmaoeKVAxUE48kDHewYPLoQ1QJ6BAhAEAE"
+    }
+  ],
+  "pagination": {
+    "current": 1,
+    "next": "https://www.google.com/search?q=MacBook+Air+vs+Pro+for+programming&oq=MacBook+Air+vs+Pro+for+programming&gl=us&hl=en&pws=0&start=10"
+  }
+}

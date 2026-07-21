@@ -1,0 +1,579 @@
+{
+  "version": "0.1.20260717",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "6.9938 sec.",
+  "cost": 0.002,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "07210101-2120-0139-0000-37c01b834cc8",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "6.8199 sec.",
+      "cost": 0.002,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "serp",
+        "google",
+        "organic",
+        "live",
+        "advanced"
+      ],
+      "data": {
+        "api": "serp",
+        "function": "live",
+        "se": "google",
+        "se_type": "organic",
+        "keyword": "snowboard vs skis for beginners",
+        "location_code": 2840,
+        "language_code": "en",
+        "device": "desktop",
+        "expand_ai_overview": true,
+        "os": "windows"
+      },
+      "result": [
+        {
+          "keyword": "snowboard vs skis for beginners",
+          "type": "organic",
+          "se_domain": "google.com",
+          "location_code": 2840,
+          "language_code": "en",
+          "check_url": "https://www.google.com/search?q=snowboard%20vs%20skis%20for%20beginners&hl=en&gl=US&ie=UTF-8&uule=w+CAIQIFISCQs2MuSEtepUEUK33kOSuTsc",
+          "datetime": "2026-07-20 22:01:33 +00:00",
+          "spell": null,
+          "refinement_chips": null,
+          "item_types": [
+            "ai_overview",
+            "organic",
+            "video",
+            "people_also_ask",
+            "short_videos",
+            "related_searches"
+          ],
+          "se_results_count": 108,
+          "pages_count": 1,
+          "items_count": 12,
+          "items": [
+            {
+              "type": "ai_overview",
+              "rank_group": 1,
+              "rank_absolute": 1,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]",
+              "asynchronous_ai_overview": true,
+              "markdown": null,
+              "items": null,
+              "references": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 2,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]",
+              "domain": "www.reddit.com",
+              "title": "Is skiing or snowboarding better for a beginner",
+              "url": "https://www.reddit.com/r/skiing/comments/1adnedy/is_skiing_or_snowboarding_better_for_a_beginner/",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "30+ comments  \u00b7  2 years ago",
+              "website_name": "Reddit\u00a0\u00b7\u00a0r/skiing",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Skiing is easier to learn on and harder to get better at, snowboard is harder initially but once you master the basics it's easy to improve. Read more",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "Skiing is easier to learn on and harder to get better at"
+              ],
+              "links": [
+                {
+                  "type": "link_element",
+                  "title": "In your opinion is snowboarding more difficult to ...",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/skiing/comments/13fya2m/in_your_opinion_is_snowboarding_more_difficult_to/",
+                  "domain": "www.reddit.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "First time\u2026 should I ski or snowboard? - Reddit",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/snowboarding/comments/1gvy6d0/first_time_should_i_ski_or_snowboard/",
+                  "domain": "www.reddit.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "More results from www.reddit.com",
+                  "description": null,
+                  "url": "https://www.google.com/search?q=snowboard+vs+skis+for+beginners+site:www.reddit.com&sca_esv=3271cc0dab4982ea&hl=en&gl=US&sa=X&ved=2ahUKEwj5gvPkoOKVAxX2hv0HHULYK3IQrQIoAnoECB0QAw",
+                  "domain": "www.google.com"
+                }
+              ],
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "video",
+              "rank_group": 1,
+              "rank_absolute": 3,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[4]/div[1]",
+              "items": [
+                {
+                  "type": "video_element",
+                  "source": "YouTube \u00b7 The Bag o' Tricks",
+                  "title": "What's Easier: Skiing Or Snowboarding?",
+                  "timestamp": "2024-11-03 00:00:00 +00:00",
+                  "url": "https://www.youtube.com/watch?v=46FdOXKji3A"
+                },
+                {
+                  "type": "video_element",
+                  "source": "YouTube \u00b7 Taevis Kapalka",
+                  "title": "Skiing vs Snowboarding \u2013 What's REALLY Better?",
+                  "timestamp": "2025-10-20 00:00:00 +00:00",
+                  "url": "https://www.youtube.com/watch?v=s86n54CfJfg"
+                },
+                {
+                  "type": "video_element",
+                  "source": "YouTube \u00b7 SnowPros Ski School",
+                  "title": "Skiing vs Snowboarding \u2013 Which is Better for Beginners ...",
+                  "timestamp": "2025-10-07 00:00:00 +00:00",
+                  "url": "https://www.youtube.com/shorts/EGLFD3R3ucg"
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 4,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[6]/div[1]/div[1]",
+              "domain": "www.theskigathering.com",
+              "title": "Skiing vs Snowboarding (Updated for 2026)",
+              "url": "https://www.theskigathering.com/solo-travel-guide/ski-advice/skiing-versus-snowboarding.php",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.theskigathering.com \u203a ski-advice \u203a skiing-...",
+              "website_name": "The Ski Gathering",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "In a nutshell, skiing is easier to learn but harder to master. Its easier to use skis on a ski lift, On a snowboard the technique is far more. For a beginner,\u00a0...",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "skiing is easier to learn but harder to master"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "people_also_ask",
+              "rank_group": 1,
+              "rank_absolute": 5,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[8]/div[1]/div[1]/div[1]",
+              "items": [
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Is it better to learn to snowboard or ski first?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[8]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Is it harder to ski or snowboard?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[8]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Is it easier for a kid to learn to ski or snowboard?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[8]/div[1]/div[1]/div[1]/div[1]/div[2]/div[3]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Is it cheaper to ski or snowboard?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[8]/div[1]/div[1]/div[1]/div[1]/div[2]/div[4]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 6,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[10]/div[1]/div[1]",
+              "domain": "shawn2nd.medium.com",
+              "title": "Snowboarding VS Skiing: Confessions of a complete beginner",
+              "url": "https://shawn2nd.medium.com/snowboarding-vs-skiing-whats-easier-and-what-is-harder-from-the-perspective-of-a-complete-445c08d78657",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "3 likes  \u00b7  7 years ago",
+              "website_name": "Medium\u00a0\u00b7\u00a0Shawn Segundo",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Overall, snowboard gear is easier to carry around. Skiing in the beginning is a bit more gentle, than the beginner snowboarding falls. skiing\u00a0...",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "snowboard gear is easier to carry around"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 7,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[12]/div[1]/div[1]",
+              "domain": "www.snow.com",
+              "title": "Ski vs. Snowboard: What's Easier to Learn for Beginners?",
+              "url": "https://www.snow.com/articles/skiing-vs-snowboarding.aspx",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.snow.com \u203a articles \u203a skiing-vs-snowboard...",
+              "website_name": "Snow.com",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "skiing often allows a quicker initial start, while snowboarding might involve more falls early on. One thing is for sure, mobility is much easier on skis.",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "skiing often allows a quicker initial start"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 8,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[14]/div[1]/div[1]",
+              "domain": "www.facebook.com",
+              "title": "Skiing vs snowboarding for beginners",
+              "url": "https://www.facebook.com/groups/355291398910159/posts/742401983532430/",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "70+ comments  \u00b7  3 years ago",
+              "website_name": "Facebook\u00a0\u00b7\u00a0Skiers and Snowboarders of the Midwest",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Skiing is easier for beginners, but snowboarding has a faster learning curve, with most agreeing it takes less time to become proficient. Read more",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "Skiing is easier for beginners"
+              ],
+              "links": [
+                {
+                  "type": "link_element",
+                  "title": "Skiing or snowboarding for beginners? - Facebook",
+                  "description": null,
+                  "url": "https://www.facebook.com/groups/VisitLapland/posts/1949904308977671/",
+                  "domain": "www.facebook.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "Should I start with skiing or snowboarding as a beginner?",
+                  "description": null,
+                  "url": "https://www.facebook.com/groups/blackskierssnowboarders/posts/10161091338453247/",
+                  "domain": "www.facebook.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "More results from www.facebook.com",
+                  "description": null,
+                  "url": "https://www.google.com/search?q=snowboard+vs+skis+for+beginners+site:www.facebook.com&sca_esv=3271cc0dab4982ea&hl=en&gl=US&sa=X&ved=2ahUKEwj5gvPkoOKVAxX2hv0HHULYK3IQrQIoAnoECCcQAw",
+                  "domain": "www.google.com"
+                }
+              ],
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "short_videos",
+              "rank_group": 1,
+              "rank_absolute": 9,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[16]/div[1]",
+              "title": "Short videos",
+              "items": [
+                {
+                  "type": "short_videos_element",
+                  "title": "Skiing vs Snowboarding \u2013 Which is Better for Beginners ...",
+                  "url": "https://www.youtube.com/shorts/EGLFD3R3ucg",
+                  "domain": "www.youtube.com",
+                  "source": "SnowPros Ski School"
+                },
+                {
+                  "type": "short_videos_element",
+                  "title": "Switched from skiing to snowboarding : r/snowboarding",
+                  "url": "https://www.reddit.com/r/snowboarding/comments/1rilvxg/switched_from_skiing_to_snowboarding/",
+                  "domain": "www.reddit.com",
+                  "source": "hijackingCats"
+                },
+                {
+                  "type": "short_videos_element",
+                  "title": "Snowboarding vs. Skiing \u2014 which one is harder? We asked ...",
+                  "url": "https://www.instagram.com/reel/DVj4Y-EDbO1/?hl=en",
+                  "domain": "www.instagram.com",
+                  "source": "Mount Southington Ski Area"
+                },
+                {
+                  "type": "short_videos_element",
+                  "title": "Do you ski \u26f7\ufe0f or do you board ?",
+                  "url": "https://www.youtube.com/shorts/RjtlQbQ8Sh0",
+                  "domain": "www.youtube.com",
+                  "source": "PeakRankings"
+                },
+                {
+                  "type": "short_videos_element",
+                  "title": "Skiing vs Snowboarding: Which is Easier for Beginners?",
+                  "url": "https://www.tiktok.com/@miffrennie/video/7525002029392088338",
+                  "domain": "www.tiktok.com",
+                  "source": "miffrennie"
+                },
+                {
+                  "type": "short_videos_element",
+                  "title": "Ski Vs Snowboard, what's easier? \u26f7\ufe0f @joeaisnow DM for ...",
+                  "url": "https://www.instagram.com/reel/DN-apGYD0zj/?hl=en",
+                  "domain": "www.instagram.com",
+                  "source": "Sam Yeo | Niseko Ski Instructor"
+                },
+                {
+                  "type": "short_videos_element",
+                  "title": "Should I start with skiing or snowboarding as a beginner?",
+                  "url": "https://www.facebook.com/groups/ogsnowboarders/posts/1366264701481308/",
+                  "domain": "www.facebook.com",
+                  "source": "Manish Manjunath"
+                },
+                {
+                  "type": "short_videos_element",
+                  "title": "What Is Easier To Learn Skiing Or Snowboarding? #skiing ...",
+                  "url": "https://www.youtube.com/shorts/v-J0mk2-Qc4",
+                  "domain": "www.youtube.com",
+                  "source": "Skylark Outdoors"
+                },
+                {
+                  "type": "short_videos_element",
+                  "title": "Ski vs Snowboard: Which Sport is Easier to Learn?",
+                  "url": "https://www.tiktok.com/@sam.yeo.skis/video/7544322602991357206",
+                  "domain": "www.tiktok.com",
+                  "source": "sam.yeo.skis"
+                },
+                {
+                  "type": "short_videos_element",
+                  "title": "Skiing Vs Snowboarding What's Harder?",
+                  "url": "https://www.instagram.com/reel/DUByJQZkrrT/",
+                  "domain": "www.instagram.com",
+                  "source": "LucaOutdoors"
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 10,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[18]/div[1]/div[1]",
+              "domain": "www.quora.com",
+              "title": "I'm a beginner looking to learn something this winter. ...",
+              "url": "https://www.quora.com/Im-a-beginner-looking-to-learn-something-this-winter-Should-I-learn-skiing-or-snowboarding-Which-one-is-more-fun-and-since-Im-on-a-tight-budget-which-sport-is-generally-cheaper",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "4 answers  \u00b7  9 months ago",
+              "website_name": "Quora",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "I'm a beginner looking to learn something this winter. Should I learn skiing or snowboarding? Which one is more fun, and since I'm on a tight budget, ...",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": null,
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 11,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[20]/div[1]/div[1]",
+              "domain": "www.freerideworldtour.com",
+              "title": "Skiing or snowboarding: which one is easier to learn?",
+              "url": "https://www.freerideworldtour.com/news-videos/skiing-or-snowboarding-which-one-is-easier-to-learn/",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.freerideworldtour.com \u203a news-videos \u203a skii...",
+              "website_name": "Freeride World Tour",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Mar 11, 2025 \u2014 Skiing is often perceived as easier to start due to its forward-facing stance and independent leg movement, while snowboarding demands full-body coordination. Read more",
+              "pre_snippet": "03/11/2025 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "Skiing is often perceived as easier to start"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2025-03-11 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "related_searches",
+              "rank_group": 1,
+              "rank_absolute": 12,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[2]/div[1]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]",
+              "items": [
+                "Snowboard vs skis for beginners reddit",
+                "Is it easier to ski or snowboard for adults",
+                "Snowboard vs skis for beginners cost",
+                "Is skiing or snowboarding more fun for beginners",
+                "Is it easier to ski or snowboard for kids",
+                "Is skiing or snowboarding more dangerous",
+                "Skiing vs snowboarding reddit",
+                "Should I ski or snowboard"
+              ],
+              "rectangle": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

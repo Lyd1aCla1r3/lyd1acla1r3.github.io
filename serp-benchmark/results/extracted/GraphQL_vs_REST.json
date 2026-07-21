@@ -1,0 +1,444 @@
+{
+  "query": "GraphQL vs REST",
+  "intent": "comparison",
+  "scores": {
+    "SearchApi": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "SerpApi": {
+      "extracted": {
+        "present": true,
+        "summary": "",
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "snippet": "The primary difference between GraphQL and REST is how they handle data delivery: relies on a fixed server-defined structure across multiple URLs, whereas GraphQL allows clients to request exactly the data they need through a single endpoint. REST remains the standard for public APIs and simple CRUD operations, while GraphQL is favored for complex, nested data architectures and optimizing mobile network traffic.",
+            "snippet_links": [
+              {
+                "link": "https://www.reddit.com/r/graphql/comments/144esgy/graphql_vs_rest_in_the_real_world/"
+              }
+            ],
+            "snippet_highlighted_words": [
+              "relies on a fixed server-defined structure across multiple URLs, whereas GraphQL allows clients to request exactly the data they need through a single endpoint"
+            ],
+            "reference_indexes": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "Core Structural Differences"
+          },
+          {
+            "type": "table",
+            "table": [
+              [
+                "Feature",
+                "REST API"
+              ],
+              [
+                "Architecture",
+                "Architectural style based on resources",
+                "Query language and schema specification"
+              ],
+              [
+                "Multiple endpoints (e.g., /users, /posts)",
+                "Single endpoint (typically /graphql)"
+              ],
+              [
+                "HTTP verbs (GET, POST, PUT, DELETE)",
+                "Queries, Mutations, and Subscriptions"
+              ],
+              [
+                "Data Payload",
+                "Fixed; server decides what to return",
+                "Flexible; client dictates the data shape"
+              ],
+              [
+                "Data Format",
+                "JSON, XML, YAML, HTML",
+                "Strictly JSON"
+              ],
+              [
+                "Caching",
+                "Native, built-in HTTP caching",
+                "Demands custom application-level caching"
+              ]
+            ],
+            "detailed": [
+              [
+                {
+                  "snippet": "Feature"
+                },
+                {
+                  "snippet": "REST API"
+                }
+              ],
+              [
+                {
+                  "snippet": "Architecture"
+                },
+                {
+                  "snippet": "Architectural style based on resources"
+                },
+                {
+                  "snippet": "Query language and schema specification"
+                }
+              ],
+              [
+                {
+                  "snippet": "Multiple endpoints (e.g., /users, /posts)"
+                },
+                {
+                  "snippet": "Single endpoint (typically /graphql)"
+                }
+              ],
+              [
+                {
+                  "snippet": "HTTP verbs (GET, POST, PUT, DELETE)"
+                },
+                {
+                  "snippet": "Queries, Mutations, and Subscriptions"
+                }
+              ],
+              [
+                {
+                  "snippet": "Data Payload"
+                },
+                {
+                  "snippet": "Fixed; server decides what to return"
+                },
+                {
+                  "snippet": "Flexible; client dictates the data shape"
+                }
+              ],
+              [
+                {
+                  "snippet": "Data Format"
+                },
+                {
+                  "snippet": "JSON, XML, YAML, HTML"
+                },
+                {
+                  "snippet": "Strictly JSON"
+                }
+              ],
+              [
+                {
+                  "snippet": "Caching"
+                },
+                {
+                  "snippet": "Native, built-in HTTP caching"
+                },
+                {
+                  "snippet": "Demands custom application-level caching"
+                }
+              ]
+            ],
+            "formatted": {
+              "architecture": {
+                "feature": "Architectural style based on resources",
+                "rest_api": "Query language and schema specification"
+              },
+              "multiple_endpoints_e_g_users_posts": {
+                "feature": "Single endpoint (typically /graphql)"
+              },
+              "http_verbs_get_post_put_delete": {
+                "feature": "Queries, Mutations, and Subscriptions"
+              },
+              "data_payload": {
+                "feature": "Fixed; server decides what to return",
+                "rest_api": "Flexible; client dictates the data shape"
+              },
+              "data_format": {
+                "feature": "JSON, XML, YAML, HTML",
+                "rest_api": "Strictly JSON"
+              },
+              "caching": {
+                "feature": "Native, built-in HTTP caching",
+                "rest_api": "Demands custom application-level caching"
+              }
+            }
+          },
+          {
+            "type": "heading",
+            "snippet": "Key Advantages of REST"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Native Caching: Leverages standard HTTP caching mechanisms seamlessly because every resource has its own unique URL."
+              },
+              {
+                "snippet": "Low Complexity\n: Easier to design, monitor, and scale without specialized dependencies or libraries."
+              },
+              {
+                "snippet": "Error Handling: Uses descriptive standard HTTP status codes (such as 401, 404\n, 429, or 500) out of the box."
+              },
+              {
+                "snippet": "Mature Ecosystem: Possesses massive global adoption with extensive tooling across every engineering stack\n.",
+                "snippet_links": [
+                  {
+                    "link": "https://blog.postman.com/graphql-vs-rest/"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              2,
+              1,
+              0,
+              3,
+              4
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "Key Advantages of GraphQL"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "No Over/Under-Fetching: Resolves data inefficiency by returning only the specific fields explicitly requested by the client."
+              },
+              {
+                "snippet": "Single Network Request\n: Aggregates complex relational data from multiple sources in one round-trip, instead of executing cascading endpoint hits."
+              },
+              {
+                "snippet": "Strict Type Safety: Relies on a strongly-typed schema to validate queries before runtime, providing integrated documentation."
+              },
+              {
+                "snippet": "Real-Time Capabilities\n: Offers built-in support for web sockets using Subscriptions for push-based updates."
+              },
+              {
+                "snippet": "No Explicit Versioning: Avoids breaking changes by simply deprecating individual fields over time instead of writing /v2/ paths.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.reddit.com/r/graphql/comments/144esgy/graphql_vs_rest_in_the_real_world/"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              0,
+              1,
+              2,
+              3,
+              5,
+              6
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "When to Choose Each Style"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "text_blocks": [
+                  {
+                    "type": "heading",
+                    "snippet": "Choose REST If:"
+                  },
+                  {
+                    "type": "list",
+                    "list": [
+                      {
+                        "snippet": "You are building a public-facing API that requires broad, multi-platform developer adoption."
+                      },
+                      {
+                        "snippet": "Your system focuses heavily on basic CRUD actions with low-relational entity tables\n."
+                      },
+                      {
+                        "snippet": "Heavy caching at the network or CDN edge is required to minimize database queries."
+                      },
+                      {
+                        "snippet": "Your team wants a fast, boilerplate setup without navigating a steep syntax learning curve\n.",
+                        "snippet_links": [
+                          {
+                            "link": "https://www.geeksforgeeks.org/graphql/graphql-vs-rest-which-is-better-for-apis/"
+                          }
+                        ]
+                      }
+                    ],
+                    "reference_indexes": [
+                      1,
+                      2,
+                      7
+                    ]
+                  }
+                ]
+              },
+              {
+                "text_blocks": [
+                  {
+                    "type": "heading",
+                    "snippet": "Choose GraphQL If:"
+                  },
+                  {
+                    "type": "list",
+                    "list": [
+                      {
+                        "snippet": "Your front-end app requires deeply nested relationships, like social feeds, messaging apps, or e-commerce platforms."
+                      },
+                      {
+                        "snippet": "Target devices operate on limited, low-bandwidth networks where payload minimization is vital."
+                      },
+                      {
+                        "snippet": "You are working with microservices or aggregate dashboards that fetch from several distinct backend databases at once\n."
+                      },
+                      {
+                        "snippet": "Rapid frontend iteration requires field updates without waiting for backend refactoring.",
+                        "snippet_links": [
+                          {
+                            "link": "https://aws.amazon.com/compare/the-difference-between-graphql-and-rest/"
+                          }
+                        ]
+                      }
+                    ],
+                    "reference_indexes": [
+                      7,
+                      2,
+                      8,
+                      9,
+                      10,
+                      11
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "snippet": "For a deeper dive into practical setup patterns, you can check out\nPostman's Architecture Comparison\nor review IBM's Technical Guidance on API Design\n.",
+                    "snippet_links": [
+                      {
+                        "text": "Postman's Architecture Comparison",
+                        "link": "https://blog.postman.com/graphql-vs-rest/"
+                      },
+                      {
+                        "text": "IBM's Technical Guidance on API Design",
+                        "link": "https://www.ibm.com/think/topics/graphql-vs-rest-api"
+                      }
+                    ],
+                    "reference_indexes": [
+                      2,
+                      10
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "snippet": "If you want to look at how these compare for your specific stack, let me know:"
+                  },
+                  {
+                    "type": "list",
+                    "list": [
+                      {
+                        "snippet": "What programming language or framework are you using?"
+                      },
+                      {
+                        "snippet": "What does your\ndata structure look like (relational, document store, or microservices)?"
+                      },
+                      {
+                        "snippet": "Who is the intended audience for the API (internal front-end or public developers)?"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "citations": [
+          {
+            "url": "https://www.reddit.com/r/graphql/comments/144esgy/graphql_vs_rest_in_the_real_world/",
+            "title": "GraphQL vs. REST in the real world",
+            "snippet": "In non-GraphQL APIs, you can return a status code of 401, 429, 500, etc, and the client would know what the issue is, but with Gra..."
+          },
+          {
+            "url": "https://www.geeksforgeeks.org/graphql/graphql-vs-rest-which-is-better-for-apis/",
+            "title": "GraphQL vs REST - GeeksforGeeks",
+            "snippet": "GraphQL vs REST * REST follows a resource-based architecture and typically uses multiple endpoints for different resources. * GraphQL provides a single endpoint wh..."
+          },
+          {
+            "url": "https://blog.postman.com/graphql-vs-rest/",
+            "title": "GraphQL vs REST: Choosing the Right API Architecture for ...",
+            "snippet": "Table_title: GraphQL vs REST Table_content: | Feature | REST | GraphQL | | --- | --- | --- | | Caching | Built-in HTTP caching | Requires custom caching strategy |..."
+          },
+          {
+            "url": "https://licensespring.com/blog/glossary/graphql-vs-rest-api",
+            "title": "GraphQL vs REST: Which One to Choose When Building Your API",
+            "snippet": "What Are the Differences Between GraphQL and REST? There are several key differences between REST and GraphQL, including: Data retrieval: REST APIs typically have ..."
+          },
+          {
+            "url": "https://blog.logrocket.com/graphql-vs-rest-apis/",
+            "title": "GraphQL vs. REST APIs: What's the difference between them",
+            "snippet": "This approach reduces over-fetching and under-fetching since the client decides exactly which fields to request. Security. REST uses HTTP status codes for error ha..."
+          },
+          {
+            "url": "https://www.howtographql.com/basics/1-graphql-is-the-better-rest/",
+            "title": "GraphQL vs REST - A comparison",
+            "snippet": "With a REST API, you would typically gather the data by accessing multiple endpoints. In the example, these could be /users/ endpoint to fetch the initial user dat..."
+          },
+          {
+            "url": "https://medium.com/@dmosyan/graphql-vs-rest-api-similarities-differences-857f9fc637a8",
+            "title": "GraphQL vs REST API | Similarities \\u0026 Differences - Medium",
+            "snippet": "A REST API is an architectural concept for application communication. On the other hand, GraphQL is a specification, an API query language, and a set of tools. Gra..."
+          },
+          {
+            "url": "https://strapi.io/blog/graphql-vs-rest",
+            "title": "GraphQL vs REST: Key Differences with Code and Use Cases - Strapi",
+            "snippet": "GraphQL Explained * GraphQL, developed by Facebook in 2012, centralizes API interactions around a strongly typed schema written in Schema Definition Language (SDL)"
+          },
+          {
+            "url": "https://aws.amazon.com/compare/the-difference-between-graphql-and-rest/",
+            "title": "GraphQL vs REST API - Difference Between API Design ...",
+            "snippet": "Both REST and GraphQL support similar data formats. JSON is the most popular data exchange format that all languages, platforms, and systems understand. The server..."
+          },
+          {
+            "url": "https://www.coursera.org/articles/graphql-vs-rest-apis",
+            "title": "GraphQL vs. REST APIs: What's the Difference? - Coursera",
+            "snippet": "GraphQL vs. REST APIs: What's the Difference? ... Learn about the differences and similarities between GraphQL and REST APIs, two methods for data communication on..."
+          },
+          {
+            "url": "https://www.ibm.com/think/topics/graphql-vs-rest-api",
+            "title": "GraphQL vs REST: What's the Difference? - IBM",
+            "snippet": "GraphQL is defined by API schema written in the GraphQL schema definition language. Each schema specifies the types of data the user can query or modify, and the r..."
+          },
+          {
+            "url": "https://hygraph.com/blog/graphql-vs-rest-apis",
+            "title": "GraphQL Vs. REST APIs: A complete comparison - Hygraph",
+            "snippet": "GraphQL is gaining momentum as a successor to REST APIs. However, it isn't always a \u201creplacement\u201d, and making the decision to opt for GraphQL comes with several co..."
+          }
+        ],
+        "related_searches": []
+      }
+    },
+    "Serper": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "DataForSEO": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    }
+  }
+}

@@ -1,0 +1,711 @@
+{
+  "version": "0.1.20260717",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "5.1435 sec.",
+  "cost": 0.002,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "07210058-2120-0139-0000-8a64330da383",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "5.0448 sec.",
+      "cost": 0.002,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "serp",
+        "google",
+        "organic",
+        "live",
+        "advanced"
+      ],
+      "data": {
+        "api": "serp",
+        "function": "live",
+        "se": "google",
+        "se_type": "organic",
+        "keyword": "Figma vs Adobe XD",
+        "location_code": 2840,
+        "language_code": "en",
+        "device": "desktop",
+        "expand_ai_overview": true,
+        "os": "windows"
+      },
+      "result": [
+        {
+          "keyword": "Figma vs Adobe XD",
+          "type": "organic",
+          "se_domain": "google.com",
+          "location_code": 2840,
+          "language_code": "en",
+          "check_url": "https://www.google.com/search?q=Figma%20vs%20Adobe%20XD&hl=en&gl=US&ie=UTF-8&uule=w+CAIQIFISCQs2MuSEtepUEUK33kOSuTsc",
+          "datetime": "2026-07-20 21:59:03 +00:00",
+          "spell": null,
+          "refinement_chips": null,
+          "item_types": [
+            "ai_overview",
+            "organic",
+            "people_also_ask",
+            "discussions_and_forums",
+            "video",
+            "short_videos",
+            "related_searches"
+          ],
+          "se_results_count": 118,
+          "pages_count": 1,
+          "items_count": 12,
+          "items": [
+            {
+              "type": "ai_overview",
+              "rank_group": 1,
+              "rank_absolute": 1,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]",
+              "asynchronous_ai_overview": false,
+              "markdown": "`Figma is the clear industry standard for UI/UX design, praised for its browser-based real-time collaboration, robust design systems, and fast auto-layout features. Adobe XD is a capable, native desktop alternative, but it is currently in maintenance mode and does not receive major updates`.[](https://www.reddit.com/r/UXDesign/comments/1231366/figma_vs_adobe_xd_which_are_you/) [[1]](https://www.reddit.com/r/UXDesign/comments/1231366/figma_vs_adobe_xd_which_are_you/)[[2]](https://www.youtube.com/watch?v=K2fes86CX1o&t=66)\n\nKey Differences\n\n- **Collaboration & Platform:** Figma is cloud-first, works in any web browser (Windows, Mac, Linux), and allows multiple users to edit files simultaneously. Adobe XD operates primarily as a local desktop app, making real-time collaboration slightly less seamless.[](https://designlab.com/blog/figma-vs-adobe-xd) [[1]](https://designlab.com/blog/figma-vs-adobe-xd)[[2]](https://mettevo.com/blog/article/figma-vs-adobe-xd-which-to-choose-for-web-design-in-2025)[[3]](https://www.youtube.com/watch?v=Hbn1SMUs-hs&t=100)[[4]](https://pueblo-vista.com/adobe-xd-vs-figma-a-designers-late-perspective/)\n- **Design Systems:** Figma outshines XD with deeply nested components, advanced variants, and a massive community plugin ecosystem. XD has document assets, but scaling them for massive enterprise projects is generally more difficult.[](https://www.reddit.com/r/UXDesign/comments/1231366/figma_vs_adobe_xd_which_are_you/) [[1]](https://www.reddit.com/r/UXDesign/comments/1231366/figma_vs_adobe_xd_which_are_you/)[[2]](https://mettevo.com/blog/article/figma-vs-adobe-xd-which-to-choose-for-web-design-in-2025)\n- **Ecosystem & Offline Use:** Adobe XD integrates flawlessly with the rest of the Adobe Creative Cloud (Photoshop, Illustrator) and allows true offline work. Figma requires an internet connection for full functionality and file access.[](https://designlab.com/blog/figma-vs-adobe-xd) [[1]](https://designlab.com/blog/figma-vs-adobe-xd)[[2]](https://mettevo.com/blog/article/figma-vs-adobe-xd-which-to-choose-for-web-design-in-2025)[[3]](https://www.quora.com/Which-platform-Figma-or-Adobe-XD-is-better-for-a-career-in-visual-content-creation)\n- **Pricing & Future:** Figma offers a very generous free tier and has a massive community base. Adobe XD requires a paid Creative Cloud subscription and is no longer being actively developed.[](https://www.reddit.com/r/UXDesign/comments/1231366/figma_vs_adobe_xd_which_are_you/) [[1]](https://www.reddit.com/r/UXDesign/comments/1231366/figma_vs_adobe_xd_which_are_you/)[[2]](https://mettevo.com/blog/article/figma-vs-adobe-xd-which-to-choose-for-web-design-in-2025)[[3]](https://www.youtube.com/watch?v=K2fes86CX1o&t=66)\n\nWhich should you choose?\n\n- Choose **Figma** if you want to prioritize teamwork, work across different operating systems, or are looking for a tool that is currently utilized by the majority of modern design teams.[](https://www.youtube.com/watch?v=K2fes86CX1o&t=66) [[1]](https://www.youtube.com/watch?v=K2fes86CX1o&t=66)[[2]](https://mettevo.com/blog/article/figma-vs-adobe-xd-which-to-choose-for-web-design-in-2025)\n- Choose **Adobe XD** if you work entirely offline, require seamless Photoshop/Illustrator integration, or are an established solo designer who is already deeply embedded in the Adobe ecosystem.[](https://mettevo.com/blog/article/figma-vs-adobe-xd-which-to-choose-for-web-design-in-2025) [[1]](https://mettevo.com/blog/article/figma-vs-adobe-xd-which-to-choose-for-web-design-in-2025)\n\nFor a deep-dive visual comparison between the two tools and a breakdown of their respective pros and cons:![Related video thumbnail](https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTUthIyq77-TlOi0mdMNlMfuzWLKYlFiExweCqglUpufIcER7BG)\n57s[Figma vs Adobe XD: Which Design Tool is BETTER?15K views \u00a0\u00b7\u00a01 year ago![](https://api.dataforseo.com/cdn/i/07210058-2120-0139-0000-8a64330da383:2)\nYouTube\u00a0\u00b7\u00a0Zero To Mastery](https://www.youtube.com/watch?v=Hbn1SMUs-hs&t=100)",
+              "items": [
+                {
+                  "type": "ai_overview_element",
+                  "position": "left",
+                  "title": null,
+                  "text": "Figma is the clear industry standard for UI/UX design, praised for its browser-based real-time collaboration, robust design systems, and fast auto-layout features. Adobe XD is a capable, native desktop alternative, but it is currently in maintenance mode and does not receive major updates. Reddit +1",
+                  "markdown": "`Figma is the clear industry standard for UI/UX design, praised for its browser-based real-time collaboration, robust design systems, and fast auto-layout features. Adobe XD is a capable, native desktop alternative, but it is currently in maintenance mode and does not receive major updates`.[](https://www.reddit.com/r/UXDesign/comments/1231366/figma_vs_adobe_xd_which_are_you/) [[1]](https://www.reddit.com/r/UXDesign/comments/1231366/figma_vs_adobe_xd_which_are_you/)[[2]](https://www.youtube.com/watch?v=K2fes86CX1o&t=66)",
+                  "links": null,
+                  "images": null,
+                  "references": [
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "Reddit",
+                      "domain": "www.reddit.com",
+                      "url": "https://www.reddit.com/r/UXDesign/comments/1231366/figma_vs_adobe_xd_which_are_you/",
+                      "title": "Figma vs Adobe XD: Which are you? : r/UXDesign - Reddit",
+                      "text": "Curious to see how many of you use Figma or Adobe XD, or both. I've been seeing a lot more Figma mentions on job boards, and XD se..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "position": "left",
+                      "source": "YouTube",
+                      "domain": "www.youtube.com",
+                      "url": "https://www.youtube.com/watch?v=K2fes86CX1o&t=66",
+                      "title": "Figma vs Adobe XD (2026): Which One Actually Delivers?",
+                      "text": "if your design process involves using a lot of photos from Photoshop or graphics from Illustrator XD makes it very easy to bring t..."
+                    }
+                  ]
+                },
+                {
+                  "type": "ai_overview_element",
+                  "position": "left",
+                  "title": "Key Differences",
+                  "text": null,
+                  "markdown": "Key Differences",
+                  "links": null,
+                  "images": null,
+                  "references": null
+                },
+                {
+                  "type": "ai_overview_element",
+                  "position": "left",
+                  "title": "Which should you choose?",
+                  "text": "For a deep-dive visual comparison between the two tools and a breakdown of their respective pros and cons: 57s Figma vs Adobe XD: Which Design Tool is BETTER? 15K views \u00b7\u00a01 year ago YouTube\u00a0\u00b7\u00a0Zero To Mastery",
+                  "markdown": "For a deep-dive visual comparison between the two tools and a breakdown of their respective pros and cons:![Related video thumbnail](https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTUthIyq77-TlOi0mdMNlMfuzWLKYlFiExweCqglUpufIcER7BG)\n57s[Figma vs Adobe XD: Which Design Tool is BETTER?15K views \u00a0\u00b7\u00a01 year ago![](https://api.dataforseo.com/cdn/i/07210058-2120-0139-0000-8a64330da383:1)\nYouTube\u00a0\u00b7\u00a0Zero To Mastery](https://www.youtube.com/watch?v=Hbn1SMUs-hs&t=100)",
+                  "links": null,
+                  "images": null,
+                  "references": null
+                }
+              ],
+              "references": [
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "Reddit",
+                  "domain": "www.reddit.com",
+                  "url": "https://www.reddit.com/r/UXDesign/comments/1231366/figma_vs_adobe_xd_which_are_you/",
+                  "title": "Figma vs Adobe XD: Which are you? : r/UXDesign - Reddit",
+                  "text": "Curious to see how many of you use Figma or Adobe XD, or both. I've been seeing a lot more Figma mentions on job boards, and XD se..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "YouTube",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/watch?v=K2fes86CX1o&t=66",
+                  "title": "Figma vs Adobe XD (2026): Which One Actually Delivers?",
+                  "text": "if your design process involves using a lot of photos from Photoshop or graphics from Illustrator XD makes it very easy to bring t..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "Designlab",
+                  "domain": "designlab.com",
+                  "url": "https://designlab.com/blog/figma-vs-adobe-xd",
+                  "title": "Figma vs Adobe XD: An In-Depth Comparison for UX/UI Designers",
+                  "text": "One of the most obvious differences between Figma and Adobe XD is that Figma is primarily a web-based program, while Adobe XD is d..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "Quora",
+                  "domain": "www.quora.com",
+                  "url": "https://www.quora.com/Which-platform-Figma-or-Adobe-XD-is-better-for-a-career-in-visual-content-creation",
+                  "title": "Which platform, Figma or Adobe XD, is better for a career in visual ... - Quora",
+                  "text": "Platform and Connectivity: Figma is a browser-based, cloud tool that requires an internet connection for full functionality, which..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "Mettevo",
+                  "domain": "mettevo.com",
+                  "url": "https://mettevo.com/blog/article/figma-vs-adobe-xd-which-to-choose-for-web-design-in-2025",
+                  "title": "Figma vs Adobe XD: Which Web Design Tool Wins in 2025? - Mettevo",
+                  "text": "Adobe XD: Which to Choose for Web Design in 2025? Kate Sheveriaieva. May 20, 2025. Updated: Jan 21, 2026. Category: web design. In..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "www.youtube.com",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/watch?v=K2fes86CX1o",
+                  "title": "Figma vs Adobe XD (2026): Which One Actually Delivers?",
+                  "text": "on let's start with the core difference and how they work figma is a web-based. tool this means you can access and edit all of you..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "position": "right",
+                  "source": "www.youtube.com",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/watch?v=Hbn1SMUs-hs",
+                  "title": "Figma vs Adobe XD: Which Design Tool is BETTER?",
+                  "text": "in this video we'll break down the pros. and cons of both tools looking at their features pricing platforms. and more so by the en..."
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 2,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]",
+              "domain": "www.reddit.com",
+              "title": "Figma vs Adobe XD: Which are you? : r/UXDesign",
+              "url": "https://www.reddit.com/r/UXDesign/comments/1231366/figma_vs_adobe_xd_which_are_you/",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "110+ comments  \u00b7  3 years ago",
+              "website_name": "Reddit\u00a0\u00b7\u00a0r/UXDesign",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Curious to see how many of you use Figma or Adobe XD, or both. I've been seeing a lot more Figma mentions on job boards, and XD seems to get much ...",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": null,
+              "links": [
+                {
+                  "type": "link_element",
+                  "title": "Still using Adobe XD, is Figma worth updating to?",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/FigmaDesign/comments/1n3qd30/still_using_adobe_xd_is_figma_worth_updating_to/",
+                  "domain": "www.reddit.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "Confused! What is the difference between Adobe XD ...",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/FigmaDesign/comments/1brr90w/confused_what_is_the_difference_between_adobe_xd/",
+                  "domain": "www.reddit.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "More results from www.reddit.com",
+                  "description": null,
+                  "url": "https://www.google.com/search?q=Figma+vs+Adobe+XD+site:www.reddit.com&sca_esv=3271cc0dab4982ea&hl=en&gl=US&sa=X&ved=2ahUKEwjy56KdoOKVAxWaTaQEHdq_NaUQrQIoAnoECCEQAw",
+                  "domain": "www.google.com"
+                }
+              ],
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "people_also_ask",
+              "rank_group": 1,
+              "rank_absolute": 3,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[3]/div[1]/div[1]/div[1]",
+              "items": [
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Does anyone still use Adobe XD?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Why is Adobe XD discontinued?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "What is replacing Adobe XD?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]/div[3]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Is Figma a good replacement for Adobe?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]/div[4]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_expanded_element",
+                      "featured_title": null,
+                      "url": "https://hedrick.io/post/figma-vs-adobe",
+                      "domain": "hedrick.io",
+                      "title": "Figma vs Adobe in 2026: which design tool wins for your workflow?",
+                      "description": "But simultaneous editing in Photoshop or Illustrator is not the same experience as Figma's multiplayer. For product teams doing daily collaborative design work, Figma is meaningfully better. For a print agency where designers each own separate files, Adobe's collaboration gap matters less.",
+                      "images": null,
+                      "timestamp": null,
+                      "table": null
+                    }
+                  ]
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 4,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[5]/div[1]/div[1]",
+              "domain": "zerotomastery.io",
+              "title": "Figma vs Adobe XD: Comparison Guide",
+              "url": "https://zerotomastery.io/blog/figma-vs-adobe-xd-comparison-guide/",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://zerotomastery.io \u203a blog \u203a figma-vs-adobe-xd-co...",
+              "website_name": "Zero To Mastery",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Jul 5, 2024 \u2014 Figma's collaborative approach to prototyping makes it stand out, while Adobe XD's advanced interactions and 3D transformations give it an edge\u00a0... Read more",
+              "pre_snippet": "07/05/2024 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "Figma's collaborative approach to prototyping makes it stand out"
+              ],
+              "links": [
+                {
+                  "type": "link_element",
+                  "title": "Mile-high comparison for...",
+                  "description": null,
+                  "url": "https://zerotomastery.io/blog/figma-vs-adobe-xd-comparison-guide/#Mile-high-comparison-for-skimmers",
+                  "domain": "zerotomastery.io"
+                },
+                {
+                  "type": "link_element",
+                  "title": "Figma vs Adobe XD: Features...",
+                  "description": null,
+                  "url": "https://zerotomastery.io/blog/figma-vs-adobe-xd-comparison-guide/#Figma-vs-Adobe-XD-features-comparison",
+                  "domain": "zerotomastery.io"
+                },
+                {
+                  "type": "link_element",
+                  "title": "Supported platforms",
+                  "description": null,
+                  "url": "https://zerotomastery.io/blog/figma-vs-adobe-xd-comparison-guide/#Supported-platforms",
+                  "domain": "zerotomastery.io"
+                }
+              ],
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2024-07-05 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "discussions_and_forums",
+              "rank_group": 1,
+              "rank_absolute": 5,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[7]/div[1]",
+              "title": "Discussions and forums",
+              "items": [
+                {
+                  "type": "discussions_and_forums_element",
+                  "title": "Still using Adobe XD, is Figma worth updating to?",
+                  "url": "https://www.reddit.com/r/FigmaDesign/comments/1n3qd30/still_using_adobe_xd_is_figma_worth_updating_to/",
+                  "domain": "www.reddit.com",
+                  "source": "Reddit",
+                  "description": null,
+                  "timestamp": "2025-09-20 21:59:03 +00:00",
+                  "posts_count": 40
+                },
+                {
+                  "type": "discussions_and_forums_element",
+                  "title": "Which platform, Figma or Adobe XD, is better for a career in visual content ...",
+                  "url": "https://www.quora.com/Which-platform-Figma-or-Adobe-XD-is-better-for-a-career-in-visual-content-creation",
+                  "domain": "www.quora.com",
+                  "source": "Quora",
+                  "description": null,
+                  "timestamp": "2024-07-20 21:59:03 +00:00",
+                  "posts_count": 1
+                },
+                {
+                  "type": "discussions_and_forums_element",
+                  "title": "Is Figma better than Adobe XD?",
+                  "url": "https://www.quora.com/Is-Figma-better-than-Adobe-XD",
+                  "domain": "www.quora.com",
+                  "source": "Quora",
+                  "description": null,
+                  "timestamp": "2019-07-20 21:59:03 +00:00",
+                  "posts_count": 10
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 6,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[9]/div[1]/div[1]",
+              "domain": "designlab.com",
+              "title": "Figma vs Adobe XD: An In-Depth Comparison for UX/UI ...",
+              "url": "https://designlab.com/blog/figma-vs-adobe-xd",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://designlab.com \u203a blog \u203a figma-vs-adobe-xd",
+              "website_name": "Designlab",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Aug 9, 2022 \u2014 Figma is primarily a web-based program, while Adobe XD is designed to work locally as a desktop app. be used on any platform",
+              "pre_snippet": "08/09/2022 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "Figma is primarily a web-based program"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2022-08-09 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "video",
+              "rank_group": 1,
+              "rank_absolute": 7,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[11]/div[1]",
+              "items": [
+                {
+                  "type": "video_element",
+                  "source": "YouTube \u00b7 Zero To Mastery",
+                  "title": "Figma vs Adobe XD: Which Design Tool is BETTER?",
+                  "timestamp": "2024-11-30 00:00:00 +00:00",
+                  "url": "https://www.youtube.com/watch?v=Hbn1SMUs-hs"
+                },
+                {
+                  "type": "video_element",
+                  "source": "YouTube \u00b7 Speak About Digital",
+                  "title": "Figma vs Adobe XD (2026): Which One Actually Delivers?",
+                  "timestamp": "2025-09-17 00:00:00 +00:00",
+                  "url": "https://www.youtube.com/watch?v=K2fes86CX1o"
+                },
+                {
+                  "type": "video_element",
+                  "source": "YouTube \u00b7 Rino de Boer",
+                  "title": "How Figma beats Adobe Xd",
+                  "timestamp": "2022-10-26 00:00:00 +00:00",
+                  "url": "https://www.youtube.com/watch?v=AlTVn4NNUIo"
+                },
+                {
+                  "type": "video_element",
+                  "source": "YouTube \u00b7 Megan Weeks",
+                  "title": "Adobe XD vs. Figma for Website Design",
+                  "timestamp": "2023-04-05 00:00:00 +00:00",
+                  "url": "https://www.youtube.com/watch?v=xbJrwoPXonE"
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 8,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[13]/div[1]/div[1]",
+              "domain": "www.hypermatic.com",
+              "title": "Figma vs Adobe XD",
+              "url": "https://www.hypermatic.com/articles/figma-vs-adobe-xd/",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.hypermatic.com \u203a Articles",
+              "website_name": "Hypermatic",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Figma uses WebGL under the hood and can handle very large design. Adobe XD generally performs fairly well, Figma has all of the features you've come to expect\u00a0...",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "Figma uses WebGL under the hood and can handle very large design"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 9,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[15]/div[1]/div[1]",
+              "domain": "www.toptal.com",
+              "title": "Figma vs. Adobe XD vs. Sketch: Which Tool Is Best?",
+              "url": "https://www.toptal.com/designers/figma/figma-vs-adobe-xd-vs-sketch",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.toptal.com \u203a designers \u203a figma-vs-adobe-x...",
+              "website_name": "Toptal",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Dec 11, 2024 \u2014 A UI/UX design expert compares Figma, Adobe XD, and Sketch, unpacking the features and use cases of these leading UI design platforms.",
+              "pre_snippet": "12/11/2024 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "compares Figma, Adobe XD, and Sketch"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2024-12-11 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "short_videos",
+              "rank_group": 1,
+              "rank_absolute": 10,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[17]/div[1]",
+              "title": "Short videos",
+              "items": [
+                {
+                  "type": "short_videos_element",
+                  "title": "Why Figma is Better than Adobe XD #coding #codeprep ...",
+                  "url": "https://www.youtube.com/shorts/uN8zLIkMR3g",
+                  "domain": "www.youtube.com",
+                  "source": "Dors Coding School"
+                },
+                {
+                  "type": "short_videos_element",
+                  "title": "Figma vs Adobe XD: Which is Best for You? | Nishant Kaushik ...",
+                  "url": "https://www.linkedin.com/posts/nishant-kaushik-wingman-partners_expertvideo-figma-adobexd-activity-7321479930955878402-oEAU",
+                  "domain": "www.linkedin.com",
+                  "source": "Nishant Kaushik"
+                },
+                {
+                  "type": "short_videos_element",
+                  "title": "Figma VS Adobe XD: What is the best UI/UX design tool ...",
+                  "url": "https://www.tiktok.com/@debaedoma/video/7214440956626488582",
+                  "domain": "www.tiktok.com",
+                  "source": "debaedoma"
+                },
+                {
+                  "type": "short_videos_element",
+                  "title": "\u2694\ufe0f The Ultimate Design Battle \u2013 2026 Edition Figma vs ...",
+                  "url": "https://www.instagram.com/reel/DSfY2p3klrn/",
+                  "domain": "www.instagram.com",
+                  "source": "Web D School"
+                },
+                {
+                  "type": "short_videos_element",
+                  "title": "Figma or Adobe XD? Mobile or Web design? We're asking our ...",
+                  "url": "https://www.facebook.com/skillshikshya/videos/figma-or-adobe-xd-mobile-or-web-design-were-asking-our-uiux-designers-about-thei/904803161675980/",
+                  "domain": "www.facebook.com",
+                  "source": "Skill Shikshya"
+                },
+                {
+                  "type": "short_videos_element",
+                  "title": "Statista on Instagram: \" Adobe vs. Figma: Two design ...",
+                  "url": "https://www.instagram.com/reel/DZpHHZ0jLzj/",
+                  "domain": "www.instagram.com",
+                  "source": "Statista"
+                },
+                {
+                  "type": "short_videos_element",
+                  "title": "Adobe XD vs Figma | Design Tools Comparison",
+                  "url": "https://www.tiktok.com/@befront.io/video/7182573709411077419",
+                  "domain": "www.tiktok.com",
+                  "source": "befront.io"
+                },
+                {
+                  "type": "short_videos_element",
+                  "title": "Adobe vs. Figma: Two design powerhouses, two very different ...",
+                  "url": "https://www.facebook.com/Statista.Inc/posts/-adobe-vs-figma-two-design-powerhouses-two-very-different-growth-storieswhile-ad/1340230468314319/",
+                  "domain": "www.facebook.com",
+                  "source": "Statista"
+                },
+                {
+                  "type": "short_videos_element",
+                  "title": "Adobe XD and Figma both get the job done, but they suit ...",
+                  "url": "https://www.instagram.com/reel/DTH9B7nCsBw/",
+                  "domain": "www.instagram.com",
+                  "source": "Edmoss Global Ltd"
+                },
+                {
+                  "type": "short_videos_element",
+                  "title": "Top 4 UI/UX design tools of 2025: Figma, Adobe XD, Framer ...",
+                  "url": "https://www.linkedin.com/posts/odissitech-global-solutions_odissitech-uiuxdesign-figma-activity-7357304171781394432-I9vr",
+                  "domain": "www.linkedin.com",
+                  "source": "ODISSI TECH GLOBAL SOLUTIONS"
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 11,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[19]/div[1]/div[1]",
+              "domain": "uxdesign.cc",
+              "title": "Who wins the fight between Figma and Adobe XD?",
+              "url": "https://uxdesign.cc/figma-vs-adobe-xd-d3a624cb7885",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://uxdesign.cc \u203a figma-vs-adobe-xd-d3a624cb7885",
+              "website_name": "UX Collective",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Dec 11, 2018 \u2014 Figma is the overall winner with 6 wins out of 10. Adobe XD won in 2 categories. They were tied in 2. In conclusion, Figma won. You should,\u00a0... Read more",
+              "pre_snippet": "12/11/2018 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "Figma is the overall winner"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2018-12-11 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "related_searches",
+              "rank_group": 1,
+              "rank_absolute": 12,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[2]/div[1]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]",
+              "items": [
+                "Figma vs adobe xd reddit",
+                "Figma vs Adobe Photoshop",
+                "Figma vs adobe xd for beginners",
+                "Adobe xd vs figma vs sketch",
+                "Figma vs adobe xd cost",
+                "Figma vs Adobe Creative Cloud",
+                "Figma vs adobe InDesign",
+                "Adobe vs Figma stock"
+              ],
+              "rectangle": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

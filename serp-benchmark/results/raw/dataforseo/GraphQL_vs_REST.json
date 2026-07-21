@@ -1,0 +1,634 @@
+{
+  "version": "0.1.20260717",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "10.9733 sec.",
+  "cost": 0.002,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "07210102-2120-0139-0000-436efff47a79",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "10.8707 sec.",
+      "cost": 0.002,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "serp",
+        "google",
+        "organic",
+        "live",
+        "advanced"
+      ],
+      "data": {
+        "api": "serp",
+        "function": "live",
+        "se": "google",
+        "se_type": "organic",
+        "keyword": "GraphQL vs REST",
+        "location_code": 2840,
+        "language_code": "en",
+        "device": "desktop",
+        "expand_ai_overview": true,
+        "os": "windows"
+      },
+      "result": [
+        {
+          "keyword": "GraphQL vs REST",
+          "type": "organic",
+          "se_domain": "google.com",
+          "location_code": 2840,
+          "language_code": "en",
+          "check_url": "https://www.google.com/search?q=GraphQL%20vs%20REST&hl=en&gl=US&ie=UTF-8&uule=w+CAIQIFISCQs2MuSEtepUEUK33kOSuTsc",
+          "datetime": "2026-07-20 22:02:49 +00:00",
+          "spell": null,
+          "refinement_chips": null,
+          "item_types": [
+            "ai_overview",
+            "organic",
+            "people_also_ask",
+            "short_videos",
+            "perspectives",
+            "related_searches"
+          ],
+          "se_results_count": 125,
+          "pages_count": 1,
+          "items_count": 12,
+          "items": [
+            {
+              "type": "ai_overview",
+              "rank_group": 1,
+              "rank_absolute": 1,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]",
+              "asynchronous_ai_overview": true,
+              "markdown": null,
+              "items": null,
+              "references": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 2,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]",
+              "domain": "aws.amazon.com",
+              "title": "GraphQL vs REST API - Difference Between API Design ...",
+              "url": "https://aws.amazon.com/compare/the-difference-between-graphql-and-rest/",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://aws.amazon.com \u203a ... \u203a Application Integration",
+              "website_name": "Amazon Web Services (AWS)",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "GraphQL and REST are two distinct approaches to designing API for exchanging data over the internet. REST enables client applications to exchange data with a\u00a0... Read more",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "GraphQL and REST are two distinct approaches to designing API"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "people_also_ask",
+              "rank_group": 1,
+              "rank_absolute": 3,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[4]/div[1]/div[1]/div[1]",
+              "items": [
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Why is GraphQL not popular?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Can GraphQL replace REST?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_expanded_element",
+                      "featured_title": null,
+                      "url": "https://www.ibm.com/think/topics/graphql-vs-rest-api",
+                      "domain": "www.ibm.com",
+                      "title": "GraphQL vs REST: What's the Difference? - IBM",
+                      "description": "GraphQL offers an efficient, more flexible addition to REST ; GraphQL APIs are often viewed as an upgrade from RESTful environments, especially given their ability to facilitate collaboration between front-end and back-end teams.",
+                      "images": null,
+                      "timestamp": null,
+                      "table": null
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Is GraphQL still relevant in 2026?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[2]/div[3]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "What are the 4 types of REST API?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[2]/div[4]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 4,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[6]/div[1]/div[1]",
+              "domain": "www.reddit.com",
+              "title": "GraphQL vs. REST in the real world",
+              "url": "https://www.reddit.com/r/graphql/comments/144esgy/graphql_vs_rest_in_the_real_world/",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "30+ comments  \u00b7  3 years ago",
+              "website_name": "Reddit\u00a0\u00b7\u00a0r/graphql",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "REST APIs and GraphQL are both \"HTTP-based APIs\", the barrier to entry and learning curve for GraphQL is unarguably much higher... REST is an\u00a0...",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "REST",
+                "GraphQL"
+              ],
+              "links": [
+                {
+                  "type": "link_element",
+                  "title": "Confused by GraphQL vs REST comparison - Reddit",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/graphql/comments/1fko6cx/confused_by_graphql_vs_rest_comparison/",
+                  "domain": "www.reddit.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "When to use GraphQL instead of a REST API? Vice versa.",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/graphql/comments/cg82f1/when_to_use_graphql_instead_of_a_rest_api_vice/",
+                  "domain": "www.reddit.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "More results from www.reddit.com",
+                  "description": null,
+                  "url": "https://www.google.com/search?q=GraphQL+vs+REST+site:www.reddit.com&sca_esv=3271cc0dab4982ea&hl=en&gl=US&sa=X&ved=2ahUKEwjK0cKIoeKVAxUaF1kFHajwAFMQrQIoAnoECCMQAw",
+                  "domain": "www.google.com"
+                }
+              ],
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 5,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[8]/div[1]/div[1]",
+              "domain": "blog.postman.com",
+              "title": "GraphQL vs REST: Choosing the Right API Architecture ...",
+              "url": "https://blog.postman.com/graphql-vs-rest/",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://blog.postman.com \u203a graphql-vs-rest",
+              "website_name": "Postman Blog",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Nov 8, 2025 \u2014 REST prioritizes simplicity and standardization, while GraphQL prioritizes flexibility and efficiency.",
+              "pre_snippet": "11/08/2025 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "GraphQL prioritizes flexibility and efficiency"
+              ],
+              "links": [
+                {
+                  "type": "link_element",
+                  "title": "What is REST?",
+                  "description": null,
+                  "url": "https://blog.postman.com/graphql-vs-rest/#what-is-rest",
+                  "domain": "blog.postman.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "What is GraphQL?",
+                  "description": null,
+                  "url": "https://blog.postman.com/graphql-vs-rest/#what-is-graphql",
+                  "domain": "blog.postman.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "Evaluating REST and...",
+                  "description": null,
+                  "url": "https://blog.postman.com/graphql-vs-rest/#evaluating-rest-and-graphql-in-practice",
+                  "domain": "blog.postman.com"
+                }
+              ],
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2025-11-08 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "short_videos",
+              "rank_group": 1,
+              "rank_absolute": 6,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[10]/div[1]",
+              "title": "Short videos",
+              "items": [
+                {
+                  "type": "short_videos_element",
+                  "title": "SOAP vs REST vs GraphQL",
+                  "url": "https://www.youtube.com/shorts/TO3XG9pL1to",
+                  "domain": "www.youtube.com",
+                  "source": "Arjay McCandless"
+                },
+                {
+                  "type": "short_videos_element",
+                  "title": "REST vs GraphQL in 60 seconds",
+                  "url": "https://www.youtube.com/shorts/_id7gnL3VuI",
+                  "domain": "www.youtube.com",
+                  "source": "The Cloud Girl"
+                },
+                {
+                  "type": "short_videos_element",
+                  "title": "GraphQL vs REST: Which One to Choose?",
+                  "url": "https://www.youtube.com/shorts/4QJwcTAmAl4",
+                  "domain": "www.youtube.com",
+                  "source": "Postman"
+                },
+                {
+                  "type": "short_videos_element",
+                  "title": "Difference between GraphQL and Rest API Explained",
+                  "url": "https://www.youtube.com/shorts/c8XMl9aQVCM",
+                  "domain": "www.youtube.com",
+                  "source": "Kritika & Pranav | Programmer Couple"
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "perspectives",
+              "rank_group": 1,
+              "rank_absolute": 7,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[12]/div[1]",
+              "title": "What people are saying",
+              "items": [
+                {
+                  "type": "perspectives_element",
+                  "title": "\ud835\udde6\ud835\ude01\ud835\uddfc\ud835\uddfd \ud835\uddf1\ud835\uddf2\ud835\uddef\ud835\uddee\ud835\ude01\ud835\uddf6\ud835\uddfb\ud835\uddf4 \ud835\udde5\ud835\uddd8\ud835\udde6\ud835\udde7 \ud835\ude03\ud835\ude00 \ud835\uddda\ud835\uddff\ud835\uddee\ud835\uddfd\ud835\uddf5\ud835\udde4\ud835\udddf. \ud835\udddc\ud835\ude01'\ud835\ude00 \ud835\ude01\ud835\uddf5\ud835\uddf2 \ud835\ude04\ud835\uddff\ud835\uddfc\ud835\uddfb\ud835\uddf4 \ud835\uddfe\ud835\ude02\ud835\uddf2\ud835\ude00\ud835\ude01\ud835\uddf6\ud835\uddfc\ud835\uddfb. The right question: \ud835\ude04\ud835\uddf5\ud835\uddfc \ud835\uddf6\ud835\ude00 \ud835\uddf0\ud835\uddee\ud835\uddf9\ud835\uddf9\ud835\uddf6\ud835\uddfb\ud835\uddf4, \ud835\uddee\ud835\uddfb\ud835\uddf1 \ud835\ude04\ud835\uddf5\ud835\uddee\ud835\ude01 \ud835\uddf1\ud835\uddfc \ud835\ude01\ud835\uddf5\ud835\uddf2\ud835\ude06 \ud835\uddfb\ud835\uddf2\ud835\uddf2\ud835\uddf1? Answer that, and the protocol picks itself: \ud835\udde3\ud835\ude02\ud835\uddef\ud835\uddf9\ud835\uddf6\ud835\uddf0 \ud835\uddd4\ud835\udde3\ud835\udddc \ud835\uddf3\ud835\uddfc\ud835\uddff \ud835\ude01\ud835\uddf5\ud835\uddf6\ud835\uddff\ud835\uddf1 \ud835\uddfd\ud835\uddee\ud835\uddff\ud835\ude01\ud835\uddf6\ud835\uddf2\ud835\ude00? \u2192 \ud835\udde5\ud835\uddd8\ud835\udde6\ud835\udde7. Boring, c",
+                  "description": null,
+                  "url": "https://www.linkedin.com/posts/arslanahmad_%F0%9D%97%A6%F0%9D%98%81%F0%9D%97%BC%F0%9D%97%BD-%F0%9D%97%B1%F0%9D%97%B2%F0%9D%97%AF%F0%9D%97%AE%F0%9D%98%81%F0%9D%97%B6%F0%9D%97%BB%F0%9D%97%B4-%F0%9D%97%A5%F0%9D%97%98%F0%9D%97%A6%F0%9D%97%A7-%F0%9D%98%83%F0%9D%98%80-%F0%9D%97%9A%F0%9D%97%BF%F0%9D%97%AE%F0%9D%97%BD%F0%9D%97%B5%F0%9D%97%A4%F0%9D%97%9F-activity-7484932990444183552-tNw8",
+                  "domain": "www.linkedin.com",
+                  "date": "11 hours ago",
+                  "source": "Arslan Ahmad",
+                  "timestamp": "2026-07-20 11:02:48 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "RestQL \u2013 GraphQL-like queries over REST, purely client-side: schema-driven mapping, batching, request dedup, caching",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/javascript/comments/1v0f6uf/restql_graphqllike_queries_over_rest_purely/",
+                  "domain": "www.reddit.com",
+                  "date": "1 day ago",
+                  "source": "r/javascript",
+                  "timestamp": "2026-07-19 22:02:48 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "REST API vs GraphQL Explained with Real Life Examples | Cloud Architect Interview",
+                  "description": null,
+                  "url": "https://www.youtube.com/watch?v=5MIY61QxWmU",
+                  "domain": "www.youtube.com",
+                  "date": "May 14, 2026",
+                  "source": "IT k Funde",
+                  "timestamp": "2026-05-14 00:00:00 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "My API handled 10,000 requests flawlessly in testing. Crashed in production within 2 hours. The problem? I used the wrong API type. \ud83c\udf81 Lately, I started learning Claude skills from this article: https://lnkd.in/eSgv9QP8 APIs aren't one-size-fits-all. Different proble",
+                  "description": null,
+                  "url": "https://www.linkedin.com/posts/aryan-gupta-81887028a_api-softwareengineering-rest-activity-7481549079722893312-fGb5",
+                  "domain": "www.linkedin.com",
+                  "date": "1 week ago",
+                  "source": "Aryan Gupta",
+                  "timestamp": "2026-07-13 22:02:48 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "SOAP vs REST vs GraphQL",
+                  "description": null,
+                  "url": "https://www.youtube.com/shorts/TO3XG9pL1to",
+                  "domain": "www.youtube.com",
+                  "date": "1 month ago",
+                  "source": "Arjay McCandless",
+                  "timestamp": "2026-06-20 22:02:48 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Not all APIs are built the same.\n\nSome are designed for simplicity.\nSome for speed.\nSome for flexibility.\nAnd some for real-time communication.\n\nIf you\u2019re learning backend development or preparing for system design interviews, understanding when to use each API style is just as important as knowing how to build one.\n\nIn this carousel, I\u2019ve broken down the 5 most popular API types:\n\u2022 REST\n\u2022 GraphQL\n\u2022 gRPC\n\u2022 SOAP\n\u2022 WebSocket\n\nLearn their architecture, strengths, limitations, and real-world use cases\u2014so you know which one fits your next project.\n\nSave this post for future reference, and share it with someone learning backend development.\n\n\ud83d\udcac Which API style do you use the most at work?\n\n#BackendDevelopment #API #RESTAPI #GraphQL #gRPC WebSocket SOAP SoftwareEngineering SystemDesign Microservices Java Programming Coding Developer Tech DistributedSystems FullStackDevelopment LearnToCode",
+                  "description": null,
+                  "url": "https://www.instagram.com/p/DaqPyPohE3_/?__d=11%252F",
+                  "domain": "www.instagram.com",
+                  "date": "1 week ago",
+                  "source": "codewithupasana",
+                  "timestamp": "2026-07-13 22:02:48 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "REST vs GraphQL in 60 seconds",
+                  "description": null,
+                  "url": "https://www.youtube.com/shorts/_id7gnL3VuI",
+                  "domain": "www.youtube.com",
+                  "date": "May 12, 2026",
+                  "source": "The Cloud Girl",
+                  "timestamp": "2026-05-12 00:00:00 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "REST vs GraphQL vs gRPC: Which API wins in system design interviews?",
+                  "description": null,
+                  "url": "https://www.youtube.com/shorts/Q3f5jmIwN3Y",
+                  "domain": "www.youtube.com",
+                  "date": "1 month ago",
+                  "source": "Hello Interview",
+                  "timestamp": "2026-06-20 22:02:48 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "SOAP vs REST vs GraphQL\n\n#systemdesign #apidesign #coding #programming",
+                  "description": null,
+                  "url": "https://www.instagram.com/reel/DZgGCdVgTrP/",
+                  "domain": "www.instagram.com",
+                  "date": "1 month ago",
+                  "source": "arjay_the_dev",
+                  "timestamp": "2026-06-20 22:02:48 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Been building on REST forever, is GraphQL actually worth switching to for scaling?",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/TechNook/comments/1ubl20y/been_building_on_rest_forever_is_graphql_actually/",
+                  "domain": "www.reddit.com",
+                  "date": "1 month ago",
+                  "source": "r/TechNook",
+                  "timestamp": "2026-06-20 22:02:48 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "GraphQL used to be popular, but that doesn't seem to be the case anymore...",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/webdev/comments/1szk144/graphql_used_to_be_popular_but_that_doesnt_seem/",
+                  "domain": "www.reddit.com",
+                  "date": "Apr 30, 2026",
+                  "source": "r/webdev",
+                  "timestamp": "2026-04-30 00:00:00 +00:00"
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 8,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[14]/div[1]/div[1]",
+              "domain": "www.ibm.com",
+              "title": "GraphQL vs REST: What's the Difference?",
+              "url": "https://www.ibm.com/think/topics/graphql-vs-rest-api",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.ibm.com \u203a think \u203a topics \u203a graphql-vs-rest-...",
+              "website_name": "IBM",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "GraphQL offers an efficient, more flexible addition to REST ; GraphQL APIs are often viewed as an upgrade from RESTful environments. Read more",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "GraphQL offers an efficient, more flexible addition to REST"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 9,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[15]/div[1]/div[1]/div[1]",
+              "domain": "www.youtube.com",
+              "title": "GraphQL vs REST: What's the Difference and When Should ...",
+              "url": "https://www.youtube.com/watch?v=2wz19HOyu1w",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "4.6K+ views  \u00b7  1 year ago",
+              "website_name": "YouTube\u00a0\u00b7\u00a0Postman",
+              "is_image": false,
+              "is_video": true,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": null,
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": null,
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2025-04-01 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 10,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[17]/div[1]/div[1]",
+              "domain": "www.geeksforgeeks.org",
+              "title": "GraphQL vs REST",
+              "url": "https://www.geeksforgeeks.org/graphql/graphql-vs-rest-which-is-better-for-apis/",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.geeksforgeeks.org \u203a graphql \u203a graphql-vs-...",
+              "website_name": "GeeksforGeeks",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Mar 11, 2026 \u2014 GraphQL and REST are two widely used approaches for building APIs that enable communication between clients and servers. Read more",
+              "pre_snippet": "03/11/2026 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "GraphQL",
+                "REST"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2026-03-11 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 11,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[19]/div[1]/div[1]",
+              "domain": "konghq.com",
+              "title": "GraphQL vs REST: Key Similarities and Differences ...",
+              "url": "https://konghq.com/blog/learning-center/graphql-vs-rest",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://konghq.com \u203a Blog \u203a Learning Center",
+              "website_name": "Kong Inc.",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Feb 27, 2025 \u2014 GraphQL uses a single endpoint and allows clients to specify their data requirements, while REST relies on multiple endpoints with fixed data\u00a0... Read more",
+              "pre_snippet": "02/27/2025 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "GraphQL uses a single endpoint and allows clients to specify their data requirements"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2025-02-27 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "related_searches",
+              "rank_group": 1,
+              "rank_absolute": 12,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[2]/div[1]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]",
+              "items": [
+                "Graphql vs rest reddit",
+                "GraphQL vs REST example",
+                "GraphQL vs REST performance",
+                "GraphQL tutorial",
+                "GraphQL vs REST pros and cons",
+                "GraphQL vs gRPC",
+                "Graphql vs rest vs api",
+                "GraphQL vs SQL"
+              ],
+              "rectangle": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

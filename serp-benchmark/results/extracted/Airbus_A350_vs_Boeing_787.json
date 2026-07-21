@@ -1,0 +1,342 @@
+{
+  "query": "Airbus A350 vs Boeing 787",
+  "intent": "comparison",
+  "scores": {
+    "SearchApi": {
+      "extracted": {
+        "present": true,
+        "summary": "",
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "answer": "The Airbus A350 and Boeing 787 are both advanced, composite wide-body jets, but they serve slightly different needs. The A350 is a larger, heavier aircraft designed for high-capacity, ultra-long-haul routes with superior passenger space. The 787 is lighter and more versatile, highly prized by airlines for its exceptional fuel efficiency on standard long-haul and \"point-to-point\" routes.",
+            "reference_indexes": [
+              2
+            ]
+          },
+          {
+            "type": "header",
+            "answer": "Passenger Experience"
+          },
+          {
+            "type": "paragraph",
+            "answer": "Many flyers and industry experts consider the Airbus A350 the more comfortable aircraft for passengers due to its wider cabin.",
+            "reference_indexes": [
+              3,
+              2
+            ]
+          },
+          {
+            "type": "paragraph",
+            "answer": "Seating Width: The A350's fuselage is roughly 5 inches wider than the 787. In a standard 3-3-3 economy layout, this gives A350 passengers approximately 18-inch wide seats, compared to around 17 inches on the 787.",
+            "reference_indexes": [
+              0
+            ]
+          },
+          {
+            "type": "header",
+            "answer": "Fleet Economics and Design"
+          },
+          {
+            "type": "paragraph",
+            "answer": "Airlines evaluate these two aircraft based on mission length and fleet logistics.",
+            "reference_indexes": [
+              2
+            ]
+          },
+          {
+            "type": "paragraph",
+            "answer": "Size Variants: Boeing offers three highly successful variants (787-8, 787-9, and 787-10), offering airlines deep flexibility to match planes to specific route demands. Airbus offers two main passenger variants (A350-900 and A350-1000).",
+            "reference_indexes": [
+              2
+            ]
+          },
+          {
+            "type": "video",
+            "link": "https://www.youtube.com/watch?v=oJXPuC7ZMv8&t=51"
+          }
+        ],
+        "citations": [
+          {
+            "url": "https://www.reddit.com/r/aviation/comments/1l4egvt/a350_or_787_dreamliner_whats_your_preference_for/",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://medium.com/@udharadesilva/airbus-a350-vs-boeing-787-which-cutting-edge-airplane-is-best-3ff6710d93ba",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=IzUoAl9NJDY&t=1",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=oJXPuC7ZMv8&t=51",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.facebook.com/61558804422315/videos/a350-vs-787-the-long-haul-showdowna350-range-cabin-comfort-advanced-cockpit-tech/1490749385985303/",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=IzUoAl9NJDY",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=oJXPuC7ZMv8",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=Gw3zclqZLXM&vl=en",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=XQHMFnJ1nMw",
+            "title": "",
+            "snippet": ""
+          }
+        ],
+        "related_searches": []
+      }
+    },
+    "SerpApi": {
+      "extracted": {
+        "present": true,
+        "summary": "",
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "snippet": "The Airbus A350 and Boeing 787 are both advanced, composite wide-body jets, but they serve slightly different needs. The A350 is a larger, heavier aircraft designed for high-capacity, ultra-long-haul routes with superior passenger space. The 787 is lighter and more versatile, highly prized by airlines for its exceptional fuel efficiency on standard long-haul and \"point-to-point\" routes.",
+            "snippet_links": [
+              {
+                "link": "https://www.youtube.com/watch?v=IzUoAl9NJDY&t=1"
+              }
+            ],
+            "snippet_highlighted_words": [
+              "The A350 is a larger, heavier aircraft designed for high-capacity, ultra-long-haul routes with superior passenger space. The 787 is lighter and more versatile"
+            ],
+            "reference_indexes": [
+              7
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "Passenger Experience"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Many flyers and industry experts consider the Airbus A350 the more comfortable aircraft for passengers due to its wider cabin.",
+            "snippet_links": [
+              {
+                "link": "https://www.youtube.com/watch?v=oJXPuC7ZMv8&t=51"
+              }
+            ],
+            "reference_indexes": [
+              8
+            ]
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Seating Width: The A350's fuselage is roughly 5 inches wider than the 787. In a standard 3-3-3 economy layout, this gives A350 passengers approximately 18-inch wide seats, compared to around 17 inches on the 787.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.reddit.com/r/aviation/comments/1l4egvt/a350_or_787_dreamliner_whats_your_preference_for/"
+                  }
+                ],
+                "reference_indexes": [
+                  2
+                ]
+              },
+              {
+                "snippet": "Cabin Environment: Both aircraft feature lower cabin altitudes (around 6,000 to 6,500 feet) to reduce jetlag and higher humidity levels than older jets. The A350 is generally considered one of the quietest planes in the sky, while the 787 is famous for its large, push-button dimmable windows.",
+                "snippet_links": [
+                  {
+                    "link": "https://medium.com/@udharadesilva/airbus-a350-vs-boeing-787-which-cutting-edge-airplane-is-best-3ff6710d93ba"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              3,
+              4
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "Fleet Economics and Design"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Airlines evaluate these two aircraft based on mission length and fleet logistics.",
+            "snippet_links": [
+              {
+                "link": "https://www.youtube.com/watch?v=IzUoAl9NJDY&t=1"
+              }
+            ],
+            "reference_indexes": [
+              9,
+              6
+            ]
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Size Variants: Boeing offers three highly successful variants (787-8, 787-9, and 787-10), offering airlines deep flexibility to match planes to specific route demands. Airbus offers two main passenger variants (A350-900 and A350-1000).",
+                "snippet_links": [
+                  {
+                    "link": "https://www.youtube.com/watch?v=IzUoAl9NJDY&t=1"
+                  }
+                ]
+              },
+              {
+                "snippet": "Range & Performance: The A350 boasts a longer maximum range and a higher maximum takeoff weight, making it the preferred choice for ultra-long-haul journeys (such as 12+ hours). The 787 excels economically on shorter long-haul flights where its lighter structure leads to lower landing fees and better fuel burn.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.facebook.com/61558804422315/videos/a350-vs-787-the-long-haul-showdowna350-range-cabin-comfort-advanced-cockpit-tech/1490749385985303/"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "For a deep-dive breakdown of how the cockpit layouts, manufacturing processes, and hidden cabin differences compare:",
+            "video": {
+              "link": "https://www.youtube.com/watch?v=oJXPuC7ZMv8&t=51",
+              "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuMWlJSQkRieDm3nxgPqIaDfA5pG7W_Dq66sFrqdDikNMDGaUw"
+            }
+          }
+        ],
+        "citations": [
+          {
+            "url": "https://www.youtube.com/watch?v=IzUoAl9NJDY",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=oJXPuC7ZMv8",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.reddit.com/r/aviation/comments/1l4egvt/a350_or_787_dreamliner_whats_your_preference_for/",
+            "title": "A350 or 787 Dreamliner? What's your preference for modern aviation?",
+            "snippet": "What's your preference for modern aviation? Discussion. Upvote 1.4K Downvote 329 Go to comments Share. Comments Section. Pretty1george. \u2022 1y ago. Used to be a B..."
+          },
+          {
+            "url": "https://medium.com/@udharadesilva/airbus-a350-vs-boeing-787-which-cutting-edge-airplane-is-best-3ff6710d93ba",
+            "title": "Airbus A350 vs Boeing 787: Which cutting edge airplane is \u2018best\u2019? | by Udhara de Silva | Medium",
+            "snippet": "Here's some information about the A350 and 787: * **A350**: * **Engine** Two ultra-quiet Rolls Royce engines * **Cabin** Extra-wide cabin with smaller windows a..."
+          },
+          {
+            "url": "https://www.facebook.com/61558804422315/videos/a350-vs-787-the-long-haul-showdowna350-range-cabin-comfort-advanced-cockpit-tech/1490749385985303/",
+            "title": "A350 VS 787 \u2014 THE LONG-HAUL SHOWDOWN A350: range, cabin ...",
+            "snippet": "two of the most advanced widebody jets on Earth. both built from carbon both born for longhaul. but underneath the A350. and 787 are completely different animal"
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=snMsCMcIWdg",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.tiktok.com/@cobyexplanes/video/7612355639141993742",
+            "title": "A350 vs 787: The Cost Advantage Explained",
+            "snippet": "Depends on mission profile. The 787 is better on shorter flights, if you need the range the A350 is the only choice."
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=IzUoAl9NJDY&t=1",
+            "title": "The A350 Is A Better Plane So Why Do Airlines Continue To Order MORE ...",
+            "snippet": "maximus odds are today no matter who you ask in the world of aviation. which plane is better the Airbus A350. for the Boeing. 787. by far most will often say th"
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=oJXPuC7ZMv8&t=51",
+            "title": "Boeing 787 vs Airbus A350 (2026): The Brutal Truth!",
+            "snippet": "then you have the European challenger the Airbus A350 XWB now in 2026. the early production nightmares are over the engine issues are fixed it's no longer about"
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=snMsCMcIWdg&t=2",
+            "title": "A350 vs 787 - Qantas' NEW Order",
+            "snippet": "quantis is moving in the shadows aiming to place a new commercial aircraft. order directly aimed at overhauling its widebody fleet and the Airbus A350. and Boei"
+          }
+        ],
+        "related_searches": []
+      }
+    },
+    "Serper": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "DataForSEO": {
+      "extracted": {
+        "present": true,
+        "summary": "![Boeing 787 Vs Airbus A350: 2026 Head-to-Head](https://api.dataforseo.com/cdn/i/07210101-2120-0139-0000-834c20dda48a:22)\n![The Boeing 787 vs The Airbus A350: Which Plane Is Best?](https://api.dataforseo.com/cdn/i/07210101-2120-0139-0000-834c20dda48a:23)\n![Boeing 787-10 Vs Airbus A350-1000 (2026): A350 Wins Range ...](https://api.dataforseo.com/cdn/i/07210101-2120-0139-0000-834c20dda48a:24)\n![A350 vs 787: which is better from a passenger&#39;s perspective ...](https://api.dataforseo.com/cdn/i/07210101-2120-0139-0000-834c20dda48a:25)\n![The Airbus A350-900 Vs. The Boeing 787-10](https://api.dataforseo.com/cdn/i/07210101-2120-0139-0000-834c20dda48a:26)\n\nThe Airbus A350 and Boeing 787 are both advanced, composite wide-body jets, but they serve slightly different needs. `The A350 is a larger, heavier aircraft designed for high-capacity, ultra-long-haul routes with superior passenger space. The 787 is lighter and more versatile` , highly prized by airlines for its exceptional fuel efficiency on standard long-haul and \"point-to-point\" routes.[](https://www.youtube.com/watch?v=IzUoAl9NJDY&t=1) [[1]](https://www.youtube.com/watch?v=IzUoAl9NJDY&t=1)\n\nPassenger Experience\n\nMany flyers and industry experts consider the Airbus A350 the more comfortable aircraft for passengers due to its wider cabin.[](https://www.youtube.com/watch?v=oJXPuC7ZMv8&t=51) [[1]](https://www.youtube.com/watch?v=oJXPuC7ZMv8&t=51)[[2]](https://www.youtube.com/watch?v=IzUoAl9NJDY&t=1)\n\n- **Seating Width:** The A350's fuselage is roughly 5 inches wider than the 787. In a standard 3-3-3 economy layout, this gives A350 passengers approximately 18-inch wide seats, compared to around 17 inches on the 787.[](https://www.reddit.com/r/aviation/comments/1l4egvt/a350_or_787_dreamliner_whats_your_preference_for/) [[1]](https://www.reddit.com/r/aviation/comments/1l4egvt/a350_or_787_dreamliner_whats_your_preference_for/)\n- **Cabin Environment:** Both aircraft feature lower cabin altitudes (around 6,000 to 6,500 feet) to reduce jetlag and higher humidity levels than older jets. The A350 is generally considered one of the quietest planes in the sky, while the 787 is famous for its large, push-button dimmable windows.[](https://medium.com/@udharadesilva/airbus-a350-vs-boeing-787-which-cutting-edge-airplane-is-best-3ff6710d93ba) [[1]](https://medium.com/@udharadesilva/airbus-a350-vs-boeing-787-which-cutting-edge-airplane-is-best-3ff6710d93ba)[[2]](https://www.facebook.com/61558804422315/videos/a350-vs-787-the-long-haul-showdowna350-range-cabin-comfort-advanced-cockpit-tech/1490749385985303/)[[3]](https://www.youtube.com/watch?v=IzUoAl9NJDY&t=1)\n\nFleet Economics and Design Airlines evaluate these two aircraft based on mission length and fleet logistics.[](https://www.youtube.com/watch?v=IzUoAl9NJDY&t=1) [[1]](https://www.youtube.com/watch?v=IzUoAl9NJDY&t=1)[[2]](https://www.youtube.com/watch?v=snMsCMcIWdg&t=2)[[3]](https://www.tiktok.com/@cobyexplanes/video/7612355639141993742)\n\n- **Size Variants:** Boeing offers three highly successful variants (787-8, 787-9, and 787-10), offering airlines deep flexibility to match planes to specific route demands. Airbus offers two main passenger variants (A350-900 and A350-1000).[](https://www.youtube.com/watch?v=IzUoAl9NJDY&t=1) [[1]](https://www.youtube.com/watch?v=IzUoAl9NJDY&t=1)\n- **Range & Performance:** The A350 boasts a longer maximum range and a higher maximum takeoff weight, making it the preferred choice for ultra-long-haul journeys (such as 12+ hours). The 787 excels economically on shorter long-haul flights where its lighter structure leads to lower landing fees and better fuel burn.[](https://www.facebook.com/61558804422315/videos/a350-vs-787-the-long-haul-showdowna350-range-cabin-comfort-advanced-cockpit-tech/1490749385985303/) [[1]](https://www.facebook.com/61558804422315/videos/a350-vs-787-the-long-haul-showdowna350-range-cabin-comfort-advanced-cockpit-tech/1490749385985303/)[[2]](https://www.youtube.com/watch?v=IzUoAl9NJDY&t=1)\n\nFor a deep-dive breakdown of how the cockpit layouts, manufacturing processes, and hidden cabin differences compare:![Related video thumbnail](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuMWlJSQkRieDm3nxgPqIaDfA5pG7W_Dq66sFrqdDikNMDGaUw)\n8m[Boeing 787 vs Airbus A350 (2026): The Brutal Truth!5.4K views \u00a0\u00b7\u00a06 months ago![](https://api.dataforseo.com/cdn/i/07210101-2120-0139-0000-834c20dda48a:27)\nYouTube\u00a0\u00b7\u00a0Luxe Fleet](https://www.youtube.com/watch?v=oJXPuC7ZMv8&t=51)",
+        "text_blocks": [
+          "![Boeing 787 Vs Airbus A350: 2026 Head-to-Head](https://api.dataforseo.com/cdn/i/07210101-2120-0139-0000-834c20dda48a:22)\n![The Boeing 787 vs The Airbus A350: Which Plane Is Best?](https://api.dataforseo.com/cdn/i/07210101-2120-0139-0000-834c20dda48a:23)\n![Boeing 787-10 Vs Airbus A350-1000 (2026): A350 Wins Range ...](https://api.dataforseo.com/cdn/i/07210101-2120-0139-0000-834c20dda48a:24)\n![A350 vs 787: which is better from a passenger&#39;s perspective ...](https://api.dataforseo.com/cdn/i/07210101-2120-0139-0000-834c20dda48a:25)\n![The Airbus A350-900 Vs. The Boeing 787-10](https://api.dataforseo.com/cdn/i/07210101-2120-0139-0000-834c20dda48a:26)\n\nThe Airbus A350 and Boeing 787 are both advanced, composite wide-body jets, but they serve slightly different needs. `The A350 is a larger, heavier aircraft designed for high-capacity, ultra-long-haul routes with superior passenger space. The 787 is lighter and more versatile` , highly prized by airlines for its exceptional fuel efficiency on standard long-haul and \"point-to-point\" routes.[](https://www.youtube.com/watch?v=IzUoAl9NJDY&t=1) [[1]](https://www.youtube.com/watch?v=IzUoAl9NJDY&t=1)\n\nPassenger Experience\n\nMany flyers and industry experts consider the Airbus A350 the more comfortable aircraft for passengers due to its wider cabin.[](https://www.youtube.com/watch?v=oJXPuC7ZMv8&t=51) [[1]](https://www.youtube.com/watch?v=oJXPuC7ZMv8&t=51)[[2]](https://www.youtube.com/watch?v=IzUoAl9NJDY&t=1)\n\n- **Seating Width:** The A350's fuselage is roughly 5 inches wider than the 787. In a standard 3-3-3 economy layout, this gives A350 passengers approximately 18-inch wide seats, compared to around 17 inches on the 787.[](https://www.reddit.com/r/aviation/comments/1l4egvt/a350_or_787_dreamliner_whats_your_preference_for/) [[1]](https://www.reddit.com/r/aviation/comments/1l4egvt/a350_or_787_dreamliner_whats_your_preference_for/)\n- **Cabin Environment:** Both aircraft feature lower cabin altitudes (around 6,000 to 6,500 feet) to reduce jetlag and higher humidity levels than older jets. The A350 is generally considered one of the quietest planes in the sky, while the 787 is famous for its large, push-button dimmable windows.[](https://medium.com/@udharadesilva/airbus-a350-vs-boeing-787-which-cutting-edge-airplane-is-best-3ff6710d93ba) [[1]](https://medium.com/@udharadesilva/airbus-a350-vs-boeing-787-which-cutting-edge-airplane-is-best-3ff6710d93ba)[[2]](https://www.facebook.com/61558804422315/videos/a350-vs-787-the-long-haul-showdowna350-range-cabin-comfort-advanced-cockpit-tech/1490749385985303/)[[3]](https://www.youtube.com/watch?v=IzUoAl9NJDY&t=1)\n\nFleet Economics and Design Airlines evaluate these two aircraft based on mission length and fleet logistics.[](https://www.youtube.com/watch?v=IzUoAl9NJDY&t=1) [[1]](https://www.youtube.com/watch?v=IzUoAl9NJDY&t=1)[[2]](https://www.youtube.com/watch?v=snMsCMcIWdg&t=2)[[3]](https://www.tiktok.com/@cobyexplanes/video/7612355639141993742)\n\n- **Size Variants:** Boeing offers three highly successful variants (787-8, 787-9, and 787-10), offering airlines deep flexibility to match planes to specific route demands. Airbus offers two main passenger variants (A350-900 and A350-1000).[](https://www.youtube.com/watch?v=IzUoAl9NJDY&t=1) [[1]](https://www.youtube.com/watch?v=IzUoAl9NJDY&t=1)\n- **Range & Performance:** The A350 boasts a longer maximum range and a higher maximum takeoff weight, making it the preferred choice for ultra-long-haul journeys (such as 12+ hours). The 787 excels economically on shorter long-haul flights where its lighter structure leads to lower landing fees and better fuel burn.[](https://www.facebook.com/61558804422315/videos/a350-vs-787-the-long-haul-showdowna350-range-cabin-comfort-advanced-cockpit-tech/1490749385985303/) [[1]](https://www.facebook.com/61558804422315/videos/a350-vs-787-the-long-haul-showdowna350-range-cabin-comfort-advanced-cockpit-tech/1490749385985303/)[[2]](https://www.youtube.com/watch?v=IzUoAl9NJDY&t=1)\n\nFor a deep-dive breakdown of how the cockpit layouts, manufacturing processes, and hidden cabin differences compare:![Related video thumbnail](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuMWlJSQkRieDm3nxgPqIaDfA5pG7W_Dq66sFrqdDikNMDGaUw)\n8m[Boeing 787 vs Airbus A350 (2026): The Brutal Truth!5.4K views \u00a0\u00b7\u00a06 months ago![](https://api.dataforseo.com/cdn/i/07210101-2120-0139-0000-834c20dda48a:27)\nYouTube\u00a0\u00b7\u00a0Luxe Fleet](https://www.youtube.com/watch?v=oJXPuC7ZMv8&t=51)"
+        ],
+        "citations": [
+          {
+            "url": "https://www.reddit.com/r/aviation/comments/1l4egvt/a350_or_787_dreamliner_whats_your_preference_for/",
+            "title": "A350 or 787 Dreamliner? What's your preference for modern aviation?",
+            "snippet": ""
+          },
+          {
+            "url": "https://medium.com/@udharadesilva/airbus-a350-vs-boeing-787-which-cutting-edge-airplane-is-best-3ff6710d93ba",
+            "title": "Airbus A350 vs Boeing 787: Which cutting edge airplane is \u2018best\u2019? | by Udhara de Silva | Medium",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=IzUoAl9NJDY&t=1",
+            "title": "The A350 Is A Better Plane So Why Do Airlines Continue To Order MORE ...",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=oJXPuC7ZMv8&t=51",
+            "title": "Boeing 787 vs Airbus A350 (2026): The Brutal Truth!",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.facebook.com/61558804422315/videos/a350-vs-787-the-long-haul-showdowna350-range-cabin-comfort-advanced-cockpit-tech/1490749385985303/",
+            "title": "A350 VS 787 \u2014 THE LONG-HAUL SHOWDOWN A350: range, cabin ...",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=IzUoAl9NJDY",
+            "title": "The A350 Is A Better Plane So Why Do Airlines Continue To Order MORE ...",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=oJXPuC7ZMv8",
+            "title": "Boeing 787 vs Airbus A350 (2026): The Brutal Truth!",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=Gw3zclqZLXM&vl=en",
+            "title": "A350 Vs 787 Dreamliner \u2013 10 Brutal Facts Airbus Fans Love (And Boeing ...",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=XQHMFnJ1nMw",
+            "title": "How Airlines Pick Between The A350 & 787",
+            "snippet": ""
+          }
+        ],
+        "related_searches": []
+      }
+    }
+  }
+}

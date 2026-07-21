@@ -1,0 +1,225 @@
+{
+  "query": "what is dark matter",
+  "intent": "definition",
+  "scores": {
+    "SearchApi": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "SerpApi": {
+      "extracted": {
+        "present": true,
+        "summary": "",
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "snippet": "Dark matter is a mysterious, invisible substance that makes up about 85% of all matter in the universe. It doesn't emit, absorb, or reflect light, and can only be detected through its gravitational pull on visible matter like stars and galaxies.",
+            "snippet_links": [
+              {
+                "link": "https://www.energy.gov/science/doe-explainsdark-matter"
+              }
+            ],
+            "snippet_highlighted_words": [
+              "a mysterious, invisible substance that makes up about 85% of all matter in the universe"
+            ],
+            "reference_indexes": [
+              0,
+              8,
+              2
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "Why We Know It Exists"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Astronomers can trace dark matter by its invisible weight and the way it acts as a cosmic glue. Key pieces of evidence include:",
+            "snippet_links": [
+              {
+                "link": "https://spaceplace.nasa.gov/dark-matter/"
+              }
+            ],
+            "reference_indexes": [
+              3
+            ]
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Galaxy Rotation: In the 1970s, astronomer Vera Rubin discovered that stars at the outer edges of galaxies were orbiting just as fast as those near the center. Based on the visible mass, gravity should have been too weak to hold them in, implying a massive halo of unseen matter.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.youtube.com/watch?v=tvAR36l2o1g&t=4"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              9
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "What Could It Be?"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Scientists know dark matter isn't made of normal \"baryonic\" matter (like protons and neutrons). The leading theories suggest it consists of undiscovered subatomic particles. The most popular candidates are Weakly Interacting Massive Particles (WIMPs)\u2014hypothetical particles that have mass but rarely interact with normal matter.",
+            "snippet_links": [
+              {
+                "link": "https://www.youtube.com/watch?v=yRC_zISpYNQ&t=13"
+              }
+            ],
+            "reference_indexes": [
+              6,
+              7
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "If you are interested in the ongoing search for these particles or how scientists map the \"cosmic web,\" you can learn more about current experiments through the Department of Energy or the European Space Agency.",
+            "snippet_links": [
+              {
+                "text": "Department of Energy",
+                "link": "https://www.energy.gov/science/doe-explainsdark-matter"
+              },
+              {
+                "text": "European Space Agency",
+                "link": "https://sci.esa.int/web/euclid/-/what-is-dark-matter-"
+              }
+            ],
+            "reference_indexes": [
+              2
+            ]
+          }
+        ],
+        "citations": [
+          {
+            "url": "https://www.energy.gov/science/doe-explainsdark-matter",
+            "title": "DOE Explains...Dark Matter - Department of Energy",
+            "snippet": "Dark Matter Facts * Dark matter makes up about 85 percent of the total matter in the universe, accounting for more than five times as much as all ordinary"
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=tvAR36l2o1g",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.lsst.org/science/dark-matter",
+            "title": "The Nature of Dark Matter | Rubin Observatory",
+            "snippet": "Dark matter, which makes up about 85% of the mass in the Universe, is more than simply dark. True, it can't shine by its own light, like hot coals, or even refl..."
+          },
+          {
+            "url": "https://spaceplace.nasa.gov/dark-matter/",
+            "title": "What Is Dark Matter? | NASA Space Place \u2013 NASA Science for Kids",
+            "snippet": "Dark matter is a mysterious substance that is invisible and has gravity. It is scattered throughout the universe and forms the foundation of its structure. Dark..."
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=yRC_zISpYNQ",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=KurVp4-aSQ0",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.britannica.com/science/dark-matter",
+            "title": "Dark matter | Definition, Discovery, Distribution, & Facts - Britannica",
+            "snippet": "What are the types of dark matter? Two varieties of dark matter have been found to exist. The first variety is about 4.5 percent of the universe and made of the..."
+          },
+          {
+            "url": "https://www.youtube.com/shorts/4mKvBHjBsw8",
+            "title": "What is Dark Matter? \u2014 Roman Space Telescope #shorts",
+            "snippet": "what is dark matter that's a very good question we've been asking that question already since uh pretty much ever since I've been alive dark. matter is a an unk"
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=tvAR36l2o1g&t=4",
+            "title": "What is dark matter and dark energy? Astro-Investigates Ep. 5 (Dark ...",
+            "snippet": "the dark universe as some call it represents some of the biggest unknowns in the cosmos. But what are these mysteries. what don't we know enter dark matter and"
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=yRC_zISpYNQ&t=13",
+            "title": "Dark Matter Explained | Cosmology 101 Episode 7",
+            "snippet": "but what if I told you that the vast majority of what makes up the universe is completely invisible never seen in a telescope never touched by a human hand neve"
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=KurVp4-aSQ0&t=14",
+            "title": "Dark Matter EXPLAINED: The BIGGEST Mystery in Science",
+            "snippet": "form of matter that forms most of the stuff in our universe. yet we can't even see it honestly it is one of the most important and incredible discoveries of the"
+          }
+        ],
+        "related_searches": []
+      }
+    },
+    "Serper": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "DataForSEO": {
+      "extracted": {
+        "present": true,
+        "summary": "![Dark Matter - NASA Science](https://api.dataforseo.com/cdn/i/07210107-2120-0139-0000-a5438dc4194a:4)\nDark matter is `a mysterious, invisible substance that makes up about 85% of all matter in the universe` . It doesn't emit, absorb, or reflect light, and can only be detected through its gravitational pull on visible matter like stars and galaxies.[](https://www.energy.gov/science/doe-explainsdark-matter) [[1]](https://www.energy.gov/science/doe-explainsdark-matter)[[2]](https://www.youtube.com/watch?v=tvAR36l2o1g&t=4)[[3]](https://www.lsst.org/science/dark-matter)\n\nWhy We Know It Exists\n\nAstronomers can trace dark matter by its invisible weight and the way it acts as a cosmic glue. Key pieces of evidence include:[](https://spaceplace.nasa.gov/dark-matter/) [[1]](https://spaceplace.nasa.gov/dark-matter/)\n\n- **Galaxy Rotation:** In the 1970s, astronomer Vera Rubin discovered that stars at the outer edges of galaxies were orbiting just as fast as those near the center. Based on the visible mass, gravity should have been too weak to hold them in, implying a massive halo of unseen matter.[](https://www.youtube.com/watch?v=tvAR36l2o1g&t=4) [[1]](https://www.youtube.com/watch?v=tvAR36l2o1g&t=4)[[2]](https://www.youtube.com/watch?v=yRC_zISpYNQ&t=13)\n- **Gravitational Lensing:** Because dark matter has mass, it warps spacetime. When light from distant, background galaxies travels past heavy clusters of dark matter, the light bends and distorts\u2014acting like a magnifying glass.[](https://www.youtube.com/watch?v=tvAR36l2o1g&t=4) [[1]](https://www.youtube.com/watch?v=tvAR36l2o1g&t=4)[[2]](https://www.youtube.com/watch?v=KurVp4-aSQ0&t=14)\n\nWhat Could It Be?Scientists know dark matter isn't made of normal \"baryonic\" matter (like protons and neutrons). The leading theories suggest it consists of undiscovered subatomic particles. The most popular candidates are Weakly Interacting Massive Particles (WIMPs)\u2014hypothetical particles that have mass but rarely interact with normal matter.[](https://www.youtube.com/watch?v=yRC_zISpYNQ&t=13) [[1]](https://www.youtube.com/watch?v=yRC_zISpYNQ&t=13)[[2]](https://www.britannica.com/science/dark-matter)[[3]](https://www.youtube.com/shorts/4mKvBHjBsw8)[[4]](https://www.youtube.com/watch?v=KurVp4-aSQ0&t=14)If you are interested in the ongoing search for these particles or how scientists map the \"cosmic web,\" you can learn more about current experiments through the [Department of Energy](https://www.energy.gov/science/doe-explainsdark-matter) or the [European Space Agency](https://sci.esa.int/web/euclid/-/what-is-dark-matter-).[[1]](https://www.lsst.org/science/dark-matter)",
+        "text_blocks": [
+          "![Dark Matter - NASA Science](https://api.dataforseo.com/cdn/i/07210107-2120-0139-0000-a5438dc4194a:4)\nDark matter is `a mysterious, invisible substance that makes up about 85% of all matter in the universe` . It doesn't emit, absorb, or reflect light, and can only be detected through its gravitational pull on visible matter like stars and galaxies.[](https://www.energy.gov/science/doe-explainsdark-matter) [[1]](https://www.energy.gov/science/doe-explainsdark-matter)[[2]](https://www.youtube.com/watch?v=tvAR36l2o1g&t=4)[[3]](https://www.lsst.org/science/dark-matter)\n\nWhy We Know It Exists\n\nAstronomers can trace dark matter by its invisible weight and the way it acts as a cosmic glue. Key pieces of evidence include:[](https://spaceplace.nasa.gov/dark-matter/) [[1]](https://spaceplace.nasa.gov/dark-matter/)\n\n- **Galaxy Rotation:** In the 1970s, astronomer Vera Rubin discovered that stars at the outer edges of galaxies were orbiting just as fast as those near the center. Based on the visible mass, gravity should have been too weak to hold them in, implying a massive halo of unseen matter.[](https://www.youtube.com/watch?v=tvAR36l2o1g&t=4) [[1]](https://www.youtube.com/watch?v=tvAR36l2o1g&t=4)[[2]](https://www.youtube.com/watch?v=yRC_zISpYNQ&t=13)\n- **Gravitational Lensing:** Because dark matter has mass, it warps spacetime. When light from distant, background galaxies travels past heavy clusters of dark matter, the light bends and distorts\u2014acting like a magnifying glass.[](https://www.youtube.com/watch?v=tvAR36l2o1g&t=4) [[1]](https://www.youtube.com/watch?v=tvAR36l2o1g&t=4)[[2]](https://www.youtube.com/watch?v=KurVp4-aSQ0&t=14)\n\nWhat Could It Be?Scientists know dark matter isn't made of normal \"baryonic\" matter (like protons and neutrons). The leading theories suggest it consists of undiscovered subatomic particles. The most popular candidates are Weakly Interacting Massive Particles (WIMPs)\u2014hypothetical particles that have mass but rarely interact with normal matter.[](https://www.youtube.com/watch?v=yRC_zISpYNQ&t=13) [[1]](https://www.youtube.com/watch?v=yRC_zISpYNQ&t=13)[[2]](https://www.britannica.com/science/dark-matter)[[3]](https://www.youtube.com/shorts/4mKvBHjBsw8)[[4]](https://www.youtube.com/watch?v=KurVp4-aSQ0&t=14)If you are interested in the ongoing search for these particles or how scientists map the \"cosmic web,\" you can learn more about current experiments through the [Department of Energy](https://www.energy.gov/science/doe-explainsdark-matter) or the [European Space Agency](https://sci.esa.int/web/euclid/-/what-is-dark-matter-).[[1]](https://www.lsst.org/science/dark-matter)"
+        ],
+        "citations": [
+          {
+            "url": "https://spaceplace.nasa.gov/dark-matter/",
+            "title": "What Is Dark Matter? | NASA Space Place \u2013 NASA Science for Kids",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.energy.gov/science/doe-explainsdark-matter",
+            "title": "DOE Explains...Dark Matter - Department of Energy",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.lsst.org/science/dark-matter",
+            "title": "The Nature of Dark Matter | Rubin Observatory",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=tvAR36l2o1g&t=4",
+            "title": "What is dark matter and dark energy? Astro-Investigates Ep. 5 (Dark ...",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=yRC_zISpYNQ&t=13",
+            "title": "Dark Matter Explained | Cosmology 101 Episode 7",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=KurVp4-aSQ0&t=14",
+            "title": "Dark Matter EXPLAINED: The BIGGEST Mystery in Science",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.britannica.com/science/dark-matter",
+            "title": "Dark matter | Definition, Discovery, Distribution, & Facts - Britannica",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/shorts/4mKvBHjBsw8",
+            "title": "What is Dark Matter? \u2014 Roman Space Telescope #shorts",
+            "snippet": ""
+          }
+        ],
+        "related_searches": []
+      }
+    }
+  }
+}

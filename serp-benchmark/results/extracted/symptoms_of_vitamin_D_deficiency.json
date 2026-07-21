@@ -1,0 +1,334 @@
+{
+  "query": "symptoms of vitamin D deficiency",
+  "intent": "long-tail",
+  "scores": {
+    "SearchApi": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "SerpApi": {
+      "extracted": {
+        "present": true,
+        "summary": "",
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "snippet": "Vitamin D deficiency is frequently silent, but it can cause persistent fatigue, general muscle weakness, achy or throbbing bone pain (particularly in the lower back or legs), and a compromised immune system leading to frequent illnesses. Severe or prolonged deficiency can cause mood changes like depression.",
+            "snippet_links": [
+              {
+                "link": "https://my.clevelandclinic.org/health/diseases/15050-vitamin-d-vitamin-d-deficiency"
+              }
+            ],
+            "snippet_highlighted_words": [
+              "persistent fatigue, general muscle weakness, achy or throbbing bone pain (particularly in the lower back or legs), and a compromised immune system leading to frequent illnesses"
+            ],
+            "reference_indexes": [
+              0,
+              1,
+              15
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "The signs and symptoms of a deficiency depend heavily on the severity and age, but can be grouped into several key areas:",
+            "reference_indexes": [
+              0,
+              9,
+              11
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "Bone and Joint Pain"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Deep bone pain: A dull, aching pain felt inside the bones, particularly in the pelvis, lower back, hips, and legs."
+              },
+              {
+                "snippet": "Fractures and weakness: In adults, low vitamin D impairs calcium absorption, which can lead to weakened bones (osteopenia or osteoporosis) and an increased risk of bone fractures from minor falls."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "Muscle Symptoms"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Aches and cramps: Vitamin D is crucial for muscle contraction; a lack of it can lead to frequent muscle aches and painful cramps."
+              },
+              {
+                "snippet": "Weakness: Noticeable loss of muscle strength, which can manifest as difficulty climbing stairs or getting up from a chair.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.endocrinecenter.com/blog/10-unexpected-signs-of-a-vitamin-d-deficiency"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              1,
+              6
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "Immunity and Fatigue"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Frequent infections: Vitamin D is essential for a robust immune system. If you are catching colds, flu, or other infections easily, it may be a warning sign."
+              },
+              {
+                "snippet": "Persistent fatigue: Feeling constantly drained, sleepy, or experiencing low energy despite adequate rest.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.endocrinecenter.com/blog/10-unexpected-signs-of-a-vitamin-d-deficiency"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              1,
+              16,
+              8
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "Mood and Mental Health"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Depression and anxiety: Low levels of vitamin D are often linked to a sour mood, irritability, or feelings of persistent sadness.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.unitypoint.org/news-and-articles/how-to-spot-a-vitamin-d-deficiency"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              8
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "Symptoms in Children"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Rickets: Severe lack of vitamin D in children causes rickets, which leads to developmental delays, bone deformities (such as bowed legs or knock-knees), and muscle spasms.",
+                "snippet_links": [
+                  {
+                    "link": "https://my.clevelandclinic.org/health/diseases/15050-vitamin-d-vitamin-d-deficiency"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              0,
+              3
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "If you suspect you have a vitamin D deficiency, you should consult your doctor. A healthcare provider can order a simple blood test (the 25-hydroxy vitamin D test) to determine your exact levels and recommend appropriate supplementation or lifestyle adjustments.",
+            "snippet_links": [
+              {
+                "link": "https://www.nebraskamed.com/primary-care/9-vitamin-d-deficiency-symptoms-and-11-high-vitamin-d-foods"
+              }
+            ],
+            "reference_indexes": [
+              9,
+              10,
+              12,
+              13,
+              14
+            ]
+          }
+        ],
+        "citations": [
+          {
+            "url": "https://my.clevelandclinic.org/health/diseases/15050-vitamin-d-vitamin-d-deficiency",
+            "title": "Vitamin D Deficiency: Causes, Symptoms & Treatment",
+            "snippet": "What are the signs and symptoms of vitamin D deficiency? Severe lack of vitamin D in children causes rickets. Symptoms of rickets include: \u00b7 Lack of vitamin D i..."
+          },
+          {
+            "url": "https://www.endocrinecenter.com/blog/10-unexpected-signs-of-a-vitamin-d-deficiency",
+            "title": "10 Unexpected Signs of a Vitamin D Deficiency - The Endocrine Center",
+            "snippet": "10 Unexpected Signs of a Vitamin D Deficiency. The Endocrine Center Blog 10 Unexpected Signs of a Vitamin D Deficiency \u00b7 1. Fatigue that won't go away. Occasion..."
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=_UYmVkBbuzg",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.merckmanuals.com/home/disorders-of-nutrition/vitamins/vitamin-d-deficiency",
+            "title": "Vitamin D Deficiency - Nutrition - Merck Manual Consumer Version",
+            "snippet": "Symptoms of Vitamin D Deficiency * Vitamin D deficiency can cause muscle aches, weakness, and bone pain in people of all ages. * M..."
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=AXq2ZdXXFCU",
+            "title": "11 Bizarre Symptoms of Vitamin D Deficiency (You NEED to Know)",
+            "snippet": "today I'm going to give you 11 really bizarre wild vitamin D deficiency symptoms now of course most people know the usual vitamin D symptoms. lower back pain de"
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=cz1IU-6Q7kE",
+            "title": "Warning Signs of Vitamin D Deficiency",
+            "snippet": "vitamin D is essential for our bones and teeth immune system brain health and regulating inflammation. we get some amount of vitamin D by consuming fish and mea"
+          },
+          {
+            "url": "https://www.bswhealth.com/blog/7-signs-you-may-be-vitamin-d-deficient",
+            "title": "Time to soak up the sun? 8 signs of low vitamin D",
+            "snippet": "Vitamin D deficiency can cause: * Bone pain * Bone fractures * Muscle pain * Muscle weakness Some signs of low vitamin D include: * Bone pain and lower back pai..."
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=9hbUuSzGHik",
+            "title": "",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.unitypoint.org/news-and-articles/how-to-spot-a-vitamin-d-deficiency",
+            "title": "How to Spot a Vitamin D Deficiency",
+            "snippet": "A medical expert, like a doctor, is best able to help you find the information and care you need. This information does not constitute medical advice or diagnos..."
+          },
+          {
+            "url": "https://www.nebraskamed.com/primary-care/9-vitamin-d-deficiency-symptoms-and-11-high-vitamin-d-foods",
+            "title": "9 vitamin D deficiency symptoms (and 11 high vitamin D foods) | Nebraska Medicine Omaha, NE",
+            "snippet": "Vitamin D is a fat-soluble vitamin that's essential for health. Symptoms of vitamin D deficiency depend on the severity of the deficiency and the person. Some s..."
+          },
+          {
+            "url": "https://www.aafp.org/afp/2009/1015/p841",
+            "title": "Recognition and Management of Vitamin D Deficiency | AFP - AAFP",
+            "snippet": "Vitamin D deficiency affects persons of all ages. Common manifestations of vitamin D deficiency are symmetric low back pain, proximal muscle weakness, muscle ac..."
+          },
+          {
+            "url": "https://emedicine.medscape.com/article/128762-overview",
+            "title": "Vitamin D Deficiency and Related Disorders - Medscape Reference",
+            "snippet": "Signs and symptoms. Vitamin D deficiency is often clinically silent. Manifestations are as follows: Children are often found to have started walking late or pre..."
+          },
+          {
+            "url": "https://www.yalemedicine.org/conditions/vitamin-d-deficiency",
+            "title": "Vitamin D Deficiency | Fact Sheets | Yale Medicine",
+            "snippet": "Vitamin D deficiency can be harmful to bones and muscles. Symptoms include: * Muscle pain * Bone pain * Tingling sensation in hands or feet * Muscle weakness Vi..."
+          },
+          {
+            "url": "https://www.goodrx.com/conditions/vitamin-d-deficiency",
+            "title": "Vitamin D Deficiency: Causes, Symptoms, Treatment, & More",
+            "snippet": "If you think you may have a low level of vitamin D, don't wait until you have symptoms. Your healthcare provider can check your level with a simple blood test."
+          },
+          {
+            "url": "https://ubiehealth.com/doctors-note/vitamin-d-deficiency-symptoms-subtle-md-overlook4262q2",
+            "title": "Don\u2019t Ignore These Subtle Vitamin D Deficiency Signs\u2014Act Now!",
+            "snippet": "What are the signs and symptoms of vitamin D deficiency? Severe lack of vitamin D in children causes rickets. Symptoms of rickets include: \u00b7 Lack of vitamin D i..."
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=_UYmVkBbuzg&t=122",
+            "title": "Doctor explains Vitamin D Deficiency | Causes, Symptoms, Treatment and ...",
+            "snippet": "reasons or have darker skin tones such as African African Caribbean or South Asian backgrounds. now babies under one year should also receive vitamin D drops un"
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=9hbUuSzGHik&t=15",
+            "title": "8 Signs Your Body Is Begging for Vitamin D",
+            "snippet": "eight signs your body is begging for vitamin D. ever since your childhood. your parents teachers and doctors seem to be on repeat take your vitamins. eat this i"
+          }
+        ],
+        "related_searches": []
+      }
+    },
+    "Serper": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "DataForSEO": {
+      "extracted": {
+        "present": true,
+        "summary": "Vitamin D deficiency is frequently silent, but it can cause `persistent fatigue, general muscle weakness, achy or throbbing bone pain (particularly in the lower back or legs), and a compromised immune system leading to frequent illnesses` . Severe or prolonged deficiency can cause mood changes like depression.[](https://my.clevelandclinic.org/health/diseases/15050-vitamin-d-vitamin-d-deficiency) [[1]](https://my.clevelandclinic.org/health/diseases/15050-vitamin-d-vitamin-d-deficiency)[[2]](https://www.endocrinecenter.com/blog/10-unexpected-signs-of-a-vitamin-d-deficiency)[[3]](https://www.youtube.com/watch?v=_UYmVkBbuzg&t=122)\n\nThe signs and symptoms of a deficiency depend heavily on the severity and age, but can be grouped into several key areas:[[1]](https://www.nebraskamed.com/primary-care/9-vitamin-d-deficiency-symptoms-and-11-high-vitamin-d-foods)[[2]](https://emedicine.medscape.com/article/128762-overview)[[3]](https://my.clevelandclinic.org/health/diseases/15050-vitamin-d-vitamin-d-deficiency)\n\nBone and Joint Pain\n\n- **Deep bone pain:** A dull, aching pain felt inside the bones, particularly in the pelvis, lower back, hips, and legs.\n- **Fractures and weakness:** In adults, low vitamin D impairs calcium absorption, which can lead to weakened bones (osteopenia or osteoporosis) and an increased risk of bone fractures from minor falls.[](https://www.merckmanuals.com/home/disorders-of-nutrition/vitamins/vitamin-d-deficiency) [[1]](https://www.merckmanuals.com/home/disorders-of-nutrition/vitamins/vitamin-d-deficiency)[[2]](https://www.youtube.com/watch?v=AXq2ZdXXFCU)[[3]](https://www.youtube.com/watch?v=cz1IU-6Q7kE)\n\nMuscle Symptoms\n\n- **Aches and cramps:** Vitamin D is crucial for muscle contraction; a lack of it can lead to frequent muscle aches and painful cramps.\n- **Weakness:** Noticeable loss of muscle strength, which can manifest as difficulty climbing stairs or getting up from a chair.[](https://www.endocrinecenter.com/blog/10-unexpected-signs-of-a-vitamin-d-deficiency) [[1]](https://www.endocrinecenter.com/blog/10-unexpected-signs-of-a-vitamin-d-deficiency)[[2]](https://www.bswhealth.com/blog/7-signs-you-may-be-vitamin-d-deficient)[[3]](https://www.youtube.com/watch?v=_UYmVkBbuzg&t=122)\n\nImmunity and Fatigue\n\n- **Frequent infections:** Vitamin D is essential for a robust immune system. If you are catching colds, flu, or other infections easily, it may be a warning sign.\n- **Persistent fatigue:** Feeling constantly drained, sleepy, or experiencing low energy despite adequate rest.[](https://www.endocrinecenter.com/blog/10-unexpected-signs-of-a-vitamin-d-deficiency) [[1]](https://www.endocrinecenter.com/blog/10-unexpected-signs-of-a-vitamin-d-deficiency)[[2]](https://www.youtube.com/watch?v=9hbUuSzGHik&t=15)[[3]](https://www.unitypoint.org/news-and-articles/how-to-spot-a-vitamin-d-deficiency)\n\nMood and Mental Health\n\n- **Depression and anxiety:** Low levels of vitamin D are often linked to a sour mood, irritability, or feelings of persistent sadness.[](https://www.unitypoint.org/news-and-articles/how-to-spot-a-vitamin-d-deficiency) [[1]](https://www.unitypoint.org/news-and-articles/how-to-spot-a-vitamin-d-deficiency)[[2]](https://www.youtube.com/watch?v=9hbUuSzGHik&t=15)\n\nSymptoms in Children\n\n- **Rickets:** Severe lack of vitamin D in children causes rickets, which leads to developmental delays, bone deformities (such as bowed legs or knock-knees), and muscle spasms.[](https://my.clevelandclinic.org/health/diseases/15050-vitamin-d-vitamin-d-deficiency) [[1]](https://my.clevelandclinic.org/health/diseases/15050-vitamin-d-vitamin-d-deficiency)[[2]](https://www.youtube.com/watch?v=_UYmVkBbuzg&t=122)[[3]](https://www.merckmanuals.com/home/disorders-of-nutrition/vitamins/vitamin-d-deficiency)\n\nIf you suspect you have a vitamin D deficiency, you should consult your doctor. A healthcare provider can order a simple blood test (the 25-hydroxy vitamin D test) to determine your exact levels and recommend appropriate supplementation or lifestyle adjustments.[](https://www.nebraskamed.com/primary-care/9-vitamin-d-deficiency-symptoms-and-11-high-vitamin-d-foods) [[1]](https://www.nebraskamed.com/primary-care/9-vitamin-d-deficiency-symptoms-and-11-high-vitamin-d-foods)[[2]](https://www.aafp.org/afp/2009/1015/p841)[[3]](https://www.yalemedicine.org/conditions/vitamin-d-deficiency)[[4]](https://www.goodrx.com/conditions/vitamin-d-deficiency)[[5]](https://ubiehealth.com/doctors-note/vitamin-d-deficiency-symptoms-subtle-md-overlook4262q2)",
+        "text_blocks": [
+          "Vitamin D deficiency is frequently silent, but it can cause `persistent fatigue, general muscle weakness, achy or throbbing bone pain (particularly in the lower back or legs), and a compromised immune system leading to frequent illnesses` . Severe or prolonged deficiency can cause mood changes like depression.[](https://my.clevelandclinic.org/health/diseases/15050-vitamin-d-vitamin-d-deficiency) [[1]](https://my.clevelandclinic.org/health/diseases/15050-vitamin-d-vitamin-d-deficiency)[[2]](https://www.endocrinecenter.com/blog/10-unexpected-signs-of-a-vitamin-d-deficiency)[[3]](https://www.youtube.com/watch?v=_UYmVkBbuzg&t=122)\n\nThe signs and symptoms of a deficiency depend heavily on the severity and age, but can be grouped into several key areas:[[1]](https://www.nebraskamed.com/primary-care/9-vitamin-d-deficiency-symptoms-and-11-high-vitamin-d-foods)[[2]](https://emedicine.medscape.com/article/128762-overview)[[3]](https://my.clevelandclinic.org/health/diseases/15050-vitamin-d-vitamin-d-deficiency)\n\nBone and Joint Pain\n\n- **Deep bone pain:** A dull, aching pain felt inside the bones, particularly in the pelvis, lower back, hips, and legs.\n- **Fractures and weakness:** In adults, low vitamin D impairs calcium absorption, which can lead to weakened bones (osteopenia or osteoporosis) and an increased risk of bone fractures from minor falls.[](https://www.merckmanuals.com/home/disorders-of-nutrition/vitamins/vitamin-d-deficiency) [[1]](https://www.merckmanuals.com/home/disorders-of-nutrition/vitamins/vitamin-d-deficiency)[[2]](https://www.youtube.com/watch?v=AXq2ZdXXFCU)[[3]](https://www.youtube.com/watch?v=cz1IU-6Q7kE)\n\nMuscle Symptoms\n\n- **Aches and cramps:** Vitamin D is crucial for muscle contraction; a lack of it can lead to frequent muscle aches and painful cramps.\n- **Weakness:** Noticeable loss of muscle strength, which can manifest as difficulty climbing stairs or getting up from a chair.[](https://www.endocrinecenter.com/blog/10-unexpected-signs-of-a-vitamin-d-deficiency) [[1]](https://www.endocrinecenter.com/blog/10-unexpected-signs-of-a-vitamin-d-deficiency)[[2]](https://www.bswhealth.com/blog/7-signs-you-may-be-vitamin-d-deficient)[[3]](https://www.youtube.com/watch?v=_UYmVkBbuzg&t=122)\n\nImmunity and Fatigue\n\n- **Frequent infections:** Vitamin D is essential for a robust immune system. If you are catching colds, flu, or other infections easily, it may be a warning sign.\n- **Persistent fatigue:** Feeling constantly drained, sleepy, or experiencing low energy despite adequate rest.[](https://www.endocrinecenter.com/blog/10-unexpected-signs-of-a-vitamin-d-deficiency) [[1]](https://www.endocrinecenter.com/blog/10-unexpected-signs-of-a-vitamin-d-deficiency)[[2]](https://www.youtube.com/watch?v=9hbUuSzGHik&t=15)[[3]](https://www.unitypoint.org/news-and-articles/how-to-spot-a-vitamin-d-deficiency)\n\nMood and Mental Health\n\n- **Depression and anxiety:** Low levels of vitamin D are often linked to a sour mood, irritability, or feelings of persistent sadness.[](https://www.unitypoint.org/news-and-articles/how-to-spot-a-vitamin-d-deficiency) [[1]](https://www.unitypoint.org/news-and-articles/how-to-spot-a-vitamin-d-deficiency)[[2]](https://www.youtube.com/watch?v=9hbUuSzGHik&t=15)\n\nSymptoms in Children\n\n- **Rickets:** Severe lack of vitamin D in children causes rickets, which leads to developmental delays, bone deformities (such as bowed legs or knock-knees), and muscle spasms.[](https://my.clevelandclinic.org/health/diseases/15050-vitamin-d-vitamin-d-deficiency) [[1]](https://my.clevelandclinic.org/health/diseases/15050-vitamin-d-vitamin-d-deficiency)[[2]](https://www.youtube.com/watch?v=_UYmVkBbuzg&t=122)[[3]](https://www.merckmanuals.com/home/disorders-of-nutrition/vitamins/vitamin-d-deficiency)\n\nIf you suspect you have a vitamin D deficiency, you should consult your doctor. A healthcare provider can order a simple blood test (the 25-hydroxy vitamin D test) to determine your exact levels and recommend appropriate supplementation or lifestyle adjustments.[](https://www.nebraskamed.com/primary-care/9-vitamin-d-deficiency-symptoms-and-11-high-vitamin-d-foods) [[1]](https://www.nebraskamed.com/primary-care/9-vitamin-d-deficiency-symptoms-and-11-high-vitamin-d-foods)[[2]](https://www.aafp.org/afp/2009/1015/p841)[[3]](https://www.yalemedicine.org/conditions/vitamin-d-deficiency)[[4]](https://www.goodrx.com/conditions/vitamin-d-deficiency)[[5]](https://ubiehealth.com/doctors-note/vitamin-d-deficiency-symptoms-subtle-md-overlook4262q2)"
+        ],
+        "citations": [
+          {
+            "url": "https://my.clevelandclinic.org/health/diseases/15050-vitamin-d-vitamin-d-deficiency",
+            "title": "Vitamin D Deficiency: Causes, Symptoms & Treatment",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.nebraskamed.com/primary-care/9-vitamin-d-deficiency-symptoms-and-11-high-vitamin-d-foods",
+            "title": "9 vitamin D deficiency symptoms (and 11 high vitamin D foods) | Nebraska Medicine Omaha, NE",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.endocrinecenter.com/blog/10-unexpected-signs-of-a-vitamin-d-deficiency",
+            "title": "10 Unexpected Signs of a Vitamin D Deficiency - The Endocrine Center",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.unitypoint.org/news-and-articles/how-to-spot-a-vitamin-d-deficiency",
+            "title": "How to Spot a Vitamin D Deficiency",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.merckmanuals.com/home/disorders-of-nutrition/vitamins/vitamin-d-deficiency",
+            "title": "Vitamin D Deficiency - Nutrition - Merck Manual Consumer Version",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.bswhealth.com/blog/7-signs-you-may-be-vitamin-d-deficient",
+            "title": "Time to soak up the sun? 8 signs of low vitamin D",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.aafp.org/afp/2009/1015/p841",
+            "title": "Recognition and Management of Vitamin D Deficiency | AFP - AAFP",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=cz1IU-6Q7kE",
+            "title": "Warning Signs of Vitamin D Deficiency",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=_UYmVkBbuzg&t=122",
+            "title": "Doctor explains Vitamin D Deficiency | Causes, Symptoms, Treatment and ...",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=AXq2ZdXXFCU",
+            "title": "11 Bizarre Symptoms of Vitamin D Deficiency (You NEED to Know)",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=9hbUuSzGHik&t=15",
+            "title": "8 Signs Your Body Is Begging for Vitamin D",
+            "snippet": ""
+          }
+        ],
+        "related_searches": []
+      }
+    }
+  }
+}

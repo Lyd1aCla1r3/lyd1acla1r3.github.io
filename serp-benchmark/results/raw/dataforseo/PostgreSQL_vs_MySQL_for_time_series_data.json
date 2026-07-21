@@ -1,0 +1,539 @@
+{
+  "version": "0.1.20260717",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "0.5943 sec.",
+  "cost": 0.002,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "07210058-2120-0139-0000-0d5177270c08",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "0.5345 sec.",
+      "cost": 0.002,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "serp",
+        "google",
+        "organic",
+        "live",
+        "advanced"
+      ],
+      "data": {
+        "api": "serp",
+        "function": "live",
+        "se": "google",
+        "se_type": "organic",
+        "keyword": "PostgreSQL vs MySQL for time series data",
+        "location_code": 2840,
+        "language_code": "en",
+        "device": "desktop",
+        "expand_ai_overview": true,
+        "os": "windows"
+      },
+      "result": [
+        {
+          "keyword": "PostgreSQL vs MySQL for time series data",
+          "type": "organic",
+          "se_domain": "google.com",
+          "location_code": 2840,
+          "language_code": "en",
+          "check_url": "https://www.google.com/search?q=PostgreSQL%20vs%20MySQL%20for%20time%20series%20data&hl=en&gl=US&ie=UTF-8&uule=w+CAIQIFISCQs2MuSEtepUEUK33kOSuTsc",
+          "datetime": "2026-07-20 21:58:14 +00:00",
+          "spell": null,
+          "refinement_chips": null,
+          "item_types": [
+            "ai_overview",
+            "organic",
+            "discussions_and_forums",
+            "people_also_ask",
+            "related_searches"
+          ],
+          "se_results_count": 39,
+          "pages_count": 1,
+          "items_count": 12,
+          "items": [
+            {
+              "type": "ai_overview",
+              "rank_group": 1,
+              "rank_absolute": 1,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]",
+              "asynchronous_ai_overview": true,
+              "markdown": null,
+              "items": null,
+              "references": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 2,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]",
+              "domain": "www.tigerdata.com",
+              "title": "PostgreSQL vs MySQL: Which to Choose and When",
+              "url": "https://www.tigerdata.com/blog/postgresql-vs-mysql-which-to-choose-and-when",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.tigerdata.com \u203a blog \u203a postgresql-vs-mysql-...",
+              "website_name": "Tiger Data",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Jan 4, 2024 \u2014 This guide will explore the core similarities between PostgreSQL and MySQL as RDBMS built on SQL queries. Read more",
+              "pre_snippet": "01/04/2024 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "PostgreSQL and MySQL"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2024-01-04 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "discussions_and_forums",
+              "rank_group": 1,
+              "rank_absolute": 3,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[4]/div[1]",
+              "title": "Discussions and forums",
+              "items": [
+                {
+                  "type": "discussions_and_forums_element",
+                  "title": "Why do you choose MySQL over Postgres?",
+                  "url": "https://www.reddit.com/r/node/comments/rv6u8u/why_do_you_choose_mysql_over_postgres/",
+                  "domain": "www.reddit.com",
+                  "source": "Reddit",
+                  "description": null,
+                  "timestamp": "2022-07-20 21:58:14 +00:00",
+                  "posts_count": 170
+                },
+                {
+                  "type": "discussions_and_forums_element",
+                  "title": "What is the purpose of time series databases and how do they differ from ...",
+                  "url": "https://www.quora.com/What-is-the-purpose-of-time-series-databases-and-how-do-they-differ-from-relational-databases-like-MySQL-or-PostgreSQL-Are-there-any-specific-situations-where-time-series-databases-are-more-useful",
+                  "domain": "www.quora.com",
+                  "source": "Quora",
+                  "description": null,
+                  "timestamp": "2025-07-20 21:58:14 +00:00",
+                  "posts_count": 1
+                },
+                {
+                  "type": "discussions_and_forums_element",
+                  "title": "PostgreSQL vs MySQL - what's better for large data handle?",
+                  "url": "https://www.reddit.com/r/SQL/comments/xw8b3/postgresql_vs_mysql_whats_better_for_large_data/",
+                  "domain": "www.reddit.com",
+                  "source": "Reddit",
+                  "description": null,
+                  "timestamp": "2013-07-20 21:58:14 +00:00",
+                  "posts_count": 20
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 4,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[6]/div[1]/div[1]",
+              "domain": "www.influxdata.com",
+              "title": "MySQL vs PostgreSQL",
+              "url": "https://www.influxdata.com/comparison/mysql-vs-postgres/",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.influxdata.com \u203a mysql-vs-postgres",
+              "website_name": "InfluxData",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Sep 13, 2023 \u2014 The primary purpose of this article is to compare how MySQL and PostgreSQL perform for workloads involving time series data, not for all possible use cases. Read more",
+              "pre_snippet": "09/13/2023 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "how MySQL and PostgreSQL perform for workloads involving time series data"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2023-09-13 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 5,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[8]/div[1]/div[1]",
+              "domain": "aws.amazon.com",
+              "title": "What's the Difference Between MySQL and PostgreSQL?",
+              "url": "https://aws.amazon.com/compare/the-difference-between-mysql-vs-postgresql/",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://aws.amazon.com \u203a ... \u203a Databases",
+              "website_name": "Amazon Web Services (AWS)",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "PostgreSQL is an object-relational database management system that offers more features than MySQL. It gives you more flexibility in data types, scalability,\u00a0... Read more",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "PostgreSQL is an object-relational database management system"
+              ],
+              "links": [
+                {
+                  "type": "link_element",
+                  "title": "Key differences: PostgreSQL...",
+                  "description": null,
+                  "url": "https://aws.amazon.com/compare/the-difference-between-mysql-vs-postgresql/#ams#what-isc3#pattern-data",
+                  "domain": "aws.amazon.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "How to choose between...",
+                  "description": null,
+                  "url": "https://aws.amazon.com/compare/the-difference-between-mysql-vs-postgresql/#ams#what-isc4#pattern-data",
+                  "domain": "aws.amazon.com"
+                }
+              ],
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 6,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[10]/div[1]/div[1]",
+              "domain": "www.red-gate.com",
+              "title": "MySQL vs. PostgreSQL: Date and Time Data Types",
+              "url": "https://www.red-gate.com/simple-talk/databases/mysql/mysql-vs-postgresql-date-and-time-data-types/",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.red-gate.com \u203a simple-talk \u203a databases \u203a my...",
+              "website_name": "Redgate",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Jun 3, 2025 \u2014 In this article, we will compare how MySQL and PostgreSQL handle date and time data, their differences, strengths, and which one might work better for your\u00a0... Read more",
+              "pre_snippet": "06/03/2025 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "how MySQL and PostgreSQL handle date and time data"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2025-06-03 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 7,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[12]/div[1]/div[1]",
+              "domain": "www.ibm.com",
+              "title": "PostgreSQL vs. MySQL: What's the Difference?",
+              "url": "https://www.ibm.com/think/topics/postgresql-vs-mysql",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.ibm.com \u203a think \u203a topics \u203a postgresql-vs-m...",
+              "website_name": "IBM",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "PostgreSQL and MySQL are relational databases that organize data into tables. ... time-series data types and geospatial analytics. Built as an open-source\u00a0... Read more",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "PostgreSQL and MySQL are relational databases that organize data into tables"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 8,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[14]/div[1]/div[1]",
+              "domain": "www.integrate.io",
+              "title": "PostgreSQL vs MySQL: The Critical Differences",
+              "url": "https://www.integrate.io/blog/postgresql-vs-mysql-which-one-is-better-for-your-use-case/",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.integrate.io \u203a Blog \u203a big data integration",
+              "website_name": "Integrate.io",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "7 days ago \u2014 MySQL is faster for read-only queries and simple web application traffic. PostgreSQL is faster for complex queries, write-heavy workloads, and\u00a0...",
+              "pre_snippet": "7 days ago",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "PostgreSQL is faster for complex queries"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2026-07-13 21:58:14 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 9,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[16]/div[1]/div[1]",
+              "domain": "www.liquibase.com",
+              "title": "PostgreSQL vs MySQL 2025: Complete Database ...",
+              "url": "https://www.liquibase.com/resources/guides/postgresql-vs-mysql",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.liquibase.com \u203a resources \u203a guides \u203a postgr...",
+              "website_name": "Liquibase",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "MySQL excels in managing read-only commands and is faster for processing read-only queries whereas PostgreSQL is suitable for read-write operations, large\u00a0... Read more",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "MySQL",
+                "PostgreSQL"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 8,
+              "rank_absolute": 10,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[18]/div[1]/div[1]",
+              "domain": "www.geopits.com",
+              "title": "MySQL vs PostgreSQL: A Complete Comparison of ...",
+              "url": "https://www.geopits.com/blog/mysql-vs-postgresql-a-complete-comparison-of-performance-scalability-features",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.geopits.com \u203a blog \u203a mysql-vs-postgresql-...",
+              "website_name": "GeoPITS",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Explore an in-depth comparison of MySQL vs PostgreSQL covering performance, scalability, indexing, transactions, and ecosystem tools \u2014 so you can choose the\u00a0...",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "Explore an in-depth comparison of MySQL vs PostgreSQL"
+              ],
+              "links": [
+                {
+                  "type": "link_element",
+                  "title": "Mysql Vs Postgresql: A...",
+                  "description": null,
+                  "url": "https://www.geopits.com/blog/mysql-vs-postgresql-a-complete-comparison-of-performance-scalability-features",
+                  "domain": "www.geopits.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "Core Architecture",
+                  "description": null,
+                  "url": "https://www.geopits.com/blog/mysql-vs-postgresql-a-complete-comparison-of-performance-scalability-features",
+                  "domain": "www.geopits.com"
+                },
+                {
+                  "type": "link_element",
+                  "title": "Json Support: Jsonb Vs Mysql...",
+                  "description": null,
+                  "url": "https://www.geopits.com/blog/mysql-vs-postgresql-a-complete-comparison-of-performance-scalability-features",
+                  "domain": "www.geopits.com"
+                }
+              ],
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "people_also_ask",
+              "rank_group": 1,
+              "rank_absolute": 11,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[20]/div[1]/div[1]/div[1]",
+              "items": [
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Why use PostgreSQL instead of MySQL?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[20]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Does NASA use PostgreSQL?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[20]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Does Netflix use Postgres?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[20]/div[1]/div[1]/div[1]/div[1]/div[2]/div[3]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "How is PostgreSQL performance compared to MySQL?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[20]/div[1]/div[1]/div[1]/div[1]/div[2]/div[4]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_ai_overview_expanded_element",
+                      "items": null,
+                      "references": null,
+                      "asynchronous_ai_overview": true
+                    }
+                  ]
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "related_searches",
+              "rank_group": 1,
+              "rank_absolute": 12,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[2]/div[1]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]",
+              "items": [
+                "Postgresql vs mysql for time series data reddit",
+                "PostgreSQL vs MySQL syntax differences",
+                "PostgreSQL vs MySQL performance",
+                "PostgreSQL vs MySQL query differences",
+                "MySQL vs PostgreSQL for data analytics",
+                "Mysql vs postgresql which is easier",
+                "PostgreSQL vs MySQL for beginners",
+                "PostgreSQL vs MongoDB"
+              ],
+              "rectangle": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,176 @@
+{
+  "query": "how to apply for a passport",
+  "intent": "informational",
+  "scores": {
+    "SearchApi": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "SerpApi": {
+      "extracted": {
+        "present": true,
+        "summary": "",
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "snippet": "To apply for a passport, fill out the application form, get a passport photo, and gather original proof of citizenship and identity with copies. Submit these documents in person at a designated post office, local government office, or consulate, and pay the applicable passport fees.",
+            "snippet_links": [
+              {
+                "link": "https://travel.state.gov/en/passports.html"
+              }
+            ],
+            "snippet_highlighted_words": [
+              "fill out the application form, get a passport photo, and gather original proof of citizenship and identity with copies. Submit these documents in person at a designated post office, local government office, or consulate, and pay the applicable passport fees"
+            ],
+            "reference_indexes": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "If you are applying for a U.S. Passport, follow these specific steps:"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Complete the Application: Fill out Form DS-11 online or print it out to fill by hand. Do not sign it until you are instructed to do so in front of an acceptance agent.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.usa.gov/apply-adult-passport"
+                  }
+                ],
+                "reference_indexes": [
+                  3,
+                  4
+                ]
+              },
+              {
+                "snippet": "Gather Documents: You need original proof of U.S. citizenship (e.g., birth certificate or naturalization certificate) and a valid photo ID (e.g., driver's license), plus clear photocopies of the front and back of each.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.usa.gov/apply-adult-passport"
+                  }
+                ],
+                "reference_indexes": [
+                  3
+                ]
+              },
+              {
+                "snippet": "Get a Photo: Obtain a recent, 2\u00d72 inch color passport photo with a white background and a neutral expression.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.youtube.com/watch?v=S9HInFUlXxU&t=113"
+                  }
+                ]
+              },
+              {
+                "snippet": "Pay Fees: Check or money order is typically required for the application fee, while a separate fee is required for the execution/acceptance facility. Use the Travel.gov Fee Calculator to check exact totals.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.youtube.com/watch?v=FD0wwBbBb1A"
+                  }
+                ],
+                "reference_indexes": [
+                  5
+                ]
+              },
+              {
+                "snippet": "Submit in Person: Schedule an appointment at a local acceptance facility, such as a post office or library. You can find locations and book online using the USPS Passport Appointment Scheduler\n\n.",
+                "snippet_links": [
+                  {
+                    "text": "USPS Passport Appointment Scheduler",
+                    "link": "https://www.usps.com/international/passports.htm"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              6
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Note for applicants currently in Santa Cruz: You will need to apply at the U.S. Consular Agency in Santa Cruz (Calle G Esquina Avenida Salvador, Piso 4). Appointments must be scheduled in advance through the U.S. Embassy in Bolivia Website\n\n.",
+            "snippet_links": [
+              {
+                "text": "U.S. Embassy in Bolivia Website",
+                "link": "https://bo.usembassy.gov/passports/important-passport-information/"
+              }
+            ],
+            "reference_indexes": [
+              2
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "If you can tell me which country's passport you are applying for, I can give you the exact official forms and direct you to the right local government portals."
+          }
+        ],
+        "citations": [
+          {
+            "url": "https://travel.state.gov/en/passports.html",
+            "title": "U.S. Passports - Travel.gov",
+            "snippet": "You can pay for faster delivery when you submit your application. Processing your application. 4 to 6 weeks. One of our passport agencies reviews your application ..."
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=S9HInFUlXxU&t=113",
+            "title": "How to Apply for a Passport",
+            "snippet": "but the most common are tourist student work and transit visas unlike passports which are issued by the United States to United US citizens a visa is issued by the"
+          },
+          {
+            "url": "https://bo.usembassy.gov/passports/important-passport-information/",
+            "title": "Important Passports Information - U.S. Embassy in Bolivia",
+            "snippet": "What Passport Service Do You Need? Renew a 10-year validity adult passport in your possession via courier service (form DS-82). Fi..."
+          },
+          {
+            "url": "https://www.usa.gov/apply-adult-passport",
+            "title": "Apply for a new adult passport | USAGov",
+            "snippet": "What do you need to get a passport? The application process for passport books and passport cards is the same. You will choose whi..."
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=FD0wwBbBb1A",
+            "title": "HOW TO apply for a U.S. passport for the FIRST TIME Form ...",
+            "snippet": "if you're applying for your US passport for the first time you don't want to miss this video. hi everyone I'm Jackie and today I will go over how to apply for a US"
+          },
+          {
+            "url": "https://www.facebook.com/travelgov/posts/not-sure-how-to-go-about-applying-for-your-us-passport-follow-the-smith-family-a/1435478775281835/",
+            "title": "Not sure how to go about applying for your U.S. passport? Follow the Smith family as they get ready for their first international trip. Choose the Smith whose situation is most like yours for step-by-step instructions on how to apply or renew.",
+            "snippet": "These are typically post offices. 5) Determine Your Fees- There is a \u201cfee calculator\u201d at travel.state.gov where you can calculate your fees. A passport book is $13..."
+          },
+          {
+            "url": "https://rushindocumentation.com/step-by-step-guide-how-to-schedule-a-us-passport-appointment/",
+            "title": "Step-by-Step Guide - How to Schedule a US Passport Appointment",
+            "snippet": "Step 3: Schedule Online or by Phone Go to the USPS Passport Appointment Scheduler. Find locations near you by entering your ZIP code. Choose your date and time fro..."
+          }
+        ],
+        "related_searches": []
+      }
+    },
+    "Serper": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "DataForSEO": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    }
+  }
+}

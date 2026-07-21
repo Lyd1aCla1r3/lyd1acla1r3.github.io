@@ -1,0 +1,561 @@
+{
+  "version": "0.1.20260717",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "2.5788 sec.",
+  "cost": 0.002,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "07210053-2120-0139-0000-a68f7e51ae39",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "2.4303 sec.",
+      "cost": 0.002,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "serp",
+        "google",
+        "organic",
+        "live",
+        "advanced"
+      ],
+      "data": {
+        "api": "serp",
+        "function": "live",
+        "se": "google",
+        "se_type": "organic",
+        "keyword": "how to change a flat tire",
+        "location_code": 2840,
+        "language_code": "en",
+        "device": "desktop",
+        "expand_ai_overview": true,
+        "os": "windows"
+      },
+      "result": [
+        {
+          "keyword": "how to change a flat tire",
+          "type": "organic",
+          "se_domain": "google.com",
+          "location_code": 2840,
+          "language_code": "en",
+          "check_url": "https://www.google.com/search?q=how%20to%20change%20a%20flat%20tire&hl=en&gl=US&ie=UTF-8&uule=w+CAIQIFISCQs2MuSEtepUEUK33kOSuTsc",
+          "datetime": "2026-07-20 21:53:07 +00:00",
+          "spell": null,
+          "refinement_chips": null,
+          "item_types": [
+            "video",
+            "people_also_ask",
+            "organic",
+            "perspectives",
+            "related_searches"
+          ],
+          "se_results_count": 53,
+          "pages_count": 1,
+          "items_count": 10,
+          "items": [
+            {
+              "type": "video",
+              "rank_group": 1,
+              "rank_absolute": 1,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[1]/div[2]/div[2]/div[1]/div[1]/div[1]/div[1]",
+              "items": [
+                {
+                  "type": "video_element",
+                  "source": "YouTube \u00b7 Dad Advice From Bo",
+                  "title": "How to change a tire in 60 seconds",
+                  "timestamp": "2023-07-06 00:00:00 +00:00",
+                  "url": "https://www.youtube.com/shorts/bInihYJPtEU"
+                },
+                {
+                  "type": "video_element",
+                  "source": "YouTube \u00b7 RuPaul",
+                  "title": "Changing a tire made easy!",
+                  "timestamp": "2025-03-26 00:00:00 +00:00",
+                  "url": "https://www.youtube.com/watch?v=7-2mQGjcuc4"
+                },
+                {
+                  "type": "video_element",
+                  "source": "YouTube \u00b7 Dad Advice From Bo",
+                  "title": "How to change a tire. Love, Dad",
+                  "timestamp": "2025-03-11 00:00:00 +00:00",
+                  "url": "https://www.youtube.com/shorts/eVtytg89T84"
+                },
+                {
+                  "type": "video_element",
+                  "source": "YouTube \u00b7 Howdini",
+                  "title": "How to Change a Tire | Change a flat car tire step by step",
+                  "timestamp": "2008-01-30 00:00:00 +00:00",
+                  "url": "https://www.youtube.com/watch?v=joBmbh0AGSQ"
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "people_also_ask",
+              "rank_group": 1,
+              "rank_absolute": 2,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[1]/div[2]/div[2]/div[1]/div[1]/div[3]/div[1]/div[1]/div[1]",
+              "items": [
+                {
+                  "type": "people_also_ask_element",
+                  "title": "How to change a flat tire by yourself?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[1]/div[2]/div[2]/div[1]/div[1]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_expanded_element",
+                      "featured_title": "Follow these steps to learn how to change a flat tire.",
+                      "url": "https://www.allstate.com/resources/car-insurance/how-to-change-a-flat-tire",
+                      "domain": "www.allstate.com",
+                      "title": "How to Change a Flat Tire in 9 Easy Steps | Allstate",
+                      "description": "Park in a safe location. If you have a flat, stop somewhere safe. ...\nGather tools and supplies. ...\nLoosen the lug nuts. ...\nPosition the jack and raise the car. ...\nRemove the lug nuts and flat tire. ...\nInstall the spare tire. ...\nLower the vehicle. ...\nTighten the lug nuts.",
+                      "images": null,
+                      "timestamp": null,
+                      "table": null
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Where do you put the jack to change a flat tire?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[1]/div[2]/div[2]/div[1]/div[1]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_expanded_element",
+                      "featured_title": null,
+                      "url": "https://www.youtube.com/watch?v=qr9KCZiNZAs",
+                      "domain": "www.youtube.com",
+                      "title": "WHERE TO PUT A CAR JACK WHEN CHANGING A TIRE - YouTube",
+                      "description": "And two on the other. Side. If you don't use these jack points and you put it. Here. On this very flimsy part of the car underneath here the runner uh you're asking for trouble.",
+                      "images": null,
+                      "timestamp": null,
+                      "table": null
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "What to do if one tire is flat?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[1]/div[2]/div[2]/div[1]/div[1]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]/div[3]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_expanded_element",
+                      "featured_title": "What To Do If Your Car Gets a Flat Tire",
+                      "url": "https://www.penskeautomotive.com/blog/1651/what-to-do-if-your-car-gets-a-flat-tire",
+                      "domain": "www.penskeautomotive.com",
+                      "title": "What To Do If Your Car Gets a Flat Tire - Penske Automotive Group",
+                      "description": "Step 1: Find a Safe Location to Stop. ...\nStep 2: Turn on Your Hazard Lights. ...\nStep 3: Assess the Damage. ...\nStep 4: Call for Assistance. ...\nStep 5: Have the Tire Repaired or Replaced. ...\nStep 6: Prevent Future Flats.",
+                      "images": null,
+                      "timestamp": null,
+                      "table": null
+                    }
+                  ]
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Is it easy to change a flat tyre?",
+                  "seed_question": null,
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[1]/div[2]/div[2]/div[1]/div[1]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]/div[4]",
+                  "expanded_element": [
+                    {
+                      "type": "people_also_ask_expanded_element",
+                      "featured_title": null,
+                      "url": "https://www.goodyear.eu/en_gb/consumer/learn/changing-a-flat-tire.html",
+                      "domain": "www.goodyear.eu",
+                      "title": "How To Change A Flat Tyre - Tips & Tricks - Choose Your Country",
+                      "description": "You can change a flat tyre in 30 minutes if you have all the right equipment ready. We recommend that you familiarise yourself with this process at home on a sunny day - watch YouTube videos of the process and making sure you understand how the jack works and where the jack points are on your car.",
+                      "images": null,
+                      "timestamp": null,
+                      "table": null
+                    }
+                  ]
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 3,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[1]/div[2]/div[2]/div[1]/div[1]/div[5]/div[1]/div[1]",
+              "domain": "allstate.com",
+              "title": "http://allstate.com/resources/car-insurance/how-to...",
+              "url": "http://allstate.com/resources/car-insurance/how-to-change-a-flat-tire",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "http://allstate.com \u203a resources \u203a how-to-change-a-flat-tire",
+              "website_name": "Allstate",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": null,
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": null,
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 4,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[1]/div[2]/div[2]/div[1]/div[1]/div[7]/div[1]/div[1]",
+              "domain": "www.coopertire.com",
+              "title": "How to Change a Tire - Tire Education",
+              "url": "https://www.coopertire.com/en_US/tire-education/learn-tire-maintenance/how-to-change-a-tire.html",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.coopertire.com \u203a learn-tire-maintenance",
+              "website_name": "Cooper Tires",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Make sure to replace all wheel nuts and snug the nuts before lowering your vehicle. Use a star pattern when tightening the nuts to ensure the wheel is centered. Read more",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "Make sure to replace all wheel nuts and snug the nuts"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 5,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[1]/div[2]/div[2]/div[1]/div[1]/div[9]/div[1]/div[1]",
+              "domain": "www.drivparts.com",
+              "title": "How to Change a Flat Tire",
+              "url": "https://www.drivparts.com/parts-matter/learning-center/by-the-numbers/changing-flat-tire.html",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.drivparts.com \u203a changing-flat-tire",
+              "website_name": "DRiV | Quality Auto Parts",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "What you'll need \u00b7 Pull over to a safe spot \u00b7 Engage the parking brake \u00b7 Gather tools \u00b7 Stabilize the vehicle \u00b7 Take off the hubcap \u00b7 Place the jack. Check your\u00a0... Read more",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "Pull over to a safe spot"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 6,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[1]/div[2]/div[2]/div[1]/div[1]/div[11]/div[1]/div[1]",
+              "domain": "www.homedepot.com",
+              "title": "How to Change a Tire",
+              "url": "https://www.homedepot.com/c/ah/how-to-change-a-tire/9ba683603be9fa5395fab908e21cabb",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.homedepot.com \u203a how-to-change-a-tire",
+              "website_name": "The Home Depot",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Sep 7, 2023 \u2014 This guide takes you through the steps of how to change a flat and replace it with the spare. Difficulty: Beginner Duration: Under 2 hours.\u00a0...",
+              "pre_snippet": "09/07/2023 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "how to change a flat and replace it with the spare"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2023-09-07 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 7,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[1]/div[2]/div[2]/div[1]/div[1]/div[13]/div[1]/div[1]",
+              "domain": "www.discounttire.com",
+              "title": "How To Change A Tire Step By Step",
+              "url": "https://www.discounttire.com/learn/change-a-tire",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.discounttire.com \u203a learn \u203a change-a-tire",
+              "website_name": "Discount Tire",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "STEP-BY-STEP: HOW TO CHANGE A FLAT TIRE \u00b7 Find a safe spot \u00b7 Secure your vehicle \u00b7 Remove your hubcap \u00b7 Watch to learn more \u00b7 Loosen lug nuts \u00b7 Raise the vehicle. Read more",
+              "pre_snippet": null,
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "Find a safe spot"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": null,
+              "rectangle": null
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 8,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[1]/div[2]/div[2]/div[1]/div[1]/div[15]/div[1]/div[1]",
+              "domain": "www.caranddriver.com",
+              "title": "How to Change a Flat Tire Quickly and Safely",
+              "url": "https://www.caranddriver.com/features/a26012411/how-to-change-tire/",
+              "cache_url": null,
+              "related_search_url": null,
+              "breadcrumb": "https://www.caranddriver.com \u203a features \u203a how-to-chan...",
+              "website_name": "Car and Driver",
+              "is_image": false,
+              "is_video": false,
+              "is_featured_snippet": false,
+              "is_malicious": false,
+              "is_web_story": false,
+              "description": "Jun 26, 2024 \u2014 Step 1: Park Your Car; Step 2: Find the Tire-Changing Tools Your Car Came With; Step 3: Jack It Up; Step 4: Remove the Lug Nuts; Step 5: Put the\u00a0... Read more",
+              "pre_snippet": "06/26/2024 00:00:00",
+              "extended_snippet": null,
+              "images": null,
+              "amp_version": false,
+              "rating": null,
+              "price": null,
+              "highlighted": [
+                "Step 1: Park Your Car"
+              ],
+              "links": null,
+              "faq": null,
+              "extended_people_also_search": null,
+              "about_this_result": null,
+              "related_result": null,
+              "timestamp": "2024-06-26 00:00:00 +00:00",
+              "rectangle": null
+            },
+            {
+              "type": "perspectives",
+              "rank_group": 1,
+              "rank_absolute": 9,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[1]/div[2]/div[2]/div[1]/div[1]/div[17]/div[1]",
+              "title": "What people are saying",
+              "items": [
+                {
+                  "type": "perspectives_element",
+                  "title": "Any one know how to change a tire? Will pay",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/jerseycity/comments/1v0xyge/any_one_know_how_to_change_a_tire_will_pay/",
+                  "domain": "www.reddit.com",
+                  "date": "1 day ago",
+                  "source": "r/jerseycity",
+                  "timestamp": "2026-07-19 21:53:07 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Hey guys! OKAY SO ... im just a girl. HOWEVER , I really need to learn how to change my own flat. Is there anyone who knows anyone who can help me ! I just need that survival skill fr.",
+                  "description": null,
+                  "url": "https://www.facebook.com/groups/joinblaque/posts/27888308397525130/",
+                  "domain": "www.facebook.com",
+                  "date": "4 days ago",
+                  "source": "The BlaQue Resource Network",
+                  "timestamp": "2026-07-16 21:53:07 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Save for this holiday weekend and remember, you might experience delays with things like AAA so you should know this just in case. Love, Dad",
+                  "description": null,
+                  "url": "https://www.tiktok.com/@dadadvicefrombo/video/7658120761730698509",
+                  "domain": "www.tiktok.com",
+                  "date": "2 weeks ago",
+                  "source": "DadAdviceFromBo",
+                  "timestamp": "2026-07-06 21:53:07 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "How to change a tire. Save this. Love, Dad",
+                  "description": null,
+                  "url": "https://www.youtube.com/shorts/V6OAQi4ar1c",
+                  "domain": "www.youtube.com",
+                  "date": "2 weeks ago",
+                  "source": "Dad Advice From Bo",
+                  "timestamp": "2026-07-06 21:53:07 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Flat on your Toyota Camry? Here\u2019s how to swap in your spare tire the right way \ud83d\udede\ud83d\udd27\n\n#sparetire #carmaintenance #flattire #cartips #roadsideassistance",
+                  "description": null,
+                  "url": "https://www.instagram.com/reel/Da0Sd1RPk-9/",
+                  "domain": "www.instagram.com",
+                  "date": "5 days ago",
+                  "source": "krisbuchowicz",
+                  "timestamp": "2026-07-15 21:53:07 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Do you all know how to change a spare tire?",
+                  "description": null,
+                  "url": "https://www.reddit.com/r/NoStupidQuestions/comments/1thu1ig/do_you_all_know_how_to_change_a_spare_tire/",
+                  "domain": "www.reddit.com",
+                  "date": "May 19, 2026",
+                  "source": "r/NoStupidQuestions",
+                  "timestamp": "2026-05-19 00:00:00 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Need to Change a Small Tire? Try This",
+                  "description": null,
+                  "url": "https://www.facebook.com/CraftyPandaHow/posts/need-to-change-a-small-tire-try-this/1074733091792758/",
+                  "domain": "www.facebook.com",
+                  "date": "1 month ago",
+                  "source": "CraftyPandaHow",
+                  "timestamp": "2026-06-20 21:53:07 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "How to Change Your Car Tire\n\n#adultingwithanni #car #tire #cartire #flattire",
+                  "description": null,
+                  "url": "https://www.instagram.com/reel/DY2oBzZp8dE/",
+                  "domain": "www.instagram.com",
+                  "date": "1 month ago",
+                  "source": "adultingwithanni",
+                  "timestamp": "2026-06-20 21:53:07 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "How To Change Your Own Tires! \ud83d\udede",
+                  "description": null,
+                  "url": "https://www.youtube.com/shorts/ITQ8yxjl5_Q",
+                  "domain": "www.youtube.com",
+                  "date": "1 month ago",
+                  "source": "One-Up Moto Garage",
+                  "timestamp": "2026-06-20 21:53:07 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "How to change a tire \n\n#jeeplife #offroad #jeepwrangler #4x4 #cars car ford offroading shorts",
+                  "description": null,
+                  "url": "https://www.instagram.com/reel/DaywW1RSMJG/",
+                  "domain": "www.instagram.com",
+                  "date": "5 days ago",
+                  "source": "sherpa.offroad",
+                  "timestamp": "2026-07-15 21:53:07 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "Good afternoon I am coming in here today to ask for some help with my flat tire that got flat yesterday due to a screw I do have a spare tire to put on I just need help with tools the jack and a 19 mm lug wrench. And will be changing the tire on the rims. I've asked",
+                  "description": null,
+                  "url": "https://www.facebook.com/groups/CarBuddies/posts/27896270990010879/",
+                  "domain": "www.facebook.com",
+                  "date": "6 days ago",
+                  "source": "Car Buddies",
+                  "timestamp": "2026-07-14 21:53:07 +00:00"
+                },
+                {
+                  "type": "perspectives_element",
+                  "title": "TEACHING MY GIRLFRIEND HOW TO CHANGE A TIRE!",
+                  "description": null,
+                  "url": "https://www.youtube.com/watch?v=A6WsppCaO60",
+                  "domain": "www.youtube.com",
+                  "date": "2 weeks ago",
+                  "source": "Makoa",
+                  "timestamp": "2026-07-06 21:53:07 +00:00"
+                }
+              ],
+              "rectangle": null
+            },
+            {
+              "type": "related_searches",
+              "rank_group": 1,
+              "rank_absolute": 10,
+              "page": 1,
+              "position": "left",
+              "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[1]/div[3]/div[1]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]",
+              "items": [
+                "How to change a flat tire at home",
+                "How to change a flat tire in 5 easy steps",
+                "How to change a tyre on a wheel at home",
+                "How to change a flat tire without a jack",
+                "How to change a flat tire bike",
+                "How to change tires at home without a machine",
+                "How to change a tyre on a rim",
+                "Tire shop near me"
+              ],
+              "rectangle": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

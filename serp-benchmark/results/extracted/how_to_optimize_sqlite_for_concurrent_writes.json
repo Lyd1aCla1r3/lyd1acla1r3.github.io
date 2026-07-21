@@ -1,0 +1,518 @@
+{
+  "query": "how to optimize sqlite for concurrent writes",
+  "intent": "long-tail",
+  "scores": {
+    "SearchApi": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "SerpApi": {
+      "extracted": {
+        "present": true,
+        "summary": "",
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "snippet": "To optimize SQLite for concurrent writes, you must understand its core architectural constraint: SQLite only allows one write transaction at a time per database file.",
+            "snippet_links": [
+              {
+                "link": "https://github.com/pocketbase/pocketbase/discussions/5524"
+              }
+            ],
+            "snippet_highlighted_words": [
+              "understand its core architectural constraint"
+            ],
+            "reference_indexes": [
+              0,
+              1
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Because true parallel writes do not exist in mainline SQLite, \"optimizing concurrent writes\" means maximizing transaction throughput so that queued writes execute in milliseconds, preventing the infamous SQLITE_BUSY errors.",
+            "snippet_links": [
+              {
+                "link": "https://github.com/pocketbase/pocketbase/discussions/5524"
+              }
+            ],
+            "snippet_inline_code": [
+              "SQLITE_BUSY"
+            ],
+            "reference_indexes": [
+              0,
+              2,
+              3
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "1. Essential PRAGMA Configurations"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Run these database settings immediately after opening a connection to drastically reduce disk I/O overhead and unlock reader-writer concurrency.",
+            "snippet_links": [
+              {
+                "link": "https://kerkour.com/sqlite-for-servers"
+              }
+            ],
+            "reference_indexes": [
+              4
+            ]
+          },
+          {
+            "type": "code_block",
+            "language": "sql",
+            "code": "-- Step 1: Enable Write-Ahead Logging\nPRAGMA journal_mode = WAL;\n\n-- Step 2: Reduce disk sync frequency safely\nPRAGMA synchronous = NORMAL;\n\n-- Step 3: Wait for locks instead of failing immediately\nPRAGMA busy_timeout = 5000;\n\n-- Step 4: Increase memory cache size\nPRAGMA cache_size = -64000; -- Uses 64MB of RAM cache\n"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "journal_mode = WAL: Switches SQLite from a rollback journal to Write-Ahead Logging. It allows an unlimited number of readers\nto access the database simultaneously while a writer is modifying it.",
+                "snippet_links": [
+                  {
+                    "link": "https://powersync.com/blog/sqlite-optimizations-for-ultra-high-performance"
+                  }
+                ],
+                "reference_indexes": [
+                  1,
+                  5
+                ]
+              },
+              {
+                "snippet": "synchronous = NORMAL: In WAL mode, this is completely safe from database corruption. It prevents SQLite from forcing a slow filesystem sync (fsync) on every single transaction, slashing transaction time from 30ms down to under 1ms\n.",
+                "snippet_links": [
+                  {
+                    "link": "https://powersync.com/blog/sqlite-optimizations-for-ultra-high-performance"
+                  }
+                ],
+                "reference_indexes": [
+                  5,
+                  4,
+                  6
+                ]
+              },
+              {
+                "snippet": "busy_timeout = 5000: Tells SQLite to sleep and retry for up to 5000 milliseconds when encountering a write lock. This transparently queues incoming concurrent writes instead of crashing the app.",
+                "snippet_links": [
+                  {
+                    "link": "https://github.com/pocketbase/pocketbase/discussions/5524"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              0,
+              2,
+              18,
+              19
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "2. Implement the Single-Writer Architecture"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Since multiple threads cannot write simultaneously, attempting to do so forces SQLite to struggle with database-level lock contentions. The absolute gold standard for managing this is the Single-Writer, Multi-Reader Pattern.",
+            "snippet_links": [
+              {
+                "link": "https://www.reddit.com/r/programming/comments/1j3gd89/abusing_sqlite_to_handle_concurrency/"
+              }
+            ],
+            "reference_indexes": [
+              3,
+              8,
+              9,
+              20
+            ]
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "The Read Pool: Open a pool of multiple connections configured as read-only."
+              },
+              {
+                "snippet": "The Single Write Connection\n: Dedicate exactly one connection for all write operations in your application."
+              },
+              {
+                "snippet": "Application-Level Queue: Route all write actions through an in-memory channel, queue, or a serialized background thread. This shifts the locking queue from the slow filesystem level to high-speed application memory\n.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.reddit.com/r/golang/comments/16xswxd/concurrency_when_writing_data_into_sqlite/"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              3,
+              2,
+              7,
+              10,
+              21
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "3. Fine-Tune Your SQL Transactions"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "How you execute your transactions drastically impacts how long the single write lock is held.",
+            "snippet_links": [
+              {
+                "link": "https://www.sqliteforum.com/p/optimizing-sqlite-for-multi-user"
+              }
+            ],
+            "reference_indexes": [
+              20,
+              11,
+              12
+            ]
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Use Explicit Transactions: Never execute multiple independent INSERT or UPDATE\n\nstatements outside a transaction. Group related writes together using BEGIN TRANSACTION; and to avoid the massive overhead of parsing and locking per statement.",
+                "snippet_links": [
+                  {
+                    "link": "https://powersync.com/blog/sqlite-optimizations-for-ultra-high-performance"
+                  }
+                ],
+                "reference_indexes": [
+                  5,
+                  0,
+                  12,
+                  13,
+                  14
+                ]
+              },
+              {
+                "snippet": "Keep Transactions Microscopic: Keep your transactions as small and fast as possible. Do not make network calls, fetch files, or run heavy application logic inside a write transaction.",
+                "snippet_links": [
+                  {
+                    "link": "https://tenthousandmeters.com/blog/sqlite-concurrent-writes-and-database-is-locked-errors/"
+                  }
+                ],
+                "reference_indexes": [
+                  7,
+                  11,
+                  12,
+                  20,
+                  22
+                ]
+              },
+              {
+                "snippet": "Avoid Write-After-Read with BEGIN IMMEDIATE: If a transaction needs to read data and then write based on that data, the standard BEGIN will fetch a read lock, and later try to upgrade to a write lock\n. If another query took a write lock in the meantime, your transaction will fail. Use BEGIN IMMEDIATE; to lock the write channel right from the start.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.reddit.com/r/golang/comments/16xswxd/concurrency_when_writing_data_into_sqlite/"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              10,
+              7,
+              5,
+              23,
+              24
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "Summary of Best Practices"
+          },
+          {
+            "type": "table",
+            "table": [
+              [
+                "Strategy",
+                "Actionable Benefit"
+              ],
+              [
+                "WAL + NORMAL",
+                "Allows parallel reads, drops transaction overhead to <1ms."
+              ],
+              [
+                "busy_timeout",
+                "Safely queues up concurrent write requests automatically."
+              ],
+              [
+                "Single-Writer Connection",
+                "Eliminates filesystem lock contention entirely."
+              ],
+              [
+                "Batching Writes",
+                "Maximizes disk throughput by minimizing lock cycles."
+              ]
+            ],
+            "detailed": [
+              [
+                {
+                  "snippet": "Strategy"
+                },
+                {
+                  "snippet": "Actionable Benefit"
+                }
+              ],
+              [
+                {
+                  "snippet": "WAL + NORMAL"
+                },
+                {
+                  "snippet": "Allows parallel reads, drops transaction overhead to <1ms."
+                }
+              ],
+              [
+                {
+                  "snippet": "busy_timeout"
+                },
+                {
+                  "snippet": "Safely queues up concurrent write requests automatically."
+                }
+              ],
+              [
+                {
+                  "snippet": "Single-Writer Connection"
+                },
+                {
+                  "snippet": "Eliminates filesystem lock contention entirely."
+                }
+              ],
+              [
+                {
+                  "snippet": "Batching Writes"
+                },
+                {
+                  "snippet": "Maximizes disk throughput by minimizing lock cycles."
+                }
+              ]
+            ],
+            "formatted": [
+              {
+                "strategy": "WAL + NORMAL",
+                "actionable_benefit": "Allows parallel reads, drops transaction overhead to <1ms."
+              },
+              {
+                "strategy": "busy_timeout",
+                "actionable_benefit": "Safely queues up concurrent write requests automatically."
+              },
+              {
+                "strategy": "Single-Writer Connection",
+                "actionable_benefit": "Eliminates filesystem lock contention entirely."
+              },
+              {
+                "strategy": "Batching Writes",
+                "actionable_benefit": "Maximizes disk throughput by minimizing lock cycles."
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "If your application reaches a scale where thousands of unique processes must execute heavy parallel writes at the exact same physical millisecond, SQLite may no longer be the correct choice. At that stage, you should migrate to a dedicated client/server engine like PostgreSQL.",
+            "snippet_links": [
+              {
+                "link": "https://github.com/pocketbase/pocketbase/discussions/5524"
+              }
+            ],
+            "reference_indexes": [
+              0,
+              15,
+              16
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "If you are developing this app right now, tell me:"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "What programming language or framework (e.g., Node.js, Python, Go) are you using?"
+              },
+              {
+                "snippet": "Are your concurrent writes coming from\nmultiple threads in one process, or multiple separate processes?"
+              },
+              {
+                "snippet": "Roughly how many writes per second do you expect your application to handle?",
+                "snippet_links": [
+                  {
+                    "link": "https://www.reddit.com/r/golang/comments/16xswxd/concurrency_when_writing_data_into_sqlite/"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              10,
+              2,
+              3,
+              0,
+              9,
+              17
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "I can provide the specific code boilerplate required to implement this architecture for your stack."
+          }
+        ],
+        "citations": [
+          {
+            "url": "https://github.com/pocketbase/pocketbase/discussions/5524",
+            "title": "How to improve the concurrent write limit due to SQLite? #5524",
+            "snippet": "on Sep 13, 2024. Original comment in English - Translate to English. As stated in https://sqlite.org/whentouse.html. Many concurrent writers? \u2192 choose client/serve..."
+          },
+          {
+            "url": "https://oldmoe.blog/2024/07/08/the-write-stuff-concurrent-write-transactions-in-sqlite/",
+            "title": "The Write Stuff: Concurrent Write Transactions in SQLite",
+            "snippet": "In this mode writes go to a separate log file and are later merged into the main database file. This mode allows an unlimited number of readers to access the datab..."
+          },
+          {
+            "url": "https://stackoverflow.com/questions/35804884/sqlite-concurrent-writing-performance",
+            "title": "Sqlite concurrent writing performance - Stack Overflow",
+            "snippet": "It means that every SQLite call will be guarded with a lock. Everything will be serialized. And that's actually what you want with..."
+          },
+          {
+            "url": "https://news.ycombinator.com/item?id=45781298",
+            "title": "SQLite concurrency and why you should care about it - Hacker News",
+            "snippet": "The separation can be ensured on SQLite level too by adding ?_ query_only\\u003d1 to connection parameters or setting the respective pra..."
+          },
+          {
+            "url": "https://kerkour.com/sqlite-for-servers",
+            "title": "Optimizing SQLite for servers - Sylvain Kerkour",
+            "snippet": "Configuring the right PRAGMAs. PRAGMA commands should be issued to the database just after openning the connection, with a simple db. Exec call or similar. PRAGMA ..."
+          },
+          {
+            "url": "https://powersync.com/blog/sqlite-optimizations-for-ultra-high-performance",
+            "title": "SQLite Optimizations For Ultra High-Performance - PowerSync",
+            "snippet": "# 1: Enable Write-Ahead Logging (WAL) And Disable Synchronous Mode. Effect: Can reduce per-transaction overhead from 30ms+ to \\u003c 1ms. The default in SQLite is to us..."
+          },
+          {
+            "url": "https://javascript.plainenglish.io/stop-the-sqlite-performance-wars-your-database-can-be-10x-faster-and-its-not-magic-156022addc75",
+            "title": "Stop the SQLite Performance Wars: Your Database Can Be ...",
+            "snippet": "Persistent Optimization: Unlike the default DELETE journal mode, which reverts to its standard state every time the database connection is closed, WAL is a persist..."
+          },
+          {
+            "url": "https://tenthousandmeters.com/blog/sqlite-concurrent-writes-and-database-is-locked-errors/",
+            "title": "SQLite concurrent writes and \\\"database is locked\\\" errors",
+            "snippet": "The BEGIN CONCURRENT enhancement allows multiple writers to process write transactions simultanously if the database is in \\\"wal\\\" or \\\"wal2\\\" mode, ..."
+          },
+          {
+            "url": "https://www.reddit.com/r/programming/comments/1j3gd89/abusing_sqlite_to_handle_concurrency/",
+            "title": "Abusing SQLite to Handle Concurrency : r/programming - Reddit",
+            "snippet": "Incredibly high value comment right here. Thanks! In your experience, should the write connection just indefinitely hold the BEGIN IMMEIDATE transaction open? Or w..."
+          },
+          {
+            "url": "https://blog.skypilot.co/abusing-sqlite-to-handle-concurrency/",
+            "title": "Abusing SQLite to Handle Concurrency - SkyPilot Blog",
+            "snippet": "TL;DR * Try to avoid using SQLite if you have many processes writing to your database concurrently. * SQLite uses database-level locks that can counter-intuitively..."
+          },
+          {
+            "url": "https://www.reddit.com/r/golang/comments/16xswxd/concurrency_when_writing_data_into_sqlite/",
+            "title": "Concurrency when writing data into SQLite? : r/golang",
+            "snippet": "According to a post on r/golang, SQLite doesn't allow more than one writer at a time. However, there are some options for concurre..."
+          },
+          {
+            "url": "https://www.sqliteforum.com/p/optimizing-sqlite-for-multi-user",
+            "title": "Optimizing SQLite for Multi-User Apps: Concurrency \\u0026 Locking",
+            "snippet": "Best Practices for SQLite in Multi-User Environments * Use WAL Mode: Enable Write-Ahead Logging to allow concurrent reads and writes. * Keep Transactions Small: Br..."
+          },
+          {
+            "url": "https://www.sqliteforum.com/p/handling-concurrency-in-sqlite-best",
+            "title": "Handling Concurrency in SQLite: Best Practices",
+            "snippet": "Step 2: Avoiding Long Locks * Step 3: Using WAL Mode for Better Concurrency. SQLite has a special mode called WAL (Write-Ahead Logging). In this mode, SQLite handl..."
+          },
+          {
+            "url": "https://stackoverflow.com/questions/1711631/improve-insert-per-second-performance-of-sqlite",
+            "title": "Improve INSERT-per-second performance of SQLite - Stack Overflow",
+            "snippet": "Several tips: * Put inserts/updates in a transaction. * For older versions of SQLite - Consider a less paranoid journal mode ( pragma journal_mode ). There is NORM..."
+          },
+          {
+            "url": "https://www.reddit.com/r/sqlite/comments/ekcbko/sqlite_performance_optimization_for_large_insert/",
+            "title": "Sqlite Performance Optimization for large insert - Reddit",
+            "snippet": "First things first: are you doing this all as a single transaction, i.e., begin transaction; .... commit; That is a must. ... yup."
+          },
+          {
+            "url": "https://sqlite.org/whentouse.html",
+            "title": "Appropriate Uses For SQLite",
+            "snippet": "SQLite only supports one writer at a time per database file. But in most cases, a write transaction only takes milliseconds and so..."
+          },
+          {
+            "url": "https://www.reddit.com/r/django/comments/1gr08wp/safe_way_to_do_concurrent_writes_with_sqlite/",
+            "title": "Safe way to do concurrent writes with SQLite? : r/django - Reddit",
+            "snippet": "Comments Section * bravopapa99. \u2022 2y ago. Try another DB, it MIGHT be the solution or it will help identify the underlying fault i..."
+          },
+          {
+            "url": "https://www.reddit.com/r/sqlite/comments/1kqnofq/how_many_readswrites_can_sqlite_handle_in_prod/",
+            "title": "How Many Reads/Writes can SQLite handle in Prod? - Reddit",
+            "snippet": "Of course it will depend on the actual length of those writes, the server infrastructure, etc. - but sqlite handles that workload ..."
+          },
+          {
+            "url": "https://www.maragu.dev/blog/go-and-sqlite-in-the-cloud",
+            "title": "Go and SQLite in the Cloud",
+            "snippet": "_timeout\\u003d5000 sets a busy timeout to 5000 milliseconds, or 5 seconds. There can only be one writer at a time in SQLite, so if another writer wants concurrent acces..."
+          },
+          {
+            "url": "https://coddy.tech/docs/sqlite/pragma-settings",
+            "title": "Runnable SQLite Docs: PRAGMA Settings",
+            "snippet": "busy_timeout \\u003d 5000 SQLite allows one writer at a time. If a second connection tries to write while the first is mid-transaction, ..."
+          },
+          {
+            "url": "https://turso.tech/blog/beyond-the-single-writer-limitation-with-tursos-concurrent-writes",
+            "title": "Beyond the Single-Writer Limitation with Turso's Concurrent ...",
+            "snippet": "SQLite has been experimenting with a feature called BEGIN CONCURRENT to mitigate the single-writer bottlenecks. This feature, available only in experimental branch..."
+          },
+          {
+            "url": "https://www.bugsink.com/blog/database-transactions/",
+            "title": "Single-writer Database Architecture with SQLite",
+            "snippet": "SQLite allows only one writer at a time. Even in WAL mode, concurrent write transactions are not possible \u2013 any attempt to write while another write is in progress..."
+          },
+          {
+            "url": "https://coddy.tech/docs/sqlite/sqlite-vs-mysql",
+            "title": "Runnable SQLite Docs: SQLite vs MySQL",
+            "snippet": "For a single process doing local reads and writes, SQLite is often faster - there's no network hop, no inter-process communication..."
+          },
+          {
+            "url": "https://blog.r-hub.io/2021/03/13/rsqlite-parallel/",
+            "title": "RSQLite concurrency issues \u2014 solution included",
+            "snippet": "If it ( SQLite ) performs a write operation later, then SQLite tries to upgrade it to a write transaction. Consider two concurrent..."
+          },
+          {
+            "url": "https://stancl.substack.com/p/using-sqlite-in-production-with-laravel",
+            "title": "Using SQLite in production with Laravel - Samuel \u0160tancl",
+            "snippet": "SQLite has this particular behavior you need to be aware of: by default, transactions don't acquire locks until you need them, and if you start with a read lock, a..."
+          }
+        ],
+        "related_searches": []
+      }
+    },
+    "Serper": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "DataForSEO": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    }
+  }
+}

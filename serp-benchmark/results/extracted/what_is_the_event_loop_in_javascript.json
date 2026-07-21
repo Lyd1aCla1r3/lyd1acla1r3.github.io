@@ -1,0 +1,532 @@
+{
+  "query": "what is the event loop in javascript",
+  "intent": "definition",
+  "scores": {
+    "SearchApi": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "SerpApi": {
+      "extracted": {
+        "present": true,
+        "summary": "",
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "snippet": "The event loop is a background mechanism that enables JavaScript to execute asynchronous, non-blocking operations despite being a single-threaded language. It continuously monitors the execution environment to decide when to run specific parts of your code\n\n\n.",
+            "snippet_links": [
+              {
+                "link": "https://www.geeksforgeeks.org/javascript/what-is-an-event-loop-in-javascript/"
+              }
+            ],
+            "snippet_highlighted_words": [
+              "a background mechanism that enables JavaScript to execute asynchronous, non-blocking operations despite being a single-threaded language"
+            ],
+            "reference_indexes": [
+              0,
+              1
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "How the Runtime Components Work Together"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "JavaScript relies on an entire runtime environment (provided by browsers or environments like\nNode.js\n) to handle tasks. The core ecosystem consists of four components:",
+            "snippet_links": [
+              {
+                "text": "Node.js",
+                "link": "https://nodejs.org/learn/asynchronous-work/event-loop-timers-and-nexttick"
+              },
+              {
+                "link": "https://nodejs.org/learn/asynchronous-work/event-loop-timers-and-nexttick"
+              }
+            ],
+            "reference_indexes": [
+              2,
+              3,
+              12,
+              13,
+              14
+            ]
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Call Stack: Tracks currently executing functions in a Last-In, First-Out (LIFO) order."
+              },
+              {
+                "snippet": "Web APIs / Node APIs\n: Handles background multi-threaded tasks like timers (setTimeout), network requests (fetch), and DOM events."
+              },
+              {
+                "snippet": "Microtask Queue\n: Holds high-priority callbacks, specifically handling Promise resolutions (.then/catch/finally) and async/await steps."
+              },
+              {
+                "snippet": "Callback Queue (Macrotask Queue)\n: Holds lower-priority callbacks from completed background operations like setTimeout or click listeners.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.geeksforgeeks.org/javascript/what-is-an-event-loop-in-javascript/"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              0,
+              1,
+              4
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "The Event Loop Sequence"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "The event loop acts like a continuous while loop following a strict order of operations:",
+            "snippet_links": [
+              {
+                "link": "https://www.geeksforgeeks.org/javascript/what-is-an-event-loop-in-javascript/"
+              }
+            ],
+            "snippet_inline_code": [
+              "while"
+            ],
+            "reference_indexes": [
+              0,
+              5
+            ]
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Execute Stack: Run synchronous code until the Call Stack is completely empty."
+              },
+              {
+                "snippet": "Clear Microtasks\n: Empty the entire Microtask Queue. If a microtask creates another microtask, it also runs immediately."
+              },
+              {
+                "snippet": "Render UI: Update the browser display if a screen repaint is needed."
+              },
+              {
+                "snippet": "Process One Macrotask\n: Pull exactly one callback from the Callback Queue and push it onto the Call Stack to run."
+              },
+              {
+                "snippet": "Repeat: Loop back to step 1 infinitely.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.youtube.com/watch?v=8aGhZQkoFbQ&t=30"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              0,
+              6,
+              7,
+              8,
+              9
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "Step-by-Step Execution Example"
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Consider this common interview code snippet:"
+          },
+          {
+            "type": "code_block",
+            "language": "javascript",
+            "code": "console.log(\"1: Start\");\n\nsetTimeout(() => {\n  console.log(\"2: Timeout\");\n}, 0);\n\nPromise.resolve().then(() => {\n  console.log(\"3: Promise\");\n});\n\nconsole.log(\"4: End\");\n"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "text_blocks": [
+                  {
+                    "type": "heading",
+                    "snippet": "The Output Order"
+                  },
+                  {
+                    "type": "list",
+                    "list": [
+                      {
+                        "snippet": "1: Start"
+                      },
+                      {
+                        "snippet": "4: End"
+                      },
+                      {
+                        "snippet": "3: Promise"
+                      },
+                      {
+                        "snippet": "2: Timeout"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "text_blocks": [
+                  {
+                    "type": "heading",
+                    "snippet": "Why it executes in this order:"
+                  },
+                  {
+                    "type": "table",
+                    "table": [
+                      [
+                        "Step",
+                        "Action",
+                        "Call Stack Status",
+                        "Queues Status"
+                      ],
+                      [
+                        "1",
+                        "Executes console.log(\"1: Start\").",
+                        "Runs and pops off immediately.",
+                        "Empty."
+                      ],
+                      [
+                        "2",
+                        "Registers setTimeout with the Web API.",
+                        "Pops off the stack.",
+                        "Callback Queue: [Timeout Callback]."
+                      ],
+                      [
+                        "Registers Promise resolution.",
+                        "Pops off the stack.",
+                        "Microtask Queue: [Promise Callback]."
+                      ],
+                      [
+                        "Executes console.log(\"4: End\").",
+                        "Runs and pops off immediately.",
+                        "Queues hold their items."
+                      ],
+                      [
+                        "Synchronous phase finishes.",
+                        "Stack is now empty.",
+                        "Loop checks queues."
+                      ],
+                      [
+                        "Event Loop checks high-priority queue.",
+                        "Runs Promise Callback.",
+                        "Microtask Queue: Emptied."
+                      ],
+                      [
+                        "Event Loop checks lower-priority queue.",
+                        "Runs Timeout Callback.",
+                        "Callback Queue: Emptied."
+                      ]
+                    ],
+                    "detailed": [
+                      [
+                        {
+                          "snippet": "Step"
+                        },
+                        {
+                          "snippet": "Action"
+                        },
+                        {
+                          "snippet": "Call Stack Status"
+                        },
+                        {
+                          "snippet": "Queues Status"
+                        }
+                      ],
+                      [
+                        {
+                          "snippet": "1"
+                        },
+                        {
+                          "snippet": "Executes console.log(\"1: Start\")."
+                        },
+                        {
+                          "snippet": "Runs and pops off immediately."
+                        },
+                        {
+                          "snippet": "Empty."
+                        }
+                      ],
+                      [
+                        {
+                          "snippet": "2"
+                        },
+                        {
+                          "snippet": "Registers setTimeout with the Web API."
+                        },
+                        {
+                          "snippet": "Pops off the stack."
+                        },
+                        {
+                          "snippet": "Callback Queue: [Timeout Callback]."
+                        }
+                      ],
+                      [
+                        {
+                          "snippet": "Registers Promise resolution."
+                        },
+                        {
+                          "snippet": "Pops off the stack."
+                        },
+                        {
+                          "snippet": "Microtask Queue: [Promise Callback]."
+                        }
+                      ],
+                      [
+                        {
+                          "snippet": "Executes console.log(\"4: End\")."
+                        },
+                        {
+                          "snippet": "Runs and pops off immediately."
+                        },
+                        {
+                          "snippet": "Queues hold their items."
+                        }
+                      ],
+                      [
+                        {
+                          "snippet": "Synchronous phase finishes."
+                        },
+                        {
+                          "snippet": "Stack is now empty."
+                        },
+                        {
+                          "snippet": "Loop checks queues."
+                        }
+                      ],
+                      [
+                        {
+                          "snippet": "Event Loop checks high-priority queue."
+                        },
+                        {
+                          "snippet": "Runs Promise Callback."
+                        },
+                        {
+                          "snippet": "Microtask Queue: Emptied."
+                        }
+                      ],
+                      [
+                        {
+                          "snippet": "Event Loop checks lower-priority queue."
+                        },
+                        {
+                          "snippet": "Runs Timeout Callback."
+                        },
+                        {
+                          "snippet": "Callback Queue: Emptied."
+                        }
+                      ]
+                    ],
+                    "formatted": [
+                      {
+                        "step": "1",
+                        "action": "Executes console.log(\"1: Start\").",
+                        "call_stack_status": "Runs and pops off immediately.",
+                        "queues_status": "Empty."
+                      },
+                      {
+                        "step": "2",
+                        "action": "Registers setTimeout with the Web API.",
+                        "call_stack_status": "Pops off the stack.",
+                        "queues_status": "Callback Queue: [Timeout Callback]."
+                      },
+                      {
+                        "step": "Registers Promise resolution.",
+                        "action": "Pops off the stack.",
+                        "call_stack_status": "Microtask Queue: [Promise Callback]."
+                      },
+                      {
+                        "step": "Executes console.log(\"4: End\").",
+                        "action": "Runs and pops off immediately.",
+                        "call_stack_status": "Queues hold their items."
+                      },
+                      {
+                        "step": "Synchronous phase finishes.",
+                        "action": "Stack is now empty.",
+                        "call_stack_status": "Loop checks queues."
+                      },
+                      {
+                        "step": "Event Loop checks high-priority queue.",
+                        "action": "Runs Promise Callback.",
+                        "call_stack_status": "Microtask Queue: Emptied."
+                      },
+                      {
+                        "step": "Event Loop checks lower-priority queue.",
+                        "action": "Runs Timeout Callback.",
+                        "call_stack_status": "Callback Queue: Emptied."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "snippet": "Key Developer Takeaways"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "Never block the thread: Running heavy math or infinite loops (while(true)) keeps the Call Stack occupied. The Event Loop will freeze, causing the browser UI to lock up\n.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.geeksforgeeks.org/javascript/what-is-an-event-loop-in-javascript/"
+                  }
+                ],
+                "reference_indexes": [
+                  0
+                ]
+              },
+              {
+                "snippet": "Timeouts are minimum values: Setting setTimeout(..., 1000) does not guarantee execution at exactly 1000ms. It means the callback enters the queue after 1000ms, waiting until the Call Stack and Microtasks are empty before running\n.",
+                "snippet_links": [
+                  {
+                    "link": "https://www.geeksforgeeks.org/javascript/what-is-an-event-loop-in-javascript/"
+                  }
+                ]
+              }
+            ],
+            "reference_indexes": [
+              0,
+              10,
+              15,
+              16
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Would you like to explore how the event loop behaves differently in Node.js phases, or see how to optimize heavy data computations using Web Workers to prevent blocking?",
+            "snippet_links": [
+              {
+                "link": "https://www.geeksforgeeks.org/javascript/what-is-an-event-loop-in-javascript/"
+              }
+            ],
+            "reference_indexes": [
+              0,
+              11
+            ]
+          }
+        ],
+        "citations": [
+          {
+            "url": "https://www.geeksforgeeks.org/javascript/what-is-an-event-loop-in-javascript/",
+            "title": "Event Loop in JavaScript - GeeksforGeeks",
+            "snippet": "Event Loop in JavaScript * The event loop is an important concept in JavaScript that enables asynchronous programming by handling tasks efficiently. Since JavaScri..."
+          },
+          {
+            "url": "https://medium.com/@poojakavi50/understanding-javascripts-event-loop-the-heartbeat-of-asynchronous-programming-43e32be07354",
+            "title": "Understanding JavaScript\u2019s Event Loop - by Pooja Prabakar - Medium",
+            "snippet": "\ud83d\udd0d How Does It Actually Work? Let's break it down step by step: Call Stack: This is where JavaScript tracks what functions are currently being executed. It works i..."
+          },
+          {
+            "url": "https://nodejs.org/learn/asynchronous-work/event-loop-timers-and-nexttick",
+            "title": "The Node.js Event Loop",
+            "snippet": "Event Loop Explained. When Node. js starts, it initializes the event loop, processes the provided input script (or drops into the REPL, which is not covered in thi..."
+          },
+          {
+            "url": "https://medium.com/@ammarjaved555/demystifying-the-javascript-event-loop-how-does-it-really-work-7cd535d951d0",
+            "title": "Demystifying the JavaScript Event Loop: How Does It Really Work?",
+            "snippet": "Demystifying the JavaScript Event Loop: How Does It Really Work? * What is the JavaScript Event Loop? The JavaScript Event Loop is a critical component of the Java..."
+          },
+          {
+            "url": "https://www.gperrucci.com/blog/javascript/event-loop-explained",
+            "title": "Demystifying JavaScript's Event Loop: A Comprehensive Guide",
+            "snippet": "Demystifying JavaScript's Event Loop: A Comprehensive Guide * Introduction: Understanding JavaScript's Runtime Model. JavaScript's single-threaded nature means it ..."
+          },
+          {
+            "url": "https://en.wikipedia.org/wiki/Event_loop",
+            "title": "Event loop - Wikipedia",
+            "snippet": "The Javascript engine has a list of events that need to be processed. The event loop handles those events one at a time until the list is empty."
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=8aGhZQkoFbQ&t=30",
+            "title": "What the heck is the event loop anyway? | Philip Roberts",
+            "snippet": "um so I want to talk about the event Loop and what the heck is the event Loop um as in the event Loop inside JavaScript. so JavaScript is a single threaded program"
+          },
+          {
+            "url": "https://medium.com/@kavindadewmith/understanding-the-javascript-event-loop-with-visual-guide-6826199290a8",
+            "title": "Understanding the JavaScript Event Loop (With Visual Guide)",
+            "snippet": "\ud83c\udfc1 Conclusion. The JavaScript Event Loop ensures that asynchronous operations don't block the main execution thread. It processes: Synchronous Code first. Microtas..."
+          },
+          {
+            "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Execution_model",
+            "title": "JavaScript execution model - MDN Web Docs",
+            "snippet": "Agent execution model. In the JavaScript specification, each autonomous executor of JavaScript is called an agent, which maintains its facilities for code executio..."
+          },
+          {
+            "url": "https://medium.com/@codewithnitish/what-is-the-event-loop-and-how-does-it-work-in-javascript-07a32ca1b311",
+            "title": "What is the event loop, and how does it work in JavaScript? - Medium",
+            "snippet": "What is the event loop, and how does it work in JavaScript? * Checks if the call stack is empty. * If empty, it first processes all the tasks in the microtask queu..."
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=WNrHrwm1wkU&t=187",
+            "title": "How does the Event Loop work?",
+            "snippet": "function is because JavaScript can't block in the Python. code each of those times sleep function calls blocks the main thread it just sits there and waits javascr"
+          },
+          {
+            "url": "https://heynode.com/tutorial/how-event-loop-works-nodejs/",
+            "title": "How the Event Loop Works in Node.js - HeyNode",
+            "snippet": "The Event Loop contains six main phases: timers, I/O callbacks, preparation / idle phase, I/O polling, setImmediate() callbacks ex..."
+          },
+          {
+            "url": "https://www.explainthis.io/en/swe/what-is-event-loop",
+            "title": "What Is an Event Loop in JavaScript?\uff5cExplainThis",
+            "snippet": "The event loop itself does not exist in JavaScript but is instead implemented by the JavaScript execution environment (browser or Node. js). There are several conc..."
+          },
+          {
+            "url": "https://medium.com/@lucadimolfetta/javascript-in-depth-execution-contexts-and-event-loop-2-of-4-4abf25c13749",
+            "title": "JavaScript in depth: execution contexts and event loop (2 of 4).",
+            "snippet": "This context is the JavaScript runtime environment, and in the case we are examining, it is the browser."
+          },
+          {
+            "url": "https://www.codecademy.com/article/introduction-to-javascript-runtime-environments",
+            "title": "Introduction to JavaScript Runtime Environments",
+            "snippet": "What is a Runtime Environment? the runtime environment of a browser (like Chrome, or Firefox) the Node ( Node.js ) runtime environment"
+          },
+          {
+            "url": "https://www.reddit.com/r/learnjavascript/comments/1kltef1/is_it_possible_to_have_an_event_listener_that/",
+            "title": "Is it possible to have an event listener that triggers after an inline onclick? : r/learnjavascript",
+            "snippet": "Correct. The timeout value is pretty much a minimum delay. When you're using synchronous APIs, such as manipulating the DOM, execu..."
+          },
+          {
+            "url": "https://jdx.dev/posts/2020-01-19-async-javascript-patterns-for-2020/",
+            "title": "Async JavaScript Patterns for 2020 \u2014",
+            "snippet": "The Javascript engine has a list of events that need to be processed. The event loop handles those events one at a time until the list is empty."
+          }
+        ],
+        "related_searches": []
+      }
+    },
+    "Serper": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "DataForSEO": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    }
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "searchParameters": {
+    "q": "best practices for Kubernetes pod disruption budgets",
+    "gl": "us",
+    "hl": "en",
+    "type": "search",
+    "engine": "google"
+  },
+  "organic": [
+    {
+      "title": "Pod Disruption Budget: Complete Guide with Real Examples",
+      "link": "https://scaleops.com/blog/pod-disruption-budget/",
+      "snippet": "Best Practices for Using Pod Disruption Budgets ; Set Accurate Selectors, Define precise label selectors in PDBs to target the right pods. Avoid ...",
+      "date": "Nov 20, 2024",
+      "position": 1
+    },
+    {
+      "title": "Pod Disruption Budgets: How You Can Use Them, and Why You Should",
+      "link": "https://cast.ai/blog/pod-disruption-budgets-in-your-deployment/",
+      "snippet": "1. Understand your applications. 2. Use selectors wisely. 3. Opt for percentage-based disruption budgets. Use PDBs with higher-level concepts. ...",
+      "date": "Apr 30, 2025",
+      "position": 2
+    },
+    {
+      "title": "Specifying a Disruption Budget for your Application",
+      "link": "https://kubernetes.io/docs/tasks/run-application/configure-pdb/",
+      "snippet": "This page shows how to limit the number of concurrent disruptions that your application experiences, allowing for higher availability.",
+      "date": "Oct 21, 2024",
+      "position": 3
+    },
+    {
+      "title": "Pod Disruption Budgets: Availability Guarantees in Kubernetes",
+      "link": "https://www.groundcover.com/learn/kubernetes/pod-disruption-budget",
+      "snippet": "Best practices for using Pod disruption budgets safely \u00b7 Create PDBs for all applications \u00b7 Align PDBs with SLOs \u00b7 Modify PDBs when you scale your ...",
+      "date": "Feb 19, 2026",
+      "position": 4
+    },
+    {
+      "title": "How to Create Kubernetes Pod Disruption Budget Strategies",
+      "link": "https://oneuptime.com/blog/post/2026-01-30-kubernetes-pdb-strategies/view",
+      "snippet": "Learn to implement Pod Disruption Budgets with minAvailable, maxUnavailable, and selector strategies for safe cluster maintenance.",
+      "date": "Jan 30, 2026",
+      "position": 5
+    },
+    {
+      "title": "Why Kubernetes Pod Disruption Budgets Are Essential for High ...",
+      "link": "https://www.linkedin.com/pulse/why-kubernetes-pod-disruption-budgets-essential-high-availability-bgbfc",
+      "snippet": "Adopt advanced deployment strategies like rolling updates, canary, or blue/green. Align Kubernetes deployment mechanisms with the service's SLOs ...",
+      "position": 6
+    },
+    {
+      "title": "Pod Disruption Budgets (PDB) in Kubernetes: A Complete Guide",
+      "link": "https://zesty.co/finops-glossary/k8s-pod-disruption-budgets/",
+      "snippet": "Best Practices for Using Pod Disruption Budgets. Set Realistic Constraints: Align minAvailable or maxUnavailable with your application's service level ...",
+      "position": 7
+    },
+    {
+      "title": "Pod disruption budgets",
+      "link": "https://www.reddit.com/r/kubernetes/comments/1aumj5w/pod_disruption_budgets/",
+      "position": 8
+    },
+    {
+      "title": "Validate every deployment has a pod disruption budget associated with it",
+      "link": "https://www.reddit.com/r/kubernetes/comments/1bfdn3r/validate_every_deployment_has_a_pod_disruption/",
+      "position": 9
+    },
+    {
+      "title": "Kubernetes Pod Disruption Budget (PDB) Simplified \ud83d\udc47 | Sandip Das",
+      "link": "https://www.linkedin.com/posts/sandip-das-developer_kubernetes-pod-disruption-budget-pdb-simplified-activity-7323270231521427456-42hz",
+      "position": 10
+    }
+  ],
+  "relatedSearches": [
+    {
+      "query": "Pod disruption budget example"
+    },
+    {
+      "query": "Pod disruption budget Kubernetes"
+    },
+    {
+      "query": "Pod disruption budget best practices"
+    },
+    {
+      "query": "Pod disruption budget percentage"
+    },
+    {
+      "query": "Default pod disruption budget"
+    },
+    {
+      "query": "Pod disruption budget ALLOWED DISRUPTIONS"
+    }
+  ],
+  "credits": 1
+}

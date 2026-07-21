@@ -1,0 +1,695 @@
+{
+  "search_metadata": {
+    "id": "6a5e9b57dc74d0886747ad32",
+    "status": "Success",
+    "json_endpoint": "https://serpapi.com/searches/V6-HdMdhAO226UpT3_q41w/6a5e9b57dc74d0886747ad32.json",
+    "pixel_position_endpoint": "https://serpapi.com/searches/V6-HdMdhAO226UpT3_q41w/6a5e9b57dc74d0886747ad32.json_with_pixel_position",
+    "created_at": "2026-07-20 22:04:07 UTC",
+    "processed_at": "2026-07-20 22:04:07 UTC",
+    "google_url": "https://www.google.com/search?q=Sony+A7IV+vs+Canon+R6&oq=Sony+A7IV+vs+Canon+R6&sourceid=chrome&ie=UTF-8",
+    "raw_html_file": "https://serpapi.com/searches/V6-HdMdhAO226UpT3_q41w/6a5e9b57dc74d0886747ad32.html",
+    "total_time_taken": 1.5
+  },
+  "search_parameters": {
+    "engine": "google",
+    "q": "Sony A7IV vs Canon R6",
+    "google_domain": "google.com",
+    "device": "desktop"
+  },
+  "search_information": {
+    "query_displayed": "Sony A7IV vs Canon R6",
+    "total_results": 121,
+    "time_taken_displayed": 0.23,
+    "organic_results_state": "Results for exact spelling"
+  },
+  "related_questions": [
+    {
+      "question": "What Canon camera is equivalent to Sony A7 IV?",
+      "type": "ai_overview",
+      "page_token": "FDjYbHicHdBRjqIwGADg7GV8HLEOTjQxmzCCotu6beEv8DLBVq20QFVWRt72LnuqPc0k8x3h-_vPXhrz_8dDd527L8bjvu9fzm17tscX2dbj8v5s5FiW1h5KaRazt9nk50kuwz9x8H6NA5o6ByvmcbtlYh33PANBTXdLwA3JSuc8nV8xzGfZoP3jhk5zox5cSMSMu8mBFcSoSgJ7YBTdk5oQIbZ7HuoNt64pkApwRIhsAijFZ1HUjO9Fhw9ehNig9gW4V-7BL27h9ZjZlhhYwxC8E6t3KoyRqNiOrCcIR3aG0fx6sKyjVT7lE_yUHvU5Ymtq5heRYa_caB8SiMoBYhE6FmolSMZsnsVPlfonabp-v2L0mAWONpYJ1l5oygZZ2To1PcJTtYLKXnKA30Vd1BIKLxF-jj2lod5qSkcn-VhOR9-fy49T3S3crT1_AfQXhB8",
+      "serpapi_ai_overview_link": "https://serpapi.com/search.json?engine=google_ai_overview&page_token=FDjYbHicHdBRjqIwGADg7GV8HLEOTjQxmzCCotu6beEv8DLBVq20QFVWRt72LnuqPc0k8x3h-_vPXhrz_8dDd527L8bjvu9fzm17tscX2dbj8v5s5FiW1h5KaRazt9nk50kuwz9x8H6NA5o6ByvmcbtlYh33PANBTXdLwA3JSuc8nV8xzGfZoP3jhk5zox5cSMSMu8mBFcSoSgJ7YBTdk5oQIbZ7HuoNt64pkApwRIhsAijFZ1HUjO9Fhw9ehNig9gW4V-7BL27h9ZjZlhhYwxC8E6t3KoyRqNiOrCcIR3aG0fx6sKyjVT7lE_yUHvU5Ymtq5heRYa_caB8SiMoBYhE6FmolSMZsnsVPlfonabp-v2L0mAWONpYJ1l5oygZZ2To1PcJTtYLKXnKA30Vd1BIKLxF-jj2lod5qSkcn-VhOR9-fy49T3S3crT1_AfQXhB8",
+      "next_page_token": "eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSTE1saGhOVFoxZG1GSlNYSkpRMU5NZUhvMFptUlNZMDVYWWs0eWJGUmpURnBMU21Ga00xZDRNVE5mYkhCNGJTMXNiMXBDYW1RemVFaDBMVzAwT1RKVlpVTnpUbkZ4WldWclRsOW9ORkpvZUVKd2NuSktTWHBxVWsxaWR4SVhWalYwWldGeU1uVk9YM0pMY0RnMFVIbHdhVUo1VVZrYUlrRkVjM0k1WmxOWlNWaE1WVE5RWWxacVVISllkRVJOYnpSZk5rRjJRVVpSU1ZFIiwiZmN2IjoiMyIsImVpIjoiVjV0ZWFyMnVOX3JLcDg0UHlwaUJ5UVkiLCJxYyI6IkNoVnpiMjU1SUdFM2FYWWdkbk1nWTJGdWIyNGdjallRQUgxR0V3TV8iLCJxdWVzdGlvbiI6IldoYXQgQ2Fub24gY2FtZXJhIGlzIGVxdWl2YWxlbnQgdG8gU29ueSBBNyBJVj8iLCJsayI6IkdpeDNhR0YwSUdOaGJtOXVJR05oYldWeVlTQnBjeUJsY1hWcGRtRnNaVzUwSUhSdklITnZibmtnWVRkcGRnIiwiYnMiOiJjNFdQT3d2Q01CUkdjYjJUY3hhdlNNRkJTczNRamtXYzZxYUNyb1kydG9HWWFCSmJfUGYyaVlpaS16bmZBMDdnSHd2bWNNMlVWcGl5Q3pjTWhVVi11NHVTU2E0Y09vMTdyUjY0aWpBNXhOUW5pNm94MHAtR2JRd1dpUksyTUc4YmFxU05lZWRjd2Z2dVhSaFRqOHlxbnJXZmJOZG9RdGlBbDloV2ZRMUQ2NFNVbUd1ZG9WQklBMXJuVGNsa2lHcTJmR0VnaDJXZk5jekFWQ3NyTW01NGhneXZScC01dFVJckp2dTNNYVVrRUowMGJQb3JqVWRQIiwiaWQiOiJmY19WNXRlYXIydU5fcktwODRQeXBpQnlRWV8yIn0=",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google_related_questions&google_domain=google.com&next_page_token=eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSTE1saGhOVFoxZG1GSlNYSkpRMU5NZUhvMFptUlNZMDVYWWs0eWJGUmpURnBMU21Ga00xZDRNVE5mYkhCNGJTMXNiMXBDYW1RemVFaDBMVzAwT1RKVlpVTnpUbkZ4WldWclRsOW9ORkpvZUVKd2NuSktTWHBxVWsxaWR4SVhWalYwWldGeU1uVk9YM0pMY0RnMFVIbHdhVUo1VVZrYUlrRkVjM0k1WmxOWlNWaE1WVE5RWWxacVVISllkRVJOYnpSZk5rRjJRVVpSU1ZFIiwiZmN2IjoiMyIsImVpIjoiVjV0ZWFyMnVOX3JLcDg0UHlwaUJ5UVkiLCJxYyI6IkNoVnpiMjU1SUdFM2FYWWdkbk1nWTJGdWIyNGdjallRQUgxR0V3TV8iLCJxdWVzdGlvbiI6IldoYXQgQ2Fub24gY2FtZXJhIGlzIGVxdWl2YWxlbnQgdG8gU29ueSBBNyBJVj8iLCJsayI6IkdpeDNhR0YwSUdOaGJtOXVJR05oYldWeVlTQnBjeUJsY1hWcGRtRnNaVzUwSUhSdklITnZibmtnWVRkcGRnIiwiYnMiOiJjNFdQT3d2Q01CUkdjYjJUY3hhdlNNRkJTczNRamtXYzZxYUNyb1kydG9HWWFCSmJfUGYyaVlpaS16bmZBMDdnSHd2bWNNMlVWcGl5Q3pjTWhVVi11NHVTU2E0Y09vMTdyUjY0aWpBNXhOUW5pNm94MHAtR2JRd1dpUksyTUc4YmFxU05lZWRjd2Z2dVhSaFRqOHlxbnJXZmJOZG9RdGlBbDloV2ZRMUQ2NFNVbUd1ZG9WQklBMXJuVGNsa2lHcTJmR0VnaDJXZk5jekFWQ3NyTW01NGhneXZScC01dFVJckp2dTNNYVVrRUowMGJQb3JqVWRQIiwiaWQiOiJmY19WNXRlYXIydU5fcktwODRQeXBpQnlRWV8yIn0%3D"
+    },
+    {
+      "question": "What is Sony equivalent to the Canon R6?",
+      "type": "ai_overview",
+      "page_token": "H55ahHicHdDbboIwGADg7GW8FBB108QsctIQLaPQv9CbBVoRtRyUZgh3e5c91Z5myb5H-L5_5KW-_b4kpVJtt9a0vu-n56Y5y9OUN5WWdUPNNZ5JmWf8tl6-Lo33gm_crrfsprdC0rbgYD0acURpqBNdPMPaLyFJTVKzGU3gzuBtJAkKga4iUrePNIYuIEYCV2Rjins0Y0roKuaGf2OzVYscdzzEfkljUWYuGziIvagUieRWMRMWEVmAcNnyQMJ5EIsuS1jAzNKGGjXHUXZ5gitODImlD_mV6Ynp17kHioJ4nhwWBE44w-4x8ozUEDso-dU3YrkaInM7R5614Dtpn8Bju4tv4T0aAspiUTEP7VYNicUTGbLIaHlnMh1I3ShSoQ80Ap4U_GtjTv7HNp9Fpdbtozn_Ab1eeX8",
+      "serpapi_ai_overview_link": "https://serpapi.com/search.json?engine=google_ai_overview&page_token=H55ahHicHdDbboIwGADg7GW8FBB108QsctIQLaPQv9CbBVoRtRyUZgh3e5c91Z5myb5H-L5_5KW-_b4kpVJtt9a0vu-n56Y5y9OUN5WWdUPNNZ5JmWf8tl6-Lo33gm_crrfsprdC0rbgYD0acURpqBNdPMPaLyFJTVKzGU3gzuBtJAkKga4iUrePNIYuIEYCV2Rjins0Y0roKuaGf2OzVYscdzzEfkljUWYuGziIvagUieRWMRMWEVmAcNnyQMJ5EIsuS1jAzNKGGjXHUXZ5gitODImlD_mV6Ynp17kHioJ4nhwWBE44w-4x8ozUEDso-dU3YrkaInM7R5614Dtpn8Bju4tv4T0aAspiUTEP7VYNicUTGbLIaHlnMh1I3ShSoQ80Ap4U_GtjTv7HNp9Fpdbtozn_Ab1eeX8",
+      "next_page_token": "eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSTE1saGhOVFoxZG1GSlNYSkpRMU5NZUhvMFptUlNZMDVYWWs0eWJGUmpURnBMU21Ga00xZDRNVE5mYkhCNGJTMXNiMXBDYW1RemVFaDBMVzAwT1RKVlpVTnpUbkZ4WldWclRsOW9ORkpvZUVKd2NuSktTWHBxVWsxaWR4SVhWalYwWldGeU1uVk9YM0pMY0RnMFVIbHdhVUo1VVZrYUlrRkVjM0k1WmxOWlNWaE1WVE5RWWxacVVISllkRVJOYnpSZk5rRjJRVVpSU1ZFIiwiZmN2IjoiMyIsImVpIjoiVjV0ZWFyMnVOX3JLcDg0UHlwaUJ5UVkiLCJxYyI6IkNoVnpiMjU1SUdFM2FYWWdkbk1nWTJGdWIyNGdjallRQUgxR0V3TV8iLCJxdWVzdGlvbiI6IldoYXQgaXMgU29ueSBlcXVpdmFsZW50IHRvIHRoZSBDYW5vbiBSNj8iLCJsayI6IkdpTjNhR0YwSUdseklITnZibmtnWlhGMWFYWmhiR1Z1ZENCMGJ5QmpZVzV2YmlCeU5nIiwiYnMiOiJjNFdQT3d2Q01CUkdjYjJUY3hhdlNNRkJTczNRamtXYzZxYUNyb1kydG9HWWFCSmJfUGYyaVlpaS16bmZBMDdnSHd2bWNNMlVWcGl5Q3pjTWhVVi11NHVTU2E0Y09vMTdyUjY0aWpBNXhOUW5pNm94MHAtR2JRd1dpUksyTUc4YmFxU05lZWRjd2Z2dVhSaFRqOHlxbnJXZmJOZG9RdGlBbDloV2ZRMUQ2NFNVbUd1ZG9WQklBMXJuVGNsa2lHcTJmR0VnaDJXZk5jekFWQ3NyTW01NGhneXZScC01dFVJckp2dTNNYVVrRUowMGJQb3JqVWRQIiwiaWQiOiJmY19WNXRlYXIydU5fcktwODRQeXBpQnlRWV8yIn0=",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google_related_questions&google_domain=google.com&next_page_token=eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSTE1saGhOVFoxZG1GSlNYSkpRMU5NZUhvMFptUlNZMDVYWWs0eWJGUmpURnBMU21Ga00xZDRNVE5mYkhCNGJTMXNiMXBDYW1RemVFaDBMVzAwT1RKVlpVTnpUbkZ4WldWclRsOW9ORkpvZUVKd2NuSktTWHBxVWsxaWR4SVhWalYwWldGeU1uVk9YM0pMY0RnMFVIbHdhVUo1VVZrYUlrRkVjM0k1WmxOWlNWaE1WVE5RWWxacVVISllkRVJOYnpSZk5rRjJRVVpSU1ZFIiwiZmN2IjoiMyIsImVpIjoiVjV0ZWFyMnVOX3JLcDg0UHlwaUJ5UVkiLCJxYyI6IkNoVnpiMjU1SUdFM2FYWWdkbk1nWTJGdWIyNGdjallRQUgxR0V3TV8iLCJxdWVzdGlvbiI6IldoYXQgaXMgU29ueSBlcXVpdmFsZW50IHRvIHRoZSBDYW5vbiBSNj8iLCJsayI6IkdpTjNhR0YwSUdseklITnZibmtnWlhGMWFYWmhiR1Z1ZENCMGJ5QmpZVzV2YmlCeU5nIiwiYnMiOiJjNFdQT3d2Q01CUkdjYjJUY3hhdlNNRkJTczNRamtXYzZxYUNyb1kydG9HWWFCSmJfUGYyaVlpaS16bmZBMDdnSHd2bWNNMlVWcGl5Q3pjTWhVVi11NHVTU2E0Y09vMTdyUjY0aWpBNXhOUW5pNm94MHAtR2JRd1dpUksyTUc4YmFxU05lZWRjd2Z2dVhSaFRqOHlxbnJXZmJOZG9RdGlBbDloV2ZRMUQ2NFNVbUd1ZG9WQklBMXJuVGNsa2lHcTJmR0VnaDJXZk5jekFWQ3NyTW01NGhneXZScC01dFVJckp2dTNNYVVrRUowMGJQb3JqVWRQIiwiaWQiOiJmY19WNXRlYXIydU5fcktwODRQeXBpQnlRWV8yIn0%3D"
+    },
+    {
+      "question": "Is the Sony A7 IV still good in 2026?",
+      "type": "ai_overview",
+      "page_token": "UK0vvnicHZDRToMwFEDjz_joKMjMliwmuG7rHJuUtjBeDHRABxeoiuD65r_4VX6Ni8_n4eSc7x84t_XvzaD6Xn_MJ5NxHO_Krishv5NdM0k_Lq2cyBQgS2U9nz5M0WMhF_iTeE9vxAu41mJJrbBxx739lSaW62XVdsgckSRGDRRbiFcJ8dvTy9GuXZ_P7g8hanxDbQFq4xtYZRXgQHjAIkTCCDEWKUE36sJW8kIZTDNrH6UGNGs9JkGZBM3ehe1-pmK_5q0gvtlaCdZjUKk1XQK5eitao2MYAWdVaRgjdi5gl-HZzl-qpzC6N6lz_AoamOZtjTLc-_maONxShjdIH7CmWJ2ifUzhGJPLibuFrPvxsKRBHns6aIFGtDsHnBpZQcO5ek42ohBnNMTWqhd8VvkYXvK4dNL1tfXKeXBbyGHh3P7_XLwWTT_X7135B5bnhF8",
+      "serpapi_ai_overview_link": "https://serpapi.com/search.json?engine=google_ai_overview&page_token=UK0vvnicHZDRToMwFEDjz_joKMjMliwmuG7rHJuUtjBeDHRABxeoiuD65r_4VX6Ni8_n4eSc7x84t_XvzaD6Xn_MJ5NxHO_Krishv5NdM0k_Lq2cyBQgS2U9nz5M0WMhF_iTeE9vxAu41mJJrbBxx739lSaW62XVdsgckSRGDRRbiFcJ8dvTy9GuXZ_P7g8hanxDbQFq4xtYZRXgQHjAIkTCCDEWKUE36sJW8kIZTDNrH6UGNGs9JkGZBM3ehe1-pmK_5q0gvtlaCdZjUKk1XQK5eitao2MYAWdVaRgjdi5gl-HZzl-qpzC6N6lz_AoamOZtjTLc-_maONxShjdIH7CmWJ2ifUzhGJPLibuFrPvxsKRBHns6aIFGtDsHnBpZQcO5ek42ohBnNMTWqhd8VvkYXvK4dNL1tfXKeXBbyGHh3P7_XLwWTT_X7135B5bnhF8",
+      "next_page_token": "eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSTE1saGhOVFoxZG1GSlNYSkpRMU5NZUhvMFptUlNZMDVYWWs0eWJGUmpURnBMU21Ga00xZDRNVE5mYkhCNGJTMXNiMXBDYW1RemVFaDBMVzAwT1RKVlpVTnpUbkZ4WldWclRsOW9ORkpvZUVKd2NuSktTWHBxVWsxaWR4SVhWalYwWldGeU1uVk9YM0pMY0RnMFVIbHdhVUo1VVZrYUlrRkVjM0k1WmxOWlNWaE1WVE5RWWxacVVISllkRVJOYnpSZk5rRjJRVVpSU1ZFIiwiZmN2IjoiMyIsImVpIjoiVjV0ZWFyMnVOX3JLcDg0UHlwaUJ5UVkiLCJxYyI6IkNoVnpiMjU1SUdFM2FYWWdkbk1nWTJGdWIyNGdjallRQUgxR0V3TV8iLCJxdWVzdGlvbiI6IklzIHRoZSBTb255IEE3IElWIHN0aWxsIGdvb2QgaW4gMjAyNj8iLCJsayI6IkdoOXBjeUJ6YjI1NUlHRTNhWFlnYzNScGJHd2daMjl2WkNCcGJpQXlNREkyIiwiYnMiOiJjNFdQT3d2Q01CUkdjYjJUY3hhdlNNRkJTczNRamtXYzZxYUNyb1kydG9HWWFCSmJfUGYyaVlpaS16bmZBMDdnSHd2bWNNMlVWcGl5Q3pjTWhVVi11NHVTU2E0Y09vMTdyUjY0aWpBNXhOUW5pNm94MHAtR2JRd1dpUksyTUc4YmFxU05lZWRjd2Z2dVhSaFRqOHlxbnJXZmJOZG9RdGlBbDloV2ZRMUQ2NFNVbUd1ZG9WQklBMXJuVGNsa2lHcTJmR0VnaDJXZk5jekFWQ3NyTW01NGhneXZScC01dFVJckp2dTNNYVVrRUowMGJQb3JqVWRQIiwiaWQiOiJmY19WNXRlYXIydU5fcktwODRQeXBpQnlRWV8yIn0=",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google_related_questions&google_domain=google.com&next_page_token=eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSTE1saGhOVFoxZG1GSlNYSkpRMU5NZUhvMFptUlNZMDVYWWs0eWJGUmpURnBMU21Ga00xZDRNVE5mYkhCNGJTMXNiMXBDYW1RemVFaDBMVzAwT1RKVlpVTnpUbkZ4WldWclRsOW9ORkpvZUVKd2NuSktTWHBxVWsxaWR4SVhWalYwWldGeU1uVk9YM0pMY0RnMFVIbHdhVUo1VVZrYUlrRkVjM0k1WmxOWlNWaE1WVE5RWWxacVVISllkRVJOYnpSZk5rRjJRVVpSU1ZFIiwiZmN2IjoiMyIsImVpIjoiVjV0ZWFyMnVOX3JLcDg0UHlwaUJ5UVkiLCJxYyI6IkNoVnpiMjU1SUdFM2FYWWdkbk1nWTJGdWIyNGdjallRQUgxR0V3TV8iLCJxdWVzdGlvbiI6IklzIHRoZSBTb255IEE3IElWIHN0aWxsIGdvb2QgaW4gMjAyNj8iLCJsayI6IkdoOXBjeUJ6YjI1NUlHRTNhWFlnYzNScGJHd2daMjl2WkNCcGJpQXlNREkyIiwiYnMiOiJjNFdQT3d2Q01CUkdjYjJUY3hhdlNNRkJTczNRamtXYzZxYUNyb1kydG9HWWFCSmJfUGYyaVlpaS16bmZBMDdnSHd2bWNNMlVWcGl5Q3pjTWhVVi11NHVTU2E0Y09vMTdyUjY0aWpBNXhOUW5pNm94MHAtR2JRd1dpUksyTUc4YmFxU05lZWRjd2Z2dVhSaFRqOHlxbnJXZmJOZG9RdGlBbDloV2ZRMUQ2NFNVbUd1ZG9WQklBMXJuVGNsa2lHcTJmR0VnaDJXZk5jekFWQ3NyTW01NGhneXZScC01dFVJckp2dTNNYVVrRUowMGJQb3JqVWRQIiwiaWQiOiJmY19WNXRlYXIydU5fcktwODRQeXBpQnlRWV8yIn0%3D"
+    },
+    {
+      "question": "Is the Canon R6 considered a professional camera?",
+      "type": "ai_overview",
+      "page_token": "5BdS9HicHdBNbptAGIBh9TJZxvw4rmLJikQABzcMmgG-ATYRnsGemPmLPQ02u16hZ-ipeppGXb2bZ_X--iPf9fj322_hnL2sF4tpmu6PxhzlcM-MWvSXm2YL1ku579m4Xn1f-U8Htkk-WfR8ZhGurYWYeCUV0FaEtlIEeBaUBbusoPxcnviu193M5OO2Gscp11IwkAaPXdkpF-51cm2p85u5O-eap7kHP5Hm0StEeB-asEjc66Cya-vJH42Pqr202VdtvU2WSAGwl2gLW2cgaB32edK_SNF7coVnuFSwy77cbWhIieudZto2pUzCvPanMkVBF7dX8FOLahYOJ0j7lF87zyxpPC6H1H60laiYQgUBXvb66FUKFMQRSgSnqCGybbIbrx8ObHRTERM8NJHFWhJKzDuuycxOUtVBZ3L_se40STGIIg-5RMA_kCctaIhySp4xvjuwz0149__15u2g3NqezfEfkJmPNQ",
+      "serpapi_ai_overview_link": "https://serpapi.com/search.json?engine=google_ai_overview&page_token=5BdS9HicHdBNbptAGIBh9TJZxvw4rmLJikQABzcMmgG-ATYRnsGemPmLPQ02u16hZ-ipeppGXb2bZ_X--iPf9fj322_hnL2sF4tpmu6PxhzlcM-MWvSXm2YL1ku579m4Xn1f-U8Htkk-WfR8ZhGurYWYeCUV0FaEtlIEeBaUBbusoPxcnviu193M5OO2Gscp11IwkAaPXdkpF-51cm2p85u5O-eap7kHP5Hm0StEeB-asEjc66Cya-vJH42Pqr202VdtvU2WSAGwl2gLW2cgaB32edK_SNF7coVnuFSwy77cbWhIieudZto2pUzCvPanMkVBF7dX8FOLahYOJ0j7lF87zyxpPC6H1H60laiYQgUBXvb66FUKFMQRSgSnqCGybbIbrx8ObHRTERM8NJHFWhJKzDuuycxOUtVBZ3L_se40STGIIg-5RMA_kCctaIhySp4xvjuwz0149__15u2g3NqezfEfkJmPNQ",
+      "next_page_token": "eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSTE1saGhOVFoxZG1GSlNYSkpRMU5NZUhvMFptUlNZMDVYWWs0eWJGUmpURnBMU21Ga00xZDRNVE5mYkhCNGJTMXNiMXBDYW1RemVFaDBMVzAwT1RKVlpVTnpUbkZ4WldWclRsOW9ORkpvZUVKd2NuSktTWHBxVWsxaWR4SVhWalYwWldGeU1uVk9YM0pMY0RnMFVIbHdhVUo1VVZrYUlrRkVjM0k1WmxOWlNWaE1WVE5RWWxacVVISllkRVJOYnpSZk5rRjJRVVpSU1ZFIiwiZmN2IjoiMyIsImVpIjoiVjV0ZWFyMnVOX3JLcDg0UHlwaUJ5UVkiLCJxYyI6IkNoVnpiMjU1SUdFM2FYWWdkbk1nWTJGdWIyNGdjallRQUgxR0V3TV8iLCJxdWVzdGlvbiI6IklzIHRoZSBDYW5vbiBSNiBjb25zaWRlcmVkIGEgcHJvZmVzc2lvbmFsIGNhbWVyYT8iLCJsayI6IkdqQnBjeUIwYUdVZ1kyRnViMjRnY2pZZ1kyOXVjMmxrWlhKbFpDQmhJSEJ5YjJabGMzTnBiMjVoYkNCallXMWxjbUUiLCJicyI6ImM0V1BPd3ZDTUJSR2NiMlRjeGF2U01GQlNzM1Fqa1djNnFhQ3JvWTJ0b0dZYUJKYl9QZjJpWWlpLXpuZkEwN2dId3ZtY00yVVZwaXlDemNNaFVWLXU0dVNTYTRjT28xN3JSNjRpakE1eE5Rbmk2b3gwcC1HYlF3V2lSSzJNRzhiYXFTTmVlZGN3ZnZ1WFJoVGo4eXFucldmYk5kb1F0aUFsOWhXZlExRDY0U1VtR3Vkb1ZCSUExcm5UY2xraUdxMmZHRWdoMldmTmN6QVZDc3JNbTU0aGd5dlJwLTV0VUlySnZ1M01hVWtFSjAwYlBvcmpVZFAiLCJpZCI6ImZjX1Y1dGVhcjJ1Tl9yS3A4NFB5cGlCeVFZXzIifQ==",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google_related_questions&google_domain=google.com&next_page_token=eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSTE1saGhOVFoxZG1GSlNYSkpRMU5NZUhvMFptUlNZMDVYWWs0eWJGUmpURnBMU21Ga00xZDRNVE5mYkhCNGJTMXNiMXBDYW1RemVFaDBMVzAwT1RKVlpVTnpUbkZ4WldWclRsOW9ORkpvZUVKd2NuSktTWHBxVWsxaWR4SVhWalYwWldGeU1uVk9YM0pMY0RnMFVIbHdhVUo1VVZrYUlrRkVjM0k1WmxOWlNWaE1WVE5RWWxacVVISllkRVJOYnpSZk5rRjJRVVpSU1ZFIiwiZmN2IjoiMyIsImVpIjoiVjV0ZWFyMnVOX3JLcDg0UHlwaUJ5UVkiLCJxYyI6IkNoVnpiMjU1SUdFM2FYWWdkbk1nWTJGdWIyNGdjallRQUgxR0V3TV8iLCJxdWVzdGlvbiI6IklzIHRoZSBDYW5vbiBSNiBjb25zaWRlcmVkIGEgcHJvZmVzc2lvbmFsIGNhbWVyYT8iLCJsayI6IkdqQnBjeUIwYUdVZ1kyRnViMjRnY2pZZ1kyOXVjMmxrWlhKbFpDQmhJSEJ5YjJabGMzTnBiMjVoYkNCallXMWxjbUUiLCJicyI6ImM0V1BPd3ZDTUJSR2NiMlRjeGF2U01GQlNzM1Fqa1djNnFhQ3JvWTJ0b0dZYUJKYl9QZjJpWWlpLXpuZkEwN2dId3ZtY00yVVZwaXlDemNNaFVWLXU0dVNTYTRjT28xN3JSNjRpakE1eE5Rbmk2b3gwcC1HYlF3V2lSSzJNRzhiYXFTTmVlZGN3ZnZ1WFJoVGo4eXFucldmYk5kb1F0aUFsOWhXZlExRDY0U1VtR3Vkb1ZCSUExcm5UY2xraUdxMmZHRWdoMldmTmN6QVZDc3JNbTU0aGd5dlJwLTV0VUlySnZ1M01hVWtFSjAwYlBvcmpVZFAiLCJpZCI6ImZjX1Y1dGVhcjJ1Tl9yS3A4NFB5cGlCeVFZXzIifQ%3D%3D"
+    }
+  ],
+  "ai_overview": {
+    "text_blocks": [
+      {
+        "type": "paragraph",
+        "snippet": "The Canon EOS R6 and Sony a7 IV are premier full-frame mirrorless cameras, but they cater to different shooting styles. The Sony a7 IV is a hybrid powerhouse ideal for video, offering a 33MP sensor and 4K 60p (with a crop). The Canon R6 is tailored for action and stills, featuring a 20.1MP sensor, uncropped 4K 60p, and a class-leading 20 fps electronic burst rate.",
+        "snippet_links": [
+          {
+            "text": "Sony a7 IV",
+            "link": "https://www.dpreview.com/articles/7660673862/sony-a7-iv-vs-canon-eos-r6-which-is-the-best-enthusiast-mirrorless/"
+          },
+          {
+            "link": "https://www.reddit.com/r/AskPhotography/comments/vj9npg/r6_or_a7iv/"
+          }
+        ],
+        "snippet_highlighted_words": [
+          "The Sony a7 IV is a hybrid powerhouse ideal for video, offering a 33MP sensor and 4K 60p (with a crop). The Canon R6 is tailored for action and stills, featuring a 20.1MP sensor, uncropped 4K 60p, and a class-leading 20 fps electronic burst rate"
+        ],
+        "reference_indexes": [
+          0,
+          1,
+          14,
+          15,
+          4
+        ]
+      },
+      {
+        "type": "heading",
+        "snippet": "Key Differences"
+      },
+      {
+        "type": "list",
+        "list": [
+          {
+            "snippet": "Resolution: The Sony a7 IV features a 33-megapixel BSI sensor, making it vastly superior for landscape photography or heavy cropping. The Canon R6 has a 20.1-megapixel sensor, which performs exceptionally well in low light but offers less room to crop in post.",
+            "snippet_links": [
+              {
+                "link": "https://www.youtube.com/watch?v=4159kGGcy-s&t=433"
+              }
+            ],
+            "reference_indexes": [
+              4,
+              16
+            ]
+          },
+          {
+            "snippet": "Video Capabilities: While both output gorgeous 10-bit color, the Canon R6 shoots uncropped 4K 60p but can be prone to overheating. The Sony a7 IV applies a 1.5x APS-C crop when shooting 4K 60p but handles heat much better and features highly reliable, consistent autofocus across all modes."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "snippet": "Which One Should You Pick?"
+      },
+      {
+        "type": "list",
+        "list": [
+          {
+            "snippet": "Choose the Sony a7 IV if you are a hybrid shooter who prioritizes video, needs higher resolution for landscape/commercial photography, and wants access to a broader, more affordable array of native third-party lenses.",
+            "snippet_links": [
+              {
+                "link": "https://www.reddit.com/r/AskPhotography/comments/vj9npg/r6_or_a7iv/"
+              }
+            ],
+            "reference_indexes": [
+              0
+            ]
+          },
+          {
+            "snippet": "Choose the Canon R6 if you are a stills photographer focused on fast-moving action, sports, and wildlife, or if you prefer Canon's menu layout, deep grip ergonomics, and classic color science.",
+            "snippet_links": [
+              {
+                "link": "https://www.youtube.com/watch?v=iyF6pKYEBtU&t=144"
+              }
+            ]
+          }
+        ],
+        "reference_indexes": [
+          1,
+          7
+        ]
+      },
+      {
+        "type": "paragraph",
+        "snippet": "For a deeper dive into how these two cameras compare in real-world use cases and handling:",
+        "video": {
+          "link": "https://www.youtube.com/watch?v=IEPLUfnofE0&t=381",
+          "thumbnail": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSgUCOujuNuCDrODbnGMI4pz3B_Cpg0-6r_JpQt2l4_XUrMKlgY"
+        }
+      }
+    ],
+    "references": [
+      {
+        "title": "R6 or A7IV? : r/AskPhotography - Reddit",
+        "link": "https://www.reddit.com/r/AskPhotography/comments/vj9npg/r6_or_a7iv/",
+        "snippet": "Video Capabilities: For video, the Sony A7IV offers more options and potentially better dynamic range with log profiles, but its 4K60 footage comes with a signi...",
+        "source": "reddit.com",
+        "thumbnail": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTHaZZvjlcRfXhGajCnxGzCkrxR9pLqhwo8qRxcNhGRQ-GgFIymD7Svl1Vs4Wk1P6WsfG2KR_Bx_jFQtOQ",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.reddit.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 0
+      },
+      {
+        "title": "Sony a7 IV vs Canon EOS R6: Which is the best enthusiast mirrorless?",
+        "link": "https://www.dpreview.com/articles/7660673862/sony-a7-iv-vs-canon-eos-r6-which-is-the-best-enthusiast-mirrorless/",
+        "snippet": "The concepts behind the handling and operation of the two cameras are pretty similar: both have fairly substantial hand grips, dials for the forefinger and thum...",
+        "source": "dpreview.com",
+        "thumbnail": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRjN74-Mm10hD76wSo1ADmRCtn_TGy0grsC-oNzlmyYvZbb7cq2FQqETqbrZD_qrunr2kodzUYpm49iYZk",
+        "source_icon": "https://encrypted-tbn0.gstatic.com/faviconV2?url=https://www.dpreview.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 1
+      },
+      {
+        "link": "https://www.youtube.com/watch?v=9GnMdLqjZI0",
+        "source": "youtube.com",
+        "index": 2
+      },
+      {
+        "link": "https://www.youtube.com/watch?v=0OfUBOtj_NM",
+        "source": "youtube.com",
+        "index": 3
+      },
+      {
+        "title": "Canon EOS R6 vs Sony Alpha 7 IV: What is the difference? - Versus",
+        "link": "https://versus.com/en/canon-eos-r6-vs-sony-alpha-7-iv",
+        "snippet": "sensor size. Full frame. Full frame. Canon RF. Canon EOS R6. Sony E. Sony Alpha 7 IV. 1053. 759. 20.1 MP. 33 MP. maximum ISO. 102400 ISO. 51200 ISO. 204800 ISO.",
+        "source": "versus.com",
+        "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbP9HRxEvgOtNx7CfNIakHVtTGWJcMhnaedxqm_nU1PYJlzkcVGQFAGN5XQoAl3mvoS9qSOTCK8EzFv3I",
+        "source_icon": "https://encrypted-tbn3.gstatic.com/faviconV2?url=https://versus.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 4
+      },
+      {
+        "link": "https://www.youtube.com/watch?v=4159kGGcy-s",
+        "source": "youtube.com",
+        "index": 5
+      },
+      {
+        "link": "https://www.youtube.com/watch?v=iyF6pKYEBtU",
+        "source": "youtube.com",
+        "index": 6
+      },
+      {
+        "title": "Canon R6 Mark II vs Sony A7 IV - Medium",
+        "link": "https://medium.com/@bestoflens.com/canon-r6-mark-ii-vs-sony-a7-iv-ac97503c5640",
+        "snippet": "Canon R6 Mark II vs Sony A7 IV: Key Differences. 1. Image Quality. Canon R6 Mark II (24.2 MP): Slightly lower resolution but excellent color science (Canon's si...",
+        "source": "medium.com",
+        "thumbnail": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcROTQShKz7giOLwrK71H1169v4dd2cF_E1P_rDXOlFNEd9SldFctj0lmUDQouUfDNXhsTuKbvqcwxECh5Y",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://medium.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 7
+      },
+      {
+        "link": "https://www.youtube.com/watch?v=IEPLUfnofE0",
+        "source": "youtube.com",
+        "index": 8
+      },
+      {
+        "title": "Why you should (NOT) buy the Canon R6 for wildlife photography!",
+        "link": "https://www.youtube.com/watch?v=y5Kq-J9dYmI",
+        "snippet": "The Canon R6 can photograph at 12 frames per second in RAW using the mechanical shutter and at 20 frames a second in RAW using the silent electronic shutter, wh...",
+        "source": "youtube.com",
+        "thumbnail": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRfL4OakNJTT_cYALCcPAwJY2p2_b4idy6d_1mCJch8ynUwQimxX14f0Tkqo1OimRNwZ7uO2NyA4TyGTJk",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.youtube.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 9
+      },
+      {
+        "title": "The best Canon R6 prices and deals",
+        "link": "https://www.digitalcameraworld.com/buying-guides/best-canon-r6-deals",
+        "snippet": "It must be said that the Canon EOS R6 is an absolutely cracking camera; it's a powerhouse. Quite simply, the Canon R6 is one of the Best cameras for filmmaking,",
+        "source": "digitalcameraworld.com",
+        "thumbnail": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQ3wlSZKbC0YoTfpqd8OAFoyLh30p-CX73XiJOi1K5nNS-42TEtZ-5JWN3UXMIem5b7_BMBKMXNr0CjY2g",
+        "source_icon": "https://encrypted-tbn3.gstatic.com/faviconV2?url=https://www.digitalcameraworld.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 10
+      },
+      {
+        "title": "Canon EOS R6 Review",
+        "link": "https://www.rtings.com/camera/reviews/canon/eos-r6",
+        "snippet": "The Canon R6 is great for sport and wildlife photography. Its image quality is fantastic, and it has an excellent autofocus system with a very reliable tracking...",
+        "source": "rtings.com",
+        "thumbnail": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQkGMXmVbAT4lmbCCeIaiHswLB9zaCApiivxJ26U4DR_IpTXQxfLGIBJ71ZjSK_CUBsk9jUjjT7UJiGhoY",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.rtings.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 11
+      },
+      {
+        "title": "Canon EOS R6 V Review: Full-Frame, Video-First and Built for Creators",
+        "link": "https://www.wilkinson.co.uk/blog/blog-canon-eos-r6-v-review/",
+        "snippet": "The R6 V offers up to 7.5 stops of IBIS, which is substantial. In real terms, it means you can shoot handheld video that holds steady without needing a gimbal o...",
+        "source": "wilkinson.co.uk",
+        "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRepNI4yQZBwgefkmqnHsIXzRkfpll3e4zMHVkGjIS9ZrG4ytyLyK1Rij4J9MahUDjy5ShNWjDw62GO54w",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.wilkinson.co.uk&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 12
+      },
+      {
+        "title": "If you were buying new camera what would you buy? Canon R8, Sony Alpha a7 III, Fujifilm X S20 or XT-5 : r/canon",
+        "link": "https://www.reddit.com/r/canon/comments/1gc68g2/if_you_were_buying_new_camera_what_would_you_buy/",
+        "snippet": "Video Capabilities: For video, the Sony A7IV offers more options and potentially better dynamic range with log profiles, but its 4K60 footage comes with a signi...",
+        "source": "reddit.com",
+        "thumbnail": "https://www.reddit.com/r/canon/comments/1gc68g2/if_you_were_buying_new_camera_what_would_you_buy/",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.reddit.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 13
+      },
+      {
+        "title": "Sony A7 IV vs Canon R6 In-Depth Comparison - Part 1: Photography",
+        "link": "https://www.youtube.com/watch?v=9GnMdLqjZI0&t=325",
+        "snippet": "function when enabled the shutter curtains cover the sensor when the camera is turned off in order to protect you from dust when changing lenses canon introduce",
+        "source": "YouTube",
+        "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQee8CNov_BsCV_XYGJ5G_kDnwwp_7PL3M-RTi_QlkGISVe39moIpwjoUHEa7Htdtcy8LPBWhhLx30-o0s",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.youtube.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 14
+      },
+      {
+        "title": "Canon R6 Mark II vs Sony A7IV - Which Is The Better Buy?",
+        "link": "https://www.youtube.com/watch?v=0OfUBOtj_NM&t=145",
+        "snippet": "that are deeper dives into all these tests that I'll be showing you throughout this video now let's get on talking about slow motion. and one of the biggest com",
+        "source": "YouTube",
+        "thumbnail": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSeLD7yZL_KuNHpEUNScNfpBnJoEyDjNBFYsGVnOBu05_LpOeAin2D7j0NhVLri_OCZegA_LYi1Kmv0xfc",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.youtube.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 15
+      },
+      {
+        "title": "Canon R6 vs Sony a7 IV Hands On Camera Review",
+        "link": "https://www.youtube.com/watch?v=4159kGGcy-s&t=433",
+        "snippet": "and I would I would be confident with both these cameras being able to shoot pretty much any kind of action yeah you have to call it a job when it comes to auto",
+        "source": "YouTube",
+        "thumbnail": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcScr9540mZWjts3mARCmzoUQktq16vUCdlJIFH2L9pNJenY6EjDyaRwLkpGaXQBiAVxhxZViL6hx24K4ZU",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.youtube.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 16
+      },
+      {
+        "title": "Sony A7IV vs Canon R6 Mark II - Which One Is Right For You?",
+        "link": "https://www.youtube.com/watch?v=iyF6pKYEBtU&t=144",
+        "snippet": "neither camera is going to be better in terms of color science people have always loved Canon's color science but Sony's improved their color science a lot and",
+        "source": "YouTube",
+        "thumbnail": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTXXImZJQGtoEkuTk4x8jQo34hST7slKA46XNPKIx-Q38mM3bAAzJM_hmfrXkINiOZq2X6mxgwe13m4KFU",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.youtube.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 17
+      },
+      {
+        "title": "Canon R6 II vs Sony a7 IV feat. Ted Forbes!",
+        "link": "https://www.youtube.com/watch?v=IEPLUfnofE0&t=13",
+        "snippet": "but I have to say this is the last time we're going to be friendly with each other because the context of our video today we're having a shootout. so I'm going",
+        "source": "YouTube",
+        "thumbnail": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRyROMRnIVNYJc4se01kboD6PqmwkrzmLU93-yWEucf2VVs962hY7xg_vzJMZ_WI8LOpUhA5K6h5ngkmdQ",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.youtube.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 18
+      }
+    ]
+  },
+  "organic_results": [
+    {
+      "position": 1,
+      "title": "Comparing Sony a7IV with Canon R6? : r/SonyAlpha",
+      "link": "https://www.reddit.com/r/SonyAlpha/comments/ro49ca/comparing_sony_a7iv_with_canon_r6/",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.reddit.com/r/SonyAlpha/comments/ro49ca/comparing_sony_a7iv_with_canon_r6/&ved=2ahUKEwj9teiuoeKVAxV65ckDHUpMIGkQFnoECCYQAQ",
+      "displayed_link": "9 comments \u00b7 4 years ago",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAhFBMVEVHcEz_RQD_RQD_RQD_RQD_RQD_RQD_RQD_RQD_PQD_NgD-XS32dlf5vK3____64dusLADUz9H-jXLOPAoSHiFrLBm3uLn3_f7jVS_b6e77pJDJo6H718__RQDw9ffs5-jm8fPIXlHqKwD5-PjolIP_VgP_SQLQ2uAyODvQ4ekABAhqcHK4ptuCAAAAHnRSTlMAPobB7P9mHdb__________________________8J6YdtgAAABWUlEQVR4AWySYZNDMBCGWyw2SI9TGnWqILT____dm6Enc-MZH8Qz2V3Je_rj7Lgekec659N_fIgPnn-yCULaYaYwsCqShYhiQXQ-dJxIedltQDZfqZQyY6K1st3vO78WsiyNDI3zySK_caJUygTMzN7eTnxdBXMcb3-0TsMC30RUJfciqSIs8JCZycHwWV1n2UVuXDKzxsDOySWu5AGVoB_TUh5imhJFpQTNfav7uDcSlBERJLUN9LOLewn6LnpCNS0EyvKg-vLRjVRLUIuxe8hSDYyyLqatyr68jdO6cxpvWGIeDOQQujagNs7YuumbJmYiZz0E3aJvMc95Ps8F-rV6PQQ0JY4XpVqVv0Cu2lYps9HbDp6HRS9Kv1-vt1Z4HeDI_1yZiFMNFIzWqYkChftl8zSkegE6HSYmENgxYYQHRGzUHiLHyh3ModvZo7nHxA71ofwdSnYAAPpVIo4RUPiIAAAAAElFTkSuQmCC.png",
+      "snippet": "I am buying my first mirrorless camera. I will buy either the Sony a7IV or Canon R6. What are your thoughts? Pros and cons? Thanks!",
+      "sitelinks": {
+        "list": [
+          {
+            "title": "R6 or A7IV? : r/AskPhotography",
+            "link": "https://www.reddit.com/r/AskPhotography/comments/vj9npg/r6_or_a7iv/",
+            "answer_count": 13,
+            "date": "Jun 24, 2022"
+          },
+          {
+            "title": "Should I buy the Canon R6 Mark ii OR Sony A7IV?",
+            "link": "https://www.reddit.com/r/CanonR6/comments/1di52j6/should_i_buy_the_canon_r6_mark_ii_or_sony_a7iv/",
+            "answer_count": 33,
+            "date": "Jun 17, 2024"
+          }
+        ]
+      },
+      "about_this_result": {
+        "source": {
+          "description": "For most folks the R6 has the more comfortable body but is bigger then the Sony, the Sony also has slightly better rated battery life but a ...",
+          "source_info_link": "https://www.reddit.com/r/SonyAlpha/comments/ro49ca/comparing_sony_a7iv_with_canon_r6/",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAhFBMVEVHcEz_RQD_RQD_RQD_RQD_RQD_RQD_RQD_RQD_PQD_NgD-XS32dlf5vK3____64dusLADUz9H-jXLOPAoSHiFrLBm3uLn3_f7jVS_b6e77pJDJo6H718__RQDw9ffs5-jm8fPIXlHqKwD5-PjolIP_VgP_SQLQ2uAyODvQ4ekABAhqcHK4ptuCAAAAHnRSTlMAPobB7P9mHdb__________________________8J6YdtgAAABWUlEQVR4AWySYZNDMBCGWyw2SI9TGnWqILT____dm6Enc-MZH8Qz2V3Je_rj7Lgekec659N_fIgPnn-yCULaYaYwsCqShYhiQXQ-dJxIedltQDZfqZQyY6K1st3vO78WsiyNDI3zySK_caJUygTMzN7eTnxdBXMcb3-0TsMC30RUJfciqSIs8JCZycHwWV1n2UVuXDKzxsDOySWu5AGVoB_TUh5imhJFpQTNfav7uDcSlBERJLUN9LOLewn6LnpCNS0EyvKg-vLRjVRLUIuxe8hSDYyyLqatyr68jdO6cxpvWGIeDOQQujagNs7YuumbJmYiZz0E3aJvMc95Ps8F-rV6PQQ0JY4XpVqVv0Cu2lYps9HbDp6HRS9Kv1-vt1Z4HeDI_1yZiFMNFIzWqYkChftl8zSkegE6HSYmENgxYYQHRGzUHiLHyh3ModvZo7nHxA71ofwdSnYAAPpVIo4RUPiIAAAAAElFTkSuQmCC.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://www.reddit.com/r/SonyAlpha/comments/ro49ca/comparing_sony_a7iv_with_canon_r6/&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fwww.reddit.com%2Fr%2FSonyAlpha%2Fcomments%2Fro49ca%2Fcomparing_sony_a7iv_with_canon_r6%2F",
+      "source": "Reddit \u00b7 r/SonyAlpha"
+    },
+    {
+      "position": 2,
+      "title": "Sony a7 IV vs Canon EOS R6: Which is the best enthusiast ...",
+      "link": "https://www.dpreview.com/articles/7660673862/sony-a7-iv-vs-canon-eos-r6-which-is-the-best-enthusiast-mirrorless/",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.dpreview.com/articles/7660673862/sony-a7-iv-vs-canon-eos-r6-which-is-the-best-enthusiast-mirrorless/&ved=2ahUKEwj9teiuoeKVAxV65ckDHUpMIGkQFnoECCMQAQ",
+      "displayed_link": "https://www.dpreview.com \u203a ... \u203a full-frame-mirrorless",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAYFBMVEVHcEwjHyAjHyAjHyAjHyAjHyAhGxwfFhIrKi0YBQUCAAA-ep84aIgeDwZSsuwvUmp2dHT___-xsLEzRlVNpNlaWFiYl5jz8_M_fqVtampBgqu-vr5Ejbri4eJJmMgtOUNtnoCIAAAABnRSTlMAjPH9__nOM3yJAAAA8klEQVR4AZ3SB3KEMAwFUNgYCWuRwYXe7n_LiFR6yh9Pfe5SFMWPl9M8YjF1mTh6XGMSJeo6v0eQAWcIiJAqlWoi2COqZ8YmL6y1LtVbRG9CLpiWZVXbgtYI3jQaBZkkzra8Qg6dVjo3uXcFAfWW4QsxMww8mOBba0dRW-kv5KFjmeA1IJXWEfUjfaEOGfLUvM0mV5Ou7AF5jftt52XbebXt6kKTmXw5Hi4EGORAzru5tZWYswhfuHzQUyMztxZZrFh_gqwyIfMztBba5fsOHx-MyWVl1e8_XsJapSr1oAmuio3_a5N97lvztqmjOLlYF0evSIUXHI2tgREAAAAASUVORK5CYII.png",
+      "date": "Dec 15, 2021",
+      "snippet": "The Canon viewfinder has optics that provide 0.76x magnification, whereas the Sony's give a fractionally larger view, with 0.78x magnification.",
+      "snippet_highlighted_words": [
+        "Canon",
+        "Sony's"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "The Canon viewfinder has optics that provide 0.76x magnification, whereas the Sony's give a fractionally larger view, with 0.78x magnification.",
+          "source_info_link": "https://www.dpreview.com/articles/7660673862/sony-a7-iv-vs-canon-eos-r6-which-is-the-best-enthusiast-mirrorless/",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAYFBMVEVHcEwjHyAjHyAjHyAjHyAjHyAhGxwfFhIrKi0YBQUCAAA-ep84aIgeDwZSsuwvUmp2dHT___-xsLEzRlVNpNlaWFiYl5jz8_M_fqVtampBgqu-vr5Ejbri4eJJmMgtOUNtnoCIAAAABnRSTlMAjPH9__nOM3yJAAAA8klEQVR4AZ3SB3KEMAwFUNgYCWuRwYXe7n_LiFR6yh9Pfe5SFMWPl9M8YjF1mTh6XGMSJeo6v0eQAWcIiJAqlWoi2COqZ8YmL6y1LtVbRG9CLpiWZVXbgtYI3jQaBZkkzra8Qg6dVjo3uXcFAfWW4QsxMww8mOBba0dRW-kv5KFjmeA1IJXWEfUjfaEOGfLUvM0mV5Ou7AF5jftt52XbebXt6kKTmXw5Hi4EGORAzru5tZWYswhfuHzQUyMztxZZrFh_gqwyIfMztBba5fsOHx-MyWVl1e8_XsJapSr1oAmuio3_a5N97lvztqmjOLlYF0evSIUXHI2tgREAAAAASUVORK5CYII.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://www.dpreview.com/articles/7660673862/sony-a7-iv-vs-canon-eos-r6-which-is-the-best-enthusiast-mirrorless/&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fwww.dpreview.com%2Farticles%2F7660673862%2Fsony-a7-iv-vs-canon-eos-r6-which-is-the-best-enthusiast-mirrorless%2F",
+      "source": "DPReview",
+      "read_more_link": "https://www.dpreview.com/articles/7660673862/sony-a7-iv-vs-canon-eos-r6-which-is-the-best-enthusiast-mirrorless/#:~:text=The%20Canon%20viewfinder%20has%20optics,experience%20for%20wearers%20of%20glasses."
+    },
+    {
+      "position": 3,
+      "title": "Sony A7IV vs Canon R6 II for photography specifications",
+      "link": "https://www.facebook.com/groups/beginnersphotographygroup/posts/8013630738684788/",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.facebook.com/groups/beginnersphotographygroup/posts/8013630738684788/&ved=2ahUKEwj9teiuoeKVAxV65ckDHUpMIGkQFnoECCsQAQ",
+      "displayed_link": "90+ comments \u00b7 1 year ago",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAXVBMVEVHcEwHZv8HaP8IZ_8IZ_8IZv8IaP8IZ_8HZv8Haf8IZ_8IaP8IZ_8AXv8AV_8AYv-SqP_P1__m6__e5f9wlP____-tvP9jiv82c_8IZ_8Iaf-fsf________8AW_-wrobhAAAAH3RSTlMAM4bC6v1h7v8Z3UL_______7_________wRiFwenBhp_Z0gAAAOhJREFUeAFtk0UWwzAMBWWHFHOZe_9bBn9Nr7Mdg5AiQjZt17WNFFTTDxwZ-kKNigvUmJw2XGF0dByx1jlnPTPDjiYqDofj8XQ4L9bsL6vozpedq13_3eJk4G-XXPIac8zBHUs5EIl48Q4Tws3ziiAZ5f7j3Vq7O5b0iOGE1Z0cRxpqS3mwSbbU4VHndukW8GwHiQ_BzUO2KceIw7MIqJBHyIZk_WwKSv6KcD_frlsqt_P5joBELJ-3iNZD8YDC_82zz1pWS5U1u5bmmY1JLdMQmVoaOIxmIdVYDXWUxVAD8Xp_FvnN1mEG0f0e5ixC4ikAAAAASUVORK5CYII.png",
+      "snippet": "Sony a7iv vs Canon r6 ii ( not debate for brand ) , for their specifications and quality(af) Please consider lens options & ecosystem **mostly ...",
+      "about_this_result": {
+        "source": {
+          "description": "the A7IV has way better autofocus, especially for video. Sony A7IV has more dynamic range. more third part lens options. Canon RF is too ...",
+          "source_info_link": "https://www.facebook.com/groups/beginnersphotographygroup/posts/8013630738684788/",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAXVBMVEVHcEwHZv8HaP8IZ_8IZ_8IZv8IaP8IZ_8HZv8Haf8IZ_8IaP8IZ_8AXv8AV_8AYv-SqP_P1__m6__e5f9wlP____-tvP9jiv82c_8IZ_8Iaf-fsf________8AW_-wrobhAAAAH3RSTlMAM4bC6v1h7v8Z3UL_______7_________wRiFwenBhp_Z0gAAAOhJREFUeAFtk0UWwzAMBWWHFHOZe_9bBn9Nr7Mdg5AiQjZt17WNFFTTDxwZ-kKNigvUmJw2XGF0dByx1jlnPTPDjiYqDofj8XQ4L9bsL6vozpedq13_3eJk4G-XXPIac8zBHUs5EIl48Q4Tws3ziiAZ5f7j3Vq7O5b0iOGE1Z0cRxpqS3mwSbbU4VHndukW8GwHiQ_BzUO2KceIw7MIqJBHyIZk_WwKSv6KcD_frlsqt_P5joBELJ-3iNZD8YDC_82zz1pWS5U1u5bmmY1JLdMQmVoaOIxmIdVYDXWUxVAD8Xp_FvnN1mEG0f0e5ixC4ikAAAAASUVORK5CYII.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://www.facebook.com/groups/beginnersphotographygroup/posts/8013630738684788/&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fwww.facebook.com%2Fgroups%2Fbeginnersphotographygroup%2Fposts%2F8013630738684788%2F",
+      "source": "Facebook \u00b7 Beginners Photography Group"
+    },
+    {
+      "position": 4,
+      "title": "Sony a7 IV vs Canon R6 Mark II | Don't Buy the Wrong One",
+      "link": "https://www.youtube.com/watch?v=cTdlk9aussY",
+      "displayed_link": "1.2K+ views \u00b7 3 months ago",
+      "thumbnail": "https://serpapi.com/searches/6a5e9b57dc74d0886747ad32/images/HBlFgAgFNtJ7XrYDroRcv32Bd_LIwch5Nm1zZ6Co_28.jpeg",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8_9hAAAAhUlEQVR4AWNwL_ChCFPHgP8MxqxA7ArEKVBcCcUNIAznI-RdQXrABgAZpv8ZjP6Tg0F6QQbsosCAXSADHmGVVPIC0jKEDHgAMuAbmgRE445D___feYzXIJBeBigH04BVW_9DAcgwqEGYaik2gGIvUByIlEbjDooTEiwps5GRlNmolpkowgBVP9wMSzSKGAAAAABJRU5ErkJggg.png",
+      "snippet": "See how the sony a7iv stacks up against the canon r6 mark ii, This camera review covers features and performance in real-world scenarios.",
+      "duration": "18:03",
+      "about_this_result": {
+        "source": {
+          "description": "See how the sony a7iv stacks up against the canon r6 mark ii, This camera review covers features and performance in real-world scenarios.",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8_9hAAAAhUlEQVR4AWNwL_ChCFPHgP8MxqxA7ArEKVBcCcUNIAznI-RdQXrABgAZpv8ZjP6Tg0F6QQbsosCAXSADHmGVVPIC0jKEDHgAMuAbmgRE445D___feYzXIJBeBigH04BVW_9DAcgwqEGYaik2gGIvUByIlEbjDooTEiwps5GRlNmolpkowgBVP9wMSzSKGAAAAABJRU5ErkJggg.png"
+        }
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://www.youtube.com/watch?v=cTdlk9aussY&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DcTdlk9aussY",
+      "source": "YouTube \u00b7 Camera Centre UK"
+    },
+    {
+      "position": 5,
+      "title": "The Sony A7 IV vs Canon EOS R6",
+      "link": "https://www.pictureline.com/blogs/products/sony-a7-iv-vs-canon-eos-r6?srsltid=AfmBOooJP3utMKyoy3iutubZc6-SKGHzdCsLwthN0c45xNLYlN9Jm0lm",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.pictureline.com/blogs/products/sony-a7-iv-vs-canon-eos-r6%3Fsrsltid%3DAfmBOooJP3utMKyoy3iutubZc6-SKGHzdCsLwthN0c45xNLYlN9Jm0lm&ved=2ahUKEwj9teiuoeKVAxV65ckDHUpMIGkQFnoECDkQAQ",
+      "displayed_link": "https://www.pictureline.com \u203a Products",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAACAAAAAcCAMAAAA3HE0QAAAALVBMVEVHcEwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACttl6nAAAADnRSTlMAyPaGL0fnsZTeEFwecNOTuJQAAADOSURBVCiRhZJZAsMgCERVxDVy_-M2rgVjm_nC8DTDqFJCSbsur87yNAVnYPXJ8G2mKtwVfgGyq29j-6AR0TPA32ustgwJRciYgxsrl5QWbYfjWBz7tBJ9zZzF4ZX_IYqJzBO4mufgoRcPoKUHrSy11DuALImaQt6BNHbN0-wOLGfDbzoBM6E68LUDdnnsLrEBbEr45tMSCzvQbzgYcrDuXgAUxrNij0cClFnShQ4Ae2iBjgC5Uu_hKnO4B9A-8oXK8Ffc1Q_ZF508CCn9og9fORsKljkJPAAAAABJRU5ErkJggg.png",
+      "date": "Jan 14, 2022",
+      "snippet": "In terms of battery life, the Sony A7 IV comes out on top with a rating of 520 shots compared to 380 shots with the Canon EOS R6. With a 35% ...",
+      "snippet_highlighted_words": [
+        "Sony A7 IV comes out on top with a rating of 520 shots"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "In terms of battery life, the Sony A7 IV comes out on top with a rating of 520 shots compared to 380 shots with the Canon EOS R6. With a 35% ...",
+          "source_info_link": "https://www.pictureline.com/blogs/products/sony-a7-iv-vs-canon-eos-r6?srsltid=AfmBOooJP3utMKyoy3iutubZc6-SKGHzdCsLwthN0c45xNLYlN9Jm0lm",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAACAAAAAcCAMAAAA3HE0QAAAALVBMVEVHcEwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACttl6nAAAADnRSTlMAyPaGL0fnsZTeEFwecNOTuJQAAADOSURBVCiRhZJZAsMgCERVxDVy_-M2rgVjm_nC8DTDqFJCSbsur87yNAVnYPXJ8G2mKtwVfgGyq29j-6AR0TPA32ustgwJRciYgxsrl5QWbYfjWBz7tBJ9zZzF4ZX_IYqJzBO4mufgoRcPoKUHrSy11DuALImaQt6BNHbN0-wOLGfDbzoBM6E68LUDdnnsLrEBbEr45tMSCzvQbzgYcrDuXgAUxrNij0cClFnShQ4Ae2iBjgC5Uu_hKnO4B9A-8oXK8Ffc1Q_ZF508CCn9og9fORsKljkJPAAAAABJRU5ErkJggg.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://www.pictureline.com/blogs/products/sony-a7-iv-vs-canon-eos-r6?srsltid=AfmBOooJP3utMKyoy3iutubZc6-SKGHzdCsLwthN0c45xNLYlN9Jm0lm&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fwww.pictureline.com%2Fblogs%2Fproducts%2Fsony-a7-iv-vs-canon-eos-r6%3Fsrsltid%3DAfmBOooJP3utMKyoy3iutubZc6-SKGHzdCsLwthN0c45xNLYlN9Jm0lm",
+      "source": "Pictureline",
+      "read_more_link": "https://www.pictureline.com/blogs/products/sony-a7-iv-vs-canon-eos-r6?srsltid=AfmBOooJP3utMKyoy3iutubZc6-SKGHzdCsLwthN0c45xNLYlN9Jm0lm#:~:text=In%20terms%20of%20battery%20life%2C,EOS%20R6.%20With%20a%2035%25"
+    },
+    {
+      "position": 6,
+      "title": "Canon R6 Mark II vs Sony A7 IV",
+      "link": "https://medium.com/@bestoflens.com/canon-r6-mark-ii-vs-sony-a7-iv-ac97503c5640",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://medium.com/%40bestoflens.com/canon-r6-mark-ii-vs-sony-a7-iv-ac97503c5640&ved=2ahUKEwj9teiuoeKVAxV65ckDHUpMIGkQFnoECDsQAQ",
+      "displayed_link": "4 likes \u00b7 1 year ago",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAARVBMVEVHcEwAAAAAAAAAAAAAAAAAAABwcHCoqKifn58bGxt8fHzKysr___8rKyv5-fnW1tbp6emQkJCsrKxaWlq0tLTBwcE-Pj777dpoAAAABnRSTlMAS8D5_5mXKh4CAAAA3ElEQVR4AXzRUQ6EIAwEUNRZClgFQb3_UbfQEDUbd76qL5WMGGOGccJPpnEwkg9e8pE9vGYw4zuOZnrHyeBPFC055zw0wTkKN8TMzEHHZWWOuCMJJh03QXpgrlr0IzLmB-6L4KzHZ0Ub947-EF3q4rI3zByuzSLogDOiYeCICxGZVxmsYuR8x9DaJFQkL3UoX-iTvNg2xbPVvrB37ZgfeGr7_tl0Q_2HXjEjSe0HWnlWJGz1DEXEAsla2lyXcIj2K6O6Wvr1kQXCnL7DG9l4kwneBIY3aeJN1HizAwDOfRO3mlC3PQAAAABJRU5ErkJggg.png",
+      "snippet": "Canon R6 Mark II (24.2 MP): Slightly lower resolution but excellent color science (Canon's signature look). \u00b7 Sony A7 IV (33 MP): More detail, ...",
+      "snippet_highlighted_words": [
+        "Canon R6",
+        "Canon's",
+        "Sony"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "Canon R6 Mark II (24.2 MP): Slightly lower resolution but excellent color science (Canon's signature look). \u00b7 Sony A7 IV (33 MP): More detail, ...",
+          "source_info_link": "https://medium.com/@bestoflens.com/canon-r6-mark-ii-vs-sony-a7-iv-ac97503c5640",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAARVBMVEVHcEwAAAAAAAAAAAAAAAAAAABwcHCoqKifn58bGxt8fHzKysr___8rKyv5-fnW1tbp6emQkJCsrKxaWlq0tLTBwcE-Pj777dpoAAAABnRSTlMAS8D5_5mXKh4CAAAA3ElEQVR4AXzRUQ6EIAwEUNRZClgFQb3_UbfQEDUbd76qL5WMGGOGccJPpnEwkg9e8pE9vGYw4zuOZnrHyeBPFC055zw0wTkKN8TMzEHHZWWOuCMJJh03QXpgrlr0IzLmB-6L4KzHZ0Ub947-EF3q4rI3zByuzSLogDOiYeCICxGZVxmsYuR8x9DaJFQkL3UoX-iTvNg2xbPVvrB37ZgfeGr7_tl0Q_2HXjEjSe0HWnlWJGz1DEXEAsla2lyXcIj2K6O6Wvr1kQXCnL7DG9l4kwneBIY3aeJN1HizAwDOfRO3mlC3PQAAAABJRU5ErkJggg.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://medium.com/@bestoflens.com/canon-r6-mark-ii-vs-sony-a7-iv-ac97503c5640&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fmedium.com%2F%40bestoflens.com%2Fcanon-r6-mark-ii-vs-sony-a7-iv-ac97503c5640",
+      "source": "Medium \u00b7 Sharon Advik",
+      "read_more_link": "https://medium.com/@bestoflens.com/canon-r6-mark-ii-vs-sony-a7-iv-ac97503c5640#:~:text=Canon%20R6%20Mark%20II%20(24.2,color%20science%20(Canon's%20signature%20look).&text=Sony%20A7%20IV%20(33%20MP)%3A,cropping%2C%20and%20great%20dynamic%20range."
+    },
+    {
+      "position": 7,
+      "title": "Canon R6III vs Sony A7IV comparison!",
+      "link": "https://www.sonyalpharumors.com/canon-r6iii-vs-sony-a7iv/",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.sonyalpharumors.com/canon-r6iii-vs-sony-a7iv/&ved=2ahUKEwj9teiuoeKVAxV65ckDHUpMIGkQFnoECDoQAQ",
+      "displayed_link": "https://www.sonyalpharumors.com \u203a reviews",
+      "favicon": "https://serpapi.com/images/i/_9j_4AAQSkZJRgABAQAAAQABAAD_2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJyUfMj0tMTU3NTo6Izc_Oj8tQT0tPS0BCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Njc3Nzc1Nzc1Nzc3NzU3Nzc3NzUtNTc1LTUtNzg1LTc2NzU3MS81NzU3OP_AABEIABwAHAMBEQACEQEDEQH_xAAbAAABBAMAAAAAAAAAAAAAAAAFAwQGBwABAv_EACYQAAEDAwMDBQEAAAAAAAAAAAECAxEABAUSITETYZEGFDJRgUH_xAAZAQACAwEAAAAAAAAAAAAAAAAFBgABBAP_xAAmEQABBAEDAwQDAAAAAAAAAAABAAIDEQQFEiExQVETI2GxMoHw_9oADAMBAAIRAxEAPwABjMXdZNR6EBCditZ2rLPlxwGndT2WrHxJJ7LenlOnsPbsPFh7MWqXwJLZUJH5NY36k9vIiJC2N0xpNGQX_fKRdxD3R69s-3ctkSCg8jtUj1aMv2SNLSpJpEoZvjcHBDZP2aK2hKmHphzRiUaI1SvzNKmpPLM0k9OE0aa0OxG18_arB5Vgn03eW901qzqr2VEpOuP7v9c0dBlM7XNPt0g5EYgc1w9y_wBqycKu2XibP2RBYDSQkjsN6V8oPEzt_W01YpZ6LdnSlGbqPdPafj1FR5pxxr9Fl-El5Neu-vJ-0vYZF-wJ6UFCuUK4rhl4MWV-XB8rtiZ0uNYbyD2RawybF5dQ7bNNvH4rgEntMUFy9Okx49zXWEcwtRjyJNjm0e3ymVxmXilTLDSGUyRKefyt2PpUfEkhtYMjWJTcbBt7IVRjgIMuwkVai2EwQQSCODVEAiirBINhZpnck1KrgKjyVmgd6tRf_9k.jpeg",
+      "date": "Nov 6, 2025",
+      "snippet": "Canon R6 Mark III is the clear winner: faster bursts, pre-capture, superior AF, 8.5-stop IBIS, and pro-grade video tools.",
+      "snippet_highlighted_words": [
+        "Canon R6 Mark III is the clear winner"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "Canon R6 Mark III is the clear winner: faster bursts, pre-capture, superior AF, 8.5-stop IBIS, and pro-grade video tools.",
+          "source_info_link": "https://www.sonyalpharumors.com/canon-r6iii-vs-sony-a7iv/",
+          "icon": "https://serpapi.com/images/i/_9j_4AAQSkZJRgABAQAAAQABAAD_2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJyUfMj0tMTU3NTo6Izc_Oj8tQT0tPS0BCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Njc3Nzc1Nzc1Nzc3NzU3Nzc3NzUtNTc1LTUtNzg1LTc2NzU3MS81NzU3OP_AABEIABwAHAMBEQACEQEDEQH_xAAbAAABBAMAAAAAAAAAAAAAAAAFAwQGBwABAv_EACYQAAEDAwMDBQEAAAAAAAAAAAECAxEABAUSITETYZEGFDJRgUH_xAAZAQACAwEAAAAAAAAAAAAAAAAFBgABBAP_xAAmEQABBAEDAwQDAAAAAAAAAAABAAIDEQQFEiExQVETI2GxMoHw_9oADAMBAAIRAxEAPwABjMXdZNR6EBCditZ2rLPlxwGndT2WrHxJJ7LenlOnsPbsPFh7MWqXwJLZUJH5NY36k9vIiJC2N0xpNGQX_fKRdxD3R69s-3ctkSCg8jtUj1aMv2SNLSpJpEoZvjcHBDZP2aK2hKmHphzRiUaI1SvzNKmpPLM0k9OE0aa0OxG18_arB5Vgn03eW901qzqr2VEpOuP7v9c0dBlM7XNPt0g5EYgc1w9y_wBqycKu2XibP2RBYDSQkjsN6V8oPEzt_W01YpZ6LdnSlGbqPdPafj1FR5pxxr9Fl-El5Neu-vJ-0vYZF-wJ6UFCuUK4rhl4MWV-XB8rtiZ0uNYbyD2RawybF5dQ7bNNvH4rgEntMUFy9Okx49zXWEcwtRjyJNjm0e3ymVxmXilTLDSGUyRKefyt2PpUfEkhtYMjWJTcbBt7IVRjgIMuwkVai2EwQQSCODVEAiirBINhZpnck1KrgKjyVmgd6tRf_9k.jpeg"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://www.sonyalpharumors.com/canon-r6iii-vs-sony-a7iv/&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fwww.sonyalpharumors.com%2Fcanon-r6iii-vs-sony-a7iv%2F",
+      "source": "SonyAlphaRumors"
+    },
+    {
+      "position": 8,
+      "title": "Canon R6 II vs Sony a7 IV feat. Ted Forbes!",
+      "link": "https://www.youtube.com/watch?v=IEPLUfnofE0",
+      "displayed_link": "213.9K+ views \u00b7 2 years ago",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKNohjjd8z5l47qspZCb7ePzCK7jYIgK8i1FcK0lu9YnA8yTiDUEcMuA&s",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8_9hAAAAhUlEQVR4AWNwL_ChCFPHgP8MxqxA7ArEKVBcCcUNIAznI-RdQXrABgAZpv8ZjP6Tg0F6QQbsosCAXSADHmGVVPIC0jKEDHgAMuAbmgRE445D___feYzXIJBeBigH04BVW_9DAcgwqEGYaik2gGIvUByIlEbjDooTEiwps5GRlNmolpkowgBVP9wMSzSKGAAAAABJRU5ErkJggg.png",
+      "snippet": "The Sony a7 IV and Canon R6 Mark II are two of the most well-rounded full-frame cameras on the market. Both are capable of outstanding ...",
+      "duration": "13:19",
+      "key_moments": [
+        {
+          "time": "00:00",
+          "title": "Intro",
+          "link": "https://www.youtube.com/watch?v=IEPLUfnofE0&t=0"
+        },
+        {
+          "time": "02:14",
+          "title": "Handling",
+          "link": "https://www.youtube.com/watch?v=IEPLUfnofE0&t=134"
+        },
+        {
+          "time": "04:17",
+          "title": "Image quality",
+          "link": "https://www.youtube.com/watch?v=IEPLUfnofE0&t=257"
+        },
+        {
+          "time": "05:59",
+          "title": "Autofocus",
+          "link": "https://www.youtube.com/watch?v=IEPLUfnofE0&t=359"
+        },
+        {
+          "time": "07:16",
+          "title": "Speed round!",
+          "link": "https://www.youtube.com/watch?v=IEPLUfnofE0&t=436"
+        },
+        {
+          "time": "08:51",
+          "title": "Burst shooting",
+          "link": "https://www.youtube.com/watch?v=IEPLUfnofE0&t=531"
+        },
+        {
+          "time": "09:52",
+          "title": "Video",
+          "link": "https://www.youtube.com/watch?v=IEPLUfnofE0&t=592"
+        },
+        {
+          "time": "10:53",
+          "title": "Battery life",
+          "link": "https://www.youtube.com/watch?v=IEPLUfnofE0&t=653"
+        },
+        {
+          "time": "11:26",
+          "title": "Lens lineup",
+          "link": "https://www.youtube.com/watch?v=IEPLUfnofE0&t=686"
+        },
+        {
+          "time": "12:03",
+          "title": "The wrap",
+          "link": "https://www.youtube.com/watch?v=IEPLUfnofE0&t=723"
+        }
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "The Sony a7 IV and Canon R6 Mark II are two of the most well-rounded full-frame cameras on the market. Both are capable of outstanding ...",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8_9hAAAAhUlEQVR4AWNwL_ChCFPHgP8MxqxA7ArEKVBcCcUNIAznI-RdQXrABgAZpv8ZjP6Tg0F6QQbsosCAXSADHmGVVPIC0jKEDHgAMuAbmgRE445D___feYzXIJBeBigH04BVW_9DAcgwqEGYaik2gGIvUByIlEbjDooTEiwps5GRlNmolpkowgBVP9wMSzSKGAAAAABJRU5ErkJggg.png"
+        }
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://www.youtube.com/watch?v=IEPLUfnofE0&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DIEPLUfnofE0",
+      "source": "YouTube \u00b7 PetaPixel"
+    }
+  ],
+  "perspectives": [
+    {
+      "author": "r/Cameras",
+      "source": "Reddit",
+      "extensions": [
+        "10+ comments "
+      ],
+      "title": "Sony A7 IV vs Canon R6 Mark II for long-term use?",
+      "date": "1 month ago"
+    },
+    {
+      "author": "Lydia Mnayer",
+      "source": "Facebook",
+      "thumbnails": [
+        "https://serpapi.com/searches/6a5e9b57dc74d0886747ad32/images/JlNqZk8kkxTv9SPzGQyv5tPEJ5bLZP_AAT8XS5rFDJE.jpeg"
+      ],
+      "title": "Canon R6 MII vs Sony a7 IV. Let the debate begin \ud83d\ude05",
+      "date": "3 weeks ago"
+    },
+    {
+      "author": "r/canon",
+      "source": "Reddit",
+      "extensions": [
+        "30+ comments "
+      ],
+      "title": "A7iv or r6 mk ii ? Plz help can't decide",
+      "date": "May 22, 2026"
+    },
+    {
+      "author": "r/Nikon",
+      "source": "Reddit",
+      "extensions": [
+        "10+ comments "
+      ],
+      "title": "Nikon Z6iii vs Sony A7iv vs Canon R6ii",
+      "date": "1 month ago"
+    }
+  ],
+  "related_searches": [
+    {
+      "block_position": 1,
+      "query": "Sony a7iv vs canon r6 reddit",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&q=Sony+a7iv+vs+canon+r6+reddit&sa=X&ved=2ahUKEwj9teiuoeKVAxV65ckDHUpMIGkQ1QJ6BAgzEAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Sony+a7iv+vs+canon+r6+reddit"
+    },
+    {
+      "block_position": 1,
+      "query": "Sony A7IV vs Canon R6 Mark II",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&q=Sony+A7IV+vs+Canon+R6+Mark+II&sa=X&ved=2ahUKEwj9teiuoeKVAxV65ckDHUpMIGkQ1QJ6BAhBEAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Sony+A7IV+vs+Canon+R6+Mark+II"
+    },
+    {
+      "block_position": 1,
+      "query": "Sony A7IV vs Canon R6 image quality",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&q=Sony+A7IV+vs+Canon+R6+image+quality&sa=X&ved=2ahUKEwj9teiuoeKVAxV65ckDHUpMIGkQ1QJ6BAg8EAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Sony+A7IV+vs+Canon+R6+image+quality"
+    },
+    {
+      "block_position": 1,
+      "query": "Sony a7iv vs canon r6 specs",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&q=Sony+a7iv+vs+canon+r6+specs&sa=X&ved=2ahUKEwj9teiuoeKVAxV65ckDHUpMIGkQ1QJ6BAg4EAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Sony+a7iv+vs+canon+r6+specs"
+    },
+    {
+      "block_position": 1,
+      "query": "Sony a7iv vs Canon R6 Mark II wildlife",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&q=Sony+a7iv+vs+Canon+R6+Mark+II+wildlife&sa=X&ved=2ahUKEwj9teiuoeKVAxV65ckDHUpMIGkQ1QJ6BAg3EAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Sony+a7iv+vs+Canon+R6+Mark+II+wildlife"
+    },
+    {
+      "block_position": 1,
+      "query": "Sony a7iv vs Canon R6 Mark II vs Nikon Z6iii",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&q=Sony+a7iv+vs+Canon+R6+Mark+II+vs+Nikon+Z6iii&sa=X&ved=2ahUKEwj9teiuoeKVAxV65ckDHUpMIGkQ1QJ6BAg2EAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Sony+a7iv+vs+Canon+R6+Mark+II+vs+Nikon+Z6iii"
+    },
+    {
+      "block_position": 1,
+      "query": "Sony a7iv vs canon r6 camera",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&q=Sony+a7iv+vs+canon+r6+camera&sa=X&ved=2ahUKEwj9teiuoeKVAxV65ckDHUpMIGkQ1QJ6BAg0EAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Sony+a7iv+vs+canon+r6+camera"
+    },
+    {
+      "block_position": 1,
+      "query": "Sony a7iv vs canon r6 price",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&q=Sony+a7iv+vs+canon+r6+price&sa=X&ved=2ahUKEwj9teiuoeKVAxV65ckDHUpMIGkQ1QJ6BAgyEAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Sony+a7iv+vs+canon+r6+price"
+    }
+  ],
+  "pagination": {
+    "current": 1,
+    "next": "https://www.google.com/search?q=Sony+A7IV+vs+Canon+R6&sca_esv=3271cc0dab4982ea&ei=V5tear2uN_rKp84PypiByQY&start=10&sa=N&sstk=AU9db-A2-Uq6y1DkT6K1F4rXUD6QfAmMb8Fz4--otT3PsHz2jTqfvuhMdTdFgJh_SfD9t1nQtQUz76sl6CzYkYc9DFLwGVvzSvD69A&ved=2ahUKEwj9teiuoeKVAxV65ckDHUpMIGkQ8NMDegQIMBAQ",
+    "other_pages": {
+      "2": "https://www.google.com/search?q=Sony+A7IV+vs+Canon+R6&sca_esv=3271cc0dab4982ea&ei=V5tear2uN_rKp84PypiByQY&start=10&sa=N&sstk=AU9db-A2-Uq6y1DkT6K1F4rXUD6QfAmMb8Fz4--otT3PsHz2jTqfvuhMdTdFgJh_SfD9t1nQtQUz76sl6CzYkYc9DFLwGVvzSvD69A&ved=2ahUKEwj9teiuoeKVAxV65ckDHUpMIGkQ8tMDegQIMBAE",
+      "3": "https://www.google.com/search?q=Sony+A7IV+vs+Canon+R6&sca_esv=3271cc0dab4982ea&ei=V5tear2uN_rKp84PypiByQY&start=20&sa=N&sstk=AU9db-A2-Uq6y1DkT6K1F4rXUD6QfAmMb8Fz4--otT3PsHz2jTqfvuhMdTdFgJh_SfD9t1nQtQUz76sl6CzYkYc9DFLwGVvzSvD69A&ved=2ahUKEwj9teiuoeKVAxV65ckDHUpMIGkQ8tMDegQIMBAG",
+      "4": "https://www.google.com/search?q=Sony+A7IV+vs+Canon+R6&sca_esv=3271cc0dab4982ea&ei=V5tear2uN_rKp84PypiByQY&start=30&sa=N&sstk=AU9db-A2-Uq6y1DkT6K1F4rXUD6QfAmMb8Fz4--otT3PsHz2jTqfvuhMdTdFgJh_SfD9t1nQtQUz76sl6CzYkYc9DFLwGVvzSvD69A&ved=2ahUKEwj9teiuoeKVAxV65ckDHUpMIGkQ8tMDegQIMBAI",
+      "5": "https://www.google.com/search?q=Sony+A7IV+vs+Canon+R6&sca_esv=3271cc0dab4982ea&ei=V5tear2uN_rKp84PypiByQY&start=40&sa=N&sstk=AU9db-A2-Uq6y1DkT6K1F4rXUD6QfAmMb8Fz4--otT3PsHz2jTqfvuhMdTdFgJh_SfD9t1nQtQUz76sl6CzYkYc9DFLwGVvzSvD69A&ved=2ahUKEwj9teiuoeKVAxV65ckDHUpMIGkQ8tMDegQIMBAK",
+      "6": "https://www.google.com/search?q=Sony+A7IV+vs+Canon+R6&sca_esv=3271cc0dab4982ea&ei=V5tear2uN_rKp84PypiByQY&start=50&sa=N&sstk=AU9db-A2-Uq6y1DkT6K1F4rXUD6QfAmMb8Fz4--otT3PsHz2jTqfvuhMdTdFgJh_SfD9t1nQtQUz76sl6CzYkYc9DFLwGVvzSvD69A&ved=2ahUKEwj9teiuoeKVAxV65ckDHUpMIGkQ8tMDegQIMBAM",
+      "7": "https://www.google.com/search?q=Sony+A7IV+vs+Canon+R6&sca_esv=3271cc0dab4982ea&ei=V5tear2uN_rKp84PypiByQY&start=60&sa=N&sstk=AU9db-A2-Uq6y1DkT6K1F4rXUD6QfAmMb8Fz4--otT3PsHz2jTqfvuhMdTdFgJh_SfD9t1nQtQUz76sl6CzYkYc9DFLwGVvzSvD69A&ved=2ahUKEwj9teiuoeKVAxV65ckDHUpMIGkQ8tMDegQIMBAO"
+    }
+  },
+  "serpapi_pagination": {
+    "current": 1,
+    "next_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Sony+A7IV+vs+Canon+R6&start=10",
+    "next": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Sony+A7IV+vs+Canon+R6&start=10",
+    "other_pages": {
+      "2": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Sony+A7IV+vs+Canon+R6&start=10",
+      "3": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Sony+A7IV+vs+Canon+R6&start=20",
+      "4": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Sony+A7IV+vs+Canon+R6&start=30",
+      "5": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Sony+A7IV+vs+Canon+R6&start=40",
+      "6": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Sony+A7IV+vs+Canon+R6&start=50",
+      "7": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Sony+A7IV+vs+Canon+R6&start=60"
+    }
+  }
+}

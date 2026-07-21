@@ -1,0 +1,695 @@
+{
+  "search_metadata": {
+    "id": "search_W19X7MebbAtElGawre68NbDz",
+    "status": "Success",
+    "created_at": "2026-07-20T22:01:55Z",
+    "request_time_taken": 2.27,
+    "parsing_time_taken": 0.28,
+    "total_time_taken": 2.55,
+    "request_url": "https://www.google.com/search?q=TCP+vs+UDP&oq=TCP+vs+UDP&gl=us&hl=en",
+    "html_url": "https://www.searchapi.io/api/v1/searches/search_W19X7MebbAtElGawre68NbDz.html",
+    "json_url": "https://www.searchapi.io/api/v1/searches/search_W19X7MebbAtElGawre68NbDz"
+  },
+  "search_parameters": {
+    "engine": "google",
+    "q": "TCP vs UDP",
+    "device": "desktop",
+    "hl": "en",
+    "gl": "us"
+  },
+  "search_information": {
+    "query_displayed": "TCP vs UDP",
+    "total_results": 130,
+    "time_taken_displayed": 0.16,
+    "detected_location": "Unknown",
+    "has_no_results_for": false
+  },
+  "ai_overview": {
+    "text_blocks": [
+      {
+        "type": "paragraph",
+        "answer": "TCP is a reliable, connection-oriented protocol that guarantees data delivery in the correct order, making it ideal for web browsing, emails, and file transfers where accuracy is essential. UDP is a faster, connectionless protocol that sends data continuously without waiting for confirmations, making it perfect for live streaming, gaming, and VoIP.",
+        "reference_indexes": [
+          0,
+          1,
+          3,
+          2
+        ]
+      },
+      {
+        "type": "header",
+        "answer": "Key Differences"
+      },
+      {
+        "type": "paragraph",
+        "answer": "Connection State: TCP establishes a dedicated connection using a \"three-way handshake\" before sending data. UDP requires no handshake and simply transmits data packets (\"datagrams\") to the destination.",
+        "reference_indexes": [
+          3
+        ]
+      },
+      {
+        "type": "video",
+        "link": "https://www.youtube.com/shorts/8B2trNb2vWk"
+      },
+      {
+        "type": "header",
+        "answer": "When to Use Which"
+      },
+      {
+        "type": "paragraph",
+        "answer": "Use TCP for:"
+      },
+      {
+        "type": "paragraph",
+        "answer": "Use UDP for:"
+      }
+    ],
+    "markdown": "TCP is a reliable, connection-oriented protocol that guarantees data delivery in the correct order, making it ideal for web browsing, emails, and file transfers where accuracy is essential. UDP is a faster, connectionless protocol that sends data continuously without waiting for confirmations, making it perfect for live streaming, gaming, and VoIP. [0](https://www.reddit.com/r/explainlikeimfive/comments/66i0ta/eli5_the_difference_between_tcp_vs_udp/) [1](https://www.geeksforgeeks.org/computer-networks/differences-between-tcp-and-udp/) [3](https://www.avg.com/en/signal/tcp-vs-udp) [2](https://www.youtube.com/watch?v=jE_FcgpQ7Co&t=31)\n\n## Key Differences\n\nConnection State: TCP establishes a dedicated connection using a \"three-way handshake\" before sending data. UDP requires no handshake and simply transmits data packets (\"datagrams\") to the destination. [3](https://www.avg.com/en/signal/tcp-vs-udp)\n\n\n\n## When to Use Which\n\nUse TCP for:\n\nUse UDP for:\n\n[[0] - ](https://www.reddit.com/r/explainlikeimfive/comments/66i0ta/eli5_the_difference_between_tcp_vs_udp/)\n[[1] - ](https://www.geeksforgeeks.org/computer-networks/differences-between-tcp-and-udp/)\n[[2] - ](https://www.youtube.com/watch?v=jE_FcgpQ7Co&t=31)\n[[3] - ](https://www.avg.com/en/signal/tcp-vs-udp)",
+    "reference_links": [
+      {
+        "index": 0,
+        "link": "https://www.reddit.com/r/explainlikeimfive/comments/66i0ta/eli5_the_difference_between_tcp_vs_udp/",
+        "favicon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.reddit.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+      },
+      {
+        "index": 1,
+        "link": "https://www.geeksforgeeks.org/computer-networks/differences-between-tcp-and-udp/",
+        "favicon": "https://encrypted-tbn1.gstatic.com/faviconV2?url=https://www.geeksforgeeks.org&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+      },
+      {
+        "index": 2,
+        "link": "https://www.youtube.com/watch?v=jE_FcgpQ7Co&t=31",
+        "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAhUlEQVR4AWNwL/ChCFPHgP8MxqxA7ArEKVBcCcUNIAznI+RdQXrABgAZpv8ZjP6Tg0F6QQbsosCAXSADHmGVVPIC0jKEDHgAMuAbmgRE445D///feYzXIJBeBigH04BVW/9DAcgwqEGYaik2gGIvUByIlEbjDooTEiwps5GRlNmolpkowgBVP9wMSzSKGAAAAABJRU5ErkJggg=="
+      },
+      {
+        "index": 3,
+        "link": "https://www.avg.com/en/signal/tcp-vs-udp",
+        "favicon": "https://encrypted-tbn1.gstatic.com/faviconV2?url=https://www.avg.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+      }
+    ]
+  },
+  "organic_results": [
+    {
+      "position": 1,
+      "title": "TCP vs. UDP",
+      "link": "https://www.geeksforgeeks.org/computer-networks/differences-between-tcp-and-udp/",
+      "source": "GeeksforGeeks",
+      "domain": "www.geeksforgeeks.org",
+      "displayed_link": "https://www.geeksforgeeks.org \u203a computer-networks",
+      "snippet": "Both are responsible for end-to-end communication between applications, but they differ significantly in terms of reliability, speed, and use ...",
+      "snippet_highlighted_words": [
+        "Both are responsible for end-to-end communication"
+      ],
+      "date": "Mar 28, 2026",
+      "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAM1BMVEVHcEwujUQvjUUujEUvjUUujUUujUUujUUvjUYvjUYvjUYujUUvjUUvjUYwi0MvjUYvjUaDgY7PAAAAEXRSTlMACRRIe7hrNKX/21qN6SD0zVxKFHYAAACqSURBVHgB3Y8FkgMgEASxlcGW/7/2sPPkAUmjXei4t8N7/0RCTETEclZkSZK7HhSbXJbUI43PaiejxHWgzVUFpqRh9R6V0levaD7C0pYS3C9kgAc0uIdUEIx/hRh4As9FQssHg+GHrEWF9kWYb9Z8pceBlYzR4o5bDZ1X2kUy6yvmQK5RmAzVBUKrRYoaTtCY10uGrTKOfEUKqQGg4rdwnpLZ/0zkfskr8gHhwgjM82lwXwAAAABJRU5ErkJggg=="
+    },
+    {
+      "position": 2,
+      "title": "ELI5: The difference between TCP vs UDP",
+      "link": "https://www.reddit.com/r/explainlikeimfive/comments/66i0ta/eli5_the_difference_between_tcp_vs_udp/",
+      "source": "Reddit \u00b7 r/explainlikeimfive",
+      "domain": "www.reddit.com",
+      "displayed_link": "6 comments  \u00b7  9 years ago",
+      "snippet": "TCP makes sure that the information gets there while UDP doesn't care about wether what was send was actually received. The advantage of TCP are ...",
+      "snippet_highlighted_words": [
+        "TCP makes sure that the information gets there"
+      ],
+      "rich_snippet": {
+        "detected_extensions": {
+          "answer_link": "https://www.reddit.com/r/explainlikeimfive/comments/66i0ta/comment/dgimh9e/",
+          "answer_count": 6,
+          "top_answer": "A tcp packet walks in to a bar and says \u201cI want a beer\u201d, barman says \u201cyou want a beer?\u201d ..."
+        }
+      },
+      "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAhFBMVEVHcEz/RQD/RQD/RQD/RQD/RQD/RQD/RQD/RQD/PQD/NgD+XS32dlf5vK3////64dusLADUz9H+jXLOPAoSHiFrLBm3uLn3/f7jVS/b6e77pJDJo6H718//RQDw9ffs5+jm8fPIXlHqKwD5+PjolIP/VgP/SQLQ2uAyODvQ4ekABAhqcHK4ptuCAAAAHnRSTlMAPobB7P9mHdb//////////////////////////8J6YdtgAAABWUlEQVR4AWySYZNDMBCGWyw2SI9TGnWqILT////dm6Enc+MZH8Qz2V3Je/rj7Lgekec659N/fIgPnn+yCULaYaYwsCqShYhiQXQ+dJxIedltQDZfqZQyY6K1st3vO78WsiyNDI3zySK/caJUygTMzN7eTnxdBXMcb3+0TsMC30RUJfciqSIs8JCZycHwWV1n2UVuXDKzxsDOySWu5AGVoB/TUh5imhJFpQTNfav7uDcSlBERJLUN9LOLewn6LnpCNS0EyvKg+vLRjVRLUIuxe8hSDYyyLqatyr68jdO6cxpvWGIeDOQQujagNs7YuumbJmYiZz0E3aJvMc95Ps8F+rV6PQQ0JY4XpVqVv0Cu2lYps9HbDp6HRS9Kv1+vt1Z4HeDI/1yZiFMNFIzWqYkChftl8zSkegE6HSYmENgxYYQHRGzUHiLHyh3ModvZo7nHxA71ofwdSnYAAPpVIo4RUPiIAAAAAElFTkSuQmCC"
+    },
+    {
+      "position": 3,
+      "title": "Simplest explanation of TCP and UDP",
+      "link": "https://www.youtube.com/shorts/8B2trNb2vWk",
+      "source": "YouTube \u00b7 KodeKloud",
+      "domain": "www.youtube.com",
+      "displayed_link": "17.6K+ views  \u00b7  7 months ago",
+      "snippet": "TCP guarantees delivery with handshakes and retries. Its perfect for websites, emails, and file transfers. UDP skips the formalities and goes ...",
+      "snippet_highlighted_words": [
+        "TCP guarantees delivery with handshakes and retries"
+      ],
+      "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAhUlEQVR4AWNwL/ChCFPHgP8MxqxA7ArEKVBcCcUNIAznI+RdQXrABgAZpv8ZjP6Tg0F6QQbsosCAXSADHmGVVPIC0jKEDHgAMuAbmgRE445D///feYzXIJBeBigH04BVW/9DAcgwqEGYaik2gGIvUByIlEbjDooTEiwps5GRlNmolpkowgBVP9wMSzSKGAAAAABJRU5ErkJggg==",
+      "video": {
+        "link": "https://encrypted-vtbn0.gstatic.com/video?q=tbn:ANd9GcQ6I7yMCAH_0JjnZJYwfKZLCZ1xtlTkAKRNtA",
+        "length": "1:36"
+      },
+      "thumbnail": "data:image/jpeg;base64,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"
+    },
+    {
+      "position": 4,
+      "title": "TCP vs UDP: Header Size, Packet Size, and Differences",
+      "link": "https://digilent.com/blog/udp-vs-tcp/?srsltid=AfmBOoo1P7d3cdOoSCqg017Hy-02qlAaV1WCyr8Dw2pnqpmytnhg7x7_",
+      "source": "Digilent",
+      "domain": "digilent.com",
+      "displayed_link": "https://digilent.com \u203a blog \u203a udp-vs-tcp",
+      "snippet": "UDP is ideal for when you want quick updates (like video or audio files), and TCP is great for when you want sensitive projects (websites and file transfers).",
+      "snippet_highlighted_words": [
+        "UDP is ideal for when you want quick updates"
+      ],
+      "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABhklEQVR4AWKgBIyCxD3uAF7LECSCIArD2eQ2jZPMV6yywXDnKTto07I9bU/bg4eCNjFZBFkEBU2vp+1pepqexrdwB8PPg7e3zmz4OObK//Pm/f8sRdjZhA/u7YLpWNQxIWIxl4GeCScvVwQGaA7xhglb/O3PsgcTdU7xgvGRgXD8XOEUHFPkMrBhArL+XKGJNoe4YYJE8VgN1+AjA54xqQ0QCPfx+fTtEqfQpRQvBfFX+M/d/S4xlmUqAw7ECH4ZMZZ9CvFWEt/iwJy/+U4YSyF2Hu8ek3H0VKEBPzmWwj0TnqUFPf+4mB5L6PsgjTvCSEt6+FA54Z0w/41dh6PHaSmxpH3EayF2uAuFUFReeSfKsYvnlLtv9MSIsXSTYxfh9umM668Vmmi0vtdiVyoG7Ih3opgaO73fx8Vyo/e9ELuz97UdFkmDBWtOQbtjOEdTkD/fYNRqzyeA9NjJkUqJ3RnwYIDkUkkE7oIkDlAmWthaiF1+OkgA9H1+DFZwzdBM2L+B7B0FANLmAUD6U5P3AAAAAElFTkSuQmCC"
+    },
+    {
+      "position": 5,
+      "title": "TCP vs. UDP: Key Differences and Uses",
+      "link": "https://www.avg.com/en/signal/tcp-vs-udp",
+      "source": "AVG.com",
+      "domain": "www.avg.com",
+      "displayed_link": "https://www.avg.com \u203a ... \u203a Privacy \u203a Privacy Tips",
+      "snippet": "The main difference between TCP and UDP is that TCP is connection-oriented, while UDP is connectionless. UDP has no handshake and no persistent ...",
+      "snippet_highlighted_words": [
+        "TCP is connection-oriented, while UDP is connectionless"
+      ],
+      "date": "Mar 17, 2026",
+      "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAABvFBMVEVHcEzZfSvjlC7qlzD1sTj0sDn2tDv4uTv4tjv4tzv0sDr5uDrdhy3fiTDsoDX6vDzsqDXYkjXWjDIzb5Iku+7wojfxqjj6vDzOpFAHYo4EaJIIapQJcJsMeaYNf6wNg7EJapIIbZcIa5S7XBMHbpgKbIVXW3EIdKDgjS56WlQIfasGeqjbai3cgS3TbSicRjMMirsQi7oYoNIPodMGm84Jjb/acCzXfCrVdygQlMQTmsvRQCbUYSvTcynOZyASoNMip9gIlMfXUSMyoM+ucTItiVKxVCzURyA6dJ13ZHyaTULHNR7DHxvCJx5TkDhemDeFizJwbyV4iiwgcG4uYonQPRvUSSJimDdQpEZ2rDp6rDpqnDVnnDd3qDmBrjpvozhLcURyMy+YExOwFBW1GhncWSLjZSNfmTZUiTKiAw7ocCTtfCUAhbhFiTZBkUPteiQmfUdFjj06h0MohlS+GR3ILR80d0ksfTk/hzQ+hjg6gTUzgUMmfUdTWT4VdUI3dVGJBQsTc0Iofj41gTc3i00zh0Iuj1y/FhzQPSDeWyNImkPAGB1OoUQ2nVQAlm/CGRu/Fx3UChG+Fx3DIh6MIO3AAAAAlHRSTlMAcP8gyv9Flf+AWLT/m///82L/BAOc/9z//////////+r/qP95Nf/////+xpz/////35ttSBr//////pz////+/+z/7/9Y0f////////////////////QqWH6f5v/////////////+s/f//v+x///yT5P////9jcve//////////9rrvL/4//e6fL/m////3FEEO/KlsXC7AAAAgNJREFUeAFEzkWCFEEQheH/ZUlXjwvOCO6+Qjbolg12MU7BliUHwN3ddby9uySoRL90jRD6J4071abxnxhUVqC0P8uUSGl9XHgGc2K56lbpjHSSxqAQ8jAvdlBzFcIOdHsIiKzI8yI0YhdCTl4Ju7SGRlt4UepvVBwKoZqwwCgdGGygmBSIKTUDgqbLoihb7E0VURcFFP2ZslKShEwrfQFs+RTFopT2t6RRef5b+oBop5gxAS03WkUGbXFEPWeIiDT+1lAct8eqigTmQoipDQMp9AJKY9VYBAvSO0dpZAnPHq0FWuWZLb4aHBzeolNS2qslDmuVia2UC9bQXiWvptMSAv501+zwg03qq6Ww7JIuyBMyR14fVel7kU0JnkThSMOJkuEl6gkvlPX2ubhhMpOc5Ys1i7viDx26GAYbaDWU1zGYjvy9kW873r3eRimMpXad0vSAhCZm++FZEWURECZFMRYBA8JzKxt4ZgIXxHm+YnBwUHjWYIFttmPodWbgoJ//OryfBJ61IsvA5b1e2KZkZu32KBMsADuGPlgb10mriZXqjWYzG2Pcfd/EtsPPWsdebyTsxbOjA9/B//bpB6sq/SGE5i6vuY37GDv3fWJiypUmpqdJrvjDbXa2dYDwQQ34wW81dj06JRDb5OYIX77kv59rZ+D6J9eYyFAw6RGjFQ8DADFO2Z5ZRDSEAAAAAElFTkSuQmCC"
+    },
+    {
+      "position": 6,
+      "title": "Introduction to TCP and UDP",
+      "link": "https://networklessons.com/network-fundamentals/introduction-to-tcp-and-udp",
+      "source": "NetworkLessons.com",
+      "domain": "networklessons.com",
+      "displayed_link": "https://networklessons.com \u203a Network Fundamentals",
+      "snippet": "TCP is a reliable protocol. UDP is an unreliable or best-effort protocol. TCP is connection-oriented which means it will \u201csetup\u201d a connection and then start ...",
+      "snippet_highlighted_words": [
+        "TCP is a reliable protocol"
+      ],
+      "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAALVBMVEVHcEz7wXD7wXD7wXD7wW/7wXD7wXD7wXD7wXD7wXD7wXD7wW/7wW/7wW/7wW9Arv0CAAAADnRSTlMA4Q9Y0T9p8B6RqS14u+2W9jsAAAC/SURBVCiRdZLbFsUQDAWJIC7J/3/u0VZDceZ1VtjZGDPjsZg/AIvgH+fkwh1dup1EOByJ0km7s6KsmWYnvEiUmW+m9HFi50xeFuok4yqF1NXNSd4H4zjCrzfGAoyddzRryFZveOmjY/88rRQfyZ8oeu1TMUU7qKDTzzoUnAIjH28lYBg1+1N9NldP0Fi2aYHSdRcQafmgQ86UynHOq/UGn69DXSlUinsrvJvA1FYZ77E8KfqD6ZnOP/bOxIf/+gNzSRMIAJCtyAAAAABJRU5ErkJggg=="
+    },
+    {
+      "position": 7,
+      "title": "What is the difference between UDP and TCP?",
+      "link": "https://protonvpn.com/support/udp-tcp?srsltid=AfmBOopeNssgxyvkDxOpt_wlhRT99l1nhyJAM7lLAjaSpky6yist-jO0",
+      "source": "Proton VPN",
+      "domain": "protonvpn.com",
+      "displayed_link": "https://protonvpn.com \u203a ... \u203a Protocols",
+      "snippet": "TCP is more concerned about accuracy. It allows devices to send and receive an ordered and error-checked stream of packets. UDP is more concerned with speed.",
+      "snippet_highlighted_words": [
+        "TCP is more concerned about accuracy"
+      ],
+      "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAIAAAD9b0jDAAABvklEQVR4Ae2VA5KkQRBG5xTrK6xOsLZt27btHdu2bdu2bU+7c76Kmhjb6njd/fNlZlGBpuAzxdJFaU05Kd6lvzdI9z05aFGgAyWEUF4au97WMl4pjD8uQsoOlB+S6hNSf0Gar1kMvc9k9JOs1cnTksK8KDmKBSsuosZ6EotHkgK4eouAuSLTIXcHfcC8HtasDh9nBACwDy3F7Xu7eLJQw8uzG8TFdaH+rH2Cw+VguI66ekIM7+1tfbizT45IKAJhkDUC9NaFxcoDE2TDSZMTZcd2iW4elkIEezf9Ij2+JMWTXAcqGuUjDKmX7wTnLwmQMoCdcYiBA34R4Bmu802RRBVIRh6nGECbz7Wcutl27nIHQIBu+BXc4jrgliEe7eD/bdy6+1EjOHa/pR+7bjfpuAi4zjlXhMJHK8XQ2/u2flBuqjWiXm4MLBONbZoahzRv/VU1EK4D1oWC8cz99dolYI1KcTf/QpuRHXQgr00yHineX2qc181R57Juo0etYPyr1EafvFVOWRzuMqhuAxNa+lCjgl8y+JBR02VsaM2Viia6np7IzALdRjA5i3S3TqWledJWftQLHcDB4sY3j6SdFGJiVRUZF1wAAAAASUVORK5CYII="
+    }
+  ],
+  "related_questions": [
+    {
+      "is_ai_overview": true,
+      "question": "What is the difference between TCP and UDP?",
+      "text_blocks": [
+        {
+          "type": "paragraph",
+          "answer": "TCP is a reliable, connection-oriented protocol that guarantees data delivery in the correct order, making it ideal for web browsing, emails, and file transfers where accuracy is essential. UDP is a faster, connectionless protocol that sends data continuously without waiting for confirmations, making it perfect for live streaming, gaming, and VoIP.",
+          "reference_indexes": [
+            0,
+            1,
+            3,
+            2
+          ]
+        },
+        {
+          "type": "header",
+          "answer": "Key Differences"
+        },
+        {
+          "type": "paragraph",
+          "answer": "Connection State: TCP establishes a dedicated connection using a \"three-way handshake\" before sending data. UDP requires no handshake and simply transmits data packets (\"datagrams\") to the destination.",
+          "reference_indexes": [
+            3
+          ]
+        },
+        {
+          "type": "video",
+          "link": "https://www.youtube.com/shorts/8B2trNb2vWk"
+        },
+        {
+          "type": "header",
+          "answer": "When to Use Which"
+        },
+        {
+          "type": "paragraph",
+          "answer": "Use TCP for:"
+        },
+        {
+          "type": "paragraph",
+          "answer": "Use UDP for:"
+        }
+      ],
+      "markdown": "TCP is a reliable, connection-oriented protocol that guarantees data delivery in the correct order, making it ideal for web browsing, emails, and file transfers where accuracy is essential. UDP is a faster, connectionless protocol that sends data continuously without waiting for confirmations, making it perfect for live streaming, gaming, and VoIP. [0](https://www.reddit.com/r/explainlikeimfive/comments/66i0ta/eli5_the_difference_between_tcp_vs_udp/) [1](https://www.geeksforgeeks.org/computer-networks/differences-between-tcp-and-udp/) [3](https://www.avg.com/en/signal/tcp-vs-udp) [2](https://www.youtube.com/watch?v=jE_FcgpQ7Co&t=31)\n\n## Key Differences\n\nConnection State: TCP establishes a dedicated connection using a \"three-way handshake\" before sending data. UDP requires no handshake and simply transmits data packets (\"datagrams\") to the destination. [3](https://www.avg.com/en/signal/tcp-vs-udp)\n\n\n\n## When to Use Which\n\nUse TCP for:\n\nUse UDP for:\n\n[[0] - ](https://www.reddit.com/r/explainlikeimfive/comments/66i0ta/eli5_the_difference_between_tcp_vs_udp/)\n[[1] - ](https://www.geeksforgeeks.org/computer-networks/differences-between-tcp-and-udp/)\n[[2] - ](https://www.youtube.com/watch?v=jE_FcgpQ7Co&t=31)\n[[3] - ](https://www.avg.com/en/signal/tcp-vs-udp)",
+      "reference_links": [
+        {
+          "index": 0,
+          "link": "https://www.reddit.com/r/explainlikeimfive/comments/66i0ta/eli5_the_difference_between_tcp_vs_udp/",
+          "favicon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.reddit.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 1,
+          "link": "https://www.geeksforgeeks.org/computer-networks/differences-between-tcp-and-udp/",
+          "favicon": "https://encrypted-tbn1.gstatic.com/faviconV2?url=https://www.geeksforgeeks.org&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 2,
+          "link": "https://www.youtube.com/watch?v=jE_FcgpQ7Co&t=31",
+          "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAhUlEQVR4AWNwL/ChCFPHgP8MxqxA7ArEKVBcCcUNIAznI+RdQXrABgAZpv8ZjP6Tg0F6QQbsosCAXSADHmGVVPIC0jKEDHgAMuAbmgRE445D///feYzXIJBeBigH04BVW/9DAcgwqEGYaik2gGIvUByIlEbjDooTEiwps5GRlNmolpkowgBVP9wMSzSKGAAAAABJRU5ErkJggg=="
+        },
+        {
+          "index": 3,
+          "link": "https://www.avg.com/en/signal/tcp-vs-udp",
+          "favicon": "https://encrypted-tbn1.gstatic.com/faviconV2?url=https://www.avg.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        }
+      ],
+      "next_page_token": "eyJmYyI6IkVxRUJDbUpCU21sVU5IUkpiVkpLYmt0ek1HTXpablI0UlRSYVVVSnVPVkZ5VWtGR2FVdEVSRlJuVVZwM1p6VmlUMlUwVm1KRk9IWldkbTExUkdSd1FrZHNWVEJDV0dGQk0wY3paakpzWWw5NVRuVmZlV05WWms1UlpFdFphMngzV1hsWVZYTldaeElYTVVwd1pXRjBTRlpIT0VOcWFHSkpVR2gwUzIxeFVYTWFJa0ZFYzNJNVpsTTFZMnN3YkZGWUxVTmFXVjlDTUZSclpXOUZWV3R5YW5sTFQyYyIsImZjdiI6IjMiLCJ2ZXQiOiIyYWhVS0V3alJqNUh3b09LVkF4WEFVVUVBSFFhcEtiVVFxN2tCS0FCNkJBZ2xFQUEiLCJxIjoiV2hhdCBpcyB0aGUgZGlmZmVyZW5jZSBiZXR3ZWVuIFRDUCBhbmQgVURQPyIsImxrIjoiR2dwMVpIQWdkbk1nZEdOdyIsInFjIjoiQ2dwMFkzQWdkbk1nZFdSd0VBQjlCNjBkUHciLCJnbCI6InVzIiwiaGwiOiJlbiJ9"
+    },
+    {
+      "question": "Why would anyone use UDP over TCP?",
+      "answer": "It depends on what you're doing online and the type of data being transferred. UDP is better if you're gaming online, because its speedy data transfer allows for mostly lag-free gaming. TCP is better if you're transferring files, like family photos, because it ensures the data arrives exactly as it was sent.Feb 23, 2023",
+      "answer_highlight": "UDP is better if you're gaming online, because its speedy data transfer allows for mostly lag-free gaming",
+      "date": "Feb 23, 2023",
+      "source": {
+        "title": "TCP vs UDP: What's the Difference and Which Protocol Is Better? - Avast",
+        "link": "https://www.avast.com/c-tcp-vs-udp-difference#:~:text=It%20depends%20on%20what%20you,exactly%20as%20it%20was%20sent.",
+        "source": "Avast",
+        "domain": "www.avast.com",
+        "displayed_link": "https://www.avast.com \u203a c-tcp-vs-udp-difference",
+        "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAY1BMVEX/////8uz/uZX/kEz/dgD/sIf/aQD/cgD/bAD/om7/k1P/bwD/eAD/1cH/iTz/dQD/gCX/xKj/gy3/0Lr/eg//hjb/yK3/ZAD/1MD/tpD/jEL/6+L/p3b/3Mz/m2H/wKD/awB6QD2UAAAAoklEQVR4AT2PhWEDMQwAz7beJIWfef8ly42YAQDng0jwjj9oYsql5BQbAKhqeoFLNq0AjZplgKuYNuCifQUccFGz6PDJ7KZ3gLtY8oQvWR75CbzUJNCaGLi2A1qx9juQHVCv0Ku1BJE61BGmGdIt4HMPy2P1bts5To8b7n5a91nO0KwMDvpx29NNzCRpswC8hpv9gob3c98Ff8/9vd+2f+9/AsbCB/pM/4UAAAAAAElFTkSuQmCC"
+      },
+      "next_page_token": "eyJmYyI6IkVxRUJDbUpCU21sVU5IUkpiVkpLYmt0ek1HTXpablI0UlRSYVVVSnVPVkZ5VWtGR2FVdEVSRlJuVVZwM1p6VmlUMlUwVm1KRk9IWldkbTExUkdSd1FrZHNWVEJDV0dGQk0wY3paakpzWWw5NVRuVmZlV05WWms1UlpFdFphMngzV1hsWVZYTldaeElYTVVwd1pXRjBTRlpIT0VOcWFHSkpVR2gwUzIxeFVYTWFJa0ZFYzNJNVpsTTFZMnN3YkZGWUxVTmFXVjlDTUZSclpXOUZWV3R5YW5sTFQyYyIsImZjdiI6IjMiLCJ2ZXQiOiIyYWhVS0V3alJqNUh3b09LVkF4WEFVVUVBSFFhcEtiVVFxN2tCS0FCNkJBZ3FFQUEiLCJxIjoiV2h5IHdvdWxkIGFueW9uZSB1c2UgVURQIG92ZXIgVENQPyIsImxrIjoiR2lGM2FIa2dkMjkxYkdRZ1lXNTViMjVsSUhWelpTQjFaSEFnYjNabGNpQjBZM0EiLCJxYyI6IkNncDBZM0FnZG5NZ2RXUndFQUI5QjYwZFB3IiwiZ2wiOiJ1cyIsImhsIjoiZW4ifQ"
+    },
+    {
+      "is_ai_overview": true,
+      "question": "Is Netflix TCP or UDP?",
+      "text_blocks": [
+        {
+          "type": "paragraph",
+          "answer": "TCP is a reliable, connection-oriented protocol that guarantees data delivery in the correct order, making it ideal for web browsing, emails, and file transfers where accuracy is essential. UDP is a faster, connectionless protocol that sends data continuously without waiting for confirmations, making it perfect for live streaming, gaming, and VoIP.",
+          "reference_indexes": [
+            0,
+            1,
+            3,
+            2
+          ]
+        },
+        {
+          "type": "header",
+          "answer": "Key Differences"
+        },
+        {
+          "type": "paragraph",
+          "answer": "Connection State: TCP establishes a dedicated connection using a \"three-way handshake\" before sending data. UDP requires no handshake and simply transmits data packets (\"datagrams\") to the destination.",
+          "reference_indexes": [
+            3
+          ]
+        },
+        {
+          "type": "video",
+          "link": "https://www.youtube.com/shorts/8B2trNb2vWk"
+        },
+        {
+          "type": "header",
+          "answer": "When to Use Which"
+        },
+        {
+          "type": "paragraph",
+          "answer": "Use TCP for:"
+        },
+        {
+          "type": "paragraph",
+          "answer": "Use UDP for:"
+        }
+      ],
+      "markdown": "TCP is a reliable, connection-oriented protocol that guarantees data delivery in the correct order, making it ideal for web browsing, emails, and file transfers where accuracy is essential. UDP is a faster, connectionless protocol that sends data continuously without waiting for confirmations, making it perfect for live streaming, gaming, and VoIP. [0](https://www.reddit.com/r/explainlikeimfive/comments/66i0ta/eli5_the_difference_between_tcp_vs_udp/) [1](https://www.geeksforgeeks.org/computer-networks/differences-between-tcp-and-udp/) [3](https://www.avg.com/en/signal/tcp-vs-udp) [2](https://www.youtube.com/watch?v=jE_FcgpQ7Co&t=31)\n\n## Key Differences\n\nConnection State: TCP establishes a dedicated connection using a \"three-way handshake\" before sending data. UDP requires no handshake and simply transmits data packets (\"datagrams\") to the destination. [3](https://www.avg.com/en/signal/tcp-vs-udp)\n\n\n\n## When to Use Which\n\nUse TCP for:\n\nUse UDP for:\n\n[[0] - ](https://www.reddit.com/r/explainlikeimfive/comments/66i0ta/eli5_the_difference_between_tcp_vs_udp/)\n[[1] - ](https://www.geeksforgeeks.org/computer-networks/differences-between-tcp-and-udp/)\n[[2] - ](https://www.youtube.com/watch?v=jE_FcgpQ7Co&t=31)\n[[3] - ](https://www.avg.com/en/signal/tcp-vs-udp)",
+      "reference_links": [
+        {
+          "index": 0,
+          "link": "https://www.reddit.com/r/explainlikeimfive/comments/66i0ta/eli5_the_difference_between_tcp_vs_udp/",
+          "favicon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.reddit.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 1,
+          "link": "https://www.geeksforgeeks.org/computer-networks/differences-between-tcp-and-udp/",
+          "favicon": "https://encrypted-tbn1.gstatic.com/faviconV2?url=https://www.geeksforgeeks.org&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        },
+        {
+          "index": 2,
+          "link": "https://www.youtube.com/watch?v=jE_FcgpQ7Co&t=31",
+          "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAhUlEQVR4AWNwL/ChCFPHgP8MxqxA7ArEKVBcCcUNIAznI+RdQXrABgAZpv8ZjP6Tg0F6QQbsosCAXSADHmGVVPIC0jKEDHgAMuAbmgRE445D///feYzXIJBeBigH04BVW/9DAcgwqEGYaik2gGIvUByIlEbjDooTEiwps5GRlNmolpkowgBVP9wMSzSKGAAAAABJRU5ErkJggg=="
+        },
+        {
+          "index": 3,
+          "link": "https://www.avg.com/en/signal/tcp-vs-udp",
+          "favicon": "https://encrypted-tbn1.gstatic.com/faviconV2?url=https://www.avg.com&client=AIM&size=16&type=FAVICON&fallback_opts=TYPE,SIZE,URL"
+        }
+      ],
+      "next_page_token": "eyJmYyI6IkVxRUJDbUpCU21sVU5IUkpiVkpLYmt0ek1HTXpablI0UlRSYVVVSnVPVkZ5VWtGR2FVdEVSRlJuVVZwM1p6VmlUMlUwVm1KRk9IWldkbTExUkdSd1FrZHNWVEJDV0dGQk0wY3paakpzWWw5NVRuVmZlV05WWms1UlpFdFphMngzV1hsWVZYTldaeElYTVVwd1pXRjBTRlpIT0VOcWFHSkpVR2gwUzIxeFVYTWFJa0ZFYzNJNVpsTTFZMnN3YkZGWUxVTmFXVjlDTUZSclpXOUZWV3R5YW5sTFQyYyIsImZjdiI6IjMiLCJ2ZXQiOiIyYWhVS0V3alJqNUh3b09LVkF4WEFVVUVBSFFhcEtiVVFxN2tCS0FCNkJBZ2tFQUEiLCJxIjoiSXMgTmV0ZmxpeCBUQ1Agb3IgVURQPyIsImxrIjoiR2hWcGN5QnVaWFJtYkdsNElIUmpjQ0J2Y2lCMVpIQSIsInFjIjoiQ2dwMFkzQWdkbk1nZFdSd0VBQjlCNjBkUHciLCJnbCI6InVzIiwiaGwiOiJlbiJ9"
+    },
+    {
+      "question": "Does port 443 use TCP or UDP?",
+      "answer": "At this point, the web browser initiates a secure connection via port 443, sending a Transmission Control Protocol (TCP) request. Next, the SSL/TLS certificate is sent to the client.Apr 10, 2025",
+      "answer_highlight": "Transmission Control Protocol (TCP)",
+      "date": "Apr 10, 2025",
+      "source": {
+        "title": "What is Port 443? How HTTPS secures web traffic | Sectigo\u00ae Official",
+        "link": "https://www.sectigo.com/blog/what-is-port-443#:~:text=At%20this%20point%2C%20the%20web,is%20sent%20to%20the%20client.",
+        "source": "Sectigo",
+        "domain": "www.sectigo.com",
+        "displayed_link": "https://www.sectigo.com \u203a blog \u203a what-is-port-443",
+        "favicon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAY1BMVEUBUlgG38cAUFYAUVcBTlUAQkz///8AR1AG5cwAS1OUsLIbYmcAP0cCgX0Di4QG6M4G7tMcY2gCd3UDoJQFxbMFzLgEp5oBbm0AX2IAPkoErZ8DkYkG3MUBamoDmY+Zs7WMpqhs9OQwAAAAnElEQVQYlWWP2RaDIAxEAySsSlBx66b//5UF7elymqdkmFwmoH2Q8CoZvAbfvOeiNB6Cgq9SARQiVo/D40UBtjH2EtzQOnOYTGY7ElCydqBqcpMVPDtiIWymCl5KK+KabFEudctMtU1rLDovlU+5KExmZmEHV7l0vXEq3NFyPn9ydH8gyD7GFuEMilj5JaP6j779HreB3rvP+d2unxSLBi51yFpCAAAAAElFTkSuQmCC"
+      },
+      "next_page_token": "eyJmYyI6IkVxRUJDbUpCU21sVU5IUkpiVkpLYmt0ek1HTXpablI0UlRSYVVVSnVPVkZ5VWtGR2FVdEVSRlJuVVZwM1p6VmlUMlUwVm1KRk9IWldkbTExUkdSd1FrZHNWVEJDV0dGQk0wY3paakpzWWw5NVRuVmZlV05WWms1UlpFdFphMngzV1hsWVZYTldaeElYTVVwd1pXRjBTRlpIT0VOcWFHSkpVR2gwUzIxeFVYTWFJa0ZFYzNJNVpsTTFZMnN3YkZGWUxVTmFXVjlDTUZSclpXOUZWV3R5YW5sTFQyYyIsImZjdiI6IjMiLCJ2ZXQiOiIyYWhVS0V3alJqNUh3b09LVkF4WEFVVUVBSFFhcEtiVVFxN2tCS0FCNkJBZ3BFQUEiLCJxIjoiRG9lcyBwb3J0IDQ0MyB1c2UgVENQIG9yIFVEUD8iLCJsayI6IkdoeGtiMlZ6SUhCdmNuUWdORFF6SUhWelpTQjBZM0FnYjNJZ2RXUnciLCJxYyI6IkNncDBZM0FnZG5NZ2RXUndFQUI5QjYwZFB3IiwiZ2wiOiJ1cyIsImhsIjoiZW4ifQ"
+    }
+  ],
+  "perspectives": [
+    {
+      "position": 1,
+      "title": "\u2699\ufe0f TCP vs UDP \u2014 Which Protocol Does What, and Why It Matters \ud83c\udf10 TCP and UDP are two core transport protocols that move data across networks \u2014 but they behave very differently. Here\u2019s a breakdown to help you understand when and why each one is use",
+      "author": "Chirag Goswami \u00b7 LinkedIn",
+      "source": "Cybersecurity professional",
+      "date": "5 days ago",
+      "iso_date": "2026-07-15T01:39:47Z",
+      "reactions": "170+ reactions",
+      "thumbnail": "data:image/png;base64,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"
+    },
+    {
+      "position": 2,
+      "title": "TCP vs UDP \ud83d\ude80\ud83d\udce6 Watch till the end and see which protocol wins in different situations! \ud83d\udc47 #TCP #UDP #CCNA #CCNP #Cisco #Networking #NetworkingWithIsrar",
+      "author": "netwithisrar",
+      "source": "Facebook",
+      "date": "2 weeks ago",
+      "iso_date": "2026-07-04T19:09:58Z",
+      "reactions": "290+ reactions",
+      "thumbnail": "data:image/jpeg;base64,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"
+    },
+    {
+      "position": 3,
+      "title": "The simplest way to explain TCP vs. UDP? Look at how you communicate. \ud83d\udce6 TCP is a Registered Courier Safe, tracked, and guaranteed delivery. If a packet drops, it\u2019s sent again. Perfect for secure tasks like payments or log-ins, but a bit slower due to constant",
+      "author": "Anjali Viramgama \u00b7 LinkedIn",
+      "source": "Software engineer",
+      "iso_date": "2026-06-25T07:00:00Z",
+      "reactions": "3 weeks ago",
+      "thumbnail": "data:image/jpeg;base64,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"
+    },
+    {
+      "position": 4,
+      "title": "TCP vs UDP | Most Important Networking Topic \ud83d\udd25",
+      "author": "PM Networking \u00b7 YouTube",
+      "source": "Cisco certification training provider",
+      "date": "1 month ago",
+      "iso_date": "2026-05-28T07:00:00Z",
+      "reactions": "1.7K+ views",
+      "thumbnail": "https://img.youtube.com/vi/VCOtrJ89bnU/hqdefault.jpg"
+    },
+    {
+      "position": 5,
+      "title": "\ud83d\udefb Or \ud83c\udfce\ufe0f? If you had to deliver something important... Which would you choose? A delivery truck that guarantees every package arrives safely? Or a race car that gets there as fast as possible, even if a few packages are lost along the way? Believe it or not... Th",
+      "author": "Randy M. Alonzo",
+      "source": "LinkedIn",
+      "iso_date": "2026-07-13T23:58:44Z",
+      "reactions": "6 days ago",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe7ddy33JB9cmTJfg4kgOVDR5hiAlHf3DujySfW8Jco_5aUsgdojOXRZMLBA&usqp=CAI&s"
+    },
+    {
+      "position": 6,
+      "title": "TCP vs UDP - How Data Actually Travels Across the Internet #education #networking #technology #CCNA",
+      "author": "OnlineCiscoCertification",
+      "source": "Facebook",
+      "iso_date": "2026-05-21T07:00:00Z",
+      "reactions": "May 21, 2026",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2IEAHKfHBO0-4pD8ZaBZ7HanPvxjWS8x1AWpxenPohquf5BbjQj1thwLk2w&usqp=CAI&s=10"
+    },
+    {
+      "position": 7,
+      "title": "TCP x UDP",
+      "author": "r/networkingmemes",
+      "source": "Reddit",
+      "date": "1 month ago",
+      "iso_date": "2026-06-17T07:00:00Z",
+      "reactions": "10+ comments",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-T2U4O0Q7WeIR64lI_6MK_Fqf-EtaRTxlxhnHyhtaycpRJZajeXkAyJmlGA&usqp=CAI&s"
+    },
+    {
+      "position": 8,
+      "title": "20 MUST-KNOW Networking Concepts For Interviews! If you\u2019re learning Cloud or DevOps, you must know these networking basics. \u2022 IP Address vs MAC Address \u2192 IP Address identifies a device on a network \u2192 MAC Address identifies the physical network interface inside that device \u2022 TCP vs UDP \u2192 TCP ensures reliable and ordered delivery of data \u2192 UDP sends data faster without guaranteed delivery \u2022 Router vs Switch \u2192 Router connects different networks together \u2192 Switch connects devices within the same network \u2022 IP Address vs DNS \u2192 IP Address is the actual network address of a device \u2192 DNS translates domain names into IP addresses \u2022 HTTP vs HTTPS \u2192 HTTP sends web traffic in plain text \u2192 HTTPS encrypts traffic using TLS \u2022 Bandwidth vs Latency \u2192 Bandwidth measures network capacity \u2192 Latency measures network delay \u2022 Internet Gateway vs NAT Gateway \u2192 Internet Gateway exposes public subnet resources to the internet \u2192 NAT Gateway gives private subnet resources outbound internet access securely",
+      "author": "vishakha.sadhwani \u00b7 Instagram",
+      "source": "Cloud & AI infrastructure architect",
+      "iso_date": "2026-06-25T07:00:00Z",
+      "reactions": "3 weeks ago",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRE0tMn22BS3LnCsDRrKGrsNwbSAnNozz3YarIwCfLtTsaDHPGkAhRB8hQnCA&usqp=CAI&s=10"
+    },
+    {
+      "position": 9,
+      "title": "\ud83d\ude80 TCP vs UDP \u2014 Understanding the Two Ways Data Travels \ud83c\udf10 When data moves across the internet, it mainly uses two transport protocols: TCP and UDP. Both are designed for communication, but they work very differently depending on the situation. Let\u2019s br",
+      "author": "Tushar Sharma",
+      "source": "LinkedIn",
+      "iso_date": "2026-05-12T07:00:00Z",
+      "reactions": "May 12, 2026",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjQCvDM7nPwpUECrGDrll3xw0g8O7UdvJXg0p479oWhj6tBveinqdYKHpiLA&usqp=CAI&s"
+    },
+    {
+      "position": 10,
+      "title": "TCP and UDP Question ? | CCNA Interview Question! #ccna #networking #mockinterview",
+      "author": "NETWORKERS HOME \u00b7 YouTube",
+      "source": "CCNA training institute",
+      "date": "1 month ago",
+      "iso_date": "2026-06-20T14:00:16Z",
+      "reactions": "20+ views",
+      "thumbnail": "https://img.youtube.com/vi/yNzCq5prVwQ/hqdefault.jpg"
+    },
+    {
+      "position": 11,
+      "title": "\u26a1 TCP vs UDP \u2013 Reliable or Fast? \ud83c\udf10 Ever wondered why browsing feels different from live gaming or video calls? \ud83e\udd14 Watch this animation to understand how TCP ensures reliable delivery while UDP prioritizes speed. Learn networking visually in just a few sec",
+      "author": "61576370915884",
+      "source": "Facebook",
+      "iso_date": "2026-06-25T06:38:11Z",
+      "reactions": "3 weeks ago",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNTnMXz82sMCXE_8eENWnacWTU7eNaUdqrLFpA0gV_FuP00kM6oqRyO81mX6Q&usqp=CAI&s=10"
+    },
+    {
+      "position": 12,
+      "title": "\ud83d\ude80 How UDP Works: The Fast Lane of Network Communication When speed matters more than perfection, UDP (User Datagram Protocol) becomes the protocol of choice. Unlike TCP, which establishes a connection and ensures every packet arrives correctly,",
+      "author": "Cyber Edition \u00b7 LinkedIn",
+      "source": "Cybersecurity news & analysis",
+      "date": "1 month ago",
+      "iso_date": "2026-06-21T07:00:00Z",
+      "reactions": "250+ reactions",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgShNBiDkLTsnmql7P9-2lYBeyKkMQTfqvnlAX6AMk7ojgEUHTfJ54ULqdPg&usqp=CAI&s"
+    },
+    {
+      "position": 13,
+      "topic": "TCP vs UDP explained",
+      "description": "Social media users are sharing funny memes and analogies to explain the reliable, slow nature of TCP versus fast UDP.",
+      "is_ai_overview": true,
+      "title": "UDP vs TCP",
+      "author": "r/ProgrammerHumor",
+      "source": "Reddit",
+      "date": "Apr 11, 2023",
+      "iso_date": "2023-04-11T07:00:00Z",
+      "reactions": "70+ comments",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVEatAZnpM7JWWGBX1l70G1WxQTbyHFWZYqeWHoq2SYxzb7Hqesvo939Z_VA&usqp=CAI&s"
+    },
+    {
+      "position": 14,
+      "topic": "TCP vs UDP explained",
+      "description": "Social media users are sharing funny memes and analogies to explain the reliable, slow nature of TCP versus fast UDP.",
+      "is_ai_overview": true,
+      "title": "the best explanation of TCP vs UDP",
+      "author": "r/ProgrammerHumor",
+      "source": "Reddit",
+      "date": "Oct 23, 2021",
+      "iso_date": "2021-10-23T07:00:00Z",
+      "reactions": "8 comments",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbCe5eno_JfgHFU19m5wKLbjmAZDXkHHHNgfhNTM6fdWCZUfRDBP-AlYInSQ&usqp=CAI&s"
+    },
+    {
+      "position": 15,
+      "topic": "TCP vs UDP explained",
+      "description": "Social media users are sharing funny memes and analogies to explain the reliable, slow nature of TCP versus fast UDP.",
+      "is_ai_overview": true,
+      "title": "TCP vs UDP",
+      "author": "r/ProgrammerHumor",
+      "source": "Reddit",
+      "date": "Nov 29, 2020",
+      "iso_date": "2020-11-29T08:00:00Z",
+      "reactions": "20+ comments",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-qCS6A46oBGkPyq8yG_sqMpBfVJXYvG2HdOObkBHrZ2UEEmA8O8EW_PCVyw&usqp=CAI&s"
+    },
+    {
+      "position": 16,
+      "topic": "TCP vs UDP explained",
+      "description": "Social media users are sharing funny memes and analogies to explain the reliable, slow nature of TCP versus fast UDP.",
+      "is_ai_overview": true,
+      "title": "TCP vs UDP",
+      "author": "r/ipv6",
+      "source": "Reddit",
+      "date": "May 17, 2026",
+      "iso_date": "2026-05-17T07:00:00Z",
+      "reactions": "10+ comments",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8wk8tQHlIfsbvBOvrgQ8jlRnHbDKlsHLNjVJupR-mFOaNievOcQYNfbAWKg&usqp=CAI&s"
+    },
+    {
+      "position": 17,
+      "topic": "TCP vs UDP explained",
+      "description": "Social media users are sharing funny memes and analogies to explain the reliable, slow nature of TCP versus fast UDP.",
+      "is_ai_overview": true,
+      "title": "found an old meme I made comparing TCP and UDP",
+      "author": "r/it",
+      "source": "Reddit",
+      "date": "Oct 3, 2025",
+      "iso_date": "2025-10-03T07:00:00Z",
+      "reactions": "10+ comments",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyxDI7sk88h45W0QbCvVF1AwpNgMD_3WQbAiQBa0f6uGUAMlOpUNm_rzJ4gA&usqp=CAI&s"
+    },
+    {
+      "position": 18,
+      "topic": "TCP vs UDP explained",
+      "description": "Social media users are sharing funny memes and analogies to explain the reliable, slow nature of TCP versus fast UDP.",
+      "is_ai_overview": true,
+      "title": "TCP vs UDP",
+      "author": "r/networkingmemes",
+      "source": "Reddit",
+      "date": "Jul 12, 2024",
+      "iso_date": "2024-07-12T07:00:00Z",
+      "reactions": "7 comments",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoJBm2unUgUFEU4wlw84brkcf1m5NJdWzIJWzpYVGDGIZyKqYoig5ZcJe7Ig&usqp=CAI&s"
+    }
+  ],
+  "inline_shorts": [
+    {
+      "position": 1,
+      "title": "Simplest explanation of TCP and UDP",
+      "link": "https://www.youtube.com/shorts/8B2trNb2vWk",
+      "source": "YouTube",
+      "author": "KodeKloud",
+      "length": "1:36",
+      "preview": "https://encrypted-vtbn0.gstatic.com/video?q=tbn:ANd9GcRlzAQA4_3rRMgHTPv-V_k291hUVmVGyosP8w",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScBAEOxC2jF9-kqZJ0zJhgw29FZWzUpL0bZQJDhlkBx6b_WhNtXHJRRf4&s=10"
+    },
+    {
+      "position": 2,
+      "title": "coding.kitty on Instagram: \"TCP vs UDP, explained by cats ...",
+      "link": "https://www.instagram.com/reel/DSE6LexESUr/?hl=en",
+      "source": "Instagram",
+      "author": "coding.kitty",
+      "length": "0:56",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT912LMldfoOhqlQ8VNbDzVBoCU6AVlEU8wxJnqFRR1Jb4x9sZPCPAB0hk&s=10"
+    },
+    {
+      "position": 3,
+      "title": "TCP vs UDP \u2014 Do you know the difference? TCP: Reliable ...",
+      "link": "https://www.facebook.com/netwithisrar/videos/tcp-vs-udp-do-you-know-the-difference-tcp-reliable-ordered-connection-based-comm/905694759042205/",
+      "source": "Facebook",
+      "author": "Networking with Israr",
+      "length": "0:19",
+      "preview": "https://encrypted-vtbn0.gstatic.com/video?q=tbn:ANd9GcT1WWmCDVhMMrGBl1Ff43UVlKO5VidFtjEVjg",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtZXDBT2uL-zJoHQMqoPIBKT41TSqPCkSGOfBcgCfVt9kbQ4pF70NJhGY&s=10"
+    },
+    {
+      "position": 4,
+      "title": "TCP vs UDP Explained with WhatsApp",
+      "link": "https://www.youtube.com/shorts/mh8geod4VRI",
+      "source": "YouTube",
+      "author": "KodeKloud",
+      "length": "3:00",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSy0SFCV_K8_QKoZNSqM3gnRzgDUkD9L8r1p8CEIUAp0U6RXxa21_qFVDA&s=10"
+    },
+    {
+      "position": 5,
+      "title": "\"Networking Tip: Difference Between TCP and UDP Explained ...",
+      "link": "https://www.linkedin.com/posts/rizwan-ali-9908932a8_networkingtips-tcpvsudp-networkengineer-activity-7355181411139481600-MFgQ",
+      "source": "LinkedIn",
+      "author": "telecomTech",
+      "length": "1:31",
+      "preview": "https://encrypted-vtbn0.gstatic.com/video?q=tbn:ANd9GcTkoXYEDqVGjz2E-SUd43HRC4nXX2qlYE0vlg",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJojSsDpCwlpUBgOj6P-7iPJC3GUphQJAX5gdxgsYrNrpT6AC8ABAOWhk&s=10"
+    },
+    {
+      "position": 6,
+      "title": "TCP vs UDP \u2013 Which One Wins? Know the Difference ...",
+      "link": "https://www.youtube.com/shorts/zKvs9NAU980",
+      "source": "YouTube",
+      "author": "Sikandar Shaik CCIEx3",
+      "length": "1:41",
+      "preview": "https://encrypted-vtbn0.gstatic.com/video?q=tbn:ANd9GcTs6zcOe8GYv2yQDi494nKFwnFpOMV-d0dnoA",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6X5p6stRb4Fbj8v8HriJfTeS2q_K1CQFzD1l9tAq3L9VTbzqzuetqKJI&s=10"
+    },
+    {
+      "position": 7,
+      "title": "TCP vs. UDP | AWS Developers | AWS Developers | 14 ...",
+      "link": "https://www.linkedin.com/posts/aws-developers_tcp-vs-udp-aws-developers-activity-7284666871348428800-YV-L",
+      "source": "LinkedIn",
+      "author": "AWS Developers",
+      "length": "0:36",
+      "preview": "https://encrypted-vtbn0.gstatic.com/video?q=tbn:ANd9GcT1j1LWx7HkXC5X0USBRnk9e_bGtTBCmQf2pw",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtNngJ_kcMPQ-mHZ33qkx015UDvW-Jfwz2LDkghYLgX0ZfL4e0LmjMl5I&s=10"
+    },
+    {
+      "position": 8,
+      "title": "TCP vs UDP: What's the Difference?",
+      "link": "https://www.youtube.com/shorts/ANfRMu7YVWY",
+      "source": "YouTube",
+      "author": "Network Kings",
+      "length": "0:19",
+      "preview": "https://encrypted-vtbn0.gstatic.com/video?q=tbn:ANd9GcRJjpK68heI35QGsklPChbhZRtiMWjZ2RyDSQ",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTM8hGDYAvaA-nUSeIfma9Drpx2wXkkzzLMO8OJSKGAtMLU2nl8BfU-KFg&s=10"
+    },
+    {
+      "position": 9,
+      "title": "What is the difference between TCP vs. UDP? #techexplained ...",
+      "link": "https://www.youtube.com/shorts/hjXGpqkWYck",
+      "source": "YouTube",
+      "author": "Tiff In Tech",
+      "length": "0:52",
+      "preview": "https://encrypted-vtbn0.gstatic.com/video?q=tbn:ANd9GcSN-GOtdW70xIkV-TfXiKkgl4xzSUh5fDfD8w",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2kiRUzKVamYO9uJb9hdFGGZNNYRv5XrgVaC2h3tNbmEsAG4_c1YbnUfM&s=10"
+    },
+    {
+      "position": 10,
+      "title": "TCP or UDP? Every Developer Must Know This",
+      "link": "https://www.youtube.com/shorts/oYf6qaBpFsw",
+      "source": "YouTube",
+      "author": "KodeKloud",
+      "length": "1:39",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLfrojgKobb6bb_DHH3sQCfYMU-bwfNS1zHB1NsfOgjLjkRZsa5NMOFfo&s=10"
+    }
+  ],
+  "related_searches": [
+    {
+      "query": "Tcp vs udp reddit",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&pws=0&hl=en&gl=us&q=Tcp+vs+udp+reddit&sa=X&ved=2ahUKEwjRj5HwoOKVAxXAUUEAHQapKbUQ1QJ6BAgxEAE"
+    },
+    {
+      "query": "TCP vs UDP full form",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&pws=0&hl=en&gl=us&q=TCP+vs+UDP+full+form&sa=X&ved=2ahUKEwjRj5HwoOKVAxXAUUEAHQapKbUQ1QJ6BAhGEAE"
+    },
+    {
+      "query": "TCP vs UDP meme",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&pws=0&hl=en&gl=us&q=TCP+vs+UDP+meme&sa=X&ved=2ahUKEwjRj5HwoOKVAxXAUUEAHQapKbUQ1QJ6BAhBEAE"
+    },
+    {
+      "query": "TCP vs UDP examples",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&pws=0&hl=en&gl=us&q=TCP+vs+UDP+examples&sa=X&ved=2ahUKEwjRj5HwoOKVAxXAUUEAHQapKbUQ1QJ6BAg8EAE"
+    },
+    {
+      "query": "Difference between TCP and UDP PDF",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&pws=0&hl=en&gl=us&q=Difference+between+TCP+and+UDP+PDF&sa=X&ved=2ahUKEwjRj5HwoOKVAxXAUUEAHQapKbUQ1QJ6BAg7EAE"
+    },
+    {
+      "query": "TCP vs UDP vs HTTP",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&pws=0&hl=en&gl=us&q=TCP+vs+UDP+vs+HTTP&sa=X&ved=2ahUKEwjRj5HwoOKVAxXAUUEAHQapKbUQ1QJ6BAg5EAE"
+    },
+    {
+      "query": "TCP vs UDP for gaming",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&pws=0&hl=en&gl=us&q=TCP+vs+UDP+for+gaming&sa=X&ved=2ahUKEwjRj5HwoOKVAxXAUUEAHQapKbUQ1QJ6BAg4EAE"
+    },
+    {
+      "query": "TCP vs UDP table",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&pws=0&hl=en&gl=us&q=TCP+vs+UDP+table&sa=X&ved=2ahUKEwjRj5HwoOKVAxXAUUEAHQapKbUQ1QJ6BAgzEAE"
+    }
+  ],
+  "pagination": {
+    "current": 1,
+    "next": "https://www.google.com/search?q=TCP+vs+UDP&oq=TCP+vs+UDP&gl=us&hl=en&pws=0&start=10"
+  }
+}

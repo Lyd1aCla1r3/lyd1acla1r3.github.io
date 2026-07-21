@@ -1,0 +1,185 @@
+{
+  "query": "what is the electoral college",
+  "intent": "definition",
+  "scores": {
+    "SearchApi": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "SerpApi": {
+      "extracted": {
+        "present": true,
+        "summary": "",
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "snippet": "The Electoral College is the official system used in the United States to elect the president and vice president every four years. It was established by the U.S. Constitution as a compromise between allowing citizens to vote directly for the president and allowing Congress to make the choice.",
+            "snippet_links": [
+              {
+                "link": "https://www.archives.gov/electoral-college/about"
+              }
+            ],
+            "reference_indexes": [
+              0,
+              1,
+              4,
+              5
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "The system operates through a group of representatives called electors. Every state is assigned a specific number of electors equal to its total representation in Congress: two for its senators, plus a variable number based on its representatives in the House. The more populous a state, the more electors it has.",
+            "snippet_links": [
+              {
+                "link": "https://www.archives.gov/electoral-college/about"
+              }
+            ],
+            "reference_indexes": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "Here are a few key details about how it works:"
+          },
+          {
+            "type": "list",
+            "list": [
+              {
+                "snippet": "The Electors: There are 538 total electors in the Electoral College, which includes three representing Washington, D.C."
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "After citizens cast their ballots in November, the electors meet in mid-December to officially cast their votes for president and vice president. Congress then counts these votes in early January to finalize the election results.",
+            "snippet_links": [
+              {
+                "link": "https://www.usa.gov/electoral-college"
+              }
+            ],
+            "reference_indexes": [
+              2,
+              4
+            ]
+          },
+          {
+            "type": "paragraph",
+            "snippet": "You can find more detailed information and the specific allocation of electoral votes for each state on the USAGov and National Archives websites.",
+            "snippet_links": [
+              {
+                "text": "USAGov",
+                "link": "https://www.usa.gov/electoral-college"
+              },
+              {
+                "text": "National Archives",
+                "link": "https://www.archives.gov/electoral-college/about"
+              }
+            ],
+            "reference_indexes": [
+              6,
+              7,
+              8
+            ]
+          }
+        ],
+        "citations": [
+          {
+            "url": "https://www.archives.gov/electoral-college/about",
+            "title": "What is the Electoral College? | National Archives",
+            "snippet": "The Electoral College is a process, not a place. The Founding Fathers established it in the Constitution as a compromise between e..."
+          },
+          {
+            "url": "https://bipartisanpolicy.org/explainer/the-electoral-college-simplified/",
+            "title": "The Electoral College, Simplified",
+            "snippet": "The Electoral College is the process used to elect the next president of the United States every four years. The process was first outlined in the U.S. Constitu..."
+          },
+          {
+            "url": "https://www.usa.gov/electoral-college",
+            "title": "Electoral College | USAGov",
+            "snippet": "Electoral College. The Electoral College decides who will be elected president and vice president of the U.S. Learn who is involved and how the process works."
+          },
+          {
+            "url": "https://www.congress.gov/crs-product/IF12682",
+            "title": "Electoral College Overview | Congress.gov",
+            "snippet": "The electoral college is the group of individuals, electors, who choose the President and Vice President. Under Article II, Section 1 of the Constitution, state..."
+          },
+          {
+            "url": "https://history.house.gov/Institution/Electoral-College/Electoral-College/",
+            "title": "Electoral College Fast Facts | US House of Representatives",
+            "snippet": "The Electoral College is the formal body that elects the President and Vice President of the United States. The process for counti..."
+          },
+          {
+            "url": "https://virginiahistory.org/sites/default/files/2024-09/7.4-Activity-3-Persuasive%20Writing.pdf",
+            "title": "The Pros and Cons of Using the Electoral College to Elect the ...",
+            "snippet": "The Electoral College is the system the United States uses to elect the president and vice president. Instead of a direct popular ..."
+          },
+          {
+            "url": "https://www.sos.ca.gov/elections/electoral-college",
+            "title": "Electoral College Information",
+            "snippet": "Where can I find more information on the electoral college? This information and more is available at the National Archives and Re..."
+          },
+          {
+            "url": "https://www.cato.org/cato-journal/fall-2018/determining-state-preferences-electoral-college-1788-2016",
+            "title": "Determining State Preferences for the Electoral College: 1788\u20132016",
+            "snippet": "Seldom have states adopted such rules, however, as discussed below. The National Archives and Records Administration reports the electoral college tabulations f..."
+          },
+          {
+            "url": "https://www.essexdems.org/post/electoral-college-what-it-is-and-how-it-shapes-elections",
+            "title": "Electoral College \u2013 What It Is and How It Shapes Elections",
+            "snippet": "Learn more about how the Electoral College works in New Jersey by visiting the NJ Voter Information Portal. For more detailed information on the Electoral Colle..."
+          }
+        ],
+        "related_searches": []
+      }
+    },
+    "Serper": {
+      "extracted": {
+        "present": false,
+        "summary": "",
+        "text_blocks": [],
+        "citations": [],
+        "related_searches": []
+      }
+    },
+    "DataForSEO": {
+      "extracted": {
+        "present": true,
+        "summary": "The Electoral College is the official system used in the United States to elect the president and vice president every four years. It was established by the U.S. Constitution as a compromise between allowing citizens to vote directly for the president and allowing Congress to make the choice.[](https://www.archives.gov/electoral-college/about) [[1]](https://www.archives.gov/electoral-college/about)[[2]](https://bipartisanpolicy.org/explainer/the-electoral-college-simplified/)[[3]](https://history.house.gov/Institution/Electoral-College/Electoral-College/)[[4]](https://virginiahistory.org/sites/default/files/2024-09/7.4-Activity-3-Persuasive%20Writing.pdf)\n\nThe system operates through a group of representatives called electors. Every state is assigned a specific number of electors equal to its total representation in Congress: two for its senators, plus a variable number based on its representatives in the House. The more populous a state, the more electors it has.[](https://www.archives.gov/electoral-college/about) [[1]](https://www.archives.gov/electoral-college/about)[[2]](https://bipartisanpolicy.org/explainer/the-electoral-college-simplified/)[[3]](https://www.usa.gov/electoral-college)\n\nHere are a few key details about how it works:\n\n- **The Electors:** There are 538 total electors in the Electoral College, which includes three representing Washington, D.C.[](https://www.usa.gov/electoral-college) [[1]](https://www.usa.gov/electoral-college)[[2]](https://www.congress.gov/crs-product/IF12682)\n- **Winning the Election:** To win the presidency, a candidate must secure a majority of at least 270 electoral votes.[](https://www.usa.gov/electoral-college) [[1]](https://www.usa.gov/electoral-college)\n- **Winner-Take-All:** In 48 states and Washington, D.C., the presidential candidate who wins the state's popular vote gets *all* of that state's electoral votes. Maine and Nebraska use a proportional system where electoral votes are divided based on congressional districts and the statewide vote.[](https://www.usa.gov/electoral-college) [[1]](https://www.usa.gov/electoral-college)\n- **Popular vs. Electoral:** Because electors are awarded by state, it is possible for a candidate to win the nationwide popular vote but lose the presidency if their opponent secures more than 270 electoral votes.[](https://www.usa.gov/electoral-college) [[1]](https://www.usa.gov/electoral-college)\n\nAfter citizens cast their ballots in November, the electors meet in mid-December to officially cast their votes for president and vice president. Congress then counts these votes in early January to finalize the election results.[](https://www.usa.gov/electoral-college) [[1]](https://www.usa.gov/electoral-college)[[2]](https://history.house.gov/Institution/Electoral-College/Electoral-College/)You can find more detailed information and the specific allocation of electoral votes for each state on the [USAGov](https://www.usa.gov/electoral-college) and [National Archives](https://www.archives.gov/electoral-college/about) websites.[[1]](https://www.sos.ca.gov/elections/electoral-college)[[2]](https://www.cato.org/cato-journal/fall-2018/determining-state-preferences-electoral-college-1788-2016)[[3]](https://www.essexdems.org/post/electoral-college-what-it-is-and-how-it-shapes-elections)",
+        "text_blocks": [
+          "The Electoral College is the official system used in the United States to elect the president and vice president every four years. It was established by the U.S. Constitution as a compromise between allowing citizens to vote directly for the president and allowing Congress to make the choice.[](https://www.archives.gov/electoral-college/about) [[1]](https://www.archives.gov/electoral-college/about)[[2]](https://bipartisanpolicy.org/explainer/the-electoral-college-simplified/)[[3]](https://history.house.gov/Institution/Electoral-College/Electoral-College/)[[4]](https://virginiahistory.org/sites/default/files/2024-09/7.4-Activity-3-Persuasive%20Writing.pdf)\n\nThe system operates through a group of representatives called electors. Every state is assigned a specific number of electors equal to its total representation in Congress: two for its senators, plus a variable number based on its representatives in the House. The more populous a state, the more electors it has.[](https://www.archives.gov/electoral-college/about) [[1]](https://www.archives.gov/electoral-college/about)[[2]](https://bipartisanpolicy.org/explainer/the-electoral-college-simplified/)[[3]](https://www.usa.gov/electoral-college)\n\nHere are a few key details about how it works:\n\n- **The Electors:** There are 538 total electors in the Electoral College, which includes three representing Washington, D.C.[](https://www.usa.gov/electoral-college) [[1]](https://www.usa.gov/electoral-college)[[2]](https://www.congress.gov/crs-product/IF12682)\n- **Winning the Election:** To win the presidency, a candidate must secure a majority of at least 270 electoral votes.[](https://www.usa.gov/electoral-college) [[1]](https://www.usa.gov/electoral-college)\n- **Winner-Take-All:** In 48 states and Washington, D.C., the presidential candidate who wins the state's popular vote gets *all* of that state's electoral votes. Maine and Nebraska use a proportional system where electoral votes are divided based on congressional districts and the statewide vote.[](https://www.usa.gov/electoral-college) [[1]](https://www.usa.gov/electoral-college)\n- **Popular vs. Electoral:** Because electors are awarded by state, it is possible for a candidate to win the nationwide popular vote but lose the presidency if their opponent secures more than 270 electoral votes.[](https://www.usa.gov/electoral-college) [[1]](https://www.usa.gov/electoral-college)\n\nAfter citizens cast their ballots in November, the electors meet in mid-December to officially cast their votes for president and vice president. Congress then counts these votes in early January to finalize the election results.[](https://www.usa.gov/electoral-college) [[1]](https://www.usa.gov/electoral-college)[[2]](https://history.house.gov/Institution/Electoral-College/Electoral-College/)You can find more detailed information and the specific allocation of electoral votes for each state on the [USAGov](https://www.usa.gov/electoral-college) and [National Archives](https://www.archives.gov/electoral-college/about) websites.[[1]](https://www.sos.ca.gov/elections/electoral-college)[[2]](https://www.cato.org/cato-journal/fall-2018/determining-state-preferences-electoral-college-1788-2016)[[3]](https://www.essexdems.org/post/electoral-college-what-it-is-and-how-it-shapes-elections)"
+        ],
+        "citations": [
+          {
+            "url": "https://www.archives.gov/electoral-college/about",
+            "title": "What is the Electoral College? | National Archives",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.usa.gov/electoral-college",
+            "title": "Electoral College | USAGov",
+            "snippet": ""
+          },
+          {
+            "url": "https://bipartisanpolicy.org/explainer/the-electoral-college-simplified/",
+            "title": "The Electoral College, Simplified",
+            "snippet": ""
+          },
+          {
+            "url": "https://www.congress.gov/crs-product/IF12682",
+            "title": "Electoral College Overview | Congress.gov",
+            "snippet": ""
+          }
+        ],
+        "related_searches": []
+      }
+    }
+  }
+}

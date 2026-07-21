@@ -1,0 +1,985 @@
+{
+  "search_metadata": {
+    "id": "6a5e9bdc49579aa1964ea4ec",
+    "status": "Success",
+    "json_endpoint": "https://serpapi.com/searches/n8dBUk-_2SpoI1zWWFZtvA/6a5e9bdc49579aa1964ea4ec.json",
+    "pixel_position_endpoint": "https://serpapi.com/searches/n8dBUk-_2SpoI1zWWFZtvA/6a5e9bdc49579aa1964ea4ec.json_with_pixel_position",
+    "created_at": "2026-07-20 22:06:20 UTC",
+    "processed_at": "2026-07-20 22:06:20 UTC",
+    "google_url": "https://www.google.com/search?q=what+is+the+event+loop+in+javascript&oq=what+is+the+event+loop+in+javascript&sourceid=chrome&ie=UTF-8",
+    "raw_html_file": "https://serpapi.com/searches/n8dBUk-_2SpoI1zWWFZtvA/6a5e9bdc49579aa1964ea4ec.html",
+    "total_time_taken": 0.68
+  },
+  "search_parameters": {
+    "engine": "google",
+    "q": "what is the event loop in javascript",
+    "google_domain": "google.com",
+    "device": "desktop"
+  },
+  "search_information": {
+    "query_displayed": "what is the event loop in javascript",
+    "total_results": 40,
+    "time_taken_displayed": 0.21,
+    "organic_results_state": "Results for exact spelling"
+  },
+  "inline_videos": [
+    {
+      "position": 1,
+      "title": "JavaScript Event Loop: How it Works and Why it Matters in 5 ...",
+      "link": "https://www.youtube.com/watch?v=lqLSNG_79lI",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwR66SH6Oapi0_ColfqIoBG9fQ6C5W-QrYdjQCdjXJ_fYhlOr687lHrw&s",
+      "channel": "James Q Quick",
+      "duration": "7:20",
+      "platform": "YouTube",
+      "date": "Nov 29, 2022",
+      "key_moments": [
+        {
+          "time": "00:00",
+          "title": "Intro",
+          "link": "https://www.youtube.com/watch?v=lqLSNG_79lI&t=0"
+        },
+        {
+          "time": "00:50",
+          "title": "Advent of CSS and JavaScript Course Discounts",
+          "link": "https://www.youtube.com/watch?v=lqLSNG_79lI&t=50"
+        },
+        {
+          "time": "01:18",
+          "title": "JavaScript is Single Threaded",
+          "link": "https://www.youtube.com/watch?v=lqLSNG_79lI&t=78"
+        },
+        {
+          "time": "02:09",
+          "title": "JavaScript Call Stack",
+          "link": "https://www.youtube.com/watch?v=lqLSNG_79lI&t=129"
+        },
+        {
+          "time": "04:15",
+          "title": "Event Queue and Event Loop",
+          "link": "https://www.youtube.com/watch?v=lqLSNG_79lI&t=255"
+        },
+        {
+          "time": "06:20",
+          "title": "Wrap Up",
+          "link": "https://www.youtube.com/watch?v=lqLSNG_79lI&t=380"
+        }
+      ]
+    },
+    {
+      "position": 2,
+      "title": "How does the Event Loop work?",
+      "link": "https://www.youtube.com/watch?v=WNrHrwm1wkU",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7aIGIfOJ-osPl11sHan-Jc742pdPHsUatZnz7UyQSKSPYrEA9qr6kSQ&s",
+      "channel": "Boot dev",
+      "duration": "18:46",
+      "platform": "YouTube",
+      "date": "Apr 15, 2025",
+      "snippet": "JavaScript is single-threaded but asynchronous, using callbacks and promises to handle multiple operations at the same time.",
+      "short_clip": "https://encrypted-vtbn0.gstatic.com/video?q=tbn:ANd9GcSRpWgLxZa2OASLlVjYWMHZV_xnqGFbLufbLg"
+    },
+    {
+      "position": 3,
+      "title": "What the heck is the event loop anyway? | Philip Roberts ...",
+      "link": "https://www.youtube.com/watch?v=8aGhZQkoFbQ",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAJaYixbIt9xfmTfb2loNK2kugxS3y_4V1PLhvhmEZ-wxh9Lt6pyl3Ig&s",
+      "channel": "JSConf",
+      "duration": "26:53",
+      "platform": "YouTube",
+      "date": "Oct 9, 2014",
+      "snippet": "I want to talk about the event Loop and what the heck is the event Loop um as in the event Loop inside JavaScript.",
+      "short_clip": "https://encrypted-vtbn0.gstatic.com/video?q=tbn:ANd9GcSVvghwkczYRijA0elVPYxZheLKYaD9FGfklA"
+    }
+  ],
+  "related_questions": [
+    {
+      "question": "What is a loop event?",
+      "type": "ai_overview",
+      "page_token": "3RhnT3icHdBfboIwAIDx7DI-Coi6aGLM6locgxqKLX9eFmwRhVIaYav6trvsVDvNzC7w_ZLv-0eeVfP7lJ6GQfdLyzLGjKuuq2Q55l1rFf1NcYsXUh4K3iznz3NnfeQr2Buw6QyIqNbsldh7b5ZkKQgSRfqEsRlxBaVbbUoZTstkURfSzw53WVMoTKlQxNveiaGzEbaA3F6k-xpf8VYHZQoYprkSNbhgpVs-OWUllHbhCRC3GNBk8Aqko3BPXKI03FHnjCW_hk0eh4nwDx5S-R1PCSIhhtkgaP658_wZl9pENjYB1TBErGewitEdF8JjJ1Hjt6jpH72XKUYP15UTbkPjnX1Atvi2S3JatsOApfQFFGlA0TtrmB07bB7WPuaTXBJGyOjIv1bu6P_Y6uPYDkt96ao_Jyh5hw",
+      "serpapi_ai_overview_link": "https://serpapi.com/search.json?engine=google_ai_overview&page_token=3RhnT3icHdBfboIwAIDx7DI-Coi6aGLM6locgxqKLX9eFmwRhVIaYav6trvsVDvNzC7w_ZLv-0eeVfP7lJ6GQfdLyzLGjKuuq2Q55l1rFf1NcYsXUh4K3iznz3NnfeQr2Buw6QyIqNbsldh7b5ZkKQgSRfqEsRlxBaVbbUoZTstkURfSzw53WVMoTKlQxNveiaGzEbaA3F6k-xpf8VYHZQoYprkSNbhgpVs-OWUllHbhCRC3GNBk8Aqko3BPXKI03FHnjCW_hk0eh4nwDx5S-R1PCSIhhtkgaP658_wZl9pENjYB1TBErGewitEdF8JjJ1Hjt6jpH72XKUYP15UTbkPjnX1Atvi2S3JatsOApfQFFGlA0TtrmB07bB7WPuaTXBJGyOjIv1bu6P_Y6uPYDkt96ao_Jyh5hw",
+      "next_page_token": "eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSSkxYWnBaRE5IYUVSTExURXRkVFE0YjFZMlFraFRNbEJtTmpOMVFsSXpOamh4VlhCUVpFWXpXRFJoYVdVMWRFSTVTMkUwTlRGbGVXMHRjVFp5UXpNeWVGazBSWGxRZFRscU5HZzRRWEZJYTA0MFZITkRVRzlzU0ROUVp4SVhNMXAwWldGMk0waENTemRHY0RnMFVHczNlWFp6UVRBYUlrRkVjM0k1WmxKa1RYVldUV1EwVmxsM05rVkdTREEyV21Vd1p6WkNUMHhhUTJjIiwiZmN2IjoiMyIsImVpIjoiM1p0ZWF2M0hCSzdGcDg0UGs3eXZzQTAiLCJxYyI6IkNpUjNhR0YwSUdseklIUm9aU0JsZG1WdWRDQnNiMjl3SUdsdUlHcGhkbUZ6WTNKcGNIUVFBSDFWalJVXyIsInF1ZXN0aW9uIjoiV2hhdCBpcyBhIGxvb3AgZXZlbnQ/IiwibGsiOiJHaE5zYjI5d0lHVjJaVzUwY3lCdFpXRnVhVzVuIiwiYnMiOiJjNDJQTVF2Q1FBeUZjYzBrU0JGdXlsQWRIWXAydmQzRndjRTVTTFFubWpzdjFfYnZXNnRTQlFYSDVIdnY1UVVXa08wcVN1Z1VDY19lQi1TR0pka2lNNU5oVkx3d2laTWpiR0QyMHFlS01kUXhlR1gwQnlSNWFQc1VXOHhOM3Y0aEJBLXJWLUN3UlNlNHBvYTItLWhDeHlSeGJCeTNlSzFaa19PaXRpak5zdjFxUEhWR19Xa0VDM2xfa0NMM3pVb01GU25ydmRyN0ExT1RQZEVuR1k5dSIsImlkIjoiZmNfM1p0ZWF2M0hCSzdGcDg0UGs3eXZzQTBfNCJ9",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google_related_questions&google_domain=google.com&next_page_token=eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSSkxYWnBaRE5IYUVSTExURXRkVFE0YjFZMlFraFRNbEJtTmpOMVFsSXpOamh4VlhCUVpFWXpXRFJoYVdVMWRFSTVTMkUwTlRGbGVXMHRjVFp5UXpNeWVGazBSWGxRZFRscU5HZzRRWEZJYTA0MFZITkRVRzlzU0ROUVp4SVhNMXAwWldGMk0waENTemRHY0RnMFVHczNlWFp6UVRBYUlrRkVjM0k1WmxKa1RYVldUV1EwVmxsM05rVkdTREEyV21Vd1p6WkNUMHhhUTJjIiwiZmN2IjoiMyIsImVpIjoiM1p0ZWF2M0hCSzdGcDg0UGs3eXZzQTAiLCJxYyI6IkNpUjNhR0YwSUdseklIUm9aU0JsZG1WdWRDQnNiMjl3SUdsdUlHcGhkbUZ6WTNKcGNIUVFBSDFWalJVXyIsInF1ZXN0aW9uIjoiV2hhdCBpcyBhIGxvb3AgZXZlbnQ%2FIiwibGsiOiJHaE5zYjI5d0lHVjJaVzUwY3lCdFpXRnVhVzVuIiwiYnMiOiJjNDJQTVF2Q1FBeUZjYzBrU0JGdXlsQWRIWXAydmQzRndjRTVTTFFubWpzdjFfYnZXNnRTQlFYSDVIdnY1UVVXa08wcVN1Z1VDY19lQi1TR0pka2lNNU5oVkx3d2laTWpiR0QyMHFlS01kUXhlR1gwQnlSNWFQc1VXOHhOM3Y0aEJBLXJWLUN3UlNlNHBvYTItLWhDeHlSeGJCeTNlSzFaa19PaXRpak5zdjFxUEhWR19Xa0VDM2xfa0NMM3pVb01GU25ydmRyN0ExT1RQZEVuR1k5dSIsImlkIjoiZmNfM1p0ZWF2M0hCSzdGcDg0UGs3eXZzQTBfNCJ9"
+    },
+    {
+      "question": "What is the purpose of an event loop?",
+      "type": "ai_overview",
+      "page_token": "DMeGJ3icHdBfbpswHABg7TJ9bExoUyVSVJXxp6SzI2z8M_bLZOwkJGBDVlZa3nqXnWqnqdTvCN_nv-7s2_8_3ppxHF43i8U0Tbenvj91h1vTu4V-_fBmYXTX1dq0m9XDKng8mm3yN49-XvOo4MMAMUVMrI9Qqpc6hj2L21AFfGaxdbwtJsjshYW75xLJyQJV1keewpod0l2OMzoKvj5bp651AivtxhKgITQmZcHzd81HkM5mdTZepbAVjqliVSo1NI3xT4GtoD2keYAhRdjRqUZkqV13gbRdEkQHKchsl6rQHpxC-L4KyUVl7x1PrK-FxQfRjhQgJ8hKlmBUpngpwNKkMbPwtJOVnFmy-0WQmvYxLfRs760nEY76c8HpbC6d4zyIVAWRbO_CKlC6KJ_uTNBEIqHnPayfmZdzUdwczds2vPn-3P4-unEz_OlPX1VvguQ",
+      "serpapi_ai_overview_link": "https://serpapi.com/search.json?engine=google_ai_overview&page_token=DMeGJ3icHdBfbpswHABg7TJ9bExoUyVSVJXxp6SzI2z8M_bLZOwkJGBDVlZa3nqXnWqnqdTvCN_nv-7s2_8_3ppxHF43i8U0Tbenvj91h1vTu4V-_fBmYXTX1dq0m9XDKng8mm3yN49-XvOo4MMAMUVMrI9Qqpc6hj2L21AFfGaxdbwtJsjshYW75xLJyQJV1keewpod0l2OMzoKvj5bp651AivtxhKgITQmZcHzd81HkM5mdTZepbAVjqliVSo1NI3xT4GtoD2keYAhRdjRqUZkqV13gbRdEkQHKchsl6rQHpxC-L4KyUVl7x1PrK-FxQfRjhQgJ8hKlmBUpngpwNKkMbPwtJOVnFmy-0WQmvYxLfRs760nEY76c8HpbC6d4zyIVAWRbO_CKlC6KJ_uTNBEIqHnPayfmZdzUdwczds2vPn-3P4-unEz_OlPX1VvguQ",
+      "next_page_token": "eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSSkxYWnBaRE5IYUVSTExURXRkVFE0YjFZMlFraFRNbEJtTmpOMVFsSXpOamh4VlhCUVpFWXpXRFJoYVdVMWRFSTVTMkUwTlRGbGVXMHRjVFp5UXpNeWVGazBSWGxRZFRscU5HZzRRWEZJYTA0MFZITkRVRzlzU0ROUVp4SVhNMXAwWldGMk0waENTemRHY0RnMFVHczNlWFp6UVRBYUlrRkVjM0k1WmxKa1RYVldUV1EwVmxsM05rVkdTREEyV21Vd1p6WkNUMHhhUTJjIiwiZmN2IjoiMyIsImVpIjoiM1p0ZWF2M0hCSzdGcDg0UGs3eXZzQTAiLCJxYyI6IkNpUjNhR0YwSUdseklIUm9aU0JsZG1WdWRDQnNiMjl3SUdsdUlHcGhkbUZ6WTNKcGNIUVFBSDFWalJVXyIsInF1ZXN0aW9uIjoiV2hhdCBpcyB0aGUgcHVycG9zZSBvZiBhbiBldmVudCBsb29wPyIsImxrIjoiR2lSM2FHRjBJR2x6SUhSb1pTQndkWEp3YjNObElHOW1JR0Z1SUdWMlpXNTBJR3h2YjNBIiwiYnMiOiJjNDJQTVF2Q1FBeUZjYzBrU0JGdXlsQWRIWXAydmQzRndjRTVTTFFubWpzdjFfYnZXNnRTQlFYSDVIdnY1UVVXa08wcVN1Z1VDY19lQi1TR0pka2lNNU5oVkx3d2laTWpiR0QyMHFlS01kUXhlR1gwQnlSNWFQc1VXOHhOM3Y0aEJBLXJWLUN3UlNlNHBvYTItLWhDeHlSeGJCeTNlSzFaa19PaXRpak5zdjFxUEhWR19Xa0VDM2xfa0NMM3pVb01GU25ydmRyN0ExT1RQZEVuR1k5dSIsImlkIjoiZmNfM1p0ZWF2M0hCSzdGcDg0UGs3eXZzQTBfNCJ9",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google_related_questions&google_domain=google.com&next_page_token=eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSSkxYWnBaRE5IYUVSTExURXRkVFE0YjFZMlFraFRNbEJtTmpOMVFsSXpOamh4VlhCUVpFWXpXRFJoYVdVMWRFSTVTMkUwTlRGbGVXMHRjVFp5UXpNeWVGazBSWGxRZFRscU5HZzRRWEZJYTA0MFZITkRVRzlzU0ROUVp4SVhNMXAwWldGMk0waENTemRHY0RnMFVHczNlWFp6UVRBYUlrRkVjM0k1WmxKa1RYVldUV1EwVmxsM05rVkdTREEyV21Vd1p6WkNUMHhhUTJjIiwiZmN2IjoiMyIsImVpIjoiM1p0ZWF2M0hCSzdGcDg0UGs3eXZzQTAiLCJxYyI6IkNpUjNhR0YwSUdseklIUm9aU0JsZG1WdWRDQnNiMjl3SUdsdUlHcGhkbUZ6WTNKcGNIUVFBSDFWalJVXyIsInF1ZXN0aW9uIjoiV2hhdCBpcyB0aGUgcHVycG9zZSBvZiBhbiBldmVudCBsb29wPyIsImxrIjoiR2lSM2FHRjBJR2x6SUhSb1pTQndkWEp3YjNObElHOW1JR0Z1SUdWMlpXNTBJR3h2YjNBIiwiYnMiOiJjNDJQTVF2Q1FBeUZjYzBrU0JGdXlsQWRIWXAydmQzRndjRTVTTFFubWpzdjFfYnZXNnRTQlFYSDVIdnY1UVVXa08wcVN1Z1VDY19lQi1TR0pka2lNNU5oVkx3d2laTWpiR0QyMHFlS01kUXhlR1gwQnlSNWFQc1VXOHhOM3Y0aEJBLXJWLUN3UlNlNHBvYTItLWhDeHlSeGJCeTNlSzFaa19PaXRpak5zdjFxUEhWR19Xa0VDM2xfa0NMM3pVb01GU25ydmRyN0ExT1RQZEVuR1k5dSIsImlkIjoiZmNfM1p0ZWF2M0hCSzdGcDg0UGs3eXZzQTBfNCJ9"
+    },
+    {
+      "question": "What is event loop in JavaScript interview questions?",
+      "type": "ai_overview",
+      "page_token": "Qc21iXicHdBLjpswAABQ9TKznJhJk0qRokoOP1FwhONfvKmIHSCxAXegA_FurtAz9FQ9TUdzgbd473_trTf_vvxpp8mNu9VqnufnZhgae31WQ7eqxkevVqqy9lIps9t-2wbfa7WP3hQ8vCpYUudYiAFJGChimVLaPFg3ehzGC2M4IIk80buGNNbhlTUL5udArzXmybgpfBwog9eYfwXqngnKYK-iaY2FTITH92NiR0kQOXErKwZrYmyKOFrES-aqsO2QoZ4k-pcMpUAv9vcFTEMpkJXWzRdmJkazAwo0Ybxl0sITThaR0w0XICjOgOXEtLykbOHCkYLLG0_twgAy19QdOcsSEsQ9ATJXNC4-nBR7a49xFket8rzH9izO_hRlOQJyPoa4rLze6B7BAg63kmKv7rZjUfAjJ-pR9PCgjL3hHtUXqk3ROVl2dFNZt9XzU63e9uunz-v9z7qbdu51aP4DKneOsA",
+      "serpapi_ai_overview_link": "https://serpapi.com/search.json?engine=google_ai_overview&page_token=Qc21iXicHdBLjpswAABQ9TKznJhJk0qRokoOP1FwhONfvKmIHSCxAXegA_FurtAz9FQ9TUdzgbd473_trTf_vvxpp8mNu9VqnufnZhgae31WQ7eqxkevVqqy9lIps9t-2wbfa7WP3hQ8vCpYUudYiAFJGChimVLaPFg3ehzGC2M4IIk80buGNNbhlTUL5udArzXmybgpfBwog9eYfwXqngnKYK-iaY2FTITH92NiR0kQOXErKwZrYmyKOFrES-aqsO2QoZ4k-pcMpUAv9vcFTEMpkJXWzRdmJkazAwo0Ybxl0sITThaR0w0XICjOgOXEtLykbOHCkYLLG0_twgAy19QdOcsSEsQ9ATJXNC4-nBR7a49xFket8rzH9izO_hRlOQJyPoa4rLze6B7BAg63kmKv7rZjUfAjJ-pR9PCgjL3hHtUXqk3ROVl2dFNZt9XzU63e9uunz-v9z7qbdu51aP4DKneOsA",
+      "next_page_token": "eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSSkxYWnBaRE5IYUVSTExURXRkVFE0YjFZMlFraFRNbEJtTmpOMVFsSXpOamh4VlhCUVpFWXpXRFJoYVdVMWRFSTVTMkUwTlRGbGVXMHRjVFp5UXpNeWVGazBSWGxRZFRscU5HZzRRWEZJYTA0MFZITkRVRzlzU0ROUVp4SVhNMXAwWldGMk0waENTemRHY0RnMFVHczNlWFp6UVRBYUlrRkVjM0k1WmxKa1RYVldUV1EwVmxsM05rVkdTREEyV21Vd1p6WkNUMHhhUTJjIiwiZmN2IjoiMyIsImVpIjoiM1p0ZWF2M0hCSzdGcDg0UGs3eXZzQTAiLCJxYyI6IkNpUjNhR0YwSUdseklIUm9aU0JsZG1WdWRDQnNiMjl3SUdsdUlHcGhkbUZ6WTNKcGNIUVFBSDFWalJVXyIsInF1ZXN0aW9uIjoiV2hhdCBpcyBldmVudCBsb29wIGluIEphdmFTY3JpcHQgaW50ZXJ2aWV3IHF1ZXN0aW9ucz8iLCJsayI6IkdqUjNhR0YwSUdseklHVjJaVzUwSUd4dmIzQWdhVzRnYW1GMllYTmpjbWx3ZENCcGJuUmxjblpwWlhjZ2NYVmxjM1JwYjI1eiIsImJzIjoiYzQyUE1RdkNRQXlGY2Mwa1NCRnV5bEFkSFlwMnZkM0Z3Y0U1U0xRbm1qc3YxX2J2VzZ0U0JRWEg1SHZ2NVFVV2tPMHFTdWdVQ2NfZUItU0dKZGtpTTVOaFZMd3dpWk1qYkdEMjBxZUtNZFF4ZUdYMEJ5UjVhUHNVVzh4TjN2NGhCQS1yVi1Dd1JTZTRwb2EyLS1oQ3h5UnhiQnkzZUsxWmtfT2l0aWpOc3YxcVBIVkdfV2tFQzNsX2tDTDN6VW9NRlNucnZkcjdBMU9UUGRFbkdZOXUiLCJpZCI6ImZjXzNadGVhdjNIQks3RnA4NFBrN3l2c0EwXzQifQ==",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google_related_questions&google_domain=google.com&next_page_token=eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSSkxYWnBaRE5IYUVSTExURXRkVFE0YjFZMlFraFRNbEJtTmpOMVFsSXpOamh4VlhCUVpFWXpXRFJoYVdVMWRFSTVTMkUwTlRGbGVXMHRjVFp5UXpNeWVGazBSWGxRZFRscU5HZzRRWEZJYTA0MFZITkRVRzlzU0ROUVp4SVhNMXAwWldGMk0waENTemRHY0RnMFVHczNlWFp6UVRBYUlrRkVjM0k1WmxKa1RYVldUV1EwVmxsM05rVkdTREEyV21Vd1p6WkNUMHhhUTJjIiwiZmN2IjoiMyIsImVpIjoiM1p0ZWF2M0hCSzdGcDg0UGs3eXZzQTAiLCJxYyI6IkNpUjNhR0YwSUdseklIUm9aU0JsZG1WdWRDQnNiMjl3SUdsdUlHcGhkbUZ6WTNKcGNIUVFBSDFWalJVXyIsInF1ZXN0aW9uIjoiV2hhdCBpcyBldmVudCBsb29wIGluIEphdmFTY3JpcHQgaW50ZXJ2aWV3IHF1ZXN0aW9ucz8iLCJsayI6IkdqUjNhR0YwSUdseklHVjJaVzUwSUd4dmIzQWdhVzRnYW1GMllYTmpjbWx3ZENCcGJuUmxjblpwWlhjZ2NYVmxjM1JwYjI1eiIsImJzIjoiYzQyUE1RdkNRQXlGY2Mwa1NCRnV5bEFkSFlwMnZkM0Z3Y0U1U0xRbm1qc3YxX2J2VzZ0U0JRWEg1SHZ2NVFVV2tPMHFTdWdVQ2NfZUItU0dKZGtpTTVOaFZMd3dpWk1qYkdEMjBxZUtNZFF4ZUdYMEJ5UjVhUHNVVzh4TjN2NGhCQS1yVi1Dd1JTZTRwb2EyLS1oQ3h5UnhiQnkzZUsxWmtfT2l0aWpOc3YxcVBIVkdfV2tFQzNsX2tDTDN6VW9NRlNucnZkcjdBMU9UUGRFbkdZOXUiLCJpZCI6ImZjXzNadGVhdjNIQks3RnA4NFBrN3l2c0EwXzQifQ%3D%3D"
+    },
+    {
+      "question": "What are the 6 phases of event loop?",
+      "type": "ai_overview",
+      "page_token": "XRi9GnicHdBNbuIwGABQzWW6LHYYOioSqpqSUCLsjO3Y-dmMgl0I9Rcn0ExCvZu7zKl6mlY9wNu8f__h5OzHj7EZhv5tOZtN03R77LojvNzqrp3Vb-9Oz3QNsK-1Xd79usMPB72K_m7Dp_M2ZLLv1Zoj4YxgjlxZcL0Q1AR8M_wsTwhzG1tp44yquNaFIiLHC9I2KffxRsPjpLPomkEzlr65KGnil80w8jZ5NusoSOX9OUPbiQTlXMrjtWppz7xSAspFGfTS5NjnsTnUiCIu753Ok1I7vVDKBAKHFcFc5Na8chxShsCKAui-aM6kiHf52iRyk2TGGVkEVcgwiL1NsPHgM1zxqNE-dxzKovQiSnYUVVO65qz2ZmEcDUnYnZjkXr9CKyFsv0wqLPzWQXVWzzBWkvo0V5DFBFWO7hi7OehxNb_5_lz9ObTDsr90x0-K3oPo",
+      "serpapi_ai_overview_link": "https://serpapi.com/search.json?engine=google_ai_overview&page_token=XRi9GnicHdBNbuIwGABQzWW6LHYYOioSqpqSUCLsjO3Y-dmMgl0I9Rcn0ExCvZu7zKl6mlY9wNu8f__h5OzHj7EZhv5tOZtN03R77LojvNzqrp3Vb-9Oz3QNsK-1Xd79usMPB72K_m7Dp_M2ZLLv1Zoj4YxgjlxZcL0Q1AR8M_wsTwhzG1tp44yquNaFIiLHC9I2KffxRsPjpLPomkEzlr65KGnil80w8jZ5NusoSOX9OUPbiQTlXMrjtWppz7xSAspFGfTS5NjnsTnUiCIu753Ok1I7vVDKBAKHFcFc5Na8chxShsCKAui-aM6kiHf52iRyk2TGGVkEVcgwiL1NsPHgM1zxqNE-dxzKovQiSnYUVVO65qz2ZmEcDUnYnZjkXr9CKyFsv0wqLPzWQXVWzzBWkvo0V5DFBFWO7hi7OehxNb_5_lz9ObTDsr90x0-K3oPo",
+      "next_page_token": "eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSSkxYWnBaRE5IYUVSTExURXRkVFE0YjFZMlFraFRNbEJtTmpOMVFsSXpOamh4VlhCUVpFWXpXRFJoYVdVMWRFSTVTMkUwTlRGbGVXMHRjVFp5UXpNeWVGazBSWGxRZFRscU5HZzRRWEZJYTA0MFZITkRVRzlzU0ROUVp4SVhNMXAwWldGMk0waENTemRHY0RnMFVHczNlWFp6UVRBYUlrRkVjM0k1WmxKa1RYVldUV1EwVmxsM05rVkdTREEyV21Vd1p6WkNUMHhhUTJjIiwiZmN2IjoiMyIsImVpIjoiM1p0ZWF2M0hCSzdGcDg0UGs3eXZzQTAiLCJxYyI6IkNpUjNhR0YwSUdseklIUm9aU0JsZG1WdWRDQnNiMjl3SUdsdUlHcGhkbUZ6WTNKcGNIUVFBSDFWalJVXyIsInF1ZXN0aW9uIjoiV2hhdCBhcmUgdGhlIDYgcGhhc2VzIG9mIGV2ZW50IGxvb3A/IiwibGsiOiJHaFUySUhCb1lYTmxJRzltSUdWMlpXNTBJR3h2YjNBIiwiYnMiOiJjNDJQTVF2Q1FBeUZjYzBrU0JGdXlsQWRIWXAydmQzRndjRTVTTFFubWpzdjFfYnZXNnRTQlFYSDVIdnY1UVVXa08wcVN1Z1VDY19lQi1TR0pka2lNNU5oVkx3d2laTWpiR0QyMHFlS01kUXhlR1gwQnlSNWFQc1VXOHhOM3Y0aEJBLXJWLUN3UlNlNHBvYTItLWhDeHlSeGJCeTNlSzFaa19PaXRpak5zdjFxUEhWR19Xa0VDM2xfa0NMM3pVb01GU25ydmRyN0ExT1RQZEVuR1k5dSIsImlkIjoiZmNfM1p0ZWF2M0hCSzdGcDg0UGs3eXZzQTBfNCJ9",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google_related_questions&google_domain=google.com&next_page_token=eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJTbWxVTkhSSkxYWnBaRE5IYUVSTExURXRkVFE0YjFZMlFraFRNbEJtTmpOMVFsSXpOamh4VlhCUVpFWXpXRFJoYVdVMWRFSTVTMkUwTlRGbGVXMHRjVFp5UXpNeWVGazBSWGxRZFRscU5HZzRRWEZJYTA0MFZITkRVRzlzU0ROUVp4SVhNMXAwWldGMk0waENTemRHY0RnMFVHczNlWFp6UVRBYUlrRkVjM0k1WmxKa1RYVldUV1EwVmxsM05rVkdTREEyV21Vd1p6WkNUMHhhUTJjIiwiZmN2IjoiMyIsImVpIjoiM1p0ZWF2M0hCSzdGcDg0UGs3eXZzQTAiLCJxYyI6IkNpUjNhR0YwSUdseklIUm9aU0JsZG1WdWRDQnNiMjl3SUdsdUlHcGhkbUZ6WTNKcGNIUVFBSDFWalJVXyIsInF1ZXN0aW9uIjoiV2hhdCBhcmUgdGhlIDYgcGhhc2VzIG9mIGV2ZW50IGxvb3A%2FIiwibGsiOiJHaFUySUhCb1lYTmxJRzltSUdWMlpXNTBJR3h2YjNBIiwiYnMiOiJjNDJQTVF2Q1FBeUZjYzBrU0JGdXlsQWRIWXAydmQzRndjRTVTTFFubWpzdjFfYnZXNnRTQlFYSDVIdnY1UVVXa08wcVN1Z1VDY19lQi1TR0pka2lNNU5oVkx3d2laTWpiR0QyMHFlS01kUXhlR1gwQnlSNWFQc1VXOHhOM3Y0aEJBLXJWLUN3UlNlNHBvYTItLWhDeHlSeGJCeTNlSzFaa19PaXRpak5zdjFxUEhWR19Xa0VDM2xfa0NMM3pVb01GU25ydmRyN0ExT1RQZEVuR1k5dSIsImlkIjoiZmNfM1p0ZWF2M0hCSzdGcDg0UGs3eXZzQTBfNCJ9"
+    }
+  ],
+  "ai_overview": {
+    "text_blocks": [
+      {
+        "type": "paragraph",
+        "snippet": "The event loop is a background mechanism that enables JavaScript to execute asynchronous, non-blocking operations despite being a single-threaded language. It continuously monitors the execution environment to decide when to run specific parts of your code\n\n\n.",
+        "snippet_links": [
+          {
+            "link": "https://www.geeksforgeeks.org/javascript/what-is-an-event-loop-in-javascript/"
+          }
+        ],
+        "snippet_highlighted_words": [
+          "a background mechanism that enables JavaScript to execute asynchronous, non-blocking operations despite being a single-threaded language"
+        ],
+        "reference_indexes": [
+          0,
+          1
+        ]
+      },
+      {
+        "type": "heading",
+        "snippet": "How the Runtime Components Work Together"
+      },
+      {
+        "type": "paragraph",
+        "snippet": "JavaScript relies on an entire runtime environment (provided by browsers or environments like\nNode.js\n) to handle tasks. The core ecosystem consists of four components:",
+        "snippet_links": [
+          {
+            "text": "Node.js",
+            "link": "https://nodejs.org/learn/asynchronous-work/event-loop-timers-and-nexttick"
+          },
+          {
+            "link": "https://nodejs.org/learn/asynchronous-work/event-loop-timers-and-nexttick"
+          }
+        ],
+        "reference_indexes": [
+          2,
+          3,
+          12,
+          13,
+          14
+        ]
+      },
+      {
+        "type": "list",
+        "list": [
+          {
+            "snippet": "Call Stack: Tracks currently executing functions in a Last-In, First-Out (LIFO) order."
+          },
+          {
+            "snippet": "Web APIs / Node APIs\n: Handles background multi-threaded tasks like timers (setTimeout), network requests (fetch), and DOM events."
+          },
+          {
+            "snippet": "Microtask Queue\n: Holds high-priority callbacks, specifically handling Promise resolutions (.then/catch/finally) and async/await steps."
+          },
+          {
+            "snippet": "Callback Queue (Macrotask Queue)\n: Holds lower-priority callbacks from completed background operations like setTimeout or click listeners.",
+            "snippet_links": [
+              {
+                "link": "https://www.geeksforgeeks.org/javascript/what-is-an-event-loop-in-javascript/"
+              }
+            ]
+          }
+        ],
+        "reference_indexes": [
+          0,
+          1,
+          4
+        ]
+      },
+      {
+        "type": "heading",
+        "snippet": "The Event Loop Sequence"
+      },
+      {
+        "type": "paragraph",
+        "snippet": "The event loop acts like a continuous while loop following a strict order of operations:",
+        "snippet_links": [
+          {
+            "link": "https://www.geeksforgeeks.org/javascript/what-is-an-event-loop-in-javascript/"
+          }
+        ],
+        "snippet_inline_code": [
+          "while"
+        ],
+        "reference_indexes": [
+          0,
+          5
+        ]
+      },
+      {
+        "type": "list",
+        "list": [
+          {
+            "snippet": "Execute Stack: Run synchronous code until the Call Stack is completely empty."
+          },
+          {
+            "snippet": "Clear Microtasks\n: Empty the entire Microtask Queue. If a microtask creates another microtask, it also runs immediately."
+          },
+          {
+            "snippet": "Render UI: Update the browser display if a screen repaint is needed."
+          },
+          {
+            "snippet": "Process One Macrotask\n: Pull exactly one callback from the Callback Queue and push it onto the Call Stack to run."
+          },
+          {
+            "snippet": "Repeat: Loop back to step 1 infinitely.",
+            "snippet_links": [
+              {
+                "link": "https://www.youtube.com/watch?v=8aGhZQkoFbQ&t=30"
+              }
+            ]
+          }
+        ],
+        "reference_indexes": [
+          0,
+          6,
+          7,
+          8,
+          9
+        ]
+      },
+      {
+        "type": "heading",
+        "snippet": "Step-by-Step Execution Example"
+      },
+      {
+        "type": "paragraph",
+        "snippet": "Consider this common interview code snippet:"
+      },
+      {
+        "type": "code_block",
+        "language": "javascript",
+        "code": "console.log(\"1: Start\");\n\nsetTimeout(() => {\n  console.log(\"2: Timeout\");\n}, 0);\n\nPromise.resolve().then(() => {\n  console.log(\"3: Promise\");\n});\n\nconsole.log(\"4: End\");\n"
+      },
+      {
+        "type": "list",
+        "list": [
+          {
+            "text_blocks": [
+              {
+                "type": "heading",
+                "snippet": "The Output Order"
+              },
+              {
+                "type": "list",
+                "list": [
+                  {
+                    "snippet": "1: Start"
+                  },
+                  {
+                    "snippet": "4: End"
+                  },
+                  {
+                    "snippet": "3: Promise"
+                  },
+                  {
+                    "snippet": "2: Timeout"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "text_blocks": [
+              {
+                "type": "heading",
+                "snippet": "Why it executes in this order:"
+              },
+              {
+                "type": "table",
+                "table": [
+                  [
+                    "Step",
+                    "Action",
+                    "Call Stack Status",
+                    "Queues Status"
+                  ],
+                  [
+                    "1",
+                    "Executes console.log(\"1: Start\").",
+                    "Runs and pops off immediately.",
+                    "Empty."
+                  ],
+                  [
+                    "2",
+                    "Registers setTimeout with the Web API.",
+                    "Pops off the stack.",
+                    "Callback Queue: [Timeout Callback]."
+                  ],
+                  [
+                    "Registers Promise resolution.",
+                    "Pops off the stack.",
+                    "Microtask Queue: [Promise Callback]."
+                  ],
+                  [
+                    "Executes console.log(\"4: End\").",
+                    "Runs and pops off immediately.",
+                    "Queues hold their items."
+                  ],
+                  [
+                    "Synchronous phase finishes.",
+                    "Stack is now empty.",
+                    "Loop checks queues."
+                  ],
+                  [
+                    "Event Loop checks high-priority queue.",
+                    "Runs Promise Callback.",
+                    "Microtask Queue: Emptied."
+                  ],
+                  [
+                    "Event Loop checks lower-priority queue.",
+                    "Runs Timeout Callback.",
+                    "Callback Queue: Emptied."
+                  ]
+                ],
+                "detailed": [
+                  [
+                    {
+                      "snippet": "Step"
+                    },
+                    {
+                      "snippet": "Action"
+                    },
+                    {
+                      "snippet": "Call Stack Status"
+                    },
+                    {
+                      "snippet": "Queues Status"
+                    }
+                  ],
+                  [
+                    {
+                      "snippet": "1"
+                    },
+                    {
+                      "snippet": "Executes console.log(\"1: Start\")."
+                    },
+                    {
+                      "snippet": "Runs and pops off immediately."
+                    },
+                    {
+                      "snippet": "Empty."
+                    }
+                  ],
+                  [
+                    {
+                      "snippet": "2"
+                    },
+                    {
+                      "snippet": "Registers setTimeout with the Web API."
+                    },
+                    {
+                      "snippet": "Pops off the stack."
+                    },
+                    {
+                      "snippet": "Callback Queue: [Timeout Callback]."
+                    }
+                  ],
+                  [
+                    {
+                      "snippet": "Registers Promise resolution."
+                    },
+                    {
+                      "snippet": "Pops off the stack."
+                    },
+                    {
+                      "snippet": "Microtask Queue: [Promise Callback]."
+                    }
+                  ],
+                  [
+                    {
+                      "snippet": "Executes console.log(\"4: End\")."
+                    },
+                    {
+                      "snippet": "Runs and pops off immediately."
+                    },
+                    {
+                      "snippet": "Queues hold their items."
+                    }
+                  ],
+                  [
+                    {
+                      "snippet": "Synchronous phase finishes."
+                    },
+                    {
+                      "snippet": "Stack is now empty."
+                    },
+                    {
+                      "snippet": "Loop checks queues."
+                    }
+                  ],
+                  [
+                    {
+                      "snippet": "Event Loop checks high-priority queue."
+                    },
+                    {
+                      "snippet": "Runs Promise Callback."
+                    },
+                    {
+                      "snippet": "Microtask Queue: Emptied."
+                    }
+                  ],
+                  [
+                    {
+                      "snippet": "Event Loop checks lower-priority queue."
+                    },
+                    {
+                      "snippet": "Runs Timeout Callback."
+                    },
+                    {
+                      "snippet": "Callback Queue: Emptied."
+                    }
+                  ]
+                ],
+                "formatted": [
+                  {
+                    "step": "1",
+                    "action": "Executes console.log(\"1: Start\").",
+                    "call_stack_status": "Runs and pops off immediately.",
+                    "queues_status": "Empty."
+                  },
+                  {
+                    "step": "2",
+                    "action": "Registers setTimeout with the Web API.",
+                    "call_stack_status": "Pops off the stack.",
+                    "queues_status": "Callback Queue: [Timeout Callback]."
+                  },
+                  {
+                    "step": "Registers Promise resolution.",
+                    "action": "Pops off the stack.",
+                    "call_stack_status": "Microtask Queue: [Promise Callback]."
+                  },
+                  {
+                    "step": "Executes console.log(\"4: End\").",
+                    "action": "Runs and pops off immediately.",
+                    "call_stack_status": "Queues hold their items."
+                  },
+                  {
+                    "step": "Synchronous phase finishes.",
+                    "action": "Stack is now empty.",
+                    "call_stack_status": "Loop checks queues."
+                  },
+                  {
+                    "step": "Event Loop checks high-priority queue.",
+                    "action": "Runs Promise Callback.",
+                    "call_stack_status": "Microtask Queue: Emptied."
+                  },
+                  {
+                    "step": "Event Loop checks lower-priority queue.",
+                    "action": "Runs Timeout Callback.",
+                    "call_stack_status": "Callback Queue: Emptied."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "snippet": "Key Developer Takeaways"
+      },
+      {
+        "type": "list",
+        "list": [
+          {
+            "snippet": "Never block the thread: Running heavy math or infinite loops (while(true)) keeps the Call Stack occupied. The Event Loop will freeze, causing the browser UI to lock up\n.",
+            "snippet_links": [
+              {
+                "link": "https://www.geeksforgeeks.org/javascript/what-is-an-event-loop-in-javascript/"
+              }
+            ],
+            "reference_indexes": [
+              0
+            ]
+          },
+          {
+            "snippet": "Timeouts are minimum values: Setting setTimeout(..., 1000) does not guarantee execution at exactly 1000ms. It means the callback enters the queue after 1000ms, waiting until the Call Stack and Microtasks are empty before running\n.",
+            "snippet_links": [
+              {
+                "link": "https://www.geeksforgeeks.org/javascript/what-is-an-event-loop-in-javascript/"
+              }
+            ]
+          }
+        ],
+        "reference_indexes": [
+          0,
+          10,
+          15,
+          16
+        ]
+      },
+      {
+        "type": "paragraph",
+        "snippet": "Would you like to explore how the event loop behaves differently in Node.js phases, or see how to optimize heavy data computations using Web Workers to prevent blocking?",
+        "snippet_links": [
+          {
+            "link": "https://www.geeksforgeeks.org/javascript/what-is-an-event-loop-in-javascript/"
+          }
+        ],
+        "reference_indexes": [
+          0,
+          11
+        ]
+      }
+    ],
+    "references": [
+      {
+        "title": "Event Loop in JavaScript - GeeksforGeeks",
+        "link": "https://www.geeksforgeeks.org/javascript/what-is-an-event-loop-in-javascript/",
+        "snippet": "Event Loop in JavaScript * The event loop is an important concept in JavaScript that enables asynchronous programming by handling tasks efficiently. Since JavaScri...",
+        "source": "GeeksforGeeks",
+        "thumbnail": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQtdihIqFYCXQjboFS51bgIEZ10dv4OMnHlfuPIFra46_eZ8foD27Ri1mD-9xSZfsDBRcCC4scA9_7kuQ4",
+        "source_icon": "https://encrypted-tbn1.gstatic.com/faviconV2?url=https://www.geeksforgeeks.org&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 0
+      },
+      {
+        "title": "Understanding JavaScript\u2019s Event Loop - by Pooja Prabakar - Medium",
+        "link": "https://medium.com/@poojakavi50/understanding-javascripts-event-loop-the-heartbeat-of-asynchronous-programming-43e32be07354",
+        "snippet": "\ud83d\udd0d How Does It Actually Work? Let's break it down step by step: Call Stack: This is where JavaScript tracks what functions are currently being executed. It works i...",
+        "source": "Medium",
+        "thumbnail": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQ9MXTcNM1pvVPXrJm_sXfqv7pT5P_G2bympZ3txjhTNcKeJSo_N2rLz7BEhwyK6oM32D9wi26bSSMmqmA",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://medium.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 1
+      },
+      {
+        "title": "The Node.js Event Loop",
+        "link": "https://nodejs.org/learn/asynchronous-work/event-loop-timers-and-nexttick",
+        "snippet": "Event Loop Explained. When Node. js starts, it initializes the event loop, processes the provided input script (or drops into the REPL, which is not covered in thi...",
+        "source": "Node.js",
+        "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ91jzLuA1kMnM7gjIZF4WxMwJ2ua-F1T_aNrg1qcS8eas3baMdYsiBehnS3_h2UPv3wYD-Wy2H-gPfvjQ",
+        "source_icon": "https://encrypted-tbn3.gstatic.com/faviconV2?url=https://nodejs.org&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 2
+      },
+      {
+        "title": "Demystifying the JavaScript Event Loop: How Does It Really Work?",
+        "link": "https://medium.com/@ammarjaved555/demystifying-the-javascript-event-loop-how-does-it-really-work-7cd535d951d0",
+        "snippet": "Demystifying the JavaScript Event Loop: How Does It Really Work? * What is the JavaScript Event Loop? The JavaScript Event Loop is a critical component of the Java...",
+        "source": "Medium",
+        "thumbnail": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRQuycR7b3Hdbw5wzgxCKzKgdGOY-v4MVbXO8U4PepzzOd5h1Ts2UcPFaCo-OjpOt8IVhVqaM1J0QuJadE",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://medium.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 3
+      },
+      {
+        "title": "Demystifying JavaScript's Event Loop: A Comprehensive Guide",
+        "link": "https://www.gperrucci.com/blog/javascript/event-loop-explained",
+        "snippet": "Demystifying JavaScript's Event Loop: A Comprehensive Guide * Introduction: Understanding JavaScript's Runtime Model. JavaScript's single-threaded nature means it ...",
+        "source": "www.gperrucci.com",
+        "thumbnail": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRtDZsiBQHvfKz_lRqmxzZxcyAmaaqcS5dld0Y-10HdSC-ahCREvrO41hFxNGPcvOL0-19bpivKEnaLhG4",
+        "source_icon": "https://encrypted-tbn3.gstatic.com/faviconV2?url=https://www.gperrucci.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 4
+      },
+      {
+        "title": "Event loop - Wikipedia",
+        "link": "https://en.wikipedia.org/wiki/Event_loop",
+        "snippet": "The Javascript engine has a list of events that need to be processed. The event loop handles those events one at a time until the list is empty.",
+        "source": "Wikipedia",
+        "thumbnail": "https://en.wikipedia.org/wiki/Event_loop",
+        "source_icon": "https://encrypted-tbn1.gstatic.com/faviconV2?url=https://en.wikipedia.org&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 5
+      },
+      {
+        "title": "What the heck is the event loop anyway? | Philip Roberts",
+        "link": "https://www.youtube.com/watch?v=8aGhZQkoFbQ&t=30",
+        "snippet": "um so I want to talk about the event Loop and what the heck is the event Loop um as in the event Loop inside JavaScript. so JavaScript is a single threaded program",
+        "source": "YouTube",
+        "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0UoyPwyXJok6AYGq_HGcwtwpgzyShOP6uyFwM6vE4RIz0IfsH2nHzi9c7NjheZRNSfQYiD9mC-bBdB3k",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.youtube.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 6
+      },
+      {
+        "title": "Understanding the JavaScript Event Loop (With Visual Guide)",
+        "link": "https://medium.com/@kavindadewmith/understanding-the-javascript-event-loop-with-visual-guide-6826199290a8",
+        "snippet": "\ud83c\udfc1 Conclusion. The JavaScript Event Loop ensures that asynchronous operations don't block the main execution thread. It processes: Synchronous Code first. Microtas...",
+        "source": "Medium",
+        "thumbnail": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTcDwVeoYYM8j4qQCOvNGF_gglNvS6EvirRnmKFGLBts0A4RWVxTMjdiRakEM1KiN_sqvUXf_pUpCj9weg",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://medium.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 7
+      },
+      {
+        "title": "JavaScript execution model - MDN Web Docs",
+        "link": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Execution_model",
+        "snippet": "Agent execution model. In the JavaScript specification, each autonomous executor of JavaScript is called an agent, which maintains its facilities for code executio...",
+        "source": "MDN Web Docs",
+        "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGth9rJJ60WtTMmy7yB2GaAXpoARuYmuGKcqCooc2jXQL4U1zv1v5_iqVDzdQ5q2mxppaPK0v1hEKZXVg",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://developer.mozilla.org&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 8
+      },
+      {
+        "title": "What is the event loop, and how does it work in JavaScript? - Medium",
+        "link": "https://medium.com/@codewithnitish/what-is-the-event-loop-and-how-does-it-work-in-javascript-07a32ca1b311",
+        "snippet": "What is the event loop, and how does it work in JavaScript? * Checks if the call stack is empty. * If empty, it first processes all the tasks in the microtask queu...",
+        "source": "Medium",
+        "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4POeiZxcKRVZ0U_sM18WshPYEdq8KQ0Sb3ZvdAc2bEzuwo_0cnbdPe508bbkRAA6fayAdJaGbC55QQB8",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://medium.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 9
+      },
+      {
+        "title": "How does the Event Loop work?",
+        "link": "https://www.youtube.com/watch?v=WNrHrwm1wkU&t=187",
+        "snippet": "function is because JavaScript can't block in the Python. code each of those times sleep function calls blocks the main thread it just sits there and waits javascr",
+        "source": "YouTube",
+        "thumbnail": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRfHTJdLrnHhwAEEyOsdPpm-gobSD62kQVSWLl2suKwJSIOfKsuapb1z7NkBGHPaidiGgd30pkAx5eMP9M",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.youtube.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 10
+      },
+      {
+        "title": "How the Event Loop Works in Node.js - HeyNode",
+        "link": "https://heynode.com/tutorial/how-event-loop-works-nodejs/",
+        "snippet": "The Event Loop contains six main phases: timers, I/O callbacks, preparation / idle phase, I/O polling, setImmediate() callbacks ex...",
+        "source": "HeyNode",
+        "thumbnail": "https://heynode.com/tutorial/how-event-loop-works-nodejs/",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://heynode.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 11
+      },
+      {
+        "title": "What Is an Event Loop in JavaScript?\uff5cExplainThis",
+        "link": "https://www.explainthis.io/en/swe/what-is-event-loop",
+        "snippet": "The event loop itself does not exist in JavaScript but is instead implemented by the JavaScript execution environment (browser or Node. js). There are several conc...",
+        "source": "ExplainThis",
+        "thumbnail": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTOTmGYwMUHnxiq_8jKMRg8Di1zir7pSz71qVhaCfAwHt418IdloOXpVC_WVZEUCCRwZhRwiEBLgp41KvA",
+        "source_icon": "https://encrypted-tbn3.gstatic.com/faviconV2?url=https://www.explainthis.io&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 12
+      },
+      {
+        "title": "JavaScript in depth: execution contexts and event loop (2 of 4).",
+        "link": "https://medium.com/@lucadimolfetta/javascript-in-depth-execution-contexts-and-event-loop-2-of-4-4abf25c13749",
+        "snippet": "This context is the JavaScript runtime environment, and in the case we are examining, it is the browser.",
+        "source": "Medium",
+        "thumbnail": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSJoooGNwqpkOhrwYfI6xZWT1WItgW5abf2v-N1IrXyMma3vmPAmyuqt86yCuliE591mFY8Luj6NwjEuxg",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://medium.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 13
+      },
+      {
+        "title": "Introduction to JavaScript Runtime Environments",
+        "link": "https://www.codecademy.com/article/introduction-to-javascript-runtime-environments",
+        "snippet": "What is a Runtime Environment? the runtime environment of a browser (like Chrome, or Firefox) the Node ( Node.js ) runtime environment",
+        "source": "Codecademy",
+        "thumbnail": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRUKD4pe-wQXSE9_C5OywsuXnloOAtQAiUZc7QjHy8Gg6lM74YLeuhfowrBl_YAH4hLKtxqTPChrEJTtug",
+        "source_icon": "https://encrypted-tbn1.gstatic.com/faviconV2?url=https://www.codecademy.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 14
+      },
+      {
+        "title": "Is it possible to have an event listener that triggers after an inline onclick? : r/learnjavascript",
+        "link": "https://www.reddit.com/r/learnjavascript/comments/1kltef1/is_it_possible_to_have_an_event_listener_that/",
+        "snippet": "Correct. The timeout value is pretty much a minimum delay. When you're using synchronous APIs, such as manipulating the DOM, execu...",
+        "source": "Reddit",
+        "thumbnail": "https://www.reddit.com/r/learnjavascript/comments/1kltef1/is_it_possible_to_have_an_event_listener_that/",
+        "source_icon": "https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.reddit.com&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 15
+      },
+      {
+        "title": "Async JavaScript Patterns for 2020 \u2014",
+        "link": "https://jdx.dev/posts/2020-01-19-async-javascript-patterns-for-2020/",
+        "snippet": "The Javascript engine has a list of events that need to be processed. The event loop handles those events one at a time until the list is empty.",
+        "source": "jdx.dev",
+        "thumbnail": "https://jdx.dev/posts/2020-01-19-async-javascript-patterns-for-2020/",
+        "source_icon": "https://encrypted-tbn0.gstatic.com/faviconV2?url=https://jdx.dev&client=AIM&size=128&type=FAVICON&fallback_opts=TYPE,SIZE,URL",
+        "index": 16
+      }
+    ]
+  },
+  "organic_results": [
+    {
+      "position": 1,
+      "title": "The JavaScript Event Loop Explained with Examples",
+      "link": "https://medium.com/@ignatovich.dm/the-javascript-event-loop-explained-with-examples-d8f7ddf0861d",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://medium.com/%40ignatovich.dm/the-javascript-event-loop-explained-with-examples-d8f7ddf0861d&ved=2ahUKEwi9qqjuoeKVAxWu4skDHRPeC9YQFnoECBkQAQ",
+      "displayed_link": "550+ likes \u00b7 1 year ago",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAARVBMVEVHcEwAAAAAAAAAAAAAAAAAAABwcHCoqKifn58bGxt8fHzKysr___8rKyv5-fnW1tbp6emQkJCsrKxaWlq0tLTBwcE-Pj777dpoAAAABnRSTlMAS8D5_5mXKh4CAAAA3ElEQVR4AXzRUQ6EIAwEUNRZClgFQb3_UbfQEDUbd76qL5WMGGOGccJPpnEwkg9e8pE9vGYw4zuOZnrHyeBPFC055zw0wTkKN8TMzEHHZWWOuCMJJh03QXpgrlr0IzLmB-6L4KzHZ0Ub947-EF3q4rI3zByuzSLogDOiYeCICxGZVxmsYuR8x9DaJFQkL3UoX-iTvNg2xbPVvrB37ZgfeGr7_tl0Q_2HXjEjSe0HWnlWJGz1DEXEAsla2lyXcIj2K6O6Wvr1kQXCnL7DG9l4kwneBIY3aeJN1HizAwDOfRO3mlC3PQAAAABJRU5ErkJggg.png",
+      "snippet": "The JavaScript event loop is responsible for managing the execution of code, collecting and processing events, and executing queued tasks.",
+      "snippet_highlighted_words": [
+        "responsible for managing the execution of code"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "The JavaScript event loop is responsible for managing the execution of code, collecting and processing events, and executing queued tasks.",
+          "source_info_link": "https://medium.com/@ignatovich.dm/the-javascript-event-loop-explained-with-examples-d8f7ddf0861d",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAARVBMVEVHcEwAAAAAAAAAAAAAAAAAAABwcHCoqKifn58bGxt8fHzKysr___8rKyv5-fnW1tbp6emQkJCsrKxaWlq0tLTBwcE-Pj777dpoAAAABnRSTlMAS8D5_5mXKh4CAAAA3ElEQVR4AXzRUQ6EIAwEUNRZClgFQb3_UbfQEDUbd76qL5WMGGOGccJPpnEwkg9e8pE9vGYw4zuOZnrHyeBPFC055zw0wTkKN8TMzEHHZWWOuCMJJh03QXpgrlr0IzLmB-6L4KzHZ0Ub947-EF3q4rI3zByuzSLogDOiYeCICxGZVxmsYuR8x9DaJFQkL3UoX-iTvNg2xbPVvrB37ZgfeGr7_tl0Q_2HXjEjSe0HWnlWJGz1DEXEAsla2lyXcIj2K6O6Wvr1kQXCnL7DG9l4kwneBIY3aeJN1HizAwDOfRO3mlC3PQAAAABJRU5ErkJggg.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://medium.com/@ignatovich.dm/the-javascript-event-loop-explained-with-examples-d8f7ddf0861d&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fmedium.com%2F%40ignatovich.dm%2Fthe-javascript-event-loop-explained-with-examples-d8f7ddf0861d",
+      "source": "Medium \u00b7 Frontend Highlights",
+      "read_more_link": "https://medium.com/@ignatovich.dm/the-javascript-event-loop-explained-with-examples-d8f7ddf0861d#:~:text=At%20its%20core%2C%20the%20JavaScript,events%2C%20and%20executing%20queued%20tasks."
+    },
+    {
+      "position": 2,
+      "title": "Event Loop in JavaScript",
+      "link": "https://www.geeksforgeeks.org/javascript/what-is-an-event-loop-in-javascript/",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.geeksforgeeks.org/javascript/what-is-an-event-loop-in-javascript/&ved=2ahUKEwi9qqjuoeKVAxWu4skDHRPeC9YQFnoECCEQAQ",
+      "displayed_link": "https://www.geeksforgeeks.org \u203a javascript \u203a what-is-an...",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAM1BMVEVHcEwujUQvjUUujEUvjUUujUUujUUujUUvjUYvjUYvjUYujUUvjUUvjUYwi0MvjUYvjUaDgY7PAAAAEXRSTlMACRRIe7hrNKX_21qN6SD0zVxKFHYAAACqSURBVHgB3Y8FkgMgEASxlcGW_7_2sPPkAUmjXei4t8N7_0RCTETEclZkSZK7HhSbXJbUI43PaiejxHWgzVUFpqRh9R6V0levaD7C0pYS3C9kgAc0uIdUEIx_hRh4As9FQssHg-GHrEWF9kWYb9Z8pceBlYzR4o5bDZ1X2kUy6yvmQK5RmAzVBUKrRYoaTtCY10uGrTKOfEUKqQGg4rdwnpLZ_0zkfskr8gHhwgjM82lwXwAAAABJRU5ErkJggg.png",
+      "date": "May 5, 2026",
+      "snippet": "The event loop is an important concept in JavaScript that enables asynchronous programming by handling tasks efficiently.",
+      "snippet_highlighted_words": [
+        "event loop",
+        "JavaScript"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "The event loop is an important concept in JavaScript that enables asynchronous programming by handling tasks efficiently.",
+          "source_info_link": "https://www.geeksforgeeks.org/javascript/what-is-an-event-loop-in-javascript/",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAM1BMVEVHcEwujUQvjUUujEUvjUUujUUujUUujUUvjUYvjUYvjUYujUUvjUUvjUYwi0MvjUYvjUaDgY7PAAAAEXRSTlMACRRIe7hrNKX_21qN6SD0zVxKFHYAAACqSURBVHgB3Y8FkgMgEASxlcGW_7_2sPPkAUmjXei4t8N7_0RCTETEclZkSZK7HhSbXJbUI43PaiejxHWgzVUFpqRh9R6V0levaD7C0pYS3C9kgAc0uIdUEIx_hRh4As9FQssHg-GHrEWF9kWYb9Z8pceBlYzR4o5bDZ1X2kUy6yvmQK5RmAzVBUKrRYoaTtCY10uGrTKOfEUKqQGg4rdwnpLZ_0zkfskr8gHhwgjM82lwXwAAAABJRU5ErkJggg.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://www.geeksforgeeks.org/javascript/what-is-an-event-loop-in-javascript/&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fwww.geeksforgeeks.org%2Fjavascript%2Fwhat-is-an-event-loop-in-javascript%2F",
+      "source": "GeeksforGeeks",
+      "read_more_link": "https://www.geeksforgeeks.org/javascript/what-is-an-event-loop-in-javascript/#:~:text=The%20event%20loop%20is%20an,programming%20by%20handling%20tasks%20efficiently."
+    },
+    {
+      "position": 3,
+      "title": "What really is the event loop ? : r/learnjavascript",
+      "link": "https://www.reddit.com/r/learnjavascript/comments/n14pg4/what_really_is_the_event_loop/",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.reddit.com/r/learnjavascript/comments/n14pg4/what_really_is_the_event_loop/&ved=2ahUKEwi9qqjuoeKVAxWu4skDHRPeC9YQFnoECCUQAQ",
+      "displayed_link": "10+ comments \u00b7 5 years ago",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAhFBMVEVHcEz_RQD_RQD_RQD_RQD_RQD_RQD_RQD_RQD_PQD_NgD-XS32dlf5vK3____64dusLADUz9H-jXLOPAoSHiFrLBm3uLn3_f7jVS_b6e77pJDJo6H718__RQDw9ffs5-jm8fPIXlHqKwD5-PjolIP_VgP_SQLQ2uAyODvQ4ekABAhqcHK4ptuCAAAAHnRSTlMAPobB7P9mHdb__________________________8J6YdtgAAABWUlEQVR4AWySYZNDMBCGWyw2SI9TGnWqILT____dm6Enc-MZH8Qz2V3Je_rj7Lgekec659N_fIgPnn-yCULaYaYwsCqShYhiQXQ-dJxIedltQDZfqZQyY6K1st3vO78WsiyNDI3zySK_caJUygTMzN7eTnxdBXMcb3-0TsMC30RUJfciqSIs8JCZycHwWV1n2UVuXDKzxsDOySWu5AGVoB_TUh5imhJFpQTNfav7uDcSlBERJLUN9LOLewn6LnpCNS0EyvKg-vLRjVRLUIuxe8hSDYyyLqatyr68jdO6cxpvWGIeDOQQujagNs7YuumbJmYiZz0E3aJvMc95Ps8F-rV6PQQ0JY4XpVqVv0Cu2lYps9HbDp6HRS9Kv1-vt1Z4HeDI_1yZiFMNFIzWqYkChftl8zSkegE6HSYmENgxYYQHRGzUHiLHyh3ModvZo7nHxA71ofwdSnYAAPpVIo4RUPiIAAAAAElFTkSuQmCC.png",
+      "snippet": "Is it a function ?some other peice of code ? Or is it literally a loop (like while and for loops). When someone asks me what is the event loop .. what ...",
+      "about_this_result": {
+        "source": {
+          "description": "The Javascript engine has a list of events that need to be processed. The event loop handles those events one at a time until the list is empty.",
+          "source_info_link": "https://www.reddit.com/r/learnjavascript/comments/n14pg4/what_really_is_the_event_loop/",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAhFBMVEVHcEz_RQD_RQD_RQD_RQD_RQD_RQD_RQD_RQD_PQD_NgD-XS32dlf5vK3____64dusLADUz9H-jXLOPAoSHiFrLBm3uLn3_f7jVS_b6e77pJDJo6H718__RQDw9ffs5-jm8fPIXlHqKwD5-PjolIP_VgP_SQLQ2uAyODvQ4ekABAhqcHK4ptuCAAAAHnRSTlMAPobB7P9mHdb__________________________8J6YdtgAAABWUlEQVR4AWySYZNDMBCGWyw2SI9TGnWqILT____dm6Enc-MZH8Qz2V3Je_rj7Lgekec659N_fIgPnn-yCULaYaYwsCqShYhiQXQ-dJxIedltQDZfqZQyY6K1st3vO78WsiyNDI3zySK_caJUygTMzN7eTnxdBXMcb3-0TsMC30RUJfciqSIs8JCZycHwWV1n2UVuXDKzxsDOySWu5AGVoB_TUh5imhJFpQTNfav7uDcSlBERJLUN9LOLewn6LnpCNS0EyvKg-vLRjVRLUIuxe8hSDYyyLqatyr68jdO6cxpvWGIeDOQQujagNs7YuumbJmYiZz0E3aJvMc95Ps8F-rV6PQQ0JY4XpVqVv0Cu2lYps9HbDp6HRS9Kv1-vt1Z4HeDI_1yZiFMNFIzWqYkChftl8zSkegE6HSYmENgxYYQHRGzUHiLHyh3ModvZo7nHxA71ofwdSnYAAPpVIo4RUPiIAAAAAElFTkSuQmCC.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://www.reddit.com/r/learnjavascript/comments/n14pg4/what_really_is_the_event_loop/&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fwww.reddit.com%2Fr%2Flearnjavascript%2Fcomments%2Fn14pg4%2Fwhat_really_is_the_event_loop%2F",
+      "source": "Reddit \u00b7 r/learnjavascript"
+    },
+    {
+      "position": 4,
+      "title": "The Node.js Event Loop",
+      "link": "https://nodejs.org/learn/asynchronous-work/event-loop-timers-and-nexttick",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://nodejs.org/learn/asynchronous-work/event-loop-timers-and-nexttick&ved=2ahUKEwi9qqjuoeKVAxWu4skDHRPeC9YQFnoECCQQAQ",
+      "displayed_link": "https://nodejs.org \u203a learn \u203a event-loop-timers-and-nexttick",
+      "favicon": "https://serpapi.com/searches/6a5e9bdc49579aa1964ea4ec/images/4PxGeGnk_W53lJneu67EOPZZFuFO5n7oxGfm1NGHLqc.png",
+      "snippet": "The event loop is what allows Node.js to perform non-blocking I/O operations \u2014 despite the fact that a single JavaScript thread is used by default",
+      "snippet_highlighted_words": [
+        "what allows Node.js to perform non-blocking I/O operations"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "The event loop is what allows Node.js to perform non-blocking I/O operations \u2014 despite the fact that a single JavaScript thread is used by default",
+          "source_info_link": "https://nodejs.org/learn/asynchronous-work/event-loop-timers-and-nexttick",
+          "icon": "https://serpapi.com/searches/6a5e9bdc49579aa1964ea4ec/images/4PxGeGnk_W53lJneu67EOG_jBz9pAs2qX_0YDVnNc5UYpLNoWNRRXNGnULiRMx3o.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://nodejs.org/learn/asynchronous-work/event-loop-timers-and-nexttick&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fnodejs.org%2Flearn%2Fasynchronous-work%2Fevent-loop-timers-and-nexttick",
+      "source": "Node.js"
+    },
+    {
+      "position": 5,
+      "title": "JavaScript Event Loop Explained: A Beginner's Guide With ...",
+      "link": "https://dev.to/buildwithgagan/javascript-event-loop-explained-a-beginners-guide-with-examples-4kae",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://dev.to/buildwithgagan/javascript-event-loop-explained-a-beginners-guide-with-examples-4kae&ved=2ahUKEwi9qqjuoeKVAxWu4skDHRPeC9YQFnoECCIQAQ",
+      "displayed_link": "https://dev.to \u203a buildwithgagan \u203a javascript-event-loop-...",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAbCAMAAABY1h8eAAAAS1BMVEUAAAAAAAAAAAAAAAAGBgYAAAC6urr39_f19fXT09NKSkrj4-P___-wsLCdnZ1cXFzHx8cXFxdlZWV4eHgfHx-RkZGHh4empqYmJiaIq-h1AAAABnRSTlMl6f_T_v6d86gKAAAAp0lEQVR4AcXSRQKEMBAF0VCD9w9u97_ouKFbavsg7lzAToFzl3APw8CF7Oc4wugcjJM0zXJCS9NUeBWAqXxhpUd1o0e0MugkPpgTq28UA4QSDMq-WDKoeCGYGir1SzRfAKM8ifIlSgaUskkpS6zKHEAqFLM552v17Q_7xtTe_2yaNoT-juEP7xnla7vPTWZ8cPDeD0Dv74VA6evzrowjDI_w8N0evfgbpM4OMGs0DpUAAAAASUVORK5CYII.png",
+      "date": "Mar 19, 2025",
+      "snippet": "The event loop is a mechanism in JavaScript that continuously monitors the call stack and the task queue, ensuring that asynchronous operations like API calls, ...",
+      "snippet_highlighted_words": [
+        "a mechanism in JavaScript that continuously monitors the call stack and the task queue"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "The event loop is a mechanism in JavaScript that continuously monitors the call stack and the task queue, ensuring that asynchronous operations like API calls, ...",
+          "source_info_link": "https://dev.to/buildwithgagan/javascript-event-loop-explained-a-beginners-guide-with-examples-4kae",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAbCAMAAABY1h8eAAAAS1BMVEUAAAAAAAAAAAAAAAAGBgYAAAC6urr39_f19fXT09NKSkrj4-P___-wsLCdnZ1cXFzHx8cXFxdlZWV4eHgfHx-RkZGHh4empqYmJiaIq-h1AAAABnRSTlMl6f_T_v6d86gKAAAAp0lEQVR4AcXSRQKEMBAF0VCD9w9u97_ouKFbavsg7lzAToFzl3APw8CF7Oc4wugcjJM0zXJCS9NUeBWAqXxhpUd1o0e0MugkPpgTq28UA4QSDMq-WDKoeCGYGir1SzRfAKM8ifIlSgaUskkpS6zKHEAqFLM552v17Q_7xtTe_2yaNoT-juEP7xnla7vPTWZ8cPDeD0Dv74VA6evzrowjDI_w8N0evfgbpM4OMGs0DpUAAAAASUVORK5CYII.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://dev.to/buildwithgagan/javascript-event-loop-explained-a-beginners-guide-with-examples-4kae&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fdev.to%2Fbuildwithgagan%2Fjavascript-event-loop-explained-a-beginners-guide-with-examples-4kae",
+      "source": "DEV Community",
+      "read_more_link": "https://dev.to/buildwithgagan/javascript-event-loop-explained-a-beginners-guide-with-examples-4kae#:~:text=The%20event%20loop%20is%20a,without%20blocking%20the%20main%20thread."
+    },
+    {
+      "position": 6,
+      "title": "Event loop",
+      "link": "https://en.wikipedia.org/wiki/Event_loop",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://en.wikipedia.org/wiki/Event_loop&ved=2ahUKEwi9qqjuoeKVAxWu4skDHRPeC9YQFnoECB4QAQ",
+      "displayed_link": "https://en.wikipedia.org \u203a wiki \u203a Event_loop",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAAAAABXZoBIAAAAnklEQVR4AeTNIQiDQABG4b-u17X1aF6PK3YEO9iMJqPVau82y4FgMezS0oVLhqsHtrcqeqzDXv3CEz_6L4yTtZM3dnHmPTtjzXZAXKYVo4agkU2GI2Lloc6JDez1-flswMu1EQZ3xlE7lK8eKDkjtwE-crBMV-wesKmCiisGGepZIfQJpMj9SNb2MYWrChjVkULuCyCfRvsdmBieyQQAsoDk_9ryhFMAAAAASUVORK5CYII.png",
+      "snippet": "In JavaScript, the event loop allows non-blocking handling of tasks such as user interactions, timers, and I/O operations despite the language being single- ...",
+      "snippet_highlighted_words": [
+        "non-blocking handling of tasks"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "In JavaScript, the event loop allows non-blocking handling of tasks such as user interactions, timers, and I/O operations despite the language being single- ...",
+          "source_info_link": "https://en.wikipedia.org/wiki/Event_loop",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAAAAABXZoBIAAAAnklEQVR4AeTNIQiDQABG4b-u17X1aF6PK3YEO9iMJqPVau82y4FgMezS0oVLhqsHtrcqeqzDXv3CEz_6L4yTtZM3dnHmPTtjzXZAXKYVo4agkU2GI2Lloc6JDez1-flswMu1EQZ3xlE7lK8eKDkjtwE-crBMV-wesKmCiisGGepZIfQJpMj9SNb2MYWrChjVkULuCyCfRvsdmBieyQQAsoDk_9ryhFMAAAAASUVORK5CYII.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://en.wikipedia.org/wiki/Event_loop&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FEvent_loop",
+      "source": "Wikipedia"
+    },
+    {
+      "position": 7,
+      "title": "Node.js Event Loop",
+      "link": "https://www.w3schools.com/nodejs/nodejs_event_loop.asp",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.w3schools.com/nodejs/nodejs_event_loop.asp&ved=2ahUKEwi9qqjuoeKVAxWu4skDHRPeC9YQFnoECB8QAQ",
+      "displayed_link": "https://www.w3schools.com \u203a nodejs \u203a nodejs_event_lo...",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAYFBMVEX___-63c6gz7um0sCr1cSv18aYzLYmonRjtpTB4NP4_Pvu9_PT6eA3pnyFxKoAkFcAlV8AklpruZoAlV4AmmgAmGTi8evl8-4AiUmLx69Yso612ssupHgLnWxBqYHK5dqH3wIXAAAAq0lEQVR4AdzLgwEDQRRF0bu27f67zJuYDeQMv_gDlu24_OL5QYiI63luBMSup1-CpBlXeVGWhXK-3rKqkazxuCrbtquJm9aoemQYubJVLZJJt3QzTOlScXPOtbJ2Gk1xtiDlxm1UVa0h0Gfn1dYapY9VafTghXLSAauelVeBGXSAw4xavDC5DWPv2sblhXLVgpFWbcCbtLil5iLi3X4aTEhMFjMmxJFYQxIAAFFuC1yESb31AAAAAElFTkSuQmCC.png",
+      "snippet": "The event loop is what makes Node.js non-blocking and efficient. It handles asynchronous operations by delegating tasks to the system and processing their ...",
+      "snippet_highlighted_words": [
+        "what makes Node.js non-blocking and efficient"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "The event loop is what makes Node.js non-blocking and efficient. It handles asynchronous operations by delegating tasks to the system and processing their ...",
+          "source_info_link": "https://www.w3schools.com/nodejs/nodejs_event_loop.asp",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y-mAAAAYFBMVEX___-63c6gz7um0sCr1cSv18aYzLYmonRjtpTB4NP4_Pvu9_PT6eA3pnyFxKoAkFcAlV8AklpruZoAlV4AmmgAmGTi8evl8-4AiUmLx69Yso612ssupHgLnWxBqYHK5dqH3wIXAAAAq0lEQVR4AdzLgwEDQRRF0bu27f67zJuYDeQMv_gDlu24_OL5QYiI63luBMSup1-CpBlXeVGWhXK-3rKqkazxuCrbtquJm9aoemQYubJVLZJJt3QzTOlScXPOtbJ2Gk1xtiDlxm1UVa0h0Gfn1dYapY9VafTghXLSAauelVeBGXSAw4xavDC5DWPv2sblhXLVgpFWbcCbtLil5iLi3X4aTEhMFjMmxJFYQxIAAFFuC1yESb31AAAAAElFTkSuQmCC.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://www.w3schools.com/nodejs/nodejs_event_loop.asp&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fwww.w3schools.com%2Fnodejs%2Fnodejs_event_loop.asp",
+      "source": "W3Schools",
+      "read_more_link": "https://www.w3schools.com/nodejs/nodejs_event_loop.asp#:~:text=The%20event%20loop%20is%20what,connections%20with%20a%20single%20thread."
+    },
+    {
+      "position": 8,
+      "title": "Event Loop in JavaScript",
+      "link": "https://www.rapidops.com/blog/event-loop-with-javascript/",
+      "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.rapidops.com/blog/event-loop-with-javascript/&ved=2ahUKEwi9qqjuoeKVAxWu4skDHRPeC9YQFnoECB0QAQ",
+      "displayed_link": "https://www.rapidops.com \u203a blog \u203a event-loop-with-java...",
+      "favicon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAJ1BMVEVHcEwdHR0cHBwcHBwdHR0cHBwcHBwdHR0dHR0cHBwdHR0cHBwdHR0FCw9rAAAADHRSTlMA7xRAtFgnzZmI323o7CsYAAABTklEQVQ4jWWT4QLFEAiFRSny_s97K-ya9cemnL6KlB7LJAxjAAvl9LUi5twGrVzu3A63W28vlYKxy4jYdwgfItWPY6nZrRKuPOX0Yz0Tyisi8-h0MRFHlnmqjX4zG1VEtPiE7a-kqmXRV95JGtCqpIP3qS-cIBcjgNCpgQ4oTXhIqKjv5ETdD5CfxY2ik85bQknE_Y58VJKpLglJfqz2qxEWkuY2J7YveTf2CTIuSOiFDtBVaNNDqVmO1EIAg21OtOsepKMl8lYb7BTERqS4echTlFS6LeHndZXKWskhswdw5OtP-vwEeBMsQKL170InJO0AncF3mZDn3MQr-QjYuGJOCY1BHPQy3RdFB1QZ_ROwBVLuQ_WroIP_HWPr4vWcynGtjUBw6z2EcM4POwKcEoXf882NETAfv3JX7Y933blM-Hm8vm3PH4VKoXY-_x8lQg4RFrF3FwAAAABJRU5ErkJggg.png",
+      "snippet": "In JavaScript, an event loop is a mechanism that allows the execution of code to be scheduled in a non-blocking way. That means the code can continue to run and ...",
+      "snippet_highlighted_words": [
+        "a mechanism that allows the execution of code to be scheduled in a non-blocking way"
+      ],
+      "about_this_result": {
+        "source": {
+          "description": "In JavaScript, an event loop is a mechanism that allows the execution of code to be scheduled in a non-blocking way. That means the code can continue to run and ...",
+          "source_info_link": "https://www.rapidops.com/blog/event-loop-with-javascript/",
+          "icon": "https://serpapi.com/images/i/iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAJ1BMVEVHcEwdHR0cHBwcHBwdHR0cHBwcHBwdHR0dHR0cHBwdHR0cHBwdHR0FCw9rAAAADHRSTlMA7xRAtFgnzZmI323o7CsYAAABTklEQVQ4jWWT4QLFEAiFRSny_s97K-ya9cemnL6KlB7LJAxjAAvl9LUi5twGrVzu3A63W28vlYKxy4jYdwgfItWPY6nZrRKuPOX0Yz0Tyisi8-h0MRFHlnmqjX4zG1VEtPiE7a-kqmXRV95JGtCqpIP3qS-cIBcjgNCpgQ4oTXhIqKjv5ETdD5CfxY2ik85bQknE_Y58VJKpLglJfqz2qxEWkuY2J7YveTf2CTIuSOiFDtBVaNNDqVmO1EIAg21OtOsepKMl8lYb7BTERqS4echTlFS6LeHndZXKWskhswdw5OtP-vwEeBMsQKL170InJO0AncF3mZDn3MQr-QjYuGJOCY1BHPQy3RdFB1QZ_ROwBVLuQ_WroIP_HWPr4vWcynGtjUBw6z2EcM4POwKcEoXf882NETAfv3JX7Y933blM-Hm8vm3PH4VKoXY-_x8lQg4RFrF3FwAAAABJRU5ErkJggg.png"
+        },
+        "languages": [
+          "en"
+        ],
+        "regions": [
+          "US"
+        ]
+      },
+      "about_page_link": "https://www.google.com/search?q=About+https://www.rapidops.com/blog/event-loop-with-javascript/&tbm=ilp",
+      "about_page_serpapi_link": "https://serpapi.com/search.json?engine=google_about_this_result&google_domain=google.com&q=About+https%3A%2F%2Fwww.rapidops.com%2Fblog%2Fevent-loop-with-javascript%2F",
+      "source": "Rapidops",
+      "read_more_link": "https://www.rapidops.com/blog/event-loop-with-javascript/#:~:text=In%20JavaScript%2C%20an%20event%20loop,or%20blocked%20by%20long%2Drunning%20operations."
+    }
+  ],
+  "related_searches": [
+    {
+      "block_position": 1,
+      "query": "What is the event loop in javascript with example",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&gl=us&hl=en&q=What+is+the+event+loop+in+javascript+with+example&sa=X&ved=2ahUKEwi9qqjuoeKVAxWu4skDHRPeC9YQ1QJ6BAg_EAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&gl=us&google_domain=google.com&hl=en&q=What+is+the+event+loop+in+javascript+with+example"
+    },
+    {
+      "block_position": 1,
+      "query": "What is event loop in Node JS",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&gl=us&hl=en&q=What+is+event+loop+in+Node+JS&sa=X&ved=2ahUKEwi9qqjuoeKVAxWu4skDHRPeC9YQ1QJ6BAhFEAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&gl=us&google_domain=google.com&hl=en&q=What+is+event+loop+in+Node+JS"
+    },
+    {
+      "block_position": 1,
+      "query": "What is the event loop in javascript w3schools",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&gl=us&hl=en&q=What+is+the+event+loop+in+javascript+w3schools&sa=X&ved=2ahUKEwi9qqjuoeKVAxWu4skDHRPeC9YQ1QJ6BAhEEAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&gl=us&google_domain=google.com&hl=en&q=What+is+the+event+loop+in+javascript+w3schools"
+    },
+    {
+      "block_position": 1,
+      "query": "Event loop in JavaScript visualizer",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&gl=us&hl=en&q=Event+loop+in+JavaScript+visualizer&sa=X&ved=2ahUKEwi9qqjuoeKVAxWu4skDHRPeC9YQ1QJ6BAhDEAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&gl=us&google_domain=google.com&hl=en&q=Event+loop+in+JavaScript+visualizer"
+    },
+    {
+      "block_position": 1,
+      "query": "What is the event loop in javascript geeksforgeeks",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&gl=us&hl=en&q=What+is+the+event+loop+in+javascript+geeksforgeeks&sa=X&ved=2ahUKEwi9qqjuoeKVAxWu4skDHRPeC9YQ1QJ6BAhBEAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&gl=us&google_domain=google.com&hl=en&q=What+is+the+event+loop+in+javascript+geeksforgeeks"
+    },
+    {
+      "block_position": 1,
+      "query": "How does event loop work in JavaScript",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&gl=us&hl=en&q=How+does+event+loop+work+in+JavaScript&sa=X&ved=2ahUKEwi9qqjuoeKVAxWu4skDHRPeC9YQ1QJ6BAhAEAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&gl=us&google_domain=google.com&hl=en&q=How+does+event+loop+work+in+JavaScript"
+    },
+    {
+      "block_position": 1,
+      "query": "Event loop in JavaScript online",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&gl=us&hl=en&q=Event+loop+in+JavaScript+online&sa=X&ved=2ahUKEwi9qqjuoeKVAxWu4skDHRPeC9YQ1QJ6BAhCEAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&gl=us&google_domain=google.com&hl=en&q=Event+loop+in+JavaScript+online"
+    },
+    {
+      "block_position": 1,
+      "query": "Event loop in browser",
+      "link": "https://www.google.com/search?sca_esv=3271cc0dab4982ea&gl=us&hl=en&q=Event+loop+in+browser&sa=X&ved=2ahUKEwi9qqjuoeKVAxWu4skDHRPeC9YQ1QJ6BAg-EAE",
+      "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&gl=us&google_domain=google.com&hl=en&q=Event+loop+in+browser"
+    }
+  ],
+  "pagination": {
+    "current": 1,
+    "next": "https://www.google.com/search?q=what+is+the+event+loop+in+javascript&sca_esv=3271cc0dab4982ea&gl=us&hl=en&ei=3Zteav3HBK7Fp84Pk7yvsA0&start=10&sa=N&sstk=AU9db-CSZS_vwMELv7hTG46mV-9jNat7Zy-WzfXvL7lrqv6eNla7Dxo7WNWHSzF5yYt05S4NJBYoMg6S-f0ChgPDC1IIv25uYSMeWw&ved=2ahUKEwi9qqjuoeKVAxWu4skDHRPeC9YQ8NMDegQIOxAG",
+    "other_pages": {
+      "2": "https://www.google.com/search?q=what+is+the+event+loop+in+javascript&sca_esv=3271cc0dab4982ea&gl=us&hl=en&ei=3Zteav3HBK7Fp84Pk7yvsA0&start=10&sa=N&sstk=AU9db-CSZS_vwMELv7hTG46mV-9jNat7Zy-WzfXvL7lrqv6eNla7Dxo7WNWHSzF5yYt05S4NJBYoMg6S-f0ChgPDC1IIv25uYSMeWw&ved=2ahUKEwi9qqjuoeKVAxWu4skDHRPeC9YQ8tMDegQIOxAE"
+    }
+  },
+  "serpapi_pagination": {
+    "current": 1,
+    "next_link": "https://serpapi.com/search.json?device=desktop&engine=google&gl=us&google_domain=google.com&hl=en&q=what+is+the+event+loop+in+javascript&start=10",
+    "next": "https://serpapi.com/search.json?device=desktop&engine=google&gl=us&google_domain=google.com&hl=en&q=what+is+the+event+loop+in+javascript&start=10",
+    "other_pages": {
+      "2": "https://serpapi.com/search.json?device=desktop&engine=google&gl=us&google_domain=google.com&hl=en&q=what+is+the+event+loop+in+javascript&start=10"
+    }
+  }
+}

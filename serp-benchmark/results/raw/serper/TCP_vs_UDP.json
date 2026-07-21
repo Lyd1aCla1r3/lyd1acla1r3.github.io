@@ -1,0 +1,119 @@
+{
+  "searchParameters": {
+    "q": "TCP vs UDP",
+    "gl": "us",
+    "hl": "en",
+    "type": "search",
+    "engine": "google"
+  },
+  "organic": [
+    {
+      "title": "TCP vs. UDP",
+      "link": "https://www.geeksforgeeks.org/computer-networks/differences-between-tcp-and-udp/",
+      "snippet": "Both are responsible for end-to-end communication between applications, but they differ significantly in terms of reliability, speed, and use ...",
+      "date": "Mar 28, 2026",
+      "position": 1
+    },
+    {
+      "title": "ELI5: The difference between TCP vs UDP",
+      "link": "https://www.reddit.com/r/explainlikeimfive/comments/66i0ta/eli5_the_difference_between_tcp_vs_udp/",
+      "snippet": "TCP makes sure that the information gets there while UDP doesn't care about wether what was send was actually received. The advantage of TCP are ...",
+      "date": "9 years ago",
+      "sitelinks": [
+        {
+          "title": "6 answers",
+          "link": "https://www.reddit.com/r/explainlikeimfive/comments/66i0ta/comment/dgimh9e/"
+        }
+      ],
+      "position": 2
+    },
+    {
+      "title": "Simplest explanation of TCP and UDP",
+      "link": "https://www.youtube.com/shorts/8B2trNb2vWk",
+      "snippet": "TCP guarantees delivery with handshakes and retries. Its perfect for websites, emails, and file transfers. UDP skips the formalities and goes ...",
+      "date": "7 months ago",
+      "position": 3
+    },
+    {
+      "title": "TCP vs UDP: Differences Between TCP & UDP Protocols",
+      "link": "https://www.avast.com/c-tcp-vs-udp-difference",
+      "snippet": "TCP is a connection-based protocol and UDP is connectionless. While TCP is more reliable, it transfers data more slowly. UDP is less reliable ...",
+      "date": "Feb 23, 2023",
+      "position": 4
+    },
+    {
+      "title": "Understanding TCP and UDP : Building Blocks of ...",
+      "link": "https://medium.com/@abhirup.acharya009/understanding-tcp-and-udp-building-blocks-of-connectivity-ec96e208b852",
+      "snippet": "TCP establishes a dedicated connection between two specific servers for data transmission, unlike UDP which can send data from one server to ...",
+      "date": "3 years ago",
+      "position": 5
+    },
+    {
+      "title": "TCP vs. UDP: Key differences between the protocols",
+      "link": "https://nordvpn.com/blog/tcp-or-udp-which-is-better/?srsltid=AfmBOoqLohr44fCcaBd8kkE7pzwntoTt9UkE4KwpI5O-qAZxJ7vjxLL2",
+      "snippet": "TCP and UDP are two of the most widely used data transfer protocols available to applications. While UDP is faster, TCP is more reliable.",
+      "date": "Nov 5, 2025",
+      "position": 6
+    },
+    {
+      "title": "TCP vs UDP Explained // Hands On Lab Example with ...",
+      "link": "https://www.youtube.com/watch?v=V1CxV6Vg7_U",
+      "snippet": "Every network engineer at some point will need to explain the difference between TCP and UDP, along with a few details about the protocol.",
+      "date": "4 years ago",
+      "position": 7
+    }
+  ],
+  "peopleAlsoAsk": [
+    {
+      "question": "Why would anyone use UDP over TCP?",
+      "title": "TCP vs UDP: Differences Between TCP & UDP Protocols - Avast",
+      "snippet": "It depends on what you're doing online and the type of data being transferred. UDP is better if you're gaming online, because its speedy data transfer allows for mostly lag-free gaming. TCP is better if you're transferring files, like family photos, because it ensures the data arrives exactly as it was sent.Feb 23, 2023",
+      "link": "https://www.avast.com/c-tcp-vs-udp-difference#:~:text=It%20depends%20on%20what%20you,exactly%20as%20it%20was%20sent."
+    },
+    {
+      "question": "Is Netflix TCP or UDP?",
+      "title": "Why does Netflix use TCP but not UDP for streaming video?",
+      "snippet": "Netflix uses TCP because TCP is much time-sensitive and does not require port forwarding. It helps to enable the full bandwidth of the network. We can compress more data at once in TCP and also reloaded data packets do not pose a problem. It also ensures higher video quality and fewer network congestion problems.Jul 23, 2025",
+      "link": "https://www.geeksforgeeks.org/computer-networks/why-does-netflix-use-tcp-but-not-udp-for-streaming-video/#:~:text=Netflix%20uses%20TCP%20because%20TCP,and%20fewer%20network%20congestion%20problems."
+    },
+    {
+      "question": "Does port 443 use TCP or UDP?",
+      "title": "What is Port 443? How HTTPS secures web traffic | Sectigo\u00ae Official",
+      "snippet": "At this point, the web browser initiates a secure connection via port 443, sending a Transmission Control Protocol (TCP) request. Next, the SSL/TLS certificate is sent to the client.Apr 10, 2025",
+      "link": "https://www.sectigo.com/blog/what-is-port-443#:~:text=At%20this%20point%2C%20the%20web,is%20sent%20to%20the%20client."
+    },
+    {
+      "question": "What is TCP, UDP, and HTTP?",
+      "title": "A Beginner's Guide to Networking Protocols: TCP, UDP, HTTP, and ...",
+      "snippet": "TCP ensure data arrives intact and in order. UDP prioritizes speed over reliability. HTTP leverages TCP to ensure web pages are delivered reliably. HTTP/3 leverages QUIC to ensure fast connection and reliability.Jun 5, 2024",
+      "link": "https://dev.to/dev_ojay/a-beginners-guide-to-networking-protocols-tcp-udp-http-and-http3-3pp6#:~:text=TCP%20ensure%20data%20arrives%20intact,ensure%20fast%20connection%20and%20reliability."
+    }
+  ],
+  "relatedSearches": [
+    {
+      "query": "Tcp vs udp reddit"
+    },
+    {
+      "query": "TCP vs UDP full form"
+    },
+    {
+      "query": "TCP vs UDP meme"
+    },
+    {
+      "query": "Difference between TCP and UDP PDF"
+    },
+    {
+      "query": "TCP vs UDP vs HTTP"
+    },
+    {
+      "query": "TCP vs UDP for gaming"
+    },
+    {
+      "query": "TCP vs UDP security"
+    },
+    {
+      "query": "TCP vs UDP table"
+    }
+  ],
+  "credits": 1
+}
