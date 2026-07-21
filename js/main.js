@@ -250,7 +250,10 @@
       i === 0 ? ctx.moveTo(hx2, hy2) : ctx.lineTo(hx2, hy2);
     }
     ctx.closePath();
-    ctx.fillStyle = RG + '0.08)';
+    var hexGrad = ctx.createLinearGradient(-HR, -HR, HR, HR);
+    hexGrad.addColorStop(0, 'rgba(217, 154, 171, 0.12)');
+    hexGrad.addColorStop(1, 'rgba(250, 228, 232, 0.12)');
+    ctx.fillStyle = hexGrad;
     ctx.fill();
     ctx.shadowColor = 'rgba(185, 115, 130, 0.2)';
     ctx.shadowBlur = 6;
@@ -308,7 +311,19 @@
       ctx.stroke();
       ctx.setLineDash([]);
 
-      ctx.fillStyle = GD + (0.1 * pulse) + ')';
+      var gradColors = [
+        ['rgba(230, 169, 141, ', 'rgba(253, 240, 223, '], // Peach/Gold
+        ['rgba(217, 154, 171, ', 'rgba(250, 228, 232, '], // Blush
+        ['rgba(166, 96, 110, ', 'rgba(234, 184, 191, '], // Rose Gold
+        ['rgba(230, 169, 141, ', 'rgba(217, 154, 171, '] // Peach to Blush
+      ];
+      var c1 = gradColors[i % gradColors.length][0];
+      var c2 = gradColors[i % gradColors.length][1];
+      
+      var nodeGrad = ctx.createLinearGradient(sx - 6, sy - 6, sx + 6, sy + 6);
+      nodeGrad.addColorStop(0, c1 + (0.15 * pulse) + ')');
+      nodeGrad.addColorStop(1, c2 + (0.15 * pulse) + ')');
+      ctx.fillStyle = nodeGrad;
       ctx.beginPath();
       ctx.arc(sx, sy, 6, 0, Math.PI * 2);
       ctx.fill();
