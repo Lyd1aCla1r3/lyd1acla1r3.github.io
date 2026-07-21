@@ -24,35 +24,43 @@ def generate_charts(df, charts_dir, blog_charts_dir):
         'axes.axisbelow': True,
     })
     
-    # Custom colors mapping from the portfolio CSS
-    colors = {
-        'yield': '#b76e79',       # --rose-gold
-        'Citations': '#eab8bf',   # Lighter, more blush gold
-        'Text Blocks': '#8b4f5a'  # --rose-gold-dark
+    import matplotlib.colors as mcolors
+    import matplotlib.patches as patches
+    import numpy as np
+
+    # Define Ombre Gradients (bottom_color, top_color)
+    ombre_palettes = {
+        'Peach/Gold': ('#e6a98d', '#fdf0df'),  # deeper peach to pale gold
+        'Blush': ('#d99aab', '#fae4e8'),       # deeper rose to pale blush
+        'Rose Gold': ('#a6606e', '#eab8bf')    # dark rose gold to light rose
     }
-    
-    def add_sheen(ax):
-        import matplotlib.patches as patches
-        for patch in ax.patches:
-            if not isinstance(patch, patches.Rectangle): continue
+
+    def apply_ombre(ax, gradient_keys):
+        """Applies an ombre gradient to the bars in the axis."""
+        num_patches = len([p for p in ax.patches if isinstance(p, patches.Rectangle) and p.get_height() > 0])
+        num_groups = len(gradient_keys)
+        if num_patches == 0 or num_groups == 0: return
+        patches_per_group = num_patches // num_groups
+        
+        valid_patches = [p for p in ax.patches if isinstance(p, patches.Rectangle) and p.get_height() > 0]
+        
+        for i, patch in enumerate(valid_patches):
             x, y = patch.get_xy()
             w, h = patch.get_width(), patch.get_height()
-            if h <= 0 or w <= 0: continue
             
-            # Left edge bright highlight (sheen)
-            highlight1 = patches.Rectangle((x, y), w * 0.25, h, color='white', alpha=0.25, zorder=patch.get_zorder()+0.1)
-            ax.add_patch(highlight1)
-            # Second highlight step for smooth gradient feel
-            highlight2 = patches.Rectangle((x + w * 0.25, y), w * 0.15, h, color='white', alpha=0.1, zorder=patch.get_zorder()+0.1)
-            ax.add_patch(highlight2)
+            group_idx = i // patches_per_group
+            key = gradient_keys[group_idx]
+            color_bottom, color_top = ombre_palettes[key]
             
-            # Right edge shadow (depth)
-            shadow = patches.Rectangle((x + w * 0.85, y), w * 0.15, h, color='black', alpha=0.15, zorder=patch.get_zorder()+0.1)
-            ax.add_patch(shadow)
+            patch.set_visible(False)
             
-            # Crisp white border for metallic polish
-            patch.set_edgecolor('white')
-            patch.set_linewidth(1.0)
+            cmap = mcolors.LinearSegmentedColormap.from_list("grad", [color_bottom, color_top])
+            gradient = np.linspace(0, 1, 256).reshape(256, 1)
+            ax.imshow(gradient, extent=[x, x+w, y, y+h], aspect='auto', cmap=cmap, origin='lower', zorder=2)
+            
+            # Subtle border
+            rect = patches.Rectangle((x, y), w, h, linewidth=0.5, edgecolor='#cccccc', facecolor='none', zorder=3)
+            ax.add_patch(rect)
             
     def save_dual(filename):
         plt.tight_layout()
@@ -66,16 +74,17 @@ def generate_charts(df, charts_dir, blog_charts_dir):
         detection_rates = detection_rates.sort_values(ascending=False)
         
         plt.figure(figsize=(9, 5.5))
-        ax = sns.barplot(x=detection_rates.index, y=detection_rates.values, color=colors['yield'], width=0.5)
+        # Initial draw (color doesn't matter, we overwrite with ombre)
+        ax = sns.barplot(x=detection_rates.index, y=detection_rates.values, color='#cccccc', width=0.5)
         
         plt.title('AI Overview Detection Yield', fontsize=16, pad=20)
         plt.ylabel('Extraction Rate (%)', fontsize=12)
         plt.xlabel('', fontsize=12)
         plt.ylim(0, 105)
-        import numpy as np
         plt.yticks(np.arange(0, 101, 10))
         
-        add_sheen(ax)
+        # Apply Peach/Gold ombre
+        apply_ombre(ax, ['Peach/Gold'])
         
         # Direct Labeling
         for i, v in enumerate(detection_rates.values):
@@ -104,12 +113,13 @@ def generate_charts(df, charts_dir, blog_charts_dir):
         melted_df = richness_df.melt(id_vars='provider', var_name='Metric', value_name='Average Count')
         
         plt.figure(figsize=(9, 5.5))
+        # Initial draw (colors overridden)
         ax = sns.barplot(
             data=melted_df, 
             x='provider', 
             y='Average Count', 
             hue='Metric',
-            palette={'Citations': colors['Citations'], 'Text Blocks': colors['Text Blocks']},
+            palette={'Citations': '#cccccc', 'Text Blocks': '#aaaaaa'},
             width=0.6
         )
         
@@ -123,19 +133,22 @@ def generate_charts(df, charts_dir, blog_charts_dir):
             tick_step = 1 if max_val <= 10 else 2
             plt.yticks(np.arange(0, int(max_val) + 2, tick_step))
         
-        add_sheen(ax)
+        # Apply Blush (Citations) and Rose Gold (Text Blocks) ombre
+        apply_ombre(ax, ['Blush', 'Rose Gold'])
         
         # Direct Labeling on grouped bars
-        for p in ax.patches:
-            if p.get_height() > 0:
-                ax.annotate(f"{p.get_height():.1f}", 
-                            (p.get_x() + p.get_width() / 2., p.get_height()), 
-                            ha='center', va='bottom', 
-                            xytext=(0, 5), textcoords='offset points',
-                            fontsize=10, fontweight='bold', color='#333333')
+        for p in [patch for patch in ax.patches if isinstance(patch, patches.Rectangle) and patch.get_height() > 0 and patch.get_visible()]:
+            ax.annotate(f"{p.get_height():.1f}", 
+                        (p.get_x() + p.get_width() / 2., p.get_height()), 
+                        ha='center', va='bottom', 
+                        xytext=(0, 5), textcoords='offset points',
+                        fontsize=10, fontweight='bold', color='#333333')
                 
-        # Style Legend
-        plt.legend(title='', frameon=False, loc='upper right', fontsize=11)
+        # Style Legend - Since we hid original patches, we need to create proxy artists for the legend
+        import matplotlib.patches as mpatches
+        patch1 = mpatches.Patch(color=ombre_palettes['Blush'][0], label='Citations')
+        patch2 = mpatches.Patch(color=ombre_palettes['Rose Gold'][0], label='Text Blocks')
+        plt.legend(handles=[patch1, patch2], title='', frameon=False, loc='upper right', fontsize=11)
             
         save_dual('richness_combined.png')
 
