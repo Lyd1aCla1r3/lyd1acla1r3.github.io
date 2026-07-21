@@ -27,10 +27,33 @@ def generate_charts(df, charts_dir, blog_charts_dir):
     # Custom colors mapping from the portfolio CSS
     colors = {
         'yield': '#b76e79',       # --rose-gold
-        'Citations': '#c9a96e',   # --gold
+        'Citations': '#eab8bf',   # Lighter, more blush gold
         'Text Blocks': '#8b4f5a'  # --rose-gold-dark
     }
     
+    def add_sheen(ax):
+        import matplotlib.patches as patches
+        for patch in ax.patches:
+            if not isinstance(patch, patches.Rectangle): continue
+            x, y = patch.get_xy()
+            w, h = patch.get_width(), patch.get_height()
+            if h <= 0 or w <= 0: continue
+            
+            # Left edge bright highlight (sheen)
+            highlight1 = patches.Rectangle((x, y), w * 0.25, h, color='white', alpha=0.25, zorder=patch.get_zorder()+0.1)
+            ax.add_patch(highlight1)
+            # Second highlight step for smooth gradient feel
+            highlight2 = patches.Rectangle((x + w * 0.25, y), w * 0.15, h, color='white', alpha=0.1, zorder=patch.get_zorder()+0.1)
+            ax.add_patch(highlight2)
+            
+            # Right edge shadow (depth)
+            shadow = patches.Rectangle((x + w * 0.85, y), w * 0.15, h, color='black', alpha=0.15, zorder=patch.get_zorder()+0.1)
+            ax.add_patch(shadow)
+            
+            # Crisp white border for metallic polish
+            patch.set_edgecolor('white')
+            patch.set_linewidth(1.0)
+            
     def save_dual(filename):
         plt.tight_layout()
         plt.savefig(charts_dir / filename, dpi=300, bbox_inches='tight')
@@ -51,6 +74,8 @@ def generate_charts(df, charts_dir, blog_charts_dir):
         plt.ylim(0, 105)
         import numpy as np
         plt.yticks(np.arange(0, 101, 10))
+        
+        add_sheen(ax)
         
         # Direct Labeling
         for i, v in enumerate(detection_rates.values):
@@ -97,6 +122,8 @@ def generate_charts(df, charts_dir, blog_charts_dir):
         if max_val > 0:
             tick_step = 1 if max_val <= 10 else 2
             plt.yticks(np.arange(0, int(max_val) + 2, tick_step))
+        
+        add_sheen(ax)
         
         # Direct Labeling on grouped bars
         for p in ax.patches:

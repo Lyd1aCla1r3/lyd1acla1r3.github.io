@@ -195,7 +195,7 @@
       ctx.font = '700 ' + size + 'px "JetBrains Mono", monospace';
 
       // Fade: visible in middle, fade at edges
-      var alpha = p.alpha * 0.8 * (p.t < 0.1 ? p.t / 0.1 : (p.t > 0.85 ? (1 - p.t) / 0.15 : 1));
+      var alpha = p.alpha * 0.3 * (p.t < 0.1 ? p.t / 0.1 : (p.t > 0.85 ? (1 - p.t) / 0.15 : 1));
       var color = p.isGold ? GD : RG;
 
       ctx.shadowColor = p.isGold ? 'rgba(195, 165, 95, 0.3)' : 'rgba(185, 115, 130, 0.3)';
