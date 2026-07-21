@@ -36,31 +36,26 @@ def generate_charts(df, charts_dir, blog_charts_dir):
     }
 
     def apply_ombre(ax, gradient_keys):
-        """Applies an ombre gradient to the bars in the axis."""
-        num_patches = len([p for p in ax.patches if isinstance(p, patches.Rectangle) and p.get_height() > 0])
-        num_groups = len(gradient_keys)
-        if num_patches == 0 or num_groups == 0: return
-        patches_per_group = num_patches // num_groups
-        
-        valid_patches = [p for p in ax.patches if isinstance(p, patches.Rectangle) and p.get_height() > 0]
-        
-        for i, patch in enumerate(valid_patches):
-            x, y = patch.get_xy()
-            w, h = patch.get_width(), patch.get_height()
-            
-            group_idx = i // patches_per_group
+        """Applies an ombre gradient strictly to the bar containers."""
+        for group_idx, container in enumerate(ax.containers):
+            if group_idx >= len(gradient_keys): break
             key = gradient_keys[group_idx]
             color_bottom, color_top = ombre_palettes[key]
             
-            patch.set_visible(False)
-            
             cmap = mcolors.LinearSegmentedColormap.from_list("grad", [color_bottom, color_top])
             gradient = np.linspace(0, 1, 256).reshape(256, 1)
-            ax.imshow(gradient, extent=[x, x+w, y, y+h], aspect='auto', cmap=cmap, origin='lower', zorder=2)
             
-            # Subtle border
-            rect = patches.Rectangle((x, y), w, h, linewidth=0.5, edgecolor='#cccccc', facecolor='none', zorder=3)
-            ax.add_patch(rect)
+            for patch in container:
+                if patch.get_height() <= 0: continue
+                x, y = patch.get_xy()
+                w, h = patch.get_width(), patch.get_height()
+                
+                patch.set_visible(False)
+                ax.imshow(gradient, extent=[x, x+w, y, y+h], aspect='auto', cmap=cmap, origin='lower', zorder=2)
+                
+                # Subtle border
+                rect = patches.Rectangle((x, y), w, h, linewidth=0.5, edgecolor='#cccccc', facecolor='none', zorder=3)
+                ax.add_patch(rect)
             
     def save_dual(filename):
         plt.tight_layout()
