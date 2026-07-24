@@ -17,6 +17,7 @@
         transition: transform 0.2s ease, box-shadow 0.2s ease;
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
+        display: block;
     }
     .blog-item:hover {
         transform: translateY(-2px);
@@ -25,6 +26,103 @@
     .blog-item h2 { font-family: var(--font-display); color: var(--text-primary); margin-top: 0; }
     .blog-item a { text-decoration: none; color: inherit; }
     .blog-item p { color: var(--text-secondary); line-height: var(--lh-relaxed); margin-bottom: 0; }
+    
+    /* Blog Tabs */
+    .blog-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-sm);
+        margin-bottom: var(--space-xl);
+        justify-content: center;
+    }
+    .blog-tabs input[type="radio"] {
+        display: none;
+    }
+    .tab-label {
+        padding: var(--space-sm) var(--space-lg);
+        background: rgba(255, 255, 255, 0.35);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-full);
+        cursor: pointer;
+        font-family: var(--font-mono);
+        font-size: var(--fs-sm);
+        color: var(--text-secondary);
+        transition: all var(--transition-fast);
+    }
+    .tab-label:hover {
+        border-color: var(--rose-gold);
+        color: var(--rose-gold);
+    }
+    .blog-tabs input[type="radio"]:checked + .tab-label {
+        background: linear-gradient(135deg, var(--rose-gold), var(--rose-gold-dark));
+        color: #fff;
+        border-color: transparent;
+        box-shadow: 0 4px 16px rgba(183, 110, 121, 0.3);
+    }
+
+    .tab-content {
+        display: none;
+        width: 100%;
+        margin-top: var(--space-xl);
+        animation: fadeIn 0.4s ease-out forwards;
+    }
+
+    #tab-perspectives:checked ~ #content-perspectives,
+    #tab-series:checked ~ #content-series,
+    #tab-methodology:checked ~ #content-methodology {
+        display: block;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .tab-desc {
+        font-family: var(--font-body);
+        font-size: var(--fs-md);
+        color: var(--text-secondary);
+        text-align: center;
+        font-style: italic;
+        line-height: var(--lh-relaxed);
+        margin-bottom: var(--space-2xl);
+        padding: 0 var(--space-lg);
+    }
+
+    .series-group {
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--border-medium);
+        border-radius: var(--radius-xl);
+        padding: var(--space-xl);
+        margin-bottom: var(--space-xl);
+        box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5), var(--shadow-sm);
+    }
+
+    .series-title {
+        font-family: var(--font-display);
+        font-size: var(--fs-xl);
+        color: var(--rose-gold-dark);
+        margin-top: 0;
+        margin-bottom: var(--space-md);
+        border-bottom: 1px solid var(--border-subtle);
+        padding-bottom: var(--space-sm);
+    }
+    
+    .series-items {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-md);
+    }
+    
+    .series-items a { text-decoration: none; display: block; }
+    
+    .series-item {
+        margin-bottom: 0; /* Reset margin inside series-items flex container */
+    }
   </style>
 </head>
 <body>
@@ -55,25 +153,58 @@
     <div class="container blog-list">
         <h1 class="section-title" style="text-align: center;">Blog</h1>
         <!-- BLOG_LIST_START -->
+
+        <div class="blog-tabs">
+            <input type="radio" id="tab-perspectives" name="blog-tabs" checked>
+            <label for="tab-perspectives" class="tab-label">Perspectives</label>
+            
+            <input type="radio" id="tab-series" name="blog-tabs">
+            <label for="tab-series" class="tab-label">Series</label>
+            
+            <input type="radio" id="tab-methodology" name="blog-tabs">
+            <label for="tab-methodology" class="tab-label">Validation & Benchmarks</label>
+            
+            <div class="tab-content" id="content-perspectives">
+                <p class="tab-desc">Observations on the evolving landscape of technical enablement, exploring how architectural shifts and emerging tools influence the craft of documentation.</p>
+                
         <a href="ai-for-code-vs-documentation.html">
             <article class="blog-item">
                 <h2>AI for Code vs Documentation</h2>
                 <p>As a technical writer, I very much appreciate when engineers recognize the importance of good documentation. There’s an expectation that engineering capacity is directly proportional to the sophist...</p>
             </article>
         </a>
-        <a href="preface.html">
-            <article class="blog-item">
-                <h2>Preface: The Big Picture & Tensor Notation</h2>
-                <p>If you have spent any time trying to understand the Transformer architecture, you have likely encountered the same frustrating hurdle. Tutorials rely heavily on abstract analogies. They tell you th...</p>
-            </article>
-        </a>
-        <!-- BLOG_LIST_END -->
+            </div>
+            
+            <div class="tab-content" id="content-series">
+                <p class="tab-desc">Sequential explorations born from personal curiosity. These collections document my process of deconstructing complex systems and sharing the resulting insights.</p>
+                
+          <div class="series-group">
+              <h3 class="series-title">Transformers</h3>
+              <div class="series-items">
+                  
+                  <a href="preface.html">
+                      <article class="blog-item series-item">
+                          <h2>Preface: The Big Picture & Tensor Notation</h2>
+                          <p>If you have spent any time trying to understand the Transformer architecture, you have likely encountered the same frustrating hurdle. Tutorials rely heavily on abstract analogies. They tell you th...</p>
+                      </article>
+                  </a>
+              </div>
+          </div>
+            </div>
+            
+            <div class="tab-content" id="content-methodology">
+                <p class="tab-desc">Empirical investigations designed to resolve complex architectural questions through rigorous data analysis. Every benchmark is supported by a public repository so you can clone the infrastructure, run the tests, and independently reproduce the findings.</p>
+                
         <a href="serp-api-benchmark.html">
             <article class="blog-item">
                 <h2>Benchmarking SERP API Fidelity for AI Overviews</h2>
-                <p>When Google actually generates an AI Overview, how often does your SERP API detect it, and how much of its structured content survives the extraction process? A rigorous, mathematically-backed benchmark of SearchApi, SerpApi, DataForSEO, and Serper.</p>
+                <p>When Google actually generates an AI Overview, how often does your SERP API detect it, and how much of its structured content survives the extraction process? A rigorous, mathematically-backed benc...</p>
             </article>
         </a>
+            </div>
+        </div>
+        <!-- BLOG_LIST_END -->
+
     </div>
   </main>
   <script src="../js/main.js"></script>
