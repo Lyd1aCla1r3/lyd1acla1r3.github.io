@@ -266,6 +266,24 @@
                           <p>In the preceding article, we observed the multilayer perceptron acting as a localized memory bank. It recognized specific contextual patterns and wrote new features back out into the $d{model}$ dimensionality. Now, we must integrate these new insights into our primary representation. We achieve this by returning to the architectural backbone of the Transformer, which is the Residual Stream.</p>
                       </article>
                   </a>
+                  <a href="article_13.html">
+                      <article class="blog-item series-item">
+                          <h2>Article 13: Layer 2 Self-Attention</h2>
+                          <p>In the first layer of our Transformer, the self-attention mechanism evaluated relationships between raw, isolated word embeddings. When we projected the tokens for "woke" and "up" into their respective Query and Key spaces, we measured their static semantic affinity. We have since routed those localized insights back into the central residual stream, refined them through a Key-Value Multi-Layer Perceptron, and stabilized the geometry with Layer Normalization. As we begin the second layer of self-attention, our token vectors no longer represent solitary dictionary definitions. They are now deeply contextualized mathematical summaries of their surrounding linguistic environment.</p>
+                      </article>
+                  </a>
+                  <a href="article_14.html">
+                      <article class="blog-item series-item">
+                          <h2>Article 14: Scoring Deep Context—Layer 2 Attention</h2>
+                          <p>In our progression through the Transformer architecture, we have reached a critical inflection point. The Query and Key vectors we extract in Layer 2 are fundamentally different from those in Layer 1. Rather than representing isolated vocabulary tokens, they now encapsulate rich, contextualized concepts fused from the entire preceding sequence. This article examines exactly how these advanced representations are scored against one another, illuminating the mathematical process by which deep neural networks decide to route high-level information.</p>
+                      </article>
+                  </a>
+                  <a href="article_15.html">
+                      <article class="blog-item series-item">
+                          <h2>Article 15: The Final Blend: Masking, Softmax, and Values in Layer 2</h2>
+                          <p>In our previous installment, we computed the unscaled and scaled attention scores for the second layer of our Transformer. We witnessed how projecting deeply contextualized tokens into new Query and Key spaces allowed them to evaluate their semantic relevance to one another. The resulting matrix of scores tells us exactly how much attention every token wishes to pay to every other token. We are now ready to finalize this attention mechanism by applying the causal mask, normalizing the scores into strict probabilities, and extracting the final contextualized features from the Value matrix.</p>
+                      </article>
+                  </a>
               </div>
           </div>
             </div>
