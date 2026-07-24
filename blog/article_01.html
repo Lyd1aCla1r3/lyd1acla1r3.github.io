@@ -104,20 +104,34 @@
 <h2>The Vocabulary Space and Tokenization</h2>
 <p>Our objective is to process the sequence <code>&lt;BOS&gt; i woke up</code>. </p>
 <p>Before we can do anything with this sequence, the model needs a predefined universe of concepts to draw from. This universe is the vocabulary. In our toy example, we have restricted the vocabulary to exactly twelve words. </p>
-<ol>
-<li><code>&lt;BOS&gt;</code></li>
-<li><code>&lt;EOS&gt;</code></li>
-<li><code>&lt;PAD&gt;</code></li>
-<li><code>i</code></li>
-<li><code>we</code></li>
-<li><code>woke</code></li>
-<li><code>stayed</code></li>
-<li><code>up</code></li>
-<li><code>late</code></li>
-<li><code>early</code></li>
-<li><code>today</code></li>
-<li><code>yesterday</code></li>
-</ol>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>&lt;BOS&gt;</code></td>
+<td><code>&lt;EOS&gt;</code></td>
+<td><code>&lt;PAD&gt;</code></td>
+<td><code>i</code></td>
+</tr>
+<tr>
+<td><code>we</code></td>
+<td><code>woke</code></td>
+<td><code>stayed</code></td>
+<td><code>up</code></td>
+</tr>
+<tr>
+<td><code>late</code></td>
+<td><code>early</code></td>
+<td><code>today</code></td>
+<td><code>yesterday</code></td>
+</tr>
+</tbody></table>
 <p>Tokenization is the process of mapping raw text to the corresponding integer indices in this vocabulary list. The index acts as a unique identifier for the concept. </p>
 <p>For our specific sequence, the mapping is extremely straightforward. 
 The <code>&lt;BOS&gt;</code> token maps to index 0. 
@@ -170,8 +184,8 @@ $$</p>
 <p>To transform our neutral one-hot vectors into this rich geometric space, we perform a standard matrix multiplication. We multiply our $4 \times 12$ input matrix by our $12 \times 6$ embedding matrix. </p>
 <p>$$ X = X_{\text{one-hot}} \times W_E $$</p>
 <pre><code class="language-mermaid">graph LR
-    A[&quot;X_one-hot (4 x 12)&quot;] --&gt;|Matrix Multiplication| B[&quot;W_E (12 x 6)&quot;]
-    B --&gt; C[&quot;X (4 x 6)&quot;]
+    A(&quot;X_one-hot (4 x 12)&quot;) --&gt;|Matrix Multiplication| B(&quot;W_E (12 x 6)&quot;)
+    B --&gt; C(&quot;X (4 x 6)&quot;)
 </code></pre>
 <p>Due to the nature of matrix multiplication, multiplying by a one-hot vector simply extracts the corresponding row from the embedding matrix. </p>
 <p>Our final tensor $X$ takes the following form.</p>

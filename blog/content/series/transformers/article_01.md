@@ -10,18 +10,11 @@ Our objective is to process the sequence `<BOS> i woke up`.
 
 Before we can do anything with this sequence, the model needs a predefined universe of concepts to draw from. This universe is the vocabulary. In our toy example, we have restricted the vocabulary to exactly twelve words. 
 
-1. `<BOS>`
-2. `<EOS>`
-3. `<PAD>`
-4. `i`
-5. `we`
-6. `woke`
-7. `stayed`
-8. `up`
-9. `late`
-10. `early`
-11. `today`
-12. `yesterday`
+| | | | |
+|---|---|---|---|
+| `<BOS>` | `<EOS>` | `<PAD>` | `i` |
+| `we` | `woke` | `stayed` | `up` |
+| `late` | `early` | `today` | `yesterday` |
 
 Tokenization is the process of mapping raw text to the corresponding integer indices in this vocabulary list. The index acts as a unique identifier for the concept. 
 
@@ -101,8 +94,8 @@ $$ X = X_{\text{one-hot}} \times W_E $$
 
 ```mermaid
 graph LR
-    A["X_one-hot (4 x 12)"] -->|Matrix Multiplication| B["W_E (12 x 6)"]
-    B --> C["X (4 x 6)"]
+    A("X_one-hot (4 x 12)") -->|Matrix Multiplication| B("W_E (12 x 6)")
+    B --> C("X (4 x 6)")
 ```
 
 Due to the nature of matrix multiplication, multiplying by a one-hot vector simply extracts the corresponding row from the embedding matrix. 
