@@ -172,8 +172,6 @@ $$</p>
 <pre><code class="language-mermaid">graph LR
     A[&quot;X_one-hot (4 x 12)&quot;] --&gt;|Matrix Multiplication| B[&quot;W_E (12 x 6)&quot;]
     B --&gt; C[&quot;X (4 x 6)&quot;]
-    style A fill:#f9f2f4,stroke:#333,stroke-width:2px
-    style C fill:#d4edda,stroke:#28a745,stroke-width:2px
 </code></pre>
 <p>Due to the nature of matrix multiplication, multiplying by a one-hot vector simply extracts the corresponding row from the embedding matrix. </p>
 <p>Our final tensor $X$ takes the following form.</p>

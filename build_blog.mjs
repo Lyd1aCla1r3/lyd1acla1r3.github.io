@@ -30,6 +30,13 @@ function getFilesRecursively(dir, relativePath = '') {
 }
 
 const mdFiles = getFilesRecursively(CONTENT_DIR);
+mdFiles.sort((a, b) => {
+    const aName = a.name.toLowerCase();
+    const bName = b.name.toLowerCase();
+    if (aName.includes('preface') && !bName.includes('preface')) return -1;
+    if (bName.includes('preface') && !aName.includes('preface')) return 1;
+    return aName.localeCompare(bName);
+});
 const posts = [];
 
 for (const fileObj of mdFiles) {

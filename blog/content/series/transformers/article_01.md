@@ -103,8 +103,6 @@ $$ X = X_{\text{one-hot}} \times W_E $$
 graph LR
     A["X_one-hot (4 x 12)"] -->|Matrix Multiplication| B["W_E (12 x 6)"]
     B --> C["X (4 x 6)"]
-    style A fill:#f9f2f4,stroke:#333,stroke-width:2px
-    style C fill:#d4edda,stroke:#28a745,stroke-width:2px
 ```
 
 Due to the nature of matrix multiplication, multiplying by a one-hot vector simply extracts the corresponding row from the embedding matrix. 
