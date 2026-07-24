@@ -252,15 +252,19 @@
     onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});">
   </script>
   <script>
-    (function() {
+    function activateTabFromHash() {
       if (window.location.hash) {
-        const tab = document.querySelector(window.location.hash);
-        if (tab && tab.type === 'radio') {
-          tab.checked = true;
-          setTimeout(() => window.scrollTo(0, 0), 10);
-        }
+        try {
+          const tab = document.querySelector(window.location.hash);
+          if (tab && tab.type === 'radio') {
+            tab.checked = true;
+            setTimeout(() => window.scrollTo(0, 0), 10);
+          }
+        } catch (e) {}
       }
-    })();
+    }
+    activateTabFromHash();
+    window.addEventListener('hashchange', activateTabFromHash);
   </script>
 </body>
 </html>
