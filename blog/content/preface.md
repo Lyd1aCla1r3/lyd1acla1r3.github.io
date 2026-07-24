@@ -23,18 +23,11 @@ We chose this sentence carefully. It allows us to watch the attention mechanism 
 
 To make the math tractable, we are restricting our model to a vocabulary of exactly twelve tokens. The total size of our vocabulary is represented by the variable $V$. In our case, $V$ equals 12.
 
-1. `<BOS>`
-2. `<EOS>`
-3. `<PAD>`
-4. `i`
-5. `we`
-6. `woke`
-7. `stayed`
-8. `up`
-9. `late`
-10. `early`
-11. `today`
-12. `yesterday`
+| | | | |
+|---|---|---|---|
+| `<BOS>` | `we` | `late` | `<PAD>` |
+| `<EOS>` | `woke` | `early` | `i` |
+| `stayed` | `today` | `yesterday` | `up` |
 
 We deliberately chose a small vocabulary with natural semantic clusters. The pronouns "i" and "we" form one cluster. The temporal adverbs "late", "early", and "today" form another. This gives our matrix operations the opportunity to physically group related concepts in vector space. As we progress, we will actually be able to see these clusters form in the numbers.
 
@@ -48,8 +41,8 @@ First, "autoregressive" describes how the model generates text. It means the mod
 
 ```mermaid
 graph LR
-    A["<BOS> i woke up"] --> B[Transformer]
-    B --> C["late"]
+    A("<BOS> i woke up") --> B("Transformer")
+    B --> C("late")
     C -.->|Appended to Input| A
     style A fill:#f9f2f4,stroke:#333,stroke-width:2px
 ```
@@ -66,14 +59,14 @@ This additive process ensures that the original information is never destroyed o
 
 ```mermaid
 graph TD
-    A[Initial Vector Input] --> B[Residual Stream]
-    B --> C{Attention Block}
-    C -->|Reads Vector| D[Compute Context]
+    A("Initial Vector Input") --> B("Residual Stream")
+    B --> C("Attention Block")
+    C -->|Reads Vector| D("Compute Context")
     D -->|Adds Context Back| B
-    B --> E{MLP Block}
-    E -->|Reads Vector| F[Compute Features]
+    B --> E("MLP Block")
+    E -->|Reads Vector| F("Compute Features")
     F -->|Adds Features Back| B
-    B --> G[Final Rich Vector Output]
+    B --> G("Final Rich Vector Output")
 ```
 
 ## The Dimensions
@@ -115,18 +108,6 @@ We then map that integer to a one-hot encoded vector. A one-hot vector is an arr
 When our text enters the Transformer, this one-hot vector is embedded into a continuous mathematical space. This creates the foundational tensor that will travel through the entire network. The shape of this tensor is defined as Batch by Sequence Length by Model Dimension. 
 
 For our specific architecture, this shape is $1 \times 4 \times 6$. Since our batch size is 1, we can strip away the batch dimension and visualize our data as a straightforward $4 \times 6$ matrix moving along the residual stream.
-
-```mermaid
-graph LR
-    subgraph 4x6 Tensor Matrix
-    direction TB
-    A["<BOS> Vector"] 
-    B["'i' Vector"]
-    C["'woke' Vector"]
-    D["'up' Vector"]
-    A --- B --- C --- D
-    end
-```
 
 $$
 X = \begin{bmatrix} 

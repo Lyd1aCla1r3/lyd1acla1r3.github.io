@@ -106,28 +106,42 @@
 <p>We chose this sentence carefully. It allows us to watch the attention mechanism do real work. To predict the word &quot;late&quot;, the network cannot just look at the word &quot;up&quot;. It must contextualize the combination of &quot;woke&quot; and &quot;up&quot; together. </p>
 <h3>The Vocabulary Space</h3>
 <p>To make the math tractable, we are restricting our model to a vocabulary of exactly twelve tokens. The total size of our vocabulary is represented by the variable $V$. In our case, $V$ equals 12.</p>
-<ol>
-<li><code>&lt;BOS&gt;</code></li>
-<li><code>&lt;EOS&gt;</code></li>
-<li><code>&lt;PAD&gt;</code></li>
-<li><code>i</code></li>
-<li><code>we</code></li>
-<li><code>woke</code></li>
-<li><code>stayed</code></li>
-<li><code>up</code></li>
-<li><code>late</code></li>
-<li><code>early</code></li>
-<li><code>today</code></li>
-<li><code>yesterday</code></li>
-</ol>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>&lt;BOS&gt;</code></td>
+<td><code>we</code></td>
+<td><code>late</code></td>
+<td><code>&lt;PAD&gt;</code></td>
+</tr>
+<tr>
+<td><code>&lt;EOS&gt;</code></td>
+<td><code>woke</code></td>
+<td><code>early</code></td>
+<td><code>i</code></td>
+</tr>
+<tr>
+<td><code>stayed</code></td>
+<td><code>today</code></td>
+<td><code>yesterday</code></td>
+<td><code>up</code></td>
+</tr>
+</tbody></table>
 <p>We deliberately chose a small vocabulary with natural semantic clusters. The pronouns &quot;i&quot; and &quot;we&quot; form one cluster. The temporal adverbs &quot;late&quot;, &quot;early&quot;, and &quot;today&quot; form another. This gives our matrix operations the opportunity to physically group related concepts in vector space. As we progress, we will actually be able to see these clusters form in the numbers.</p>
 <h2>The Architecture</h2>
 <p>Before we define the dimensions of our data, we must clearly define the architecture processing that data. We will be using an autoregressive Decoder-only architecture. This is the exact framework that powers models like GPT. </p>
 <p>To understand this, we need to unpack two distinct terms. </p>
 <p>First, &quot;autoregressive&quot; describes how the model generates text. It means the model predicts the next word based on its own previous outputs. Once it predicts a word, it appends that new word to the input sequence and runs the entire process again to predict the subsequent word. It feeds its own output back into itself in a continuous loop.</p>
 <pre><code class="language-mermaid">graph LR
-    A[&quot;&lt;BOS&gt; i woke up&quot;] --&gt; B[Transformer]
-    B --&gt; C[&quot;late&quot;]
+    A(&quot;&lt;BOS&gt; i woke up&quot;) --&gt; B(&quot;Transformer&quot;)
+    B --&gt; C(&quot;late&quot;)
     C -.-&gt;|Appended to Input| A
     style A fill:#f9f2f4,stroke:#333,stroke-width:2px
 </code></pre>
@@ -137,14 +151,14 @@
 <p>Imagine a main highway that runs continuously from the very first layer of the network to the very last. When a word enters the network, it is placed on this highway as a vector. As this vector travels through the network, the Attention and Multi-Layer Perceptron blocks do not intercept and replace it. Instead, they read from the vector, calculate new contextual information, and then add that new information back into the original vector. </p>
 <p>This additive process ensures that the original information is never destroyed or compressed through a bottleneck. It simply accumulates richness and context as it moves forward. </p>
 <pre><code class="language-mermaid">graph TD
-    A[Initial Vector Input] --&gt; B[Residual Stream]
-    B --&gt; C{Attention Block}
-    C --&gt;|Reads Vector| D[Compute Context]
+    A(&quot;Initial Vector Input&quot;) --&gt; B(&quot;Residual Stream&quot;)
+    B --&gt; C(&quot;Attention Block&quot;)
+    C --&gt;|Reads Vector| D(&quot;Compute Context&quot;)
     D --&gt;|Adds Context Back| B
-    B --&gt; E{MLP Block}
-    E --&gt;|Reads Vector| F[Compute Features]
+    B --&gt; E(&quot;MLP Block&quot;)
+    E --&gt;|Reads Vector| F(&quot;Compute Features&quot;)
     F --&gt;|Adds Features Back| B
-    B --&gt; G[Final Rich Vector Output]
+    B --&gt; G(&quot;Final Rich Vector Output&quot;)
 </code></pre>
 <h2>The Dimensions</h2>
 <p>With the architecture established, we can define the specific size of the pathways our data will travel. We have scaled the dimensions down to the specifications below.</p>
@@ -166,16 +180,6 @@
 <p>We then map that integer to a one-hot encoded vector. A one-hot vector is an array of zeros with a single &#39;1&#39; placed at the index corresponding to that word. For a twelve-word vocabulary, the one-hot vector for the fourth word is a 12-dimensional array consisting of eleven zeros and one &#39;1&#39; in the fourth position.</p>
 <p>When our text enters the Transformer, this one-hot vector is embedded into a continuous mathematical space. This creates the foundational tensor that will travel through the entire network. The shape of this tensor is defined as Batch by Sequence Length by Model Dimension. </p>
 <p>For our specific architecture, this shape is $1 \times 4 \times 6$. Since our batch size is 1, we can strip away the batch dimension and visualize our data as a straightforward $4 \times 6$ matrix moving along the residual stream.</p>
-<pre><code class="language-mermaid">graph LR
-    subgraph 4x6 Tensor Matrix
-    direction TB
-    A[&quot;&lt;BOS&gt; Vector&quot;] 
-    B[&quot;&#39;i&#39; Vector&quot;]
-    C[&quot;&#39;woke&#39; Vector&quot;]
-    D[&quot;&#39;up&#39; Vector&quot;]
-    A --- B --- C --- D
-    end
-</code></pre>
 <p>$$
 X = \begin{bmatrix} 
 \text{-- } \langle \text{BOS} \rangle \text{ vector --} \\
@@ -201,6 +205,11 @@ $$</p>
 
   <!-- Mermaid for Diagram Rendering -->
   <style>
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: var(--space-2xl) 0;
+    }
     .mermaid svg {
       filter: drop-shadow(0 4px 16px rgba(183, 110, 121, 0.12));
     }
@@ -215,7 +224,7 @@ $$</p>
         primaryColor: '#ffffff',
         primaryBorderColor: '#b76e79',
         primaryTextColor: '#3d2028',
-        lineColor: '#c9a96e',
+        lineColor: '#8b4f5a',
         nodeBorder: '#b76e79',
         clusterBkg: 'rgba(232, 180, 184, 0.15)',
         clusterBorder: '#d4a0a0'
