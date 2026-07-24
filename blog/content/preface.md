@@ -44,7 +44,6 @@ graph LR
     A("<BOS> i woke up") --> B("Transformer")
     B --> C("late")
     C -.->|Appended to Input| A
-    style A fill:#f9f2f4,stroke:#333,stroke-width:2px
 ```
 
 Second, "Decoder-only" refers to the structure of the network. Original Transformers had two halves. An Encoder processed a source language like French, and a Decoder generated a target language like English. We do not need to translate between two different sequences. We only need to predict the continuation of a single sequence. We discard the Encoder entirely and only use the Decoder. 
