@@ -43,19 +43,19 @@ for (const file of files) {
   let mathBlocks = [];
   let processedMarkdown = markdown.replace(/\$\$([\s\S]*?)\$\$/g, (match) => {
       mathBlocks.push(match);
-      return `___MATH_BLOCK_${mathBlocks.length - 1}___`;
+      return `MATHBLOCKREPLACEMENT${mathBlocks.length - 1}`;
   });
   processedMarkdown = processedMarkdown.replace(/\$([^\n$]+)\$/g, (match) => {
       mathBlocks.push(match);
-      return `___MATH_INLINE_${mathBlocks.length - 1}___`;
+      return `MATHINLINEREPLACEMENT${mathBlocks.length - 1}`;
   });
 
   let contentHtml = marked.parse(processedMarkdown);
 
-  contentHtml = contentHtml.replace(/___MATH_BLOCK_(\d+)___/g, (match, i) => {
+  contentHtml = contentHtml.replace(/MATHBLOCKREPLACEMENT(\d+)/g, (match, i) => {
       return mathBlocks[i];
   });
-  contentHtml = contentHtml.replace(/___MATH_INLINE_(\d+)___/g, (match, i) => {
+  contentHtml = contentHtml.replace(/MATHINLINEREPLACEMENT(\d+)/g, (match, i) => {
       return mathBlocks[i];
   });
   
