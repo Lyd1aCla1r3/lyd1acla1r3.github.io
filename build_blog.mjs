@@ -40,11 +40,28 @@ for (const file of files) {
     }
   }
   
-  const contentHtml = marked.parse(markdown);
+  let mathBlocks = [];
+  let processedMarkdown = markdown.replace(/\$\$([\s\S]*?)\$\$/g, (match) => {
+      mathBlocks.push(match);
+      return `___MATH_BLOCK_${mathBlocks.length - 1}___`;
+  });
+  processedMarkdown = processedMarkdown.replace(/\$([^\n$]+)\$/g, (match) => {
+      mathBlocks.push(match);
+      return `___MATH_INLINE_${mathBlocks.length - 1}___`;
+  });
+
+  let contentHtml = marked.parse(processedMarkdown);
+
+  contentHtml = contentHtml.replace(/___MATH_BLOCK_(\d+)___/g, (match, i) => {
+      return mathBlocks[i];
+  });
+  contentHtml = contentHtml.replace(/___MATH_INLINE_(\d+)___/g, (match, i) => {
+      return mathBlocks[i];
+  });
   
   const finalHtml = templateHtml
-    .replace('{{TITLE}}', title)
-    .replace('{{CONTENT}}', contentHtml);
+    .replace('{{TITLE}}', () => title)
+    .replace('{{CONTENT}}', () => contentHtml);
     
   const outFilename = file.replace('.md', '.html');
   const outPath = path.join(BLOG_DIR, outFilename);

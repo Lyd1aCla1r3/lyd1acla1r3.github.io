@@ -105,7 +105,7 @@
 <p>The token <code>&lt;BOS&gt;</code> stands for Beginning of Sequence. This is a standard marker that tells the network a new thought has started. </p>
 <p>We chose this sentence carefully. It allows us to watch the attention mechanism do real work. To predict the word &quot;late&quot;, the network cannot just look at the word &quot;up&quot;. It must contextualize the combination of &quot;woke&quot; and &quot;up&quot; together. </p>
 <h3>The Vocabulary Space</h3>
-<p>To make the math tractable, we are restricting our model to a vocabulary of exactly twelve tokens. The total size of our vocabulary is represented by the variable $V$. In our case, $V$ equals 12.</p>
+<p>To make the math tractable, we are restricting our model to a vocabulary of exactly twelve tokens. The total size of our vocabulary is represented by the variable <em><strong>MATH_INLINE_1</strong></em>. In our case, <em><strong>MATH_INLINE_2</strong></em> equals 12.</p>
 <ol>
 <li><code>&lt;BOS&gt;</code></li>
 <li><code>&lt;EOS&gt;</code></li>
@@ -151,21 +151,21 @@
 <h3>Sequence Length</h3>
 <p>Sequence length is how many tokens we are feeding into the model at one time. For our input of four tokens, the sequence length is 4.</p>
 <h3>Model Dimensionality</h3>
-<p>Every token is represented by a vector traveling on the residual stream highway. The variable $d_{model}$ defines the width of that highway. We are using a 6-dimensional vector for each token. This allows us to easily visualize the data on a screen without losing the capacity to store complex features.</p>
+<p>Every token is represented by a vector traveling on the residual stream highway. The variable <em><strong>MATH_INLINE_3</strong></em> defines the width of that highway. We are using a 6-dimensional vector for each token. This allows us to easily visualize the data on a screen without losing the capacity to store complex features.</p>
 <h3>Batch Size</h3>
 <p>GPUs act as highly parallel execution units. Instead of passing one sequence through the network at a time, we stack many independent sequences together into a batch to process them simultaneously. Batching repeats the exact same math in parallel across different inputs. We will set our batch size to 1 to keep our focus entirely on a single sequence.</p>
 <h3>Attention Heads</h3>
 <p>The attention mechanism finds relationships between tokens. Rather than having one monolithic attention process, we divide the workload into multiple independent heads. This allows the network to learn different types of relationships simultaneously. One head might specialize in grammar, while another focuses on semantic meaning. We will use 3 parallel heads.</p>
 <h3>Head Dimensionality</h3>
-<p>We have 3 heads dividing up our 6-dimensional residual stream. Each individual head operates in a 2-dimensional subspace. The matrices powering our attention mechanism will therefore be simple $6 \times 2$ structures.</p>
+<p>We have 3 heads dividing up our 6-dimensional residual stream. Each individual head operates in a 2-dimensional subspace. The matrices powering our attention mechanism will therefore be simple <em><strong>MATH_INLINE_4</strong></em> structures.</p>
 <h3>Feed-Forward Dimension</h3>
 <p>While the residual stream is excellent for securely moving information between layers, it is too narrow to perform complex reasoning. </p>
-<p>The Multi-Layer Perceptron solves this by expanding the data into a much wider, higher-dimensional space. In this expanded space, complex, entangled concepts can be linearly separated and processed before being compressed back down into the residual stream. It is an empirical standard in deep learning to expand this space by a factor of 4. Our feed-forward dimension will be $6 \times 4$, which equals 24.</p>
+<p>The Multi-Layer Perceptron solves this by expanding the data into a much wider, higher-dimensional space. In this expanded space, complex, entangled concepts can be linearly separated and processed before being compressed back down into the residual stream. It is an empirical standard in deep learning to expand this space by a factor of 4. Our feed-forward dimension will be <em><strong>MATH_INLINE_5</strong></em>, which equals 24.</p>
 <h2>The Central Tensor</h2>
 <p>Before text enters the Transformer, it needs to be converted into numbers. We start by assigning a unique integer index to every word in our vocabulary. </p>
 <p>We then map that integer to a one-hot encoded vector. A one-hot vector is an array of zeros with a single &#39;1&#39; placed at the index corresponding to that word. For a twelve-word vocabulary, the one-hot vector for the fourth word is a 12-dimensional array consisting of eleven zeros and one &#39;1&#39; in the fourth position.</p>
 <p>When our text enters the Transformer, this one-hot vector is embedded into a continuous mathematical space. This creates the foundational tensor that will travel through the entire network. The shape of this tensor is defined as Batch by Sequence Length by Model Dimension. </p>
-<p>For our specific architecture, this shape is $1 \times 4 \times 6$. Since our batch size is 1, we can strip away the batch dimension and visualize our data as a straightforward $4 \times 6$ matrix moving along the residual stream.</p>
+<p>For our specific architecture, this shape is <em><strong>MATH_INLINE_6</strong></em>. Since our batch size is 1, we can strip away the batch dimension and visualize our data as a straightforward <em><strong>MATH_INLINE_7</strong></em> matrix moving along the residual stream.</p>
 <pre><code class="language-mermaid">graph LR
     subgraph 4x6 Tensor Matrix
     direction TB
@@ -176,16 +176,9 @@
     A --- B --- C --- D
     end
 </code></pre>
-<p>$
-X = \begin{bmatrix} 
-\text{-- } \langle \text{BOS} \rangle \text{ vector --} \
-\text{-- &quot;i&quot; vector --} \
-\text{-- &quot;woke&quot; vector --} \
-\text{-- &quot;up&quot; vector --} 
-\end{bmatrix}_{4 \times 6}
-$</p>
-<p>Every single mathematical operation in our forward pass will read from and write to this $4 \times 6$ matrix. </p>
-<p>In the next article, we will take our raw text, map it to our vocabulary indices, and perform our first genuine calculation. We will transform one-hot encoded vectors into this $4 \times 6$ geometric representation.</p>
+<p><em><strong>MATH_BLOCK_0</strong></em></p>
+<p>Every single mathematical operation in our forward pass will read from and write to this <em><strong>MATH_INLINE_8</strong></em> matrix. </p>
+<p>In the next article, we will take our raw text, map it to our vocabulary indices, and perform our first genuine calculation. We will transform one-hot encoded vectors into this <em><strong>MATH_INLINE_9</strong></em> geometric representation.</p>
 
         </article>
     </div>
