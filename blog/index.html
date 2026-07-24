@@ -251,5 +251,16 @@
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" 
     onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});">
   </script>
+  <script>
+    (function() {
+      if (window.location.hash) {
+        const tab = document.querySelector(window.location.hash);
+        if (tab && tab.type === 'radio') {
+          tab.checked = true;
+          setTimeout(() => window.scrollTo(0, 0), 10);
+        }
+      }
+    })();
+  </script>
 </body>
 </html>

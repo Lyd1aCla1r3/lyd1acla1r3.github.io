@@ -92,11 +92,15 @@ for (const fileObj of mdFiles) {
     <li><a href="../index.html">Home</a></li>
     <li><a href="index.html">Blog</a></li>`;
     
+  let tabId = 'tab-perspectives';
+  if (topLevelDir === 'series') tabId = 'tab-series';
+  if (topLevelDir === 'validation-and-benchmarks') tabId = 'tab-methodology';
+
   if (topLevelDir === 'series' && seriesName) {
       let seriesDisplay = seriesName.charAt(0).toUpperCase() + seriesName.slice(1).replace(/-/g, ' ');
-      breadcrumbHtml += `<li><a href="index.html">Series: ${seriesDisplay}</a></li>`;
+      breadcrumbHtml += `<li><a href="index.html#${tabId}">Series: ${seriesDisplay}</a></li>`;
   } else if (topLevelDir !== 'uncategorized') {
-      breadcrumbHtml += `<li><a href="index.html">${tierDisplay}</a></li>`;
+      breadcrumbHtml += `<li><a href="index.html#${tabId}">${tierDisplay}</a></li>`;
   }
   
   breadcrumbHtml += `<li aria-current="page">${title}</li></ol></nav>`;
