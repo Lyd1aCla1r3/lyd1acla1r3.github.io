@@ -104,13 +104,14 @@
 <h1>Article 2: The Permutation Invariance Problem &amp; Positional Encoding</h1>
 <p>Welcome back. In our previous session, we successfully transformed our input sequence <code>&lt;BOS&gt; i woke up</code> into a dense, continuous semantic space. We mathematically compressed sparse 12-dimensional one-hot vectors into a 6-dimensional embedding matrix.</p>
 <p>Our current tensor representation $X$ for our sequence looks like this:</p>
-<pre><code class="language-math">X = \begin{bmatrix}
- 0.1 &amp;  0.0 &amp;  0.0 &amp;  0.0 &amp;  0.0 &amp;  0.0 \\
- 0.0 &amp;  0.8 &amp; -0.1 &amp;  0.2 &amp;  0.0 &amp;  0.5 \\
- 0.0 &amp; -0.2 &amp;  0.9 &amp;  0.1 &amp; -0.4 &amp;  0.1 \\
- 0.0 &amp; -0.1 &amp;  0.4 &amp;  0.9 &amp; -0.2 &amp;  0.0
+<p>$$
+X = \begin{bmatrix}
+ 0.1 &  0.0 &  0.0 &  0.0 &  0.0 &  0.0 \\
+ 0.0 &  0.8 & -0.1 &  0.2 &  0.0 &  0.5 \\
+ 0.0 & -0.2 &  0.9 &  0.1 & -0.4 &  0.1 \\
+ 0.0 & -0.1 &  0.4 &  0.9 & -0.2 &  0.0
 \end{bmatrix}
-</code></pre>
+$$</p>
 <p>This matrix beautifully captures the semantic meaning of our words. The problem is that it captures absolutely nothing else.</p>
 <h2>The Permutation Invariance Problem</h2>
 <p>To understand why this is a fatal flaw, we must anticipate how the upcoming Attention mechanism processes this data. When we eventually compute self-attention, we will be calculating dot products between these row vectors to measure their similarities.</p>
@@ -126,13 +127,14 @@
 <p>For our rigorous walkthrough, we will use an absolute positional encoding. We want a matrix that is mathematically deterministic and bounded, ensuring we do not explode the numerical variance of our carefully calibrated embeddings.</p>
 <p>The original Transformer architecture used interweaving sine and cosine waves of varying frequencies. We will adopt a mathematically similar approach. By varying the frequencies across our 6 dimensions, each position generates a completely unique vector signature.</p>
 <p>Here is the exact Positional Encoding matrix $W_{PE}$ for our 4-token sequence:</p>
-<pre><code class="language-math">W_{PE} = \begin{bmatrix}
- 0.0 &amp;  1.0 &amp;  0.0 &amp;  1.0 &amp;  0.0 &amp;  1.0 \\
- 0.8 &amp;  0.5 &amp;  0.4 &amp;  0.9 &amp;  0.2 &amp;  1.0 \\
- 0.9 &amp; -0.4 &amp;  0.8 &amp;  0.6 &amp;  0.4 &amp;  0.9 \\
- 0.1 &amp; -1.0 &amp;  1.0 &amp;  0.2 &amp;  0.6 &amp;  0.8
+<p>$$
+W_{PE} = \begin{bmatrix}
+ 0.0 &  1.0 &  0.0 &  1.0 &  0.0 &  1.0 \\
+ 0.8 &  0.5 &  0.4 &  0.9 &  0.2 &  1.0 \\
+ 0.9 & -0.4 &  0.8 &  0.6 &  0.4 &  0.9 \\
+ 0.1 & -1.0 &  1.0 &  0.2 &  0.6 &  0.8
 \end{bmatrix}
-</code></pre>
+$$</p>
 <p>Notice the geometric elegance of this matrix. The values fluctuate smoothly between -1.0 and 1.0. Position 0 produces a clean alternating pattern, while subsequent positions introduce complex phase shifts. No two rows are identical.</p>
 <h2>The Final Matrix Addition</h2>
 <p>The integration of positional data is remarkably simple. We perform an element-wise matrix addition of our semantic embeddings $X$ and our positional signatures $W_{PE}$.</p>
@@ -142,26 +144,28 @@
     Add --&gt; XPos(&quot;Contextualized Input X_pos&quot;)
 </code></pre>
 <p>Let us compute the exact addition for our model:</p>
-<pre><code class="language-math">X_{pos} = \begin{bmatrix}
- 0.1 &amp;  0.0 &amp;  0.0 &amp;  0.0 &amp;  0.0 &amp;  0.0 \\
- 0.0 &amp;  0.8 &amp; -0.1 &amp;  0.2 &amp;  0.0 &amp;  0.5 \\
- 0.0 &amp; -0.2 &amp;  0.9 &amp;  0.1 &amp; -0.4 &amp;  0.1 \\
- 0.0 &amp; -0.1 &amp;  0.4 &amp;  0.9 &amp; -0.2 &amp;  0.0
+<p>$$
+X_{pos} = \begin{bmatrix}
+ 0.1 &  0.0 &  0.0 &  0.0 &  0.0 &  0.0 \\
+ 0.0 &  0.8 & -0.1 &  0.2 &  0.0 &  0.5 \\
+ 0.0 & -0.2 &  0.9 &  0.1 & -0.4 &  0.1 \\
+ 0.0 & -0.1 &  0.4 &  0.9 & -0.2 &  0.0
 \end{bmatrix} + \begin{bmatrix}
- 0.0 &amp;  1.0 &amp;  0.0 &amp;  1.0 &amp;  0.0 &amp;  1.0 \\
- 0.8 &amp;  0.5 &amp;  0.4 &amp;  0.9 &amp;  0.2 &amp;  1.0 \\
- 0.9 &amp; -0.4 &amp;  0.8 &amp;  0.6 &amp;  0.4 &amp;  0.9 \\
- 0.1 &amp; -1.0 &amp;  1.0 &amp;  0.2 &amp;  0.6 &amp;  0.8
+ 0.0 &  1.0 &  0.0 &  1.0 &  0.0 &  1.0 \\
+ 0.8 &  0.5 &  0.4 &  0.9 &  0.2 &  1.0 \\
+ 0.9 & -0.4 &  0.8 &  0.6 &  0.4 &  0.9 \\
+ 0.1 & -1.0 &  1.0 &  0.2 &  0.6 &  0.8
 \end{bmatrix}
-</code></pre>
+$$</p>
 <p>Which yields our final, positionally-aware tensor $X_{pos}$:</p>
-<pre><code class="language-math">X_{pos} = \begin{bmatrix}
- 0.1 &amp;  1.0 &amp;  0.0 &amp;  1.0 &amp;  0.0 &amp;  1.0 \\
- 0.8 &amp;  1.3 &amp;  0.3 &amp;  1.1 &amp;  0.2 &amp;  1.5 \\
- 0.9 &amp; -0.6 &amp;  1.7 &amp;  0.7 &amp;  0.0 &amp;  1.0 \\
- 0.1 &amp; -1.1 &amp;  1.4 &amp;  1.1 &amp;  0.4 &amp;  0.8
+<p>$$
+X_{pos} = \begin{bmatrix}
+ 0.1 &  1.0 &  0.0 &  1.0 &  0.0 &  1.0 \\
+ 0.8 &  1.3 &  0.3 &  1.1 &  0.2 &  1.5 \\
+ 0.9 & -0.6 &  1.7 &  0.7 &  0.0 &  1.0 \\
+ 0.1 & -1.1 &  1.4 &  1.1 &  0.4 &  0.8
 \end{bmatrix}
-</code></pre>
+$$</p>
 <p>Our vector for &quot;woke&quot; is no longer just the abstract concept of waking up. It is now explicitly &quot;woke&quot; at position 2.</p>
 <p>The stage is now completely set. We have successfully translated a string of text into a mathematically rich tensor that understands both semantic meaning and sequential time. Next, we will feed this matrix into the heart of the architecture to introduce Layer 1 Self-Attention.</p>
 

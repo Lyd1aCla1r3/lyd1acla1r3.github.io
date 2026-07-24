@@ -6,18 +6,18 @@ The next step in the Transformer architecture is self-attention. The core mechan
 
 This naive approach is known as computing symmetric similarity. We can test this by multiplying $X_{pos}$ by its own transpose $X_{pos}^T$. 
 
-```python
-Symmetric Similarity = X_pos @ X_pos.T
-```
+$$ \text{Symmetric Similarity} = X_{pos} \times X_{pos}^T $$
 
 Here is the result of that direct calculation:
 
-| Token | <BOS> | i | woke | up |
-| :--- | :--- | :--- | :--- | :--- |
-| **<BOS>** | 3.0 | 4.0 | 1.2 | 0.8 |
-| **i** | 4.0 | 5.9 | 2.7 | 1.6 |
-| **woke** | 1.2 | 2.7 | 5.5 | 4.7 |
-| **up** | 0.8 | 1.6 | 4.7 | 5.2 |
+$$
+\text{Symmetric Similarity} = \begin{bmatrix}
+3.0 & 4.0 & 1.2 & 0.8 \\
+4.0 & 5.9 & 2.7 & 1.6 \\
+1.2 & 2.7 & 5.5 & 4.7 \\
+0.8 & 1.6 & 4.7 & 5.2
+\end{bmatrix}
+$$
 
 The dot product measures how much two vectors point in the same direction. When we multiply a matrix by its own transpose, the highest values will invariably appear along the diagonal. The token "woke" aligns most strongly with itself, yielding a score of $5.5$. The token "up" aligns most strongly with itself, yielding $5.2$. 
 
@@ -45,55 +45,57 @@ Each attention head possesses its own independent $W_Q$ and $W_K$ matrices, both
 
 Let us instantiate a concrete $W_Q$ and $W_K$ for our first attention head. 
 
-```python
-W_Q (6 x 2):
-[[ 0.1  0.2]
- [-0.1  0.5]
- [ 0.8 -0.2]
- [ 0.3  0.4]
- [-0.2  0.1]
- [ 0.1 -0.3]]
+$$
+W_Q = \begin{bmatrix}
+ 0.1 &  0.2 \\
+-0.1 &  0.5 \\
+ 0.8 & -0.2 \\
+ 0.3 &  0.4 \\
+-0.2 &  0.1 \\
+ 0.1 & -0.3
+\end{bmatrix}
+$$
 
-W_K (6 x 2):
-[[-0.2  0.4]
- [ 0.5 -0.1]
- [ 0.6  0.2]
- [ 0.1  0.7]
- [ 0.2 -0.2]
- [-0.4  0.3]]
-```
+$$
+W_K = \begin{bmatrix}
+-0.2 &  0.4 \\
+ 0.5 & -0.1 \\
+ 0.6 &  0.2 \\
+ 0.1 &  0.7 \\
+ 0.2 & -0.2 \\
+-0.4 &  0.3
+\end{bmatrix}
+$$
 
 To calculate the Queries $Q$, we multiply our positionally-encoded sequence $X_{pos}$ by $W_Q$.
 
-```python
-Q = X_pos @ W_Q
-```
+$$ Q = X_{pos} \times W_Q $$
 
 The resulting Query matrix $Q$ has dimensions $4 \times 2$. Each token has been compressed from a 6-dimensional representation into a 2-dimensional "question". 
 
-```python
-Q (4 x 2):
-[[ 0.3  0.6]  # <BOS>
- [ 0.6  0.8]  # i
- [ 1.8 -0.5]  # woke
- [ 1.6 -0.6]] # up
-```
+$$
+Q = \begin{bmatrix}
+ 0.3 &  0.6 \\
+ 0.6 &  0.8 \\
+ 1.8 & -0.5 \\
+ 1.6 & -0.6
+\end{bmatrix}
+$$
 
 We perform the exact same operation for the Keys $K$, multiplying $X_{pos}$ by $W_K$.
 
-```python
-K = X_pos @ W_K
-```
+$$ K = X_{pos} \times W_K $$
 
 This yields our $4 \times 2$ Key matrix. Each token now has a 2-dimensional "answer".
 
-```python
-K (4 x 2):
-[[ 0.2  0.9]  # <BOS>
- [ 0.2  1.4]  # i
- [ 0.2  1.6]  # woke
- [ 0.1  1.4]] # up
-```
+$$
+K = \begin{bmatrix}
+ 0.2 &  0.9 \\
+ 0.2 &  1.4 \\
+ 0.2 &  1.6 \\
+ 0.1 &  1.4
+\end{bmatrix}
+$$
 
 By separating the inputs into independent Queries and Keys, the network breaks the mirror of symmetric similarity. The token "woke" no longer strictly attends to itself. It projects a specific question into the Query space, and it projects a specific identity into the Key space. In the next article, we will multiply these matrices together, calculate the final attention scores, and observe how the network scales the results to prevent gradient collapse.
 

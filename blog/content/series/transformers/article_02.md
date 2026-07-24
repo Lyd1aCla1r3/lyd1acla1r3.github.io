@@ -4,14 +4,14 @@ Welcome back. In our previous session, we successfully transformed our input seq
 
 Our current tensor representation $X$ for our sequence looks like this:
 
-```math
+$$
 X = \begin{bmatrix}
  0.1 &  0.0 &  0.0 &  0.0 &  0.0 &  0.0 \\
  0.0 &  0.8 & -0.1 &  0.2 &  0.0 &  0.5 \\
  0.0 & -0.2 &  0.9 &  0.1 & -0.4 &  0.1 \\
  0.0 & -0.1 &  0.4 &  0.9 & -0.2 &  0.0
 \end{bmatrix}
-```
+$$
 
 This matrix beautifully captures the semantic meaning of our words. The problem is that it captures absolutely nothing else.
 
@@ -38,14 +38,14 @@ The original Transformer architecture used interweaving sine and cosine waves of
 
 Here is the exact Positional Encoding matrix $W_{PE}$ for our 4-token sequence:
 
-```math
+$$
 W_{PE} = \begin{bmatrix}
  0.0 &  1.0 &  0.0 &  1.0 &  0.0 &  1.0 \\
  0.8 &  0.5 &  0.4 &  0.9 &  0.2 &  1.0 \\
  0.9 & -0.4 &  0.8 &  0.6 &  0.4 &  0.9 \\
  0.1 & -1.0 &  1.0 &  0.2 &  0.6 &  0.8
 \end{bmatrix}
-```
+$$
 
 Notice the geometric elegance of this matrix. The values fluctuate smoothly between -1.0 and 1.0. Position 0 produces a clean alternating pattern, while subsequent positions introduce complex phase shifts. No two rows are identical.
 
@@ -62,7 +62,7 @@ graph TD
 
 Let us compute the exact addition for our model:
 
-```math
+$$
 X_{pos} = \begin{bmatrix}
  0.1 &  0.0 &  0.0 &  0.0 &  0.0 &  0.0 \\
  0.0 &  0.8 & -0.1 &  0.2 &  0.0 &  0.5 \\
@@ -74,18 +74,18 @@ X_{pos} = \begin{bmatrix}
  0.9 & -0.4 &  0.8 &  0.6 &  0.4 &  0.9 \\
  0.1 & -1.0 &  1.0 &  0.2 &  0.6 &  0.8
 \end{bmatrix}
-```
+$$
 
 Which yields our final, positionally-aware tensor $X_{pos}$:
 
-```math
+$$
 X_{pos} = \begin{bmatrix}
  0.1 &  1.0 &  0.0 &  1.0 &  0.0 &  1.0 \\
  0.8 &  1.3 &  0.3 &  1.1 &  0.2 &  1.5 \\
  0.9 & -0.6 &  1.7 &  0.7 &  0.0 &  1.0 \\
  0.1 & -1.1 &  1.4 &  1.1 &  0.4 &  0.8
 \end{bmatrix}
-```
+$$
 
 Our vector for "woke" is no longer just the abstract concept of waking up. It is now explicitly "woke" at position 2.
 

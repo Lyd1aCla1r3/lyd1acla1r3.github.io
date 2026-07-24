@@ -64,9 +64,6 @@ for (const fileObj of mdFiles) {
                  .replace(/[*_~`]/g, '')
                  .replace(/\n/g, ' ')
                  .trim();
-      if (summary.length > 200) {
-        summary = summary.substring(0, 197) + '...';
-      }
       break;
     }
   }

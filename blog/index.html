@@ -176,7 +176,7 @@
         <a href="ai-for-code-vs-documentation.html">
             <article class="blog-item">
                 <h2>AI for Code vs Documentation</h2>
-                <p>As a technical writer, I very much appreciate when engineers recognize the importance of good documentation. There’s an expectation that engineering capacity is directly proportional to the sophist...</p>
+                <p>As a technical writer, I very much appreciate when engineers recognize the importance of good documentation. There’s an expectation that engineering capacity is directly proportional to the sophistication of coding agents. However, documentation tools and practices were not designed to scale.</p>
             </article>
         </a>
             </div>
@@ -191,37 +191,37 @@
                   <a href="preface.html">
                       <article class="blog-item series-item">
                           <h2>Preface: The Big Picture & Tensor Notation</h2>
-                          <p>If you have spent any time trying to understand the Transformer architecture, you have likely encountered the same frustrating hurdle. Tutorials rely heavily on abstract analogies. They tell you th...</p>
+                          <p>If you have spent any time trying to understand the Transformer architecture, you have likely encountered the same frustrating hurdle. Tutorials rely heavily on abstract analogies. They tell you that the Query matrix asks a question and the Key matrix holds the answer. These metaphors might give you a fleeting sense of intuition. They collapse the moment you try to write code, debug a model, or understand the fundamental geometry of deep learning.</p>
                       </article>
                   </a>
                   <a href="article_01.html">
                       <article class="blog-item series-item">
                           <h2>Article 1: Tokens, One-Hot Encodings, and the Embedding Matrix</h2>
-                          <p>At the end of the Preface, we established that every operation in our Transformer will read from and write to a central $4 \times 6$ matrix. We must now bridge the gap between our raw text and that...</p>
+                          <p>At the end of the Preface, we established that every operation in our Transformer will read from and write to a central $4 \times 6$ matrix. We must now bridge the gap between our raw text and that geometric representation. Text is inherently abstract. Computers cannot multiply words. Computers multiply numbers. We need a rigorous mechanical process to translate human language into a mathematical format that a neural network can manipulate.</p>
                       </article>
                   </a>
                   <a href="article_02.html">
                       <article class="blog-item series-item">
                           <h2>Article 2: The Permutation Invariance Problem & Positional Encoding</h2>
-                          <p>Welcome back. In our previous session, we successfully transformed our input sequence <BOS> i woke up into a dense, continuous semantic space. We mathematically compressed sparse 12-dimensional one...</p>
+                          <p>Welcome back. In our previous session, we successfully transformed our input sequence <BOS> i woke up into a dense, continuous semantic space. We mathematically compressed sparse 12-dimensional one-hot vectors into a 6-dimensional embedding matrix.</p>
                       </article>
                   </a>
                   <a href="article_03.html">
                       <article class="blog-item series-item">
                           <h2>Article 3: The Motivation for Q, K, and V (Asymmetric Similarity)</h2>
-                          <p>In the previous article, we solved the permutation invariance problem by adding absolute positional encodings to our token embeddings. Our sequence <BOS> i woke up is now represented by the $4 \tim...</p>
+                          <p>In the previous article, we solved the permutation invariance problem by adding absolute positional encodings to our token embeddings. Our sequence <BOS> i woke up is now represented by the $4 \times 6$ matrix $X{pos}$, which contains both semantic meaning and positional context.</p>
                       </article>
                   </a>
                   <a href="article_04.html">
                       <article class="blog-item series-item">
                           <h2>Article 4: The Attention Score and $\sqrt{d_k}$</h2>
-                          <p>In the previous installment, we established why the Transformer does not calculate attention directly from the input embeddings. We projected our sequence into two distinct semantic subspaces, yiel...</p>
+                          <p>In the previous installment, we established why the Transformer does not calculate attention directly from the input embeddings. We projected our sequence into two distinct semantic subspaces, yielding a matrix of Queries ($Q$) and a matrix of Keys ($K$). This asymmetric projection allows the network to match concepts that belong together even if their base embeddings are geometrically distant.</p>
                       </article>
                   </a>
                   <a href="article_05.html">
                       <article class="blog-item series-item">
                           <h2>Article 5: Causal Masking</h2>
-                          <p>In our previous session, we successfully derived the scaled attention scores. We calculated the dot product between our Query and Key matrices, measuring how intensely each token seeks information ...</p>
+                          <p>In our previous session, we successfully derived the scaled attention scores. We calculated the dot product between our Query and Key matrices, measuring how intensely each token seeks information from every other token, and scaled the result by $\sqrt{dk}$ to prevent gradient saturation.</p>
                       </article>
                   </a>
               </div>
@@ -234,7 +234,7 @@
         <a href="serp-api-benchmark.html">
             <article class="blog-item">
                 <h2>Benchmarking SERP API Fidelity for AI Overviews</h2>
-                <p>When Google actually generates an AI Overview, how often does your SERP API detect it, and how much of its structured content survives the extraction process? A rigorous, mathematically-backed benc...</p>
+                <p>When Google actually generates an AI Overview, how often does your SERP API detect it, and how much of its structured content survives the extraction process? A rigorous, mathematically-backed benchmark of SearchApi, SerpApi, DataForSEO, and Serper.</p>
             </article>
         </a>
             </div>

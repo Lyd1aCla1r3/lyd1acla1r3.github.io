@@ -107,33 +107,36 @@
 <h3>The Problem of Parallel Training</h3>
 <p>When training a Transformer, we do not feed tokens in one by one. We optimize for speed by passing the entire sequence through the network simultaneously. This technique is known as teacher forcing. Our matrix operations compute the attention scores for <code>&lt;BOS&gt;</code>, <code>i</code>, <code>woke</code>, and <code>up</code> all at the exact same time.</p>
 <p>Let us examine the scaled attention scores from our previous calculation. The rows represent our Queries looking for information, and the columns represent our Keys offering information.</p>
-<pre><code class="language-math">\text{Scaled Scores} = \begin{bmatrix}
-0.45 &amp; 0.68 &amp; 0.73 &amp; 0.63 \\
-0.59 &amp; 0.87 &amp; 0.93 &amp; 0.79 \\
--0.09 &amp; -0.20 &amp; -0.26 &amp; -0.28 \\
--0.18 &amp; -0.33 &amp; -0.39 &amp; -0.39
+<p>$$
+\text{Scaled Scores} = \begin{bmatrix}
+0.45 & 0.68 & 0.73 & 0.63 \\
+0.59 & 0.87 & 0.93 & 0.79 \\
+-0.09 & -0.20 & -0.26 & -0.28 \\
+-0.18 & -0.33 & -0.39 & -0.39
 \end{bmatrix}
-</code></pre>
+$$</p>
 <p>The first row represents the <code>&lt;BOS&gt;</code> token acting as a Query. It is generating attention scores against all available Keys. The second column of the first row holds a score of 0.68, representing the <code>&lt;BOS&gt;</code> token attending to the <code>i</code> token.</p>
 <p>This reveals a profound issue. If the model is processing the <code>&lt;BOS&gt;</code> token to predict the next logical word in the sequence, it should only have access to information from the <code>&lt;BOS&gt;</code> token itself. In our current matrix, the <code>&lt;BOS&gt;</code> token has full visibility into the future tokens <code>i</code>, <code>woke</code>, and <code>up</code>. The model is effectively looking at the answer key while taking the test. The network will perfectly learn to copy the next token rather than learning the underlying linguistic patterns.</p>
 <h3>The Causal Mask</h3>
 <p>We must physically block the flow of information from future tokens into past tokens. We achieve this by applying a lower-triangular mask to the attention scores. </p>
 <p>We define a mask where any position representing a Query attending to a future Key is marked for obstruction.</p>
-<pre><code class="language-math">\text{Mask} = \begin{bmatrix}
-1 &amp; 0 &amp; 0 &amp; 0 \\
-1 &amp; 1 &amp; 0 &amp; 0 \\
-1 &amp; 1 &amp; 1 &amp; 0 \\
-1 &amp; 1 &amp; 1 &amp; 1
+<p>$$
+\text{Mask} = \begin{bmatrix}
+1 & 0 & 0 & 0 \\
+1 & 1 & 0 & 0 \\
+1 & 1 & 1 & 0 \\
+1 & 1 & 1 & 1
 \end{bmatrix}
-</code></pre>
+$$</p>
 <p>Where the mask holds a 1, we keep the original scaled score. Where the mask holds a 0, we overwrite the score with negative infinity ($-\infty$). Applying this operation yields our masked attention scores.</p>
-<pre><code class="language-math">\text{Masked Scores} = \begin{bmatrix}
-0.45 &amp; -\infty &amp; -\infty &amp; -\infty \\
-0.59 &amp; 0.87 &amp; -\infty &amp; -\infty \\
--0.09 &amp; -0.20 &amp; -0.26 &amp; -\infty \\
--0.18 &amp; -0.33 &amp; -0.39 &amp; -0.39
+<p>$$
+\text{Masked Scores} = \begin{bmatrix}
+0.45 & -\infty & -\infty & -\infty \\
+0.59 & 0.87 & -\infty & -\infty \\
+-0.09 & -0.20 & -0.26 & -\infty \\
+-0.18 & -0.33 & -0.39 & -0.39
 \end{bmatrix}
-</code></pre>
+$$</p>
 <p>By inspecting the second row, we see the Query for the token <code>i</code> can only attend to the Key for <code>&lt;BOS&gt;</code> and the Key for <code>i</code>. The scores for <code>woke</code> and <code>up</code> have been obliterated. Causality is preserved.</p>
 <h3>The Mathematical Role of Negative Infinity</h3>
 <p>We use $-\infty$ rather than zero due to the mathematical properties of the next operation in the architecture. The Softmax function will soon convert these scores into a valid probability distribution. The Softmax function exponentiates each value using $e^x$.</p>

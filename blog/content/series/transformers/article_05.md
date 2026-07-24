@@ -10,14 +10,14 @@ When training a Transformer, we do not feed tokens in one by one. We optimize fo
 
 Let us examine the scaled attention scores from our previous calculation. The rows represent our Queries looking for information, and the columns represent our Keys offering information.
 
-```math
+$$
 \text{Scaled Scores} = \begin{bmatrix}
 0.45 & 0.68 & 0.73 & 0.63 \\
 0.59 & 0.87 & 0.93 & 0.79 \\
 -0.09 & -0.20 & -0.26 & -0.28 \\
 -0.18 & -0.33 & -0.39 & -0.39
 \end{bmatrix}
-```
+$$
 
 The first row represents the `<BOS>` token acting as a Query. It is generating attention scores against all available Keys. The second column of the first row holds a score of 0.68, representing the `<BOS>` token attending to the `i` token.
 
@@ -29,25 +29,25 @@ We must physically block the flow of information from future tokens into past to
 
 We define a mask where any position representing a Query attending to a future Key is marked for obstruction.
 
-```math
+$$
 \text{Mask} = \begin{bmatrix}
 1 & 0 & 0 & 0 \\
 1 & 1 & 0 & 0 \\
 1 & 1 & 1 & 0 \\
 1 & 1 & 1 & 1
 \end{bmatrix}
-```
+$$
 
 Where the mask holds a 1, we keep the original scaled score. Where the mask holds a 0, we overwrite the score with negative infinity ($-\infty$). Applying this operation yields our masked attention scores.
 
-```math
+$$
 \text{Masked Scores} = \begin{bmatrix}
 0.45 & -\infty & -\infty & -\infty \\
 0.59 & 0.87 & -\infty & -\infty \\
 -0.09 & -0.20 & -0.26 & -\infty \\
 -0.18 & -0.33 & -0.39 & -0.39
 \end{bmatrix}
-```
+$$
 
 By inspecting the second row, we see the Query for the token `i` can only attend to the Key for `<BOS>` and the Key for `i`. The scores for `woke` and `up` have been obliterated. Causality is preserved.
 
