@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Article 3: The Motivation for Q, K, and V (Asymmetric Similarity) — Lydia Pedersen</title>
+  <link rel="stylesheet" href="../css/styles.css?v=1.2">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .blog-post {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: var(--space-4xl) var(--space-md);
+        background: var(--bg-card);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 8px 32px rgba(183, 110, 121, 0.05);
+        border: 1px solid var(--border-subtle);
+    }
+    .blog-post h1, .blog-post h2, .blog-post h3 {
+        color: var(--text-primary);
+        font-family: var(--font-display);
+        margin-top: var(--space-2xl);
+        margin-bottom: var(--space-md);
+    }
+    .blog-post h1 { font-size: var(--fs-3xl); margin-top: 0; }
+    .blog-post h2 { font-size: var(--fs-2xl); border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-sm); }
+    .blog-post p, .blog-post li {
+        color: var(--text-secondary);
+        line-height: var(--lh-relaxed);
+        margin-bottom: var(--space-md);
+        font-size: var(--fs-md);
+    }
+    .blog-post img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-md);
+        margin: var(--space-lg) 0;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .blog-post a {
+        color: var(--text-accent);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s ease;
+    }
+    .blog-post a:hover {
+        border-bottom-color: var(--text-accent);
+    }
+    .blog-post {
+        background: rgba(255, 255, 255, 0.65);
+        padding: var(--space-2xl);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-subtle);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .blog-post h1 { margin-top: 0; font-family: var(--font-display); color: var(--text-primary); font-size: 2.5rem; line-height: 1.1; margin-bottom: 2rem; }
+    .blog-post .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; display: flex; gap: 1rem; align-items: center; }
+    .blog-post .meta span { display: inline-flex; align-items: center; gap: 0.25rem; }
+    .blog-post h2 { font-family: var(--font-display); color: var(--text-primary); margin-top: 2.5rem; margin-bottom: 1rem; font-size: 1.8rem; }
+    .blog-post h3 { font-family: var(--font-display); color: var(--text-primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.4rem; }
+    .blog-post p { line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1.05rem; }
+    .blog-post ul, .blog-post ol { margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem; }
+    .blog-post li { margin-bottom: 0.5rem; }
+    .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+    .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
+    .blog-post table { width: 100%; margin: var(--space-2xl) 0; table-layout: fixed; border-collapse: separate; border-spacing: var(--space-sm); text-align: center; }
+    .blog-post thead { display: none; }
+    .blog-post td { padding: 4px; }
+    .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 6px 12px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; width: 100%; font-size: 0.95rem; color: var(--rose-gold-dark); }
+  </style>
+</head>
+<body>
+  <!-- Fixed chip visual (always visible, bottom-left, behind everything) -->
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
+  <!-- Full-screen overlay canvas for the diagonal binary→agent→text animation -->
+  <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="../index.html" class="nav__logo" aria-label="Home">lydia<span>.</span>pedersen</a>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="../index.html#about" class="nav__link">About</a></li>
+        <li><a href="../index.html#samples" class="nav__link">Writing</a></li>
+        <li><a href="../index.html#case-studies" class="nav__link">Engineering</a></li>
+        <li><a href="../index.html#skills" class="nav__link">Skills</a></li>
+        <li><a href="index.html" class="nav__link">Blog</a></li>
+        <li><a href="../index.html#contact" class="nav__link">Contact</a></li>
+      </ul>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="nav__toggle-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-lg));">
+    <div class="container">
+<nav aria-label="breadcrumb" class="breadcrumbs"><ol>
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html">Series: Transformers</a></li><li aria-current="page">Article 3: The Motivation for Q, K, and V (Asymmetric Similarity)</li></ol></nav>
+        <article class="blog-post">
+<h1>Article 3: The Motivation for Q, K, and V (Asymmetric Similarity)</h1>
+<p>In the previous article, we solved the permutation invariance problem by adding absolute positional encodings to our token embeddings. Our sequence <code>&lt;BOS&gt; i woke up</code> is now represented by the $4 \times 6$ matrix $X_{pos}$, which contains both semantic meaning and positional context. </p>
+<p>The next step in the Transformer architecture is self-attention. The core mechanism of attention is discovering which tokens in the sequence are relevant to each other. The simplest way to measure mathematical relevance between two vectors is to calculate their dot product. It is therefore tempting to assume we should just compute the dot product of every token vector with every other token vector directly.</p>
+<p>This naive approach is known as computing symmetric similarity. We can test this by multiplying $X_{pos}$ by its own transpose $X_{pos}^T$. </p>
+<pre><code class="language-python">Symmetric Similarity = X_pos @ X_pos.T
+</code></pre>
+<p>Here is the result of that direct calculation:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Token</th>
+<th align="left"><BOS></th>
+<th align="left">i</th>
+<th align="left">woke</th>
+<th align="left">up</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong><BOS></strong></td>
+<td align="left">3.0</td>
+<td align="left">4.0</td>
+<td align="left">1.2</td>
+<td align="left">0.8</td>
+</tr>
+<tr>
+<td align="left"><strong>i</strong></td>
+<td align="left">4.0</td>
+<td align="left">5.9</td>
+<td align="left">2.7</td>
+<td align="left">1.6</td>
+</tr>
+<tr>
+<td align="left"><strong>woke</strong></td>
+<td align="left">1.2</td>
+<td align="left">2.7</td>
+<td align="left">5.5</td>
+<td align="left">4.7</td>
+</tr>
+<tr>
+<td align="left"><strong>up</strong></td>
+<td align="left">0.8</td>
+<td align="left">1.6</td>
+<td align="left">4.7</td>
+<td align="left">5.2</td>
+</tr>
+</tbody></table>
+<p>The dot product measures how much two vectors point in the same direction. When we multiply a matrix by its own transpose, the highest values will invariably appear along the diagonal. The token &quot;woke&quot; aligns most strongly with itself, yielding a score of $5.5$. The token &quot;up&quot; aligns most strongly with itself, yielding $5.2$. </p>
+<p>This creates a fundamental limitation. In human language, semantic relationships are rarely symmetric. Verbs need to find subjects. Prepositions need to find objects. In our sequence, the particle &quot;up&quot; needs to attend to the verb &quot;woke&quot; to form the phrasal verb &quot;woke up&quot;. If we rely on symmetric similarity, a token will always be overwhelmingly distracted by its own reflection. It will struggle to look for complementary grammatical structures because the vectors for different parts of speech point in different directions in the embedding space.</p>
+<p>We need a mechanism that allows a token to ask a question, and allows other tokens to provide the answer. We need asymmetric similarity.</p>
+<h2>The Bilinear Form</h2>
+<p>To achieve asymmetric similarity, the Transformer projects the input tensor $X_{pos}$ into three distinct new subspaces using three learned weight matrices. We call these projections Queries, Keys, and Values. For now, we will focus on the Queries and Keys. </p>
+<p>Instead of asking how similar vector $A$ is to vector $B$, we project $A$ into a Query subspace and $B$ into a Key subspace. We then measure the similarity between the Query projection of $A$ and the Key projection of $B$. </p>
+<p>Mathematically, this operation is a bilinear form. Given our input $X_{pos}$ and our two weight matrices $W_Q$ and $W_K$, the attention scores are calculated as:</p>
+<p>$\text{Attention Scores} = (X_{pos} W_Q) (X_{pos} W_K)^T$</p>
+<p>This equation is deeply elegant. The weight matrices $W_Q$ and $W_K$ act as lenses. During training, the neural network adjusts these lenses to map conceptually complementary tokens into the exact same region of a new, lower-dimensional space. The network might learn to map the Query vector for a preposition and the Key vector for a verb into the exact same mathematical coordinate. When their dot product is subsequently computed, the result will be a massive positive number, forcing the network to attend to that relationship.</p>
+<h2>Calculating Queries and Keys</h2>
+<p>Our Transformer uses $3$ attention heads. The model dimension $d_{model}$ is $6$. We divide the model dimension by the number of heads to determine the dimensionality of the Query and Key subspaces. This gives us a head dimension $d_k = 2$. </p>
+<p>Each attention head possesses its own independent $W_Q$ and $W_K$ matrices, both sized $6 \times 2$. This allows each head to look for entirely different types of relationships. Head 1 might look for subject-verb relationships. Head 2 might track temporal adverbs. </p>
+<p>Let us instantiate a concrete $W_Q$ and $W_K$ for our first attention head. </p>
+<pre><code class="language-python">W_Q (6 x 2):
+[[ 0.1  0.2]
+ [-0.1  0.5]
+ [ 0.8 -0.2]
+ [ 0.3  0.4]
+ [-0.2  0.1]
+ [ 0.1 -0.3]]
+
+W_K (6 x 2):
+[[-0.2  0.4]
+ [ 0.5 -0.1]
+ [ 0.6  0.2]
+ [ 0.1  0.7]
+ [ 0.2 -0.2]
+ [-0.4  0.3]]
+</code></pre>
+<p>To calculate the Queries $Q$, we multiply our positionally-encoded sequence $X_{pos}$ by $W_Q$.</p>
+<pre><code class="language-python">Q = X_pos @ W_Q
+</code></pre>
+<p>The resulting Query matrix $Q$ has dimensions $4 \times 2$. Each token has been compressed from a 6-dimensional representation into a 2-dimensional &quot;question&quot;. </p>
+<pre><code class="language-python">Q (4 x 2):
+[[ 0.3  0.6]  # &lt;BOS&gt;
+ [ 0.6  0.8]  # i
+ [ 1.8 -0.5]  # woke
+ [ 1.6 -0.6]] # up
+</code></pre>
+<p>We perform the exact same operation for the Keys $K$, multiplying $X_{pos}$ by $W_K$.</p>
+<pre><code class="language-python">K = X_pos @ W_K
+</code></pre>
+<p>This yields our $4 \times 2$ Key matrix. Each token now has a 2-dimensional &quot;answer&quot;.</p>
+<pre><code class="language-python">K (4 x 2):
+[[ 0.2  0.9]  # &lt;BOS&gt;
+ [ 0.2  1.4]  # i
+ [ 0.2  1.6]  # woke
+ [ 0.1  1.4]] # up
+</code></pre>
+<p>By separating the inputs into independent Queries and Keys, the network breaks the mirror of symmetric similarity. The token &quot;woke&quot; no longer strictly attends to itself. It projects a specific question into the Query space, and it projects a specific identity into the Key space. In the next article, we will multiply these matrices together, calculate the final attention scores, and observe how the network scales the results to prevent gradient collapse.</p>
+<pre><code class="language-mermaid">graph TD
+    X(&quot;X_pos (4 x 6)&quot;) --&gt; Q_proj(&quot;Multiply by W_Q (6 x 2)&quot;)
+    X --&gt; K_proj(&quot;Multiply by W_K (6 x 2)&quot;)
+    
+    Q_proj --&gt; Q_mat(&quot;Query Matrix (4 x 2)&quot;)
+    K_proj --&gt; K_mat(&quot;Key Matrix (4 x 2)&quot;)
+    
+    Q_mat --&gt; Dot(&quot;Dot Product (Q @ K^T)&quot;)
+    K_mat --&gt; Dot
+    
+    Dot --&gt; Scores(&quot;Asymmetric Attention Scores (4 x 4)&quot;)
+</code></pre>
+
+        </article>
+    </div>
+  </main>
+  <script src="../js/main.js"></script>
+
+  <!-- KaTeX for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" 
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});">
+  </script>
+
+  <!-- Mermaid for Diagram Rendering -->
+  <style>
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: var(--space-2xl) 0;
+    }
+    .mermaid svg {
+      filter: drop-shadow(0 4px 16px rgba(183, 110, 121, 0.12));
+    }
+  </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ 
+      startOnLoad: true, 
+      theme: 'base',
+      themeVariables: {
+        fontFamily: "'Outfit', -apple-system, BlinkMacSystemFont, sans-serif",
+        primaryColor: '#ffffff',
+        primaryBorderColor: '#b76e79',
+        primaryTextColor: '#8b4f5a',
+        lineColor: '#b76e79',
+        nodeBorder: '#b76e79',
+        clusterBkg: 'rgba(232, 180, 184, 0.15)',
+        clusterBorder: '#d4a0a0'
+      }
+    });
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      const blocks = document.querySelectorAll('.language-mermaid');
+      blocks.forEach((block) => {
+        const parent = block.parentElement;
+        if (parent.tagName === 'PRE') {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          parent.replaceWith(mermaidDiv);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

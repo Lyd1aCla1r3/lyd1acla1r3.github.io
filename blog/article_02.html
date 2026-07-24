@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Building a Transformer from Scratch: Part 2: The Permutation Invariance Problem & Positional Encoding — Lydia Pedersen</title>
+  <link rel="stylesheet" href="../css/styles.css?v=1.2">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .blog-post {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: var(--space-4xl) var(--space-md);
+        background: var(--bg-card);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 8px 32px rgba(183, 110, 121, 0.05);
+        border: 1px solid var(--border-subtle);
+    }
+    .blog-post h1, .blog-post h2, .blog-post h3 {
+        color: var(--text-primary);
+        font-family: var(--font-display);
+        margin-top: var(--space-2xl);
+        margin-bottom: var(--space-md);
+    }
+    .blog-post h1 { font-size: var(--fs-3xl); margin-top: 0; }
+    .blog-post h2 { font-size: var(--fs-2xl); border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-sm); }
+    .blog-post p, .blog-post li {
+        color: var(--text-secondary);
+        line-height: var(--lh-relaxed);
+        margin-bottom: var(--space-md);
+        font-size: var(--fs-md);
+    }
+    .blog-post img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-md);
+        margin: var(--space-lg) 0;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .blog-post a {
+        color: var(--text-accent);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s ease;
+    }
+    .blog-post a:hover {
+        border-bottom-color: var(--text-accent);
+    }
+    .blog-post {
+        background: rgba(255, 255, 255, 0.65);
+        padding: var(--space-2xl);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-subtle);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .blog-post h1 { margin-top: 0; font-family: var(--font-display); color: var(--text-primary); font-size: 2.5rem; line-height: 1.1; margin-bottom: 2rem; }
+    .blog-post .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; display: flex; gap: 1rem; align-items: center; }
+    .blog-post .meta span { display: inline-flex; align-items: center; gap: 0.25rem; }
+    .blog-post h2 { font-family: var(--font-display); color: var(--text-primary); margin-top: 2.5rem; margin-bottom: 1rem; font-size: 1.8rem; }
+    .blog-post h3 { font-family: var(--font-display); color: var(--text-primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.4rem; }
+    .blog-post p { line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1.05rem; }
+    .blog-post ul, .blog-post ol { margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem; }
+    .blog-post li { margin-bottom: 0.5rem; }
+    .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+    .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
+    .blog-post table { width: 100%; margin: var(--space-2xl) 0; table-layout: fixed; border-collapse: separate; border-spacing: var(--space-sm); text-align: center; }
+    .blog-post thead { display: none; }
+    .blog-post td { padding: 4px; }
+    .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 6px 12px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; width: 100%; font-size: 0.95rem; color: var(--rose-gold-dark); }
+  </style>
+</head>
+<body>
+  <!-- Fixed chip visual (always visible, bottom-left, behind everything) -->
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
+  <!-- Full-screen overlay canvas for the diagonal binary→agent→text animation -->
+  <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="../index.html" class="nav__logo" aria-label="Home">lydia<span>.</span>pedersen</a>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="../index.html#about" class="nav__link">About</a></li>
+        <li><a href="../index.html#samples" class="nav__link">Writing</a></li>
+        <li><a href="../index.html#case-studies" class="nav__link">Engineering</a></li>
+        <li><a href="../index.html#skills" class="nav__link">Skills</a></li>
+        <li><a href="index.html" class="nav__link">Blog</a></li>
+        <li><a href="../index.html#contact" class="nav__link">Contact</a></li>
+      </ul>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="nav__toggle-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-lg));">
+    <div class="container">
+<nav aria-label="breadcrumb" class="breadcrumbs"><ol>
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html">Series: Transformers</a></li><li aria-current="page">Building a Transformer from Scratch: Part 2: The Permutation Invariance Problem & Positional Encoding</li></ol></nav>
+        <article class="blog-post">
+<h1>Building a Transformer from Scratch: Part 2: The Permutation Invariance Problem &amp; Positional Encoding</h1>
+<p>Welcome back. In our previous session, we successfully transformed our input sequence <code>&lt;BOS&gt; i woke up</code> into a dense, continuous semantic space. We mathematically compressed sparse 12-dimensional one-hot vectors into a 6-dimensional embedding matrix. </p>
+<p>Our current tensor representation $X$ for our sequence looks like this:</p>
+<pre><code class="language-math">X = \begin{bmatrix}
+ 0.1 &amp;  0.0 &amp;  0.0 &amp;  0.0 &amp;  0.0 &amp;  0.0 \\
+ 0.0 &amp;  0.8 &amp; -0.1 &amp;  0.2 &amp;  0.0 &amp;  0.5 \\
+ 0.0 &amp; -0.2 &amp;  0.9 &amp;  0.1 &amp; -0.4 &amp;  0.1 \\
+ 0.0 &amp; -0.1 &amp;  0.4 &amp;  0.9 &amp; -0.2 &amp;  0.0 
+\end{bmatrix}
+</code></pre>
+<p>This matrix beautifully captures the semantic meaning of our words. The problem is that it captures absolutely nothing else. </p>
+<h2>The Permutation Invariance Problem</h2>
+<p>To understand why this is a fatal flaw, we must anticipate how the upcoming Attention mechanism processes this data. When we eventually compute self-attention, we will be calculating dot products between these row vectors to measure their similarities. </p>
+<p>A fundamental property of set operations and matrix multiplication is that they are permutation invariant. If you shuffle the rows of our matrix $X$ to represent the sequence &quot;woke i up <code>&lt;BOS&gt;</code>&quot;, the attention mechanism will calculate the exact same pairwise similarities. The model would process &quot;i woke up&quot; and &quot;woke i up&quot; as identical semantic concepts. Human language relies entirely on word order to derive meaning. &quot;The dog bit the man&quot; and &quot;The man bit the dog&quot; use identical tokens, yet they describe completely different events. </p>
+<p>Without a mechanism to inject sequence order, our Transformer is merely a highly sophisticated bag-of-words model. It is completely order-blind.</p>
+<h2>Injecting Time: Positional Encoding</h2>
+<p>We must explicitly inject positional information into our vectors before they enter the attention layers. We achieve this by creating a secondary matrix of identical dimensions to our input tensor, which we will simply add to it. </p>
+<p>There are two primary philosophies for positional encoding:</p>
+<ol>
+<li><strong>Relative Positional Encoding:</strong> The model learns the distances between words. Instead of knowing that &quot;woke&quot; is at position 2, it only cares that &quot;woke&quot; is exactly one step away from &quot;i&quot;. Modern architectures like RoPE utilize relative encodings through complex vector rotations.</li>
+<li><strong>Absolute Positional Encoding:</strong> Every position in the sequence receives a unique, static vector signature. The model learns that position 0 always has a specific geometric translation, position 1 has another, and so forth.</li>
+</ol>
+<p>For our rigorous walkthrough, we will use an absolute positional encoding. We want a matrix that is mathematically deterministic and bounded, ensuring we do not explode the numerical variance of our carefully calibrated embeddings. </p>
+<p>The original Transformer architecture used interweaving sine and cosine waves of varying frequencies. We will adopt a mathematically similar approach. By varying the frequencies across our 6 dimensions, each position generates a completely unique vector signature.</p>
+<p>Here is the exact Positional Encoding matrix $W_{PE}$ for our 4-token sequence:</p>
+<pre><code class="language-math">W_{PE} = \begin{bmatrix}
+ 0.0 &amp;  1.0 &amp;  0.0 &amp;  1.0 &amp;  0.0 &amp;  1.0 \\
+ 0.8 &amp;  0.5 &amp;  0.4 &amp;  0.9 &amp;  0.2 &amp;  1.0 \\
+ 0.9 &amp; -0.4 &amp;  0.8 &amp;  0.6 &amp;  0.4 &amp;  0.9 \\
+ 0.1 &amp; -1.0 &amp;  1.0 &amp;  0.2 &amp;  0.6 &amp;  0.8 
+\end{bmatrix}
+</code></pre>
+<p>Notice the geometric elegance of this matrix. The values fluctuate smoothly between -1.0 and 1.0. Position 0 produces a clean alternating pattern, while subsequent positions introduce complex phase shifts. No two rows are identical.</p>
+<h2>The Final Matrix Addition</h2>
+<p>The integration of positional data is remarkably simple. We perform an element-wise matrix addition of our semantic embeddings $X$ and our positional signatures $W_{PE}$. </p>
+<pre><code class="language-mermaid">graph TD
+    X(&quot;Semantic Embeddings X&quot;) --&gt; Add(&quot;Element-wise Addition&quot;)
+    PE(&quot;Positional Encoding W_PE&quot;) --&gt; Add
+    Add --&gt; XPos(&quot;Contextualized Input X_pos&quot;)
+</code></pre>
+<p>Let us compute the exact addition for our model:</p>
+<pre><code class="language-math">X_{pos} = \begin{bmatrix}
+ 0.1 &amp;  0.0 &amp;  0.0 &amp;  0.0 &amp;  0.0 &amp;  0.0 \\
+ 0.0 &amp;  0.8 &amp; -0.1 &amp;  0.2 &amp;  0.0 &amp;  0.5 \\
+ 0.0 &amp; -0.2 &amp;  0.9 &amp;  0.1 &amp; -0.4 &amp;  0.1 \\
+ 0.0 &amp; -0.1 &amp;  0.4 &amp;  0.9 &amp; -0.2 &amp;  0.0 
+\end{bmatrix} + \begin{bmatrix}
+ 0.0 &amp;  1.0 &amp;  0.0 &amp;  1.0 &amp;  0.0 &amp;  1.0 \\
+ 0.8 &amp;  0.5 &amp;  0.4 &amp;  0.9 &amp;  0.2 &amp;  1.0 \\
+ 0.9 &amp; -0.4 &amp;  0.8 &amp;  0.6 &amp;  0.4 &amp;  0.9 \\
+ 0.1 &amp; -1.0 &amp;  1.0 &amp;  0.2 &amp;  0.6 &amp;  0.8 
+\end{bmatrix}
+</code></pre>
+<p>Which yields our final, positionally-aware tensor $X_{pos}$:</p>
+<pre><code class="language-math">X_{pos} = \begin{bmatrix}
+ 0.1 &amp;  1.0 &amp;  0.0 &amp;  1.0 &amp;  0.0 &amp;  1.0 \\
+ 0.8 &amp;  1.3 &amp;  0.3 &amp;  1.1 &amp;  0.2 &amp;  1.5 \\
+ 0.9 &amp; -0.6 &amp;  1.7 &amp;  0.7 &amp;  0.0 &amp;  1.0 \\
+ 0.1 &amp; -1.1 &amp;  1.4 &amp;  1.1 &amp;  0.4 &amp;  0.8 
+\end{bmatrix}
+</code></pre>
+<p>Our vector for &quot;woke&quot; is no longer just the abstract concept of waking up. It is now explicitly &quot;woke&quot; at position 2. </p>
+<p>The stage is now completely set. We have successfully translated a string of text into a mathematically rich tensor that understands both semantic meaning and sequential time. Next, we will feed this matrix into the heart of the architecture to introduce Layer 1 Self-Attention.</p>
+
+        </article>
+    </div>
+  </main>
+  <script src="../js/main.js"></script>
+
+  <!-- KaTeX for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" 
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});">
+  </script>
+
+  <!-- Mermaid for Diagram Rendering -->
+  <style>
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: var(--space-2xl) 0;
+    }
+    .mermaid svg {
+      filter: drop-shadow(0 4px 16px rgba(183, 110, 121, 0.12));
+    }
+  </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ 
+      startOnLoad: true, 
+      theme: 'base',
+      themeVariables: {
+        fontFamily: "'Outfit', -apple-system, BlinkMacSystemFont, sans-serif",
+        primaryColor: '#ffffff',
+        primaryBorderColor: '#b76e79',
+        primaryTextColor: '#8b4f5a',
+        lineColor: '#b76e79',
+        nodeBorder: '#b76e79',
+        clusterBkg: 'rgba(232, 180, 184, 0.15)',
+        clusterBorder: '#d4a0a0'
+      }
+    });
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      const blocks = document.querySelectorAll('.language-mermaid');
+      blocks.forEach((block) => {
+        const parent = block.parentElement;
+        if (parent.tagName === 'PRE') {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          parent.replaceWith(mermaidDiv);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
