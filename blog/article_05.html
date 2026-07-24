@@ -22,8 +22,10 @@
         margin-top: var(--space-2xl);
         margin-bottom: var(--space-md);
     }
-    .blog-post h1 { font-size: var(--fs-3xl); margin-top: 0; }
-    .blog-post h2 { font-size: var(--fs-2xl); border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-sm); }
+    .blog-post h1 { font-size: var(--fs-3xl); margin-top: 0; line-height: 1.1; }
+    .blog-post h2, .blog-post h3 { border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-sm); }
+    .blog-post h2 { font-size: var(--fs-2xl); }
+    .blog-post h3 { font-size: var(--fs-xl); }
     .blog-post p, .blog-post li {
         color: var(--text-secondary);
         line-height: var(--lh-relaxed);
@@ -37,13 +39,13 @@
         margin: var(--space-lg) 0;
         box-shadow: 0 4px 16px rgba(0,0,0,0.1);
     }
-    .blog-post a {
+    .blog-post a:not(.pagination-link) {
         color: var(--text-accent);
         text-decoration: none;
         border-bottom: 1px solid transparent;
         transition: border-color 0.2s ease;
     }
-    .blog-post a:hover {
+    .blog-post a:not(.pagination-link):hover {
         border-bottom-color: var(--text-accent);
     }
     .blog-post {
@@ -55,11 +57,8 @@
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
     }
-    .blog-post h1 { margin-top: 0; font-family: var(--font-display); color: var(--text-primary); font-size: 2.5rem; line-height: 1.1; margin-bottom: 2rem; }
     .blog-post .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; display: flex; gap: 1rem; align-items: center; }
     .blog-post .meta span { display: inline-flex; align-items: center; gap: 0.25rem; }
-    .blog-post h2 { font-family: var(--font-display); color: var(--text-primary); margin-top: 2.5rem; margin-bottom: 1rem; font-size: 1.8rem; }
-    .blog-post h3 { font-family: var(--font-display); color: var(--text-primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.4rem; }
     .blog-post p { line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1.05rem; }
     .blog-post ul, .blog-post ol { margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem; }
     .blog-post li { margin-bottom: 0.5rem; }
@@ -104,7 +103,7 @@
 <h1>Article 5: Causal Masking</h1>
 <p>In our previous session, we successfully derived the scaled attention scores. We calculated the dot product between our Query and Key matrices, measuring how intensely each token seeks information from every other token, and scaled the result by $\sqrt{d_k}$ to prevent gradient saturation. </p>
 <p>Before we can convert these scores into a final probability distribution, we must address a critical structural flaw in how our matrix currently operates during training. </p>
-<h3>The Problem of Parallel Training</h3>
+<h2>The Problem of Parallel Training</h2>
 <p>When training a Transformer, we do not feed tokens in one by one. We optimize for speed by passing the entire sequence through the network simultaneously. This technique is known as teacher forcing. Our matrix operations compute the attention scores for <code>&lt;BOS&gt;</code>, <code>i</code>, <code>woke</code>, and <code>up</code> all at the exact same time.</p>
 <p>Let us examine the scaled attention scores from our previous calculation. The rows represent our Queries looking for information, and the columns represent our Keys offering information.</p>
 <p>$$
@@ -117,7 +116,7 @@
 $$</p>
 <p>The first row represents the <code>&lt;BOS&gt;</code> token acting as a Query. It is generating attention scores against all available Keys. The second column of the first row holds a score of 0.68, representing the <code>&lt;BOS&gt;</code> token attending to the <code>i</code> token.</p>
 <p>This reveals a profound issue. If the model is processing the <code>&lt;BOS&gt;</code> token to predict the next logical word in the sequence, it should only have access to information from the <code>&lt;BOS&gt;</code> token itself. In our current matrix, the <code>&lt;BOS&gt;</code> token has full visibility into the future tokens <code>i</code>, <code>woke</code>, and <code>up</code>. The model is effectively looking at the answer key while taking the test. The network will perfectly learn to copy the next token rather than learning the underlying linguistic patterns.</p>
-<h3>The Causal Mask</h3>
+<h2>The Causal Mask</h2>
 <p>We must physically block the flow of information from future tokens into past tokens. We achieve this by applying a lower-triangular mask to the attention scores. </p>
 <p>We define a mask where any position representing a Query attending to a future Key is marked for obstruction.</p>
 <p>$$
@@ -138,11 +137,20 @@ $$</p>
 \end{bmatrix}
 $$</p>
 <p>By inspecting the second row, we see the Query for the token <code>i</code> can only attend to the Key for <code>&lt;BOS&gt;</code> and the Key for <code>i</code>. The scores for <code>woke</code> and <code>up</code> have been obliterated. Causality is preserved.</p>
-<h3>The Mathematical Role of Negative Infinity</h3>
+<h2>The Mathematical Role of Negative Infinity</h2>
 <p>We use $-\infty$ rather than zero due to the mathematical properties of the next operation in the architecture. The Softmax function will soon convert these scores into a valid probability distribution. The Softmax function exponentiates each value using $e^x$.</p>
 <p>As $x$ approaches $-\infty$, the value of $e^x$ converges exactly to 0. When we calculate the final attention weights in the next step, any connection blocked by our causal mask will receive a probability weight of precisely 0%. Future tokens will contribute nothing to the mathematical representation of past tokens.</p>
 <p>With our causal mask firmly in place, we are ready to safely pass these masked scores through the Softmax function and extract our final Value matrices.</p>
 
+<div class="blog-pagination">
+      <a href="article_04.html" class="pagination-link prev">
+        <span class="pagination-label">Previous</span>
+        <span class="pagination-title">Article 4: The Attention Score and $\sqrt{d_k}$</span>
+      </a>
+      <a href="article_06.html" class="pagination-link next">
+        <span class="pagination-label">Next</span>
+        <span class="pagination-title">Article 6: From Scores to Synthesis: Softmax and The Value Matrix</span>
+      </a></div>
         </article>
     </div>
   </main>

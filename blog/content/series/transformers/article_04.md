@@ -8,7 +8,7 @@ Our sequence currently consists of four tokens:
 
 We now need to calculate the actual attention scores. We want to quantify how strongly each token in our sequence should attend to every other token. We achieve this by taking the dot product of every Query vector with every Key vector. 
 
-### The Dot Product as a Metric of Similarity
+## The Dot Product as a Metric of Similarity
 
 The dot product measures alignment. When two vectors point in similar directions, their dot product is large and positive. When they are orthogonal, it is zero. When they point in opposite directions, it is negative. 
 
@@ -45,7 +45,7 @@ $$
 
 Each row in this result corresponds to a Query token, and each column corresponds to a Key token. The value at row 3 and column 2, which is $-0.29$, represents the raw alignment score between the Query for "woke" and the Key for "i". 
 
-### The Problem of Dimensionality
+## The Problem of Dimensionality
 
 These raw scores are mathematically correct. We cannot use them as they are. The Transformer architecture relies on converting these raw scores into a strict probability distribution using the Softmax function. Softmax will force the scores in each row to sum to $1.0$, allowing us to treat them as percentage weights.
 
@@ -53,7 +53,7 @@ There is a subtle mathematical trap hidden in the dot product. As the dimensiona
 
 If you take two random independent vectors of dimension $d$ with a mean of 0 and a variance of 1, their dot product will have a mean of 0 and a variance of $d$. Our current toy model uses a tiny head dimension of $d_k = 2$, so this effect is invisible. In a production model like GPT-3, the head dimension is typically $d_k = 128$. The variance of the raw dot products becomes massive.
 
-### Softmax Saturation and Gradient Death
+## Softmax Saturation and Gradient Death
 
 To understand why high variance is fatal, we must look at how the Softmax function behaves with extreme values. 
 
@@ -69,7 +69,7 @@ The network has placed 100% of its attention on the final token. This might seem
 
 Neural networks learn via backpropagation, which relies on calculating gradients. The gradient represents the slope of the function. When a Softmax distribution becomes this sharply peaked, it operates in the absolute flattest regions of its curve. The slope approaches zero. If the gradient is zero, the network cannot update its weights. The learning process halts completely. This phenomenon is known as Softmax saturation.
 
-### The Mathematical Solution: Scaling by $\sqrt{d_k}$
+## The Mathematical Solution: Scaling by $\sqrt{d_k}$
 
 We must prevent the variance of the dot products from growing with the dimensionality of the network. We do this by dividing the raw attention scores by the square root of the head dimension ($\sqrt{d_k}$). 
 
@@ -85,7 +85,7 @@ Passing these scaled numbers through the Softmax function produces a healthy, nu
 
 The gradients can flow freely through this distribution. The network can continue to learn.
 
-### Scaling Our Toy Model
+## Scaling Our Toy Model
 
 We must now apply this mandatory scaling to our own toy model. Our head dimension is $d_k = 2$. Our scaling factor is $\sqrt{2}$, which is approximately $1.414$.
 

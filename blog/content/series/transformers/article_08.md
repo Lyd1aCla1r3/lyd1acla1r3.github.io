@@ -1,8 +1,8 @@
-### Article 8: The Residual Stream and the Central Memory Bus
+# Article 8: The Residual Stream and the Central Memory Bus
 
 We have successfully calculated the multi-head attention output. The temptation now is to treat this output as the sole input to the next layer, much like a traditional feed-forward network. We must resist that instinct. The Transformer architecture does not pass data sequentially through a gauntlet of filters. Instead, it relies on a central, shared memory backbone known as the residual stream.
 
-#### Reframing the Architecture: The Information Highway
+## Reframing the Architecture: The Information Highway
 
 In a standard deep neural network, each layer transforms the data completely. The input to layer two is exclusively the output of layer one. This creates a bottleneck. If a layer destroys information during its transformation, that information is lost forever. Furthermore, during backpropagation, gradients must multiply through every layer's weight matrix. If those weights are small, the gradients vanish, halting the learning process for early layers.
 
@@ -19,7 +19,7 @@ graph TD
 
 This means our token vectors do not lose their original identity. The attention block acts as an additive update, mixing contextual information into the base meaning of the token.
 
-#### The Mathematics of the Residual Connection
+## The Mathematics of the Residual Connection
 
 We formalize this additive update with a simple equation:
 
@@ -62,7 +62,7 @@ X_{\text{out}} = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-#### The Geometric Implications of Addition
+## The Geometric Implications of Addition
 
 When we add the attention output to the original embedding, we are performing vector translation. The attention block calculates a directional shift based on the surrounding context. By adding this shift vector to the original token vector, we move the token to a new location in the $d_{model}$ dimensional space. 
 

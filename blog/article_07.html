@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Article 6: From Scores to Synthesis: Softmax and The Value Matrix — Lydia Pedersen</title>
+  <title>Article 7: The Cross-Head Mixer and The Projection Matrix — Lydia Pedersen</title>
   <link rel="stylesheet" href="../css/styles.css?v=1.2">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
   <style>
@@ -98,95 +98,96 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Article 6: From Scores to Synthesis: Softmax and The Value Matrix</li></ol></nav>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Article 7: The Cross-Head Mixer and The Projection Matrix</li></ol></nav>
         <article class="blog-post">
-<h1>Article 6: From Scores to Synthesis: Softmax and The Value Matrix</h1>
-<p>In our previous installation, we successfully calculated the masked attention scores. By applying a lower triangular matrix of negative infinity values, we erected a strict mathematical barrier that prevents information from flowing backward in time. We are now left with a matrix representing the raw geometric alignment between our Queries and Keys across all valid time steps. </p>
-<p>These scalar values are mathematically unbounded. We must now convert them into a stable format capable of driving the core synthesis step of the attention mechanism. This transformation requires the Softmax function and the introduction of our third fundamental learned matrix: the Value matrix.</p>
-<h2>The Softmax Function: Converting Alignment to Probability</h2>
-<p>We intend to use our attention scores as a set of weights to perform a weighted sum. If we were to use the raw, unbounded scores directly, the magnitude of our vectors would compound uncontrollably as information flows deeper into the network. To maintain mathematical stability, we require our weights to be strictly positive and to sum exactly to 1 across each row. We achieve this by applying the Softmax function.</p>
-<p>The Softmax function operates by taking the exponential of each input value and dividing it by the sum of all exponentials in that row. Exponentiation maps any real number to a positive value. Dividing by the total sum normalizes these positive values into a strict probability distribution.</p>
-<p>Let us observe our masked scaled scores from the previous step:</p>
+<h1>Article 7: The Cross-Head Mixer and The Projection Matrix</h1>
+<p>In our previous session, we completed the journey of a single attention head. We watched it calculate its masked attention scores, convert those scores into strict probability distributions via the Softmax function, and finally compute a weighted sum over the Value matrix $V$. </p>
+<p>That process yielded a contextually enriched vector for each token in our sequence. These vectors, however, only have a dimension of $d_v = 2$. Our overall model dimension is $d_{model} = 6$. We deliberately split our architecture into three parallel attention heads so the network could simultaneously look for different types of semantic relationships. Head 1 might be attending to subject-verb pairings, while Head 2 looks for temporal markers, and Head 3 focuses on pronoun antecedents.</p>
+<p>We now face a critical architectural challenge. We have three isolated sets of findings. We must unify these independent insights back into a single cohesive representation for each token, and this representation must seamlessly reintegrate with our overarching $d_{model} = 6$ architecture. </p>
+<h2>The Concatenation Step</h2>
+<p>The most straightforward way to combine the outputs of the three heads might seem to be addition. We could simply sum the three matrices together. Summation, however, destroys the distinct structural information each head worked so hard to extract. If Head 1 finds a strong positive signal for a specific feature and Head 2 finds a strong negative signal, adding them together would cancel out the values, effectively erasing the evidence gathered by both heads.</p>
+<p>Instead of summing, we concatenate the outputs along the feature dimension. By placing the three $4 \times 2$ matrices side-by-side, we preserve every piece of information. The resulting matrix has a sequence length of 4 and a new feature dimension of $3 \times 2 = 6$. </p>
+<p>Let us look at the actual output of our three heads. We will use the exact Head 1 output we calculated previously, alongside simulated outputs for Head 2 and Head 3.</p>
 <p>$$
-\text{Scores}_{masked} = \begin{bmatrix}
- 0.45 & -\infty & -\infty & -\infty \\
- 0.59 &  0.87 & -\infty & -\infty \\
--0.09 & -0.20 & -0.26 & -\infty \\
--0.18 & -0.33 & -0.39 & -0.39
-\end{bmatrix}
-$$</p>
-<p>Applying the Softmax function yields our final attention weights matrix $A$:</p>
-<p>$$
-A = \text{Softmax}(\text{Scores}_{masked}) = \begin{bmatrix}
- 1.00 &  0.00 &  0.00 &  0.00 \\
- 0.43 &  0.57 &  0.00 &  0.00 \\
- 0.37 &  0.33 &  0.31 &  0.00 \\
- 0.29 &  0.25 &  0.23 &  0.23
-\end{bmatrix}
-$$</p>
-<p>Observe the profound elegance of the causal mask at work. The exponential of negative infinity approaches exactly zero. Our masked positions have been flawlessly converted into zero-valued weights. The model is now mathematically incapable of extracting information from future tokens. Every row sums precisely to 1, providing a clean probability distribution over all preceding context. </p>
-<h2>The Value Matrix: The Content Payload</h2>
-<p>Until this exact moment in the architecture, our computations have focused entirely on routing. The Query and Key matrices exist solely to dictate <em>where</em> information should flow. They measure semantic relevance. They do not represent the information payload itself.</p>
-<p>If the attention weights are the map, the Value matrix is the cargo. The semantic features required to determine relevance are fundamentally different from the semantic features required to predict the next word. We therefore project our original positional embeddings $X$ into a third distinct subspace using the Value weight matrix $W_V$.</p>
-<p>Our embedding dimension $d_{model}$ is 6. We project down into a head dimension $d_v$ of 2. We define our learned weights $W_V$:</p>
-<p>$$
-W_V = \begin{bmatrix}
- 0.3 & -0.1 \\
- 0.2 &  0.5 \\
--0.4 &  0.1 \\
- 0.1 &  0.6 \\
--0.3 &  0.2 \\
- 0.5 & -0.4
-\end{bmatrix}
-$$</p>
-<p>We calculate our Value matrix $V$ by taking the dot product of our positional embeddings $X$ and $W_V$:</p>
-<p>$$
-V = X \cdot W_V = \begin{bmatrix}
- 0.83 &  0.69 \\
- 1.18 &  0.70 \\
- 0.04 & -0.20 \\
--0.36 &  0.00
-\end{bmatrix}
-$$</p>
-<p>The matrix $V$ contains the actual conceptual representations that will be broadcast across the sequence. Each row holds the information payload for a single token in our <code>&lt;BOS&gt; i woke up</code> sequence.</p>
-<h2>The Weighted Sum: Synthesizing Context</h2>
-<p>We have reached the culmination of the single head attention mechanism. We possess a matrix of routing instructions $A$ and a matrix of information payloads $V$. We synthesize our new contextualized representations by computing the dot product of $A$ and $V$. </p>
-<p>This operation physically executes a weighted sum. Every token constructs a new representation of itself by blending together the Value vectors of all preceding tokens according to the probabilities in the attention matrix. </p>
-<pre><code class="language-mermaid">graph TD
-    A(&quot;Attention Weights Matrix A&quot;) --&gt; C(&quot;Weighted Sum Matrix Multiplication&quot;)
-    B(&quot;Value Matrix V&quot;) --&gt; C
-    C --&gt; D(&quot;Contextualized Output H&quot;)
-</code></pre>
-<p>We compute our final head output $H$:</p>
-<p>$$
-H = A \cdot V = \begin{bmatrix}
- 1.00 &  0.00 &  0.00 &  0.00 \\
- 0.43 &  0.57 &  0.00 &  0.00 \\
- 0.37 &  0.33 &  0.31 &  0.00 \\
- 0.29 &  0.25 &  0.23 &  0.23
-\end{bmatrix} \cdot \begin{bmatrix}
- 0.83 &  0.69 \\
- 1.18 &  0.70 \\
- 0.04 & -0.20 \\
--0.36 &  0.00
-\end{bmatrix} = \begin{bmatrix}
+\text{Head 1} = \begin{bmatrix}
  0.83 &  0.69 \\
  1.03 &  0.70 \\
  0.70 &  0.42 \\
  0.46 &  0.32
 \end{bmatrix}
 $$</p>
-<p>Let us analyze the final row corresponding to the token <code>up</code>. Its new representation is <code>[0.46, 0.32]</code>. This vector is no longer a static dictionary definition. It is a dynamic, context aware representation explicitly shaped by the presence of <code>woke</code> and <code>i</code> occurring earlier in the sequence. </p>
-<p>We have successfully completed the attention mechanism for a single head. Our model operates with three independent attention heads running in parallel. In our next session, we will explore how to reconcile these independent perspectives by projecting them back into the original embedding dimension.</p>
+<p>$$
+\text{Head 2} = \begin{bmatrix}
+-0.50 &  0.10 \\
+-0.40 &  0.30 \\
+-0.20 &  0.25 \\
+ 0.10 & -0.15
+\end{bmatrix}
+$$</p>
+<p>$$
+\text{Head 3} = \begin{bmatrix}
+ 0.20 & -0.30 \\
+ 0.15 & -0.20 \\
+ 0.40 &  0.05 \\
+ 0.25 &  0.10
+\end{bmatrix}
+$$</p>
+<p>When we concatenate these three matrices horizontally, we achieve our target width of 6.</p>
+<p>$$
+\text{Concatenated} = \begin{bmatrix}
+ 0.83 &  0.69 & -0.50 &  0.10 &  0.20 & -0.30 \\
+ 1.03 &  0.70 & -0.40 &  0.30 &  0.15 & -0.20 \\
+ 0.70 &  0.42 & -0.20 &  0.25 &  0.40 &  0.05 \\
+ 0.46 &  0.32 &  0.10 & -0.15 &  0.25 &  0.10
+\end{bmatrix}
+$$</p>
+<h2>The Projection Matrix</h2>
+<p>Concatenation perfectly resolves our sizing issue. We are back to a $4 \times 6$ matrix. Yet, a geometric problem remains. The features are entirely segregated. The first two columns belong exclusively to Head 1, the middle two to Head 2, and the final two to Head 3. The insights exist in the same mathematical structure, yet they do not interact. </p>
+<p>A neural network derives its power from synthesizing discrete pieces of evidence into higher-order concepts. To facilitate this synthesis, we introduce the final learned parameter of the attention mechanism, the Projection Matrix, denoted as $W_O$. </p>
+<pre><code class="language-mermaid">graph TD
+    H1(&quot;Head 1 Output&lt;br&gt;4x2&quot;) --&gt; C
+    H2(&quot;Head 2 Output&lt;br&gt;4x2&quot;) --&gt; C
+    H3(&quot;Head 3 Output&lt;br&gt;4x2&quot;) --&gt; C
+    C(&quot;Concatenated Matrix&lt;br&gt;4x6&quot;) --&gt; M
+    W(&quot;Projection Matrix W_O&lt;br&gt;6x6&quot;) --&gt; M
+    M(&quot;Final Attention Output&lt;br&gt;4x6&quot;)
+</code></pre>
+<p>The matrix $W_O$ has dimensions of $d_{model} \times d_{model}$, which in our case is $6 \times 6$. It acts as a cross-head mixer. When we multiply our concatenated matrix by $W_O$, the resulting matrix is a linear combination of all the features from all the heads. The network can learn that a high value in column 1 from Head 1, when combined with a low value in column 5 from Head 3, implies a specific semantic meaning that should be passed forward to the rest of the architecture.</p>
+<p>Here is the randomly initialized projection matrix $W_O$ for our toy model.</p>
+<p>$$
+W_O = \begin{bmatrix}
+ 0.10 &  0.20 & -0.10 &  0.30 &  0.00 & -0.20 \\
+-0.20 &  0.10 &  0.40 &  0.10 &  0.20 &  0.00 \\
+ 0.30 & -0.10 &  0.10 & -0.20 &  0.50 &  0.10 \\
+-0.10 &  0.40 & -0.30 &  0.10 & -0.10 &  0.30 \\
+ 0.20 &  0.00 &  0.20 & -0.10 &  0.30 & -0.10 \\
+-0.30 &  0.10 & -0.10 &  0.20 & -0.20 &  0.40
+\end{bmatrix}
+$$</p>
+<p>We apply the final transformation by taking the dot product of our concatenated outputs and $W_O$.</p>
+<p>$$
+\text{Output} = \text{Concatenated} \cdot W_O
+$$</p>
+<p>$$
+\text{Output} = \begin{bmatrix}
+-0.08 &  0.29 &  0.18 &  0.35 &  0.00 & -0.33 \\
+-0.10 &  0.42 &  0.10 &  0.43 & -0.01 & -0.25 \\
+-0.03 &  0.31 &  0.08 &  0.29 &  0.07 & -0.10 \\
+ 0.05 &  0.06 &  0.18 &  0.13 &  0.18 & -0.11
+\end{bmatrix}
+$$</p>
+<h2>Rejoining the Stream</h2>
+<p>With this final calculation, we have successfully completed the Multi-Head Self-Attention block. We began with basic token embeddings representing our sequence <code>&lt;BOS&gt; i woke up</code>. We split those representations, allowed them to search for context across the sequence, gathered their findings, and fused those findings back into a unified $4 \times 6$ matrix.</p>
+<p>Every vector in this output matrix now contains rich, contextualized information about its surrounding tokens. We are ready to merge these advanced representations back into the main residual stream of the Transformer.</p>
 
 <div class="blog-pagination">
-      <a href="article_05.html" class="pagination-link prev">
+      <a href="article_06.html" class="pagination-link prev">
         <span class="pagination-label">Previous</span>
-        <span class="pagination-title">Article 5: Causal Masking</span>
+        <span class="pagination-title">Article 6: From Scores to Synthesis: Softmax and The Value Matrix</span>
       </a>
-      <a href="article_07.html" class="pagination-link next">
+      <a href="article_08.html" class="pagination-link next">
         <span class="pagination-label">Next</span>
-        <span class="pagination-title">Article 7: The Cross-Head Mixer and The Projection Matrix</span>
+        <span class="pagination-title">Article 8: The Residual Stream and the Central Memory Bus</span>
       </a></div>
         </article>
     </div>

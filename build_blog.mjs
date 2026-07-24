@@ -37,7 +37,7 @@ mdFiles.sort((a, b) => {
     if (bName.includes('preface') && !aName.includes('preface')) return 1;
     return aName.localeCompare(bName);
 });
-const posts = [];
+const postsData = [];
 
 for (const fileObj of mdFiles) {
   const filePath = fileObj.fullPath;
@@ -105,22 +105,67 @@ for (const fileObj of mdFiles) {
   
   breadcrumbHtml += `<li aria-current="page">${title}</li></ol></nav>`;
 
-  const finalHtml = templateHtml
-    .replace('{{TITLE}}', () => title)
-    .replace('{{BREADCRUMBS}}', () => breadcrumbHtml)
-    .replace('{{CONTENT}}', () => contentHtml);
-    
   const outFilename = fileObj.name.replace('.md', '.html');
-  const outPath = path.join(BLOG_DIR, outFilename);
-  fs.writeFileSync(outPath, finalHtml, 'utf-8');
-  console.log(`Generated blog post: ${outFilename}`);
   
-  posts.push({
+  postsData.push({
     title,
     summary,
     url: outFilename,
     tier: topLevelDir,
-    seriesName: seriesName
+    seriesName: seriesName,
+    contentHtml,
+    breadcrumbHtml
+  });
+}
+
+const posts = [];
+for (let i = 0; i < postsData.length; i++) {
+  const post = postsData[i];
+  const prevPost = i > 0 ? postsData[i - 1] : null;
+  const nextPost = i < postsData.length - 1 ? postsData[i + 1] : null;
+
+  let paginationHtml = '<div class="blog-pagination">';
+  if (prevPost) {
+    paginationHtml += `
+      <a href="${prevPost.url}" class="pagination-link prev">
+        <span class="pagination-label">Previous</span>
+        <span class="pagination-title">${prevPost.title}</span>
+      </a>`;
+  } else {
+    paginationHtml += `<div style="flex: 1;"></div>`;
+  }
+  
+  if (nextPost) {
+    paginationHtml += `
+      <a href="${nextPost.url}" class="pagination-link next">
+        <span class="pagination-label">Next</span>
+        <span class="pagination-title">${nextPost.title}</span>
+      </a>`;
+  } else {
+    paginationHtml += `<div style="flex: 1;"></div>`;
+  }
+  paginationHtml += '</div>';
+
+  if (!prevPost && !nextPost) {
+      paginationHtml = '';
+  }
+
+  const finalHtml = templateHtml
+    .replace('{{TITLE}}', () => post.title)
+    .replace('{{BREADCRUMBS}}', () => post.breadcrumbHtml)
+    .replace('{{CONTENT}}', () => post.contentHtml)
+    .replace('{{PAGINATION}}', () => paginationHtml);
+    
+  const outPath = path.join(BLOG_DIR, post.url);
+  fs.writeFileSync(outPath, finalHtml, 'utf-8');
+  console.log(`Generated blog post: ${post.url}`);
+  
+  posts.push({
+    title: post.title,
+    summary: post.summary,
+    url: post.url,
+    tier: post.tier,
+    seriesName: post.seriesName
   });
 }
 

@@ -6,7 +6,7 @@ That process yielded a contextually enriched vector for each token in our sequen
 
 We now face a critical architectural challenge. We have three isolated sets of findings. We must unify these independent insights back into a single cohesive representation for each token, and this representation must seamlessly reintegrate with our overarching $d_{model} = 6$ architecture. 
 
-### The Concatenation Step
+## The Concatenation Step
 
 The most straightforward way to combine the outputs of the three heads might seem to be addition. We could simply sum the three matrices together. Summation, however, destroys the distinct structural information each head worked so hard to extract. If Head 1 finds a strong positive signal for a specific feature and Head 2 finds a strong negative signal, adding them together would cancel out the values, effectively erasing the evidence gathered by both heads.
 
@@ -52,7 +52,7 @@ $$
 \end{bmatrix}
 $$
 
-### The Projection Matrix
+## The Projection Matrix
 
 Concatenation perfectly resolves our sizing issue. We are back to a $4 \times 6$ matrix. Yet, a geometric problem remains. The features are entirely segregated. The first two columns belong exclusively to Head 1, the middle two to Head 2, and the final two to Head 3. The insights exist in the same mathematical structure, yet they do not interact. 
 
@@ -98,7 +98,7 @@ $$
 \end{bmatrix}
 $$
 
-### Rejoining the Stream
+## Rejoining the Stream
 
 With this final calculation, we have successfully completed the Multi-Head Self-Attention block. We began with basic token embeddings representing our sequence `<BOS> i woke up`. We split those representations, allowed them to search for context across the sequence, gathered their findings, and fused those findings back into a unified $4 \times 6$ matrix.
 

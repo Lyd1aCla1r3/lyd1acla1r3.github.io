@@ -4,7 +4,7 @@ In our previous session, we successfully derived the scaled attention scores. We
 
 Before we can convert these scores into a final probability distribution, we must address a critical structural flaw in how our matrix currently operates during training. 
 
-### The Problem of Parallel Training
+## The Problem of Parallel Training
 
 When training a Transformer, we do not feed tokens in one by one. We optimize for speed by passing the entire sequence through the network simultaneously. This technique is known as teacher forcing. Our matrix operations compute the attention scores for `<BOS>`, `i`, `woke`, and `up` all at the exact same time.
 
@@ -23,7 +23,7 @@ The first row represents the `<BOS>` token acting as a Query. It is generating a
 
 This reveals a profound issue. If the model is processing the `<BOS>` token to predict the next logical word in the sequence, it should only have access to information from the `<BOS>` token itself. In our current matrix, the `<BOS>` token has full visibility into the future tokens `i`, `woke`, and `up`. The model is effectively looking at the answer key while taking the test. The network will perfectly learn to copy the next token rather than learning the underlying linguistic patterns.
 
-### The Causal Mask
+## The Causal Mask
 
 We must physically block the flow of information from future tokens into past tokens. We achieve this by applying a lower-triangular mask to the attention scores. 
 
@@ -51,7 +51,7 @@ $$
 
 By inspecting the second row, we see the Query for the token `i` can only attend to the Key for `<BOS>` and the Key for `i`. The scores for `woke` and `up` have been obliterated. Causality is preserved.
 
-### The Mathematical Role of Negative Infinity
+## The Mathematical Role of Negative Infinity
 
 We use $-\infty$ rather than zero due to the mathematical properties of the next operation in the architecture. The Softmax function will soon convert these scores into a valid probability distribution. The Softmax function exponentiates each value using $e^x$.
 

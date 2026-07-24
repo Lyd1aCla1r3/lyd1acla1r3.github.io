@@ -4,7 +4,7 @@ In our previous discussion, we explored the first half of the Multi-Layer Percep
 
 At this stage, our token vectors exist in the expanded $24$-dimensional space. We now face two tasks. First, we must decide which of those $24$ searched patterns were actually found. Second, we must contract this high-dimensional space back into our $d_{model} = 6$ residual stream, bringing new conceptual information along with it.
 
-### The Non-Linear Gate: ReLU
+## The Non-Linear Gate: ReLU
 
 Linear transformations alone are mathematically limited. If we simply chained the $W_1$ projection into another projection matrix $W_2$, the two operations would collapse into a single equivalent linear projection. This would completely defeat the purpose of expanding into a higher dimension. To create a true memory bank, we need a mechanism to selectively activate features. We need a non-linear activation function.
 
@@ -40,7 +40,7 @@ $$
 
 Notice the profound sparsification of the data. The negative values have been eradicated. The zeros represent memory slots that did not fire. The non-zero positive values represent specific contextual features that were successfully recognized by the $W_1$ Keys.
 
-### The Value Matrix: Contracting Back to the Stream
+## The Value Matrix: Contracting Back to the Stream
 
 Now that we know which patterns fired, we must translate those activations into meaningful updates for our residual stream. This is the role of the second projection matrix, $W_2$, along with its bias $b_2$.
 
@@ -85,7 +85,7 @@ $$
 
 This $4 \times 6$ matrix contains the refined, highly contextualized updates for our tokens. For example, the row corresponding to "woke" now holds the mathematical synthesis of all the specific concepts that the MLP decided were relevant to its current context.
 
-### The Big Picture of the MLP
+## The Big Picture of the MLP
 
 We can visualize this entire Key-Value process as a focused expansion and contraction workflow:
 

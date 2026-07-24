@@ -194,42 +194,6 @@
                           <p>If you have spent any time trying to understand the Transformer architecture, you have likely encountered the same frustrating hurdle. Tutorials rely heavily on abstract analogies. They tell you that the Query matrix asks a question and the Key matrix holds the answer. These metaphors might give you a fleeting sense of intuition. They collapse the moment you try to write code, debug a model, or understand the fundamental geometry of deep learning.</p>
                       </article>
                   </a>
-                  <a href="07_projection_matrix.html">
-                      <article class="blog-item series-item">
-                          <h2>Article 7: The Cross-Head Mixer and The Projection Matrix</h2>
-                          <p>In our previous session, we completed the journey of a single attention head. We watched it calculate its masked attention scores, convert those scores into strict probability distributions via the Softmax function, and finally compute a weighted sum over the Value matrix $V$.</p>
-                      </article>
-                  </a>
-                  <a href="08_residual_stream.html">
-                      <article class="blog-item series-item">
-                          <h2>Untitled Post</h2>
-                          <p>We have successfully calculated the multi-head attention output. The temptation now is to treat this output as the sole input to the next layer, much like a traditional feed-forward network. We must resist that instinct. The Transformer architecture does not pass data sequentially through a gauntlet of filters. Instead, it relies on a central, shared memory backbone known as the residual stream.</p>
-                      </article>
-                  </a>
-                  <a href="09_layer_norm.html">
-                      <article class="blog-item series-item">
-                          <h2>Article 9: Taming the Stream: The Geometry of Layer Normalization</h2>
-                          <p>In our previous installment, we introduced the Residual Stream. We observed how the Attention block operates as an independent module that reads from the central memory bus, calculates contextual updates, and adds those updates directly back into the original embeddings. This additive process ensures that the network never loses the raw, initial information about the token and its position.</p>
-                      </article>
-                  </a>
-                  <a href="10_mlp_key_value.html">
-                      <article class="blog-item series-item">
-                          <h2>Article 10: The MLP as a Key-Value Memory Bank (Expansion)</h2>
-                          <p>We have successfully normalized the residual stream. Our vectors are now stable, centered, and scaled, ready for the next major transformation. Up until this point, the self-attention mechanism has allowed tokens to move information between one another. The representation for "up" has reached out and pulled in context from "woke". However, attention merely routes information. It does not possess the capacity to interpret that combined information into a new, higher-level concept.</p>
-                      </article>
-                  </a>
-                  <a href="11_mlp_activation_values.html">
-                      <article class="blog-item series-item">
-                          <h2>Article 11: The MLP - Activation and Contraction</h2>
-                          <p>In our previous discussion, we explored the first half of the Multi-Layer Perceptron (MLP) as a Key-Value memory bank. By projecting our $d{model} = 6$ residual stream into the much larger $d{ff} = 24$ space using the $W1$ matrix, we created a set of "Keys". Each column of $W1$ searched the residual stream for a specific, complex contextual pattern.</p>
-                      </article>
-                  </a>
-                  <a href="12_final_layer_1.html">
-                      <article class="blog-item series-item">
-                          <h2>Article 12: Completing Layer 1 Residuals and Normalization</h2>
-                          <p>In the preceding article, we observed the multilayer perceptron acting as a localized memory bank. It recognized specific contextual patterns and wrote new features back out into the $d{model}$ dimensionality. Now, we must integrate these new insights into our primary representation. We achieve this by returning to the architectural backbone of the Transformer, which is the Residual Stream.</p>
-                      </article>
-                  </a>
                   <a href="article_01.html">
                       <article class="blog-item series-item">
                           <h2>Article 1: Tokens, One-Hot Encodings, and the Embedding Matrix</h2>
@@ -264,6 +228,42 @@
                       <article class="blog-item series-item">
                           <h2>Article 6: From Scores to Synthesis: Softmax and The Value Matrix</h2>
                           <p>In our previous installation, we successfully calculated the masked attention scores. By applying a lower triangular matrix of negative infinity values, we erected a strict mathematical barrier that prevents information from flowing backward in time. We are now left with a matrix representing the raw geometric alignment between our Queries and Keys across all valid time steps.</p>
+                      </article>
+                  </a>
+                  <a href="article_07.html">
+                      <article class="blog-item series-item">
+                          <h2>Article 7: The Cross-Head Mixer and The Projection Matrix</h2>
+                          <p>In our previous session, we completed the journey of a single attention head. We watched it calculate its masked attention scores, convert those scores into strict probability distributions via the Softmax function, and finally compute a weighted sum over the Value matrix $V$.</p>
+                      </article>
+                  </a>
+                  <a href="article_08.html">
+                      <article class="blog-item series-item">
+                          <h2>Article 8: The Residual Stream and the Central Memory Bus</h2>
+                          <p>We have successfully calculated the multi-head attention output. The temptation now is to treat this output as the sole input to the next layer, much like a traditional feed-forward network. We must resist that instinct. The Transformer architecture does not pass data sequentially through a gauntlet of filters. Instead, it relies on a central, shared memory backbone known as the residual stream.</p>
+                      </article>
+                  </a>
+                  <a href="article_09.html">
+                      <article class="blog-item series-item">
+                          <h2>Article 9: Taming the Stream: The Geometry of Layer Normalization</h2>
+                          <p>In our previous installment, we introduced the Residual Stream. We observed how the Attention block operates as an independent module that reads from the central memory bus, calculates contextual updates, and adds those updates directly back into the original embeddings. This additive process ensures that the network never loses the raw, initial information about the token and its position.</p>
+                      </article>
+                  </a>
+                  <a href="article_10.html">
+                      <article class="blog-item series-item">
+                          <h2>Article 10: The MLP as a Key-Value Memory Bank (Expansion)</h2>
+                          <p>We have successfully normalized the residual stream. Our vectors are now stable, centered, and scaled, ready for the next major transformation. Up until this point, the self-attention mechanism has allowed tokens to move information between one another. The representation for "up" has reached out and pulled in context from "woke". However, attention merely routes information. It does not possess the capacity to interpret that combined information into a new, higher-level concept.</p>
+                      </article>
+                  </a>
+                  <a href="article_11.html">
+                      <article class="blog-item series-item">
+                          <h2>Article 11: The MLP - Activation and Contraction</h2>
+                          <p>In our previous discussion, we explored the first half of the Multi-Layer Perceptron (MLP) as a Key-Value memory bank. By projecting our $d{model} = 6$ residual stream into the much larger $d{ff} = 24$ space using the $W1$ matrix, we created a set of "Keys". Each column of $W1$ searched the residual stream for a specific, complex contextual pattern.</p>
+                      </article>
+                  </a>
+                  <a href="article_12.html">
+                      <article class="blog-item series-item">
+                          <h2>Article 12: Completing Layer 1 Residuals and Normalization</h2>
+                          <p>In the preceding article, we observed the multilayer perceptron acting as a localized memory bank. It recognized specific contextual patterns and wrote new features back out into the $d{model}$ dimensionality. Now, we must integrate these new insights into our primary representation. We achieve this by returning to the architectural backbone of the Transformer, which is the Residual Stream.</p>
                       </article>
                   </a>
               </div>
