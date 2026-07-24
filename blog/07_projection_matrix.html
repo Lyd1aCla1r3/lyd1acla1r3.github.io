@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Article 7: The Cross-Head Mixer and The Projection Matrix — Lydia Pedersen</title>
+  <link rel="stylesheet" href="../css/styles.css?v=1.2">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .blog-post {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: var(--space-4xl) var(--space-md);
+        background: var(--bg-card);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 8px 32px rgba(183, 110, 121, 0.05);
+        border: 1px solid var(--border-subtle);
+    }
+    .blog-post h1, .blog-post h2, .blog-post h3 {
+        color: var(--text-primary);
+        font-family: var(--font-display);
+        margin-top: var(--space-2xl);
+        margin-bottom: var(--space-md);
+    }
+    .blog-post h1 { font-size: var(--fs-3xl); margin-top: 0; }
+    .blog-post h2 { font-size: var(--fs-2xl); border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-sm); }
+    .blog-post p, .blog-post li {
+        color: var(--text-secondary);
+        line-height: var(--lh-relaxed);
+        margin-bottom: var(--space-md);
+        font-size: var(--fs-md);
+    }
+    .blog-post img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-md);
+        margin: var(--space-lg) 0;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .blog-post a {
+        color: var(--text-accent);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s ease;
+    }
+    .blog-post a:hover {
+        border-bottom-color: var(--text-accent);
+    }
+    .blog-post {
+        background: rgba(255, 255, 255, 0.65);
+        padding: var(--space-2xl);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-subtle);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .blog-post h1 { margin-top: 0; font-family: var(--font-display); color: var(--text-primary); font-size: 2.5rem; line-height: 1.1; margin-bottom: 2rem; }
+    .blog-post .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; display: flex; gap: 1rem; align-items: center; }
+    .blog-post .meta span { display: inline-flex; align-items: center; gap: 0.25rem; }
+    .blog-post h2 { font-family: var(--font-display); color: var(--text-primary); margin-top: 2.5rem; margin-bottom: 1rem; font-size: 1.8rem; }
+    .blog-post h3 { font-family: var(--font-display); color: var(--text-primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.4rem; }
+    .blog-post p { line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1.05rem; }
+    .blog-post ul, .blog-post ol { margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem; }
+    .blog-post li { margin-bottom: 0.5rem; }
+    .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+    .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
+    .blog-post table { width: 100%; margin: var(--space-2xl) 0; table-layout: fixed; border-collapse: separate; border-spacing: var(--space-sm); text-align: center; }
+    .blog-post thead { display: none; }
+    .blog-post td { padding: 4px; }
+    .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 6px 12px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; width: 100%; font-size: 0.95rem; color: var(--rose-gold-dark); }
+  </style>
+</head>
+<body>
+  <!-- Fixed chip visual (always visible, bottom-left, behind everything) -->
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
+  <!-- Full-screen overlay canvas for the diagonal binary→agent→text animation -->
+  <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="../index.html" class="nav__logo" aria-label="Home">lydia<span>.</span>pedersen</a>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="../index.html#about" class="nav__link">About</a></li>
+        <li><a href="../index.html#samples" class="nav__link">Writing</a></li>
+        <li><a href="../index.html#case-studies" class="nav__link">Engineering</a></li>
+        <li><a href="../index.html#skills" class="nav__link">Skills</a></li>
+        <li><a href="index.html" class="nav__link">Blog</a></li>
+        <li><a href="../index.html#contact" class="nav__link">Contact</a></li>
+      </ul>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="nav__toggle-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-lg));">
+    <div class="container">
+<nav aria-label="breadcrumb" class="breadcrumbs"><ol>
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Article 7: The Cross-Head Mixer and The Projection Matrix</li></ol></nav>
+        <article class="blog-post">
+<h1>Article 7: The Cross-Head Mixer and The Projection Matrix</h1>
+<p>In our previous session, we completed the journey of a single attention head. We watched it calculate its masked attention scores, convert those scores into strict probability distributions via the Softmax function, and finally compute a weighted sum over the Value matrix $V$. </p>
+<p>That process yielded a contextually enriched vector for each token in our sequence. These vectors, however, only have a dimension of $d_v = 2$. Our overall model dimension is $d_{model} = 6$. We deliberately split our architecture into three parallel attention heads so the network could simultaneously look for different types of semantic relationships. Head 1 might be attending to subject-verb pairings, while Head 2 looks for temporal markers, and Head 3 focuses on pronoun antecedents.</p>
+<p>We now face a critical architectural challenge. We have three isolated sets of findings. We must unify these independent insights back into a single cohesive representation for each token, and this representation must seamlessly reintegrate with our overarching $d_{model} = 6$ architecture. </p>
+<h3>The Concatenation Step</h3>
+<p>The most straightforward way to combine the outputs of the three heads might seem to be addition. We could simply sum the three matrices together. Summation, however, destroys the distinct structural information each head worked so hard to extract. If Head 1 finds a strong positive signal for a specific feature and Head 2 finds a strong negative signal, adding them together would cancel out the values, effectively erasing the evidence gathered by both heads.</p>
+<p>Instead of summing, we concatenate the outputs along the feature dimension. By placing the three $4 \times 2$ matrices side-by-side, we preserve every piece of information. The resulting matrix has a sequence length of 4 and a new feature dimension of $3 \times 2 = 6$. </p>
+<p>Let us look at the actual output of our three heads. We will use the exact Head 1 output we calculated previously, alongside simulated outputs for Head 2 and Head 3.</p>
+<p>$$
+\text{Head 1} = \begin{bmatrix}
+ 0.83 &  0.69 \\
+ 1.03 &  0.70 \\
+ 0.70 &  0.42 \\
+ 0.46 &  0.32
+\end{bmatrix}
+$$</p>
+<p>$$
+\text{Head 2} = \begin{bmatrix}
+-0.50 &  0.10 \\
+-0.40 &  0.30 \\
+-0.20 &  0.25 \\
+ 0.10 & -0.15
+\end{bmatrix}
+$$</p>
+<p>$$
+\text{Head 3} = \begin{bmatrix}
+ 0.20 & -0.30 \\
+ 0.15 & -0.20 \\
+ 0.40 &  0.05 \\
+ 0.25 &  0.10
+\end{bmatrix}
+$$</p>
+<p>When we concatenate these three matrices horizontally, we achieve our target width of 6.</p>
+<p>$$
+\text{Concatenated} = \begin{bmatrix}
+ 0.83 &  0.69 & -0.50 &  0.10 &  0.20 & -0.30 \\
+ 1.03 &  0.70 & -0.40 &  0.30 &  0.15 & -0.20 \\
+ 0.70 &  0.42 & -0.20 &  0.25 &  0.40 &  0.05 \\
+ 0.46 &  0.32 &  0.10 & -0.15 &  0.25 &  0.10
+\end{bmatrix}
+$$</p>
+<h3>The Projection Matrix</h3>
+<p>Concatenation perfectly resolves our sizing issue. We are back to a $4 \times 6$ matrix. Yet, a geometric problem remains. The features are entirely segregated. The first two columns belong exclusively to Head 1, the middle two to Head 2, and the final two to Head 3. The insights exist in the same mathematical structure, yet they do not interact. </p>
+<p>A neural network derives its power from synthesizing discrete pieces of evidence into higher-order concepts. To facilitate this synthesis, we introduce the final learned parameter of the attention mechanism, the Projection Matrix, denoted as $W_O$. </p>
+<pre><code class="language-mermaid">graph TD
+    H1(&quot;Head 1 Output&lt;br&gt;4x2&quot;) --&gt; C
+    H2(&quot;Head 2 Output&lt;br&gt;4x2&quot;) --&gt; C
+    H3(&quot;Head 3 Output&lt;br&gt;4x2&quot;) --&gt; C
+    C(&quot;Concatenated Matrix&lt;br&gt;4x6&quot;) --&gt; M
+    W(&quot;Projection Matrix W_O&lt;br&gt;6x6&quot;) --&gt; M
+    M(&quot;Final Attention Output&lt;br&gt;4x6&quot;)
+</code></pre>
+<p>The matrix $W_O$ has dimensions of $d_{model} \times d_{model}$, which in our case is $6 \times 6$. It acts as a cross-head mixer. When we multiply our concatenated matrix by $W_O$, the resulting matrix is a linear combination of all the features from all the heads. The network can learn that a high value in column 1 from Head 1, when combined with a low value in column 5 from Head 3, implies a specific semantic meaning that should be passed forward to the rest of the architecture.</p>
+<p>Here is the randomly initialized projection matrix $W_O$ for our toy model.</p>
+<p>$$
+W_O = \begin{bmatrix}
+ 0.10 &  0.20 & -0.10 &  0.30 &  0.00 & -0.20 \\
+-0.20 &  0.10 &  0.40 &  0.10 &  0.20 &  0.00 \\
+ 0.30 & -0.10 &  0.10 & -0.20 &  0.50 &  0.10 \\
+-0.10 &  0.40 & -0.30 &  0.10 & -0.10 &  0.30 \\
+ 0.20 &  0.00 &  0.20 & -0.10 &  0.30 & -0.10 \\
+-0.30 &  0.10 & -0.10 &  0.20 & -0.20 &  0.40
+\end{bmatrix}
+$$</p>
+<p>We apply the final transformation by taking the dot product of our concatenated outputs and $W_O$.</p>
+<p>$$
+\text{Output} = \text{Concatenated} \cdot W_O
+$$</p>
+<p>$$
+\text{Output} = \begin{bmatrix}
+-0.08 &  0.29 &  0.18 &  0.35 &  0.00 & -0.33 \\
+-0.10 &  0.42 &  0.10 &  0.43 & -0.01 & -0.25 \\
+-0.03 &  0.31 &  0.08 &  0.29 &  0.07 & -0.10 \\
+ 0.05 &  0.06 &  0.18 &  0.13 &  0.18 & -0.11
+\end{bmatrix}
+$$</p>
+<h3>Rejoining the Stream</h3>
+<p>With this final calculation, we have successfully completed the Multi-Head Self-Attention block. We began with basic token embeddings representing our sequence <code>&lt;BOS&gt; i woke up</code>. We split those representations, allowed them to search for context across the sequence, gathered their findings, and fused those findings back into a unified $4 \times 6$ matrix.</p>
+<p>Every vector in this output matrix now contains rich, contextualized information about its surrounding tokens. We are ready to merge these advanced representations back into the main residual stream of the Transformer.</p>
+
+        </article>
+    </div>
+  </main>
+  <script src="../js/main.js"></script>
+
+  <!-- KaTeX for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" 
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});">
+  </script>
+
+  <!-- Mermaid for Diagram Rendering -->
+  <style>
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: var(--space-2xl) 0;
+    }
+    .mermaid svg {
+      filter: drop-shadow(0 4px 16px rgba(183, 110, 121, 0.12));
+    }
+  </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ 
+      startOnLoad: true, 
+      theme: 'base',
+      themeVariables: {
+        fontFamily: "'Outfit', -apple-system, BlinkMacSystemFont, sans-serif",
+        primaryColor: '#ffffff',
+        primaryBorderColor: '#b76e79',
+        primaryTextColor: '#8b4f5a',
+        lineColor: '#b76e79',
+        nodeBorder: '#b76e79',
+        clusterBkg: 'rgba(232, 180, 184, 0.15)',
+        clusterBorder: '#d4a0a0'
+      }
+    });
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      const blocks = document.querySelectorAll('.language-mermaid');
+      blocks.forEach((block) => {
+        const parent = block.parentElement;
+        if (parent.tagName === 'PRE') {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          parent.replaceWith(mermaidDiv);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
