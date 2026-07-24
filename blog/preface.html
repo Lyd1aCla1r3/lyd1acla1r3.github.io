@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preface: The Big Picture & Tensor Notation — Lydia Pedersen</title>
+  <link rel="stylesheet" href="../css/styles.css?v=1.1">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .blog-post {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: var(--space-4xl) var(--space-md);
+        background: var(--bg-card);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 8px 32px rgba(183, 110, 121, 0.05);
+        border: 1px solid var(--border-subtle);
+    }
+    .blog-post h1, .blog-post h2, .blog-post h3 {
+        color: var(--text-primary);
+        font-family: var(--font-display);
+        margin-top: var(--space-2xl);
+        margin-bottom: var(--space-md);
+    }
+    .blog-post h1 { font-size: var(--fs-3xl); margin-top: 0; }
+    .blog-post h2 { font-size: var(--fs-2xl); border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-sm); }
+    .blog-post p, .blog-post li {
+        color: var(--text-secondary);
+        line-height: var(--lh-relaxed);
+        margin-bottom: var(--space-md);
+        font-size: var(--fs-md);
+    }
+    .blog-post img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-md);
+        margin: var(--space-lg) 0;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .blog-post a {
+        color: var(--text-accent);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s ease;
+    }
+    .blog-post a:hover {
+        border-bottom-color: var(--text-accent);
+    }
+    .blog-post {
+        background: rgba(255, 255, 255, 0.65);
+        padding: var(--space-2xl);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-subtle);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .blog-post h1 { margin-top: 0; font-family: var(--font-display); color: var(--text-primary); font-size: 2.5rem; line-height: 1.1; margin-bottom: 0.5rem; }
+    .blog-post .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; display: flex; gap: 1rem; align-items: center; }
+    .blog-post .meta span { display: inline-flex; align-items: center; gap: 0.25rem; }
+    .blog-post h2 { font-family: var(--font-display); color: var(--text-primary); margin-top: 2.5rem; margin-bottom: 1rem; font-size: 1.8rem; }
+    .blog-post h3 { font-family: var(--font-display); color: var(--text-primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.4rem; }
+    .blog-post p { line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1.05rem; }
+    .blog-post ul, .blog-post ol { margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem; }
+    .blog-post li { margin-bottom: 0.5rem; }
+    .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+    .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
+  </style>
+</head>
+<body>
+  <!-- Fixed chip visual (always visible, bottom-left, behind everything) -->
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
+  <!-- Full-screen overlay canvas for the diagonal binary→agent→text animation -->
+  <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="../index.html" class="nav__logo" aria-label="Home">lydia<span>.</span>pedersen</a>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="../index.html#about" class="nav__link">About</a></li>
+        <li><a href="../index.html#samples" class="nav__link">Writing</a></li>
+        <li><a href="../index.html#case-studies" class="nav__link">Engineering</a></li>
+        <li><a href="../index.html#skills" class="nav__link">Skills</a></li>
+        <li><a href="index.html" class="nav__link">Blog</a></li>
+        <li><a href="../index.html#contact" class="nav__link">Contact</a></li>
+      </ul>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="nav__toggle-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main-content" style="padding-top: var(--nav-height);">
+    <div class="container">
+        <article class="blog-post">
+<h1>Preface: The Big Picture &amp; Tensor Notation</h1>
+<h2>The Problem with Tutorials</h2>
+<p>If you have spent any time trying to understand the Transformer architecture, you have likely encountered the same frustrating hurdle. Tutorials rely heavily on abstract analogies. They tell you that the Query matrix asks a question and the Key matrix holds the answer. These metaphors might give you a fleeting sense of intuition. They collapse the moment you try to write code, debug a model, or understand the fundamental geometry of deep learning.</p>
+<p>We are going to take a different approach. Over the course of this series, we will build a complete Transformer from scratch by calculating every single number by hand. Our goal is to translate these complex, abstract operations into meaningful, structural realities. By the end, there will be no magic left. You will have a clear, intuitive grasp of how multi-dimensional tensors flow through linear projections.</p>
+<p>To do this, we need a problem that is small enough to compute on a whiteboard, yet complex enough to demonstrate the true power of the architecture.</p>
+<h2>The Toy Example</h2>
+<p>Our objective is to train a Transformer to predict the next word in a specific sequence. </p>
+<p><strong>Input:</strong> <code>&lt;BOS&gt; i woke up</code><br><strong>Target:</strong> <code>late</code></p>
+<p>The token <code>&lt;BOS&gt;</code> stands for Beginning of Sequence. This is a standard marker that tells the network a new thought has started. </p>
+<p>We chose this sentence carefully. It allows us to watch the attention mechanism do real work. To predict the word &quot;late&quot;, the network cannot just look at the word &quot;up&quot;. It must contextualize the combination of &quot;woke&quot; and &quot;up&quot; together. </p>
+<h3>The Vocabulary Space</h3>
+<p>To make the math tractable, we are restricting our model to a vocabulary of exactly twelve tokens. The total size of our vocabulary is represented by the variable $V$. In our case, $V$ equals 12.</p>
+<ol>
+<li><code>&lt;BOS&gt;</code></li>
+<li><code>&lt;EOS&gt;</code></li>
+<li><code>&lt;PAD&gt;</code></li>
+<li><code>i</code></li>
+<li><code>we</code></li>
+<li><code>woke</code></li>
+<li><code>stayed</code></li>
+<li><code>up</code></li>
+<li><code>late</code></li>
+<li><code>early</code></li>
+<li><code>today</code></li>
+<li><code>yesterday</code></li>
+</ol>
+<p>We deliberately chose a small vocabulary with natural semantic clusters. The pronouns &quot;i&quot; and &quot;we&quot; form one cluster. The temporal adverbs &quot;late&quot;, &quot;early&quot;, and &quot;today&quot; form another. This gives our matrix operations the opportunity to physically group related concepts in vector space. As we progress, we will actually be able to see these clusters form in the numbers.</p>
+<h2>The Architecture</h2>
+<p>Before we define the dimensions of our data, we must clearly define the architecture processing that data. We will be using an autoregressive Decoder-only architecture. This is the exact framework that powers models like GPT. </p>
+<p>To understand this, we need to unpack two distinct terms. </p>
+<p>First, &quot;autoregressive&quot; describes how the model generates text. It means the model predicts the next word based on its own previous outputs. Once it predicts a word, it appends that new word to the input sequence and runs the entire process again to predict the subsequent word. It feeds its own output back into itself in a continuous loop.</p>
+<pre><code class="language-mermaid">graph LR
+    A[&quot;&lt;BOS&gt; i woke up&quot;] --&gt; B[Transformer]
+    B --&gt; C[&quot;late&quot;]
+    C -.-&gt;|Appended to Input| A
+    style A fill:#f9f2f4,stroke:#333,stroke-width:2px
+</code></pre>
+<p>Second, &quot;Decoder-only&quot; refers to the structure of the network. Original Transformers had two halves. An Encoder processed a source language like French, and a Decoder generated a target language like English. We do not need to translate between two different sequences. We only need to predict the continuation of a single sequence. We discard the Encoder entirely and only use the Decoder. </p>
+<h3>The Residual Stream</h3>
+<p>Inside this Decoder, there is a central memory bus called the residual stream. This is arguably the most important structural concept in the entire architecture.</p>
+<p>Imagine a main highway that runs continuously from the very first layer of the network to the very last. When a word enters the network, it is placed on this highway as a vector. As this vector travels through the network, the Attention and Multi-Layer Perceptron blocks do not intercept and replace it. Instead, they read from the vector, calculate new contextual information, and then add that new information back into the original vector. </p>
+<p>This additive process ensures that the original information is never destroyed or compressed through a bottleneck. It simply accumulates richness and context as it moves forward. </p>
+<pre><code class="language-mermaid">graph TD
+    A[Initial Vector Input] --&gt; B[Residual Stream]
+    B --&gt; C{Attention Block}
+    C --&gt;|Reads Vector| D[Compute Context]
+    D --&gt;|Adds Context Back| B
+    B --&gt; E{MLP Block}
+    E --&gt;|Reads Vector| F[Compute Features]
+    F --&gt;|Adds Features Back| B
+    B --&gt; G[Final Rich Vector Output]
+</code></pre>
+<h2>The Dimensions</h2>
+<p>With the architecture established, we can define the specific size of the pathways our data will travel. We have scaled the dimensions down to the specifications below.</p>
+<h3>Sequence Length</h3>
+<p>Sequence length is how many tokens we are feeding into the model at one time. For our input of four tokens, the sequence length is 4.</p>
+<h3>Model Dimensionality</h3>
+<p>Every token is represented by a vector traveling on the residual stream highway. The variable $d_{model}$ defines the width of that highway. We are using a 6-dimensional vector for each token. This allows us to easily visualize the data on a screen without losing the capacity to store complex features.</p>
+<h3>Batch Size</h3>
+<p>GPUs act as highly parallel execution units. Instead of passing one sequence through the network at a time, we stack many independent sequences together into a batch to process them simultaneously. Batching repeats the exact same math in parallel across different inputs. We will set our batch size to 1 to keep our focus entirely on a single sequence.</p>
+<h3>Attention Heads</h3>
+<p>The attention mechanism finds relationships between tokens. Rather than having one monolithic attention process, we divide the workload into multiple independent heads. This allows the network to learn different types of relationships simultaneously. One head might specialize in grammar, while another focuses on semantic meaning. We will use 3 parallel heads.</p>
+<h3>Head Dimensionality</h3>
+<p>We have 3 heads dividing up our 6-dimensional residual stream. Each individual head operates in a 2-dimensional subspace. The matrices powering our attention mechanism will therefore be simple $6 \times 2$ structures.</p>
+<h3>Feed-Forward Dimension</h3>
+<p>While the residual stream is excellent for securely moving information between layers, it is too narrow to perform complex reasoning. </p>
+<p>The Multi-Layer Perceptron solves this by expanding the data into a much wider, higher-dimensional space. In this expanded space, complex, entangled concepts can be linearly separated and processed before being compressed back down into the residual stream. It is an empirical standard in deep learning to expand this space by a factor of 4. Our feed-forward dimension will be $6 \times 4$, which equals 24.</p>
+<h2>The Central Tensor</h2>
+<p>Before text enters the Transformer, it needs to be converted into numbers. We start by assigning a unique integer index to every word in our vocabulary. </p>
+<p>We then map that integer to a one-hot encoded vector. A one-hot vector is an array of zeros with a single &#39;1&#39; placed at the index corresponding to that word. For a twelve-word vocabulary, the one-hot vector for the fourth word is a 12-dimensional array consisting of eleven zeros and one &#39;1&#39; in the fourth position.</p>
+<p>When our text enters the Transformer, this one-hot vector is embedded into a continuous mathematical space. This creates the foundational tensor that will travel through the entire network. The shape of this tensor is defined as Batch by Sequence Length by Model Dimension. </p>
+<p>For our specific architecture, this shape is $1 \times 4 \times 6$. Since our batch size is 1, we can strip away the batch dimension and visualize our data as a straightforward $4 \times 6$ matrix moving along the residual stream.</p>
+<pre><code class="language-mermaid">graph LR
+    subgraph 4x6 Tensor Matrix
+    direction TB
+    A[&quot;&lt;BOS&gt; Vector&quot;] 
+    B[&quot;&#39;i&#39; Vector&quot;]
+    C[&quot;&#39;woke&#39; Vector&quot;]
+    D[&quot;&#39;up&#39; Vector&quot;]
+    A --- B --- C --- D
+    end
+</code></pre>
+<p>$
+X = \begin{bmatrix} 
+\text{-- } \langle \text{BOS} \rangle \text{ vector --} \
+\text{-- &quot;i&quot; vector --} \
+\text{-- &quot;woke&quot; vector --} \
+\text{-- &quot;up&quot; vector --} 
+\end{bmatrix}_{4 \times 6}
+$</p>
+<p>Every single mathematical operation in our forward pass will read from and write to this $4 \times 6$ matrix. </p>
+<p>In the next article, we will take our raw text, map it to our vocabulary indices, and perform our first genuine calculation. We will transform one-hot encoded vectors into this $4 \times 6$ geometric representation.</p>
+
+        </article>
+    </div>
+  </main>
+  <script src="../js/main.js"></script>
+</body>
+</html>
