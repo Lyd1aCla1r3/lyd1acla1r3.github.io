@@ -98,6 +98,9 @@
   <main id="main-content" style="padding-top: var(--nav-height);">
     <div class="container">
         <article class="blog-post">
+<nav aria-label="breadcrumb" class="breadcrumbs"><ol>
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html">Series: Transformers</a></li><li aria-current="page">Article 1: Tokens, One-Hot Encodings, and the Embedding Matrix</li></ol></nav>
 <h1>Article 1: Tokens, One-Hot Encodings, and the Embedding Matrix</h1>
 <p>At the end of the Preface, we established that every operation in our Transformer will read from and write to a central $4 \times 6$ matrix. We must now bridge the gap between our raw text and that geometric representation. Text is inherently abstract. Computers cannot multiply words. Computers multiply numbers. We need a rigorous mechanical process to translate human language into a mathematical format that a neural network can manipulate.</p>
 <p>This translation happens in three distinct stages. First, we break our sentence down into discrete pieces called tokens. Second, we map each token to a strict geometric location using a one-hot vector. Third, we project those isolated vectors into a shared, continuous space using an Embedding Matrix. </p>

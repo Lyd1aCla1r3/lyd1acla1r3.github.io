@@ -1164,3 +1164,41 @@ html {
     border-radius: var(--radius-sm);
   }
 }
+
+/* ---------- Breadcrumbs ---------- */
+.breadcrumbs {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  margin-bottom: var(--space-xl);
+  color: var(--text-muted);
+}
+.breadcrumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.breadcrumbs li {
+  display: inline-flex;
+  align-items: center;
+}
+.breadcrumbs li:not(:last-child)::after {
+  content: '/';
+  margin-left: var(--space-sm);
+  color: var(--border-medium);
+}
+.breadcrumbs a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+.breadcrumbs a:hover {
+  color: var(--rose-gold);
+}
+.breadcrumbs [aria-current="page"] {
+  color: var(--rose-gold);
+  font-weight: var(--fw-medium);
+}

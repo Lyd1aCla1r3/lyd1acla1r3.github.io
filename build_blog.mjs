@@ -90,8 +90,23 @@ for (const fileObj of mdFiles) {
       return mathBlocks[i];
   });
   
+  let tierDisplay = topLevelDir.charAt(0).toUpperCase() + topLevelDir.slice(1).replace(/-/g, ' ');
+  let breadcrumbHtml = `<nav aria-label="breadcrumb" class="breadcrumbs"><ol>
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="index.html">Blog</a></li>`;
+    
+  if (topLevelDir === 'series' && seriesName) {
+      let seriesDisplay = seriesName.charAt(0).toUpperCase() + seriesName.slice(1).replace(/-/g, ' ');
+      breadcrumbHtml += `<li><a href="index.html">Series: ${seriesDisplay}</a></li>`;
+  } else if (topLevelDir !== 'uncategorized') {
+      breadcrumbHtml += `<li><a href="index.html">${tierDisplay}</a></li>`;
+  }
+  
+  breadcrumbHtml += `<li aria-current="page">${title}</li></ol></nav>`;
+
   const finalHtml = templateHtml
     .replace('{{TITLE}}', () => title)
+    .replace('{{BREADCRUMBS}}', () => breadcrumbHtml)
     .replace('{{CONTENT}}', () => contentHtml);
     
   const outFilename = fileObj.name.replace('.md', '.html');
