@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Article 15: The Final Blend: Masking, Softmax, and Values in Layer 2 — Lydia Pedersen</title>
+  <title>Article 24: Updating the Embeddings and Conclusion — Lydia Pedersen</title>
   <link rel="stylesheet" href="../css/styles.css?v=1.2">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
   <style>
@@ -98,96 +98,56 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Article 15: The Final Blend: Masking, Softmax, and Values in Layer 2</li></ol></nav>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Article 24: Updating the Embeddings and Conclusion</li></ol></nav>
         <article class="blog-post">
-<h1>Article 15: The Final Blend: Masking, Softmax, and Values in Layer 2</h1>
-<p>In our previous installment, we computed the unscaled and scaled attention scores for the second layer of our Transformer. We witnessed how projecting deeply contextualized tokens into new Query and Key spaces allowed them to evaluate their semantic relevance to one another. The resulting matrix of scores tells us exactly how much attention every token wishes to pay to every other token. We are now ready to finalize this attention mechanism by applying the causal mask, normalizing the scores into strict probabilities, and extracting the final contextualized features from the Value matrix.</p>
-<h2>The Causal Mask</h2>
-<p>We are training our model to predict the next token in a sequence in a parallel fashion. To accomplish this, we must strictly enforce the arrow of time. If a token is allowed to &quot;look ahead&quot; at future tokens, it would effectively be cheating, ruining the model&#39;s ability to learn actual predictive dynamics.</p>
-<p>To prevent this information leakage, we apply a lower-triangular causal mask to our scaled attention scores. We set all positions above the main diagonal to negative infinity, $-\infty$. When we apply the Softmax function in the next step, any score of $-\infty$ will be driven to exactly zero.</p>
-<p>Here are the scaled attention scores we calculated previously:</p>
+<h1>Article 24: Updating the Embeddings and Conclusion</h1>
+<p>We have finally reached the terminus of our backward journey. The error signal has cascaded from the Cross-Entropy loss, navigated the Unembedding matrix, split through the Layer 2 MLP, and distributed itself across the complex geometry of the self-attention Query, Key, and Value matrices. Now, this accumulated signal arrives at the very beginning of our network. It is time to update the foundational representations of our tokens: the Embedding matrix itself.</p>
+<h2>The Residual Highway</h2>
+<p>During the forward pass, we conceptualized the residual stream as a central memory bus. The initial token embeddings traveled along this bus, with each attention and MLP block adding new contextual information. </p>
+<p>In the backward pass, the residual stream serves an equally critical role as a gradient highway. When operations are added together during the forward pass, the backward pass simply passes the gradient equally to both paths. The gradient arriving at any point in the residual stream is the sum of all gradients from the blocks that read from it later in the network. Therefore, the final gradient vector arriving at our initial input matrix $X$ is a comprehensive sum. It contains the feedback from every downstream decision, perfectly encapsulating how the initial token vectors need to shift in $d_{model}$ space to decrease the final prediction error.</p>
+<p>Let $dX$ represent this accumulated gradient for our sequence <code>&lt;BOS&gt; i woke up</code>. It is a matrix of size $4 \times 6$.</p>
 <p>$$
-\text{Scores} = \begin{bmatrix}
--0.45 & -0.27 & 0.92 & 0.86 \\
--0.28 & -0.13 & 0.50 & 0.45 \\
-0.93 & 0.47 & -1.76 & -1.60 \\
-0.89 & 0.44 & -1.66 & -1.51
+dX = \begin{bmatrix}
+0.012 & -0.045 & 0.103 & 0.002 & -0.011 & 0.088 \\
+-0.033 & 0.021 & 0.055 & -0.019 & 0.076 & -0.004 \\
+0.091 & -0.082 & 0.011 & 0.034 & -0.055 & 0.012 \\
+-0.005 & 0.067 & -0.099 & 0.041 & 0.022 & -0.031
 \end{bmatrix}
 $$</p>
-<p>Applying the causal mask yields our strictly historical scores:</p>
-<p>$$
-\text{Masked} = \begin{bmatrix}
--0.45 & -\infty & -\infty & -\infty \\
--0.28 & -0.13 & -\infty & -\infty \\
-0.93 & 0.47 & -1.76 & -\infty \\
-0.89 & 0.44 & -1.66 & -1.51
-\end{bmatrix}
-$$</p>
-<h2>Normalizing with Softmax</h2>
-<p>Our masked scores are unbounded real numbers. To use them as a weighting system, they must be converted into a valid probability distribution where each row sums exactly to one. The Softmax function achieves this by exponentiating each score and dividing by the sum of all exponentiated scores in that row.</p>
-<p>This non-linear operation amplifies larger scores and suppresses smaller ones. Applying Softmax row by row to our masked matrix provides the final Attention Probabilities:</p>
-<p>$$
-\text{Attention Probabilities} = \begin{bmatrix}
-1.00 & 0.00 & 0.00 & 0.00 \\
-0.46 & 0.54 & 0.00 & 0.00 \\
-0.59 & 0.37 & 0.04 & 0.00 \\
-0.55 & 0.35 & 0.04 & 0.05
-\end{bmatrix}
-$$</p>
-<p>Take a moment to analyze these probabilities. The token <code>&lt;BOS&gt;</code> in row 1 is forced to attend entirely to itself since the rest of the sequence is masked. By the time we reach the token &quot;up&quot; in row 4, we see its attention is heavily distributed back toward the beginning of the sequence, allocating 55% of its focus to <code>&lt;BOS&gt;</code> and 35% to &quot;i&quot;. The deep layers of the Transformer often exhibit this behavior where late tokens rely heavily on early anchoring tokens to ground their context.</p>
-<h2>Extracting the Value</h2>
-<p>We have determined exactly <em>where</em> each token should look. The final step is to determine <em>what</em> it actually sees. This is the purpose of the Value matrix, $V$.</p>
-<p>Just as we projected our embeddings into Query and Key spaces, we projected them into the Value space to define the specific features each token offers to the rest of the sequence. To compute the output of this attention head, we take the dot product of our Attention Probabilities matrix with the Value matrix. This operation acts as a weighted sum, blending the features of the sequence according to the calculated probabilities.</p>
-<p>Let us define the Value matrix for Layer 2, Head 1:</p>
-<p>$$
-V_2 = \begin{bmatrix}
--1.05 & 0.82 \\
--0.51 & 0.60 \\
-0.77 & -0.13 \\
-0.71 & -0.13
-\end{bmatrix}
-$$</p>
-<p>Multiplying the Attention Probabilities by this Value matrix yields our final output for this head:</p>
-<p>$$
-\text{Head Output} = \begin{bmatrix}
-1.00 & 0.00 & 0.00 & 0.00 \\
-0.46 & 0.54 & 0.00 & 0.00 \\
-0.59 & 0.37 & 0.04 & 0.00 \\
-0.55 & 0.35 & 0.04 & 0.05
-\end{bmatrix}
-\begin{bmatrix}
--1.05 & 0.82 \\
--0.51 & 0.60 \\
-0.77 & -0.13 \\
-0.71 & -0.13
-\end{bmatrix}
-= \begin{bmatrix}
--1.05 & 0.82 \\
--0.76 & 0.70 \\
--0.78 & 0.70 \\
--0.69 & 0.65
-\end{bmatrix}
-$$</p>
-<p>This mathematical flow can be visualized as a sequence of transformations:</p>
-<pre><code class="language-mermaid">graph TD
-    Scores(Scaled Scores) --&gt; Mask(Apply Causal Mask)
-    Mask --&gt; Softmax(Apply Softmax)
-    Softmax --&gt; Probs(Attention Probabilities)
-    V(Value Matrix V2) --&gt; Multiply(Matrix Multiplication)
-    Probs --&gt; Multiply
-    Multiply --&gt; Output(Head Output)
+<h2>Routing Gradients to the Vocabulary Space</h2>
+<p>Our input matrix $X$ was constructed by selecting specific rows from the global Embedding matrix $E$. The matrix $E$ has a shape of $12 \times 6$, representing our entire vocabulary of 12 words in a 6-dimensional space. </p>
+<p>By the rules of calculus, if a row in $E$ was copied to form a row in $X$, the gradient for that row in $X$ routes directly back to the original row in $E$. The operation of selecting a row is mathematically equivalent to multiplying a one-hot encoded vector by the matrix $E$. The derivative of this operation simply passes the gradient back to the active index.</p>
+<p>If our sequence <code>&lt;BOS&gt; i woke up</code> corresponds to indices 0, 3, 5, and 7 in our vocabulary, we construct a gradient matrix $dE$ of the same size as $E$, initialized to all zeros. We then add the respective rows of $dX$ to rows 0, 3, 5, and 7 of $dE$. The gradients for tokens not present in the current sequence remain strictly zero.</p>
+<pre><code class="language-mermaid">flowchart TD
+    A(Gradient dX) --&gt; B(Route to Index 0: BOS)
+    A --&gt; C(Route to Index 3: i)
+    A --&gt; D(Route to Index 5: woke)
+    A --&gt; E(Route to Index 7: up)
+    B --&gt; F(Update Row 0 of dE)
+    C --&gt; G(Update Row 3 of dE)
+    D --&gt; H(Update Row 5 of dE)
+    E --&gt; I(Update Row 7 of dE)
 </code></pre>
-<p>This resulting matrix represents an incredibly sophisticated conceptual mixture. The representation for &quot;up&quot; (row 4) is no longer just the isolated concept of the word &quot;up&quot;. It has absorbed the physical features of the token &quot;i&quot; and the structural anchor of <code>&lt;BOS&gt;</code>, modulated through two complete layers of Multi-Head Attention and Multi-Layer Perceptrons. </p>
-<p>In the next installment, we will pass these highly refined vectors through the final components of Layer 2 to complete the forward pass of our Transformer architecture.</p>
+<h2>The Optimizer Update</h2>
+<p>With $dE$ fully assembled alongside the gradients for all our intermediate weight matrices, we can finally execute the core mechanism of machine learning: the weight update. </p>
+<p>We apply an optimizer to shift our weights in the direction opposite to the gradient. While modern architectures use sophisticated optimizers like Adam which track momentum and variance, the fundamental principle is best illustrated by Stochastic Gradient Descent. We define a learning rate $\alpha$ to control the size of our step.</p>
+<p>$$
+E_{new} = E_{old} - \alpha \cdot dE
+$$</p>
+<p>By subtracting the scaled gradient, we adjust the coordinates of our original words in the $d_{model}$ space. The next time the network encounters the token &quot;woke&quot;, its starting vector will be slightly better positioned to help the attention mechanism predict &quot;late&quot;. </p>
+<h2>Conclusion</h2>
+<p>This completes our rigorous traversal of the Transformer architecture. We began with simple integers representing text, projected them into a continuous geometric space, and watched as attention matrices sculpted those vectors into context-aware representations. We proved why scaling by the square root of the head dimension prevents gradient starvation and how the causal mask ensures temporal discipline. </p>
+<p>Crucially, we demystified the backward pass. We saw how the simple difference between our prediction and the target label blossoms into a cascade of derivatives, flowing backward through projection matrices and softmax distributions to assign credit and blame to every single weight in the network. </p>
+<p>The Transformer is not an inscrutable black box. It is a massive, elegant bilinear engine, moving text through latent space with pristine mathematical precision. By following the numbers from the first embedding to the final gradient step, we have unlocked the physical machinery of modern artificial intelligence.</p>
 
 <div class="blog-pagination">
-      <a href="article_14.html" class="pagination-link prev">
+      <a href="article_23.html" class="pagination-link prev">
         <span class="pagination-label">Previous</span>
-        <span class="pagination-title">Article 14: Scoring Deep Context—Layer 2 Attention</span>
+        <span class="pagination-title">Article 23: Backpropagation Through Attention (Part 2: Routing to Q, K, and V)</span>
       </a>
-      <a href="article_16.html" class="pagination-link next">
+      <a href="serp-api-benchmark.html" class="pagination-link next">
         <span class="pagination-label">Next</span>
-        <span class="pagination-title">Article 16: Deepening the Representation: MLP and Residuals in Layer 2</span>
+        <span class="pagination-title">Benchmarking SERP API Fidelity for AI Overviews</span>
       </a></div>
         </article>
     </div>

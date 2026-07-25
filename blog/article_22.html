@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Article 15: The Final Blend: Masking, Softmax, and Values in Layer 2 — Lydia Pedersen</title>
+  <title>Article 22: Backpropagating Through Attention: The Softmax and the Mask — Lydia Pedersen</title>
   <link rel="stylesheet" href="../css/styles.css?v=1.2">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
   <style>
@@ -98,96 +98,45 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Article 15: The Final Blend: Masking, Softmax, and Values in Layer 2</li></ol></nav>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Article 22: Backpropagating Through Attention: The Softmax and the Mask</li></ol></nav>
         <article class="blog-post">
-<h1>Article 15: The Final Blend: Masking, Softmax, and Values in Layer 2</h1>
-<p>In our previous installment, we computed the unscaled and scaled attention scores for the second layer of our Transformer. We witnessed how projecting deeply contextualized tokens into new Query and Key spaces allowed them to evaluate their semantic relevance to one another. The resulting matrix of scores tells us exactly how much attention every token wishes to pay to every other token. We are now ready to finalize this attention mechanism by applying the causal mask, normalizing the scores into strict probabilities, and extracting the final contextualized features from the Value matrix.</p>
-<h2>The Causal Mask</h2>
-<p>We are training our model to predict the next token in a sequence in a parallel fashion. To accomplish this, we must strictly enforce the arrow of time. If a token is allowed to &quot;look ahead&quot; at future tokens, it would effectively be cheating, ruining the model&#39;s ability to learn actual predictive dynamics.</p>
-<p>To prevent this information leakage, we apply a lower-triangular causal mask to our scaled attention scores. We set all positions above the main diagonal to negative infinity, $-\infty$. When we apply the Softmax function in the next step, any score of $-\infty$ will be driven to exactly zero.</p>
-<p>Here are the scaled attention scores we calculated previously:</p>
+<h1>Article 22: Backpropagating Through Attention: The Softmax and the Mask</h1>
+<p>We left off with the gradient flowing down the residual stream, reaching the output of our Layer 2 attention block. Our objective now is to pull this error signal backward through the self-attention mechanism itself. This requires us to unpack the sequence of operations that created the attention output. The final operations in that sequence involved multiplying the attention probabilities by the Value matrix, and prior to that, applying the Softmax function to the masked attention scores.</p>
+<h2>From Values to Probabilities</h2>
+<p>During the forward pass, the attention output is computed as the matrix product of the probability matrix $P$ and the Value matrix $V$. The gradient of the loss with respect to this output represents the exact direction we must move to minimize the error in our final contextualized vectors. To determine how to adjust the attention probabilities $P$, we apply the standard chain rule for matrix multiplication. The gradient with respect to $P$ is the incoming gradient multiplied by the transpose of $V$. We will define this resulting gradient matrix as $d\_P$.</p>
+<p>The matrix $d\_P$ tells us how the loss would change if we tweaked the attention probabilities. It is a sequence-by-sequence square matrix, detailing the precise error signal for the attention connection between every pair of tokens in our text.</p>
+<h2>The Calculus of Softmax</h2>
+<p>We must push this gradient $d\_P$ backward through the Softmax function to find the gradient with respect to the raw, pre-Softmax attention scores. We will define these pre-Softmax scores as $S$. </p>
+<p>The Softmax function presents a unique mathematical challenge. It takes a vector of scores and normalizes them into a coupled probability distribution. Changing a single score in the input vector alters the sum in the denominator for all other elements, inherently shifting the final probability of every other element. Consequently, the derivative of a Softmax output with respect to its input is a Jacobian matrix containing the partial derivatives of every output with respect to every input.</p>
+<p>The mathematical formula for backpropagating through Softmax across an entire sequence reduces to an elegant matrix operation:</p>
 <p>$$
-\text{Scores} = \begin{bmatrix}
--0.45 & -0.27 & 0.92 & 0.86 \\
--0.28 & -0.13 & 0.50 & 0.45 \\
-0.93 & 0.47 & -1.76 & -1.60 \\
-0.89 & 0.44 & -1.66 & -1.51
-\end{bmatrix}
+d\_S = P \odot (d\_P - \sum (d\_P \odot P))
 $$</p>
-<p>Applying the causal mask yields our strictly historical scores:</p>
+<p>Here, $\odot$ represents element-wise multiplication. We multiply the incoming gradient $d\_P$ by the probabilities $P$, sum those results along the sequence dimension, and subtract that sum from the original $d\_P$. We then multiply the entire result element-wise by the probabilities $P$ again.</p>
+<p>This formulation captures the proportional interplay of probabilities. If a particular token received a high probability during the forward pass, its gradient heavily influences the adjustment of the pre-Softmax scores. If a token was ignored and assigned a near-zero probability, the multiplication by $P$ ensures the gradient struggles to pass through, effectively severing the learning signal for that specific connection.</p>
+<h2>Traversing the Causal Mask</h2>
+<p>We have successfully calculated $d\_S$, representing the gradient with respect to the masked attention scores. The final step in this stage is to push the gradient through the causal mask.</p>
+<p>During the forward pass, we applied a lower-triangular mask to the raw attention scores. We explicitly set all values above the diagonal to negative infinity. This structural intervention prevented tokens from attending to future positions, guaranteeing our model respects causality during parallel training. When the Softmax function encountered negative infinity, it mapped it to a strict zero probability.</p>
+<p>In the backward pass, gradients flow only where information flowed forward. Since the upper triangular elements of the score matrix were overwritten and ignored during the forward pass, they cannot have contributed to the final loss. The error signal for those future-looking connections must be zero. </p>
+<p>To route the gradient through the causal mask, we simply apply a binary lower-triangular mask to $d\_S$, zeroing out the upper triangular portion:</p>
 <p>$$
-\text{Masked} = \begin{bmatrix}
--0.45 & -\infty & -\infty & -\infty \\
--0.28 & -0.13 & -\infty & -\infty \\
-0.93 & 0.47 & -1.76 & -\infty \\
-0.89 & 0.44 & -1.66 & -1.51
-\end{bmatrix}
+d\_S\_{unmasked} = \begin{bmatrix}
+1 & 0 & 0 & 0 \\
+1 & 1 & 0 & 0 \\
+1 & 1 & 1 & 0 \\
+1 & 1 & 1 & 1
+\end{bmatrix} \odot d\_S
 $$</p>
-<h2>Normalizing with Softmax</h2>
-<p>Our masked scores are unbounded real numbers. To use them as a weighting system, they must be converted into a valid probability distribution where each row sums exactly to one. The Softmax function achieves this by exponentiating each score and dividing by the sum of all exponentiated scores in that row.</p>
-<p>This non-linear operation amplifies larger scores and suppresses smaller ones. Applying Softmax row by row to our masked matrix provides the final Attention Probabilities:</p>
-<p>$$
-\text{Attention Probabilities} = \begin{bmatrix}
-1.00 & 0.00 & 0.00 & 0.00 \\
-0.46 & 0.54 & 0.00 & 0.00 \\
-0.59 & 0.37 & 0.04 & 0.00 \\
-0.55 & 0.35 & 0.04 & 0.05
-\end{bmatrix}
-$$</p>
-<p>Take a moment to analyze these probabilities. The token <code>&lt;BOS&gt;</code> in row 1 is forced to attend entirely to itself since the rest of the sequence is masked. By the time we reach the token &quot;up&quot; in row 4, we see its attention is heavily distributed back toward the beginning of the sequence, allocating 55% of its focus to <code>&lt;BOS&gt;</code> and 35% to &quot;i&quot;. The deep layers of the Transformer often exhibit this behavior where late tokens rely heavily on early anchoring tokens to ground their context.</p>
-<h2>Extracting the Value</h2>
-<p>We have determined exactly <em>where</em> each token should look. The final step is to determine <em>what</em> it actually sees. This is the purpose of the Value matrix, $V$.</p>
-<p>Just as we projected our embeddings into Query and Key spaces, we projected them into the Value space to define the specific features each token offers to the rest of the sequence. To compute the output of this attention head, we take the dot product of our Attention Probabilities matrix with the Value matrix. This operation acts as a weighted sum, blending the features of the sequence according to the calculated probabilities.</p>
-<p>Let us define the Value matrix for Layer 2, Head 1:</p>
-<p>$$
-V_2 = \begin{bmatrix}
--1.05 & 0.82 \\
--0.51 & 0.60 \\
-0.77 & -0.13 \\
-0.71 & -0.13
-\end{bmatrix}
-$$</p>
-<p>Multiplying the Attention Probabilities by this Value matrix yields our final output for this head:</p>
-<p>$$
-\text{Head Output} = \begin{bmatrix}
-1.00 & 0.00 & 0.00 & 0.00 \\
-0.46 & 0.54 & 0.00 & 0.00 \\
-0.59 & 0.37 & 0.04 & 0.00 \\
-0.55 & 0.35 & 0.04 & 0.05
-\end{bmatrix}
-\begin{bmatrix}
--1.05 & 0.82 \\
--0.51 & 0.60 \\
-0.77 & -0.13 \\
-0.71 & -0.13
-\end{bmatrix}
-= \begin{bmatrix}
--1.05 & 0.82 \\
--0.76 & 0.70 \\
--0.78 & 0.70 \\
--0.69 & 0.65
-\end{bmatrix}
-$$</p>
-<p>This mathematical flow can be visualized as a sequence of transformations:</p>
-<pre><code class="language-mermaid">graph TD
-    Scores(Scaled Scores) --&gt; Mask(Apply Causal Mask)
-    Mask --&gt; Softmax(Apply Softmax)
-    Softmax --&gt; Probs(Attention Probabilities)
-    V(Value Matrix V2) --&gt; Multiply(Matrix Multiplication)
-    Probs --&gt; Multiply
-    Multiply --&gt; Output(Head Output)
-</code></pre>
-<p>This resulting matrix represents an incredibly sophisticated conceptual mixture. The representation for &quot;up&quot; (row 4) is no longer just the isolated concept of the word &quot;up&quot;. It has absorbed the physical features of the token &quot;i&quot; and the structural anchor of <code>&lt;BOS&gt;</code>, modulated through two complete layers of Multi-Head Attention and Multi-Layer Perceptrons. </p>
-<p>In the next installment, we will pass these highly refined vectors through the final components of Layer 2 to complete the forward pass of our Transformer architecture.</p>
+<p>We now possess the gradient with respect to the pure, unmasked attention scores, representing the direct scaled dot product $Q K^T / \sqrt{d_k}$. Our error signal has successfully traversed the most numerically complex non-linearity in the Transformer architecture. In our next installment, we will distribute this gradient into the Query, Key, and Value weight matrices, completing the learning cycle for the self-attention mechanism.</p>
 
 <div class="blog-pagination">
-      <a href="article_14.html" class="pagination-link prev">
+      <a href="article_21.html" class="pagination-link prev">
         <span class="pagination-label">Previous</span>
-        <span class="pagination-title">Article 14: Scoring Deep Context—Layer 2 Attention</span>
+        <span class="pagination-title">Article 21: Backpropagating Through the Unembedding and Residual Stream</span>
       </a>
-      <a href="article_16.html" class="pagination-link next">
+      <a href="article_23.html" class="pagination-link next">
         <span class="pagination-label">Next</span>
-        <span class="pagination-title">Article 16: Deepening the Representation: MLP and Residuals in Layer 2</span>
+        <span class="pagination-title">Article 23: Backpropagation Through Attention (Part 2: Routing to Q, K, and V)</span>
       </a></div>
         </article>
     </div>

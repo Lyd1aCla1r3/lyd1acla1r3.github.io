@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Article 15: The Final Blend: Masking, Softmax, and Values in Layer 2 — Lydia Pedersen</title>
+  <title>Article 19: Cross-Entropy Loss — Lydia Pedersen</title>
   <link rel="stylesheet" href="../css/styles.css?v=1.2">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
   <style>
@@ -98,96 +98,62 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Article 15: The Final Blend: Masking, Softmax, and Values in Layer 2</li></ol></nav>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Article 19: Cross-Entropy Loss</li></ol></nav>
         <article class="blog-post">
-<h1>Article 15: The Final Blend: Masking, Softmax, and Values in Layer 2</h1>
-<p>In our previous installment, we computed the unscaled and scaled attention scores for the second layer of our Transformer. We witnessed how projecting deeply contextualized tokens into new Query and Key spaces allowed them to evaluate their semantic relevance to one another. The resulting matrix of scores tells us exactly how much attention every token wishes to pay to every other token. We are now ready to finalize this attention mechanism by applying the causal mask, normalizing the scores into strict probabilities, and extracting the final contextualized features from the Value matrix.</p>
-<h2>The Causal Mask</h2>
-<p>We are training our model to predict the next token in a sequence in a parallel fashion. To accomplish this, we must strictly enforce the arrow of time. If a token is allowed to &quot;look ahead&quot; at future tokens, it would effectively be cheating, ruining the model&#39;s ability to learn actual predictive dynamics.</p>
-<p>To prevent this information leakage, we apply a lower-triangular causal mask to our scaled attention scores. We set all positions above the main diagonal to negative infinity, $-\infty$. When we apply the Softmax function in the next step, any score of $-\infty$ will be driven to exactly zero.</p>
-<p>Here are the scaled attention scores we calculated previously:</p>
+<h1>Article 19: Cross-Entropy Loss</h1>
+<p>In our preceding analysis, we transformed the raw logits of the Transformer into a valid probability distribution using the Softmax function. This generated a set of predictions representing the model&#39;s current, untrained belief about the next token in the sequence. To teach the model, we must establish a rigorous metric that quantifies exactly how incorrect these beliefs are. This metric is the loss function, the single scalar value that the entire neural network is designed to minimize.</p>
+<h2>The Geometry of Truth</h2>
+<p>To measure the error of our predictions, we first need to define what a perfect prediction looks like. When we feed the model the token <code>&lt;BOS&gt;</code>, the actual next token in our sequence is <code>i</code>. We can represent this ground truth as a target probability distribution. </p>
+<p>If the model were omniscient, it would assign a probability of 1.0 to the token <code>i</code> and 0.0 to all other tokens. This perfectly certain distribution is identical to the one-hot vectors we used to construct our initial embedding matrix. For each time step, our target is simply the one-hot representation of the correct next token. </p>
+<p>Our predicted distribution for the first step, however, looks very different. It is a near-uniform spread of probabilities across all twelve vocabulary words. The loss function must calculate the mathematical distance between our predicted, flat distribution and the sharp, one-hot target distribution.</p>
+<h2>Why Cross-Entropy</h2>
+<p>A naive approach to calculating this distance might be to take the squared difference between the predicted probabilities and the target probabilities, similar to calculating Euclidean distance. While Mean Squared Error works well for continuous regression tasks, it behaves poorly for classification probabilities. When a model is confidently wrong, the gradients of Mean Squared Error shrink, slowing down the learning process precisely when it needs to make the largest corrections.</p>
+<p>Instead, we use Cross-Entropy Loss. For a single prediction, Cross-Entropy Loss evaluates the predicted probability assigned exclusively to the correct target class. It ignores the probabilities assigned to the incorrect classes, provided the target is a pure one-hot vector.</p>
+<p>The function is defined as the negative natural logarithm of the predicted probability of the target token:</p>
 <p>$$
-\text{Scores} = \begin{bmatrix}
--0.45 & -0.27 & 0.92 & 0.86 \\
--0.28 & -0.13 & 0.50 & 0.45 \\
-0.93 & 0.47 & -1.76 & -1.60 \\
-0.89 & 0.44 & -1.66 & -1.51
-\end{bmatrix}
+\text{Loss} = -\log(P_{\text{target}})
 $$</p>
-<p>Applying the causal mask yields our strictly historical scores:</p>
+<p>The natural logarithm exhibits ideal properties for measuring probabilistic error. If the model predicts the correct token with a probability of 1.0, the logarithm of 1.0 is 0, resulting in zero loss. As the predicted probability approaches 0, the logarithm approaches negative infinity, resulting in an infinitely large positive loss. This asymmetric penalty heavily punishes the model for assigning very low probabilities to the true target, forcing it to aggressively adjust its weights. Furthermore, the logarithm translates the multiplication of probabilities into addition, which simplifies our calculus during backpropagation.</p>
+<h2>Calculating the Sequence Loss</h2>
+<p>Our sequence <code>&lt;BOS&gt; i woke up</code> requires the model to make four distinct predictions simultaneously. We process the targets across the time steps: <code>i</code> for index 3, <code>woke</code> for index 5, <code>up</code> for index 7, and <code>late</code> for index 8.</p>
+<p>At each step, we look up the predicted probability from the Softmax matrix we calculated in the previous article, and then we take the negative logarithm.</p>
+<p><strong>Time Step 0</strong>
+The input is <code>&lt;BOS&gt;</code> and the target is <code>i</code>. The predicted probability for <code>i</code> is 0.0843.
+$$
+\text{Loss}_0 = -\log(0.0843) = 2.4734
+$$</p>
+<p><strong>Time Step 1</strong>
+The input is <code>i</code> and the target is <code>woke</code>. The predicted probability for <code>woke</code> is 0.0831.
+$$
+\text{Loss}_1 = -\log(0.0831) = 2.4877
+$$</p>
+<p><strong>Time Step 2</strong>
+The input is <code>woke</code> and the target is <code>up</code>. The predicted probability for <code>up</code> is 0.0833.
+$$
+\text{Loss}_2 = -\log(0.0833) = 2.4853
+$$</p>
+<p><strong>Time Step 3</strong>
+The input is <code>up</code> and the target is <code>late</code>. The predicted probability for <code>late</code> is 0.0833.
+$$
+\text{Loss}_3 = -\log(0.0833) = 2.4853
+$$</p>
+<p>To compute the final loss for the entire sequence, we calculate the arithmetic mean of the individual losses across all time steps. </p>
 <p>$$
-\text{Masked} = \begin{bmatrix}
--0.45 & -\infty & -\infty & -\infty \\
--0.28 & -0.13 & -\infty & -\infty \\
-0.93 & 0.47 & -1.76 & -\infty \\
-0.89 & 0.44 & -1.66 & -1.51
-\end{bmatrix}
+\text{Total Loss} = \frac{2.4734 + 2.4877 + 2.4853 + 2.4853}{4} = 2.4829
 $$</p>
-<h2>Normalizing with Softmax</h2>
-<p>Our masked scores are unbounded real numbers. To use them as a weighting system, they must be converted into a valid probability distribution where each row sums exactly to one. The Softmax function achieves this by exponentiating each score and dividing by the sum of all exponentiated scores in that row.</p>
-<p>This non-linear operation amplifies larger scores and suppresses smaller ones. Applying Softmax row by row to our masked matrix provides the final Attention Probabilities:</p>
-<p>$$
-\text{Attention Probabilities} = \begin{bmatrix}
-1.00 & 0.00 & 0.00 & 0.00 \\
-0.46 & 0.54 & 0.00 & 0.00 \\
-0.59 & 0.37 & 0.04 & 0.00 \\
-0.55 & 0.35 & 0.04 & 0.05
-\end{bmatrix}
-$$</p>
-<p>Take a moment to analyze these probabilities. The token <code>&lt;BOS&gt;</code> in row 1 is forced to attend entirely to itself since the rest of the sequence is masked. By the time we reach the token &quot;up&quot; in row 4, we see its attention is heavily distributed back toward the beginning of the sequence, allocating 55% of its focus to <code>&lt;BOS&gt;</code> and 35% to &quot;i&quot;. The deep layers of the Transformer often exhibit this behavior where late tokens rely heavily on early anchoring tokens to ground their context.</p>
-<h2>Extracting the Value</h2>
-<p>We have determined exactly <em>where</em> each token should look. The final step is to determine <em>what</em> it actually sees. This is the purpose of the Value matrix, $V$.</p>
-<p>Just as we projected our embeddings into Query and Key spaces, we projected them into the Value space to define the specific features each token offers to the rest of the sequence. To compute the output of this attention head, we take the dot product of our Attention Probabilities matrix with the Value matrix. This operation acts as a weighted sum, blending the features of the sequence according to the calculated probabilities.</p>
-<p>Let us define the Value matrix for Layer 2, Head 1:</p>
-<p>$$
-V_2 = \begin{bmatrix}
--1.05 & 0.82 \\
--0.51 & 0.60 \\
-0.77 & -0.13 \\
-0.71 & -0.13
-\end{bmatrix}
-$$</p>
-<p>Multiplying the Attention Probabilities by this Value matrix yields our final output for this head:</p>
-<p>$$
-\text{Head Output} = \begin{bmatrix}
-1.00 & 0.00 & 0.00 & 0.00 \\
-0.46 & 0.54 & 0.00 & 0.00 \\
-0.59 & 0.37 & 0.04 & 0.00 \\
-0.55 & 0.35 & 0.04 & 0.05
-\end{bmatrix}
-\begin{bmatrix}
--1.05 & 0.82 \\
--0.51 & 0.60 \\
-0.77 & -0.13 \\
-0.71 & -0.13
-\end{bmatrix}
-= \begin{bmatrix}
--1.05 & 0.82 \\
--0.76 & 0.70 \\
--0.78 & 0.70 \\
--0.69 & 0.65
-\end{bmatrix}
-$$</p>
-<p>This mathematical flow can be visualized as a sequence of transformations:</p>
-<pre><code class="language-mermaid">graph TD
-    Scores(Scaled Scores) --&gt; Mask(Apply Causal Mask)
-    Mask --&gt; Softmax(Apply Softmax)
-    Softmax --&gt; Probs(Attention Probabilities)
-    V(Value Matrix V2) --&gt; Multiply(Matrix Multiplication)
-    Probs --&gt; Multiply
-    Multiply --&gt; Output(Head Output)
-</code></pre>
-<p>This resulting matrix represents an incredibly sophisticated conceptual mixture. The representation for &quot;up&quot; (row 4) is no longer just the isolated concept of the word &quot;up&quot;. It has absorbed the physical features of the token &quot;i&quot; and the structural anchor of <code>&lt;BOS&gt;</code>, modulated through two complete layers of Multi-Head Attention and Multi-Layer Perceptrons. </p>
-<p>In the next installment, we will pass these highly refined vectors through the final components of Layer 2 to complete the forward pass of our Transformer architecture.</p>
+<h2>The Untrained Baseline</h2>
+<p>Our final calculated loss is 2.4829. This specific value is highly informative. For a completely untrained model, the weights act as random noise, causing the Softmax function to distribute probability relatively evenly across the entire vocabulary. </p>
+<p>With a vocabulary size $V$ of 12, a uniform distribution assigns a probability of $\frac{1}{12}$ to every token. The theoretical Cross-Entropy Loss for a uniform distribution is $-\log(\frac{1}{12})$, which evaluates to approximately 2.4849. Our calculated loss of 2.4829 is nearly identical to this theoretical baseline. This confirms our forward pass is functioning correctly and clearly demonstrates the model&#39;s initial state of total uncertainty.</p>
+<p>We have now reached the end of the forward pass. We possess a single scalar value that quantifies the error of our entire network. In our next installment, we will begin the backward pass, calculating the derivative of this loss to uncover an elegantly simple mathematical cancellation that drives the learning process.</p>
 
 <div class="blog-pagination">
-      <a href="article_14.html" class="pagination-link prev">
+      <a href="article_18.html" class="pagination-link prev">
         <span class="pagination-label">Previous</span>
-        <span class="pagination-title">Article 14: Scoring Deep Context—Layer 2 Attention</span>
+        <span class="pagination-title">Article 18: Final Softmax and Predictions</span>
       </a>
-      <a href="article_16.html" class="pagination-link next">
+      <a href="article_20.html" class="pagination-link next">
         <span class="pagination-label">Next</span>
-        <span class="pagination-title">Article 16: Deepening the Representation: MLP and Residuals in Layer 2</span>
+        <span class="pagination-title">Article 20: The Beautiful Cancellation</span>
       </a></div>
         </article>
     </div>

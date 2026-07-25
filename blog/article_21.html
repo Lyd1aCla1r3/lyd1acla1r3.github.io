@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Article 15: The Final Blend: Masking, Softmax, and Values in Layer 2 — Lydia Pedersen</title>
+  <title>Article 21: Backpropagating Through the Unembedding and Residual Stream — Lydia Pedersen</title>
   <link rel="stylesheet" href="../css/styles.css?v=1.2">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
   <style>
@@ -98,96 +98,70 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Article 15: The Final Blend: Masking, Softmax, and Values in Layer 2</li></ol></nav>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Article 21: Backpropagating Through the Unembedding and Residual Stream</li></ol></nav>
         <article class="blog-post">
-<h1>Article 15: The Final Blend: Masking, Softmax, and Values in Layer 2</h1>
-<p>In our previous installment, we computed the unscaled and scaled attention scores for the second layer of our Transformer. We witnessed how projecting deeply contextualized tokens into new Query and Key spaces allowed them to evaluate their semantic relevance to one another. The resulting matrix of scores tells us exactly how much attention every token wishes to pay to every other token. We are now ready to finalize this attention mechanism by applying the causal mask, normalizing the scores into strict probabilities, and extracting the final contextualized features from the Value matrix.</p>
-<h2>The Causal Mask</h2>
-<p>We are training our model to predict the next token in a sequence in a parallel fashion. To accomplish this, we must strictly enforce the arrow of time. If a token is allowed to &quot;look ahead&quot; at future tokens, it would effectively be cheating, ruining the model&#39;s ability to learn actual predictive dynamics.</p>
-<p>To prevent this information leakage, we apply a lower-triangular causal mask to our scaled attention scores. We set all positions above the main diagonal to negative infinity, $-\infty$. When we apply the Softmax function in the next step, any score of $-\infty$ will be driven to exactly zero.</p>
-<p>Here are the scaled attention scores we calculated previously:</p>
+<h1>Article 21: Backpropagating Through the Unembedding and Residual Stream</h1>
+<p>In our previous installment, we discovered the elegant simplicity of the Cross-Entropy Loss derivative. The gradient of our loss with respect to the raw, pre-Softmax logits simplifies entirely to the predicted probability distribution minus the one-hot encoded target vector. This single matrix, measuring how wrong our predictions were across the sequence, serves as the physical error signal that we must now route backward through the network to update its weights.</p>
+<p>We are now ready to execute the Chain Rule. We will begin at the very end of the network, pushing the error signal backward through the Unembedding matrix, down into the final residual stream, and ultimately into the Layer 2 Multi-Layer Perceptron. </p>
+<h2>The Chain Rule at the Unembedding Layer</h2>
+<p>The Unembedding layer is the final linear transformation in our Transformer. During the forward pass, it multiplied the final contextualized vectors of our sequence by the Unembedding weight matrix $W_U$ to produce the vocabulary-sized logits.</p>
+<p>Mathematically, the forward pass for this step is defined as:</p>
 <p>$$
-\text{Scores} = \begin{bmatrix}
--0.45 & -0.27 & 0.92 & 0.86 \\
--0.28 & -0.13 & 0.50 & 0.45 \\
-0.93 & 0.47 & -1.76 & -1.60 \\
-0.89 & 0.44 & -1.66 & -1.51
-\end{bmatrix}
+\text{Logits} = \text{Output}_{\text{Layer2}} \times W_U
 $$</p>
-<p>Applying the causal mask yields our strictly historical scores:</p>
+<p>Here, $\text{Output}_{\text{Layer2}}$ has a shape of 4 by 6, representing the sequence length by the model dimension. The weight matrix $W_U$ has a shape of 6 by 12, representing the model dimension by the vocabulary size. The resulting logits have a shape of 4 by 12.</p>
+<p>We possess the gradient of the loss with respect to these logits, which we will denote as $\partial L / \partial \text{Logits}$. To update the network, we must calculate two new gradients. First, we need the gradient with respect to the weights $W_U$ so the optimizer can adjust them. Second, we need the gradient with respect to the input $\text{Output}_{\text{Layer2}}$ so we can continue passing the error backward.</p>
+<h3>Updating the Unembedding Weights</h3>
+<p>The gradient of the loss with respect to the Unembedding weights requires us to multiply the transposed input by the incoming error signal. </p>
 <p>$$
-\text{Masked} = \begin{bmatrix}
--0.45 & -\infty & -\infty & -\infty \\
--0.28 & -0.13 & -\infty & -\infty \\
-0.93 & 0.47 & -1.76 & -\infty \\
-0.89 & 0.44 & -1.66 & -1.51
-\end{bmatrix}
+\frac{\partial L}{\partial W_U} = \text{Output}_{\text{Layer2}}^T \times \frac{\partial L}{\partial \text{Logits}}
 $$</p>
-<h2>Normalizing with Softmax</h2>
-<p>Our masked scores are unbounded real numbers. To use them as a weighting system, they must be converted into a valid probability distribution where each row sums exactly to one. The Softmax function achieves this by exponentiating each score and dividing by the sum of all exponentiated scores in that row.</p>
-<p>This non-linear operation amplifies larger scores and suppresses smaller ones. Applying Softmax row by row to our masked matrix provides the final Attention Probabilities:</p>
+<p>To visualize this geometrically, we map the dimensions. We transpose the 4 by 6 input to become 6 by 4. We then multiply this by the 4 by 12 error signal. The resulting gradient matrix perfectly matches the 6 by 12 shape of our original $W_U$ matrix. Each element in this new matrix tells us exactly how to nudge a specific weight in $W_U$ to decrease the overall loss.</p>
+<h3>Passing the Error Backward</h3>
+<p>Updating the final weights is only half the task. We must also pull the error signal backward to the preceding layers. To find the gradient with respect to the input $\text{Output}_{\text{Layer2}}$, we multiply the incoming error signal by the transposed weight matrix.</p>
 <p>$$
-\text{Attention Probabilities} = \begin{bmatrix}
-1.00 & 0.00 & 0.00 & 0.00 \\
-0.46 & 0.54 & 0.00 & 0.00 \\
-0.59 & 0.37 & 0.04 & 0.00 \\
-0.55 & 0.35 & 0.04 & 0.05
-\end{bmatrix}
+\frac{\partial L}{\partial \text{Output}_{\text{Layer2}}} = \frac{\partial L}{\partial \text{Logits}} \times W_U^T
 $$</p>
-<p>Take a moment to analyze these probabilities. The token <code>&lt;BOS&gt;</code> in row 1 is forced to attend entirely to itself since the rest of the sequence is masked. By the time we reach the token &quot;up&quot; in row 4, we see its attention is heavily distributed back toward the beginning of the sequence, allocating 55% of its focus to <code>&lt;BOS&gt;</code> and 35% to &quot;i&quot;. The deep layers of the Transformer often exhibit this behavior where late tokens rely heavily on early anchoring tokens to ground their context.</p>
-<h2>Extracting the Value</h2>
-<p>We have determined exactly <em>where</em> each token should look. The final step is to determine <em>what</em> it actually sees. This is the purpose of the Value matrix, $V$.</p>
-<p>Just as we projected our embeddings into Query and Key spaces, we projected them into the Value space to define the specific features each token offers to the rest of the sequence. To compute the output of this attention head, we take the dot product of our Attention Probabilities matrix with the Value matrix. This operation acts as a weighted sum, blending the features of the sequence according to the calculated probabilities.</p>
-<p>Let us define the Value matrix for Layer 2, Head 1:</p>
+<p>The dimensions align perfectly once more. We multiply the 4 by 12 error signal by the 12 by 6 transposed weight matrix, yielding a 4 by 6 matrix. This new matrix represents the error signal scaled and rotated back into the $d_{model}$ dimensionality of our residual stream.</p>
+<h2>Splitting the Signal: The Residual Connection</h2>
+<p>We have successfully routed the error signal back into the $d_{model}$ dimensional space at the very end of Layer 2. During the forward pass, this final state was constructed by adding the output of the Layer 2 Multi-Layer Perceptron to the pre-existing residual stream.</p>
 <p>$$
-V_2 = \begin{bmatrix}
--1.05 & 0.82 \\
--0.51 & 0.60 \\
-0.77 & -0.13 \\
-0.71 & -0.13
-\end{bmatrix}
+\text{Output}_{\text{Layer2}} = \text{Residual}_{\text{Pre-MLP}} + \text{MLP}_{\text{Output}}
 $$</p>
-<p>Multiplying the Attention Probabilities by this Value matrix yields our final output for this head:</p>
-<p>$$
-\text{Head Output} = \begin{bmatrix}
-1.00 & 0.00 & 0.00 & 0.00 \\
-0.46 & 0.54 & 0.00 & 0.00 \\
-0.59 & 0.37 & 0.04 & 0.00 \\
-0.55 & 0.35 & 0.04 & 0.05
-\end{bmatrix}
-\begin{bmatrix}
--1.05 & 0.82 \\
--0.51 & 0.60 \\
-0.77 & -0.13 \\
-0.71 & -0.13
-\end{bmatrix}
-= \begin{bmatrix}
--1.05 & 0.82 \\
--0.76 & 0.70 \\
--0.78 & 0.70 \\
--0.69 & 0.65
-\end{bmatrix}
-$$</p>
-<p>This mathematical flow can be visualized as a sequence of transformations:</p>
+<p>In calculus, the derivative of a sum $f(x) + g(x)$ is simply $f'(x) + g'(x)$. When executing backpropagation through an addition operation, the incoming gradient is distributed equally and unchanged to both branches. </p>
 <pre><code class="language-mermaid">graph TD
-    Scores(Scaled Scores) --&gt; Mask(Apply Causal Mask)
-    Mask --&gt; Softmax(Apply Softmax)
-    Softmax --&gt; Probs(Attention Probabilities)
-    V(Value Matrix V2) --&gt; Multiply(Matrix Multiplication)
-    Probs --&gt; Multiply
-    Multiply --&gt; Output(Head Output)
+    Err(Incoming Error Signal) --&gt; Unembed(Unembedding Layer)
+    Unembed --&gt; Out(Layer 2 Output Error)
+    Out --&gt; Res(Main Residual Stream)
+    Out --&gt; MLP(Layer 2 MLP Output)
 </code></pre>
-<p>This resulting matrix represents an incredibly sophisticated conceptual mixture. The representation for &quot;up&quot; (row 4) is no longer just the isolated concept of the word &quot;up&quot;. It has absorbed the physical features of the token &quot;i&quot; and the structural anchor of <code>&lt;BOS&gt;</code>, modulated through two complete layers of Multi-Head Attention and Multi-Layer Perceptrons. </p>
-<p>In the next installment, we will pass these highly refined vectors through the final components of Layer 2 to complete the forward pass of our Transformer architecture.</p>
+<p>This means the 4 by 6 error signal we just calculated copies itself. One copy travels directly down the central residual stream, preserving the unmodified error signal for earlier layers. The second copy flows directly into the output of the Multi-Layer Perceptron.</p>
+<h2>Entering the Multi-Layer Perceptron</h2>
+<p>The final operation inside the Layer 2 MLP during the forward pass was a linear projection. The internal activations of the MLP were multiplied by the second weight matrix, $W_2$, to project the data from the expanded $d_{ff}$ dimension back down to the $d_{model}$ dimension.</p>
+<p>$$
+\text{MLP}_{\text{Output}} = \text{Activations} \times W_2
+$$</p>
+<p>Since the error signal flowing into the MLP is exactly the error signal from the residual stream, we can apply the exact same linear algebra rules we used for the Unembedding layer to continue the backward pass.</p>
+<p>To find the gradient for the $W_2$ weights, we transpose the incoming activations and multiply by the error signal:</p>
+<p>$$
+\frac{\partial L}{\partial W_2} = \text{Activations}^T \times \frac{\partial L}{\partial \text{Output}_{\text{Layer2}}}
+$$</p>
+<p>Our activations were expanded to $d_{ff} = 24$. Transposing the 4 by 24 activations gives us 24 by 4. Multiplying this by the 4 by 6 error signal yields a 24 by 6 gradient matrix, perfectly matching the dimensions of $W_2$. </p>
+<p>To continue pulling the error backward through the activation function and into the first half of the MLP, we multiply the error signal by the transposed $W_2$ matrix:</p>
+<p>$$
+\frac{\partial L}{\partial \text{Activations}} = \frac{\partial L}{\partial \text{Output}_{\text{Layer2}}} \times W_2^T
+$$</p>
+<p>This operation takes our 4 by 6 error signal, multiplies it by the 6 by 24 transposed weight matrix, and produces a 4 by 24 error signal ready to be passed backward through the non-linear activation function.</p>
+<p>By strictly following the rules of matrix multiplication and addition, we have successfully navigated the error signal from the vocabulary-level predictions deep into the internal mechanisms of Layer 2. In our next analysis, we will tackle the rigorous calculus of routing these gradients through the Softmax function and the causal mask of the attention mechanism.</p>
 
 <div class="blog-pagination">
-      <a href="article_14.html" class="pagination-link prev">
+      <a href="article_20.html" class="pagination-link prev">
         <span class="pagination-label">Previous</span>
-        <span class="pagination-title">Article 14: Scoring Deep Context—Layer 2 Attention</span>
+        <span class="pagination-title">Article 20: The Beautiful Cancellation</span>
       </a>
-      <a href="article_16.html" class="pagination-link next">
+      <a href="article_22.html" class="pagination-link next">
         <span class="pagination-label">Next</span>
-        <span class="pagination-title">Article 16: Deepening the Representation: MLP and Residuals in Layer 2</span>
+        <span class="pagination-title">Article 22: Backpropagating Through Attention: The Softmax and the Mask</span>
       </a></div>
         </article>
     </div>
