@@ -1,5 +1,7 @@
 # Preface: The Big Picture & Tensor Notation
 
+*Prefer to read this seamlessly offline? [Download the complete, formatting-optimized 100-page Transformer Ebook here.](/series/transformers/transformer_ebook_final.pdf)*
+
 ## The Problem with Tutorials
 
 If you have spent any time trying to understand the Transformer architecture, you have likely encountered the same frustrating hurdle. Tutorials rely heavily on abstract analogies. They tell you that the Query matrix asks a question and the Key matrix holds the answer. These metaphors might give you a fleeting sense of intuition. They collapse the moment you try to write code, debug a model, or understand the fundamental geometry of deep learning.
@@ -41,9 +43,9 @@ First, "autoregressive" describes how the model generates text. It means the mod
 
 ```mermaid
 graph LR
-    A("<BOS> i woke up") --> B("Transformer")
+    A("&lt;BOS&gt; i woke up") --> B("Transformer")
     B --> C("late")
-    C -.->|Appended to Input| A
+    C -. Appended to Input .-> A
 ```
 
 Second, "Decoder-only" refers to the structure of the network. Original Transformers had two halves. An Encoder processed a source language like French, and a Decoder generated a target language like English. We do not need to translate between two different sequences. We only need to predict the continuation of a single sequence. We discard the Encoder entirely and only use the Decoder. 
@@ -119,4 +121,6 @@ $$
 
 Every single mathematical operation in our forward pass will read from and write to this $4 \times 6$ matrix. 
 
-In the next article, we will take our raw text, map it to our vocabulary indices, and perform our first genuine calculation. We will transform one-hot encoded vectors into this $4 \times 6$ geometric representation.
+In the next part, we will take our raw text, map it to our vocabulary indices, and perform our first genuine calculation. We will transform one-hot encoded vectors into this $4 \times 6$ geometric representation.
+
+*Prefer to read this seamlessly offline? [Download the complete, formatting-optimized 100-page Transformer Ebook here.](/series/transformers/transformer_ebook_final.pdf)*

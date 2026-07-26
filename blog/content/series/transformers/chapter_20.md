@@ -1,6 +1,8 @@
-# Article 20: The Beautiful Cancellation
+# Part 20: The Beautiful Cancellation
 
-In the previous article, we established the geometry of the Cross-Entropy loss function. We calculated exactly how far our model's predicted probability distribution strayed from the ground truth one-hot vector. That scalar loss value represents the total error of our network. Now, we must assign blame for that error. We are entering the backpropagation phase of our Transformer, and our very first step is to calculate the gradient of the loss with respect to the final unnormalized scores, known as the logits. 
+*Prefer to read this seamlessly offline? [Download the complete, formatting-optimized 100-page Transformer Ebook here.](/series/transformers/transformer_ebook_final.pdf)*
+
+In the previous part, we established the geometry of the Cross-Entropy loss function. We calculated exactly how far our model's predicted probability distribution strayed from the ground truth one-hot vector. That scalar loss value represents the total error of our network. Now, we must assign blame for that error. We are entering the backpropagation phase of our Transformer, and our very first step is to calculate the gradient of the loss with respect to the final unnormalized scores, known as the logits. 
 
 ## The Calculus Problem
 
@@ -35,21 +37,21 @@ We represent the target tokens as a matrix of one-hot vectors ($Y$), where each 
 
 $$
 Y = \begin{bmatrix}
- 0 &  0 &  0 &  1.0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 \\
- 0 &  0 &  0 &  0 &  0 &  1.0 &  0 &  0 &  0 &  0 &  0 &  0 \\
- 0 &  0 &  0 &  0 &  0 &  0 &  0 &  1.0 &  0 &  0 &  0 &  0 \\
- 0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  1.0 &  0 &  0 &  0
+ 0 &  0 &  0 &  1.0 &  0 &  0 &  0 &  0 &  0 & \dots &  0 \\
+ 0 &  0 &  0 &  0 &  0 &  1.0 &  0 &  0 &  0 & \dots &  0 \\
+ 0 &  0 &  0 &  0 &  0 &  0 &  0 &  1.0 &  0 & \dots &  0 \\
+ 0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  1.0 & \dots &  0
 \end{bmatrix}
 $$
 
-Next, we take the predicted probabilities ($P$) that we calculated in Article 18. To find the gradient, we simply subtract the target matrix ($Y$) from our predictions ($P$).
+Next, we take the predicted probabilities ($P$) that we calculated in Part 18. To find the gradient, we simply subtract the target matrix ($Y$) from our predictions ($P$).
 
 $$
 \frac{\partial L}{\partial z} = \begin{bmatrix}
- 0.0854 &  0.0850 &  0.0846 & -0.9157 &  0.0839 &  0.0835 &  0.0831 &  0.0828 &  0.0824 &  0.0820 &  0.0817 &  0.0813 \\
- 0.0813 &  0.0817 &  0.0820 &  0.0824 &  0.0828 & -0.9169 &  0.0835 &  0.0839 &  0.0843 &  0.0846 &  0.0850 &  0.0854 \\
- 0.0833 &  0.0833 &  0.0833 &  0.0833 &  0.0833 &  0.0833 &  0.0833 & -0.9167 &  0.0833 &  0.0833 &  0.0833 &  0.0833 \\
- 0.0833 &  0.0833 &  0.0833 &  0.0833 &  0.0833 &  0.0833 &  0.0833 &  0.0833 & -0.9167 &  0.0833 &  0.0833 &  0.0833
+ 0.0854 &  0.0850 &  0.0846 & -0.9157 &  0.0839 &  0.0835 &  0.0831 &  0.0828 &  0.0824 & \dots &  0.0813 \\
+ 0.0813 &  0.0817 &  0.0820 &  0.0824 &  0.0828 & -0.9169 &  0.0835 &  0.0839 &  0.0843 & \dots &  0.0854 \\
+ 0.0833 &  0.0833 &  0.0833 &  0.0833 &  0.0833 &  0.0833 &  0.0833 & -0.9167 &  0.0833 & \dots &  0.0833 \\
+ 0.0833 &  0.0833 &  0.0833 &  0.0833 &  0.0833 &  0.0833 &  0.0833 &  0.0833 & -0.9167 & \dots &  0.0833
 \end{bmatrix}
 $$
 
@@ -62,3 +64,5 @@ During gradient descent, we subtract the gradient from our weights to minimize t
 Conversely, for all the incorrect tokens, the target was `0.0`. The subtraction yields a positive gradient equal to the predicted probability. When the optimizer subtracts this positive value, it will decrease the logits for all incorrect tokens. 
 
 The mathematical cancellation of Softmax and Cross-Entropy results in an exceedingly pure learning signal. It gently suppresses the logits of wrong answers proportional to how strongly the model believed them, while aggressively pulling up the logit of the correct answer. With this gradient vector firmly established at the output of our network, we are now ready to propagate this learning signal backward through the Unembedding matrix and into the heart of the Transformer.
+
+*Prefer to read this seamlessly offline? [Download the complete, formatting-optimized 100-page Transformer Ebook here.](/series/transformers/transformer_ebook_final.pdf)*

@@ -1,4 +1,6 @@
-# Article 5: Causal Masking
+# Part 5: Causal Masking
+
+*Prefer to read this seamlessly offline? [Download the complete, formatting-optimized 100-page Transformer Ebook here.](/series/transformers/transformer_ebook_final.pdf)*
 
 In our previous session, we successfully derived the scaled attention scores. We calculated the dot product between our Query and Key matrices, measuring how intensely each token seeks information from every other token, and scaled the result by $\sqrt{d_k}$ to prevent gradient saturation. 
 
@@ -58,3 +60,5 @@ We use $-\infty$ rather than zero due to the mathematical properties of the next
 As $x$ approaches $-\infty$, the value of $e^x$ converges exactly to 0. When we calculate the final attention weights in the next step, any connection blocked by our causal mask will receive a probability weight of precisely 0%. Future tokens will contribute nothing to the mathematical representation of past tokens.
 
 With our causal mask firmly in place, we are ready to safely pass these masked scores through the Softmax function and extract our final Value matrices.
+
+*Prefer to read this seamlessly offline? [Download the complete, formatting-optimized 100-page Transformer Ebook here.](/series/transformers/transformer_ebook_final.pdf)*

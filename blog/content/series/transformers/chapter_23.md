@@ -1,6 +1,8 @@
-# Article 23: Backpropagation Through Attention (Part 2: Routing to Q, K, and V)
+# Part 23: Backpropagation Through Attention (Part 2: Routing to Q, K, and V)
 
-In the previous article, we successfully navigated the complexities of the Softmax function and the causal mask. We calculated the gradient of the loss with respect to the raw, unmasked attention scores, giving us a precise measurement of how each attention connection should be adjusted. We now stand at the final stage of backpropagating through the self-attention mechanism. Our objective is to distribute these score gradients, along with the gradients from the attention output itself, backward into the Query, Key, and Value matrices. Ultimately, we must route these signals all the way back to the weight matrices that created them and the input sequence that started it all.
+*Prefer to read this seamlessly offline? [Download the complete, formatting-optimized 100-page Transformer Ebook here.](/series/transformers/transformer_ebook_final.pdf)*
+
+In the previous part, we successfully navigated the complexities of the Softmax function and the causal mask. We calculated the gradient of the loss with respect to the raw, unmasked attention scores, giving us a precise measurement of how each attention connection should be adjusted. We now stand at the final stage of backpropagating through the self-attention mechanism. Our objective is to distribute these score gradients, along with the gradients from the attention output itself, backward into the Query, Key, and Value matrices. Ultimately, we must route these signals all the way back to the weight matrices that created them and the input sequence that started it all.
 
 ## The Value Matrix Gradient
 
@@ -87,4 +89,6 @@ graph TD
     dX_K --> dX
 ```
 
-We have now completely backpropagated through the self-attention mechanism. We successfully translated the error from the network's output into specific updates for the $W_Q$, $W_K$, and $W_V$ matrices, and we prepared the error signal to continue its journey backward down the residual stream. In the next article, we will follow this signal as it reaches the very beginning of the network to update the original token embeddings.
+We have now completely backpropagated through the self-attention mechanism. We successfully translated the error from the network's output into specific updates for the $W_Q$, $W_K$, and $W_V$ matrices, and we prepared the error signal to continue its journey backward down the residual stream. In the next part, we will follow this signal as it reaches the very beginning of the network to update the original token embeddings.
+
+*Prefer to read this seamlessly offline? [Download the complete, formatting-optimized 100-page Transformer Ebook here.](/series/transformers/transformer_ebook_final.pdf)*

@@ -1,4 +1,6 @@
-# Article 19: Cross-Entropy Loss
+# Part 19: Cross-Entropy Loss
+
+*Prefer to read this seamlessly offline? [Download the complete, formatting-optimized 100-page Transformer Ebook here.](/series/transformers/transformer_ebook_final.pdf)*
 
 In our preceding analysis, we transformed the raw logits of the Transformer into a valid probability distribution using the Softmax function. This generated a set of predictions representing the model's current, untrained belief about the next token in the sequence. To teach the model, we must establish a rigorous metric that quantifies exactly how incorrect these beliefs are. This metric is the loss function, the single scalar value that the entire neural network is designed to minimize.
 
@@ -28,7 +30,7 @@ The natural logarithm exhibits ideal properties for measuring probabilistic erro
 
 Our sequence `<BOS> i woke up` requires the model to make four distinct predictions simultaneously. We process the targets across the time steps: `i` for index 3, `woke` for index 5, `up` for index 7, and `late` for index 8.
 
-At each step, we look up the predicted probability from the Softmax matrix we calculated in the previous article, and then we take the negative logarithm.
+At each step, we look up the predicted probability from the Softmax matrix we calculated in the previous part, and then we take the negative logarithm.
 
 **Time Step 0**
 The input is `<BOS>` and the target is `i`. The predicted probability for `i` is 0.0843.
@@ -67,3 +69,5 @@ Our final calculated loss is 2.4829. This specific value is highly informative. 
 With a vocabulary size $V$ of 12, a uniform distribution assigns a probability of $\frac{1}{12}$ to every token. The theoretical Cross-Entropy Loss for a uniform distribution is $-\log(\frac{1}{12})$, which evaluates to approximately 2.4849. Our calculated loss of 2.4829 is nearly identical to this theoretical baseline. This confirms our forward pass is functioning correctly and clearly demonstrates the model's initial state of total uncertainty.
 
 We have now reached the end of the forward pass. We possess a single scalar value that quantifies the error of our entire network. In our next installment, we will begin the backward pass, calculating the derivative of this loss to uncover an elegantly simple mathematical cancellation that drives the learning process.
+
+*Prefer to read this seamlessly offline? [Download the complete, formatting-optimized 100-page Transformer Ebook here.](/series/transformers/transformer_ebook_final.pdf)*

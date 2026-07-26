@@ -1,10 +1,12 @@
-# Article 10: The MLP as a Key-Value Memory Bank (Expansion)
+# Part 10: The MLP as a Key-Value Memory Bank (Expansion)
+
+*Prefer to read this seamlessly offline? [Download the complete, formatting-optimized 100-page Transformer Ebook here.](/series/transformers/transformer_ebook_final.pdf)*
 
 We have successfully normalized the residual stream. Our vectors are now stable, centered, and scaled, ready for the next major transformation. Up until this point, the self-attention mechanism has allowed tokens to move information *between* one another. The representation for "up" has reached out and pulled in context from "woke". However, attention merely routes information. It does not possess the capacity to interpret that combined information into a new, higher-level concept. 
 
 To process the newly contextualized vector, we pass it into the Feed-Forward Network, often referred to as the Multi-Layer Perceptron or MLP.
 
-Historically, the MLP has been described simply as a function that "expands dimensions" and introduces non-linearity. Mechanistic interpretability offers a far more precise and compelling geometric framing. We can view the MLP as a massive Key-Value memory bank stored directly within the weights of the network. In this article, we will focus entirely on the first linear layer of the MLP, which acts as the "Keys" in this memory retrieval system.
+Historically, the MLP has been described simply as a function that "expands dimensions" and introduces non-linearity. Mechanistic interpretability offers a far more precise and compelling geometric framing. We can view the MLP as a massive Key-Value memory bank stored directly within the weights of the network. In this part, we will focus entirely on the first linear layer of the MLP, which acts as the "Keys" in this memory retrieval system.
 
 ## The Geometry of the Keys
 
@@ -57,10 +59,10 @@ Here is the complete matrix multiplication $X_{norm} W_1 = X_{proj}$. To keep th
 
 $$
 X_{proj} = \begin{bmatrix}
- 0.64 & -0.30 & -0.93 & -0.86 &  0.53 & -1.24 &  0.88 &  0.71 & -2.13 & -2.01 & -2.58 & -1.43 &  0.55 & -1.00 &  2.03 &  0.40 &  0.10 & -0.16 & -0.12 &  1.60 &  0.56 & -0.70 &  1.20 & -0.19 \\
- 1.07 & -1.32 & -0.65 & -0.96 &  1.47 & -2.19 &  2.16 & -0.20 & -2.64 & -2.37 & -2.90 & -0.09 &  1.95 & -2.10 &  2.34 & -0.52 &  1.08 &  0.59 &  0.35 &  1.65 &  0.47 & -1.16 &  1.35 &  1.73 \\
--2.21 & -0.10 & -2.12 &  0.33 & -2.18 &  2.73 & -0.92 &  1.72 &  3.32 &  0.60 &  0.68 & -1.01 &  1.77 &  0.81 & -2.21 &  1.17 &  1.05 & -0.77 & -1.35 &  0.11 & -0.54 & -0.78 &  0.05 &  1.09 \\
--0.62 & -0.74 & -0.58 & -0.56 &  0.00 &  2.26 & -0.71 &  0.74 &  2.40 &  1.17 &  0.24 & -0.62 &  0.11 &  0.85 & -0.72 &  0.56 &  0.95 & -0.64 &  0.62 & -0.25 & -0.88 &  0.08 &  0.23 &  1.53
+ 0.64 & -0.30 & -0.93 & -0.86 &  0.53 & -1.24 &  0.88 &  0.71 & -2.13 & \dots & -0.19 \\
+ 1.07 & -1.32 & -0.65 & -0.96 &  1.47 & -2.19 &  2.16 & -0.20 & -2.64 & \dots &  1.73 \\
+-2.21 & -0.10 & -2.12 &  0.33 & -2.18 &  2.73 & -0.92 &  1.72 &  3.32 & \dots &  1.09 \\
+-0.62 & -0.74 & -0.58 & -0.56 &  0.00 &  2.26 & -0.71 &  0.74 &  2.40 & \dots &  1.53
 \end{bmatrix}
 $$
 
@@ -82,11 +84,13 @@ For our model, we apply a randomly initialized $b_1$ vector of length 24 to ever
 
 $$
 X_{proj\_biased} = \begin{bmatrix}
- 0.58 & -0.26 & -1.09 & -0.90 &  0.56 & -1.16 &  1.03 &  0.71 & -2.25 & -1.96 & -2.53 & -1.38 &  0.48 & -0.89 &  2.04 &  0.47 &  0.22 & -0.10 & -0.09 &  1.82 &  0.59 & -0.72 &  1.21 & -0.04 \\
- 1.01 & -1.28 & -0.81 & -1.00 &  1.50 & -2.11 &  2.30 & -0.21 & -2.75 & -2.32 & -2.85 & -0.04 &  1.88 & -1.99 &  2.34 & -0.45 &  1.21 &  0.66 &  0.38 &  1.87 &  0.50 & -1.19 &  1.36 &  1.88 \\
--2.27 & -0.07 & -2.28 &  0.29 & -2.16 &  2.81 & -0.78 &  1.72 &  3.20 &  0.64 &  0.74 & -0.96 &  1.70 &  0.92 & -2.20 &  1.24 &  1.18 & -0.71 & -1.32 &  0.32 & -0.51 & -0.81 &  0.06 &  1.24 \\
--0.69 & -0.71 & -0.74 & -0.60 &  0.03 &  2.34 & -0.56 &  0.74 &  2.29 &  1.22 &  0.29 & -0.57 &  0.04 &  0.96 & -0.71 &  0.63 &  1.08 & -0.58 &  0.64 & -0.04 & -0.85 &  0.05 &  0.24 &  1.68
+ 0.58 & -0.26 & -1.09 & -0.90 &  0.56 & -1.16 &  1.03 &  0.71 & -2.25 & \dots & -0.04 \\
+ 1.01 & -1.28 & -0.81 & -1.00 &  1.50 & -2.11 &  2.30 & -0.21 & -2.75 & \dots &  1.88 \\
+-2.27 & -0.07 & -2.28 &  0.29 & -2.16 &  2.81 & -0.78 &  1.72 &  3.20 & \dots &  1.24 \\
+-0.69 & -0.71 & -0.74 & -0.60 &  0.03 &  2.34 & -0.56 &  0.74 &  2.29 & \dots &  1.68
 \end{bmatrix}
 $$
 
 Our vectors have successfully probed the memory bank. We have measured exactly how well each token aligns with the 24 internal Key patterns. The next step is determining which of these patterns actually "fires," dropping irrelevant matches to zero before writing new conceptual information back into the residual stream. This thresholding introduces non-linearity, bringing us to the Activation Function.
+
+*Prefer to read this seamlessly offline? [Download the complete, formatting-optimized 100-page Transformer Ebook here.](/series/transformers/transformer_ebook_final.pdf)*

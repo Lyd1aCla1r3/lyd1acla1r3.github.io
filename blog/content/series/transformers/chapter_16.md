@@ -1,4 +1,6 @@
-# Article 16: Deepening the Representation: MLP and Residuals in Layer 2
+# Part 16: Deepening the Representation: MLP and Residuals in Layer 2
+
+*Prefer to read this seamlessly offline? [Download the complete, formatting-optimized 100-page Transformer Ebook here.](/series/transformers/transformer_ebook_final.pdf)*
 
 We have arrived at the final stages of the forward pass for our second Transformer layer. In the previous installment, we computed the attention probabilities and combined them with the Value matrix to create contextualized updates. Now, we must integrate these updates into the central nervous system of our model: the Residual Stream, and pass them through the final Multi-Layer Perceptron (MLP) memory bank.
 
@@ -86,3 +88,5 @@ $$
 $$
 
 Our initial embeddings have now been transformed twice by attention and twice by MLPs. The vectors residing in the Residual Stream are profoundly rich. They no longer represent mere words; they represent complex syntactic roles, semantic meanings, and contextual relationships tailored precisely to our specific sequence. In the next phase, we will map these final representations back into our vocabulary space to predict the next word.
+
+*Prefer to read this seamlessly offline? [Download the complete, formatting-optimized 100-page Transformer Ebook here.](/series/transformers/transformer_ebook_final.pdf)*

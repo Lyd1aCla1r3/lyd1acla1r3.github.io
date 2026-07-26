@@ -1,6 +1,8 @@
-# Article 14: Scoring Deep Context—Layer 2 Attention
+# Part 14: Scoring Deep Context: Layer 2 Attention
 
-In our progression through the Transformer architecture, we have reached a critical inflection point. The Query and Key vectors we extract in Layer 2 are fundamentally different from those in Layer 1. Rather than representing isolated vocabulary tokens, they now encapsulate rich, contextualized concepts fused from the entire preceding sequence. This article examines exactly how these advanced representations are scored against one another, illuminating the mathematical process by which deep neural networks decide to route high-level information.
+*Prefer to read this seamlessly offline? [Download the complete, formatting-optimized 100-page Transformer Ebook here.](/series/transformers/transformer_ebook_final.pdf)*
+
+In our progression through the Transformer architecture, we have reached a critical inflection point. The Query and Key vectors we extract in Layer 2 are fundamentally different from those in Layer 1. Rather than representing isolated vocabulary tokens, they now encapsulate rich, contextualized concepts fused from the entire preceding sequence. This part examines exactly how these advanced representations are scored against one another, illuminating the mathematical process by which deep neural networks decide to route high-level information.
 
 ## The Semantic Shift in Queries and Keys
 
@@ -61,3 +63,5 @@ $$
 By scaling these values, we preserve the relative alignments while compressing the absolute magnitudes. This ensures the upcoming probability distribution remains expressive enough to route information proportionally across multiple tokens, rather than collapsing into a rigid selection.
 
 Our deep conceptual representations have now calculated their mutual relevance. The next mathematical step requires us to enforce causality upon these scores, ensuring that our model strictly adheres to the arrow of time during the training phase.
+
+*Prefer to read this seamlessly offline? [Download the complete, formatting-optimized 100-page Transformer Ebook here.](/series/transformers/transformer_ebook_final.pdf)*

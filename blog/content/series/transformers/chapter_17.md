@@ -1,4 +1,6 @@
-# Article 17: Mapping Back to Words
+# Part 17: Mapping Back to Words
+
+*Prefer to read this seamlessly offline? [Download the complete, formatting-optimized 100-page Transformer Ebook here.](/series/transformers/transformer_ebook_final.pdf)*
 
 Our journey through the Transformer has transformed our input sequence into deeply contextualized mathematical representations. The residual stream emerging from Layer 2 contains rich information about what each token means in relation to the others. However, these vectors are still floating in our abstract six-dimensional model space. To produce actual text, we must translate these vectors back into the twelve-dimensional vocabulary space. This critical translation is performed by the Unembedding matrix.
 
@@ -26,7 +28,7 @@ Let us examine the output for the final token in our sequence, which is `up`. We
 
 $$
 \text{Logits}_{\text{up}} = \begin{bmatrix}
--0.12 & 0.45 & -1.23 & 0.05 & 0.88 & -0.34 & -0.77 & 1.02 & 3.45 & 2.11 & 0.56 & -0.11
+-0.12 & 0.45 & -1.23 & 0.05 & 0.88 & -0.34 & -0.77 & 1.02 & 3.45 & \dots & -0.11
 \end{bmatrix}
 $$
 
@@ -36,4 +38,6 @@ In a well-trained model, the highest score in this vector should correspond to t
 
 While the logits provide a ranking of the most likely next words, they are unbounded raw scores. They can be positive, negative, and of any magnitude. This presents a problem for interpreting the model's confidence and for calculating the loss during backpropagation. We cannot easily determine if a score of 3.45 represents absolute certainty or just a slight preference over a score of 2.11.
 
-To solve this, we must convert these raw scores into a strict probability distribution where all values are positive and sum exactly to one. We will explore how the final Softmax function accomplishes this in the next article.
+To solve this, we must convert these raw scores into a strict probability distribution where all values are positive and sum exactly to one. We will explore how the final Softmax function accomplishes this in the next part.
+
+*Prefer to read this seamlessly offline? [Download the complete, formatting-optimized 100-page Transformer Ebook here.](/series/transformers/transformer_ebook_final.pdf)*

@@ -1,4 +1,6 @@
-# Article 22: Backpropagating Through Attention: The Softmax and the Mask
+# Part 22: Backpropagating Through Attention: The Softmax and the Mask
+
+*Prefer to read this seamlessly offline? [Download the complete, formatting-optimized 100-page Transformer Ebook here.](/series/transformers/transformer_ebook_final.pdf)*
 
 We left off with the gradient flowing down the residual stream, reaching the output of our Layer 2 attention block. Our objective now is to pull this error signal backward through the self-attention mechanism itself. This requires us to unpack the sequence of operations that created the attention output. The final operations in that sequence involved multiplying the attention probabilities by the Value matrix, and prior to that, applying the Softmax function to the masked attention scores.
 
@@ -44,3 +46,5 @@ d\_S\_{unmasked} = \begin{bmatrix}
 $$
 
 We now possess the gradient with respect to the pure, unmasked attention scores, representing the direct scaled dot product $Q K^T / \sqrt{d_k}$. Our error signal has successfully traversed the most numerically complex non-linearity in the Transformer architecture. In our next installment, we will distribute this gradient into the Query, Key, and Value weight matrices, completing the learning cycle for the self-attention mechanism.
+
+*Prefer to read this seamlessly offline? [Download the complete, formatting-optimized 100-page Transformer Ebook here.](/series/transformers/transformer_ebook_final.pdf)*
