@@ -101,8 +101,7 @@
     <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Part 1: Tokens, One-Hot Encodings, and the Embedding Matrix</li></ol></nav>
         <article class="blog-post">
 <h1>Part 1: Tokens, One-Hot Encodings, and the Embedding Matrix</h1>
-<p><em>Prefer to read this seamlessly offline? <a href="/series/transformers/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
-<p>At the end of the Preface, we established that every operation in our Transformer will read from and write to a central $4 \times 6$ matrix. We must now bridge the gap between our raw text and that geometric representation. Text is inherently abstract. Computers cannot multiply words. Computers multiply numbers. We need a rigorous mechanical process to translate human language into a mathematical format that a neural network can manipulate.</p>
+<p><em>Prefer to read this seamlessly offline? <a href="/series/transformers/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p><p>At the end of the Preface, we established that every operation in our Transformer will read from and write to a central $4 \times 6$ matrix. We must now bridge the gap between our raw text and that geometric representation. Text is inherently abstract. Computers cannot multiply words. Computers multiply numbers. We need a rigorous mechanical process to translate human language into a mathematical format that a neural network can manipulate.</p>
 <p>This translation happens in three distinct stages. First, we break our sentence down into discrete pieces called tokens. Second, we map each token to a strict geometric location using a one-hot vector. Third, we project those isolated vectors into a shared, continuous space using an Embedding Matrix. </p>
 <h2>The Vocabulary Space and Tokenization</h2>
 <p>Our objective is to process the sequence <code>&lt;BOS&gt; i woke up</code>. </p>
@@ -208,9 +207,9 @@ Row 4 is the coordinate vector for <code>up</code>.</p>
 <p><em>Prefer to read this seamlessly offline? <a href="/series/transformers/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 
 <div class="blog-pagination">
-      <a href="body.html" class="pagination-link prev">
+      <a href="ai-for-code-vs-documentation.html" class="pagination-link prev">
         <span class="pagination-label">Previous</span>
-        <span class="pagination-title">Untitled Post</span>
+        <span class="pagination-title">AI for Code vs Documentation</span>
       </a>
       <a href="chapter_02.html" class="pagination-link next">
         <span class="pagination-label">Next</span>

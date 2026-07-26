@@ -101,8 +101,7 @@
     <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Part 5: Causal Masking</li></ol></nav>
         <article class="blog-post">
 <h1>Part 5: Causal Masking</h1>
-<p><em>Prefer to read this seamlessly offline? <a href="/series/transformers/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
-<p>In our previous session, we successfully derived the scaled attention scores. We calculated the dot product between our Query and Key matrices, measuring how intensely each token seeks information from every other token, and scaled the result by $\sqrt{d_k}$ to prevent gradient saturation. </p>
+<p><em>Prefer to read this seamlessly offline? <a href="/series/transformers/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p><p>In our previous session, we successfully derived the scaled attention scores. We calculated the dot product between our Query and Key matrices, measuring how intensely each token seeks information from every other token, and scaled the result by $\sqrt{d_k}$ to prevent gradient saturation. </p>
 <p>Before we can convert these scores into a final probability distribution, we must address a critical structural flaw in how our matrix currently operates during training. </p>
 <h2>The Problem of Parallel Training</h2>
 <p>When training a Transformer, we do not feed tokens in one by one. We optimize for speed by passing the entire sequence through the network simultaneously. This technique is known as teacher forcing. Our matrix operations compute the attention scores for <code>&lt;BOS&gt;</code>, <code>i</code>, <code>woke</code>, and <code>up</code> all at the exact same time.</p>

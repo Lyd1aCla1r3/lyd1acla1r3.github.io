@@ -1,6 +1,6 @@
 # Part 2: The Permutation Invariance Problem & Positional Encoding
 
-*Prefer to read this seamlessly offline? [Download the complete, formatting-optimized 100-page Transformer Ebook here.](/series/transformers/transformer_ebook_final.pdf)*
+<p><em>Prefer to read this seamlessly offline? <a href="/series/transformers/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 
 Welcome back. In our previous session, we successfully transformed our input sequence `<BOS> i woke up` into a dense, continuous semantic space. We mathematically compressed sparse 12-dimensional one-hot vectors into a 6-dimensional embedding matrix.
 
@@ -93,4 +93,4 @@ Our vector for "woke" is no longer just the abstract concept of waking up. It is
 
 The stage is now completely set. We have successfully translated a string of text into a mathematically rich tensor that understands both semantic meaning and sequential time. Next, we will feed this matrix into the heart of the architecture to introduce Layer 1 Self-Attention.
 
-*Prefer to read this seamlessly offline? [Download the complete, formatting-optimized 100-page Transformer Ebook here.](/series/transformers/transformer_ebook_final.pdf)*
+<p><em>Prefer to read this seamlessly offline? <a href="/series/transformers/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
