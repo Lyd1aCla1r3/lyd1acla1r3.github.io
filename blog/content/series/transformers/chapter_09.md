@@ -1,5 +1,7 @@
 # Part 9: Taming the Stream: The Geometry of Layer Normalization
 
+<!-- SUMMARY: Counteract the geometric drift and magnitude expansion caused by continuous additive updates through the disciplined application of Layer Normalization. By independently centering and scaling each token vector across its embedding dimension, this mechanism mathematically stabilizes the residual stream while retaining vital contextual geometries. -->
+
 <p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 
 In our previous installment, we introduced the Residual Stream. We observed how the Attention block operates as an independent module that reads from the central memory bus, calculates contextual updates, and adds those updates directly back into the original embeddings. This additive process ensures that the network never loses the raw, initial information about the token and its position. 

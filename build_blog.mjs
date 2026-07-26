@@ -58,13 +58,19 @@ for (const fileObj of mdFiles) {
   const body = markdown.replace(/^#\s+(.+)/m, '').trim();
   const paragraphs = body.split(/\n\s*\n/);
   let summary = '';
-  for (const p of paragraphs) {
-    if (!p.startsWith('#') && !p.startsWith('!') && !p.startsWith('<') && p.trim().length > 0) {
-      summary = p.replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1') 
-                 .replace(/[*_~`]/g, '')
-                 .replace(/\n/g, ' ')
-                 .trim();
-      break;
+
+  const summaryMatch = body.match(/<!--\s*SUMMARY:\s*([\s\S]*?)\s*-->/i);
+  if (summaryMatch) {
+    summary = summaryMatch[1].replace(/\n/g, ' ').trim();
+  } else {
+    for (const p of paragraphs) {
+      if (!p.startsWith('#') && !p.startsWith('!') && !p.startsWith('<') && p.trim().length > 0) {
+        summary = p.replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1') 
+                   .replace(/[*_~`]/g, '')
+                   .replace(/\n/g, ' ')
+                   .trim();
+        break;
+      }
     }
   }
   

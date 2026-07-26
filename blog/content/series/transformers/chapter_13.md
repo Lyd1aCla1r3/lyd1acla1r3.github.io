@@ -1,4 +1,5 @@
 # Part 13: Layer 2 Self-Attention
+<!-- SUMMARY: As the Transformer processes the second layer of self-attention, token vectors evolve from isolated definitions into deeply contextualized mathematical representations. This section details how these advanced abstractions are projected into Query, Key, and Value subspaces to evaluate high-level syntactic structures. -->
 
 <p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 

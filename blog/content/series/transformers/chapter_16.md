@@ -1,4 +1,5 @@
 # Part 16: Deepening the Representation: MLP and Residuals in Layer 2
+<!-- SUMMARY: Integrate the Layer 2 attention updates into the Residual Stream and stabilize the geometry using Layer Normalization. The normalized vectors then flow into a Multi-Layer Perceptron acting as a deep contextual memory bank, enabling the injection of learned knowledge into the sequence representation. -->
 
 <p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 

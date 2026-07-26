@@ -1,5 +1,7 @@
 # Part 12: Completing Layer 1 Residuals and Normalization
 
+<!-- SUMMARY: Finalize the architecture of the first Transformer layer by integrating the newly synthesized conceptual features back into the residual stream via additive updates. To counteract the resulting geometric instability and magnitude expansion, rigorously apply Layer Normalization to prepare the contextualized vectors for deeper processing in subsequent layers. -->
+
 <p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 
 In the preceding part, we observed the multilayer perceptron acting as a localized memory bank. It recognized specific contextual patterns and wrote new features back out into the $d_{model}$ dimensionality. Now, we must integrate these new insights into our primary representation. We achieve this by returning to the architectural backbone of the Transformer, which is the Residual Stream.

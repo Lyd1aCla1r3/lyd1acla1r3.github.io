@@ -1,5 +1,7 @@
 # Part 21: Backpropagating Through the Unembedding and Residual Stream
 
+<!-- SUMMARY: We initiate the backward pass by routing the error signal from the vocabulary logits through the Unembedding matrix and into the final residual stream. Applying the chain rule reveals how the gradient symmetrically branches through the Multi-Layer Perceptron to update intermediate weights. -->
+
 <p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 
 In our previous installment, we discovered the elegant simplicity of the Cross-Entropy Loss derivative. The gradient of our loss with respect to the raw, pre-Softmax logits simplifies entirely to the predicted probability distribution minus the one-hot encoded target vector. This single matrix, measuring how wrong our predictions were across the sequence, serves as the physical error signal that we must now route backward through the network to update its weights.

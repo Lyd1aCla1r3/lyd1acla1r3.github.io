@@ -1,5 +1,7 @@
 # AI for Code vs Documentation
 
+<!-- SUMMARY: As AI radically accelerates software development, maintaining high-quality documentation has become an escalating challenge that simple agentic generation cannot fully resolve. Advancing documentation to a first-class citizen requires keeping humans in the loop to capture the nuanced art and critical context of technical writing. -->
+
 As a technical writer, I very much appreciate when engineers recognize the importance of good documentation. There’s an expectation that engineering capacity is directly proportional to the sophistication of coding agents. However, documentation tools and practices were not designed to scale.
 
 The obvious solution is that AI should also produce the documentation, but this is non-trivial, and for the majority of developers, documentation is not the focus.

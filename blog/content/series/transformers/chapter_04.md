@@ -1,5 +1,7 @@
 # Part 4: The Attention Score and $\sqrt{d_k}$
 
+<!-- SUMMARY: Calculating raw attention scores via the dot product exposes an insidious scaling problem in high-dimensional vector spaces. To prevent catastrophic Softmax saturation and the resulting gradient death, we mathematically stabilize the variance by dividing our scores by the square root of the head dimension. -->
+
 <p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 
 In the previous installment, we established why the Transformer does not calculate attention directly from the input embeddings. We projected our sequence into two distinct semantic subspaces, yielding a matrix of Queries ($Q$) and a matrix of Keys ($K$). This asymmetric projection allows the network to match concepts that belong together even if their base embeddings are geometrically distant.

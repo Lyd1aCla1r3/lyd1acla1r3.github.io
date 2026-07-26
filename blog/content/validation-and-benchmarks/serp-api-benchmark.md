@@ -1,5 +1,7 @@
 # Benchmarking SERP API Fidelity for AI Overviews
 
+<!-- SUMMARY: Evaluate the parsing fidelity and extraction richness of major SERP APIs when confronting the non-deterministic architecture of Google's AI Overviews. By mathematically auditing detection yields and structural data integrity, this benchmark rigorously determines which providers are capable of powering enterprise Retrieval-Augmented Generation pipelines. -->
+
 When Google actually generates an AI Overview, how often does your SERP API detect it, and how much of its structured content survives the extraction process? A rigorous, mathematically-backed benchmark of SearchApi, SerpApi, DataForSEO, and Serper.
 
 <p>If you are building an AI agent or Retrieval-Augmented Generation (RAG) pipeline that searches the web for grounded facts, you are probably relying on a SERP API (Search Engine Results Page Application Programming Interface) to scrape Google and return structured JSON.</p>

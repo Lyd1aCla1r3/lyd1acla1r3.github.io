@@ -1,5 +1,7 @@
 # Part 22: Backpropagating Through Attention: The Softmax and the Mask
 
+<!-- SUMMARY: We push the gradient backward through the self-attention mechanism by solving the Jacobian of the Softmax function and navigating the causal mask. This matrix operation gracefully handles coupled probabilities and severs the learning signal for future-looking connections, yielding the exact error for unmasked attention scores. -->
+
 <p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 
 We left off with the gradient flowing down the residual stream, reaching the output of our Layer 2 attention block. Our objective now is to pull this error signal backward through the self-attention mechanism itself. This requires us to unpack the sequence of operations that created the attention output. The final operations in that sequence involved multiplying the attention probabilities by the Value matrix, and prior to that, applying the Softmax function to the masked attention scores.

@@ -1,5 +1,7 @@
 # Part 10: The MLP as a Key-Value Memory Bank (Expansion)
 
+<!-- SUMMARY: Reconceptualize the Feed-Forward Network's expansion phase as a high-dimensional Key-Value memory retrieval mechanism. By projecting token vectors into a substantially larger geometric space, the model computes dot products against learned Key patterns to precisely measure alignment with higher-order conceptual features. -->
+
 <p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 
 We have successfully normalized the residual stream. Our vectors are now stable, centered, and scaled, ready for the next major transformation. Up until this point, the self-attention mechanism has allowed tokens to move information *between* one another. The representation for "up" has reached out and pulled in context from "woke". However, attention merely routes information. It does not possess the capacity to interpret that combined information into a new, higher-level concept. 

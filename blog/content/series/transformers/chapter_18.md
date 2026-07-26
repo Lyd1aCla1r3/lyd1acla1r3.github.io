@@ -1,4 +1,5 @@
 # Part 18: Final Softmax and Predictions
+<!-- SUMMARY: Compress unbounded vocabulary logits into a strict, positive probability distribution that sums to one using the final Softmax function. This transformation reveals the untrained network's maximum uncertainty, motivating the profound mathematical necessity of Backpropagation. -->
 
 <p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 

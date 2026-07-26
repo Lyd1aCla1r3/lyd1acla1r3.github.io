@@ -1,5 +1,7 @@
 # Part 1: Tokens, One-Hot Encodings, and the Embedding Matrix
 
+<!-- SUMMARY: The foundational process of translating raw text into a rigorous geometric representation requires mapping discrete tokens into orthogonal one-hot vectors. We mathematically motivate the necessity of the Embedding Matrix to compress these isolated dimensions into a dense semantic space, enabling the natural inference of conceptual relationships. -->
+
 <p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 
 At the end of the Preface, we established that every operation in our Transformer will read from and write to a central $4 \times 6$ matrix. We must now bridge the gap between our raw text and that geometric representation. Text is inherently abstract. Computers cannot multiply words. Computers multiply numbers. We need a rigorous mechanical process to translate human language into a mathematical format that a neural network can manipulate.

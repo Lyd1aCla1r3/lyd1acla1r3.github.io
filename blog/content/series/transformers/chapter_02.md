@@ -1,5 +1,7 @@
 # Part 2: The Permutation Invariance Problem & Positional Encoding
 
+<!-- SUMMARY: Matrix operations are inherently permutation invariant, creating a fatal flaw that leaves the Transformer entirely blind to sequence order. We resolve this by explicitly injecting temporal context through the element-wise addition of mathematically deterministic absolute positional encodings. -->
+
 <p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 
 Welcome back. In our previous session, we successfully transformed our input sequence `<BOS> i woke up` into a dense, continuous semantic space. We mathematically compressed sparse 12-dimensional one-hot vectors into a 6-dimensional embedding matrix.

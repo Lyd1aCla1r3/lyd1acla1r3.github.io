@@ -1,5 +1,7 @@
 # Part 7: The Cross-Head Mixer and The Projection Matrix
 
+<!-- SUMMARY: Concatenate the isolated outputs of multiple attention heads into a unified matrix to preserve structural integrity without destructive interference. Synthesize these discrete features into higher-order contextual representations by projecting them through a learned cross-head mixing matrix, preparing the vectors to rejoin the residual stream. -->
+
 <p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 
 In our previous session, we completed the journey of a single attention head. We watched it calculate its masked attention scores, convert those scores into strict probability distributions via the Softmax function, and finally compute a weighted sum over the Value matrix $V$. 

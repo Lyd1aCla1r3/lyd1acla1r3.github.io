@@ -1,5 +1,7 @@
 # Part 24: Updating the Embeddings and Conclusion
 
+<!-- SUMMARY: The accumulated gradient finally reaches the initial embedding matrix via the residual stream, perfectly encapsulating how token representations must shift to minimize prediction error. With the backward pass complete, we conclude our rigorous mathematical traversal of the physical machinery driving the modern Transformer architecture. -->
+
 <p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 
 We have finally reached the terminus of our backward journey. The error signal has cascaded from the Cross-Entropy loss, navigated the Unembedding matrix, split through the Layer 2 MLP, and distributed itself across the complex geometry of the self-attention Query, Key, and Value matrices. Now, this accumulated signal arrives at the very beginning of our network. It is time to update the foundational representations of our tokens: the Embedding matrix itself.
