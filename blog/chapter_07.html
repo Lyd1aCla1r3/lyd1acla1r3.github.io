@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI for Code vs Documentation — Lydia Pedersen</title>
+  <title>Part 7: The Cross-Head Mixer and The Projection Matrix — Lydia Pedersen</title>
   <link rel="stylesheet" href="../css/styles.css?v=1.2">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
   <style>
@@ -98,23 +98,98 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-perspectives">Perspectives</a></li><li aria-current="page">AI for Code vs Documentation</li></ol></nav>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Part 7: The Cross-Head Mixer and The Projection Matrix</li></ol></nav>
         <article class="blog-post">
-<h1>AI for Code vs Documentation</h1>
-<p>As a technical writer, I very much appreciate when engineers recognize the importance of good documentation. There’s an expectation that engineering capacity is directly proportional to the sophistication of coding agents. However, documentation tools and practices were not designed to scale.</p>
-<p>The obvious solution is that AI should also produce the documentation, but this is non-trivial, and for the majority of developers, documentation is not the focus.</p>
-<p>Before Claude Code or Cursor, it was challenging for documentation to keep pace with software development; now it’s nearly impossible. The culture of innovation is frenzied. Experimentation and accelerated development are the high-value deliverables while documentation is an afterthought.</p>
-<p>The trouble with “just get AI to do it” is that even the most advanced GPTs are much better at critiquing than creating. To extract user-facing, coherent, and accurate documentation from PRs is a challenge. To properly describe the motivations and nuances associated with a complex feature set is an art.</p>
-<p>Even a controlled agentic workflow with strict hallucination guards and deterministic auto-fixing needs a human in the loop for governance, and these systems must still be built in-house. I hope to help advance documentation to a first-class citizen so that technology remains meaningfully accessible.</p>
+<h1>Part 7: The Cross-Head Mixer and The Projection Matrix</h1>
+<p><em>Prefer to read this seamlessly offline? <a href="/series/transformers/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p>In our previous session, we completed the journey of a single attention head. We watched it calculate its masked attention scores, convert those scores into strict probability distributions via the Softmax function, and finally compute a weighted sum over the Value matrix $V$. </p>
+<p>That process yielded a contextually enriched vector for each token in our sequence. These vectors, however, only have a dimension of $d_v = 2$. Our overall model dimension is $d_{model} = 6$. We deliberately split our architecture into three parallel attention heads so the network could simultaneously look for different types of semantic relationships. Head 1 might be attending to subject-verb pairings, while Head 2 looks for temporal markers, and Head 3 focuses on pronoun antecedents.</p>
+<p>We now face a critical architectural challenge. We have three isolated sets of findings. We must unify these independent insights back into a single cohesive representation for each token, and this representation must seamlessly reintegrate with our overarching $d_{model} = 6$ architecture. </p>
+<h2>The Concatenation Step</h2>
+<p>The most straightforward way to combine the outputs of the three heads might seem to be addition. We could simply sum the three matrices together. Summation, however, destroys the distinct structural information each head worked so hard to extract. If Head 1 finds a strong positive signal for a specific feature and Head 2 finds a strong negative signal, adding them together would cancel out the values, effectively erasing the evidence gathered by both heads.</p>
+<p>Instead of summing, we concatenate the outputs along the feature dimension. By placing the three $4 \times 2$ matrices side-by-side, we preserve every piece of information. The resulting matrix has a sequence length of 4 and a new feature dimension of $3 \times 2 = 6$. </p>
+<p>Let us look at the actual output of our three heads. We will use the exact Head 1 output we calculated previously, alongside simulated outputs for Head 2 and Head 3.</p>
+<p>$$
+\text{Head 1} = \begin{bmatrix}
+ 0.83 &  0.69 \\
+ 1.03 &  0.70 \\
+ 0.70 &  0.42 \\
+ 0.46 &  0.32
+\end{bmatrix}
+$$</p>
+<p>$$
+\text{Head 2} = \begin{bmatrix}
+-0.50 &  0.10 \\
+-0.40 &  0.30 \\
+-0.20 &  0.25 \\
+ 0.10 & -0.15
+\end{bmatrix}
+$$</p>
+<p>$$
+\text{Head 3} = \begin{bmatrix}
+ 0.20 & -0.30 \\
+ 0.15 & -0.20 \\
+ 0.40 &  0.05 \\
+ 0.25 &  0.10
+\end{bmatrix}
+$$</p>
+<p>When we concatenate these three matrices horizontally, we achieve our target width of 6.</p>
+<p>$$
+\text{Concatenated} = \begin{bmatrix}
+ 0.83 &  0.69 & -0.50 &  0.10 &  0.20 & -0.30 \\
+ 1.03 &  0.70 & -0.40 &  0.30 &  0.15 & -0.20 \\
+ 0.70 &  0.42 & -0.20 &  0.25 &  0.40 &  0.05 \\
+ 0.46 &  0.32 &  0.10 & -0.15 &  0.25 &  0.10
+\end{bmatrix}
+$$</p>
+<h2>The Projection Matrix</h2>
+<p>Concatenation perfectly resolves our sizing issue. We are back to a $4 \times 6$ matrix. Yet, a geometric problem remains. The features are entirely segregated. The first two columns belong exclusively to Head 1, the middle two to Head 2, and the final two to Head 3. The insights exist in the same mathematical structure, yet they do not interact. </p>
+<p>A neural network derives its power from synthesizing discrete pieces of evidence into higher-order concepts. To facilitate this synthesis, we introduce the final learned parameter of the attention mechanism, the Projection Matrix, denoted as $W_O$. </p>
+<pre><code class="language-mermaid">graph TD
+    H1(&quot;Head 1 Output&lt;br&gt;4x2&quot;) --&gt; C
+    H2(&quot;Head 2 Output&lt;br&gt;4x2&quot;) --&gt; C
+    H3(&quot;Head 3 Output&lt;br&gt;4x2&quot;) --&gt; C
+    C(&quot;Concatenated Matrix&lt;br&gt;4x6&quot;) --&gt; M
+    W(&quot;Projection Matrix W_O&lt;br&gt;6x6&quot;) --&gt; M
+    M(&quot;Final Attention Output&lt;br&gt;4x6&quot;)
+</code></pre>
+<p>The matrix $W_O$ has dimensions of $d_{model} \times d_{model}$, which in our case is $6 \times 6$. It acts as a cross-head mixer. When we multiply our concatenated matrix by $W_O$, the resulting matrix is a linear combination of all the features from all the heads. The network can learn that a high value in column 1 from Head 1, when combined with a low value in column 5 from Head 3, implies a specific semantic meaning that should be passed forward to the rest of the architecture.</p>
+<p>Here is the randomly initialized projection matrix $W_O$ for our toy model.</p>
+<p>$$
+W_O = \begin{bmatrix}
+ 0.10 &  0.20 & -0.10 &  0.30 &  0.00 & -0.20 \\
+-0.20 &  0.10 &  0.40 &  0.10 &  0.20 &  0.00 \\
+ 0.30 & -0.10 &  0.10 & -0.20 &  0.50 &  0.10 \\
+-0.10 &  0.40 & -0.30 &  0.10 & -0.10 &  0.30 \\
+ 0.20 &  0.00 &  0.20 & -0.10 &  0.30 & -0.10 \\
+-0.30 &  0.10 & -0.10 &  0.20 & -0.20 &  0.40
+\end{bmatrix}
+$$</p>
+<p>We apply the final transformation by taking the dot product of our concatenated outputs and $W_O$.</p>
+<p>$$
+\text{Output} = \text{Concatenated} \cdot W_O
+$$</p>
+<p>$$
+\text{Output} = \begin{bmatrix}
+-0.08 &  0.29 &  0.18 &  0.35 &  0.00 & -0.33 \\
+-0.10 &  0.42 &  0.10 &  0.43 & -0.01 & -0.25 \\
+-0.03 &  0.31 &  0.08 &  0.29 &  0.07 & -0.10 \\
+ 0.05 &  0.06 &  0.18 &  0.13 &  0.18 & -0.11
+\end{bmatrix}
+$$</p>
+<h2>Rejoining the Stream</h2>
+<p>With this final calculation, we have successfully completed the Multi-Head Self-Attention block. We began with basic token embeddings representing our sequence <code>&lt;BOS&gt; i woke up</code>. We split those representations, allowed them to search for context across the sequence, gathered their findings, and fused those findings back into a unified $4 \times 6$ matrix.</p>
+<p>Every vector in this output matrix now contains rich, contextualized information about its surrounding tokens. We are ready to merge these advanced representations back into the main residual stream of the Transformer.</p>
+<p><em>Prefer to read this seamlessly offline? <a href="/series/transformers/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 
 <div class="blog-pagination">
-      <a href="preface.html" class="pagination-link prev">
+      <a href="chapter_06.html" class="pagination-link prev">
         <span class="pagination-label">Previous</span>
-        <span class="pagination-title">Preface: The Big Picture & Tensor Notation</span>
+        <span class="pagination-title">Part 6: From Scores to Synthesis: Softmax and The Value Matrix</span>
       </a>
-      <a href="body.html" class="pagination-link next">
+      <a href="chapter_08.html" class="pagination-link next">
         <span class="pagination-label">Next</span>
-        <span class="pagination-title">Untitled Post</span>
+        <span class="pagination-title">Part 8: The Residual Stream and the Central Memory Bus</span>
       </a></div>
         </article>
     </div>

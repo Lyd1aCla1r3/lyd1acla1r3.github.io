@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI for Code vs Documentation — Lydia Pedersen</title>
+  <title>Part 23: Backpropagation Through Attention (Part 2: Routing to Q, K, and V) — Lydia Pedersen</title>
   <link rel="stylesheet" href="../css/styles.css?v=1.2">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
   <style>
@@ -98,23 +98,79 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-perspectives">Perspectives</a></li><li aria-current="page">AI for Code vs Documentation</li></ol></nav>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Part 23: Backpropagation Through Attention (Part 2: Routing to Q, K, and V)</li></ol></nav>
         <article class="blog-post">
-<h1>AI for Code vs Documentation</h1>
-<p>As a technical writer, I very much appreciate when engineers recognize the importance of good documentation. There’s an expectation that engineering capacity is directly proportional to the sophistication of coding agents. However, documentation tools and practices were not designed to scale.</p>
-<p>The obvious solution is that AI should also produce the documentation, but this is non-trivial, and for the majority of developers, documentation is not the focus.</p>
-<p>Before Claude Code or Cursor, it was challenging for documentation to keep pace with software development; now it’s nearly impossible. The culture of innovation is frenzied. Experimentation and accelerated development are the high-value deliverables while documentation is an afterthought.</p>
-<p>The trouble with “just get AI to do it” is that even the most advanced GPTs are much better at critiquing than creating. To extract user-facing, coherent, and accurate documentation from PRs is a challenge. To properly describe the motivations and nuances associated with a complex feature set is an art.</p>
-<p>Even a controlled agentic workflow with strict hallucination guards and deterministic auto-fixing needs a human in the loop for governance, and these systems must still be built in-house. I hope to help advance documentation to a first-class citizen so that technology remains meaningfully accessible.</p>
+<h1>Part 23: Backpropagation Through Attention (Part 2: Routing to Q, K, and V)</h1>
+<p><em>Prefer to read this seamlessly offline? <a href="/series/transformers/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p>In the previous part, we successfully navigated the complexities of the Softmax function and the causal mask. We calculated the gradient of the loss with respect to the raw, unmasked attention scores, giving us a precise measurement of how each attention connection should be adjusted. We now stand at the final stage of backpropagating through the self-attention mechanism. Our objective is to distribute these score gradients, along with the gradients from the attention output itself, backward into the Query, Key, and Value matrices. Ultimately, we must route these signals all the way back to the weight matrices that created them and the input sequence that started it all.</p>
+<h2>The Value Matrix Gradient</h2>
+<p>During the forward pass, the attention mechanism produced its final output by multiplying the probability matrix by the Value matrix. If we denote the output as $Z$, the attention probabilities as $P$, and the values as $V$, the operation was $Z = P V$.</p>
+<p>To determine how to adjust the Value matrix, we must calculate the gradient of the loss with respect to $V$. Using the chain rule of matrix calculus, we multiply the transpose of the probability matrix by the gradient of the output. </p>
+<p>$$
+\partial V = P^T \partial Z
+$$</p>
+<p>The transpose operation here is highly intuitive. In the forward pass, a row of $P$ determined how much of each value vector to mix into a single output token. During backpropagation, we transpose $P$. This means a column of $P^T$ dictates how much of the output error should be attributed to a specific value vector. We are explicitly reversing the weighted sum.</p>
+<p>Once we have the gradient for the Value matrix, finding the gradient for its corresponding weight matrix $W_V$ follows standard linear layer backpropagation. We multiply the transpose of the input $X$ by the Value gradient.</p>
+<p>$$
+\partial W_V = X^T \partial V
+$$</p>
+<h2>Routing Gradients to Queries and Keys</h2>
+<p>The Query and Key matrices are responsible for generating the attention scores. In the forward pass, we computed the scaled dot-product attention scores as $S = \frac{Q K^T}{\sqrt{d_k}}$. </p>
+<p>We have already computed the gradient with respect to these scores, which we will refer to as $\partial S$. To distribute this gradient back to the Queries and Keys, we apply the matrix derivative rules for multiplication, remembering to include the scaling factor.</p>
+<p>For the Query matrix gradient, we multiply the score gradient by the Key matrix. </p>
+<p>$$
+\partial Q = \frac{\partial S K}{\sqrt{d_k}}
+$$</p>
+<p>For the Key matrix gradient, we multiply the transposed score gradient by the Query matrix.</p>
+<p>$$
+\partial K = \frac{\partial S^T Q}{\sqrt{d_k}}
+$$</p>
+<p>The geometry of these operations perfectly mirrors the forward pass. The score gradient $\partial S$ represents how the alignment between every query and key needs to change. To know how to adjust a specific query vector, we project that required change onto the key vectors it interacted with. We apply the transpose for the Key gradient to properly align the dimensions, routing the error from the queries back to the keys.</p>
+<p>Similar to the Value weights, we calculate the gradients for the Query and Key weight matrices by multiplying the transposed input by their respective gradients.</p>
+<p>$$
+\partial W_Q = X^T \partial Q
+$$</p>
+<p>$$
+\partial W_K = X^T \partial K
+$$</p>
+<h2>The Confluence at the Input</h2>
+<p>The final step in this layer is to route the gradients all the way back to the input matrix $X$. In the forward pass, the input branched into three parallel paths to create the Queries, Keys, and Values. </p>
+<p>When gradients flow backward through a branching architecture, they sum together at the point of origin. We must calculate the gradient with respect to the input from each of the three paths and add them up.</p>
+<p>$$
+\partial X_V = \partial V W_V^T
+$$</p>
+<p>$$
+\partial X_Q = \partial Q W_Q^T
+$$</p>
+<p>$$
+\partial X_K = \partial K W_K^T
+$$</p>
+<p>The total gradient flowing backward out of the attention block and down the residual stream is the sum of these three components.</p>
+<p>$$
+\partial X_{Total} = \partial X_V + \partial X_Q + \partial X_K
+$$</p>
+<pre><code class="language-mermaid">graph TD
+    dZ(Gradient of Output) --&gt; dV(Gradient of V)
+    dS(Gradient of Scores) --&gt; dQ(Gradient of Q)
+    dS --&gt; dK(Gradient of K)
+    dV --&gt; dX_V(Input Gradient from V)
+    dQ --&gt; dX_Q(Input Gradient from Q)
+    dK --&gt; dX_K(Input Gradient from K)
+    dX_V --&gt; dX(Total Input Gradient)
+    dX_Q --&gt; dX
+    dX_K --&gt; dX
+</code></pre>
+<p>We have now completely backpropagated through the self-attention mechanism. We successfully translated the error from the network&#39;s output into specific updates for the $W_Q$, $W_K$, and $W_V$ matrices, and we prepared the error signal to continue its journey backward down the residual stream. In the next part, we will follow this signal as it reaches the very beginning of the network to update the original token embeddings.</p>
+<p><em>Prefer to read this seamlessly offline? <a href="/series/transformers/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 
 <div class="blog-pagination">
-      <a href="preface.html" class="pagination-link prev">
+      <a href="chapter_22.html" class="pagination-link prev">
         <span class="pagination-label">Previous</span>
-        <span class="pagination-title">Preface: The Big Picture & Tensor Notation</span>
+        <span class="pagination-title">Part 22: Backpropagating Through Attention: The Softmax and the Mask</span>
       </a>
-      <a href="body.html" class="pagination-link next">
+      <a href="chapter_24.html" class="pagination-link next">
         <span class="pagination-label">Next</span>
-        <span class="pagination-title">Untitled Post</span>
+        <span class="pagination-title">Part 24: Updating the Embeddings and Conclusion</span>
       </a></div>
         </article>
     </div>

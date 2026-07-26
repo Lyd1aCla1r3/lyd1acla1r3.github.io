@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI for Code vs Documentation — Lydia Pedersen</title>
+  <title>Part 19: Cross-Entropy Loss — Lydia Pedersen</title>
   <link rel="stylesheet" href="../css/styles.css?v=1.2">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
   <style>
@@ -98,23 +98,64 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-perspectives">Perspectives</a></li><li aria-current="page">AI for Code vs Documentation</li></ol></nav>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Part 19: Cross-Entropy Loss</li></ol></nav>
         <article class="blog-post">
-<h1>AI for Code vs Documentation</h1>
-<p>As a technical writer, I very much appreciate when engineers recognize the importance of good documentation. There’s an expectation that engineering capacity is directly proportional to the sophistication of coding agents. However, documentation tools and practices were not designed to scale.</p>
-<p>The obvious solution is that AI should also produce the documentation, but this is non-trivial, and for the majority of developers, documentation is not the focus.</p>
-<p>Before Claude Code or Cursor, it was challenging for documentation to keep pace with software development; now it’s nearly impossible. The culture of innovation is frenzied. Experimentation and accelerated development are the high-value deliverables while documentation is an afterthought.</p>
-<p>The trouble with “just get AI to do it” is that even the most advanced GPTs are much better at critiquing than creating. To extract user-facing, coherent, and accurate documentation from PRs is a challenge. To properly describe the motivations and nuances associated with a complex feature set is an art.</p>
-<p>Even a controlled agentic workflow with strict hallucination guards and deterministic auto-fixing needs a human in the loop for governance, and these systems must still be built in-house. I hope to help advance documentation to a first-class citizen so that technology remains meaningfully accessible.</p>
+<h1>Part 19: Cross-Entropy Loss</h1>
+<p><em>Prefer to read this seamlessly offline? <a href="/series/transformers/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p>In our preceding analysis, we transformed the raw logits of the Transformer into a valid probability distribution using the Softmax function. This generated a set of predictions representing the model&#39;s current, untrained belief about the next token in the sequence. To teach the model, we must establish a rigorous metric that quantifies exactly how incorrect these beliefs are. This metric is the loss function, the single scalar value that the entire neural network is designed to minimize.</p>
+<h2>The Geometry of Truth</h2>
+<p>To measure the error of our predictions, we first need to define what a perfect prediction looks like. When we feed the model the token <code>&lt;BOS&gt;</code>, the actual next token in our sequence is <code>i</code>. We can represent this ground truth as a target probability distribution. </p>
+<p>If the model were omniscient, it would assign a probability of 1.0 to the token <code>i</code> and 0.0 to all other tokens. This perfectly certain distribution is identical to the one-hot vectors we used to construct our initial embedding matrix. For each time step, our target is simply the one-hot representation of the correct next token. </p>
+<p>Our predicted distribution for the first step, however, looks very different. It is a near-uniform spread of probabilities across all twelve vocabulary words. The loss function must calculate the mathematical distance between our predicted, flat distribution and the sharp, one-hot target distribution.</p>
+<h2>Why Cross-Entropy</h2>
+<p>A naive approach to calculating this distance might be to take the squared difference between the predicted probabilities and the target probabilities, similar to calculating Euclidean distance. While Mean Squared Error works well for continuous regression tasks, it behaves poorly for classification probabilities. When a model is confidently wrong, the gradients of Mean Squared Error shrink, slowing down the learning process precisely when it needs to make the largest corrections.</p>
+<p>Instead, we use Cross-Entropy Loss. For a single prediction, Cross-Entropy Loss evaluates the predicted probability assigned exclusively to the correct target class. It ignores the probabilities assigned to the incorrect classes, provided the target is a pure one-hot vector.</p>
+<p>The function is defined as the negative natural logarithm of the predicted probability of the target token:</p>
+<p>$$
+\text{Loss} = -\log(P_{\text{target}})
+$$</p>
+<p>The natural logarithm exhibits ideal properties for measuring probabilistic error. If the model predicts the correct token with a probability of 1.0, the logarithm of 1.0 is 0, resulting in zero loss. As the predicted probability approaches 0, the logarithm approaches negative infinity, resulting in an infinitely large positive loss. This asymmetric penalty heavily punishes the model for assigning very low probabilities to the true target, forcing it to aggressively adjust its weights. Furthermore, the logarithm translates the multiplication of probabilities into addition, which simplifies our calculus during backpropagation.</p>
+<h2>Calculating the Sequence Loss</h2>
+<p>Our sequence <code>&lt;BOS&gt; i woke up</code> requires the model to make four distinct predictions simultaneously. We process the targets across the time steps: <code>i</code> for index 3, <code>woke</code> for index 5, <code>up</code> for index 7, and <code>late</code> for index 8.</p>
+<p>At each step, we look up the predicted probability from the Softmax matrix we calculated in the previous part, and then we take the negative logarithm.</p>
+<p><strong>Time Step 0</strong>
+The input is <code>&lt;BOS&gt;</code> and the target is <code>i</code>. The predicted probability for <code>i</code> is 0.0843.
+$$
+\text{Loss}_0 = -\log(0.0843) = 2.4734
+$$</p>
+<p><strong>Time Step 1</strong>
+The input is <code>i</code> and the target is <code>woke</code>. The predicted probability for <code>woke</code> is 0.0831.
+$$
+\text{Loss}_1 = -\log(0.0831) = 2.4877
+$$</p>
+<p><strong>Time Step 2</strong>
+The input is <code>woke</code> and the target is <code>up</code>. The predicted probability for <code>up</code> is 0.0833.
+$$
+\text{Loss}_2 = -\log(0.0833) = 2.4853
+$$</p>
+<p><strong>Time Step 3</strong>
+The input is <code>up</code> and the target is <code>late</code>. The predicted probability for <code>late</code> is 0.0833.
+$$
+\text{Loss}_3 = -\log(0.0833) = 2.4853
+$$</p>
+<p>To compute the final loss for the entire sequence, we calculate the arithmetic mean of the individual losses across all time steps. </p>
+<p>$$
+\text{Total Loss} = \frac{2.4734 + 2.4877 + 2.4853 + 2.4853}{4} = 2.4829
+$$</p>
+<h2>The Untrained Baseline</h2>
+<p>Our final calculated loss is 2.4829. This specific value is highly informative. For a completely untrained model, the weights act as random noise, causing the Softmax function to distribute probability relatively evenly across the entire vocabulary. </p>
+<p>With a vocabulary size $V$ of 12, a uniform distribution assigns a probability of $\frac{1}{12}$ to every token. The theoretical Cross-Entropy Loss for a uniform distribution is $-\log(\frac{1}{12})$, which evaluates to approximately 2.4849. Our calculated loss of 2.4829 is nearly identical to this theoretical baseline. This confirms our forward pass is functioning correctly and clearly demonstrates the model&#39;s initial state of total uncertainty.</p>
+<p>We have now reached the end of the forward pass. We possess a single scalar value that quantifies the error of our entire network. In our next installment, we will begin the backward pass, calculating the derivative of this loss to uncover an elegantly simple mathematical cancellation that drives the learning process.</p>
+<p><em>Prefer to read this seamlessly offline? <a href="/series/transformers/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 
 <div class="blog-pagination">
-      <a href="preface.html" class="pagination-link prev">
+      <a href="chapter_18.html" class="pagination-link prev">
         <span class="pagination-label">Previous</span>
-        <span class="pagination-title">Preface: The Big Picture & Tensor Notation</span>
+        <span class="pagination-title">Part 18: Final Softmax and Predictions</span>
       </a>
-      <a href="body.html" class="pagination-link next">
+      <a href="chapter_20.html" class="pagination-link next">
         <span class="pagination-label">Next</span>
-        <span class="pagination-title">Untitled Post</span>
+        <span class="pagination-title">Part 20: The Beautiful Cancellation</span>
       </a></div>
         </article>
     </div>

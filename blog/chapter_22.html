@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI for Code vs Documentation — Lydia Pedersen</title>
+  <title>Part 22: Backpropagating Through Attention: The Softmax and the Mask — Lydia Pedersen</title>
   <link rel="stylesheet" href="../css/styles.css?v=1.2">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
   <style>
@@ -98,23 +98,47 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-perspectives">Perspectives</a></li><li aria-current="page">AI for Code vs Documentation</li></ol></nav>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Part 22: Backpropagating Through Attention: The Softmax and the Mask</li></ol></nav>
         <article class="blog-post">
-<h1>AI for Code vs Documentation</h1>
-<p>As a technical writer, I very much appreciate when engineers recognize the importance of good documentation. There’s an expectation that engineering capacity is directly proportional to the sophistication of coding agents. However, documentation tools and practices were not designed to scale.</p>
-<p>The obvious solution is that AI should also produce the documentation, but this is non-trivial, and for the majority of developers, documentation is not the focus.</p>
-<p>Before Claude Code or Cursor, it was challenging for documentation to keep pace with software development; now it’s nearly impossible. The culture of innovation is frenzied. Experimentation and accelerated development are the high-value deliverables while documentation is an afterthought.</p>
-<p>The trouble with “just get AI to do it” is that even the most advanced GPTs are much better at critiquing than creating. To extract user-facing, coherent, and accurate documentation from PRs is a challenge. To properly describe the motivations and nuances associated with a complex feature set is an art.</p>
-<p>Even a controlled agentic workflow with strict hallucination guards and deterministic auto-fixing needs a human in the loop for governance, and these systems must still be built in-house. I hope to help advance documentation to a first-class citizen so that technology remains meaningfully accessible.</p>
+<h1>Part 22: Backpropagating Through Attention: The Softmax and the Mask</h1>
+<p><em>Prefer to read this seamlessly offline? <a href="/series/transformers/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p>We left off with the gradient flowing down the residual stream, reaching the output of our Layer 2 attention block. Our objective now is to pull this error signal backward through the self-attention mechanism itself. This requires us to unpack the sequence of operations that created the attention output. The final operations in that sequence involved multiplying the attention probabilities by the Value matrix, and prior to that, applying the Softmax function to the masked attention scores.</p>
+<h2>From Values to Probabilities</h2>
+<p>During the forward pass, the attention output is computed as the matrix product of the probability matrix $P$ and the Value matrix $V$. The gradient of the loss with respect to this output represents the exact direction we must move to minimize the error in our final contextualized vectors. To determine how to adjust the attention probabilities $P$, we apply the standard chain rule for matrix multiplication. The gradient with respect to $P$ is the incoming gradient multiplied by the transpose of $V$. We will define this resulting gradient matrix as $d\_P$.</p>
+<p>The matrix $d\_P$ tells us how the loss would change if we tweaked the attention probabilities. It is a sequence-by-sequence square matrix, detailing the precise error signal for the attention connection between every pair of tokens in our text.</p>
+<h2>The Calculus of Softmax</h2>
+<p>We must push this gradient $d\_P$ backward through the Softmax function to find the gradient with respect to the raw, pre-Softmax attention scores. We will define these pre-Softmax scores as $S$. </p>
+<p>The Softmax function presents a unique mathematical challenge. It takes a vector of scores and normalizes them into a coupled probability distribution. Changing a single score in the input vector alters the sum in the denominator for all other elements, inherently shifting the final probability of every other element. Consequently, the derivative of a Softmax output with respect to its input is a Jacobian matrix containing the partial derivatives of every output with respect to every input.</p>
+<p>The mathematical formula for backpropagating through Softmax across an entire sequence reduces to an elegant matrix operation:</p>
+<p>$$
+d\_S = P \odot (d\_P - \sum (d\_P \odot P))
+$$</p>
+<p>Here, $\odot$ represents element-wise multiplication. We multiply the incoming gradient $d\_P$ by the probabilities $P$, sum those results along the sequence dimension, and subtract that sum from the original $d\_P$. We then multiply the entire result element-wise by the probabilities $P$ again.</p>
+<p>This formulation captures the proportional interplay of probabilities. If a particular token received a high probability during the forward pass, its gradient heavily influences the adjustment of the pre-Softmax scores. If a token was ignored and assigned a near-zero probability, the multiplication by $P$ ensures the gradient struggles to pass through, effectively severing the learning signal for that specific connection.</p>
+<h2>Traversing the Causal Mask</h2>
+<p>We have successfully calculated $d\_S$, representing the gradient with respect to the masked attention scores. The final step in this stage is to push the gradient through the causal mask.</p>
+<p>During the forward pass, we applied a lower-triangular mask to the raw attention scores. We explicitly set all values above the diagonal to negative infinity. This structural intervention prevented tokens from attending to future positions, guaranteeing our model respects causality during parallel training. When the Softmax function encountered negative infinity, it mapped it to a strict zero probability.</p>
+<p>In the backward pass, gradients flow only where information flowed forward. Since the upper triangular elements of the score matrix were overwritten and ignored during the forward pass, they cannot have contributed to the final loss. The error signal for those future-looking connections must be zero. </p>
+<p>To route the gradient through the causal mask, we simply apply a binary lower-triangular mask to $d\_S$, zeroing out the upper triangular portion:</p>
+<p>$$
+d\_S\_{unmasked} = \begin{bmatrix}
+1 & 0 & 0 & 0 \\
+1 & 1 & 0 & 0 \\
+1 & 1 & 1 & 0 \\
+1 & 1 & 1 & 1
+\end{bmatrix} \odot d\_S
+$$</p>
+<p>We now possess the gradient with respect to the pure, unmasked attention scores, representing the direct scaled dot product $Q K^T / \sqrt{d_k}$. Our error signal has successfully traversed the most numerically complex non-linearity in the Transformer architecture. In our next installment, we will distribute this gradient into the Query, Key, and Value weight matrices, completing the learning cycle for the self-attention mechanism.</p>
+<p><em>Prefer to read this seamlessly offline? <a href="/series/transformers/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 
 <div class="blog-pagination">
-      <a href="preface.html" class="pagination-link prev">
+      <a href="chapter_21.html" class="pagination-link prev">
         <span class="pagination-label">Previous</span>
-        <span class="pagination-title">Preface: The Big Picture & Tensor Notation</span>
+        <span class="pagination-title">Part 21: Backpropagating Through the Unembedding and Residual Stream</span>
       </a>
-      <a href="body.html" class="pagination-link next">
+      <a href="chapter_23.html" class="pagination-link next">
         <span class="pagination-label">Next</span>
-        <span class="pagination-title">Untitled Post</span>
+        <span class="pagination-title">Part 23: Backpropagation Through Attention (Part 2: Routing to Q, K, and V)</span>
       </a></div>
         </article>
     </div>

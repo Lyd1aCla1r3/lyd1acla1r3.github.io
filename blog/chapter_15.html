@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI for Code vs Documentation — Lydia Pedersen</title>
+  <title>Part 15: The Final Blend: Masking, Softmax, and Values in Layer 2 — Lydia Pedersen</title>
   <link rel="stylesheet" href="../css/styles.css?v=1.2">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
   <style>
@@ -98,23 +98,98 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-perspectives">Perspectives</a></li><li aria-current="page">AI for Code vs Documentation</li></ol></nav>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Part 15: The Final Blend: Masking, Softmax, and Values in Layer 2</li></ol></nav>
         <article class="blog-post">
-<h1>AI for Code vs Documentation</h1>
-<p>As a technical writer, I very much appreciate when engineers recognize the importance of good documentation. There’s an expectation that engineering capacity is directly proportional to the sophistication of coding agents. However, documentation tools and practices were not designed to scale.</p>
-<p>The obvious solution is that AI should also produce the documentation, but this is non-trivial, and for the majority of developers, documentation is not the focus.</p>
-<p>Before Claude Code or Cursor, it was challenging for documentation to keep pace with software development; now it’s nearly impossible. The culture of innovation is frenzied. Experimentation and accelerated development are the high-value deliverables while documentation is an afterthought.</p>
-<p>The trouble with “just get AI to do it” is that even the most advanced GPTs are much better at critiquing than creating. To extract user-facing, coherent, and accurate documentation from PRs is a challenge. To properly describe the motivations and nuances associated with a complex feature set is an art.</p>
-<p>Even a controlled agentic workflow with strict hallucination guards and deterministic auto-fixing needs a human in the loop for governance, and these systems must still be built in-house. I hope to help advance documentation to a first-class citizen so that technology remains meaningfully accessible.</p>
+<h1>Part 15: The Final Blend: Masking, Softmax, and Values in Layer 2</h1>
+<p><em>Prefer to read this seamlessly offline? <a href="/series/transformers/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p>In our previous installment, we computed the unscaled and scaled attention scores for the second layer of our Transformer. We witnessed how projecting deeply contextualized tokens into new Query and Key spaces allowed them to evaluate their semantic relevance to one another. The resulting matrix of scores tells us exactly how much attention every token wishes to pay to every other token. We are now ready to finalize this attention mechanism by applying the causal mask, normalizing the scores into strict probabilities, and extracting the final contextualized features from the Value matrix.</p>
+<h2>The Causal Mask</h2>
+<p>We are training our model to predict the next token in a sequence in a parallel fashion. To accomplish this, we must strictly enforce the arrow of time. If a token is allowed to &quot;look ahead&quot; at future tokens, it would effectively be cheating, ruining the model&#39;s ability to learn actual predictive dynamics.</p>
+<p>To prevent this information leakage, we apply a lower-triangular causal mask to our scaled attention scores. We set all positions above the main diagonal to negative infinity, $-\infty$. When we apply the Softmax function in the next step, any score of $-\infty$ will be driven to exactly zero.</p>
+<p>Here are the scaled attention scores we calculated previously:</p>
+<p>$$
+\text{Scores} = \begin{bmatrix}
+-0.45 & -0.27 & 0.92 & 0.86 \\
+-0.28 & -0.13 & 0.50 & 0.45 \\
+0.93 & 0.47 & -1.76 & -1.60 \\
+0.89 & 0.44 & -1.66 & -1.51
+\end{bmatrix}
+$$</p>
+<p>Applying the causal mask yields our strictly historical scores:</p>
+<p>$$
+\text{Masked} = \begin{bmatrix}
+-0.45 & -\infty & -\infty & -\infty \\
+-0.28 & -0.13 & -\infty & -\infty \\
+0.93 & 0.47 & -1.76 & -\infty \\
+0.89 & 0.44 & -1.66 & -1.51
+\end{bmatrix}
+$$</p>
+<h2>Normalizing with Softmax</h2>
+<p>Our masked scores are unbounded real numbers. To use them as a weighting system, they must be converted into a valid probability distribution where each row sums exactly to one. The Softmax function achieves this by exponentiating each score and dividing by the sum of all exponentiated scores in that row.</p>
+<p>This non-linear operation amplifies larger scores and suppresses smaller ones. Applying Softmax row by row to our masked matrix provides the final Attention Probabilities:</p>
+<p>$$
+\text{Attention Probabilities} = \begin{bmatrix}
+1.00 & 0.00 & 0.00 & 0.00 \\
+0.46 & 0.54 & 0.00 & 0.00 \\
+0.59 & 0.37 & 0.04 & 0.00 \\
+0.55 & 0.35 & 0.04 & 0.05
+\end{bmatrix}
+$$</p>
+<p>Take a moment to analyze these probabilities. The token <code>&lt;BOS&gt;</code> in row 1 is forced to attend entirely to itself since the rest of the sequence is masked. By the time we reach the token &quot;up&quot; in row 4, we see its attention is heavily distributed back toward the beginning of the sequence, allocating 55% of its focus to <code>&lt;BOS&gt;</code> and 35% to &quot;i&quot;. The deep layers of the Transformer often exhibit this behavior where late tokens rely heavily on early anchoring tokens to ground their context.</p>
+<h2>Extracting the Value</h2>
+<p>We have determined exactly <em>where</em> each token should look. The final step is to determine <em>what</em> it actually sees. This is the purpose of the Value matrix, $V$.</p>
+<p>Just as we projected our embeddings into Query and Key spaces, we projected them into the Value space to define the specific features each token offers to the rest of the sequence. To compute the output of this attention head, we take the dot product of our Attention Probabilities matrix with the Value matrix. This operation acts as a weighted sum, blending the features of the sequence according to the calculated probabilities.</p>
+<p>Let us define the Value matrix for Layer 2, Head 1:</p>
+<p>$$
+V_2 = \begin{bmatrix}
+-1.05 & 0.82 \\
+-0.51 & 0.60 \\
+0.77 & -0.13 \\
+0.71 & -0.13
+\end{bmatrix}
+$$</p>
+<p>Multiplying the Attention Probabilities by this Value matrix yields our final output for this head:</p>
+<p>$$
+\text{Head Output} = \begin{bmatrix}
+1.00 & 0.00 & 0.00 & 0.00 \\
+0.46 & 0.54 & 0.00 & 0.00 \\
+0.59 & 0.37 & 0.04 & 0.00 \\
+0.55 & 0.35 & 0.04 & 0.05
+\end{bmatrix}
+\begin{bmatrix}
+-1.05 & 0.82 \\
+-0.51 & 0.60 \\
+0.77 & -0.13 \\
+0.71 & -0.13
+\end{bmatrix}
+= \begin{bmatrix}
+-1.05 & 0.82 \\
+-0.76 & 0.70 \\
+-0.78 & 0.70 \\
+-0.69 & 0.65
+\end{bmatrix}
+$$</p>
+<p>This mathematical flow can be visualized as a sequence of transformations:</p>
+<pre><code class="language-mermaid">graph TD
+    Scores(Scaled Scores) --&gt; Mask(Apply Causal Mask)
+    Mask --&gt; Softmax(Apply Softmax)
+    Softmax --&gt; Probs(Attention Probabilities)
+    V(Value Matrix V2) --&gt; Multiply(Matrix Multiplication)
+    Probs --&gt; Multiply
+    Multiply --&gt; Output(Head Output)
+</code></pre>
+<p>This resulting matrix represents an incredibly sophisticated conceptual mixture. The representation for &quot;up&quot; (row 4) is no longer just the isolated concept of the word &quot;up&quot;. It has absorbed the physical features of the token &quot;i&quot; and the structural anchor of <code>&lt;BOS&gt;</code>, modulated through two complete layers of Multi-Head Attention and Multi-Layer Perceptrons. </p>
+<p>In the next installment, we will pass these highly refined vectors through the final components of Layer 2 to complete the forward pass of our Transformer architecture.</p>
+<p><em>Prefer to read this seamlessly offline? <a href="/series/transformers/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 
 <div class="blog-pagination">
-      <a href="preface.html" class="pagination-link prev">
+      <a href="chapter_14.html" class="pagination-link prev">
         <span class="pagination-label">Previous</span>
-        <span class="pagination-title">Preface: The Big Picture & Tensor Notation</span>
+        <span class="pagination-title">Part 14: Scoring Deep Context: Layer 2 Attention</span>
       </a>
-      <a href="body.html" class="pagination-link next">
+      <a href="chapter_16.html" class="pagination-link next">
         <span class="pagination-label">Next</span>
-        <span class="pagination-title">Untitled Post</span>
+        <span class="pagination-title">Part 16: Deepening the Representation: MLP and Residuals in Layer 2</span>
       </a></div>
         </article>
     </div>

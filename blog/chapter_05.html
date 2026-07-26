@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI for Code vs Documentation — Lydia Pedersen</title>
+  <title>Part 5: Causal Masking — Lydia Pedersen</title>
   <link rel="stylesheet" href="../css/styles.css?v=1.2">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
   <style>
@@ -98,23 +98,60 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-perspectives">Perspectives</a></li><li aria-current="page">AI for Code vs Documentation</li></ol></nav>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Part 5: Causal Masking</li></ol></nav>
         <article class="blog-post">
-<h1>AI for Code vs Documentation</h1>
-<p>As a technical writer, I very much appreciate when engineers recognize the importance of good documentation. There’s an expectation that engineering capacity is directly proportional to the sophistication of coding agents. However, documentation tools and practices were not designed to scale.</p>
-<p>The obvious solution is that AI should also produce the documentation, but this is non-trivial, and for the majority of developers, documentation is not the focus.</p>
-<p>Before Claude Code or Cursor, it was challenging for documentation to keep pace with software development; now it’s nearly impossible. The culture of innovation is frenzied. Experimentation and accelerated development are the high-value deliverables while documentation is an afterthought.</p>
-<p>The trouble with “just get AI to do it” is that even the most advanced GPTs are much better at critiquing than creating. To extract user-facing, coherent, and accurate documentation from PRs is a challenge. To properly describe the motivations and nuances associated with a complex feature set is an art.</p>
-<p>Even a controlled agentic workflow with strict hallucination guards and deterministic auto-fixing needs a human in the loop for governance, and these systems must still be built in-house. I hope to help advance documentation to a first-class citizen so that technology remains meaningfully accessible.</p>
+<h1>Part 5: Causal Masking</h1>
+<p><em>Prefer to read this seamlessly offline? <a href="/series/transformers/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p>In our previous session, we successfully derived the scaled attention scores. We calculated the dot product between our Query and Key matrices, measuring how intensely each token seeks information from every other token, and scaled the result by $\sqrt{d_k}$ to prevent gradient saturation. </p>
+<p>Before we can convert these scores into a final probability distribution, we must address a critical structural flaw in how our matrix currently operates during training. </p>
+<h2>The Problem of Parallel Training</h2>
+<p>When training a Transformer, we do not feed tokens in one by one. We optimize for speed by passing the entire sequence through the network simultaneously. This technique is known as teacher forcing. Our matrix operations compute the attention scores for <code>&lt;BOS&gt;</code>, <code>i</code>, <code>woke</code>, and <code>up</code> all at the exact same time.</p>
+<p>Let us examine the scaled attention scores from our previous calculation. The rows represent our Queries looking for information, and the columns represent our Keys offering information.</p>
+<p>$$
+\text{Scaled Scores} = \begin{bmatrix}
+0.45 & 0.68 & 0.73 & 0.63 \\
+0.59 & 0.87 & 0.93 & 0.79 \\
+-0.09 & -0.20 & -0.26 & -0.28 \\
+-0.18 & -0.33 & -0.39 & -0.39
+\end{bmatrix}
+$$</p>
+<p>The first row represents the <code>&lt;BOS&gt;</code> token acting as a Query. It is generating attention scores against all available Keys. The second column of the first row holds a score of 0.68, representing the <code>&lt;BOS&gt;</code> token attending to the <code>i</code> token.</p>
+<p>This reveals a profound issue. If the model is processing the <code>&lt;BOS&gt;</code> token to predict the next logical word in the sequence, it should only have access to information from the <code>&lt;BOS&gt;</code> token itself. In our current matrix, the <code>&lt;BOS&gt;</code> token has full visibility into the future tokens <code>i</code>, <code>woke</code>, and <code>up</code>. The model is effectively looking at the answer key while taking the test. The network will perfectly learn to copy the next token rather than learning the underlying linguistic patterns.</p>
+<h2>The Causal Mask</h2>
+<p>We must physically block the flow of information from future tokens into past tokens. We achieve this by applying a lower-triangular mask to the attention scores. </p>
+<p>We define a mask where any position representing a Query attending to a future Key is marked for obstruction.</p>
+<p>$$
+\text{Mask} = \begin{bmatrix}
+1 & 0 & 0 & 0 \\
+1 & 1 & 0 & 0 \\
+1 & 1 & 1 & 0 \\
+1 & 1 & 1 & 1
+\end{bmatrix}
+$$</p>
+<p>Where the mask holds a 1, we keep the original scaled score. Where the mask holds a 0, we overwrite the score with negative infinity ($-\infty$). Applying this operation yields our masked attention scores.</p>
+<p>$$
+\text{Masked Scores} = \begin{bmatrix}
+0.45 & -\infty & -\infty & -\infty \\
+0.59 & 0.87 & -\infty & -\infty \\
+-0.09 & -0.20 & -0.26 & -\infty \\
+-0.18 & -0.33 & -0.39 & -0.39
+\end{bmatrix}
+$$</p>
+<p>By inspecting the second row, we see the Query for the token <code>i</code> can only attend to the Key for <code>&lt;BOS&gt;</code> and the Key for <code>i</code>. The scores for <code>woke</code> and <code>up</code> have been obliterated. Causality is preserved.</p>
+<h2>The Mathematical Role of Negative Infinity</h2>
+<p>We use $-\infty$ rather than zero due to the mathematical properties of the next operation in the architecture. The Softmax function will soon convert these scores into a valid probability distribution. The Softmax function exponentiates each value using $e^x$.</p>
+<p>As $x$ approaches $-\infty$, the value of $e^x$ converges exactly to 0. When we calculate the final attention weights in the next step, any connection blocked by our causal mask will receive a probability weight of precisely 0%. Future tokens will contribute nothing to the mathematical representation of past tokens.</p>
+<p>With our causal mask firmly in place, we are ready to safely pass these masked scores through the Softmax function and extract our final Value matrices.</p>
+<p><em>Prefer to read this seamlessly offline? <a href="/series/transformers/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 
 <div class="blog-pagination">
-      <a href="preface.html" class="pagination-link prev">
+      <a href="chapter_04.html" class="pagination-link prev">
         <span class="pagination-label">Previous</span>
-        <span class="pagination-title">Preface: The Big Picture & Tensor Notation</span>
+        <span class="pagination-title">Part 4: The Attention Score and $\sqrt{d_k}$</span>
       </a>
-      <a href="body.html" class="pagination-link next">
+      <a href="chapter_06.html" class="pagination-link next">
         <span class="pagination-label">Next</span>
-        <span class="pagination-title">Untitled Post</span>
+        <span class="pagination-title">Part 6: From Scores to Synthesis: Softmax and The Value Matrix</span>
       </a></div>
         </article>
     </div>
