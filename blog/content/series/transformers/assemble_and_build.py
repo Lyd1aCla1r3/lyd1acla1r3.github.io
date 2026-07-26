@@ -65,6 +65,9 @@ for filename in files:
     with open(filepath, 'r') as f:
         content = f.read()
     
+    # Remove download CTA links from the ebook build
+    content = re.sub(r'<p><em>Prefer to read this seamlessly offline\?.*?</em></p>\n*', '', content, flags=re.IGNORECASE)
+    
     # Part -> Chapter renaming
     content = re.sub(r'# Part (\d+):', r'# Chapter \1:', content)
     content = re.sub(r'\bPart (\d+)\b', r'Chapter \1', content)
