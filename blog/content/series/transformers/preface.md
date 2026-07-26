@@ -1,7 +1,7 @@
 # Preface: The Big Picture & Tensor Notation
 <!-- SUMMARY: Discard abstract metaphors and build an autoregressive Decoder-only Transformer from scratch using rigorous tensor notation and geometric principles. This foundational overview defines the vocabulary space, architectural dimensions, and the central residual stream required to calculate the forward pass. -->
 
-<p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 
 ## The Problem with Tutorials
 
@@ -124,4 +124,4 @@ Every single mathematical operation in our forward pass will read from and write
 
 In the next part, we will take our raw text, map it to our vocabulary indices, and perform our first genuine calculation. We will transform one-hot encoded vectors into this $4 \times 6$ geometric representation.
 
-<p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>

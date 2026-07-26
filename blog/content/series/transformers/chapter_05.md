@@ -2,7 +2,7 @@
 
 <!-- SUMMARY: Parallel training introduces a critical structural flaw by allowing past tokens illegal computational access to future context. We preserve causality by applying a lower-triangular mask of negative infinity, erecting an impenetrable mathematical barrier that elegantly neutralizes future information when passed through the Softmax function. -->
 
-<p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 
 In our previous session, we successfully derived the scaled attention scores. We calculated the dot product between our Query and Key matrices, measuring how intensely each token seeks information from every other token, and scaled the result by $\sqrt{d_k}$ to prevent gradient saturation. 
 
@@ -63,4 +63,4 @@ As $x$ approaches $-\infty$, the value of $e^x$ converges exactly to 0. When we 
 
 With our causal mask firmly in place, we are ready to safely pass these masked scores through the Softmax function and extract our final Value matrices.
 
-<p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
