@@ -20,11 +20,24 @@ final_pdf = os.path.join(directory, 'transformer_ebook_final.pdf')
 
 files = ['preface.md'] + [f'chapter_{i:02d}.md' for i in range(1, 25)]
 
-# --- Frontmatter ---
-title_page = """<div style="height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
-<h1 style="border: none; font-size: 2.5em; margin-bottom: 0; text-align: center;">The Transformer Architecture</h1>
-<h2 style="border: none; font-size: 1.5em; margin-top: 10px; color: var(--text-color); font-weight: 300; text-align: center;">A Geometric Toy Example from Scratch</h2>
-<p style="margin-top: 50px; font-size: 1.2em;">By Lydia Pedersen</p>
+import base64
+
+with open("/Users/lydia/Desktop/personal/career/resumes/portfolio/assets/images/transformer_decoder_cover.jpg", "rb") as image_file:
+    encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+
+title_page = f"""<style>
+@page :first {{
+    margin: 0;
+}}
+</style>
+<div style="position: relative; height: 100vh; overflow: hidden; width: 100%; box-sizing: border-box;">
+    <img src="data:image/jpeg;base64,{encoded_string}" style="position: absolute; top: -10vh; left: -25%; height: 120vh; width: auto; opacity: 0.18; z-index: -2; max-width: none;" />
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 100%); z-index: -1;"></div>
+    <div style="height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: flex-end; padding-right: 12%; text-align: right; box-sizing: border-box;">
+        <h1 style="border: none; font-size: 3.8em; margin-bottom: 0; text-align: right; line-height: 1.1;">The Transformer<br>Architecture</h1>
+        <h2 style="border: none; font-size: 1.8em; margin-top: 15px; color: var(--text-color); font-weight: 300; text-align: right; line-height: 1.3;">A Geometric Toy Example<br>from Scratch</h2>
+        <p style="margin-top: 50px; font-size: 1.4em; font-weight: 500;">By Lydia Pedersen</p>
+    </div>
 </div>
 <div style="page-break-after: always;"></div>
 """
