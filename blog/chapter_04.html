@@ -101,7 +101,7 @@
     <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Part 4: The Attention Score and $\sqrt{d_k}$</li></ol></nav>
         <article class="blog-post">
 <h1>Part 4: The Attention Score and $\sqrt{d_k}$</h1>
-<p><em>Prefer to read this seamlessly offline? <a href="/series/transformers/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p><p>In the previous installment, we established why the Transformer does not calculate attention directly from the input embeddings. We projected our sequence into two distinct semantic subspaces, yielding a matrix of Queries ($Q$) and a matrix of Keys ($K$). This asymmetric projection allows the network to match concepts that belong together even if their base embeddings are geometrically distant.</p>
+<p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p><p>In the previous installment, we established why the Transformer does not calculate attention directly from the input embeddings. We projected our sequence into two distinct semantic subspaces, yielding a matrix of Queries ($Q$) and a matrix of Keys ($K$). This asymmetric projection allows the network to match concepts that belong together even if their base embeddings are geometrically distant.</p>
 <p>Our sequence currently consists of four tokens:</p>
 <p>| <code>&lt;BOS&gt;</code> | <code>i</code> | <code>woke</code> | <code>up</code> |</p>
 <p>We now need to calculate the actual attention scores. We want to quantify how strongly each token in our sequence should attend to every other token. We achieve this by taking the dot product of every Query vector with every Key vector. </p>
@@ -172,7 +172,7 @@ $$</p>
 $$</p>
 <p>These values are now safely bounded and ready to be converted into probabilities. </p>
 <p>We cannot apply the Softmax function just yet. Our model is currently looking at the entire sequence simultaneously. The first token (<code>&lt;BOS&gt;</code>) has a score of <code>0.63</code> connecting it to the future token <code>up</code>. In a language modeling task, allowing a token to attend to words that have not been generated yet is invalid. We must hide the future before we finalize our probabilities, which brings us to the mathematics of Causal Masking.</p>
-<p><em>Prefer to read this seamlessly offline? <a href="/series/transformers/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="chapter_03.html" class="pagination-link prev">

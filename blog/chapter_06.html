@@ -101,7 +101,7 @@
     <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Part 6: From Scores to Synthesis: Softmax and The Value Matrix</li></ol></nav>
         <article class="blog-post">
 <h1>Part 6: From Scores to Synthesis: Softmax and The Value Matrix</h1>
-<p><em>Prefer to read this seamlessly offline? <a href="/series/transformers/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p><p>In our previous installation, we successfully calculated the masked attention scores. By applying a lower triangular matrix of negative infinity values, we erected a strict mathematical barrier that prevents information from flowing backward in time. We are now left with a matrix representing the raw geometric alignment between our Queries and Keys across all valid time steps. </p>
+<p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p><p>In our previous installation, we successfully calculated the masked attention scores. By applying a lower triangular matrix of negative infinity values, we erected a strict mathematical barrier that prevents information from flowing backward in time. We are now left with a matrix representing the raw geometric alignment between our Queries and Keys across all valid time steps. </p>
 <p>These scalar values are mathematically unbounded. We must now convert them into a stable format capable of driving the core synthesis step of the attention mechanism. This transformation requires the Softmax function and the introduction of our third fundamental learned matrix: the Value matrix.</p>
 <h2>The Softmax Function: Converting Alignment to Probability</h2>
 <p>We intend to use our attention scores as a set of weights to perform a weighted sum. If we were to use the raw, unbounded scores directly, the magnitude of our vectors would compound uncontrollably as information flows deeper into the network. To maintain mathematical stability, we require our weights to be strictly positive and to sum exactly to 1 across each row. We achieve this by applying the Softmax function.</p>
@@ -178,7 +178,7 @@ H = A \cdot V = \begin{bmatrix}
 $$</p>
 <p>Let us analyze the final row corresponding to the token <code>up</code>. Its new representation is <code>[0.46, 0.32]</code>. This vector is no longer a static dictionary definition. It is a dynamic, context aware representation explicitly shaped by the presence of <code>woke</code> and <code>i</code> occurring earlier in the sequence. </p>
 <p>We have successfully completed the attention mechanism for a single head. Our model operates with three independent attention heads running in parallel. In our next session, we will explore how to reconcile these independent perspectives by projecting them back into the original embedding dimension.</p>
-<p><em>Prefer to read this seamlessly offline? <a href="/series/transformers/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="chapter_05.html" class="pagination-link prev">

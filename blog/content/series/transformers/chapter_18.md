@@ -1,6 +1,6 @@
 # Part 18: Final Softmax and Predictions
 
-<p><em>Prefer to read this seamlessly offline? <a href="/series/transformers/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 
 In the previous step, we projected our highly contextualized vectors out of the latent model space and back into the vocabulary space. This operation yielded our logits, which are raw, unbounded scores assigning a numerical value to each of the 12 possible words in our vocabulary. While logits indicate the model's geometric preference for certain words, they are not interpretable as a true probability distribution. We require a mechanism to compress these unbounded scores into a strict, positive range that sums to exactly one. The Softmax function provides this precise mathematical transformation.
 
@@ -52,4 +52,4 @@ To make the network predict "late", we need the probability at index 8 of the fi
 
 This brings us to the final and most mathematically profound phase of neural network architecture, which is Backpropagation.
 
-<p><em>Prefer to read this seamlessly offline? <a href="/series/transformers/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>

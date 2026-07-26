@@ -101,7 +101,7 @@
     <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Part 9: Taming the Stream: The Geometry of Layer Normalization</li></ol></nav>
         <article class="blog-post">
 <h1>Part 9: Taming the Stream: The Geometry of Layer Normalization</h1>
-<p><em>Prefer to read this seamlessly offline? <a href="/series/transformers/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p><p>In our previous installment, we introduced the Residual Stream. We observed how the Attention block operates as an independent module that reads from the central memory bus, calculates contextual updates, and adds those updates directly back into the original embeddings. This additive process ensures that the network never loses the raw, initial information about the token and its position. </p>
+<p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p><p>In our previous installment, we introduced the Residual Stream. We observed how the Attention block operates as an independent module that reads from the central memory bus, calculates contextual updates, and adds those updates directly back into the original embeddings. This additive process ensures that the network never loses the raw, initial information about the token and its position. </p>
 <p>There is a subtle geometric consequence to this continuous addition. As a vector moves through multiple layers of a deep neural network, accumulating updates from Attention and Feed-Forward blocks, its magnitude can grow uncontrollably. Furthermore, the values within the vector might drift, losing their centered distribution. If the vectors become excessively large or skewed, the subsequent layers will struggle to process them effectively, leading to numerical instability and vanishing or exploding gradients during backpropagation.</p>
 <p>We must introduce a stabilizing mechanism. This is the role of Layer Normalization. </p>
 <h2>The Geometry of Normalization</h2>
@@ -173,7 +173,7 @@ $$</p>
     E --&gt; F(&quot;Stabilized Normalized Stream&quot;)
 </code></pre>
 <p>The vectors have been stabilized, yet they still retain the rich contextual updates harvested by the Attention mechanism. Next, we will direct these stabilized vectors into the Feed-Forward Network, a component that will act as a conceptual memory bank for each individual token.</p>
-<p><em>Prefer to read this seamlessly offline? <a href="/series/transformers/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/transformer_ebook_final.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="chapter_08.html" class="pagination-link prev">
