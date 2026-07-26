@@ -16,7 +16,7 @@ frontmatter_file = os.path.join(directory, 'frontmatter.md')
 body_file = os.path.join(directory, 'body.md')
 frontmatter_pdf = os.path.join(directory, 'frontmatter.pdf')
 body_pdf = os.path.join(directory, 'body.pdf')
-final_pdf = os.path.join(directory, 'transformer_ebook_final.pdf')
+final_pdf = '/Users/lydia/Desktop/personal/career/resumes/portfolio/assets/docs/transformers-ebook-v1.0.pdf'
 
 files = ['preface.md'] + [f'chapter_{i:02d}.md' for i in range(1, 25)]
 
@@ -42,7 +42,7 @@ title_page = f"""<style>
 <div style="page-break-after: always;"></div>
 """
 
-copyright_page = """<div style="height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; font-size: 0.8em; color: var(--secondary-color);">
+copyright_page = """<div style="height: calc(100vh - 50mm); display: flex; flex-direction: column; justify-content: flex-end; font-size: 0.8em; color: var(--secondary-color);">
 <p><strong>The Transformer Architecture: A Geometric Toy Example from Scratch</strong></p>
 <p>Copyright &copy; 2026 Lydia Pedersen. All rights reserved.</p>
 <p>No part of this publication may be reproduced, distributed, or transmitted in any form or by any means, including photocopying, recording, or other electronic or mechanical methods, without the prior written permission of the publisher, except in the case of brief quotations embodied in critical reviews and certain other noncommercial uses permitted by copyright law.</p>
