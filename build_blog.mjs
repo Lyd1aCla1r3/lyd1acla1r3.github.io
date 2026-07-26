@@ -23,7 +23,9 @@ function getFilesRecursively(dir, relativePath = '') {
     if (stat && stat.isDirectory()) {
       results = results.concat(getFilesRecursively(fullPath, relPath));
     } else if (file.endsWith('.md')) {
-      results.push({ fullPath, relPath, name: file });
+      if (!['body.md', 'frontmatter.md', 'transformer_ebook_final.md', 'transformer_ebook.md'].includes(file)) {
+        results.push({ fullPath, relPath, name: file });
+      }
     }
   });
   return results;
