@@ -1,6 +1,6 @@
 # Part 6: From Scores to Synthesis: Softmax and The Value Matrix
 
-<!-- SUMMARY: We finalize the single-head attention mechanism by leveraging the Softmax function to convert unbounded routing scores into a stable, strict probability distribution. We then compute a weighted sum against the Value matrix, dynamically synthesizing a new, deeply contextualized geometric representation for each token. -->
+<!-- SUMMARY: The single-head attention mechanism is finalized by leveraging the softmax function to convert unbounded routing scores into a strict probability distribution. A weighted sum against the value matrix is then computed to dynamically synthesize a deeply contextualized geometric representation for each token. -->
 
 <p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 

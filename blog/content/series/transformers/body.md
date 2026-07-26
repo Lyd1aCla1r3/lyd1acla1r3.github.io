@@ -1,5 +1,5 @@
 <h1 id="preface-the-big-picture--tensor-notation">Preface: The Big Picture & Tensor Notation</h1>
-<!-- SUMMARY: Discard abstract metaphors and build an autoregressive Decoder-only Transformer from scratch using rigorous tensor notation and geometric principles. This foundational overview defines the vocabulary space, architectural dimensions, and the central residual stream required to calculate the forward pass. -->
+<!-- SUMMARY: This foundational overview introduces an autoregressive Decoder-only Transformer built from scratch using rigorous tensor notation and geometric principles. The text defines the vocabulary space, architectural dimensions, and the central residual stream required to calculate the forward pass. -->
 
 ## The Problem with Tutorials
 
@@ -132,7 +132,7 @@ In the next part, we will take our raw text, map it to our vocabulary indices, a
 
 <h1 id="chapter-1-tokens-one-hot-encodings-and-the-embedding-matrix">Chapter 1: Tokens, One-Hot Encodings, and the Embedding Matrix</h1>
 
-<!-- SUMMARY: The foundational process of translating raw text into a rigorous geometric representation requires mapping discrete tokens into orthogonal one-hot vectors. We mathematically motivate the necessity of the Embedding Matrix to compress these isolated dimensions into a dense semantic space, enabling the natural inference of conceptual relationships. -->
+<!-- SUMMARY: Translating raw text into a rigorous geometric representation requires mapping discrete tokens into orthogonal one-hot vectors. This process mathematically motivates the necessity of the embedding matrix to compress these isolated dimensions into a dense semantic space, enabling the natural inference of conceptual relationships. -->
 
 At the end of the Preface, we established that every operation in our Transformer will read from and write to a central $4 \times 6$ matrix. We must now bridge the gap between our raw text and that geometric representation. Text is inherently abstract. Computers cannot multiply words. Computers multiply numbers. We need a rigorous mechanical process to translate human language into a mathematical format that a neural network can manipulate.
 
@@ -258,7 +258,7 @@ We have successfully translated our text into the central $4 \times 6$ tensor th
 
 <h1 id="chapter-2-the-permutation-invariance-problem--positional-encoding">Chapter 2: The Permutation Invariance Problem & Positional Encoding</h1>
 
-<!-- SUMMARY: Matrix operations are inherently permutation invariant, creating a fatal flaw that leaves the Transformer entirely blind to sequence order. We resolve this by explicitly injecting temporal context through the element-wise addition of mathematically deterministic absolute positional encodings. -->
+<!-- SUMMARY: Matrix operations are inherently permutation invariant, creating a structural flaw that leaves the architecture entirely blind to sequence order. This limitation is resolved by explicitly injecting temporal context through the element-wise addition of mathematically deterministic absolute positional encodings. -->
 
 Welcome back. In our previous session, we successfully transformed our input sequence `<BOS> i woke up` into a dense, continuous semantic space. We mathematically compressed sparse 12-dimensional one-hot vectors into a 6-dimensional embedding matrix.
 
@@ -365,7 +365,7 @@ The stage is now completely set. We have successfully translated a string of tex
 
 <h1 id="chapter-3-the-motivation-for-q-k-and-v-asymmetric-similarity">Chapter 3: The Motivation for Q, K, and V (Asymmetric Similarity)</h1>
 
-<!-- SUMMARY: Symmetric similarity is structurally inadequate for capturing grammatically asymmetric linguistic relationships like verbs seeking subjects. By projecting our context-aware embeddings into distinct Query and Key subspaces, we implement a bilinear form that enables tokens to independently query their surroundings and present complementary information. -->
+<!-- SUMMARY: Symmetric similarity is structurally inadequate for capturing grammatically asymmetric linguistic relationships. Projecting context-aware embeddings into distinct query and key subspaces implements a bilinear form that enables tokens to independently query their surroundings and present complementary information. -->
 
 In the previous part, we solved the permutation invariance problem by adding absolute positional encodings to our token embeddings. Our sequence `<BOS> i woke up` is now represented by the $4 \times 6$ matrix $X_{pos}$, which contains both semantic meaning and positional context. 
 
@@ -491,7 +491,7 @@ graph TD
 
 <h1 id="chapter-4-the-attention-score-and-$\sqrt{d_k}$">Chapter 4: The Attention Score and $\sqrt{d_k}$</h1>
 
-<!-- SUMMARY: Calculating raw attention scores via the dot product exposes an insidious scaling problem in high-dimensional vector spaces. To prevent catastrophic Softmax saturation and the resulting gradient death, we mathematically stabilize the variance by dividing our scores by the square root of the head dimension. -->
+<!-- SUMMARY: Calculating raw attention scores via the dot product exposes a scaling problem in high-dimensional vector spaces. To prevent catastrophic softmax saturation and the resulting gradient decay, the variance is mathematically stabilized by dividing the scores by the square root of the head dimension. -->
 
 In the previous installment, we established why the Transformer does not calculate attention directly from the input embeddings. We projected our sequence into two distinct semantic subspaces, yielding a matrix of Queries ($Q$) and a matrix of Keys ($K$). This asymmetric projection allows the network to match concepts that belong together even if their base embeddings are geometrically distant.
 
@@ -618,7 +618,7 @@ We cannot apply the Softmax function just yet. Our model is currently looking at
 
 <h1 id="chapter-5-causal-masking">Chapter 5: Causal Masking</h1>
 
-<!-- SUMMARY: Parallel training introduces a critical structural flaw by allowing past tokens illegal computational access to future context. We preserve causality by applying a lower-triangular mask of negative infinity, erecting an impenetrable mathematical barrier that elegantly neutralizes future information when passed through the Softmax function. -->
+<!-- SUMMARY: Parallel training introduces a structural vulnerability by allowing past tokens computational access to future context. Causality is preserved by applying a lower-triangular mask of negative infinity, establishing a mathematical barrier that neutralizes future information when passed through the softmax function. -->
 
 In our previous session, we successfully derived the scaled attention scores. We calculated the dot product between our Query and Key matrices, measuring how intensely each token seeks information from every other token, and scaled the result by $\sqrt{d_k}$ to prevent gradient saturation. 
 
@@ -685,7 +685,7 @@ With our causal mask firmly in place, we are ready to safely pass these masked s
 
 <h1 id="chapter-6-from-scores-to-synthesis-softmax-and-the-value-matrix">Chapter 6: From Scores to Synthesis: Softmax and The Value Matrix</h1>
 
-<!-- SUMMARY: We finalize the single-head attention mechanism by leveraging the Softmax function to convert unbounded routing scores into a stable, strict probability distribution. We then compute a weighted sum against the Value matrix, dynamically synthesizing a new, deeply contextualized geometric representation for each token. -->
+<!-- SUMMARY: The single-head attention mechanism is finalized by leveraging the softmax function to convert unbounded routing scores into a strict probability distribution. A weighted sum against the value matrix is then computed to dynamically synthesize a deeply contextualized geometric representation for each token. -->
 
 In our previous installation, we successfully calculated the masked attention scores. By applying a lower triangular matrix of negative infinity values, we erected a strict mathematical barrier that prevents information from flowing backward in time. We are now left with a matrix representing the raw geometric alignment between our Queries and Keys across all valid time steps. 
 
@@ -806,7 +806,7 @@ We have successfully completed the attention mechanism for a single head. Our mo
 
 <h1 id="chapter-7-the-cross-head-mixer-and-the-projection-matrix">Chapter 7: The Cross-Head Mixer and The Projection Matrix</h1>
 
-<!-- SUMMARY: Concatenate the isolated outputs of multiple attention heads into a unified matrix to preserve structural integrity without destructive interference. Synthesize these discrete features into higher-order contextual representations by projecting them through a learned cross-head mixing matrix, preparing the vectors to rejoin the residual stream. -->
+<!-- SUMMARY: The isolated outputs of multiple attention heads are concatenated into a unified matrix to preserve structural integrity without destructive interference. These discrete features are synthesized into higher-order contextual representations by projecting them through a learned cross-head mixing matrix, preparing the vectors to rejoin the residual stream. -->
 
 In our previous session, we completed the journey of a single attention head. We watched it calculate its masked attention scores, convert those scores into strict probability distributions via the Softmax function, and finally compute a weighted sum over the Value matrix $V$. 
 
@@ -922,7 +922,7 @@ Every vector in this output matrix now contains rich, contextualized information
 
 <h1 id="chapter-8-the-residual-stream-and-the-central-memory-bus">Chapter 8: The Residual Stream and the Central Memory Bus</h1>
 
-<!-- SUMMARY: Examine the central memory bus of the Transformer, where contextual updates from the attention blocks are element-wise added to the residual stream. Geometrically, this operation acts as a vector translation in high-dimensional space, shifting token representations to incorporate context while rigorously preserving their foundational identities. -->
+<!-- SUMMARY: The central memory bus of the architecture processes contextual updates from the attention blocks via element-wise addition to the residual stream. Geometrically, this operation acts as a vector translation in high-dimensional space, shifting token representations to incorporate context while preserving their foundational identities. -->
 
 We have successfully calculated the multi-head attention output. The temptation now is to treat this output as the sole input to the next layer, much like a traditional feed-forward network. We must resist that instinct. The Transformer architecture does not pass data sequentially through a gauntlet of filters. Instead, it relies on a central, shared memory backbone known as the residual stream.
 
@@ -1007,7 +1007,7 @@ This central memory bus ensures that every subsequent layer has unimpeded access
 
 <h1 id="chapter-9-taming-the-stream-the-geometry-of-layer-normalization">Chapter 9: Taming the Stream: The Geometry of Layer Normalization</h1>
 
-<!-- SUMMARY: Counteract the geometric drift and magnitude expansion caused by continuous additive updates through the disciplined application of Layer Normalization. By independently centering and scaling each token vector across its embedding dimension, this mechanism mathematically stabilizes the residual stream while retaining vital contextual geometries. -->
+<!-- SUMMARY: Geometric drift and magnitude expansion caused by continuous additive updates are counteracted through the rigorous application of layer normalization. By independently centering and scaling each token vector across its embedding dimension, this mechanism mathematically stabilizes the residual stream while retaining vital contextual geometries. -->
 
 In our previous installment, we introduced the Residual Stream. We observed how the Attention block operates as an independent module that reads from the central memory bus, calculates contextual updates, and adds those updates directly back into the original embeddings. This additive process ensures that the network never loses the raw, initial information about the token and its position. 
 
@@ -1131,7 +1131,7 @@ The vectors have been stabilized, yet they still retain the rich contextual upda
 
 <h1 id="chapter-10-the-mlp-as-a-key-value-memory-bank-expansion">Chapter 10: The MLP as a Key-Value Memory Bank (Expansion)</h1>
 
-<!-- SUMMARY: Reconceptualize the Feed-Forward Network's expansion phase as a high-dimensional Key-Value memory retrieval mechanism. By projecting token vectors into a substantially larger geometric space, the model computes dot products against learned Key patterns to precisely measure alignment with higher-order conceptual features. -->
+<!-- SUMMARY: The expansion phase of the feed-forward network acts as a high-dimensional key-value memory retrieval mechanism. By projecting token vectors into a substantially larger geometric space, the model computes dot products against learned key patterns to precisely measure alignment with higher-order conceptual features. -->
 
 We have successfully normalized the residual stream. Our vectors are now stable, centered, and scaled, ready for the next major transformation. Up until this point, the self-attention mechanism has allowed tokens to move information *between* one another. The representation for "up" has reached out and pulled in context from "woke". However, attention merely routes information. It does not possess the capacity to interpret that combined information into a new, higher-level concept. 
 
@@ -1234,7 +1234,7 @@ Our vectors have successfully probed the memory bank. We have measured exactly h
 
 <h1 id="chapter-11-the-mlp---activation-and-contraction">Chapter 11: The MLP - Activation and Contraction</h1>
 
-<!-- SUMMARY: Investigate the non-linear gating and geometric contraction phases of the Multi-Layer Perceptron. The ReLU activation function sparsifies the high-dimensional space by isolating successful pattern matches, which are subsequently contracted through a Value matrix to synthesize a refined vector of contextual updates. -->
+<!-- SUMMARY: The multi-layer perceptron executes precise non-linear gating and geometric contraction phases. The ReLU activation function sparsifies the high-dimensional space by isolating successful pattern matches, which are subsequently contracted through a value matrix to synthesize a refined vector of contextual updates. -->
 
 In our previous discussion, we explored the first half of the Multi-Layer Perceptron (MLP) as a Key-Value memory bank. By projecting our $d_{model} = 6$ residual stream into the much larger $d_{ff} = 24$ space using the $W_1$ matrix, we created a set of "Keys". Each column of $W_1$ searched the residual stream for a specific, complex contextual pattern.
 
@@ -1354,7 +1354,7 @@ Our next step is to physically write this new information back into the central 
 
 <h1 id="chapter-12-completing-layer-1-residuals-and-normalization">Chapter 12: Completing Layer 1 Residuals and Normalization</h1>
 
-<!-- SUMMARY: Finalize the architecture of the first Transformer layer by integrating the newly synthesized conceptual features back into the residual stream via additive updates. To counteract the resulting geometric instability and magnitude expansion, rigorously apply Layer Normalization to prepare the contextualized vectors for deeper processing in subsequent layers. -->
+<!-- SUMMARY: The architecture of the first layer is finalized by integrating the newly synthesized conceptual features back into the residual stream via additive updates. To counteract the resulting geometric instability and magnitude expansion, layer normalization is applied to prepare the contextualized vectors for deeper processing in subsequent layers. -->
 
 In the preceding part, we observed the multilayer perceptron acting as a localized memory bank. It recognized specific contextual patterns and wrote new features back out into the $d_{model}$ dimensionality. Now, we must integrate these new insights into our primary representation. We achieve this by returning to the architectural backbone of the Transformer, which is the Residual Stream.
 
@@ -1451,7 +1451,7 @@ The vectors exiting this block are no longer simple dictionary lookups. They are
 <div style="page-break-before: always;"></div>
 
 <h1 id="chapter-13-layer-2-self-attention">Chapter 13: Layer 2 Self-Attention</h1>
-<!-- SUMMARY: As the Transformer processes the second layer of self-attention, token vectors evolve from isolated definitions into deeply contextualized mathematical representations. This section details how these advanced abstractions are projected into Query, Key, and Value subspaces to evaluate high-level syntactic structures. -->
+<!-- SUMMARY: As the sequence progresses through the second layer of self-attention, token vectors evolve from isolated definitions into deeply contextualized mathematical representations. These advanced abstractions are projected into query, key, and value subspaces to evaluate high-level syntactic structures. -->
 
 In the first layer of our Transformer, the self-attention mechanism evaluated relationships between raw, isolated word embeddings. When we projected the tokens for "woke" and "up" into their respective Query and Key spaces, we measured their static semantic affinity. We have since routed those localized insights back into the central residual stream, refined them through a Key-Value Multi-Layer Perceptron, and stabilized the geometry with Layer Normalization. As we begin the second layer of self-attention, our token vectors no longer represent solitary dictionary definitions. They are now deeply contextualized mathematical summaries of their surrounding linguistic environment.
 
@@ -1557,7 +1557,7 @@ The mathematics remain identical to the first layer. We project an input tensor 
 <div style="page-break-before: always;"></div>
 
 <h1 id="chapter-14-scoring-deep-context-layer-2-attention">Chapter 14: Scoring Deep Context: Layer 2 Attention</h1>
-<!-- SUMMARY: This installment explores the fundamental shift in Query and Key vectors during Layer 2, examining how compound semantic structures are scored using the scaled dot-product. By stabilizing the variance of these unscaled scores, the model prevents Softmax saturation and preserves gradient health during backpropagation. -->
+<!-- SUMMARY: The query and key vectors undergo a fundamental mathematical shift during the second layer as compound semantic structures are scored using the scaled dot-product. Stabilizing the variance of these unscaled scores prevents softmax saturation and preserves gradient health during backpropagation. -->
 
 In our progression through the Transformer architecture, we have reached a critical inflection point. The Query and Key vectors we extract in Layer 2 are fundamentally different from those in Layer 1. Rather than representing isolated vocabulary tokens, they now encapsulate rich, contextualized concepts fused from the entire preceding sequence. This part examines exactly how these advanced representations are scored against one another, illuminating the mathematical process by which deep neural networks decide to route high-level information.
 
@@ -1626,7 +1626,7 @@ Our deep conceptual representations have now calculated their mutual relevance. 
 <div style="page-break-before: always;"></div>
 
 <h1 id="chapter-15-the-final-blend-masking-softmax-and-values-in-layer-2">Chapter 15: The Final Blend: Masking, Softmax, and Values in Layer 2</h1>
-<!-- SUMMARY: Finalize the attention mechanism by enforcing causality through lower-triangular masking and normalizing the scores into a strict probability distribution via the Softmax function. These calculated attention probabilities are then blended with the Value matrix to extract highly refined, contextualized features. -->
+<!-- SUMMARY: The secondary attention mechanism is finalized by enforcing causality through lower-triangular masking and normalizing the scores into a strict probability distribution via the softmax function. These calculated attention probabilities are then blended with the value matrix to extract highly refined, contextualized features. -->
 
 In our previous installment, we computed the unscaled and scaled attention scores for the second layer of our Transformer. We witnessed how projecting deeply contextualized tokens into new Query and Key spaces allowed them to evaluate their semantic relevance to one another. The resulting matrix of scores tells us exactly how much attention every token wishes to pay to every other token. We are now ready to finalize this attention mechanism by applying the causal mask, normalizing the scores into strict probabilities, and extracting the final contextualized features from the Value matrix.
 
@@ -1746,7 +1746,7 @@ In the next installment, we will pass these highly refined vectors through the f
 <div style="page-break-before: always;"></div>
 
 <h1 id="chapter-16-deepening-the-representation-mlp-and-residuals-in-layer-2">Chapter 16: Deepening the Representation: MLP and Residuals in Layer 2</h1>
-<!-- SUMMARY: Integrate the Layer 2 attention updates into the Residual Stream and stabilize the geometry using Layer Normalization. The normalized vectors then flow into a Multi-Layer Perceptron acting as a deep contextual memory bank, enabling the injection of learned knowledge into the sequence representation. -->
+<!-- SUMMARY: The second layer attention updates are integrated into the residual stream and geometrically stabilized using layer normalization. The normalized vectors then flow into a multi-layer perceptron acting as a deep contextual memory bank, enabling the injection of learned knowledge into the sequence representation. -->
 
 We have arrived at the final stages of the forward pass for our second Transformer layer. In the previous installment, we computed the attention probabilities and combined them with the Value matrix to create contextualized updates. Now, we must integrate these updates into the central nervous system of our model: the Residual Stream, and pass them through the final Multi-Layer Perceptron (MLP) memory bank.
 
@@ -1843,7 +1843,7 @@ Our initial embeddings have now been transformed twice by attention and twice by
 <div style="page-break-before: always;"></div>
 
 <h1 id="chapter-17-mapping-back-to-words">Chapter 17: Mapping Back to Words</h1>
-<!-- SUMMARY: Translate the deeply contextualized mathematical representations emerging from Layer 2 back into the vocabulary space using the Unembedding matrix. This critical linear projection produces raw logits that quantify the model's geometric preference for predicting the next sequence token. -->
+<!-- SUMMARY: The deeply contextualized mathematical representations emerging from the second layer are translated back into the vocabulary space using the unembedding matrix. This critical linear projection produces raw logits that quantify the geometric preference for predicting the next sequence token. -->
 
 Our journey through the Transformer has transformed our input sequence into deeply contextualized mathematical representations. The residual stream emerging from Layer 2 contains rich information about what each token means in relation to the others. However, these vectors are still floating in our abstract six-dimensional model space. To produce actual text, we must translate these vectors back into the twelve-dimensional vocabulary space. This critical translation is performed by the Unembedding matrix.
 
@@ -1889,7 +1889,7 @@ To solve this, we must convert these raw scores into a strict probability distri
 <div style="page-break-before: always;"></div>
 
 <h1 id="chapter-18-final-softmax-and-predictions">Chapter 18: Final Softmax and Predictions</h1>
-<!-- SUMMARY: Compress unbounded vocabulary logits into a strict, positive probability distribution that sums to one using the final Softmax function. This transformation reveals the untrained network's maximum uncertainty, motivating the profound mathematical necessity of Backpropagation. -->
+<!-- SUMMARY: Unbounded vocabulary logits are compressed into a strict, positive probability distribution that sums to one using the final softmax function. This transformation reveals the untrained network's maximum uncertainty, setting the foundation for the backpropagation phase. -->
 
 In the previous step, we projected our highly contextualized vectors out of the latent model space and back into the vocabulary space. This operation yielded our logits, which are raw, unbounded scores assigning a numerical value to each of the 12 possible words in our vocabulary. While logits indicate the model's geometric preference for certain words, they are not interpretable as a true probability distribution. We require a mechanism to compress these unbounded scores into a strict, positive range that sums to exactly one. The Softmax function provides this precise mathematical transformation.
 
@@ -1948,7 +1948,7 @@ This brings us to the final and most mathematically profound phase of neural net
 
 <h1 id="chapter-19-cross-entropy-loss">Chapter 19: Cross-Entropy Loss</h1>
 
-<!-- SUMMARY: We formalize the error of the Transformer's raw predictions by calculating the Cross-Entropy Loss against the one-hot target distribution. This asymmetric logarithmic penalty heavily punishes confidently incorrect predictions, yielding a mathematically elegant error signal for the network. -->
+<!-- SUMMARY: The error of the raw predictions is formalized by calculating the cross-entropy loss against the one-hot target distribution. This asymmetric logarithmic penalty heavily punishes confidently incorrect predictions, yielding a mathematically elegant error signal for the network to optimize. -->
 
 In our preceding analysis, we transformed the raw logits of the Transformer into a valid probability distribution using the Softmax function. This generated a set of predictions representing the model's current, untrained belief about the next token in the sequence. To teach the model, we must establish a rigorous metric that quantifies exactly how incorrect these beliefs are. This metric is the loss function, the single scalar value that the entire neural network is designed to minimize.
 
@@ -2025,7 +2025,7 @@ We have now reached the end of the forward pass. We possess a single scalar valu
 
 <h1 id="chapter-20-the-beautiful-cancellation">Chapter 20: The Beautiful Cancellation</h1>
 
-<!-- SUMMARY: By chaining the derivatives of the Cross-Entropy loss and the Softmax function, we discover a profound mathematical cancellation that radically simplifies the gradient. This elegant physical interpretation reveals the error signal as the precise difference between the model's predicted probabilities and the ground truth. -->
+<!-- SUMMARY: Chaining the derivatives of the cross-entropy loss and the softmax function reveals a mathematical cancellation that radically simplifies the gradient. This interpretation establishes the primary error signal as the precise difference between the predicted probabilities and the ground truth. -->
 
 In the previous part, we established the geometry of the Cross-Entropy loss function. We calculated exactly how far our model's predicted probability distribution strayed from the ground truth one-hot vector. That scalar loss value represents the total error of our network. Now, we must assign blame for that error. We are entering the backpropagation phase of our Transformer, and our very first step is to calculate the gradient of the loss with respect to the final unnormalized scores, known as the logits. 
 
@@ -2096,7 +2096,7 @@ The mathematical cancellation of Softmax and Cross-Entropy results in an exceedi
 
 <h1 id="chapter-21-backpropagating-through-the-unembedding-and-residual-stream">Chapter 21: Backpropagating Through the Unembedding and Residual Stream</h1>
 
-<!-- SUMMARY: We initiate the backward pass by routing the error signal from the vocabulary logits through the Unembedding matrix and into the final residual stream. Applying the chain rule reveals how the gradient symmetrically branches through the Multi-Layer Perceptron to update intermediate weights. -->
+<!-- SUMMARY: The backward pass initiates by routing the error signal from the vocabulary logits through the unembedding matrix and into the final residual stream. Applying the chain rule demonstrates how the gradient symmetrically branches through the multi-layer perceptron to update intermediate weights. -->
 
 In our previous installment, we discovered the elegant simplicity of the Cross-Entropy Loss derivative. The gradient of our loss with respect to the raw, pre-Softmax logits simplifies entirely to the predicted probability distribution minus the one-hot encoded target vector. This single matrix, measuring how wrong our predictions were across the sequence, serves as the physical error signal that we must now route backward through the network to update its weights.
 
@@ -2197,7 +2197,7 @@ By strictly following the rules of matrix multiplication and addition, we have s
 
 <h1 id="chapter-22-backpropagating-through-attention-the-softmax-and-the-mask">Chapter 22: Backpropagating Through Attention: The Softmax and the Mask</h1>
 
-<!-- SUMMARY: We push the gradient backward through the self-attention mechanism by solving the Jacobian of the Softmax function and navigating the causal mask. This matrix operation gracefully handles coupled probabilities and severs the learning signal for future-looking connections, yielding the exact error for unmasked attention scores. -->
+<!-- SUMMARY: The gradient propagates backward through the self-attention mechanism by solving the Jacobian of the softmax function and navigating the causal mask. This matrix operation handles coupled probabilities and severs the learning signal for future-looking connections, yielding the exact error for unmasked attention scores. -->
 
 We left off with the gradient flowing down the residual stream, reaching the output of our Layer 2 attention block. Our objective now is to pull this error signal backward through the self-attention mechanism itself. This requires us to unpack the sequence of operations that created the attention output. The final operations in that sequence involved multiplying the attention probabilities by the Value matrix, and prior to that, applying the Softmax function to the masked attention scores.
 
@@ -2252,7 +2252,7 @@ We now possess the gradient with respect to the pure, unmasked attention scores,
 
 <h1 id="chapter-23-backpropagation-through-attention-chapter-2-routing-to-q-k-and-v">Chapter 23: Backpropagation Through Attention (Chapter 2: Routing to Q, K, and V)</h1>
 
-<!-- SUMMARY: With the attention score gradients calculated, we distribute the error signal backward into the Query, Key, and Value matrices. Reversing the weighted sums geometrically mirrors the forward pass, successfully translating the output error into precise updates for the self-attention weight matrices. -->
+<!-- SUMMARY: Following the calculation of the attention score gradients, the error signal is distributed backward into the query, key, and value matrices. Reversing the weighted sums geometrically mirrors the forward pass, successfully translating the output error into precise updates for the self-attention weight matrices. -->
 
 In the previous part, we successfully navigated the complexities of the Softmax function and the causal mask. We calculated the gradient of the loss with respect to the raw, unmasked attention scores, giving us a precise measurement of how each attention connection should be adjusted. We now stand at the final stage of backpropagating through the self-attention mechanism. Our objective is to distribute these score gradients, along with the gradients from the attention output itself, backward into the Query, Key, and Value matrices. Ultimately, we must route these signals all the way back to the weight matrices that created them and the input sequence that started it all.
 
@@ -2353,7 +2353,7 @@ We have now completely backpropagated through the self-attention mechanism. We s
 
 <h1 id="chapter-24-updating-the-embeddings-and-conclusion">Chapter 24: Updating the Embeddings and Conclusion</h1>
 
-<!-- SUMMARY: The accumulated gradient finally reaches the initial embedding matrix via the residual stream, perfectly encapsulating how token representations must shift to minimize prediction error. With the backward pass complete, we conclude our rigorous mathematical traversal of the physical machinery driving the modern Transformer architecture. -->
+<!-- SUMMARY: The accumulated gradient ultimately reaches the initial embedding matrix via the residual stream, perfectly encapsulating how token representations must shift to minimize prediction error. The completion of the backward pass finalizes the mathematical traversal of the machinery driving the architecture. -->
 
 We have finally reached the terminus of our backward journey. The error signal has cascaded from the Cross-Entropy loss, navigated the Unembedding matrix, split through the Layer 2 MLP, and distributed itself across the complex geometry of the self-attention Query, Key, and Value matrices. Now, this accumulated signal arrives at the very beginning of our network. It is time to update the foundational representations of our tokens: the Embedding matrix itself.
 

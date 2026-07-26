@@ -1,5 +1,5 @@
 # Part 14: Scoring Deep Context: Layer 2 Attention
-<!-- SUMMARY: This installment explores the fundamental shift in Query and Key vectors during Layer 2, examining how compound semantic structures are scored using the scaled dot-product. By stabilizing the variance of these unscaled scores, the model prevents Softmax saturation and preserves gradient health during backpropagation. -->
+<!-- SUMMARY: The query and key vectors undergo a fundamental mathematical shift during the second layer as compound semantic structures are scored using the scaled dot-product. Stabilizing the variance of these unscaled scores prevents softmax saturation and preserves gradient health during backpropagation. -->
 
 <p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 

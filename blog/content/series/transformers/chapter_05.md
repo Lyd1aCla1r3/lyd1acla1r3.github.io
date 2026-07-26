@@ -1,6 +1,6 @@
 # Part 5: Causal Masking
 
-<!-- SUMMARY: Parallel training introduces a critical structural flaw by allowing past tokens illegal computational access to future context. We preserve causality by applying a lower-triangular mask of negative infinity, erecting an impenetrable mathematical barrier that elegantly neutralizes future information when passed through the Softmax function. -->
+<!-- SUMMARY: Parallel training introduces a structural vulnerability by allowing past tokens computational access to future context. Causality is preserved by applying a lower-triangular mask of negative infinity, establishing a mathematical barrier that neutralizes future information when passed through the softmax function. -->
 
 <p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 

@@ -1,6 +1,6 @@
 # Part 10: The MLP as a Key-Value Memory Bank (Expansion)
 
-<!-- SUMMARY: Reconceptualize the Feed-Forward Network's expansion phase as a high-dimensional Key-Value memory retrieval mechanism. By projecting token vectors into a substantially larger geometric space, the model computes dot products against learned Key patterns to precisely measure alignment with higher-order conceptual features. -->
+<!-- SUMMARY: The expansion phase of the feed-forward network acts as a high-dimensional key-value memory retrieval mechanism. By projecting token vectors into a substantially larger geometric space, the model computes dot products against learned key patterns to precisely measure alignment with higher-order conceptual features. -->
 
 <p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 

@@ -1,6 +1,6 @@
 # Part 20: The Beautiful Cancellation
 
-<!-- SUMMARY: By chaining the derivatives of the Cross-Entropy loss and the Softmax function, we discover a profound mathematical cancellation that radically simplifies the gradient. This elegant physical interpretation reveals the error signal as the precise difference between the model's predicted probabilities and the ground truth. -->
+<!-- SUMMARY: Chaining the derivatives of the cross-entropy loss and the softmax function reveals a mathematical cancellation that radically simplifies the gradient. This interpretation establishes the primary error signal as the precise difference between the predicted probabilities and the ground truth. -->
 
 <p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 

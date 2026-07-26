@@ -1,6 +1,6 @@
 # Part 3: The Motivation for Q, K, and V (Asymmetric Similarity)
 
-<!-- SUMMARY: Symmetric similarity is structurally inadequate for capturing grammatically asymmetric linguistic relationships like verbs seeking subjects. By projecting our context-aware embeddings into distinct Query and Key subspaces, we implement a bilinear form that enables tokens to independently query their surroundings and present complementary information. -->
+<!-- SUMMARY: Symmetric similarity is structurally inadequate for capturing grammatically asymmetric linguistic relationships. Projecting context-aware embeddings into distinct query and key subspaces implements a bilinear form that enables tokens to independently query their surroundings and present complementary information. -->
 
 <p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 

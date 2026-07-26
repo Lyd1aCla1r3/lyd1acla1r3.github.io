@@ -1,5 +1,5 @@
 # Part 15: The Final Blend: Masking, Softmax, and Values in Layer 2
-<!-- SUMMARY: Finalize the attention mechanism by enforcing causality through lower-triangular masking and normalizing the scores into a strict probability distribution via the Softmax function. These calculated attention probabilities are then blended with the Value matrix to extract highly refined, contextualized features. -->
+<!-- SUMMARY: The secondary attention mechanism is finalized by enforcing causality through lower-triangular masking and normalizing the scores into a strict probability distribution via the softmax function. These calculated attention probabilities are then blended with the value matrix to extract highly refined, contextualized features. -->
 
 <p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 

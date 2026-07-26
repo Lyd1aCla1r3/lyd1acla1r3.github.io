@@ -1,5 +1,5 @@
 # Part 17: Mapping Back to Words
-<!-- SUMMARY: Translate the deeply contextualized mathematical representations emerging from Layer 2 back into the vocabulary space using the Unembedding matrix. This critical linear projection produces raw logits that quantify the model's geometric preference for predicting the next sequence token. -->
+<!-- SUMMARY: The deeply contextualized mathematical representations emerging from the second layer are translated back into the vocabulary space using the unembedding matrix. This critical linear projection produces raw logits that quantify the geometric preference for predicting the next sequence token. -->
 
 <p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 
