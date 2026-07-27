@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Mathematics of Parallel Training: Teacher Forcing vs. Inference — Lydia Pedersen</title>
+  <link rel="stylesheet" href="../css/styles.css?v=1.2">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .blog-post {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: var(--space-4xl) var(--space-md);
+        background: var(--bg-card);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 8px 32px rgba(183, 110, 121, 0.05);
+        border: 1px solid var(--border-subtle);
+    }
+    .blog-post h1, .blog-post h2, .blog-post h3 {
+        color: var(--text-primary);
+        font-family: var(--font-display);
+        margin-top: var(--space-2xl);
+        margin-bottom: var(--space-md);
+    }
+    .blog-post h1 { font-size: var(--fs-3xl); margin-top: 0; line-height: 1.1; }
+    .blog-post h2, .blog-post h3 { border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-sm); }
+    .blog-post h2 { font-size: var(--fs-2xl); }
+    .blog-post h3 { font-size: var(--fs-xl); }
+    .blog-post p, .blog-post li {
+        color: var(--text-secondary);
+        line-height: var(--lh-relaxed);
+        margin-bottom: var(--space-md);
+        font-size: var(--fs-md);
+    }
+    .blog-post img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-md);
+        margin: var(--space-lg) 0;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .blog-post a:not(.pagination-link) {
+        color: var(--text-accent);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s ease;
+    }
+    .blog-post a:not(.pagination-link):hover {
+        border-bottom-color: var(--text-accent);
+    }
+    .blog-post {
+        background: rgba(255, 255, 255, 0.65);
+        padding: var(--space-2xl);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-subtle);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .blog-post .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; display: flex; gap: 1rem; align-items: center; }
+    .blog-post .meta span { display: inline-flex; align-items: center; gap: 0.25rem; }
+    .blog-post p { line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1.05rem; }
+    .blog-post ul, .blog-post ol { margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem; }
+    .blog-post li { margin-bottom: 0.5rem; }
+    .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+    .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
+    .blog-post table { width: 100%; margin: var(--space-2xl) 0; table-layout: fixed; border-collapse: separate; border-spacing: var(--space-sm); text-align: center; }
+    .blog-post thead { display: none; }
+    .blog-post td { padding: 4px; }
+    .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 6px 12px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; width: 100%; font-size: 0.95rem; color: var(--rose-gold-dark); }
+  </style>
+</head>
+<body>
+  <!-- Fixed chip visual (always visible, bottom-left, behind everything) -->
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
+  <!-- Full-screen overlay canvas for the diagonal binary→agent→text animation -->
+  <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="../index.html" class="nav__logo" aria-label="Home">lydia<span>.</span>pedersen</a>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="../index.html#about" class="nav__link">About</a></li>
+        <li><a href="../index.html#samples" class="nav__link">Writing</a></li>
+        <li><a href="../index.html#case-studies" class="nav__link">Engineering</a></li>
+        <li><a href="../index.html#skills" class="nav__link">Skills</a></li>
+        <li><a href="index.html" class="nav__link">Blog</a></li>
+        <li><a href="../index.html#contact" class="nav__link">Contact</a></li>
+      </ul>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="nav__toggle-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-lg));">
+    <div class="container">
+<nav aria-label="breadcrumb" class="breadcrumbs"><ol>
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-perspectives">Perspectives</a></li><li aria-current="page">The Mathematics of Parallel Training: Teacher Forcing vs. Inference</li></ol></nav>
+        <article class="blog-post">
+<h1>The Mathematics of Parallel Training: Teacher Forcing vs. Inference</h1>
+<!-- SUMMARY: A step-by-step mathematical walkthrough contrasting the highly parallelized nature of Transformer training with the sequential bottleneck of inference. By utilizing a concrete toy example, the underlying tensor algebra of causal masking and cross-entropy loss is demystified. This renders the mechanics of Teacher Forcing accessible and rigorously proven without relying on abstraction. --><p>A fascinating divergence exists between how large language models are trained and how they operate upon deployment. While a model takes months to process billions of words during training, it generates responses in seconds. This discrepancy stems from a fundamental difference in architecture. Training is massively parallelized, whereas deployment, commonly referred to as inference, is strictly sequential.</p>
+<p>During inference, a model generates text one token at a time. If it must write a paragraph, it cannot write the third sentence without first writing the second. If this same sequential process were used during training, scaling to modern model sizes would be computationally impossible. To solve this, researchers utilize a mathematical technique called Teacher Forcing.</p>
+<p>Rather than discussing these concepts abstractly, this article will construct a small toy example. By tracing the exact matrix operations, the mechanics of how Teacher Forcing allows a neural network to process an entire sequence simultaneously will become explicitly clear.</p>
+<h2>The Auto-Regressive Bottleneck of Inference</h2>
+<p>Consider a scenario where the model must complete the simple sequence &quot;i woke up&quot;, with the goal of predicting the word &quot;late&quot;.</p>
+<p>During inference, the model begins with the first word, &quot;i&quot;. It performs a series of matrix multiplications to predict the next word, &quot;woke&quot;. Next, it appends this new word to its context, creating the input &quot;i woke&quot;, and performs all the calculations again to predict &quot;up&quot;.</p>
+<p>This represents the auto-regressive bottleneck. To predict step three, the result from step two is mathematically required. There is no shortcut to skip ahead. </p>
+<p>If the model utilizes an embedding dimension of $d_{model} = 4$, meaning every word is translated into a vector of four numbers, the input tensor for the word &quot;i&quot; at time step $t=1$ has a shape of $1 \times 1 \times 4$. The final output is a single probability distribution predicting one word. </p>
+<h2>Bypassing the Bottleneck: Teacher Forcing</h2>
+<p>Training avoids this sequential trap entirely. Given that the ground truth sequence &quot;i woke up late&quot; is known in advance, the architecture does not need to guess one word at a time. </p>
+<p>Instead, Teacher Forcing feeds the entire sequence into the model simultaneously. The input tensor $X$ now represents the three starting words, &quot;i woke up&quot;, all at once. Its shape expands to $1 \times 3 \times 4$, representing one sequence, three words, and four dimensions. </p>
+<p>However, presenting the entire sequence at once introduces a critical flaw. If the words &quot;i woke up&quot; are processed simultaneously, the attention mechanism might allow the word &quot;i&quot; to look ahead at &quot;woke&quot; to figure out the context. If the model can see the future during training, it circumvents the learning process entirely.</p>
+<h2>The Solution: The Causal Mask</h2>
+<p>To prevent the model from looking ahead, the architecture employs a mathematical tool known as a Causal Mask. </p>
+<p>When the model calculates how much each word should pay attention to the others, it generates an Attention Score matrix. For the three-word sequence &quot;i&quot;, &quot;woke&quot;, &quot;up&quot;, this results in a $3 \times 3$ matrix. </p>
+<p>Assume the raw, unmasked attention scores look like this:</p>
+<p>$$
+\text{Raw Scores} = \begin{bmatrix}
+1.2 & 0.5 & 0.1 \\
+0.4 & 1.5 & -0.2 \\
+0.8 & -0.1 & 1.1
+\end{bmatrix}
+$$</p>
+<p>The first row represents how much attention the word &quot;i&quot; is allocating to &quot;i&quot;, &quot;woke&quot;, and &quot;up&quot;. Notice that &quot;i&quot; is assigning a score of $0.5$ to &quot;woke&quot;. The model is effectively looking into the future.</p>
+<p>Before these scores are converted into final probabilities using the Softmax function, the Causal Mask is applied. This mask is a lower-triangular matrix filled with negative infinity above the diagonal:</p>
+<p>$$
+\text{Mask} = \begin{bmatrix}
+0 & -\infty & -\infty \\
+0 & 0 & -\infty \\
+0 & 0 & 0
+\end{bmatrix}
+$$</p>
+<p>When this mask is added to the raw scores, any finite number added to negative infinity becomes negative infinity:</p>
+<p>$$
+\text{Masked Scores} = \begin{bmatrix}
+1.2 & -\infty & -\infty \\
+0.4 & 1.5 & -\infty \\
+0.8 & -0.1 & 1.1
+\end{bmatrix}
+$$</p>
+<p>The rationale for using negative infinity lies in the subsequent step. The network passes these values through the Softmax function, which utilizes exponentiation, or $e^x$, to convert raw scores into probabilities between 0 and 1. Mathematically, $e^{-\infty}$ evaluates to exactly zero.</p>
+<p>$$
+\text{Softmax}(x_i) = \frac{e^{x_i}}{\sum e^{x_j}}
+$$</p>
+<p>Because the causal mask changed the future scores to negative infinity, the Softmax function turns those future scores into exactly zero. This forces the probabilities to distribute entirely among the past and present words. After applying Softmax, the matrix transforms into a strict probability distribution:</p>
+<p>$$
+\text{Probabilities} = \begin{bmatrix}
+1.0 & 0.0 & 0.0 \\
+0.25 & 0.75 & 0.0 \\
+0.43 & 0.17 & 0.40
+\end{bmatrix}
+$$</p>
+<p>Observe the top row. The word &quot;i&quot; now possesses a 100 percent probability of attending to itself, and exactly 0 percent probability of attending to the future words &quot;woke&quot; or &quot;up&quot;. The causal mask mathematically blinds the model to the future. This ensures it predicts the next word using only past and present context, fully solving the lookahead flaw.</p>
+<h2>Shifted Targets and Parallel Loss</h2>
+<p>Thanks to the causal mask, the model is now generating three independent, non-cheating predictions simultaneously. The single forward pass produces a large matrix containing vocabulary predictions for all three positions at once. </p>
+<p>To evaluate the model&#39;s accuracy, the error is calculated by comparing these predictions against a shifted version of the target sequence.</p>
+<ul>
+<li>Input Sequence: <code>[&quot;i&quot;, &quot;woke&quot;, &quot;up&quot;]</code></li>
+<li>Target Sequence: <code>[&quot;woke&quot;, &quot;up&quot;, &quot;late&quot;]</code></li>
+</ul>
+<p>At position 1, the model was restricted to seeing only &quot;i&quot;, and it is penalized based on how accurately it predicted &quot;woke&quot;. At position 2, it saw &quot;i woke&quot;, and is penalized for its prediction of &quot;up&quot;. At position 3, it saw &quot;i woke up&quot;, and is penalized for &quot;late&quot;.</p>
+<p>The Cross-Entropy Loss is calculated for all three positions simultaneously:</p>
+<p>$$
+\mathcal{L} = - \frac{1}{L} \sum_{t=1}^{L} \sum_{v=1}^{V} y_{t,v} \log(\hat{y}_{t,v})
+$$</p>
+<p>To demystify this equation, every variable maps directly to our physical matrix dimensions:</p>
+<ul>
+<li>$L$ represents the sequence length, which is 3 in our toy example.</li>
+<li>$t$ indexes the current time step along that sequence, moving iteratively from position 1 to position 3.</li>
+<li>$V$ represents the total size of our vocabulary.</li>
+<li>$v$ iterates through every possible word index in that vocabulary.</li>
+<li>$y$ denotes the ground truth target. This is represented as a binary one-hot vector where the correct target word is a 1 and all incorrect words are 0.</li>
+<li>$\hat{y}$ represents the model&#39;s predicted probability for that specific word, such as 0.12.</li>
+</ul>
+<p>By multiplying the true binary value by the logarithm of the predicted probability at every time step $t$ and every vocabulary word $v$, the equation calculates the error across the entire sequence. Averaging this loss across all $L$ positions generates a single gradient tensor. This single tensor mathematically represents three separate examples of context, and it updates the model&#39;s weights all at once.</p>
+<h2>Conclusion</h2>
+<p>This mechanism is the core innovation of Teacher Forcing. By formatting the input as a full sequence, shifting the target answers by one position, and applying a negative infinity causal mask, the architecture transforms what would have been three slow, sequential steps into one massive, parallel matrix multiplication. This precise linear algebra forms the foundational bedrock that makes training models on trillions of words computationally feasible, even as inference remains bound by the auto-regressive bottleneck.</p>
+
+<div class="blog-pagination">
+      <a href="serp-api-benchmark.html" class="pagination-link prev">
+        <span class="pagination-label">Previous</span>
+        <span class="pagination-title">Benchmarking SERP API Fidelity for AI Overviews</span>
+      </a><div style="flex: 1;"></div></div>
+        </article>
+    </div>
+  </main>
+  <script src="../js/main.js"></script>
+
+  <!-- KaTeX for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" 
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});">
+  </script>
+
+  <!-- Mermaid for Diagram Rendering -->
+  <style>
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: var(--space-2xl) 0;
+    }
+    .mermaid svg {
+      filter: drop-shadow(0 4px 16px rgba(183, 110, 121, 0.12));
+    }
+  </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ 
+      startOnLoad: true, 
+      theme: 'base',
+      themeVariables: {
+        fontFamily: "'Outfit', -apple-system, BlinkMacSystemFont, sans-serif",
+        primaryColor: '#ffffff',
+        primaryBorderColor: '#b76e79',
+        primaryTextColor: '#8b4f5a',
+        lineColor: '#b76e79',
+        nodeBorder: '#b76e79',
+        clusterBkg: 'rgba(232, 180, 184, 0.15)',
+        clusterBorder: '#d4a0a0'
+      }
+    });
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      const blocks = document.querySelectorAll('.language-mermaid');
+      blocks.forEach((block) => {
+        const parent = block.parentElement;
+        if (parent.tagName === 'PRE') {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          parent.replaceWith(mermaidDiv);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

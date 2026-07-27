@@ -1,25 +1,16 @@
 # Part 18: Final Softmax and Predictions
-<!-- SUMMARY: Unbounded vocabulary logits are compressed into a strict, positive probability distribution that sums to one using the final softmax function. This transformation reveals the untrained network's maximum uncertainty, setting the foundation for the backpropagation phase. -->
 
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<!-- SUMMARY: The unbounded vocabulary logits are transformed into a strict probability distribution using the softmax function. Analyzing this distribution reveals the untrained network's maximum mathematical uncertainty, while techniques like temperature scaling and Top-K decoding provide mechanisms to shape this entropy during actual text generation. -->
 
-In the previous step, we projected our highly contextualized vectors out of the latent model space and back into the vocabulary space. This operation yielded our logits, which are raw, unbounded scores assigning a numerical value to each of the 12 possible words in our vocabulary. While logits indicate the model's geometric preference for certain words, they are not interpretable as a true probability distribution. We require a mechanism to compress these unbounded scores into a strict, positive range that sums to exactly one. The Softmax function provides this precise mathematical transformation.
+Projecting highly contextualized vectors out of the latent model space and back into the vocabulary space yields a matrix of raw scores known as logits. These scalar values assign a geometric magnitude to each of the twelve possible words in the vocabulary. While these magnitudes provide an ordering of likelihood, they do not constitute a mathematically rigorous probability distribution. The values extend across arbitrary bounds and lack the fundamental property of summing to exactly one. Converting these raw signals into actionable predictions requires a normalizing operation.
 
-## The Mechanics of Softmax
-
-The Softmax function operates on a vector of numbers, performing two critical operations simultaneously. First, it exponentiates every value in the vector. Exponentiation serves a dual purpose: it forces all negative scores to become strictly positive fractions, and it non-linearly amplifies the differences between scores. A slightly higher logit becomes a significantly higher exponentiated value, creating a winner-take-all dynamic that helps the model confidently select a single token.
-
-Second, the function sums all the newly exponentiated values and divides each individual value by this total sum. This normalization step guarantees that the final output vector constitutes a valid probability distribution, where all elements are positive and their collective sum is precisely 1.0. 
-
-Mathematically, for a given logit vector $z$, the probability of the $i$-th element is defined as:
+The architecture employs the softmax function across the vocabulary dimension of the logits matrix to enforce this transformation. The function operates by exponentiating each scalar value and dividing by the sum of all exponentiated values in that row. Exponentiation guarantees that all resultant values become strictly positive fractions while non-linearly amplifying the differences between scores. A slightly higher logit becomes a significantly higher exponentiated value, creating a dynamic that helps the network confidently select a single token. The subsequent division normalizes the outputs. This bounds all values between zero and one, creating a strict probability distribution where the sum across the vocabulary dimension equals exactly one.
 
 $$
 P(z_i) = \frac{e^{z_i}}{\sum_{j} e^{z_j}}
 $$
 
-## Transforming the Logits
-
-We can now apply this function to the logits we calculated at the end of Layer 2. As a reminder, our $4 \times 12$ logit matrix represents the predictions at each of our four sequence positions across our 12-token vocabulary. The sequence positions correspond to the tokens `<BOS>`, `i`, `woke`, and `up`.
+Applying this function to the calculated logit matrix transforms the raw scores at each sequence position. The four rows represent the predictions following the tokens start, "i", "woke", and "up".
 
 $$
 \text{Logits} = \begin{bmatrix}
@@ -30,8 +21,6 @@ $$
 \end{bmatrix}
 $$
 
-By applying the Softmax function to each row independently, we convert these raw scores into our final probability distribution.
-
 $$
 \text{Probabilities} = \begin{bmatrix}
  0.0854 &  0.0850 &  0.0846 &  0.0843 &  0.0839 &  0.0835 &  0.0831 &  0.0828 & \dots &  0.0813 \\
@@ -41,16 +30,18 @@ $$
 \end{bmatrix}
 $$
 
-## The Untrained State
+The final row of the probability matrix corresponds to the predictions following the word "up". The ultimate objective is for the network to predict the word "late" as the next logical token. However, every single value in that final row is exactly 0.0833. In a vocabulary of twelve words, a completely uniform distribution yields a probability of exactly one divided by twelve for each word. The model is expressing maximum uncertainty, considering every possible word in the vocabulary to be equally likely. This result confirms that the initialized projection matrices act as an empty vessel. The network possesses the structural capacity to route information but lacks specific geometric knowledge.
 
-Observe the final row of our probability matrix. This row corresponds to the final token in our sequence, the word "up". Our ultimate goal for this entire Transformer architecture is to predict the word "late" as the next logical token. 
+When generating actual text, the network relies on sampling from this final probability distribution. A naive approach would always select the single highest probability value, a strategy known as greedy decoding. Relying exclusively on greedy decoding traps models in repetitive loops and eliminates the natural variance of language. Introducing controlled stochasticity requires manipulating the shape of the probability distribution before sampling occurs.
 
-If we look at the probabilities in that fourth row, every single value is exactly $0.0833$. In a vocabulary of 12 words, a completely uniform distribution yields a probability of exactly one divided by twelve for each word, which equals $0.0833$. The model is expressing maximum uncertainty. It considers every possible word in the vocabulary to be equally likely to follow our input phrase.
+The standard technique for modulating this distribution is temperature scaling. Before applying the softmax function, each value in the logits matrix is divided by a scalar parameter termed temperature.
 
-This result is entirely expected. The matrices we have used throughout this series, from the initial embeddings to the Q, K, and V projections, were arbitrarily defined for our toy example. The network possesses the structural capacity to route information, contextualize words, and generate predictions, yet it lacks the specific geometric knowledge required to understand language. It is an empty vessel.
+$$
+\text{Scaled Logit} = \frac{\text{Logit}}{\text{Temperature}}
+$$
 
-To make the network predict "late", we need the probability at index 8 of the final row to approach a value of $1.0$, while all other probabilities approach $0.0$. Achieving this requires a mechanism to measure how wrong the current uniform prediction is and a method to systematically adjust every single matrix weight in the network to improve that prediction. 
+Setting the temperature value below one increases the absolute magnitude of the logits. This operation geometrically stretches the distances between the values, causing the subsequent softmax operation to assign overwhelmingly high probability mass to the maximum logit. A low temperature setting forces the network toward highly deterministic outputs. Conversely, a temperature setting greater than one compresses the absolute magnitude of the logits. This shrinks the relative differences between the scores, resulting in a flatter probability distribution after the softmax step. A higher temperature injects entropy, assigning non-trivial probabilities to sub-optimal tokens and increasing generation diversity.
 
-This brings us to the final and most mathematically profound phase of neural network architecture, which is Backpropagation.
+Modern implementations further constrain this sampling process by applying techniques like Top-K decoding. This strategy truncates the probability distribution by zeroing out all values except the top candidates, preventing the selection of statistically impossible continuations while preserving the localized entropy of temperature scaling.
 
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+To make the network predict "late" consistently without relying on artificial sampling constraints, the underlying logit for the correct token must naturally dominate the distribution. Achieving this requires a mechanism to measure how wrong the current uniform prediction is and a method to systematically adjust every single matrix weight to improve it.

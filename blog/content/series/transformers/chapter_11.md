@@ -1,26 +1,28 @@
-# Part 11: The MLP - Activation and Contraction
+# Part 11: Layer Normalization and The Multi-Layer Perceptron
 
 <!-- SUMMARY: The multi-layer perceptron executes precise non-linear gating and geometric contraction phases. The ReLU activation function sparsifies the high-dimensional space by isolating successful pattern matches, which are subsequently contracted through a value matrix to synthesize a refined vector of contextual updates. -->
 
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+The calculations established in Parts 9 and 10 successfully center and scale the residual stream while mapping the token representations into a high-dimensional space. This geometric expansion isolates complex conceptual patterns, preparing the network to select and extract the most relevant semantic features.
 
-In our previous discussion, we explored the first half of the Multi-Layer Perceptron (MLP) as a Key-Value memory bank. By projecting our $d_{model} = 6$ residual stream into the much larger $d_{ff} = 24$ space using the $W_1$ matrix, we created a set of "Keys". Each column of $W_1$ searched the residual stream for a specific, complex contextual pattern.
+## The Multi-Layer Perceptron: Activation and Contraction
 
-At this stage, our token vectors exist in the expanded $24$-dimensional space. We now face two tasks. First, we must decide which of those $24$ searched patterns were actually found. Second, we must contract this high-dimensional space back into our $d_{model} = 6$ residual stream, bringing new conceptual information along with it.
+Previous discussions explored the first half of the Multi-Layer Perceptron as a Key-Value memory bank. Projecting the $d_{model} = 6$ residual stream into the much larger $d_{ff} = 24$ space using the $W_1$ matrix created a set of Keys. Each column of $W_1$ searched the residual stream for a specific, complex contextual pattern.
 
-## The Non-Linear Gate: ReLU
+At this stage, token vectors exist in the expanded $24$-dimensional space. Two tasks remain. First, the system must decide which of those $24$ searched patterns were actually found. Second, the architecture must contract this high-dimensional space back into the $d_{model} = 6$ residual stream, bringing new conceptual information along with it.
 
-Linear transformations alone are mathematically limited. If we simply chained the $W_1$ projection into another projection matrix $W_2$, the two operations would collapse into a single equivalent linear projection. This would completely defeat the purpose of expanding into a higher dimension. To create a true memory bank, we need a mechanism to selectively activate features. We need a non-linear activation function.
+### The Non-Linear Gate: ReLU
 
-In our toy model, we will use the Rectified Linear Unit, commonly referred to as ReLU. The function is defined elegantly:
+Linear transformations alone are mathematically limited. Chaining the $W_1$ projection directly into another projection matrix $W_2$ would collapse the two operations into a single equivalent linear projection. This collapse would completely defeat the purpose of expanding into a higher dimension. Creating a true memory bank requires a mechanism to selectively activate features. The system requires a non-linear activation function.
+
+The toy model uses the Rectified Linear Unit, commonly referred to as ReLU. The function is defined elegantly:
 
 $$
 \text{ReLU}(x) = \max(0, x)
 $$
 
-This function acts as a threshold or a gate. If the dot product between a token's vector and a Key in $W_1$ resulted in a negative value, it means the pattern was not found. ReLU clamps that negative value to zero, effectively shutting down that pathway. If the dot product was positive, the pattern was found, and ReLU allows the signal to pass through unchanged.
+This function acts as a threshold or a gate. If the dot product between a token vector and a Key in $W_1$ resulted in a negative value, the pattern was not found. ReLU clamps that negative value to zero, effectively shutting down that pathway. If the dot product was positive, the pattern was found, and ReLU allows the signal to pass through unchanged.
 
-Let us look at the output of our $W_1$ projection for our four tokens `<BOS>`, `i`, `woke`, and `up`. For brevity, we will display the first three dimensions and the final dimension of the $4 \times 24$ matrix:
+The output of the $W_1$ projection for the four tokens `<BOS>`, `i`, `woke`, and `up` reveals the activation states. For brevity, the following tensor displays the first three dimensions and the final dimension of the $4 \times 24$ matrix:
 
 $$
 X_{proj} = \begin{bmatrix}
@@ -31,7 +33,7 @@ X_{proj} = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-We apply the ReLU function element-wise across the entire tensor:
+Applying the ReLU function element-wise across the entire tensor yields the activated state:
 
 $$
 X_{act} = \max(0, X_{proj}) = \begin{bmatrix}
@@ -42,17 +44,17 @@ X_{act} = \max(0, X_{proj}) = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-Notice the profound sparsification of the data. The negative values have been eradicated. The zeros represent memory slots that did not fire. The non-zero positive values represent specific contextual features that were successfully recognized by the $W_1$ Keys.
+This operation results in profound sparsification of the data. The negative values have been eradicated. The zeros represent memory slots that did not fire. The non-zero positive values represent specific contextual features successfully recognized by the $W_1$ Keys.
 
-## The Value Matrix: Contracting Back to the Stream
+### The Value Matrix: Contracting Back to the Stream
 
-Now that we know which patterns fired, we must translate those activations into meaningful updates for our residual stream. This is the role of the second projection matrix, $W_2$, along with its bias $b_2$.
+After determining which patterns fired, the architecture must translate those activations into meaningful updates for the residual stream. The second projection matrix, $W_2$, along with its bias $b_2$, performs this translation.
 
-If $W_1$ acted as the "Keys", $W_2$ acts as the "Values". 
+While $W_1$ acted as the Keys, $W_2$ acts as the Values.
 
-The $W_2$ matrix has a shape of $d_{ff} \times d_{model}$, which in our case is $24 \times 6$. You can think of $W_2$ as a collection of $24$ row vectors. Each row corresponds to one of the features in our expanded space. If a specific feature fired during the ReLU step, its positive scalar value will multiply the corresponding row in $W_2$. The result is a $6$-dimensional vector of *new information* that is perfectly shaped to be added back into the residual stream.
+The $W_2$ matrix has a shape of $d_{ff} \times d_{model}$, equating to $24 \times 6$ in the toy model. The $W_2$ matrix functions as a collection of $24$ row vectors. Each row corresponds to one of the features in the expanded space. If a specific feature fired during the ReLU step, its positive scalar value multiplies the corresponding row in $W_2$. The result is a $6$-dimensional vector of new information shaped perfectly to be added back into the residual stream.
 
-Let us construct our deterministic $W_2$ matrix and $b_2$ bias vector. We will display a truncated view of the $24 \times 6$ matrix:
+The following tensors represent the deterministic $W_2$ matrix and $b_2$ bias vector, displaying a truncated view of the $24 \times 6$ matrix:
 
 $$
 W_2 = \begin{bmatrix}
@@ -70,13 +72,13 @@ b_2 = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-When we multiply our activated memory state $X_{act}$ by the Values matrix $W_2$ and add the bias, we contract the representations back down to our $d_{model}$ dimension:
+Multiplying the activated memory state $X_{act}$ by the Values matrix $W_2$ and adding the bias contracts the representations back down to the $d_{model}$ dimension:
 
 $$
 X_{contracted} = X_{act} W_2 + b_2
 $$
 
-Calculating the full matrix multiplication yields our final MLP output tensor:
+Calculating the full matrix multiplication yields the final Multi-Layer Perceptron output tensor:
 
 $$
 X_{contracted} = \begin{bmatrix}
@@ -87,22 +89,22 @@ X_{contracted} = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-This $4 \times 6$ matrix contains the refined, highly contextualized updates for our tokens. For example, the row corresponding to "woke" now holds the mathematical synthesis of all the specific concepts that the MLP decided were relevant to its current context.
+This $4 \times 6$ matrix contains the refined, highly contextualized updates for the tokens. For example, the row corresponding to the token woke now holds the mathematical synthesis of all the specific concepts that the Multi-Layer Perceptron decided were relevant to the current context.
 
-## The Big Picture of the MLP
+### The Big Picture of the Multi-Layer Perceptron
 
-We can visualize this entire Key-Value process as a focused expansion and contraction workflow:
+The entire Key-Value process visualizes as a focused expansion and contraction workflow:
 
 ```mermaid
 graph TD
-    A("Residual Stream (d_model = 6)") -->|Multiply by W1| B("Keys Projection (d_ff = 24)")
-    B -->|Apply ReLU| C("Feature Activation Gate")
-    C -->|Multiply by W2| D("Values Contraction (d_model = 6)")
-    D --> E("New Contextual Features")
+    A["Residual Stream, d_model = 6"] -->|Multiply by W1| B["Keys Projection, d_ff = 24"]
+    B -->|Apply ReLU| C["Feature Activation Gate"]
+    C -->|Multiply by W2| D["Values Contraction, d_model = 6"]
+    D --> E["New Contextual Features"]
 ```
 
-The MLP has successfully read from the normalized residual stream, expanded the data to search for high-dimensional concepts, filtered those concepts through a non-linear gate, and contracted the resulting values back into a $6$-dimensional update vector. 
+The Multi-Layer Perceptron successfully reads from the normalized residual stream, expands the data to search for high-dimensional concepts, filters those concepts through a non-linear gate, and contracts the resulting values back into a $6$-dimensional update vector. 
 
-Our next step is to physically write this new information back into the central information highway, completing the Layer 1 architecture.
+The next step physically writes this new information back into the central information highway, completing the Layer 1 architecture.
 
 <p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>

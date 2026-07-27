@@ -101,29 +101,47 @@
     <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Part 17: Mapping Back to Words</li></ol></nav>
         <article class="blog-post">
 <h1>Part 17: Mapping Back to Words</h1>
-<!-- SUMMARY: The deeply contextualized mathematical representations emerging from the second layer are translated back into the vocabulary space using the unembedding matrix. This critical linear projection produces raw logits that quantify the geometric preference for predicting the next sequence token. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p><p>Our journey through the Transformer has transformed our input sequence into deeply contextualized mathematical representations. The residual stream emerging from Layer 2 contains rich information about what each token means in relation to the others. However, these vectors are still floating in our abstract six-dimensional model space. To produce actual text, we must translate these vectors back into the twelve-dimensional vocabulary space. This critical translation is performed by the Unembedding matrix.</p>
+<!-- SUMMARY: The deeply contextualized mathematical representations emerging from the second layer are translated back into the vocabulary space using the unembedding matrix. This critical linear projection produces raw logits that quantify the geometric preference for predicting the next sequence token. --><p>The network has completed its deep processing phase. The geometric coordinates within the residual stream emerging from Layer 2 now contain dense, highly abstracted representations of grammar and semantics. The vectors contain rich information about what each token means in relation to the others. However, these vectors are still floating in an abstract six-dimensional model space. To generate actual text, the architecture must translate these continuous vectors back into the discrete twelve-dimensional vocabulary space. This operation bridges the gap between the hidden dimensionality of the model and the tangible tokens that comprise language.</p>
 <h2>The Unembedding Matrix</h2>
-<p>Throughout the forward pass, our tokens have existed as vectors where the model dimension is 6. Our goal is to predict the next token in the sequence. To do this, we need a score for every single word in our vocabulary, which has a size of 12. </p>
-<p>The Unembedding matrix, often denoted as $W_U$, acts as the bridge between these two spaces. It is a linear projection matrix with dimensions $6 \times 12$. Geometrically, you can think of each column in this matrix as representing a specific word in our vocabulary. By taking the dot product of our contextualized token vector with the matrix, we are measuring how strongly our token&#39;s final state aligns with the abstract concept of each vocabulary word.</p>
-<p>In many architectures, this matrix is independent and learned separately during training. In other models, it is simply the transpose of the original Embedding matrix, a technique known as weight tying. Weight tying assumes that the conceptual representation of a word entering the model should be geometrically similar to the representation of the word exiting the model. For our toy example, we will treat it as an independent $6 \times 12$ matrix.</p>
+<p>Throughout the forward pass, the tokens have existed as vectors where the model dimension is 6. The goal is to predict the next token in the sequence. To do this, the network needs a score for every single word in the vocabulary, which has a size of 12.</p>
+<p>The unembedding matrix, often denoted as $W_U$, acts as the bridge between these two spaces. It functions as a linear classifier projection matrix with dimensions $6 \times 12$. Its dimensions align with the model dimension on one axis and the total vocabulary size on the other. Geometrically, each column in this matrix represents a specific word in the vocabulary.</p>
+<p>In many architectures, this matrix is independent and learned separately during training. Allowing the unembedding layer to learn independent weights provides the network with greater flexibility to optimize its output distribution. In other models, it is simply the transpose of the original embedding matrix, a technique known as weight tying. Weight tying assumes that the conceptual representation of a word entering the model should be geometrically similar to the representation of the word exiting the model. For this implementation, the network uses an independent $6 \times 12$ matrix.</p>
+<p>$$
+\text{Unembedding Matrix } W_U = \begin{bmatrix}
+   0.00 &    0.01 &    0.02 &    0.03 &    0.04 &    0.05 &    0.06 &    0.07 &    0.08 &    0.09 &    0.10 &    0.11 \\
+   0.01 &    0.02 &    0.03 &    0.04 &    0.05 &    0.06 &    0.07 &    0.08 &    0.09 &    0.10 &    0.11 &    0.12 \\
+   0.02 &    0.03 &    0.04 &    0.05 &    0.06 &    0.07 &    0.08 &    0.09 &    0.10 &    0.11 &    0.12 &    0.13 \\
+   0.03 &    0.04 &    0.05 &    0.06 &    0.07 &    0.08 &    0.09 &    0.10 &    0.11 &    0.12 &    0.13 &    0.14 \\
+   0.04 &    0.05 &    0.06 &    0.07 &    0.08 &    0.09 &    0.10 &    0.11 &    0.12 &    0.13 &    0.14 &    0.15 \\
+   0.05 &    0.06 &    0.07 &    0.08 &    0.09 &    0.10 &    0.11 &    0.12 &    0.13 &    0.14 &    0.15 &    0.16
+\end{bmatrix}
+$$</p>
 <h2>Calculating the Logits</h2>
-<p>The matrix multiplication of our final Layer 2 output with the Unembedding matrix produces our logits. Logits are the raw, unnormalized scores for each vocabulary token. </p>
-<p>Let us define our final Layer 2 output tensor as $X_{final}$ with dimensions $4 \times 6$, representing our sequence of four tokens: <code>&lt;BOS&gt;</code>, <code>i</code>, <code>woke</code>, and <code>up</code>. We multiply this by $W_U$:</p>
+<p>The network computes the dot product between the final Layer 2 output matrix and the unembedding matrix. This multiplication measures the geometric alignment between the contextualized sequence vectors and every possible vocabulary concept. By taking this dot product, the network is measuring how strongly a token&#39;s final state aligns with the abstract concept of each vocabulary word. A high positive scalar value indicates a strong semantic match, whereas a negative value indicates an unlikely candidate. The resulting matrix contains these unnormalized scores, which are formally known as logits.</p>
+<p>The final Layer 2 output tensor $X_{final}$ has dimensions $4 \times 6$, representing the sequence of four tokens: <code>&lt;BOS&gt;</code>, <code>i</code>, <code>woke</code>, and <code>up</code>. The network multiplies this by $W_U$:</p>
 <p>$$
 \text{Logits} = X_{final} W_U
 $$</p>
 <p>Since $X_{final}$ is $4 \times 6$ and $W_U$ is $6 \times 12$, the resulting Logits matrix has dimensions $4 \times 12$.</p>
-<p>Let us examine the output for the final token in our sequence, which is <code>up</code>. We want the model to predict <code>late</code>, which is the ninth token in our vocabulary at index 8. The row corresponding to <code>up</code> in the Logits matrix will contain twelve raw numerical scores. </p>
+<p>$$
+\text{Logits} = \begin{bmatrix}
+  -0.03 &   -0.03 &   -0.04 &   -0.04 &   -0.05 &   -0.05 &   -0.05 &   -0.06 &   -0.06 &   -0.07 &   -0.07 &   -0.08 \\
+   0.03 &    0.03 &    0.04 &    0.04 &    0.05 &    0.05 &    0.05 &    0.06 &    0.06 &    0.07 &    0.07 &    0.08 \\
+  -0.07 &   -0.07 &   -0.07 &   -0.07 &   -0.07 &   -0.07 &   -0.07 &   -0.07 &   -0.07 &   -0.07 &   -0.07 &   -0.07 \\
+   0.07 &    0.07 &    0.07 &    0.07 &    0.07 &    0.07 &    0.07 &    0.07 &    0.07 &    0.07 &    0.07 &    0.07
+\end{bmatrix}
+$$</p>
+<p>Each row in the logits matrix corresponds to a specific position in the input sequence. The twelve columns represent the raw confidence for each token in the vocabulary being the correct subsequent word. While these values encode the network&#39;s raw predictions, they represent an untrained state.</p>
+<p>The theoretical output for the final token in the sequence, <code>up</code>, provides a clear example. The network aims to predict <code>late</code>, which is the ninth token in the vocabulary at index 8. In a fully optimized scenario, the row corresponding to <code>up</code> in the Logits matrix will contain twelve raw numerical scores that heavily favor the correct token.</p>
 <p>$$
 \text{Logits}_{\text{up}} = \begin{bmatrix}
 -0.12 & 0.45 & -1.23 & 0.05 & 0.88 & -0.34 & -0.77 & 1.02 & 3.45 & \dots & -0.11
 \end{bmatrix}
 $$</p>
-<p>In a well-trained model, the highest score in this vector should correspond to the correct next word. In the hypothetical vector above, the value at index 8 is 3.45, which is significantly higher than the other values. This indicates that the model&#39;s internal geometry strongly favors <code>late</code> as the next logical continuation of the sequence.</p>
+<p>In a well-trained model, the highest score in this vector corresponds to the correct next word. In the hypothetical vector above, the value at index 8 is 3.45, which is significantly higher than the other values. This highest value indicates that the internal geometry strongly favors <code>late</code> as the next logical continuation of the sequence.</p>
 <h2>The Need for Probabilities</h2>
-<p>While the logits provide a ranking of the most likely next words, they are unbounded raw scores. They can be positive, negative, and of any magnitude. This presents a problem for interpreting the model&#39;s confidence and for calculating the loss during backpropagation. We cannot easily determine if a score of 3.45 represents absolute certainty or just a slight preference over a score of 2.11.</p>
-<p>To solve this, we must convert these raw scores into a strict probability distribution where all values are positive and sum exactly to one. We will explore how the final Softmax function accomplishes this in the next part.</p>
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p>While the logits provide a ranking of the most likely next words, they are unbounded raw scores. They can be positive, negative, and of any magnitude. The values extend infinitely in both positive and negative directions and do not sum to one. This presents a problem for interpreting the model&#39;s confidence and for calculating the loss during backpropagation. It is impossible to easily determine if a score of 3.45 represents absolute certainty or just a slight preference over a score of 2.11.</p>
+<p>Transforming these raw algebraic magnitudes into interpretable probabilities requires a final normalization step. The network must convert these raw scores into a strict probability distribution where all values are positive and sum exactly to one.</p>
 
 <div class="blog-pagination">
       <a href="chapter_16.html" class="pagination-link prev">

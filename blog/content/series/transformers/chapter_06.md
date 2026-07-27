@@ -4,17 +4,17 @@
 
 <p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 
-In our previous installation, we successfully calculated the masked attention scores. By applying a lower triangular matrix of negative infinity values, we erected a strict mathematical barrier that prevents information from flowing backward in time. We are now left with a matrix representing the raw geometric alignment between our Queries and Keys across all valid time steps. 
+The previously calculated masked attention scores provide a strict mathematical barrier that prevents information from flowing backward in time through the application of a lower triangular matrix of negative infinity values. The resulting matrix represents the raw geometric alignment between Queries and Keys across all valid time steps.
 
-These scalar values are mathematically unbounded. We must now convert them into a stable format capable of driving the core synthesis step of the attention mechanism. This transformation requires the Softmax function and the introduction of our third fundamental learned matrix: the Value matrix.
+These scalar values are mathematically unbounded. Converting them into a stable format capable of driving the core synthesis step of the attention mechanism requires the Softmax function and the introduction of a third fundamental learned matrix: the Value matrix.
 
 ## The Softmax Function: Converting Alignment to Probability
 
-We intend to use our attention scores as a set of weights to perform a weighted sum. If we were to use the raw, unbounded scores directly, the magnitude of our vectors would compound uncontrollably as information flows deeper into the network. To maintain mathematical stability, we require our weights to be strictly positive and to sum exactly to 1 across each row. We achieve this by applying the Softmax function.
+The attention scores function as a set of weights to perform a weighted sum. Using the raw unbounded scores directly would cause the magnitude of vectors to compound uncontrollably as information flows deeper into the network. Maintaining mathematical stability requires weights to be strictly positive and to sum exactly to 1 across each row. This is achieved by applying the Softmax function.
 
 The Softmax function operates by taking the exponential of each input value and dividing it by the sum of all exponentials in that row. Exponentiation maps any real number to a positive value. Dividing by the total sum normalizes these positive values into a strict probability distribution.
 
-Let us observe our masked scaled scores from the previous step:
+The masked scaled scores from the preceding step are:
 
 $$
 \text{Scores}_{masked} = \begin{bmatrix}
@@ -25,7 +25,7 @@ $$
 \end{bmatrix}
 $$
 
-Applying the Softmax function yields our final attention weights matrix $A$:
+Applying the Softmax function yields the final attention weights matrix $A$:
 
 $$
 A = \text{Softmax}(\text{Scores}_{masked}) = \begin{bmatrix}
@@ -36,15 +36,15 @@ A = \text{Softmax}(\text{Scores}_{masked}) = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-Observe the profound elegance of the causal mask at work. The exponential of negative infinity approaches exactly zero. Our masked positions have been flawlessly converted into zero-valued weights. The model is now mathematically incapable of extracting information from future tokens. Every row sums precisely to 1, providing a clean probability distribution over all preceding context. 
+The causal mask functions such that the exponential of negative infinity approaches exactly zero. Masked positions are flawlessly converted into zero-valued weights. The model is now mathematically incapable of extracting information from future tokens. Every row sums precisely to 1, providing a clean probability distribution over all preceding context.
 
 ## The Value Matrix: The Content Payload
 
-Until this exact moment in the architecture, our computations have focused entirely on routing. The Query and Key matrices exist solely to dictate *where* information should flow. They measure semantic relevance. They do not represent the information payload itself.
+Computations thus far have focused entirely on routing. The Query and Key matrices exist solely to dictate where information should flow. They measure semantic relevance. They do not represent the information payload itself.
 
-If the attention weights are the map, the Value matrix is the cargo. The semantic features required to determine relevance are fundamentally different from the semantic features required to predict the next word. We therefore project our original positional embeddings $X$ into a third distinct subspace using the Value weight matrix $W_V$.
+If the attention weights are the map, the Value matrix is the cargo. The semantic features required to determine relevance are fundamentally different from the semantic features required to predict the next word. The original positional embeddings $X$ are therefore projected into a third distinct subspace using the Value weight matrix $W_V$.
 
-Our embedding dimension $d_{model}$ is 6. We project down into a head dimension $d_v$ of 2. We define our learned weights $W_V$:
+The embedding dimension $d_{model}$ is 6. This is projected down into a head dimension $d_v$ of 2. The learned weights $W_V$ are defined as:
 
 $$
 W_V = \begin{bmatrix}
@@ -57,7 +57,7 @@ W_V = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-We calculate our Value matrix $V$ by taking the dot product of our positional embeddings $X$ and $W_V$:
+The Value matrix $V$ is calculated by taking the dot product of the positional embeddings $X$ and $W_V$:
 
 $$
 V = X \cdot W_V = \begin{bmatrix}
@@ -68,13 +68,13 @@ V = X \cdot W_V = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-The matrix $V$ contains the actual conceptual representations that will be broadcast across the sequence. Each row holds the information payload for a single token in our `<BOS> i woke up` sequence.
+The matrix $V$ contains the actual conceptual representations that will be broadcast across the sequence. Each row holds the information payload for a single token in the `<BOS> i woke up` sequence.
 
 ## The Weighted Sum: Synthesizing Context
 
-We have reached the culmination of the single head attention mechanism. We possess a matrix of routing instructions $A$ and a matrix of information payloads $V$. We synthesize our new contextualized representations by computing the dot product of $A$ and $V$. 
+The culmination of the single head attention mechanism relies on a matrix of routing instructions $A$ and a matrix of information payloads $V$. New contextualized representations are synthesized by computing the dot product of $A$ and $V$.
 
-This operation physically executes a weighted sum. Every token constructs a new representation of itself by blending together the Value vectors of all preceding tokens according to the probabilities in the attention matrix. 
+This operation physically executes a weighted sum. Every token constructs a new representation of itself by blending together the Value vectors of all preceding tokens according to the probabilities in the attention matrix.
 
 ```mermaid
 graph TD
@@ -83,7 +83,7 @@ graph TD
     C --> D("Contextualized Output H")
 ```
 
-We compute our final head output $H$:
+The final head output $H$ is computed as:
 
 $$
 H = A \cdot V = \begin{bmatrix}
@@ -104,8 +104,8 @@ H = A \cdot V = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-Let us analyze the final row corresponding to the token `up`. Its new representation is `[0.46, 0.32]`. This vector is no longer a static dictionary definition. It is a dynamic, context aware representation explicitly shaped by the presence of `woke` and `i` occurring earlier in the sequence. 
+The final row corresponding to the token `up` has a new representation of `[0.46, 0.32]`. This vector is no longer a static dictionary definition. It is a dynamic, context-aware representation explicitly shaped by the presence of `woke` and `i` occurring earlier in the sequence.
 
-We have successfully completed the attention mechanism for a single head. Our model operates with three independent attention heads running in parallel. In our next session, we will explore how to reconcile these independent perspectives by projecting them back into the original embedding dimension.
+The attention mechanism for a single head is complete. The model operates with three independent attention heads running in parallel. The architecture then reconciles these independent perspectives by projecting them back into the original embedding dimension.
 
 <p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
