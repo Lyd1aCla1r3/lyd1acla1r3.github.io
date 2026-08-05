@@ -107,39 +107,12 @@
 <p>To accomplish this, a problem is selected that is small enough to compute on a whiteboard, yet complex enough to demonstrate the true power of the architecture.</p>
 <h2>The Toy Example</h2>
 <p>The objective is to train a Transformer to predict the next word in a specific sequence. </p>
-<p><strong>Input:</strong> <code>&lt;BOS&gt; i woke up</code><br><strong>Target:</strong> <code>late</code></p>
+<p><strong>Input:</strong> <code>&lt;BOS&gt;</code> <code>i</code> <code>woke</code> <code>up</code><br><strong>Target:</strong> <code>late</code></p>
 <p>The token <code>&lt;BOS&gt;</code> stands for Beginning of Sequence. This is a standard marker that tells the network a new sequence has started. </p>
 <p>This sentence is chosen carefully. It allows the attention mechanism to perform observable work. To predict the word &quot;late&quot;, the network cannot merely look at the word &quot;up&quot;. It must contextualize the combination of &quot;woke&quot; and &quot;up&quot; together. </p>
 <h3>The Vocabulary Space</h3>
 <p>To make the math tractable, the model is restricted to a vocabulary of exactly twelve tokens. The total size of the vocabulary is represented by the variable $V$. In this configuration, $V$ equals 12.</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>&lt;BOS&gt;</code></td>
-<td><code>we</code></td>
-<td><code>late</code></td>
-<td><code>&lt;PAD&gt;</code></td>
-</tr>
-<tr>
-<td><code>&lt;EOS&gt;</code></td>
-<td><code>woke</code></td>
-<td><code>early</code></td>
-<td><code>i</code></td>
-</tr>
-<tr>
-<td><code>stayed</code></td>
-<td><code>today</code></td>
-<td><code>yesterday</code></td>
-<td><code>up</code></td>
-</tr>
-</tbody></table>
+<p><code>&lt;BOS&gt;</code> <code>we</code> <code>late</code> <code>&lt;PAD&gt;</code><br><code>&lt;EOS&gt;</code> <code>woke</code> <code>early</code> <code>i</code><br><code>stayed</code> <code>today</code> <code>yesterday</code> <code>up</code>  </p>
 <p>This small vocabulary features natural semantic clusters. The pronouns &quot;i&quot; and &quot;we&quot; form one cluster. The temporal adverbs &quot;late&quot;, &quot;early&quot;, and &quot;today&quot; form another. This gives the matrix operations the opportunity to physically group related concepts in vector space. As the model trains, these clusters will visibly form within the numerical representations.</p>
 <h2>The Architecture</h2>
 <p>Before defining the dimensions of the data, the architecture processing that data must be clearly defined. The network utilizes an autoregressive Decoder-only architecture. This is the exact framework that powers models like GPT.</p>

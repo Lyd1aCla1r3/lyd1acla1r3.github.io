@@ -68,7 +68,7 @@ V = X \cdot W_V = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-The matrix $V$ contains the actual conceptual representations that will be broadcast across the sequence. Each row holds the information payload for a single token in the `<BOS> i woke up` sequence.
+The matrix $V$ contains the actual conceptual representations that will be broadcast across the sequence. Each row holds the information payload for a single token in the `<BOS>` `i` `woke` `up` sequence.
 
 ## The Weighted Sum: Synthesizing Context
 

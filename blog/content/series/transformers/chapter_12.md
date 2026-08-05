@@ -21,7 +21,7 @@ W_1 = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-When the normalized vectors from the sequence, specifically `<BOS> i woke up`, are multiplied by this matrix, and the learned bias terms are added, the result is a massive expansion of the data. Every token vector transforms from six numbers into twenty-four distinct activation potentials. 
+When the normalized vectors from the sequence, specifically `<BOS>` `i` `woke` `up`, are multiplied by this matrix, and the learned bias terms are added, the result is a massive expansion of the data. Every token vector transforms from six numbers into twenty-four distinct activation potentials. 
 
 $$
 \text{Projected State} = \begin{bmatrix}

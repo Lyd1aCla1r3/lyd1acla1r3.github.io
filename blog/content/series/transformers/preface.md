@@ -15,7 +15,7 @@ To accomplish this, a problem is selected that is small enough to compute on a w
 
 The objective is to train a Transformer to predict the next word in a specific sequence. 
 
-**Input:** `<BOS> i woke up`  
+**Input:** `<BOS>` `i` `woke` `up`  
 **Target:** `late`
 
 The token `<BOS>` stands for Beginning of Sequence. This is a standard marker that tells the network a new sequence has started. 
@@ -26,11 +26,9 @@ This sentence is chosen carefully. It allows the attention mechanism to perform 
 
 To make the math tractable, the model is restricted to a vocabulary of exactly twelve tokens. The total size of the vocabulary is represented by the variable $V$. In this configuration, $V$ equals 12.
 
-| | | | |
-|---|---|---|---|
-| `<BOS>` | `we` | `late` | `<PAD>` |
-| `<EOS>` | `woke` | `early` | `i` |
-| `stayed` | `today` | `yesterday` | `up` |
+`<BOS>` `we` `late` `<PAD>`  
+`<EOS>` `woke` `early` `i`  
+`stayed` `today` `yesterday` `up`  
 
 This small vocabulary features natural semantic clusters. The pronouns "i" and "we" form one cluster. The temporal adverbs "late", "early", and "today" form another. This gives the matrix operations the opportunity to physically group related concepts in vector space. As the model trains, these clusters will visibly form within the numerical representations.
 

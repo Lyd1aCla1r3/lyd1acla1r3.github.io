@@ -148,7 +148,7 @@ V = X \cdot W_V = \begin{bmatrix}
 -0.36 &  0.00
 \end{bmatrix}
 $$</p>
-<p>The matrix $V$ contains the actual conceptual representations that will be broadcast across the sequence. Each row holds the information payload for a single token in the <code>&lt;BOS&gt; i woke up</code> sequence.</p>
+<p>The matrix $V$ contains the actual conceptual representations that will be broadcast across the sequence. Each row holds the information payload for a single token in the <code>&lt;BOS&gt;</code> <code>i</code> <code>woke</code> <code>up</code> sequence.</p>
 <h2>The Weighted Sum: Synthesizing Context</h2>
 <p>The culmination of the single head attention mechanism relies on a matrix of routing instructions $A$ and a matrix of information payloads $V$. New contextualized representations are synthesized by computing the dot product of $A$ and $V$.</p>
 <p>This operation physically executes a weighted sum. Every token constructs a new representation of itself by blending together the Value vectors of all preceding tokens according to the probabilities in the attention matrix.</p>

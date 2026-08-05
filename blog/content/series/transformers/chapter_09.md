@@ -14,7 +14,7 @@ A stabilizing mechanism is required. This is the role of Layer Normalization.
 
 The token embeddings function as points in a six-dimensional space, where $d_{model} = 6$. Before the addition of the Attention output, these points were relatively close to the origin and bounded by the properties of the initial embedding and positional encoding. After adding the Attention output, the points have shifted.
 
-The current state of the Residual Stream for the sequence `<BOS> i woke up` is:
+The current state of the Residual Stream for the sequence `<BOS>` `i` `woke` `up` is:
 
 $$
 \text{Residual Stream} = \begin{bmatrix}

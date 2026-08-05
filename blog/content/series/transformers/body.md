@@ -13,7 +13,7 @@ To accomplish this, a problem is selected that is small enough to compute on a w
 
 The objective is to train a Transformer to predict the next word in a specific sequence. 
 
-**Input:** `<BOS> i woke up`  
+**Input:** `<BOS>` `i` `woke` `up`  
 **Target:** `late`
 
 The token `<BOS>` stands for Beginning of Sequence. This is a standard marker that tells the network a new sequence has started. 
@@ -24,7 +24,9 @@ This sentence is chosen carefully. It allows the attention mechanism to perform 
 
 To make the math tractable, the model is restricted to a vocabulary of exactly twelve tokens. The total size of the vocabulary is represented by the variable $V$. In this configuration, $V$ equals 12.
 
-`<BOS>` `we` `late` `<PAD>` `<EOS>` `woke` `early` `i` `stayed` `today` `yesterday` `up`
+`<BOS>` `we` `late` `<PAD>`  
+`<EOS>` `woke` `early` `i`  
+`stayed` `today` `yesterday` `up`  
 
 This small vocabulary features natural semantic clusters. The pronouns "i" and "we" form one cluster. The temporal adverbs "late", "early", and "today" form another. This gives the matrix operations the opportunity to physically group related concepts in vector space. As the model trains, these clusters will visibly form within the numerical representations.
 
@@ -140,11 +142,13 @@ This translation happens in three distinct stages. First, the sentence is broken
 
 ## The Vocabulary Space and Tokenization
 
-The objective is to process the sequence `<BOS> i woke up`. 
+The objective is to process the sequence `<BOS>` `i` `woke` `up`. 
 
 Before processing this sequence, the model needs a predefined universe of concepts to draw from. This universe is the vocabulary. In this example, the vocabulary is restricted to exactly twelve words. 
 
-`<BOS>` `<EOS>` `<PAD>` `i` `we` `woke` `stayed` `up` `late` `early` `today` `yesterday`
+`<BOS>` `<EOS>` `<PAD>` `i`  
+`we` `woke` `stayed` `up`  
+`late` `early` `today` `yesterday`  
 
 Tokenization maps raw text to the corresponding integer indices in this vocabulary list. The index acts as a unique identifier for the concept. 
 
@@ -260,7 +264,7 @@ The text is now successfully translated into the central $4 \times 6$ tensor tha
 
 <!-- SUMMARY: Matrix operations are inherently permutation invariant, creating a structural flaw that leaves the architecture entirely blind to sequence order. This limitation is resolved by explicitly injecting temporal context through the element-wise addition of mathematically deterministic absolute positional encodings. -->
 
-The input sequence `<BOS> i woke up` is now transformed into a dense, continuous semantic space. Sparse 12-dimensional one-hot vectors are mathematically compressed into a 6-dimensional embedding matrix.
+The input sequence `<BOS>` `i` `woke` `up` is now transformed into a dense, continuous semantic space. Sparse 12-dimensional one-hot vectors are mathematically compressed into a 6-dimensional embedding matrix.
 
 The current tensor representation $X$ for the sequence takes the following form:
 <div style="page-break-after: avoid;"></div>
@@ -366,7 +370,7 @@ The initial preparations are complete. A string of text is successfully translat
 
 <!-- SUMMARY: Symmetric similarity is structurally inadequate for capturing grammatically asymmetric linguistic relationships. Projecting context-aware embeddings into distinct query and key subspaces implements a bilinear form that enables tokens to independently query their surroundings and present complementary information. -->
 
-The permutation invariance problem is solved by adding absolute positional encodings to the token embeddings. The sequence `<BOS> i woke up` is now represented by the $4 \times 6$ matrix $X_{pos}$, which contains both semantic meaning and positional context. 
+The permutation invariance problem is solved by adding absolute positional encodings to the token embeddings. The sequence `<BOS>` `i` `woke` `up` is now represented by the $4 \times 6$ matrix $X_{pos}$, which contains both semantic meaning and positional context. 
 
 The next step in the Transformer architecture is self-attention. The core mechanism of attention involves discovering which tokens in the sequence are relevant to each other. The simplest way to measure mathematical relevance between two vectors is to calculate their dot product. A naive assumption suggests computing the dot product of every token vector with every other token vector directly.
 
@@ -497,7 +501,7 @@ The previous section established why the Transformer does not calculate attentio
 
 The sequence currently consists of four tokens:
 
-| `<BOS>` | `i` | `woke` | `up` |
+`<BOS>` `i` `woke` `up`  
 
 The actual attention scores must now be calculated. This step quantifies how strongly each token in the sequence should attend to every other token. This is achieved by computing the dot product of every Query vector with every Key vector. 
 
@@ -755,7 +759,7 @@ V = X \cdot W_V = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-The matrix $V$ contains the actual conceptual representations that will be broadcast across the sequence. Each row holds the information payload for a single token in the `<BOS> i woke up` sequence.
+The matrix $V$ contains the actual conceptual representations that will be broadcast across the sequence. Each row holds the information payload for a single token in the `<BOS>` `i` `woke` `up` sequence.
 
 ## The Weighted Sum: Synthesizing Context
 
@@ -914,7 +918,7 @@ $$
 
 ## Rejoining the Stream
 
-This final calculation successfully completes the Multi-Head Self-Attention block. The process began with basic token embeddings representing the sequence `<BOS> i woke up`. The architecture split those representations, allowed them to search for context across the sequence, gathered their findings, and fused those findings back into a unified $4 \times 6$ matrix.
+This final calculation successfully completes the Multi-Head Self-Attention block. The process began with basic token embeddings representing the sequence `<BOS>` `i` `woke` `up`. The architecture split those representations, allowed them to search for context across the sequence, gathered their findings, and fused those findings back into a unified $4 \times 6$ matrix.
 
 Every vector in this output matrix now contains rich, contextualized information about its surrounding tokens. These advanced representations are ready to merge back into the main residual stream of the Transformer.
 
@@ -1069,7 +1073,7 @@ A stabilizing mechanism is required. This is the role of Layer Normalization.
 
 The token embeddings function as points in a six-dimensional space, where $d_{model} = 6$. Before the addition of the Attention output, these points were relatively close to the origin and bounded by the properties of the initial embedding and positional encoding. After adding the Attention output, the points have shifted.
 
-The current state of the Residual Stream for the sequence `<BOS> i woke up` is:
+The current state of the Residual Stream for the sequence `<BOS>` `i` `woke` `up` is:
 <div style="page-break-after: avoid;"></div>
 
 $$
@@ -1433,7 +1437,7 @@ W_1 = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-When the normalized vectors from the sequence, specifically `<BOS> i woke up`, are multiplied by this matrix, and the learned bias terms are added, the result is a massive expansion of the data. Every token vector transforms from six numbers into twenty-four distinct activation potentials. 
+When the normalized vectors from the sequence, specifically `<BOS>` `i` `woke` `up`, are multiplied by this matrix, and the learned bias terms are added, the result is a massive expansion of the data. Every token vector transforms from six numbers into twenty-four distinct activation potentials. 
 
 $$
 \text{Projected State} = \begin{bmatrix}
@@ -1781,7 +1785,7 @@ In the progression through the Transformer architecture, the network reaches a c
 
 When the attention scores were calculated in Layer 1, the Queries $Q$ and Keys $K$ were derived from raw word embeddings plus positional information. They were searching for basic relationships, such as a subject looking for a verb. In Layer 2, the input vectors have passed through the first attention mechanism and the Multi-Layer Perceptron. They have already absorbed surrounding context.
 
-The model is processing the sequence `<BOS> i woke up` with the goal of predicting the next token. The vectors corresponding to "woke" and "up" are no longer isolated; they have mixed their information in the residual stream. Consequently, the Layer 2 $Q_2$ and $K_2$ matrices project this mixed, abstract data into a new dimensional space. They are asking highly specific, compound questions about the sentence structure.
+The model is processing the sequence `<BOS>` `i` `woke` `up` with the goal of predicting the next token. The vectors corresponding to "woke" and "up" are no longer isolated; they have mixed their information in the residual stream. Consequently, the Layer 2 $Q_2$ and $K_2$ matrices project this mixed, abstract data into a new dimensional space. They are asking highly specific, compound questions about the sentence structure.
 
 The exact $Q_2$ matrix and the transposed Key matrix $K_2^T$ for the first attention head in Layer 2 are presented below.
 
@@ -2790,7 +2794,7 @@ During the forward pass, the residual stream operated as a central memory bus. T
 
 In the backward pass, the residual stream serves an equally critical role as a gradient highway. When operations add together during the forward pass, the backward pass simply passes the gradient equally to both paths. The gradient arriving at any point in the residual stream equals the sum of all gradients from the blocks that read from it later in the network. Therefore, the final gradient vector arriving at the initial input matrix $X$ represents a comprehensive sum. It contains the feedback from every downstream decision, perfectly encapsulating how the initial token vectors need to shift in $d_{model}$ space to decrease the final prediction error.
 
-Let $d\_X$ represent this accumulated gradient for the sequence `<BOS> i woke up`. It forms a matrix of size $4 \times 6$:
+Let $d\_X$ represent this accumulated gradient for the sequence `<BOS>` `i` `woke` `up`. It forms a matrix of size $4 \times 6$:
 <div style="page-break-after: avoid;"></div>
 
 $$
@@ -2810,7 +2814,7 @@ By the rules of calculus, if a row in $E$ copies forward to form a row in $X$, t
 
 <div style="page-break-inside: avoid;">
 
-If the sequence `<BOS> i woke up` corresponds to indices 0, 3, 5, and 7 in the vocabulary, the process constructs a gradient matrix $d\_E$ of the same size as $E$, initialized to all zeros. The network then adds the respective rows of $d\_X$ to rows 0, 3, 5, and 7 of $d\_E$. The gradients for tokens not present in the current sequence remain strictly zero.
+If the sequence `<BOS>` `i` `woke` `up` corresponds to indices 0, 3, 5, and 7 in the vocabulary, the process constructs a gradient matrix $d\_E$ of the same size as $E$, initialized to all zeros. The network then adds the respective rows of $d\_X$ to rows 0, 3, 5, and 7 of $d\_E$. The gradients for tokens not present in the current sequence remain strictly zero.
 
 ```mermaid
 flowchart TD

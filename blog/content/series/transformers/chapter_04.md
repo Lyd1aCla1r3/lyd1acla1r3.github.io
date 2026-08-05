@@ -8,7 +8,7 @@ The previous section established why the Transformer does not calculate attentio
 
 The sequence currently consists of four tokens:
 
-| `<BOS>` | `i` | `woke` | `up` |
+`<BOS>` `i` `woke` `up`  
 
 The actual attention scores must now be calculated. This step quantifies how strongly each token in the sequence should attend to every other token. This is achieved by computing the dot product of every Query vector with every Key vector. 
 

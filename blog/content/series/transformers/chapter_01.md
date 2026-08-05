@@ -10,15 +10,13 @@ This translation happens in three distinct stages. First, the sentence is broken
 
 ## The Vocabulary Space and Tokenization
 
-The objective is to process the sequence `<BOS> i woke up`. 
+The objective is to process the sequence `<BOS>` `i` `woke` `up`. 
 
 Before processing this sequence, the model needs a predefined universe of concepts to draw from. This universe is the vocabulary. In this example, the vocabulary is restricted to exactly twelve words. 
 
-| | | | |
-|---|---|---|---|
-| `<BOS>` | `<EOS>` | `<PAD>` | `i` |
-| `we` | `woke` | `stayed` | `up` |
-| `late` | `early` | `today` | `yesterday` |
+`<BOS>` `<EOS>` `<PAD>` `i`  
+`we` `woke` `stayed` `up`  
+`late` `early` `today` `yesterday`  
 
 Tokenization maps raw text to the corresponding integer indices in this vocabulary list. The index acts as a unique identifier for the concept. 
 

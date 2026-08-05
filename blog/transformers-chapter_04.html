@@ -103,7 +103,7 @@
 <h1>Part 4: The Attention Score and $\sqrt{d_k}$</h1>
 <!-- SUMMARY: Calculating raw attention scores via the dot product exposes a scaling problem in high-dimensional vector spaces. To prevent catastrophic softmax saturation and the resulting gradient decay, the variance is mathematically stabilized by dividing the scores by the square root of the head dimension. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p><p>The previous section established why the Transformer does not calculate attention directly from the input embeddings. The sequence is projected into two distinct semantic subspaces, yielding a matrix of Queries ($Q$) and a matrix of Keys ($K$). This asymmetric projection allows the network to match concepts that belong together even if their base embeddings are geometrically distant.</p>
 <p>The sequence currently consists of four tokens:</p>
-<p>| <code>&lt;BOS&gt;</code> | <code>i</code> | <code>woke</code> | <code>up</code> |</p>
+<p><code>&lt;BOS&gt;</code> <code>i</code> <code>woke</code> <code>up</code>  </p>
 <p>The actual attention scores must now be calculated. This step quantifies how strongly each token in the sequence should attend to every other token. This is achieved by computing the dot product of every Query vector with every Key vector. </p>
 <h2>The Dot Product as a Metric of Similarity</h2>
 <p>The dot product measures alignment. When two vectors point in similar directions, their dot product is large and positive. When they are orthogonal, it is zero. When they point in opposite directions, it is negative. </p>

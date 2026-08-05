@@ -104,36 +104,9 @@
 <!-- SUMMARY: Translating raw text into a rigorous geometric representation requires mapping discrete tokens into orthogonal one-hot vectors. This process mathematically motivates the necessity of the embedding matrix to compress these isolated dimensions into a dense semantic space, enabling the natural inference of conceptual relationships. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p><p>The Preface established that every operation in the Transformer reads from and writes to a central $4 \times 6$ matrix. Bridging the gap between raw text and that geometric representation is the next requirement. Text is inherently abstract. Computers cannot multiply words. Computers multiply numbers. A rigorous mechanical process is needed to translate human language into a mathematical format that a neural network can manipulate.</p>
 <p>This translation happens in three distinct stages. First, the sentence is broken down into discrete pieces called tokens. Second, each token is mapped to a strict geometric location using a one-hot vector. Third, those isolated vectors are projected into a shared, continuous space using an Embedding Matrix. </p>
 <h2>The Vocabulary Space and Tokenization</h2>
-<p>The objective is to process the sequence <code>&lt;BOS&gt; i woke up</code>. </p>
+<p>The objective is to process the sequence <code>&lt;BOS&gt;</code> <code>i</code> <code>woke</code> <code>up</code>. </p>
 <p>Before processing this sequence, the model needs a predefined universe of concepts to draw from. This universe is the vocabulary. In this example, the vocabulary is restricted to exactly twelve words. </p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>&lt;BOS&gt;</code></td>
-<td><code>&lt;EOS&gt;</code></td>
-<td><code>&lt;PAD&gt;</code></td>
-<td><code>i</code></td>
-</tr>
-<tr>
-<td><code>we</code></td>
-<td><code>woke</code></td>
-<td><code>stayed</code></td>
-<td><code>up</code></td>
-</tr>
-<tr>
-<td><code>late</code></td>
-<td><code>early</code></td>
-<td><code>today</code></td>
-<td><code>yesterday</code></td>
-</tr>
-</tbody></table>
+<p><code>&lt;BOS&gt;</code> <code>&lt;EOS&gt;</code> <code>&lt;PAD&gt;</code> <code>i</code><br><code>we</code> <code>woke</code> <code>stayed</code> <code>up</code><br><code>late</code> <code>early</code> <code>today</code> <code>yesterday</code>  </p>
 <p>Tokenization maps raw text to the corresponding integer indices in this vocabulary list. The index acts as a unique identifier for the concept. </p>
 <p>For this sequence, the mapping is straightforward. 
 The <code>&lt;BOS&gt;</code> token maps to index 0. 

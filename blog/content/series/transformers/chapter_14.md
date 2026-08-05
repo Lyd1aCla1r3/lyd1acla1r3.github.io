@@ -61,7 +61,7 @@ In the progression through the Transformer architecture, the network reaches a c
 
 When the attention scores were calculated in Layer 1, the Queries $Q$ and Keys $K$ were derived from raw word embeddings plus positional information. They were searching for basic relationships, such as a subject looking for a verb. In Layer 2, the input vectors have passed through the first attention mechanism and the Multi-Layer Perceptron. They have already absorbed surrounding context.
 
-The model is processing the sequence `<BOS> i woke up` with the goal of predicting the next token. The vectors corresponding to "woke" and "up" are no longer isolated; they have mixed their information in the residual stream. Consequently, the Layer 2 $Q_2$ and $K_2$ matrices project this mixed, abstract data into a new dimensional space. They are asking highly specific, compound questions about the sentence structure.
+The model is processing the sequence `<BOS>` `i` `woke` `up` with the goal of predicting the next token. The vectors corresponding to "woke" and "up" are no longer isolated; they have mixed their information in the residual stream. Consequently, the Layer 2 $Q_2$ and $K_2$ matrices project this mixed, abstract data into a new dimensional space. They are asking highly specific, compound questions about the sentence structure.
 
 The exact $Q_2$ matrix and the transposed Key matrix $K_2^T$ for the first attention head in Layer 2 are presented below.
 
