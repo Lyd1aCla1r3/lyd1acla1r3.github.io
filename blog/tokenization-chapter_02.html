@@ -106,114 +106,16 @@
 <p>The training algorithm begins by isolating the fundamental building blocks of the language. The entire training corpus is first separated into discrete words, typically delineated by whitespace. Every word is then strictly decomposed into a sequence of individual character tokens.</p>
 <p>This isolation requires a dedicated mechanism to preserve the original structural boundaries of the words. If the algorithm processes the corpus as a continuous stream of characters, it risks merging characters that span across adjacent words, creating unnatural representations. To prevent this bleeding, a dedicated end-of-word marker, denoted as <code>&lt;/w&gt;</code>, is appended to the terminal character of every word sequence.</p>
 <p>The toy corpus from the preceding article provides a concrete initialization state. The corpus consists of nine distinct verbs, each appearing exactly once. Decomposing these words produces a highly constrained initial vocabulary of thirteen character-level tokens:</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>a</code></td>
-<td><code>d</code></td>
-<td><code>e</code></td>
-<td><code>g</code></td>
-<td><code>i</code></td>
-<td><code>k</code></td>
-<td><code>l</code></td>
-</tr>
-<tr>
-<td><code>n</code></td>
-<td><code>o</code></td>
-<td><code>r</code></td>
-<td><code>t</code></td>
-<td><code>w</code></td>
-<td><code>&lt;/w&gt;</code></td>
-<td></td>
-</tr>
-</tbody></table>
+<p><code>a</code> <code>d</code> <code>e</code> <code>g</code> <code>i</code> <code>k</code> <code>l</code><br><code>n</code> <code>o</code> <code>r</code> <code>t</code> <code>w</code> <code>&lt;/w&gt;</code>  </p>
 <p>The words themselves transform into sequences constructed exclusively from this initial character inventory. For example, the string &#39;walking&#39; maps to a sequence of eight discrete elements: <code>w</code>, <code>a</code>, <code>l</code>, <code>k</code>, <code>i</code>, <code>n</code>, <code>g</code>, <code>&lt;/w&gt;</code>. The entire corpus is processed into this fully atomized state before any compression occurs.</p>
 <h2>Pair Frequency Evaluation</h2>
 <p>The core intelligence of the algorithm relies on discovering structural redundancies within these atomized sequences. The system executes a comprehensive scan over the entire corpus, evaluating every instance where two distinct tokens appear adjacent to one another.</p>
 <p>This frequency counting operation tallies the occurrences of every adjacent pair across all words. The goal is to identify the single pair of tokens that co-occur most frequently. In the initialized state of the toy corpus, several character pairings appear repeatedly due to the morphological similarities of the chosen verb families. A tally of the most common adjacent pairs immediately highlights structural patterns:</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>a</code></td>
-<td>+</td>
-<td><code>l</code></td>
-<td>$\rightarrow$</td>
-<td>6 occurrences</td>
-</tr>
-<tr>
-<td><code>k</code></td>
-<td>+</td>
-<td><code>e</code></td>
-<td>$\rightarrow$</td>
-<td>6 occurrences</td>
-</tr>
-<tr>
-<td><code>l</code></td>
-<td>+</td>
-<td><code>k</code></td>
-<td>$\rightarrow$</td>
-<td>6 occurrences</td>
-</tr>
-<tr>
-<td><code>w</code></td>
-<td>+</td>
-<td><code>a</code></td>
-<td>$\rightarrow$</td>
-<td>4 occurrences</td>
-</tr>
-</tbody></table>
+<p><code>a</code> + <code>l</code> $\rightarrow$ 6 occurrences<br><code>k</code> + <code>e</code> $\rightarrow$ 6 occurrences<br><code>l</code> + <code>k</code> $\rightarrow$ 6 occurrences<br><code>w</code> + <code>a</code> $\rightarrow$ 4 occurrences  </p>
 <p>The algorithm identifies the pairs <code>a</code> + <code>l</code>, <code>k</code> + <code>e</code>, and <code>l</code> + <code>k</code> as tied for the highest frequency. A deterministic tie-breaking protocol resolves this collision. When multiple pairs share the highest frequency, the algorithm selects the pair that appears first when sorted lexicographically. Comparing the tied pairs, the character <code>a</code> precedes <code>k</code> and <code>l</code> in the alphabet, dictating the selection of the pair <code>a</code> + <code>l</code> for the inaugural merge operation.</p>
 <h2>The Greedy Merge Rule</h2>
 <p>The identification of the highest-frequency pair triggers the central update mechanism. The algorithm formally registers a new token representing the concatenation of the selected pair. This new element is appended to the recognized vocabulary, increasing the total size of the vocabulary space by one.</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>a</code></td>
-<td><code>d</code></td>
-<td><code>e</code></td>
-<td><code>g</code></td>
-<td><code>i</code></td>
-<td><code>k</code></td>
-<td><code>l</code></td>
-</tr>
-<tr>
-<td><code>n</code></td>
-<td><code>o</code></td>
-<td><code>r</code></td>
-<td><code>t</code></td>
-<td><code>w</code></td>
-<td><code>&lt;/w&gt;</code></td>
-<td><strong><code>al</code></strong></td>
-</tr>
-</tbody></table>
+<p><code>a</code> <code>d</code> <code>e</code> <code>g</code> <code>i</code> <code>k</code> <code>l</code><br><code>n</code> <code>o</code> <code>r</code> <code>t</code> <code>w</code> <code>&lt;/w&gt;</code> <strong><code>al</code></strong>  </p>
 <p>Simultaneously, the algorithm sweeps through the entire corpus and replaces every adjacent occurrence of the individual tokens with the new fused token. This structural update reduces the overall sequence length of the corpus. Two discrete dimensions of information are compressed into a single, cohesive unit. For example, the sequence representation of the string &#39;walking&#39; compresses from eight elements to seven: <code>w</code>, <code>al</code>, <code>k</code>, <code>i</code>, <code>n</code>, <code>g</code>, <code>&lt;/w&gt;</code>.</p>
 <p>This localized compression logic forms an iterative loop.</p>
 <pre><code class="language-mermaid">graph TD

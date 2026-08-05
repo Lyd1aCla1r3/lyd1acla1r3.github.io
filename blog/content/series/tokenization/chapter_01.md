@@ -14,11 +14,10 @@ Defining the vocabulary space around natural word boundaries presents an intuiti
 
 A minimal toy corpus demonstrates the initial viability of this approach. Applying strict word-level boundaries produces a nine-element vocabulary:
 
-| | | |
-|---|---|---|
-| `waking` | `woke` | `woken` |
-| `walking` | `walked` | `walker` |
-| `talking` | `talked` | `talker` |
+`waking` `woke` `woken`  
+`walking` `walked` `walker`  
+`talking` `talked` `talker`  
+
 
 The structural flaw emerges immediately when scaling this strategy to a realistic production corpus. A modern language contains hundreds of thousands of base words. Adding grammatical permutations, prefixes, suffixes, punctuation combinations, and typographical errors results in unbounded expansion.
 
@@ -41,11 +40,10 @@ Addressing the dimensionality explosion requires constraining the vocabulary siz
 
 Applying character-level boundaries to the toy corpus decomposes the text into a tiny, highly constrained vocabulary of thirteen distinct elements, including a designated end-of-word marker `</w>`:
 
-| | | | | |
-|---|---|---|---|---|
-| `a` | `d` | `e` | `g` | `i` |
-| `k` | `l` | `n` | `o` | `r` |
-| `t` | `w` | `</w>` | | |
+`a` `d` `e` `g` `i`  
+`k` `l` `n` `o` `r`  
+`t` `w` `</w>`  
+
 
 This approach completely resolves the memory explosion problem. The embedding matrix shrinks to a negligible size.
 
@@ -63,9 +61,8 @@ Decomposing rare and complex words into reusable subword units strictly bounds t
 
 Applying a hypothetical subword algorithm to the toy corpus reveals morphological structures hidden across different verb families. The prefixes `walk` and `talk` might remain whole, while common suffixes like `ing` and `ed` separate into independent, reusable tokens.
 
-| | | | | |
-|---|---|---|---|---|
-| `walk` | `talk` | `ing` | `ed` | `er` |
+`walk` `talk` `ing` `ed` `er`  
+
 
 The embedding matrix row corresponding to `ing` captures the geometric representation of continuous action. The architecture effectively constructs composite representations for novel combinations by adding the learned vector for a stem to the learned vector for a suffix.
 

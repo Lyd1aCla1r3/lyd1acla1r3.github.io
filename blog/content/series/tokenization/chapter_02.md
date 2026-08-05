@@ -14,10 +14,9 @@ This isolation requires a dedicated mechanism to preserve the original structura
 
 The toy corpus from the preceding article provides a concrete initialization state. The corpus consists of nine distinct verbs, each appearing exactly once. Decomposing these words produces a highly constrained initial vocabulary of thirteen character-level tokens:
 
-| | | | | | | |
-|---|---|---|---|---|---|---|
-| `a` | `d` | `e` | `g` | `i` | `k` | `l` |
-| `n` | `o` | `r` | `t` | `w` | `</w>`| |
+`a` `d` `e` `g` `i` `k` `l`  
+`n` `o` `r` `t` `w` `</w>`  
+
 
 The words themselves transform into sequences constructed exclusively from this initial character inventory. For example, the string 'walking' maps to a sequence of eight discrete elements: `w`, `a`, `l`, `k`, `i`, `n`, `g`, `</w>`. The entire corpus is processed into this fully atomized state before any compression occurs.
 
@@ -27,12 +26,11 @@ The core intelligence of the algorithm relies on discovering structural redundan
 
 This frequency counting operation tallies the occurrences of every adjacent pair across all words. The goal is to identify the single pair of tokens that co-occur most frequently. In the initialized state of the toy corpus, several character pairings appear repeatedly due to the morphological similarities of the chosen verb families. A tally of the most common adjacent pairs immediately highlights structural patterns:
 
-| | | | | |
-|---|---|---|---|---|
-| `a` | + | `l` | $\rightarrow$ | 6 occurrences |
-| `k` | + | `e` | $\rightarrow$ | 6 occurrences |
-| `l` | + | `k` | $\rightarrow$ | 6 occurrences |
-| `w` | + | `a` | $\rightarrow$ | 4 occurrences |
+`a` + `l` $\rightarrow$ 6 occurrences  
+`k` + `e` $\rightarrow$ 6 occurrences  
+`l` + `k` $\rightarrow$ 6 occurrences  
+`w` + `a` $\rightarrow$ 4 occurrences  
+
 
 The algorithm identifies the pairs `a` + `l`, `k` + `e`, and `l` + `k` as tied for the highest frequency. A deterministic tie-breaking protocol resolves this collision. When multiple pairs share the highest frequency, the algorithm selects the pair that appears first when sorted lexicographically. Comparing the tied pairs, the character `a` precedes `k` and `l` in the alphabet, dictating the selection of the pair `a` + `l` for the inaugural merge operation.
 
@@ -40,10 +38,9 @@ The algorithm identifies the pairs `a` + `l`, `k` + `e`, and `l` + `k` as tied f
 
 The identification of the highest-frequency pair triggers the central update mechanism. The algorithm formally registers a new token representing the concatenation of the selected pair. This new element is appended to the recognized vocabulary, increasing the total size of the vocabulary space by one.
 
-| | | | | | | |
-|---|---|---|---|---|---|---|
-| `a` | `d` | `e` | `g` | `i` | `k` | `l` |
-| `n` | `o` | `r` | `t` | `w` | `</w>`| **`al`** |
+`a` `d` `e` `g` `i` `k` `l`  
+`n` `o` `r` `t` `w` `</w>` **`al`**  
+
 
 Simultaneously, the algorithm sweeps through the entire corpus and replaces every adjacent occurrence of the individual tokens with the new fused token. This structural update reduces the overall sequence length of the corpus. Two discrete dimensions of information are compressed into a single, cohesive unit. For example, the sequence representation of the string 'walking' compresses from eight elements to seven: `w`, `al`, `k`, `i`, `n`, `g`, `</w>`.
 
