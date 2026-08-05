@@ -463,7 +463,7 @@ The previously demonstrated encoding process relies on a fragile assumption. The
 
 ## The Universal Byte-Level Foundation
 
-Resolving this failure state requires abandoning the concept of text characters entirely. At the lowest physical hardware level, computers store data as bits—microscopic electrical states representing either a 1 or a 0. Software operating systems group these bits into standardized blocks of eight called *bytes*. Because a byte consists of eight binary positions ($2^8$), it can represent exactly 256 distinct permutations, yielding a fixed range of integer values from 0 to 255.
+Resolving this failure state requires abandoning the concept of text characters entirely. At the lowest physical hardware level, computers store data as bits—microscopic electrical states representing either a 1 or a 0. Software operating systems group these bits into standardized blocks of eight called *bytes*. Because a byte consists of eight binary positions ($2^8$), it can represent exactly 256 distinct permutations, yielding a fixed range of integer values from `0` to `255`.
 
 Every text symbol, regardless of language or complexity, is fundamentally stored as a sequence of these bytes encoded via the UTF-8 standard. This provides the perfect, finite mathematical foundation for tokenization. Instead of defining the base vocabulary as an unpredictable set of human characters, production systems define their base vocabulary as the 256 raw byte values.
 
@@ -473,19 +473,19 @@ A critical distinction must be made regarding how the algorithm interacts with t
 
 By initializing the algorithm with this exact 256-token foundation, no string can ever be unencodable. 
 
-Standard encoding tables exhibit a distinct behavioral shift at the [127] boundary, which corresponds to 7F in hexadecimal. The first 128 integer values (0 through 127) are strictly reserved for the classic ASCII character set, which covers all standard English letters, numbers, and basic punctuation. Given there are only 128 of these characters, they fit perfectly inside a single 8-bit byte. For example, the letter w maps to the single byte integer 119.
+Standard encoding tables exhibit a distinct behavioral shift at the [127] boundary, which corresponds to 7F in hexadecimal. The first 128 integer values (0 through 127) are strictly reserved for the classic ASCII character set, which covers all standard English letters, numbers, and basic punctuation. Given there are only 128 of these characters, they fit perfectly inside a single 8-bit byte. For example, the letter `w` maps to the single byte integer `119`.
 
-However, the Unicode standard contains over one million symbols. To accommodate this massive scale without breaking compatibility with older 1-byte systems, UTF-8 operates as a *variable-length* encoding. Once a character falls outside that standard English range, the encoding shifts to use multiple bytes. The accented character é requires two bytes, specifically [195] followed by [169]. An emoji like 🚀 requires four bytes, sequentially [240], [159], [154], and [128].
+However, the Unicode standard contains over one million symbols. To accommodate this massive scale without breaking compatibility with older 1-byte systems, UTF-8 operates as a *variable-length* encoding. Once a character falls outside that standard English range, the encoding shifts to use multiple bytes. The accented character `é` requires two bytes, specifically `[195]` followed by `[169]`. An emoji like 🚀 requires four bytes, sequentially `[240]`, `[159]`, `[154]`, and `[128]`.
 
 The tokenizer algorithm possesses no mechanism to read these bits. It never touches binary data. When text is fed into a tokenizer, the programming language (like Python) first executes a standard `encode("utf-8")` function. This function references the OS-level text encoding standards to translate the string into an array of integers. 
 
-When an author types é, the system instantly translates it into the integer array [195, 169]. The tokenizer is simply handed this integer array. 
+When an author types `é`, the system instantly translates it into the integer array `[195, 169]`. The tokenizer is simply handed this integer array. 
 
 To display these complex characters on a screen, the computer's text rendering engine must concatenate the underlying bits of that multi-byte sequence and interpret them as a single unified code point. But the Byte Pair Encoding algorithm *never* does this. 
 
 ### The Unicode Dimensionality Problem
 
-Given the existence of over a million pre-assigned Unicode symbols, utilizing those established IDs directly appears to be a logical alternative. Initializing a base vocabulary with 1.1 million Unicode characters would still permit the algorithm to merge frequent characters, mapping combinations like [x] + [y] to [z], starting at token ID 2,000,000. Capping the base vocabulary at [255] and manually learning new abstract entries for [256] onward requires specific justification.
+Given the existence of over a million pre-assigned Unicode symbols, utilizing those established IDs directly appears to be a logical alternative. Initializing a base vocabulary with 1.1 million Unicode characters would still permit the algorithm to merge frequent characters, mapping combinations like [x] + [y] to [z], starting at token ID `2,000,000`. Capping the base vocabulary at `[255]` and manually learning new abstract entries for `[256]` onward requires specific justification.
 
 The answer is structural efficiency and matrix parameter constraints.
 
@@ -493,17 +493,17 @@ The embedding matrix of a Transformer must contain exactly one row for *every si
 
 Conversely, if the base vocabulary is capped at the 256 raw bytes, the foundational embedding matrix costs almost nothing (only 256 rows). This leaves the entire parameter budget completely open. The algorithm can allocate its finite 50,000-token vocabulary exclusively to the structural combinations that actually appear frequently in the corpus.
 
-When the tokenizer receives the array for é, it strictly sees the integer [195] followed by the integer [169]. Because those two distinct integers appear sequentially every single time an author types é, the BPE algorithm will naturally identify them as a highly frequent pair. It will then merge them by minting a completely new, abstract integer token ID ([195] + [169] &rarr; [257]). 
+When the tokenizer receives the array for `é`, it strictly sees the integer `[195]` followed by the integer `[169]`. Because those two distinct integers appear sequentially every single time an author types `é`, the BPE algorithm will naturally identify them as a highly frequent pair. It will then merge them by minting a completely new, abstract integer token ID (`[195]` + `[169]` &rarr; `[257]`). 
 
 By extending this logic across massive datasets, the algorithm mathematically learns to fuse multi-byte sequences, morphological subwords (like `i` `n` `g`), and entire common words (like `t` `h` `e`) into highly efficient token identifiers—all while maintaining an incredibly compact, data-driven vocabulary.
 
 ### Decoding and the UTF-8 Guarantee
 
-The restriction to abstract integers necessitates a dedicated text reconstruction protocol. Transforming the abstract token [257] back into the printable character é requires reversing the merge operations.
+The restriction to abstract integers necessitates a dedicated text reconstruction protocol. Transforming the abstract token `[257]` back into the printable character `é` requires reversing the merge operations.
 
-The tokenizer maintains a strict lookup table of every merge it performed. During the decoding phase (when the neural network outputs token [257]), the tokenizer references this table and simply reverses the operation. It expands [257] back down to its base constituent bytes: [195, 169]. It then hands this raw byte array back to the programming language.
+The tokenizer maintains a strict lookup table of every merge it performed. During the decoding phase (when the neural network outputs token `[257]`), the tokenizer references this table and simply reverses the operation. It expands `[257]` back down to its base constituent bytes: `[195, 169]`. It then hands this raw byte array back to the programming language.
 
-This reversal process introduces a critical ambiguity regarding whether the array [195, 169] should be interpreted as the single character é or as two completely separate characters, such as Ã followed by ©.
+This reversal process introduces a critical ambiguity regarding whether the array `[195, 169]` should be interpreted as the single character `é` or as two completely separate characters, such as `Ã` followed by `©`.
 
 This is where the mathematical brilliance of the UTF-8 specification shines. UTF-8 uses exactly two types of bytes: **Start Bytes** and **Continuation Bytes**. By looking at the binary prefix of any byte, the decoding system instantly knows exactly how to group them:
 
@@ -523,21 +523,21 @@ This design makes the byte stream perfectly self-synchronizing. If a computer ju
 
 The strict limitation of merging only adjacent pairs prevents the algorithm from compressing a 3-byte or 4-byte character in a single operation. 
 
-Encountering a 3-byte character, such as a Hindi Devanagari symbol represented by [224] [164] [185], forces the tokenizer to merge the sequence iteratively. First, it will merge [224] + [164] into a new abstract token like [350]. Later, it will merge [350] + [185] into [412].
+Encountering a 3-byte character, such as a Hindi Devanagari symbol represented by `[224]` `[164]` `[185]`, forces the tokenizer to merge the sequence iteratively. First, it will merge `[224]` + `[164]` into a new abstract token like `[350]`. Later, it will merge `[350]` + `[185]` into `[412]`.
 
-Leaving a character partially merged as [350] and [185] poses zero risk of corrupting the text. 
+Leaving a character partially merged as `[350]` and `[185]` poses zero risk of corrupting the text. 
 
 Tokens are never decoded in isolation. The neural network outputs the sequence of tokens, and the tokenizer expands them all back into a massive, flat byte array. Whether the neural network used one token or three tokens to generate those bytes is irrelevant to the UTF-8 decoder. As long as the final byte array receives `[224, 164, 185]`, the Start Byte (`224`) will tell the text engine to read all three bytes together and render the symbol flawlessly.
 
-This partial merging behavior actually provides a massive structural advantage for foreign languages. In UTF-8, characters from the same language script are grouped together. Almost all Hindi characters share the exact same first two bytes ([224] and [164]). 
+This partial merging behavior actually provides a massive structural advantage for foreign languages. In UTF-8, characters from the same language script are grouped together. Almost all Hindi characters share the exact same first two bytes (`[224]` and `[164]`). 
 
-By merging those first two bytes into the abstract token [350], the algorithm effectively creates a "Devanagari Prefix" token. Now, instead of requiring thousands of unique tokens for every Hindi character, the model can efficiently represent any Hindi character as just two tokens: [Devanagari_Prefix] + [Specific_3rd_Byte]. By operating strictly on raw bytes, Byte Pair Encoding naturally discovers the structural DNA of human languages.
+By merging those first two bytes into the abstract token `[350]`, the algorithm effectively creates a "Devanagari Prefix" token. Now, instead of requiring thousands of unique tokens for every Hindi character, the model can efficiently represent any Hindi character as just two tokens: `[Devanagari_Prefix]` + `[Specific_3rd_Byte]`. By operating strictly on raw bytes, Byte Pair Encoding naturally discovers the structural DNA of human languages.
 
 ## Re-Training the Toy Example in Bytes
 
 To prove that the mechanical logic remains mathematically identical, the toy corpus is completely detached from human-readable characters and converted into raw integers. 
 
-A special boundary token, `</w>`, is appended to mark the end of each word. The boundary marker </w> does not map to its literal 4-byte sequence. This string functions as an abstract control token artificially injected by the tokenizer rather than literal text typed by a human. To prevent the neural network from confusing control tokens with actual text, production systems assign control tokens to dedicated integers that exist completely outside the 0-255 raw byte range. Therefore, the word boundary token is explicitly assigned the integer [256], and the algorithm begins minting new fused tokens at [257].
+A special boundary token, `</w>`, is appended to mark the end of each word. The boundary marker </w> does not map to its literal 4-byte sequence. This string functions as an abstract control token artificially injected by the tokenizer rather than literal text typed by a human. To prevent the neural network from confusing control tokens with actual text, production systems assign control tokens to dedicated integers that exist completely outside the 0-255 raw byte range. Therefore, the word boundary token is explicitly assigned the integer `[256]`, and the algorithm begins minting new fused tokens at `[257]`.
 
 <div class="trace-container">
 <p>INITIAL CORPUS:</p>
