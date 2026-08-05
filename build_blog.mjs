@@ -113,7 +113,10 @@ for (const fileObj of mdFiles) {
   
   breadcrumbHtml += `<li aria-current="page">${title}</li></ol></nav>`;
 
-  const outFilename = fileObj.name.replace('.md', '.html');
+  let outFilename = fileObj.name.replace('.md', '.html');
+  if (seriesName) {
+    outFilename = `${seriesName}-${outFilename}`;
+  }
   
   postsData.push({
     title,

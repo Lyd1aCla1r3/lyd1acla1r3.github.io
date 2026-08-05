@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI for Code vs Documentation — Lydia Pedersen</title>
+  <title>Part 2: The Permutation Invariance Problem & Positional Encoding — Lydia Pedersen</title>
   <link rel="stylesheet" href="../css/styles.css?v=1.2">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
   <style>
@@ -98,23 +98,85 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-perspectives">Perspectives</a></li><li aria-current="page">AI for Code vs Documentation</li></ol></nav>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Part 2: The Permutation Invariance Problem & Positional Encoding</li></ol></nav>
         <article class="blog-post">
-<h1>AI for Code vs Documentation</h1>
-<!-- SUMMARY: As AI radically accelerates software development, maintaining high-quality documentation has become an escalating challenge that simple agentic generation cannot fully resolve. Advancing documentation to a core priority requires keeping humans in the loop to capture the nuanced art and critical context of technical writing. --><p>As a technical writer, I very much appreciate when engineers recognize the importance of good documentation. There’s an expectation that engineering capacity is directly proportional to the sophistication of coding agents. However, documentation tools and practices were not designed to scale.</p>
-<p>The obvious solution is that AI should also produce the documentation, but this is non-trivial, and for the majority of developers, documentation is not the focus.</p>
-<p>Before Claude Code or Cursor, it was challenging for documentation to keep pace with software development; now it’s nearly impossible. The culture of innovation is frenzied. Experimentation and accelerated development are the high-value deliverables while documentation is an afterthought.</p>
-<p>The trouble with “just get AI to do it” is that even the most advanced GPTs are much better at critiquing than creating. To extract user-facing, coherent, and accurate documentation from PRs is a challenge. To properly describe the motivations and nuances associated with a complex feature set is an art.</p>
-<p>Even a controlled agentic workflow with strict hallucination guards and deterministic auto-fixing needs a human in the loop for governance, and these systems must still be built in-house. I hope to help advance documentation to a first-class citizen so that technology remains meaningfully accessible.</p>
+<h1>Part 2: The Permutation Invariance Problem &amp; Positional Encoding</h1>
+<!-- SUMMARY: Matrix operations are inherently permutation invariant, creating a structural flaw that leaves the architecture entirely blind to sequence order. This limitation is resolved by explicitly injecting temporal context through the element-wise addition of mathematically deterministic absolute positional encodings. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p><p>The input sequence <code>&lt;BOS&gt; i woke up</code> is now transformed into a dense, continuous semantic space. Sparse 12-dimensional one-hot vectors are mathematically compressed into a 6-dimensional embedding matrix.</p>
+<p>The current tensor representation $X$ for the sequence takes the following form:</p>
+<p>$$
+X = \begin{bmatrix}
+ 0.1 &  0.0 &  0.0 &  0.0 &  0.0 &  0.0 \\
+ 0.0 &  0.8 & -0.1 &  0.2 &  0.0 &  0.5 \\
+ 0.0 & -0.2 &  0.9 &  0.1 & -0.4 &  0.1 \\
+ 0.0 & -0.1 &  0.4 &  0.9 & -0.2 &  0.0
+\end{bmatrix}
+$$</p>
+<p>This matrix captures the semantic meaning of the words. A critical problem remains regarding structural context.</p>
+<h2>The Permutation Invariance Problem</h2>
+<p>To understand the nature of this flaw, the processing method of the Attention mechanism must be anticipated. During the computation of self-attention, dot products are calculated between these row vectors to measure similarities.</p>
+<p>A fundamental property of set operations and matrix multiplication is permutation invariance. If the rows of the matrix $X$ are shuffled to represent the sequence &quot;woke i up <code>&lt;BOS&gt;</code>&quot;, the attention mechanism calculates the exact same pairwise similarities. The model processes &quot;i woke up&quot; and &quot;woke i up&quot; as identical semantic concepts. Human language relies entirely on word order to derive meaning. &quot;The dog bit the man&quot; and &quot;The man bit the dog&quot; use identical tokens, yet these phrases describe completely different events.</p>
+<p>Without a mechanism to inject sequence order, the Transformer acts as merely a highly sophisticated bag-of-words model. The architecture is completely order-blind.</p>
+<h2>Injecting Time: Positional Encoding</h2>
+<p>Positional information must be explicitly injected into the vectors before they enter the attention layers. This injection is achieved by creating a secondary matrix of identical dimensions to the input tensor, which is then added to it.</p>
+<p>There are two primary philosophies for positional encoding:</p>
+<ol>
+<li><strong>Relative Positional Encoding:</strong> The model learns the distances between words. Instead of treating &quot;woke&quot; as residing at position 2, the system only registers that &quot;woke&quot; is exactly one step away from &quot;i&quot;. Modern architectures like RoPE utilize relative encodings through complex vector rotations.</li>
+<li><strong>Absolute Positional Encoding:</strong> Every position in the sequence receives a unique, static vector signature. The model learns that position 0 always has a specific geometric translation, position 1 has another, and so forth.</li>
+</ol>
+<p>For this rigorous walkthrough, an absolute positional encoding is utilized. A mathematically deterministic and bounded matrix is required, ensuring the numerical variance of the carefully calibrated embeddings does not explode.</p>
+<p>The original Transformer architecture used interweaving sine and cosine waves of varying frequencies. A mathematically similar approach is adopted here. By varying the frequencies across the 6 dimensions, each position generates a completely unique vector signature.</p>
+<p>The exact Positional Encoding matrix $W_{PE}$ for the 4-token sequence is defined below.</p>
+<p>$$
+W_{PE} = \begin{bmatrix}
+ 0.0 &  1.0 &  0.0 &  1.0 &  0.0 &  1.0 \\
+ 0.8 &  0.5 &  0.4 &  0.9 &  0.2 &  1.0 \\
+ 0.9 & -0.4 &  0.8 &  0.6 &  0.4 &  0.9 \\
+ 0.1 & -1.0 &  1.0 &  0.2 &  0.6 &  0.8
+\end{bmatrix}
+$$</p>
+<p>This matrix exhibits geometric elegance. The values fluctuate smoothly between -1.0 and 1.0. Position 0 produces a clean alternating pattern, while subsequent positions introduce complex phase shifts. No two rows are identical.</p>
+<h2>The Final Matrix Addition</h2>
+<p>The integration of positional data is simple. An element-wise matrix addition merges the semantic embeddings $X$ and the positional signatures $W_{PE}$.</p>
+<pre><code class="language-mermaid">graph TD
+    X(&quot;Semantic Embeddings X&quot;) --&gt; Add(&quot;Element-wise Addition&quot;)
+    PE(&quot;Positional Encoding W_PE&quot;) --&gt; Add
+    Add --&gt; XPos(&quot;Contextualized Input X_pos&quot;)
+</code></pre>
+<p>The exact addition for the model is computed as follows:</p>
+<p>$$
+X_{pos} = \begin{bmatrix}
+ 0.1 &  0.0 &  0.0 &  0.0 &  0.0 &  0.0 \\
+ 0.0 &  0.8 & -0.1 &  0.2 &  0.0 &  0.5 \\
+ 0.0 & -0.2 &  0.9 &  0.1 & -0.4 &  0.1 \\
+ 0.0 & -0.1 &  0.4 &  0.9 & -0.2 &  0.0
+\end{bmatrix} + \begin{bmatrix}
+ 0.0 &  1.0 &  0.0 &  1.0 &  0.0 &  1.0 \\
+ 0.8 &  0.5 &  0.4 &  0.9 &  0.2 &  1.0 \\
+ 0.9 & -0.4 &  0.8 &  0.6 &  0.4 &  0.9 \\
+ 0.1 & -1.0 &  1.0 &  0.2 &  0.6 &  0.8
+\end{bmatrix}
+$$</p>
+<p>This operation yields the final, positionally-aware tensor $X_{pos}$:</p>
+<p>$$
+X_{pos} = \begin{bmatrix}
+ 0.1 &  1.0 &  0.0 &  1.0 &  0.0 &  1.0 \\
+ 0.8 &  1.3 &  0.3 &  1.1 &  0.2 &  1.5 \\
+ 0.9 & -0.6 &  1.7 &  0.7 &  0.0 &  1.0 \\
+ 0.1 & -1.1 &  1.4 &  1.1 &  0.4 &  0.8
+\end{bmatrix}
+$$</p>
+<p>The vector for &quot;woke&quot; is no longer just the abstract concept of waking up. The representation is now explicitly &quot;woke&quot; at position 2.</p>
+<p>The initial preparations are complete. A string of text is successfully translated into a mathematically rich tensor that captures both semantic meaning and sequential time. Next, this matrix is fed into the heart of the architecture to introduce Layer 1 Self-Attention.</p>
+<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 
 <div class="blog-pagination">
-      <a href="transformers-preface.html" class="pagination-link prev">
+      <a href="tokenization-chapter_02.html" class="pagination-link prev">
         <span class="pagination-label">Previous</span>
-        <span class="pagination-title">Preface: The Big Picture & Tensor Notation</span>
+        <span class="pagination-title">Part 2: The BPE Training Algorithm</span>
       </a>
-      <a href="tokenization-chapter_01.html" class="pagination-link next">
+      <a href="tokenization-chapter_03.html" class="pagination-link next">
         <span class="pagination-label">Next</span>
-        <span class="pagination-title">Part 1: Characters, Words, and the Subword Compromise</span>
+        <span class="pagination-title">Part 3: Training BPE by Hand</span>
       </a></div>
         </article>
     </div>

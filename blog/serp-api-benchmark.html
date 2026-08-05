@@ -64,10 +64,10 @@
     .blog-post li { margin-bottom: 0.5rem; }
     .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
     .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
-    .blog-post table { width: 100%; margin: var(--space-2xl) 0; table-layout: fixed; border-collapse: separate; border-spacing: var(--space-sm); text-align: center; }
+    .blog-post table { width: auto; margin: var(--space-2xl) 0; border-collapse: collapse; text-align: left; }
     .blog-post thead { display: none; }
-    .blog-post td { padding: 4px; }
-    .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 6px 12px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; width: 100%; font-size: 0.95rem; color: var(--rose-gold-dark); }
+    .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 4px 10px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; font-size: 0.95rem; color: var(--rose-gold-dark); margin-right: 6px; }
   </style>
 </head>
 <body>
@@ -186,7 +186,7 @@ Clone the repo, add your API keys to <code>config.yaml</code>, and run <code>pyt
 </ol>
 
 <div class="blog-pagination">
-      <a href="chapter_24.html" class="pagination-link prev">
+      <a href="transformers-chapter_24.html" class="pagination-link prev">
         <span class="pagination-label">Previous</span>
         <span class="pagination-title">Part 24: Updating the Embeddings and Conclusion</span>
       </a>

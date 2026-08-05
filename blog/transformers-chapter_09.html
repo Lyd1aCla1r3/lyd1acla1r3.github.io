@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Part 9: Taming the Stream: The Geometry of Layer Normalization — Lydia Pedersen</title>
+  <link rel="stylesheet" href="../css/styles.css?v=1.2">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .blog-post {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: var(--space-4xl) var(--space-md);
+        background: var(--bg-card);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 8px 32px rgba(183, 110, 121, 0.05);
+        border: 1px solid var(--border-subtle);
+    }
+    .blog-post h1, .blog-post h2, .blog-post h3 {
+        color: var(--text-primary);
+        font-family: var(--font-display);
+        margin-top: var(--space-2xl);
+        margin-bottom: var(--space-md);
+    }
+    .blog-post h1 { font-size: var(--fs-3xl); margin-top: 0; line-height: 1.1; }
+    .blog-post h2, .blog-post h3 { border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-sm); }
+    .blog-post h2 { font-size: var(--fs-2xl); }
+    .blog-post h3 { font-size: var(--fs-xl); }
+    .blog-post p, .blog-post li {
+        color: var(--text-secondary);
+        line-height: var(--lh-relaxed);
+        margin-bottom: var(--space-md);
+        font-size: var(--fs-md);
+    }
+    .blog-post img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-md);
+        margin: var(--space-lg) 0;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .blog-post a:not(.pagination-link) {
+        color: var(--text-accent);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s ease;
+    }
+    .blog-post a:not(.pagination-link):hover {
+        border-bottom-color: var(--text-accent);
+    }
+    .blog-post {
+        background: rgba(255, 255, 255, 0.65);
+        padding: var(--space-2xl);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-subtle);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .blog-post .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; display: flex; gap: 1rem; align-items: center; }
+    .blog-post .meta span { display: inline-flex; align-items: center; gap: 0.25rem; }
+    .blog-post p { line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1.05rem; }
+    .blog-post ul, .blog-post ol { margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem; }
+    .blog-post li { margin-bottom: 0.5rem; }
+    .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+    .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
+    .blog-post table { width: auto; margin: var(--space-2xl) 0; border-collapse: collapse; text-align: left; }
+    .blog-post thead { display: none; }
+    .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 4px 10px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; font-size: 0.95rem; color: var(--rose-gold-dark); margin-right: 6px; }
+  </style>
+</head>
+<body>
+  <!-- Fixed chip visual (always visible, bottom-left, behind everything) -->
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
+  <!-- Full-screen overlay canvas for the diagonal binary→agent→text animation -->
+  <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="../index.html" class="nav__logo" aria-label="Home">lydia<span>.</span>pedersen</a>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="../index.html#about" class="nav__link">About</a></li>
+        <li><a href="../index.html#samples" class="nav__link">Writing</a></li>
+        <li><a href="../index.html#case-studies" class="nav__link">Engineering</a></li>
+        <li><a href="../index.html#skills" class="nav__link">Skills</a></li>
+        <li><a href="index.html" class="nav__link">Blog</a></li>
+        <li><a href="../index.html#contact" class="nav__link">Contact</a></li>
+      </ul>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="nav__toggle-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-lg));">
+    <div class="container">
+<nav aria-label="breadcrumb" class="breadcrumbs"><ol>
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Part 9: Taming the Stream: The Geometry of Layer Normalization</li></ol></nav>
+        <article class="blog-post">
+<h1>Part 9: Taming the Stream: The Geometry of Layer Normalization</h1>
+<!-- SUMMARY: Geometric drift and magnitude expansion caused by continuous additive updates are counteracted through the rigorous application of layer normalization. By independently centering and scaling each token vector across its embedding dimension, this mechanism mathematically stabilizes the residual stream while retaining vital contextual geometries. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p><p>The previous section detailed the Residual Stream. The Attention block operates as an independent module that reads from the central memory bus, calculates contextual updates, and adds those updates directly back into the original embeddings. This additive process ensures that the network never loses the raw initial information about the token and its position. </p>
+<p>There is a subtle geometric consequence to this continuous addition. As a vector moves through multiple layers of a deep neural network and accumulates updates from Attention and Feed-Forward blocks, its magnitude can grow uncontrollably. The values within the vector might drift and lose their centered distribution. If the vectors become excessively large or skewed, the subsequent layers will struggle to process them effectively, leading to numerical instability and vanishing or exploding gradients during backpropagation.</p>
+<p>A stabilizing mechanism is required. This is the role of Layer Normalization. </p>
+<h2>The Geometry of Normalization</h2>
+<p>The token embeddings function as points in a six-dimensional space, where $d_{model} = 6$. Before the addition of the Attention output, these points were relatively close to the origin and bounded by the properties of the initial embedding and positional encoding. After adding the Attention output, the points have shifted.</p>
+<p>The current state of the Residual Stream for the sequence <code>&lt;BOS&gt; i woke up</code> is:</p>
+<p>$$
+\text{Residual Stream} = \begin{bmatrix}
+ 0.02 &  1.29 &  0.18 &  1.35 &  0.00 &  0.67 \\
+ 0.74 &  1.76 &  0.45 &  1.52 &  0.20 &  1.23 \\
+ 0.88 & -0.31 &  1.78 &  0.99 &  0.09 &  0.91 \\
+ 0.19 & -1.03 &  1.56 &  1.21 &  0.58 &  0.69
+\end{bmatrix}
+$$</p>
+<p>To stabilize these representations, Layer Normalization performs two distinct operations independently on every single token vector. It centers the vector by subtracting its mean, and it scales the vector by dividing it by its standard deviation.</p>
+<p>Layer Normalization operates across the embedding dimension $d_{model}$ for each individual token. It does not look across the sequence length. The normalization of the token &quot;i&quot; is completely independent of the normalization of the token &quot;woke&quot;. This preserves the strict independence of the tokens before they interact again in the next Attention layer.</p>
+<h3>Step 1: Centering the Vector</h3>
+<p>For a given token vector $x$, its mean $\mu$ is first calculated. The mean is simply the average of the $d_{model}$ values within that specific vector.</p>
+<p>The mean for each of the four tokens is:</p>
+<p>$$
+\text{Means} = \begin{bmatrix}
+ 0.58 \\
+ 0.98 \\
+ 0.72 \\
+ 0.53
+\end{bmatrix}
+$$</p>
+<p>Subtracting this mean from every element in the corresponding token vector shifts the entire vector through the six-dimensional space so that it is perfectly centered around zero. The geometric relationship between the components of the vector remains identical, yet the vector as a whole is anchored back to the origin of the coordinate system.</p>
+<h3>Step 2: Scaling the Vector</h3>
+<p>Centering resolves the drift, yet the magnitude of the vector might still be excessively large or small. Standardizing the scale involves calculating the variance $\sigma^2$ of the vector across its $d_{model}$ components. </p>
+<p>The variances for the tokens are as follows:</p>
+<p>$$
+\text{Variances} = \begin{bmatrix}
+ 0.32 \\
+ 0.32 \\
+ 0.45 \\
+ 0.68
+\end{bmatrix}
+$$</p>
+<p>The vector is scaled by dividing each component by the standard deviation, which is the square root of the variance. Preventing mathematical errors in the rare event of a zero variance requires adding a microscopic constant $\epsilon$ before taking the square root.</p>
+<p>The complete mathematical formula for normalizing a vector $x$ is:</p>
+<p>$$
+\hat{x} = \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}}
+$$</p>
+<p>Applying this formula to the centered Residual Stream yields a perfectly standardized matrix:</p>
+<p>$$
+\text{Normalized Stream} = \begin{bmatrix}
+-1.00 &  1.25 & -0.72 &  1.35 & -1.04 &  0.15 \\
+-0.43 &  1.38 & -0.95 &  0.95 & -1.39 &  0.44 \\
+ 0.23 & -1.54 &  1.57 &  0.40 & -0.94 &  0.28 \\
+-0.42 & -1.89 &  1.24 &  0.82 &  0.06 &  0.19
+\end{bmatrix}
+$$</p>
+<p>Every token vector in this new matrix now possesses a mean of exactly 0 and a variance of exactly 1. </p>
+<h3>Step 3: Learned Scale and Bias</h3>
+<p>Standardizing the vectors to a strict normal distribution is mathematically safe. It ensures stability. Forcing every vector into this exact shape might inadvertently destroy valuable structural information that the network has learned to represent through the magnitude or shift of the vector.</p>
+<p>To resolve this tension, Layer Normalization introduces two learned parameters for the embedding dimension: a scale parameter $\gamma$ and a bias parameter $\beta$. </p>
+<p>$$
+\text{Output} = \gamma \odot \hat{x} + \beta
+$$</p>
+<p>The network learns exactly how much to stretch and shift the normalized vectors. During training, backpropagation adjusts $\gamma$ and $\beta$. If the network determines that the rigid normalization is discarding useful information, it can adjust these parameters to scale and shift the vectors back into a more optimal shape. </p>
+<p>For the purposes of this concrete toy model, $\gamma$ is initialized to a vector of ones and $\beta$ to a vector of zeros. This means the Normalized Stream remains unchanged for now, representing the pure geometric standardization.</p>
+<h2>The Stabilized Backbone</h2>
+<p>With Layer Normalization complete, the token representations are mathematically disciplined. They are ready to be passed into the next component of the Transformer architecture.</p>
+<pre><code class="language-mermaid">graph TD
+    A(&quot;Residual Stream&quot;) --&gt; B(&quot;Calculate Mean across d_model&quot;)
+    B --&gt; C(&quot;Calculate Variance across d_model&quot;)
+    C --&gt; D(&quot;Subtract Mean &amp; Divide by StdDev&quot;)
+    D --&gt; E(&quot;Apply Learned Gamma and Beta&quot;)
+    E --&gt; F(&quot;Stabilized Normalized Stream&quot;)
+</code></pre>
+<p>The vectors have been stabilized, yet they still retain the rich contextual updates harvested by the Attention mechanism. These stabilized vectors will next be directed into the Feed-Forward Network, a component that will act as a conceptual memory bank for each individual token.</p>
+<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+
+<div class="blog-pagination">
+      <a href="transformers-chapter_08.html" class="pagination-link prev">
+        <span class="pagination-label">Previous</span>
+        <span class="pagination-title">Part 8: The Residual Stream and the Central Memory Bus</span>
+      </a>
+      <a href="transformers-chapter_10.html" class="pagination-link next">
+        <span class="pagination-label">Next</span>
+        <span class="pagination-title">Part 10: The Residual Stream and MLP Expansion</span>
+      </a></div>
+        </article>
+    </div>
+  </main>
+  <script src="../js/main.js"></script>
+
+  <!-- KaTeX for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" 
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});">
+  </script>
+
+  <!-- Mermaid for Diagram Rendering -->
+  <style>
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: var(--space-2xl) 0;
+    }
+    .mermaid svg {
+      filter: drop-shadow(0 4px 16px rgba(183, 110, 121, 0.12));
+    }
+  </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ 
+      startOnLoad: true, 
+      theme: 'base',
+      themeVariables: {
+        fontFamily: "'Outfit', -apple-system, BlinkMacSystemFont, sans-serif",
+        primaryColor: '#ffffff',
+        primaryBorderColor: '#b76e79',
+        primaryTextColor: '#8b4f5a',
+        lineColor: '#b76e79',
+        nodeBorder: '#b76e79',
+        clusterBkg: 'rgba(232, 180, 184, 0.15)',
+        clusterBorder: '#d4a0a0'
+      }
+    });
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      const blocks = document.querySelectorAll('.language-mermaid');
+      blocks.forEach((block) => {
+        const parent = block.parentElement;
+        if (parent.tagName === 'PRE') {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          parent.replaceWith(mermaidDiv);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

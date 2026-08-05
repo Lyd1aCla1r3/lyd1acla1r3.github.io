@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Part 20: The Beautiful Cancellation — Lydia Pedersen</title>
+  <link rel="stylesheet" href="../css/styles.css?v=1.2">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .blog-post {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: var(--space-4xl) var(--space-md);
+        background: var(--bg-card);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 8px 32px rgba(183, 110, 121, 0.05);
+        border: 1px solid var(--border-subtle);
+    }
+    .blog-post h1, .blog-post h2, .blog-post h3 {
+        color: var(--text-primary);
+        font-family: var(--font-display);
+        margin-top: var(--space-2xl);
+        margin-bottom: var(--space-md);
+    }
+    .blog-post h1 { font-size: var(--fs-3xl); margin-top: 0; line-height: 1.1; }
+    .blog-post h2, .blog-post h3 { border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-sm); }
+    .blog-post h2 { font-size: var(--fs-2xl); }
+    .blog-post h3 { font-size: var(--fs-xl); }
+    .blog-post p, .blog-post li {
+        color: var(--text-secondary);
+        line-height: var(--lh-relaxed);
+        margin-bottom: var(--space-md);
+        font-size: var(--fs-md);
+    }
+    .blog-post img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-md);
+        margin: var(--space-lg) 0;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .blog-post a:not(.pagination-link) {
+        color: var(--text-accent);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s ease;
+    }
+    .blog-post a:not(.pagination-link):hover {
+        border-bottom-color: var(--text-accent);
+    }
+    .blog-post {
+        background: rgba(255, 255, 255, 0.65);
+        padding: var(--space-2xl);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-subtle);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .blog-post .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; display: flex; gap: 1rem; align-items: center; }
+    .blog-post .meta span { display: inline-flex; align-items: center; gap: 0.25rem; }
+    .blog-post p { line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1.05rem; }
+    .blog-post ul, .blog-post ol { margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem; }
+    .blog-post li { margin-bottom: 0.5rem; }
+    .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+    .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
+    .blog-post table { width: auto; margin: var(--space-2xl) 0; border-collapse: collapse; text-align: left; }
+    .blog-post thead { display: none; }
+    .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 4px 10px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; font-size: 0.95rem; color: var(--rose-gold-dark); margin-right: 6px; }
+  </style>
+</head>
+<body>
+  <!-- Fixed chip visual (always visible, bottom-left, behind everything) -->
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
+  <!-- Full-screen overlay canvas for the diagonal binary→agent→text animation -->
+  <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="../index.html" class="nav__logo" aria-label="Home">lydia<span>.</span>pedersen</a>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="../index.html#about" class="nav__link">About</a></li>
+        <li><a href="../index.html#samples" class="nav__link">Writing</a></li>
+        <li><a href="../index.html#case-studies" class="nav__link">Engineering</a></li>
+        <li><a href="../index.html#skills" class="nav__link">Skills</a></li>
+        <li><a href="index.html" class="nav__link">Blog</a></li>
+        <li><a href="../index.html#contact" class="nav__link">Contact</a></li>
+      </ul>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="nav__toggle-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-lg));">
+    <div class="container">
+<nav aria-label="breadcrumb" class="breadcrumbs"><ol>
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Part 20: The Beautiful Cancellation</li></ol></nav>
+        <article class="blog-post">
+<h1>Part 20: The Beautiful Cancellation</h1>
+<!-- SUMMARY: Chaining the derivatives of the cross-entropy loss and the softmax function reveals a mathematical cancellation that radically simplifies the gradient. This interpretation establishes the primary error signal as the precise difference between the predicted probabilities and the ground truth. --><p>The previous phase established the geometry of the cross-entropy loss function by calculating exactly how far the predicted probability distribution strayed from the ground truth one-hot vector. That resulting scalar loss value represents the total error of the entire network. Assigning blame for that accumulated error initiates the backpropagation phase. The very first step requires calculating the gradient of the loss with respect to the final unnormalized scores, known as the logits.</p>
+<h2>The Calculus Problem</h2>
+<p>Backpropagation relies entirely on the chain rule of calculus. Finding how a specific weight deep inside the network contributed to the final error requires multiplying the gradients of every operation situated between that weight and the final loss. The journey backward begins at the very end of the network architecture, tracing from the scalar cross-entropy loss, through the softmax function, and directly into the logits.</p>
+<p>Taking the derivative of these two final operations individually reveals significant complexity. The softmax function is not an element-wise operation. Modifying the unnormalized logit for a single word inherently changes the output probability of every other word in the vocabulary to maintain a total sum of one. The derivative of softmax is therefore not a simple vector, but rather a full Jacobian matrix tracking the interaction of every single output with every single input. The derivative of the cross-entropy loss introduces further complexity by requiring the derivative of a logarithm, which yields fractional terms.</p>
+<p>Multiplying a fractional gradient by a complex Jacobian matrix typically results in a computational bottleneck. A profound mathematical elegance emerges when combining these two specific functions.</p>
+<h2>The Mathematical Elegance</h2>
+<p>Applying the chain rule to calculate the gradient of the cross-entropy loss $L$ with respect to the pre-softmax logits $z$ causes the complex terms of the Jacobian matrix and the logarithmic derivatives to perfectly cancel each other out. The mathematical proof of this cancellation is a foundational concept in vector calculus, yielding a final derivative that is stunningly simple.</p>
+<p>$$
+\frac{\partial L}{\partial z} = P - Y
+$$</p>
+<p>In this equation, $P$ represents the predicted probability distribution, and $Y$ represents the ground truth one-hot encoded target vector. The gradient of the loss with respect to the logits is strictly the difference between the predicted model probabilities and the actual target states.</p>
+<h2>Applying the Cancellation</h2>
+<p>This beautiful cancellation translates directly into the concrete matrices of the toy example. The forward pass generated a sequence of predicted probabilities for the four time steps, which must now be compared against the correct target tokens.</p>
+<table>
+<thead>
+<tr>
+<th align="left">Time Step</th>
+<th align="left">Input Token</th>
+<th align="left">Target Token</th>
+<th align="left">Target Index</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left"><code>&lt;BOS&gt;</code></td>
+<td align="left"><code>i</code></td>
+<td align="left">3</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left"><code>i</code></td>
+<td align="left"><code>woke</code></td>
+<td align="left">5</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left"><code>woke</code></td>
+<td align="left"><code>up</code></td>
+<td align="left">7</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="left"><code>up</code></td>
+<td align="left"><code>late</code></td>
+<td align="left">8</td>
+</tr>
+</tbody></table>
+<p>These target tokens form a matrix of one-hot vectors designated as $Y$. Each row corresponds to a discrete time step, and the column of the correct target token contains a value of exactly <code>1.0</code>.</p>
+<p>$$
+Y = \begin{bmatrix}
+ 0 &  0 &  0 &  1.0 &  0 &  0 &  0 &  0 &  0 & \dots &  0 \\
+ 0 &  0 &  0 &  0 &  0 &  1.0 &  0 &  0 &  0 & \dots &  0 \\
+ 0 &  0 &  0 &  0 &  0 &  0 &  0 &  1.0 &  0 & \dots &  0 \\
+ 0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  1.0 & \dots &  0
+\end{bmatrix}
+$$</p>
+<p>The gradient calculation extracts the predicted probability tensor $P$ generated during the softmax phase. Finding the exact gradient requires subtracting the target matrix $Y$ from the prediction matrix $P$.</p>
+<p>$$
+\frac{\partial L}{\partial z} = \begin{bmatrix}
+ 0.0854 &  0.0850 &  0.0846 & -0.9157 &  0.0839 &  0.0835 &  0.0831 &  0.0828 &  0.0824 & \dots &  0.0813 \\
+ 0.0813 &  0.0817 &  0.0820 &  0.0824 &  0.0828 & -0.9169 &  0.0835 &  0.0839 &  0.0843 & \dots &  0.0854 \\
+ 0.0833 &  0.0833 &  0.0833 &  0.0833 &  0.0833 &  0.0833 &  0.0833 & -0.9167 &  0.0833 & \dots &  0.0833 \\
+ 0.0833 &  0.0833 &  0.0833 &  0.0833 &  0.0833 &  0.0833 &  0.0833 &  0.0833 & -0.9167 & \dots &  0.0833
+\end{bmatrix}
+$$</p>
+<h2>The Physical Intuition</h2>
+<p>This resulting matrix represents the precise direction and magnitude of the necessary corrections for the unnormalized logits. This gradient acts physically as a set of forces pulling upon the network outputs.</p>
+<p>Gradient descent minimizes the total error by subtracting the computed gradient from the active parameters. For the correct token in each sequence, the model predicted a small probability near <code>0.084</code> when the ideal value was <code>1.0</code>. The subtraction yields a negative gradient of roughly <code>-0.916</code>. When the optimizer subtracts this negative value during the update step, it mathematically forces an increase in the unnormalized logit for the correct token.</p>
+<p>For all incorrect tokens, the target value was <code>0.0</code>. The subtraction yields a positive gradient exactly equal to the mistakenly predicted probability. The optimizer subtracts this positive value, which aggressively decreases the unnormalized logits for all incorrect tokens.</p>
+<p>The mathematical cancellation of the softmax and cross-entropy operations produces an exceedingly pure learning signal. This signal gently suppresses the logits of wrong answers proportionally to how strongly the model believed them, while simultaneously pulling up the logit of the correct answer with immense force. Establishing this pristine gradient vector at the output allows the architecture to propagate this learning signal backward through the unembedding matrix and directly into the deepest attention layers of the system.</p>
+
+<div class="blog-pagination">
+      <a href="transformers-chapter_19.html" class="pagination-link prev">
+        <span class="pagination-label">Previous</span>
+        <span class="pagination-title">Part 19: The Cross-Entropy Loss Function</span>
+      </a>
+      <a href="transformers-chapter_21.html" class="pagination-link next">
+        <span class="pagination-label">Next</span>
+        <span class="pagination-title">Part 21: Backpropagating Through the Unembedding and Residual Stream</span>
+      </a></div>
+        </article>
+    </div>
+  </main>
+  <script src="../js/main.js"></script>
+
+  <!-- KaTeX for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" 
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});">
+  </script>
+
+  <!-- Mermaid for Diagram Rendering -->
+  <style>
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: var(--space-2xl) 0;
+    }
+    .mermaid svg {
+      filter: drop-shadow(0 4px 16px rgba(183, 110, 121, 0.12));
+    }
+  </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ 
+      startOnLoad: true, 
+      theme: 'base',
+      themeVariables: {
+        fontFamily: "'Outfit', -apple-system, BlinkMacSystemFont, sans-serif",
+        primaryColor: '#ffffff',
+        primaryBorderColor: '#b76e79',
+        primaryTextColor: '#8b4f5a',
+        lineColor: '#b76e79',
+        nodeBorder: '#b76e79',
+        clusterBkg: 'rgba(232, 180, 184, 0.15)',
+        clusterBorder: '#d4a0a0'
+      }
+    });
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      const blocks = document.querySelectorAll('.language-mermaid');
+      blocks.forEach((block) => {
+        const parent = block.parentElement;
+        if (parent.tagName === 'PRE') {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          parent.replaceWith(mermaidDiv);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

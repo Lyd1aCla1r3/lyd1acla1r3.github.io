@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lydia Pedersen - Portfolio Overview</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* Ensure perfect single-page printing */
+    @page {
+      size: letter;
+      margin: 0.5in;
+    }
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    body {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    
+    /* Override metallic text clipping bug in PDF generation */
+    .no-metallic {
+      background: none !important;
+      -webkit-text-fill-color: var(--text-primary) !important;
+      color: var(--text-primary) !important;
+      font-family: var(--font-display);
+      font-size: var(--fs-3xl);
+      font-weight: var(--fw-bold);
+      margin-bottom: 0;
+      text-align: center;
+    }
+
+    .overview-hero {
+      padding: var(--space-md) 0 var(--space-sm);
+      text-align: center;
+    }
+    .overview-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-md);
+      margin-top: var(--space-md);
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    /* We still want the links clickable in the PDF, but no buttons */
+    .btn { display: none !important; }
+    .print-link { 
+      display: inline-block; 
+      color: var(--rose-gold) !important; 
+      font-weight: bold; 
+      font-size: var(--fs-md);
+      text-decoration: underline;
+      margin-top: var(--space-xs);
+    }
+    /* Compact the sample cards to fit on one page */
+    .sample-card {
+      padding: var(--space-md) var(--space-lg) !important;
+      margin-bottom: 0 !important;
+    }
+    .sample-card__title {
+      font-size: var(--fs-md) !important;
+      margin-bottom: var(--space-xs) !important;
+      background: none !important;
+      -webkit-text-fill-color: var(--text-primary) !important;
+      color: var(--text-primary) !important;
+    }
+    .sample-card__desc {
+      font-size: var(--fs-sm) !important;
+    }
+    /* Disable animation states for immediate render */
+    .fade-in {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  </style>
+</head>
+<body>
+  <main style="padding: 0;">
+    <section class="about" style="padding: 0; background: transparent;">
+      <div class="container" style="padding: 0;">
+        <div class="overview-hero">
+          <span class="section-label" style="justify-content: center; margin-bottom: var(--space-xs);">Portfolio Link</span>
+          <h1 class="no-metallic">Lydia Pedersen</h1>
+          <p class="section-subtitle" style="margin: 0 auto; color: var(--text-secondary);">Content Engineer Portfolio</p>
+          
+          <div style="margin-top: var(--space-sm);">
+            <a href="https://lyd1acla1r3.github.io" class="print-link">https://lyd1acla1r3.github.io</a>
+          </div>
+        </div>
+
+        <p style="text-align: center; max-width: 600px; margin: var(--space-md) auto; font-size: var(--fs-sm); color: var(--text-secondary);">
+          My complete portfolio is deployed as an interactive site demonstrating my documentation engineering work and technical communication philosophy. Please visit the link above to view:
+        </p>
+
+        <div class="overview-grid">
+          <article class="sample-card">
+            <h3 class="sample-card__title">The Transformer Architecture Ebook</h3>
+            <p class="sample-card__desc" style="margin-bottom: 0;">A 24-chapter series breaking down the entire forward and backward pass using tensor notation, from token embeddings through backpropagation.</p>
+          </article>
+          
+          <article class="sample-card">
+            <h3 class="sample-card__title">AI Pipeline Case Studies</h3>
+            <p class="sample-card__desc" style="margin-bottom: 0;">Architectural overviews of the multi-stage writer agent and analytics deflection engine mentioned in my cover letter.</p>
+          </article>
+
+          <article class="sample-card">
+            <h3 class="sample-card__title">SERP API Benchmark</h3>
+            <p class="sample-card__desc" style="margin-bottom: 0;">A data-driven empirical investigation into extraction fidelity for major SERP APIs against Google's AI Overviews.</p>
+          </article>
+          
+          <article class="sample-card">
+            <h3 class="sample-card__title">Writing Samples</h3>
+            <p class="sample-card__desc" style="margin-bottom: 0;">10 curated, downloadable PDFs spanning API management, Kubernetes, and event-driven architectures.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

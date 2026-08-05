@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Part 16: Deepening the Representation: MLP and Residuals in Layer 2 — Lydia Pedersen</title>
+  <link rel="stylesheet" href="../css/styles.css?v=1.2">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .blog-post {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: var(--space-4xl) var(--space-md);
+        background: var(--bg-card);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 8px 32px rgba(183, 110, 121, 0.05);
+        border: 1px solid var(--border-subtle);
+    }
+    .blog-post h1, .blog-post h2, .blog-post h3 {
+        color: var(--text-primary);
+        font-family: var(--font-display);
+        margin-top: var(--space-2xl);
+        margin-bottom: var(--space-md);
+    }
+    .blog-post h1 { font-size: var(--fs-3xl); margin-top: 0; line-height: 1.1; }
+    .blog-post h2, .blog-post h3 { border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-sm); }
+    .blog-post h2 { font-size: var(--fs-2xl); }
+    .blog-post h3 { font-size: var(--fs-xl); }
+    .blog-post p, .blog-post li {
+        color: var(--text-secondary);
+        line-height: var(--lh-relaxed);
+        margin-bottom: var(--space-md);
+        font-size: var(--fs-md);
+    }
+    .blog-post img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-md);
+        margin: var(--space-lg) 0;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .blog-post a:not(.pagination-link) {
+        color: var(--text-accent);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s ease;
+    }
+    .blog-post a:not(.pagination-link):hover {
+        border-bottom-color: var(--text-accent);
+    }
+    .blog-post {
+        background: rgba(255, 255, 255, 0.65);
+        padding: var(--space-2xl);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-subtle);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .blog-post .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; display: flex; gap: 1rem; align-items: center; }
+    .blog-post .meta span { display: inline-flex; align-items: center; gap: 0.25rem; }
+    .blog-post p { line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1.05rem; }
+    .blog-post ul, .blog-post ol { margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem; }
+    .blog-post li { margin-bottom: 0.5rem; }
+    .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+    .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
+    .blog-post table { width: auto; margin: var(--space-2xl) 0; border-collapse: collapse; text-align: left; }
+    .blog-post thead { display: none; }
+    .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 4px 10px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; font-size: 0.95rem; color: var(--rose-gold-dark); margin-right: 6px; }
+  </style>
+</head>
+<body>
+  <!-- Fixed chip visual (always visible, bottom-left, behind everything) -->
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
+  <!-- Full-screen overlay canvas for the diagonal binary→agent→text animation -->
+  <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="../index.html" class="nav__logo" aria-label="Home">lydia<span>.</span>pedersen</a>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="../index.html#about" class="nav__link">About</a></li>
+        <li><a href="../index.html#samples" class="nav__link">Writing</a></li>
+        <li><a href="../index.html#case-studies" class="nav__link">Engineering</a></li>
+        <li><a href="../index.html#skills" class="nav__link">Skills</a></li>
+        <li><a href="index.html" class="nav__link">Blog</a></li>
+        <li><a href="../index.html#contact" class="nav__link">Contact</a></li>
+      </ul>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="nav__toggle-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-lg));">
+    <div class="container">
+<nav aria-label="breadcrumb" class="breadcrumbs"><ol>
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Part 16: Deepening the Representation: MLP and Residuals in Layer 2</li></ol></nav>
+        <article class="blog-post">
+<h1>Part 16: Deepening the Representation: MLP and Residuals in Layer 2</h1>
+<!-- SUMMARY: The second layer attention updates are integrated into the residual stream and geometrically stabilized using layer normalization. The normalized vectors then flow into a multi-layer perceptron acting as a deep contextual memory bank, enabling the injection of learned knowledge into the sequence representation. --><p>The forward pass for the second Transformer layer reaches its final stages after the attention probabilities are computed and combined with the Value matrix to create contextualized updates. The calculation of self-attention concludes by taking the dot products of the Queries and Keys, masking the results to maintain sequence causality, and applying the Softmax function. These normalized attention probabilities weight the Value matrix to extract the deeply contextualized features identified by the attention heads. A final projection matrix mixes these independent insights back into the primary model dimension. The resulting matrix represents the complete output of the second layer attention block. These updates must now be integrated into the central nervous system of the model, which is the residual stream, and passed through the final multilayer perceptron memory bank.</p>
+<p>$$
+\text{Layer 2 Attention Output} = \begin{bmatrix}
+  0.05 & -0.10 &  0.15 & -0.20 &  0.25 & -0.30 \\
+ -0.05 &  0.10 & -0.15 &  0.20 & -0.25 &  0.30 \\
+  0.25 &  0.25 &  0.25 & -0.25 & -0.25 & -0.25 \\
+ -0.25 & -0.25 & -0.25 &  0.25 &  0.25 &  0.25
+\end{bmatrix}
+$$</p>
+<h2>The First Residual Connection</h2>
+<p>The residual stream acts as the central information highway of the Transformer architecture, bypassing the attention block entirely. The attention mechanism does not replace the representations in the stream; it computes an update to be added to them. The output of the first layer flows directly forward and acts as the foundational state.</p>
+<p>$$
+\text{Layer 1 Final Output} = \begin{bmatrix}
+  0.10 & -0.20 &  0.30 & -0.40 &  0.50 & -0.60 \\
+ -0.10 &  0.20 & -0.30 &  0.40 & -0.50 &  0.60 \\
+  0.50 &  0.50 &  0.50 & -0.50 & -0.50 & -0.50 \\
+ -0.50 & -0.50 & -0.50 &  0.50 &  0.50 &  0.50
+\end{bmatrix}
+$$</p>
+<p>The network adds the newly computed attention output directly to this pristine first layer output point-wise. This addition operation writes the latest structural discoveries into the shared memory bus without erasing the fundamental syntactic properties established earlier in the network. The addition allows the model to preserve all previous contextual information while overlaying the new insights gained from the attention heads of the second layer.</p>
+<p>$$
+\text{Residual}_1 = \text{Stream}_{\text{in}} + \text{Attention}_{\text{out}}
+$$</p>
+<p>For a sequence containing the words &quot;woke&quot; and &quot;up&quot;, the representation for the word &quot;woke&quot; now fundamentally intertwines with the word &quot;up&quot;, deeply embedding the semantic concept of waking up rather than just the individual words. Using the established mathematical values, the first residual output is calculated as follows.</p>
+<p>$$
+\text{After First Residual} = \begin{bmatrix}
+  0.15 & -0.30 &  0.45 & -0.60 &  0.75 & -0.90 \\
+ -0.15 &  0.30 & -0.45 &  0.60 & -0.75 &  0.90 \\
+  0.75 &  0.75 &  0.75 & -0.75 & -0.75 & -0.75 \\
+ -0.75 & -0.75 & -0.75 &  0.75 &  0.75 &  0.75
+\end{bmatrix}
+$$</p>
+<h2>Layer Normalization</h2>
+<p>Following the addition step, the vectors undergo layer normalization to stabilize their variance. This step recenters and scales the vectors so that their mean is zero and their variance is one.</p>
+<p>$$
+\text{Norm}_1 = \text{LayerNorm}(\text{Residual}_1)
+$$</p>
+<p>This normalization guarantees that the subsequent multilayer perceptron block receives inputs that are geometrically well-behaved, preventing any single feature from disproportionately dominating the activations.</p>
+<h2>The Multilayer Perceptron: A Deep Contextual Memory</h2>
+<p>The normalized vectors now flow into the second layer&#39;s multilayer perceptron. While the attention mechanism moves information between tokens, the multilayer perceptron processes information within each token. This block functions as a sophisticated key-value memory bank, similar to the first layer, but now operating on highly abstract and contextualized representations. For the purpose of mathematical clarity in this conceptual stage, the second layer operations are represented within a condensed constant dimensional space. The network projects the normalized vectors through a dense linear layer, applies the Rectified Linear Unit activation function, and projects the results back out. This final feature extraction isolates the most abstract token representations.</p>
+<h3>The Key Expansion</h3>
+<p>The first linear transformation, denoted as $W_1$, projects the vectors into a higher-dimensional space. In the toy model, the dimension expands from 6 to 24. This projection acts as a set of keys checking if specific complex patterns exist within the token representations.</p>
+<p>$$
+\text{Hidden} = \text{ReLU}(\text{Norm}_1 W_1 + b_1)
+$$</p>
+<p>The Rectified Linear Unit activation function serves as the firing threshold. If a pattern is detected, for instance if the vector now strongly represents the combined waking up concept, the corresponding neurons fire. If not, they remain silent with a value of zero.</p>
+<h3>The Value Contraction</h3>
+<p>The active neurons then trigger the second linear transformation, denoted as $W_2$, which acts as the values. This step projects the data back down to the original model dimension.</p>
+<p>$$
+\text{MLP}_{\text{out}} = \text{Hidden} W_2 + b_2
+$$</p>
+<p>When a specific neuron fires in the hidden layer, it causes the second weight matrix to write a corresponding conceptual vector into the output. This allows the network to inject learned knowledge about the world into the sequence representations. The simulated output yields the following highly refined semantic combinations.</p>
+<p>$$
+\text{Layer 2 MLP Output} = \begin{bmatrix}
+  0.03 &  0.02 &  0.04 &  0.02 &  0.05 &  0.02 \\
+  0.02 &  0.03 &  0.02 &  0.04 &  0.02 &  0.05 \\
+  0.04 &  0.04 &  0.04 &  0.02 &  0.02 &  0.02 \\
+  0.02 &  0.02 &  0.02 &  0.04 &  0.04 &  0.04
+\end{bmatrix}
+$$</p>
+<h2>The Final Integration</h2>
+<p>The architecture concludes the second layer with one final residual connection. The output of the multilayer perceptron is added back to the main residual stream to form the definitive output of the second layer. This ensures the gradients flow unobstructed during backpropagation and guarantees the network retains all prior structural information.</p>
+<p>$$
+\text{Output}_{\text{Layer 2}} = \text{Residual}_1 + \text{MLP}_{\text{out}}
+$$</p>
+<p>The sequence representation has now evolved significantly.</p>
+<p>$$
+\text{Layer 2 Final Output} = \begin{bmatrix}
+  0.18 & -0.28 &  0.49 & -0.58 &  0.80 & -0.88 \\
+ -0.13 &  0.33 & -0.43 &  0.64 & -0.73 &  0.95 \\
+  0.79 &  0.79 &  0.79 & -0.73 & -0.73 & -0.73 \\
+ -0.73 & -0.73 & -0.73 &  0.79 &  0.79 &  0.79
+\end{bmatrix}
+$$</p>
+<p>The initial embeddings have now been transformed twice by attention blocks and twice by multilayer perceptrons. The vectors residing in the residual stream are profoundly rich. This matrix represents the culmination of the forward pass through the deep processing layers. The simple vocabulary IDs that entered the network have been transformed into complex geometric coordinates that encapsulate grammar, context, and abstract meaning tailored precisely to the specific sequence. The network is now fully prepared to map these internal representations back into the vocabulary space to generate the prediction for the next word.</p>
+<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+
+<div class="blog-pagination">
+      <a href="transformers-chapter_15.html" class="pagination-link prev">
+        <span class="pagination-label">Previous</span>
+        <span class="pagination-title">Part 15: Layer 2 Self-Attention</span>
+      </a>
+      <a href="transformers-chapter_17.html" class="pagination-link next">
+        <span class="pagination-label">Next</span>
+        <span class="pagination-title">Part 17: Mapping Back to Words</span>
+      </a></div>
+        </article>
+    </div>
+  </main>
+  <script src="../js/main.js"></script>
+
+  <!-- KaTeX for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" 
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});">
+  </script>
+
+  <!-- Mermaid for Diagram Rendering -->
+  <style>
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: var(--space-2xl) 0;
+    }
+    .mermaid svg {
+      filter: drop-shadow(0 4px 16px rgba(183, 110, 121, 0.12));
+    }
+  </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ 
+      startOnLoad: true, 
+      theme: 'base',
+      themeVariables: {
+        fontFamily: "'Outfit', -apple-system, BlinkMacSystemFont, sans-serif",
+        primaryColor: '#ffffff',
+        primaryBorderColor: '#b76e79',
+        primaryTextColor: '#8b4f5a',
+        lineColor: '#b76e79',
+        nodeBorder: '#b76e79',
+        clusterBkg: 'rgba(232, 180, 184, 0.15)',
+        clusterBorder: '#d4a0a0'
+      }
+    });
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      const blocks = document.querySelectorAll('.language-mermaid');
+      blocks.forEach((block) => {
+        const parent = block.parentElement;
+        if (parent.tagName === 'PRE') {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          parent.replaceWith(mermaidDiv);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

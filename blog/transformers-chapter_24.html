@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI for Code vs Documentation — Lydia Pedersen</title>
+  <title>Part 24: Updating the Embeddings and Conclusion — Lydia Pedersen</title>
   <link rel="stylesheet" href="../css/styles.css?v=1.2">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
   <style>
@@ -98,23 +98,68 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-perspectives">Perspectives</a></li><li aria-current="page">AI for Code vs Documentation</li></ol></nav>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Part 24: Updating the Embeddings and Conclusion</li></ol></nav>
         <article class="blog-post">
-<h1>AI for Code vs Documentation</h1>
-<!-- SUMMARY: As AI radically accelerates software development, maintaining high-quality documentation has become an escalating challenge that simple agentic generation cannot fully resolve. Advancing documentation to a core priority requires keeping humans in the loop to capture the nuanced art and critical context of technical writing. --><p>As a technical writer, I very much appreciate when engineers recognize the importance of good documentation. There’s an expectation that engineering capacity is directly proportional to the sophistication of coding agents. However, documentation tools and practices were not designed to scale.</p>
-<p>The obvious solution is that AI should also produce the documentation, but this is non-trivial, and for the majority of developers, documentation is not the focus.</p>
-<p>Before Claude Code or Cursor, it was challenging for documentation to keep pace with software development; now it’s nearly impossible. The culture of innovation is frenzied. Experimentation and accelerated development are the high-value deliverables while documentation is an afterthought.</p>
-<p>The trouble with “just get AI to do it” is that even the most advanced GPTs are much better at critiquing than creating. To extract user-facing, coherent, and accurate documentation from PRs is a challenge. To properly describe the motivations and nuances associated with a complex feature set is an art.</p>
-<p>Even a controlled agentic workflow with strict hallucination guards and deterministic auto-fixing needs a human in the loop for governance, and these systems must still be built in-house. I hope to help advance documentation to a first-class citizen so that technology remains meaningfully accessible.</p>
+<h1>Part 24: Updating the Embeddings and Conclusion</h1>
+<!-- SUMMARY: The accumulated gradient ultimately reaches the initial embedding matrix via the residual stream, perfectly encapsulating how token representations must shift to minimize prediction error. The completion of the backward pass finalizes the mathematical traversal of the machinery driving the architecture. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p><p>The backward journey finally reaches its terminus. The error signal cascaded from the Cross-Entropy loss, navigated the Unembedding matrix, split through the Layer 2 MLP, and distributed itself across the complex geometry of the self-attention Query, Key, and Value matrices. Now, this accumulated signal arrives at the very beginning of the network. It is time to update the foundational representations of the tokens: the Embedding matrix itself.</p>
+<h2>The Residual Highway</h2>
+<p>During the forward pass, the residual stream operated as a central memory bus. The initial token embeddings traveled along this bus, with each attention and MLP block adding new contextual information. </p>
+<p>In the backward pass, the residual stream serves an equally critical role as a gradient highway. When operations add together during the forward pass, the backward pass simply passes the gradient equally to both paths. The gradient arriving at any point in the residual stream equals the sum of all gradients from the blocks that read from it later in the network. Therefore, the final gradient vector arriving at the initial input matrix $X$ represents a comprehensive sum. It contains the feedback from every downstream decision, perfectly encapsulating how the initial token vectors need to shift in $d_{model}$ space to decrease the final prediction error.</p>
+<p>Let $d\_X$ represent this accumulated gradient for the sequence <code>&lt;BOS&gt; i woke up</code>. It forms a matrix of size $4 \times 6$:</p>
+<p>$$
+d\_X = \begin{bmatrix}
+-0.0036 & 0.1565 & -0.2620 & 0.0822 & 0.0087 & -0.0299 \\
+0.0092 & -0.1988 & -0.0220 & 0.0357 & 0.1478 & -0.0518 \\
+-0.0808 & -0.0502 & 0.0915 & 0.0329 & -0.0530 & 0.0513 \\
+0.0097 & 0.0969 & -0.0702 & -0.0328 & -0.0392 & -0.1464
+\end{bmatrix}
+$$</p>
+<h2>Routing Gradients to the Vocabulary Space</h2>
+<p>The input matrix $X$ was constructed by selecting specific rows from the global Embedding matrix $E$. The matrix $E$ has a shape of $12 \times 6$, representing the entire vocabulary of 12 words in a 6-dimensional space. </p>
+<p>By the rules of calculus, if a row in $E$ copies forward to form a row in $X$, the gradient for that row in $X$ routes directly back to the original row in $E$. The operation of selecting a row is mathematically equivalent to multiplying a one-hot encoded vector by the matrix $E$. The derivative of this operation simply passes the gradient back to the active index.</p>
+<p>If the sequence <code>&lt;BOS&gt; i woke up</code> corresponds to indices 0, 3, 5, and 7 in the vocabulary, the process constructs a gradient matrix $d\_E$ of the same size as $E$, initialized to all zeros. The network then adds the respective rows of $d\_X$ to rows 0, 3, 5, and 7 of $d\_E$. The gradients for tokens not present in the current sequence remain strictly zero.</p>
+<pre><code class="language-mermaid">flowchart TD
+    A(Gradient d_X) --&gt; B(Route to Index 0: BOS)
+    A --&gt; C(Route to Index 3: i)
+    A --&gt; D(Route to Index 5: woke)
+    A --&gt; E(Route to Index 7: up)
+    B --&gt; F(Update Row 0 of d_E)
+    C --&gt; G(Update Row 3 of d_E)
+    D --&gt; H(Update Row 5 of d_E)
+    E --&gt; I(Update Row 7 of d_E)
+</code></pre>
+<h2>The Optimizer Update</h2>
+<p>With $d\_E$ fully assembled alongside the gradients for all intermediate weight matrices, the network can finally execute the core mechanism of machine learning: the weight update. </p>
+<p>An optimizer applies these gradients to shift the weights in the direction opposite to the error. While modern architectures use sophisticated optimizers like Adam which track momentum and variance, the fundamental principle is best illustrated by Stochastic Gradient Descent. A defined learning rate $\alpha$ controls the size of the step.</p>
+<p>$$
+E_{new} = E_{old} - \alpha \cdot d\_E
+$$</p>
+<p>For example, observing the shift for the <code>&lt;BOS&gt;</code> token at Row 0 with a learning rate of $0.01$, the process subtracts the scaled gradient:</p>
+<p>$$
+E_{old}[0] = \begin{bmatrix}
+0.4967 & -0.1383 & 0.6477 & 1.5230 & -0.2342 & -0.2341
+\end{bmatrix}
+$$</p>
+<p>$$
+E_{new}[0] = \begin{bmatrix}
+0.4967 & -0.1398 & 0.6503 & 1.5222 & -0.2342 & -0.2338
+\end{bmatrix}
+$$</p>
+<p>By subtracting the scaled gradient, the coordinates of the original words adjust within the $d_{model}$ space. The next time the network encounters the token &quot;woke&quot;, its starting vector will sit in a slightly better position to help the attention mechanism predict &quot;late&quot;. </p>
+<h2>Conclusion</h2>
+<p>This completes the rigorous traversal of the Transformer architecture. The journey began with simple integers representing text, projected them into a continuous geometric space, and demonstrated how attention matrices sculpt those vectors into context-aware representations. The mathematical proofs established why scaling by the square root of the head dimension prevents gradient starvation and how the causal mask ensures temporal discipline. </p>
+<p>Crucially, the backward pass stands demystified. The simple difference between the prediction and the target label blossoms into a cascade of derivatives, flowing backward through projection matrices and softmax distributions to assign credit and blame to every single weight in the network. </p>
+<p>The Transformer is not an inscrutable black box. It operates as a massive, elegant bilinear engine, moving text through latent space with pristine mathematical precision. By following the numbers from the first embedding to the final gradient step, the physical machinery of modern artificial intelligence becomes visible.</p>
+<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 
 <div class="blog-pagination">
-      <a href="transformers-preface.html" class="pagination-link prev">
+      <a href="transformers-chapter_23.html" class="pagination-link prev">
         <span class="pagination-label">Previous</span>
-        <span class="pagination-title">Preface: The Big Picture & Tensor Notation</span>
+        <span class="pagination-title">Part 23: Backpropagation - Attention (Part 2: Q, K, V)</span>
       </a>
-      <a href="tokenization-chapter_01.html" class="pagination-link next">
+      <a href="serp-api-benchmark.html" class="pagination-link next">
         <span class="pagination-label">Next</span>
-        <span class="pagination-title">Part 1: Characters, Words, and the Subword Compromise</span>
+        <span class="pagination-title">Benchmarking SERP API Fidelity for AI Overviews</span>
       </a></div>
         </article>
     </div>

@@ -191,154 +191,196 @@
                 <p class="tab-desc">Sequential explorations born from personal curiosity. These collections document my process of deconstructing complex systems and sharing the resulting insights.</p>
                 
           <div class="series-group">
+              <h3 class="series-title">Tokenization</h3>
+              <div class="series-items">
+                  
+                  <a href="tokenization-preface.html">
+                      <article class="blog-item series-item">
+                          <h2>Preface: Why Tokenization Matters</h2>
+                          <p>Neural networks fundamentally operate on numerical tensors, establishing a strict requirement to translate raw text into structured integer sequences. Byte Pair Encoding satisfies this mathematical constraint by statistically discovering subword units, serving as the critical bridge to the initial embedding matrix.</p>
+                      </article>
+                  </a>
+                  <a href="tokenization-chapter_01.html">
+                      <article class="blog-item series-item">
+                          <h2>Part 1: Characters, Words, and the Subword Compromise</h2>
+                          <p>The translation of raw text into a sequence of integer IDs requires defining a finite vocabulary space. Analyzing word-level and character-level boundaries reveals an inherent mathematical tradeoff between infinite vocabulary expansion and the destruction of semantic meaning, mandating a subword compression algorithm.</p>
+                      </article>
+                  </a>
+                  <a href="tokenization-chapter_02.html">
+                      <article class="blog-item series-item">
+                          <h2>Part 2: The BPE Training Algorithm</h2>
+                          <p>Constructing an optimized subword vocabulary requires a deterministic compression algorithm rather than manual linguistic rules. Byte Pair Encoding resolves this by initializing a base character vocabulary and executing a greedy, iterative merge operation that systematically fuses the most frequent adjacent tokens into unified semantic structures.</p>
+                      </article>
+                  </a>
+                  <a href="tokenization-chapter_03.html">
+                      <article class="blog-item series-item">
+                          <h2>Part 3: Training BPE by Hand</h2>
+                          <p>Executing the Byte Pair Encoding algorithm against a concrete corpus reveals exactly how abstract statistical rules collapse character-level data into optimized semantic units. Tracing the frequency counts and merge selections across a fourteen-step compression sequence demonstrates the deterministic derivation of morphological stems and suffixes without linguistic programming.</p>
+                      </article>
+                  </a>
+                  <a href="tokenization-chapter_04.html">
+                      <article class="blog-item series-item">
+                          <h2>Part 4: Encoding and Decoding</h2>
+                          <p>The deployment of a static vocabulary and ordered list of merge rules enables the rigorous tokenization of novel text. This process mathematically guarantees consistency with the training distribution while gracefully decomposing unseen words into familiar subword units.</p>
+                      </article>
+                  </a>
+                  <a href="tokenization-chapter_05.html">
+                      <article class="blog-item series-item">
+                          <h2>Part 5: From Bytes to Billions</h2>
+                          <p>Bridging the theoretical foundation of tokenization to production realities requires replacing arbitrary character sets with a universal byte-level fallback. Tracing the exact algorithm across pure byte integers proves that morphological structure emerges naturally without any requirement for human-readable letters, establishing the strict mathematical dimensions required by the Transformer's embedding matrix.</p>
+                      </article>
+                  </a>
+              </div>
+          </div>
+          <div class="series-group">
               <h3 class="series-title">Transformers</h3>
               <div class="series-items">
                   
-                  <a href="preface.html">
+                  <a href="transformers-preface.html">
                       <article class="blog-item series-item">
                           <h2>Preface: The Big Picture & Tensor Notation</h2>
                           <p>This foundational overview introduces an autoregressive Decoder-only Transformer built from scratch using rigorous tensor notation and geometric principles. The text defines the vocabulary space, architectural dimensions, and the central residual stream required to calculate the forward pass.</p>
                       </article>
                   </a>
-                  <a href="chapter_01.html">
+                  <a href="transformers-chapter_01.html">
                       <article class="blog-item series-item">
                           <h2>Part 1: Tokens, One-Hot Encodings, and the Embedding Matrix</h2>
                           <p>Translating raw text into a rigorous geometric representation requires mapping discrete tokens into orthogonal one-hot vectors. This process mathematically motivates the necessity of the embedding matrix to compress these isolated dimensions into a dense semantic space, enabling the natural inference of conceptual relationships.</p>
                       </article>
                   </a>
-                  <a href="chapter_02.html">
+                  <a href="transformers-chapter_02.html">
                       <article class="blog-item series-item">
                           <h2>Part 2: The Permutation Invariance Problem & Positional Encoding</h2>
                           <p>Matrix operations are inherently permutation invariant, creating a structural flaw that leaves the architecture entirely blind to sequence order. This limitation is resolved by explicitly injecting temporal context through the element-wise addition of mathematically deterministic absolute positional encodings.</p>
                       </article>
                   </a>
-                  <a href="chapter_03.html">
+                  <a href="transformers-chapter_03.html">
                       <article class="blog-item series-item">
                           <h2>Part 3: The Motivation for Q, K, and V (Asymmetric Similarity)</h2>
                           <p>Symmetric similarity is structurally inadequate for capturing grammatically asymmetric linguistic relationships. Projecting context-aware embeddings into distinct query and key subspaces implements a bilinear form that enables tokens to independently query their surroundings and present complementary information.</p>
                       </article>
                   </a>
-                  <a href="chapter_04.html">
+                  <a href="transformers-chapter_04.html">
                       <article class="blog-item series-item">
                           <h2>Part 4: The Attention Score and $\sqrt{d_k}$</h2>
                           <p>Calculating raw attention scores via the dot product exposes a scaling problem in high-dimensional vector spaces. To prevent catastrophic softmax saturation and the resulting gradient decay, the variance is mathematically stabilized by dividing the scores by the square root of the head dimension.</p>
                       </article>
                   </a>
-                  <a href="chapter_05.html">
+                  <a href="transformers-chapter_05.html">
                       <article class="blog-item series-item">
                           <h2>Part 5: Causal Masking</h2>
                           <p>Parallel training introduces a structural vulnerability by allowing past tokens computational access to future context. Causality is preserved by applying a lower-triangular mask of negative infinity, establishing a mathematical barrier that neutralizes future information when passed through the softmax function.</p>
                       </article>
                   </a>
-                  <a href="chapter_06.html">
+                  <a href="transformers-chapter_06.html">
                       <article class="blog-item series-item">
                           <h2>Part 6: From Scores to Synthesis: Softmax and The Value Matrix</h2>
                           <p>The single-head attention mechanism is finalized by leveraging the softmax function to convert unbounded routing scores into a strict probability distribution. A weighted sum against the value matrix is then computed to dynamically synthesize a deeply contextualized geometric representation for each token.</p>
                       </article>
                   </a>
-                  <a href="chapter_07.html">
+                  <a href="transformers-chapter_07.html">
                       <article class="blog-item series-item">
                           <h2>Part 7: The Projection Matrix and The Cross-Head Mixer</h2>
                           <p>The isolated outputs of multiple attention heads are concatenated into a unified matrix to preserve structural integrity without destructive interference. These discrete features are synthesized into higher-order contextual representations by projecting them through a learned cross-head mixing matrix, preparing the vectors to rejoin the residual stream.</p>
                       </article>
                   </a>
-                  <a href="chapter_08.html">
+                  <a href="transformers-chapter_08.html">
                       <article class="blog-item series-item">
                           <h2>Part 8: The Residual Stream and the Central Memory Bus</h2>
                           <p>The central memory bus of the architecture processes contextual updates from the attention blocks via element-wise addition to the residual stream. Geometrically, this operation acts as a vector translation in high-dimensional space, shifting token representations to incorporate context while preserving their foundational identities.</p>
                       </article>
                   </a>
-                  <a href="chapter_09.html">
+                  <a href="transformers-chapter_09.html">
                       <article class="blog-item series-item">
                           <h2>Part 9: Taming the Stream: The Geometry of Layer Normalization</h2>
                           <p>Geometric drift and magnitude expansion caused by continuous additive updates are counteracted through the rigorous application of layer normalization. By independently centering and scaling each token vector across its embedding dimension, this mechanism mathematically stabilizes the residual stream while retaining vital contextual geometries.</p>
                       </article>
                   </a>
-                  <a href="chapter_10.html">
+                  <a href="transformers-chapter_10.html">
                       <article class="blog-item series-item">
                           <h2>Part 10: The Residual Stream and MLP Expansion</h2>
                           <p>The expansion phase of the feed-forward network acts as a high-dimensional key-value memory retrieval mechanism. By projecting token vectors into a substantially larger geometric space, the model computes dot products against learned key patterns to precisely measure alignment with higher-order conceptual features.</p>
                       </article>
                   </a>
-                  <a href="chapter_11.html">
+                  <a href="transformers-chapter_11.html">
                       <article class="blog-item series-item">
                           <h2>Part 11: Layer Normalization and The Multi-Layer Perceptron</h2>
                           <p>The multi-layer perceptron executes precise non-linear gating and geometric contraction phases. The ReLU activation function sparsifies the high-dimensional space by isolating successful pattern matches, which are subsequently contracted through a value matrix to synthesize a refined vector of contextual updates.</p>
                       </article>
                   </a>
-                  <a href="chapter_12.html">
+                  <a href="transformers-chapter_12.html">
                       <article class="blog-item series-item">
                           <h2>Part 12: The MLP as a Key-Value Memory and Layer 1 Completion</h2>
                           <p>The feed-forward network acts as a vast conceptual memory bank for the Transformer. By projecting the residual stream into a higher-dimensional space, the first linear layer functions as a series of specific pattern-matching keys, probing each token vector for complex linguistic and contextual features learned during training. The architecture of the first layer is then finalized by integrating the newly synthesized conceptual features back into the residual stream via additive updates. To counteract the resulting geometric instability and magnitude expansion, layer normalization is applied to prepare the contextualized vectors for deeper processing in subsequent layers.</p>
                       </article>
                   </a>
-                  <a href="chapter_13.html">
+                  <a href="transformers-chapter_13.html">
                       <article class="blog-item series-item">
                           <h2>Part 13: The MLP Activation and Layer 2 Self-Attention</h2>
                           <p>The activation function serves as the critical gatekeeper within the feed-forward network, filtering the conceptual matches identified by the first layer. The subsequent linear projection then translates these activated patterns into concrete conceptual updates, writing new features back into the residual stream. As the sequence progresses through the second layer of self-attention, token vectors evolve from isolated definitions into deeply contextualized mathematical representations that evaluate high-level syntactic structures.</p>
                       </article>
                   </a>
-                  <a href="chapter_14.html">
+                  <a href="transformers-chapter_14.html">
                       <article class="blog-item series-item">
                           <h2>Part 14: Final Layer 1 Residuals, Norms, and Layer 2 Attention</h2>
                           <p>The multi-layer perceptron output is added back into the residual stream, preserving the original contextual information while integrating the newly activated conceptual features. A final layer normalization step stabilizes the vector geometry, preparing the enriched representations for the second layer. The query and key vectors then undergo a fundamental mathematical shift as compound semantic structures are scored using the scaled dot-product. Stabilizing the variance of these unscaled scores prevents softmax saturation and preserves gradient health during backpropagation.</p>
                       </article>
                   </a>
-                  <a href="chapter_15.html">
+                  <a href="transformers-chapter_15.html">
                       <article class="blog-item series-item">
                           <h2>Part 15: Layer 2 Self-Attention</h2>
                           <p>The progression into the second layer marks a profound shift as the self-attention mechanism now operates on deeply contextualized representations rather than static embeddings. By projecting these enriched vectors into new query, key, and value spaces, the mechanism computes relationships between complex semantic clusters. Causality is enforced through lower-triangular masking and the scores are normalized into a strict probability distribution via the softmax function, with the resulting attention probabilities blended against the value matrix to extract highly refined contextual features.</p>
                       </article>
                   </a>
-                  <a href="chapter_16.html">
+                  <a href="transformers-chapter_16.html">
                       <article class="blog-item series-item">
                           <h2>Part 16: Deepening the Representation: MLP and Residuals in Layer 2</h2>
                           <p>The second layer attention updates are integrated into the residual stream and geometrically stabilized using layer normalization. The normalized vectors then flow into a multi-layer perceptron acting as a deep contextual memory bank, enabling the injection of learned knowledge into the sequence representation.</p>
                       </article>
                   </a>
-                  <a href="chapter_17.html">
+                  <a href="transformers-chapter_17.html">
                       <article class="blog-item series-item">
                           <h2>Part 17: Mapping Back to Words</h2>
                           <p>The deeply contextualized mathematical representations emerging from the second layer are translated back into the vocabulary space using the unembedding matrix. This critical linear projection produces raw logits that quantify the geometric preference for predicting the next sequence token.</p>
                       </article>
                   </a>
-                  <a href="chapter_18.html">
+                  <a href="transformers-chapter_18.html">
                       <article class="blog-item series-item">
                           <h2>Part 18: Final Softmax and Predictions</h2>
                           <p>The unbounded vocabulary logits are transformed into a strict probability distribution using the softmax function. Analyzing this distribution reveals the untrained network's maximum mathematical uncertainty, while techniques like temperature scaling and Top-K decoding provide mechanisms to shape this entropy during actual text generation.</p>
                       </article>
                   </a>
-                  <a href="chapter_19.html">
+                  <a href="transformers-chapter_19.html">
                       <article class="blog-item series-item">
                           <h2>Part 19: The Cross-Entropy Loss Function</h2>
                           <p>The error of the raw predictions is formalized by calculating the cross-entropy loss against the one-hot target distribution. This asymmetric logarithmic penalty heavily punishes confidently incorrect predictions, yielding a mathematically elegant error signal for the network to optimize.</p>
                       </article>
                   </a>
-                  <a href="chapter_20.html">
+                  <a href="transformers-chapter_20.html">
                       <article class="blog-item series-item">
                           <h2>Part 20: The Beautiful Cancellation</h2>
                           <p>Chaining the derivatives of the cross-entropy loss and the softmax function reveals a mathematical cancellation that radically simplifies the gradient. This interpretation establishes the primary error signal as the precise difference between the predicted probabilities and the ground truth.</p>
                       </article>
                   </a>
-                  <a href="chapter_21.html">
+                  <a href="transformers-chapter_21.html">
                       <article class="blog-item series-item">
                           <h2>Part 21: Backpropagating Through the Unembedding and Residual Stream</h2>
                           <p>The backward pass initiates by routing the error signal from the vocabulary logits through the unembedding matrix and into the final residual stream. Applying the chain rule demonstrates how the gradient symmetrically branches through the multi-layer perceptron to update intermediate weights.</p>
                       </article>
                   </a>
-                  <a href="chapter_22.html">
+                  <a href="transformers-chapter_22.html">
                       <article class="blog-item series-item">
                           <h2>Part 22: Backpropagation - Attention (Part 1: Softmax & Scores)</h2>
                           <p>The gradient propagates backward through the self-attention mechanism by solving the Jacobian of the softmax function and navigating the causal mask. This matrix operation handles coupled probabilities and severs the learning signal for future-looking connections, yielding the exact error for unmasked attention scores.</p>
                       </article>
                   </a>
-                  <a href="chapter_23.html">
+                  <a href="transformers-chapter_23.html">
                       <article class="blog-item series-item">
                           <h2>Part 23: Backpropagation - Attention (Part 2: Q, K, V)</h2>
                           <p>Following the calculation of the attention score gradients, the error signal is distributed backward into the query, key, and value matrices. Reversing the weighted sums geometrically mirrors the forward pass, successfully translating the output error into precise updates for the self-attention weight matrices.</p>
                       </article>
                   </a>
-                  <a href="chapter_24.html">
+                  <a href="transformers-chapter_24.html">
                       <article class="blog-item series-item">
                           <h2>Part 24: Updating the Embeddings and Conclusion</h2>
                           <p>The accumulated gradient ultimately reaches the initial embedding matrix via the residual stream, perfectly encapsulating how token representations must shift to minimize prediction error. The completion of the backward pass finalizes the mathematical traversal of the machinery driving the architecture.</p>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Part 22: Backpropagation - Attention (Part 1: Softmax & Scores) — Lydia Pedersen</title>
+  <link rel="stylesheet" href="../css/styles.css?v=1.2">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .blog-post {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: var(--space-4xl) var(--space-md);
+        background: var(--bg-card);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 8px 32px rgba(183, 110, 121, 0.05);
+        border: 1px solid var(--border-subtle);
+    }
+    .blog-post h1, .blog-post h2, .blog-post h3 {
+        color: var(--text-primary);
+        font-family: var(--font-display);
+        margin-top: var(--space-2xl);
+        margin-bottom: var(--space-md);
+    }
+    .blog-post h1 { font-size: var(--fs-3xl); margin-top: 0; line-height: 1.1; }
+    .blog-post h2, .blog-post h3 { border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-sm); }
+    .blog-post h2 { font-size: var(--fs-2xl); }
+    .blog-post h3 { font-size: var(--fs-xl); }
+    .blog-post p, .blog-post li {
+        color: var(--text-secondary);
+        line-height: var(--lh-relaxed);
+        margin-bottom: var(--space-md);
+        font-size: var(--fs-md);
+    }
+    .blog-post img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-md);
+        margin: var(--space-lg) 0;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .blog-post a:not(.pagination-link) {
+        color: var(--text-accent);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s ease;
+    }
+    .blog-post a:not(.pagination-link):hover {
+        border-bottom-color: var(--text-accent);
+    }
+    .blog-post {
+        background: rgba(255, 255, 255, 0.65);
+        padding: var(--space-2xl);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-subtle);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .blog-post .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; display: flex; gap: 1rem; align-items: center; }
+    .blog-post .meta span { display: inline-flex; align-items: center; gap: 0.25rem; }
+    .blog-post p { line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1.05rem; }
+    .blog-post ul, .blog-post ol { margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem; }
+    .blog-post li { margin-bottom: 0.5rem; }
+    .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+    .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
+    .blog-post table { width: auto; margin: var(--space-2xl) 0; border-collapse: collapse; text-align: left; }
+    .blog-post thead { display: none; }
+    .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 4px 10px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; font-size: 0.95rem; color: var(--rose-gold-dark); margin-right: 6px; }
+  </style>
+</head>
+<body>
+  <!-- Fixed chip visual (always visible, bottom-left, behind everything) -->
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
+  <!-- Full-screen overlay canvas for the diagonal binary→agent→text animation -->
+  <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="../index.html" class="nav__logo" aria-label="Home">lydia<span>.</span>pedersen</a>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="../index.html#about" class="nav__link">About</a></li>
+        <li><a href="../index.html#samples" class="nav__link">Writing</a></li>
+        <li><a href="../index.html#case-studies" class="nav__link">Engineering</a></li>
+        <li><a href="../index.html#skills" class="nav__link">Skills</a></li>
+        <li><a href="index.html" class="nav__link">Blog</a></li>
+        <li><a href="../index.html#contact" class="nav__link">Contact</a></li>
+      </ul>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="nav__toggle-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-lg));">
+    <div class="container">
+<nav aria-label="breadcrumb" class="breadcrumbs"><ol>
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Part 22: Backpropagation - Attention (Part 1: Softmax & Scores)</li></ol></nav>
+        <article class="blog-post">
+<h1>Part 22: Backpropagation - Attention (Part 1: Softmax &amp; Scores)</h1>
+<!-- SUMMARY: The gradient propagates backward through the self-attention mechanism by solving the Jacobian of the softmax function and navigating the causal mask. This matrix operation handles coupled probabilities and severs the learning signal for future-looking connections, yielding the exact error for unmasked attention scores. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p><p>The previous installment routed the gradient down the residual stream to the output of the Layer 2 attention block. The objective now requires pulling this error signal backward through the self-attention mechanism itself. This requires unpacking the sequence of operations that created the attention output. The final operations in that sequence involved multiplying the attention probabilities by the Value matrix, and prior to that, applying the softmax function to the masked attention scores.</p>
+<h2>From Values to Probabilities</h2>
+<p>During the forward pass, the attention output emerged as the matrix product of the probability matrix $P$ and the Value matrix $V$. The gradient of the loss with respect to this output represents the exact direction required to minimize the error in the final contextualized vectors. To determine the necessary adjustment for the attention probabilities $P$, the standard chain rule for matrix multiplication is applied. The gradient with respect to $P$ equals the incoming gradient multiplied by the transpose of $V$. The resulting gradient matrix is defined as $d\_P$.</p>
+<p>The matrix $d\_P$ dictates how the loss would change if the attention probabilities shifted. It is a square matrix mapping sequence length by sequence length, detailing the precise error signal for the attention connection between every pair of tokens in the text.</p>
+<h2>The Calculus of Softmax</h2>
+<p>The gradient $d\_P$ must pass backward through the softmax function to uncover the gradient with respect to the raw, pre-softmax attention scores. These pre-softmax scores are defined as $S$.</p>
+<p>The softmax function presents a unique mathematical challenge. It takes a vector of scores and normalizes them into a coupled probability distribution. Changing a single score in the input vector alters the sum in the denominator for all other elements, inherently shifting the final probability of every other element. Consequently, the derivative of a softmax output with respect to its input forms a Jacobian matrix containing the partial derivatives of every output with respect to every input.</p>
+<p>The mathematical formula for backpropagating through softmax across an entire sequence reduces to an elegant matrix operation:</p>
+<p>$$
+d\_S = P \odot \left( d\_P - \sum \left( d\_P \odot P \right) \right)
+$$</p>
+<p>Here, $\odot$ represents element-wise multiplication. The incoming gradient $d\_P$ is multiplied by the probabilities $P$, summed along the sequence dimension, and subtracted from the original $d\_P$. The entire result is then multiplied element-wise by the probabilities $P$ again.</p>
+<p>To anchor this physically, the network relies on the forward pass attention probabilities $P$:</p>
+<p>$$
+P = \begin{bmatrix}
+1.0000 & 0.0000 & 0.0000 & 0.0000 \\
+0.5000 & 0.5000 & 0.0000 & 0.0000 \\
+0.4520 & 0.5320 & 0.0150 & 0.0000 \\
+0.5900 & 0.1510 & 0.1290 & 0.1300
+\end{bmatrix}
+$$</p>
+<p>This matrix operation captures the proportional interplay of probabilities. If a particular token received a high probability during the forward pass, its gradient heavily influences the adjustment of the pre-softmax scores. If a token was ignored and assigned a near-zero probability, the multiplication by $P$ ensures the gradient struggles to pass through, effectively severing the learning signal for that specific connection.</p>
+<p>Applying the formula yields the precise gradient with respect to the masked scores, $d\_S$:</p>
+<p>$$
+d\_S = \begin{bmatrix}
+0.0000 & 0.0000 & 0.0000 & 0.0000 \\
+-0.0332 & 0.0332 & 0.0000 & 0.0000 \\
+0.0417 & -0.0410 & -0.0007 & 0.0000 \\
+-0.0083 & 0.0078 & -0.0096 & 0.0101
+\end{bmatrix}
+$$</p>
+<h2>Traversing the Causal Mask</h2>
+<p>The matrix $d\_S$ represents the gradient with respect to the masked attention scores. The final step in this stage requires pushing the gradient through the causal mask.</p>
+<p>During the forward pass, a lower-triangular mask was applied to the raw attention scores. All values above the diagonal were explicitly set to negative infinity. This structural intervention prevented tokens from attending to future positions, guaranteeing the model respects causality during parallel training. When the softmax function encountered negative infinity, it mapped it to a strict zero probability.</p>
+<p>In the backward pass, gradients flow only where information flowed forward. Since the upper triangular elements of the score matrix were overwritten and ignored during the forward pass, they cannot have contributed to the final loss. The error signal for those future-looking connections must be zero.</p>
+<p>To route the gradient through the causal mask, a binary lower-triangular mask is applied to $d\_S$, zeroing out the upper triangular portion:</p>
+<p>$$
+d\_S_{\text{unmasked}} = \begin{bmatrix}
+1 & 0 & 0 & 0 \\
+1 & 1 & 0 & 0 \\
+1 & 1 & 1 & 0 \\
+1 & 1 & 1 & 1
+\end{bmatrix} \odot d\_S
+$$</p>
+<p>The resulting unmasked scores gradient matrix remains largely identical, as the softmax gradient naturally forces the previously masked values to zero. However, this formal mathematical step guarantees the error signal cleanly respects causality:</p>
+<p>$$
+d\_S_{\text{unmasked}} = \begin{bmatrix}
+0.0000 & 0.0000 & 0.0000 & 0.0000 \\
+-0.0332 & 0.0332 & 0.0000 & 0.0000 \\
+0.0417 & -0.0410 & -0.0007 & 0.0000 \\
+-0.0083 & 0.0078 & -0.0096 & 0.0101
+\end{bmatrix}
+$$</p>
+<p>The network now possesses the gradient with respect to the pure, unmasked attention scores, representing the direct scaled dot product between queries and keys. The error signal has successfully traversed the most numerically complex non-linearity in the Transformer architecture. The subsequent analysis will distribute this gradient into the Query, Key, and Value weight matrices, completing the learning cycle for the self-attention mechanism.</p>
+<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+
+<div class="blog-pagination">
+      <a href="transformers-chapter_21.html" class="pagination-link prev">
+        <span class="pagination-label">Previous</span>
+        <span class="pagination-title">Part 21: Backpropagating Through the Unembedding and Residual Stream</span>
+      </a>
+      <a href="transformers-chapter_23.html" class="pagination-link next">
+        <span class="pagination-label">Next</span>
+        <span class="pagination-title">Part 23: Backpropagation - Attention (Part 2: Q, K, V)</span>
+      </a></div>
+        </article>
+    </div>
+  </main>
+  <script src="../js/main.js"></script>
+
+  <!-- KaTeX for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" 
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});">
+  </script>
+
+  <!-- Mermaid for Diagram Rendering -->
+  <style>
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: var(--space-2xl) 0;
+    }
+    .mermaid svg {
+      filter: drop-shadow(0 4px 16px rgba(183, 110, 121, 0.12));
+    }
+  </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ 
+      startOnLoad: true, 
+      theme: 'base',
+      themeVariables: {
+        fontFamily: "'Outfit', -apple-system, BlinkMacSystemFont, sans-serif",
+        primaryColor: '#ffffff',
+        primaryBorderColor: '#b76e79',
+        primaryTextColor: '#8b4f5a',
+        lineColor: '#b76e79',
+        nodeBorder: '#b76e79',
+        clusterBkg: 'rgba(232, 180, 184, 0.15)',
+        clusterBorder: '#d4a0a0'
+      }
+    });
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      const blocks = document.querySelectorAll('.language-mermaid');
+      blocks.forEach((block) => {
+        const parent = block.parentElement;
+        if (parent.tagName === 'PRE') {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          parent.replaceWith(mermaidDiv);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
