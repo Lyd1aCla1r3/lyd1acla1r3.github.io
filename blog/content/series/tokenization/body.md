@@ -435,7 +435,29 @@ The tokenization pipeline is now mathematically complete, reliably transforming 
 <h1 id="chapter-5-from-bytes-to-billions">Chapter 5: From Bytes to Billions</h1>
 <!-- SUMMARY: Bridging the theoretical foundation of tokenization to production realities requires replacing arbitrary character sets with a universal byte-level fallback. Tracing the exact algorithm across pure byte integers proves that morphological structure emerges naturally without any requirement for human-readable letters, establishing the strict mathematical dimensions required by the Transformer's embedding matrix. -->
 
-
+<style>
+  .trace-container code {
+    font-size: 0.75em !important;
+    padding: 0.15em 0.3em !important;
+  }
+  .trace-container td {
+    white-space: nowrap !important;
+  }
+  .trace-container b code {
+    font-weight: 900 !important;
+    color: #9a5b65 !important; /* Dark Rose Gold */
+    background-color: #fdf5f6 !important;
+    border: 1px solid #e0c6cb !important;
+  }
+  /* For dark mode if it exists */
+  @media (prefers-color-scheme: dark) {
+    .trace-container b code {
+      color: #e6b3bc !important;
+      background-color: #3b2a2d !important;
+      border: 1px solid #6b4d53 !important;
+    }
+  }
+</style>
 
 The previously demonstrated encoding process relies on a fragile assumption. The initial base vocabulary was strictly limited to the alphabetical characters explicitly observed in the training corpus. When a novel character like an emoji, a foreign script symbol, or a simple unobserved punctuation mark appears during inference, the greedy longest-match algorithm encounters a mathematical dead end. The character cannot be matched to any known token, triggering an out-of-vocabulary failure state that prevents the text from being processed.
 
@@ -471,7 +493,7 @@ The embedding matrix of a Transformer must contain exactly one row for *every si
 
 Conversely, if the base vocabulary is capped at the 256 raw bytes, the foundational embedding matrix costs almost nothing (only 256 rows). This leaves the entire parameter budget completely open. The algorithm can allocate its finite 50,000-token vocabulary exclusively to the structural combinations that actually appear frequently in the corpus.
 
-When the tokenizer receives the array for `é`, it strictly sees the integer `[195]` followed by the integer `[169]`. Because those two distinct integers appear sequentially every single time an author types `é`, the BPE algorithm will naturally identify them as a highly frequent pair. It will then merge them by minting a completely new, abstract integer token ID (`[195]` + `[169]` &rarr; `[257]`). 
+When the tokenizer receives the array for é, it strictly sees the integer [195] followed by the integer [169]. Because those two distinct integers appear sequentially every single time an author types é, the BPE algorithm will naturally identify them as a highly frequent pair. It will then merge them by minting a completely new, abstract integer token ID ([195] + [169] &rarr; [257]). 
 
 By extending this logic across massive datasets, the algorithm mathematically learns to fuse multi-byte sequences, morphological subwords (like `i` `n` `g`), and entire common words (like `t` `h` `e`) into highly efficient token identifiers—all while maintaining an incredibly compact, data-driven vocabulary.
 
@@ -479,7 +501,7 @@ By extending this logic across massive datasets, the algorithm mathematically le
 
 The restriction to abstract integers necessitates a dedicated text reconstruction protocol. Transforming the abstract token [257] back into the printable character é requires reversing the merge operations.
 
-The tokenizer maintains a strict lookup table of every merge it performed. During the decoding phase (when the neural network outputs token `[257]`), the tokenizer references this table and simply reverses the operation. It expands `[257]` back down to its base constituent bytes: `[195, 169]`. It then hands this raw byte array back to the programming language.
+The tokenizer maintains a strict lookup table of every merge it performed. During the decoding phase (when the neural network outputs token [257]), the tokenizer references this table and simply reverses the operation. It expands [257] back down to its base constituent bytes: [195, 169]. It then hands this raw byte array back to the programming language.
 
 This reversal process introduces a critical ambiguity regarding whether the array [195, 169] should be interpreted as the single character é or as two completely separate characters, such as Ã followed by ©.
 
@@ -507,9 +529,9 @@ Leaving a character partially merged as [350] and [185] poses zero risk of corru
 
 Tokens are never decoded in isolation. The neural network outputs the sequence of tokens, and the tokenizer expands them all back into a massive, flat byte array. Whether the neural network used one token or three tokens to generate those bytes is irrelevant to the UTF-8 decoder. As long as the final byte array receives `[224, 164, 185]`, the Start Byte (`224`) will tell the text engine to read all three bytes together and render the symbol flawlessly.
 
-This partial merging behavior actually provides a massive structural advantage for foreign languages. In UTF-8, characters from the same language script are grouped together. Almost all Hindi characters share the exact same first two bytes (`[224]` and `[164]`). 
+This partial merging behavior actually provides a massive structural advantage for foreign languages. In UTF-8, characters from the same language script are grouped together. Almost all Hindi characters share the exact same first two bytes ([224] and [164]). 
 
-By merging those first two bytes into the abstract token `[350]`, the algorithm effectively creates a "Devanagari Prefix" token. Now, instead of requiring thousands of unique tokens for every Hindi character, the model can efficiently represent any Hindi character as just two tokens: `[Devanagari_Prefix]` + `[Specific_3rd_Byte]`. By operating strictly on raw bytes, Byte Pair Encoding naturally discovers the structural DNA of human languages.
+By merging those first two bytes into the abstract token [350], the algorithm effectively creates a "Devanagari Prefix" token. Now, instead of requiring thousands of unique tokens for every Hindi character, the model can efficiently represent any Hindi character as just two tokens: [Devanagari_Prefix] + [Specific_3rd_Byte]. By operating strictly on raw bytes, Byte Pair Encoding naturally discovers the structural DNA of human languages.
 
 ## Re-Training the Toy Example in Bytes
 
@@ -560,9 +582,13 @@ A special boundary token, `</w>`, is appended to mark the end of each word. The 
   </tbody>
 </table>
 
-| Step | Operation | Result | Bytes |
-|:---|:---|:---|:---|
-| Step 1 | `a` + `l` | $\rightarrow$ **`al`** | `[97]` + `[108]` $\rightarrow$ **`[257]`** |
+<table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse;">
+  <tbody>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0;">Step 1 &nbsp;&nbsp;&nbsp;&nbsp; <code>a</code> + <code>l</code> &rarr; <b><code>al</code></b> &nbsp;&nbsp;&nbsp;&nbsp; <code>[97]</code> + <code>[108]</code> &rarr; <b><code>[257]</code></b></td>
+    </tr>
+  </tbody>
+</table>
 <table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse;">
   <tbody>
     <tr>
@@ -604,9 +630,13 @@ A special boundary token, `</w>`, is appended to mark the end of each word. The 
   </tbody>
 </table>
 
-| Step | Operation | Result | Bytes |
-|:---|:---|:---|:---|
-| Step 2 | `al` + `k` | $\rightarrow$ **`alk`** | `[257]` + `[107]` $\rightarrow$ **`[258]`** |
+<table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse;">
+  <tbody>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0;">Step 2 &nbsp;&nbsp;&nbsp;&nbsp; <code>al</code> + <code>k</code> &rarr; <b><code>alk</code></b> &nbsp;&nbsp;&nbsp;&nbsp; <code>[257]</code> + <code>[107]</code> &rarr; <b><code>[258]</code></b></td>
+    </tr>
+  </tbody>
+</table>
 <table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse;">
   <tbody>
     <tr>
