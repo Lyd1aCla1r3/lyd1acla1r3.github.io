@@ -126,11 +126,10 @@ This isolation requires a dedicated mechanism to preserve the original structura
 
 The toy corpus from the preceding article provides a concrete initialization state. The corpus consists of nine distinct verbs, each appearing exactly once. Decomposing these words produces a highly constrained initial vocabulary of thirteen character-level tokens:
 
-| | | | | |
-|---|---|---|---|---|
-| `a` | `d` | `e` | `g` | `i` |
-| `k` | `l` | `n` | `o` | `r` |
-| `t` | `w` | `</w>` | | |
+| | | | | | | |
+|---|---|---|---|---|---|---|
+| `a` | `d` | `e` | `g` | `i` | `k` | `l` |
+| `n` | `o` | `r` | `t` | `w` | `</w>`| |
 
 The words themselves transform into sequences constructed exclusively from this initial character inventory. For example, the string 'walking' maps to a sequence of eight discrete elements: `w`, `a`, `l`, `k`, `i`, `n`, `g`, `</w>`. The entire corpus is processed into this fully atomized state before any compression occurs.
 
@@ -153,11 +152,10 @@ The algorithm identifies the pairs `a` + `l`, `k` + `e`, and `l` + `k` as tied f
 
 The identification of the highest-frequency pair triggers the central update mechanism. The algorithm formally registers a new token representing the concatenation of the selected pair. This new element is appended to the recognized vocabulary, increasing the total size of the vocabulary space by one.
 
-| | | | | |
-|---|---|---|---|---|
-| `a` | `d` | `e` | `g` | `i` |
-| `k` | `l` | `n` | `o` | `r` |
-| `t` | `w` | `</w>` | `al` | |
+| | | | | | | |
+|---|---|---|---|---|---|---|
+| `a` | `d` | `e` | `g` | `i` | `k` | `l` |
+| `n` | `o` | `r` | `t` | `w` | `</w>`| `al` |
 
 Simultaneously, the algorithm sweeps through the entire corpus and replaces every adjacent occurrence of the individual tokens with the new fused token. This structural update reduces the overall sequence length of the corpus. Two discrete dimensions of information are compressed into a single, cohesive unit. For example, the sequence representation of the string 'walking' compresses from eight elements to seven: `w`, `al`, `k`, `i`, `n`, `g`, `</w>`.
 
@@ -216,7 +214,7 @@ The algorithm evaluates the frequency of every adjacent token pair in this initi
 
 | Step | Operation | Result | Frequency |
 |:---|:---|:---|---:|
-| Step 1 | `a` + `l` | $\rightarrow$ `al` | 6 occurrences |
+| Step 1 | `a` + `l` | $\rightarrow$ **`al`** | 6 occurrences |
 
 | |
 |---|
@@ -235,7 +233,7 @@ This operation immediately alters the subsequent frequency distribution. The sec
 
 | Step | Operation | Result | Frequency |
 |:---|:---|:---|---:|
-| Step 2 | `al` + `k` | $\rightarrow$ `alk` | 6 occurrences |
+| Step 2 | `al` + `k` | $\rightarrow$ **`alk`** | 6 occurrences |
 
 | |
 |---|
@@ -254,7 +252,7 @@ The merge operation fuses these tokens, creating the cohesive `alk` unit. The th
 
 | Step | Operation | Result | Frequency |
 |:---|:---|:---|---:|
-| Step 3 | `alk` + `e` | $\rightarrow$ `alke` | 4 occurrences |
+| Step 3 | `alk` + `e` | $\rightarrow$ **`alke`** | 4 occurrences |
 
 After merely three iterations, the counting mechanism derives `alk`, the central morphological root shared by the majority of the corpus. This fragment serves as the structural foundation for *walking*, *walked*, *walker*, *talking*, *talked*, and *talker*. The internal representation of the text compresses significantly.
 
@@ -278,21 +276,21 @@ The subsequent three merge iterations reveal how boundary markers influence the 
 
 | Step | Operation | Result | Frequency |
 |:---|:---|:---|---:|
-| Step 4 | `g` + `</w>` | $\rightarrow$ `g</w>` | 3 occurrences |
+| Step 4 | `g` + `</w>` | $\rightarrow$ **`g</w>`** | 3 occurrences |
 
 Iteration five targets the interior of the suffix, binding the preceding characters.
 
 
 | Step | Operation | Result | Frequency |
 |:---|:---|:---|---:|
-| Step 5 | `i` + `n` | $\rightarrow$ `in` | 3 occurrences |
+| Step 5 | `i` + `n` | $\rightarrow$ **`in`** | 3 occurrences |
 
 Iteration six combines these two newly formed tokens.
 
 
 | Step | Operation | Result | Frequency |
 |:---|:---|:---|---:|
-| Step 6 | `in` + `g</w>` | $\rightarrow$ `ing</w>` | 3 occurrences |
+| Step 6 | `in` + `g</w>` | $\rightarrow$ **`ing</w>`** | 3 occurrences |
 
 This sequence formally registers the morphological `-ing` suffix into the subword vocabulary. The token boundary marker `</w>` guarantees that this newly minted token `ing</w>` specifically represents the suffix at the end of a word, preventing it from incorrectly matching the substring "ing" in the middle of an unrelated word.
 
@@ -303,20 +301,20 @@ The iterative compression rapidly integrates the remaining structure. The next f
 
 | Step | Operation | Result | Frequency |
 |:---|:---|:---|---:|
-| Step 7 | `alk` + `ing</w>` | $\rightarrow$ `alking</w>` | 2 occurrences |
-| Step 8 | `alke` + `d` | $\rightarrow$ `alked` | 2 occurrences |
-| Step 9 | `alke` + `r` | $\rightarrow$ `alker` | 2 occurrences |
-| Step 10 | `alked` + `</w>` | $\rightarrow$ `alked</w>` | 2 occurrences |
-| Step 11 | `alker` + `</w>` | $\rightarrow$ `alker</w>` | 2 occurrences |
+| Step 7 | `alk` + `ing</w>` | $\rightarrow$ **`alking</w>`** | 2 occurrences |
+| Step 8 | `alke` + `d` | $\rightarrow$ **`alked`** | 2 occurrences |
+| Step 9 | `alke` + `r` | $\rightarrow$ **`alker`** | 2 occurrences |
+| Step 10 | `alked` + `</w>` | $\rightarrow$ **`alked</w>`** | 2 occurrences |
+| Step 11 | `alker` + `</w>` | $\rightarrow$ **`alker</w>`** | 2 occurrences |
 
 The initial `alk` fragment transforms into three complete lexical structures: `alking</w>`, `alked</w>`, and `alker</w>`. The counting procedure then evaluates the remaining verb family.
 
 
 | Step | Operation | Result | Frequency |
 |:---|:---|:---|---:|
-| Step 12 | `k` + `e` | $\rightarrow$ `ke` | 2 occurrences |
-| Step 13 | `o` + `ke` | $\rightarrow$ `oke` | 2 occurrences |
-| Step 14 | `w` + `oke` | $\rightarrow$ `woke` | 2 occurrences |
+| Step 12 | `k` + `e` | $\rightarrow$ **`ke`** | 2 occurrences |
+| Step 13 | `o` + `ke` | $\rightarrow$ **`oke`** | 2 occurrences |
+| Step 14 | `w` + `oke` | $\rightarrow$ **`woke`** | 2 occurrences |
 
 After fourteen merge operations, the original sequences of isolated characters transition into large subword fragments. The internal representation of the text demonstrates profound compression.
 
@@ -376,11 +374,11 @@ The application of this static protocol to words from the original training dist
 | | |
 |:---|---:|
 | Initial: `w` `a` `l` `k` `e` `d` `</w>` | |
-| Step 1: `a` + `l` $\rightarrow$ `w` `al` `k` `e` `d` `</w>` | (Rule 1) |
-| Step 2: `al` + `k` $\rightarrow$ `w` `alk` `e` `d` `</w>` | (Rule 2) |
-| Step 3: `alk` + `e` $\rightarrow$ `w` `alke` `d` `</w>` | (Rule 3) |
-| Step 4: `alke` + `d` $\rightarrow$ `w` `alked` `</w>` | (Rule 8) |
-| Step 5: `alked` + `</w>` $\rightarrow$ `w` `alked</w>` | (Rule 10) |
+| Step 1: `a` + `l` $\rightarrow$ `w` **`al`** `k` `e` `d` `</w>` | (Rule 1) |
+| Step 2: `al` + `k` $\rightarrow$ `w` **`alk`** `e` `d` `</w>` | (Rule 2) |
+| Step 3: `alk` + `e` $\rightarrow$ `w` **`alke`** `d` `</w>` | (Rule 3) |
+| Step 4: `alke` + `d` $\rightarrow$ `w` **`alked`** `</w>` | (Rule 8) |
+| Step 5: `alked` + `</w>` $\rightarrow$ `w` **`alked</w>`** | (Rule 10) |
 
 The algorithm completely ignores rules 4, 5, 6, 7, and 9 as the necessary adjacent pairs do not exist in the current sequence. The word systematically collapses down to two final tokens: `w` and `alked</w>`. 
 
@@ -389,9 +387,9 @@ A similar execution dictates the encoding of `waking`, which is also present in 
 | | |
 |:---|---:|
 | Initial: `w` `a` `k` `i` `n` `g` `</w>` | |
-| Step 1: `g` + `</w>` $\rightarrow$ `w` `a` `k` `i` `n` `g</w>` | (Rule 4) |
-| Step 2: `i` + `n` $\rightarrow$ `w` `a` `k` `in` `g</w>` | (Rule 5) |
-| Step 3: `in` + `g</w>` $\rightarrow$ `w` `a` `k` `ing</w>` | (Rule 6) |
+| Step 1: `g` + `</w>` $\rightarrow$ `w` `a` `k` `i` `n` **`g</w>`** | (Rule 4) |
+| Step 2: `i` + `n` $\rightarrow$ `w` `a` `k` **`in`** `g</w>` | (Rule 5) |
+| Step 3: `in` + `g</w>` $\rightarrow$ `w` `a` `k` **`ing</w>`** | (Rule 6) |
 
 The training process naturally halted before discovering a sequence unifying `w`, `a`, and `k`, causing the final encoding to remain fractured across four distinct tokens: `w`, `a`, `k`, and `ing</w>`.
 
@@ -404,12 +402,12 @@ Processing the novel word `stalking`, which does not exist in the training corpu
 | | |
 |:---|---:|
 | Initial: `s` `t` `a` `l` `k` `i` `n` `g` `</w>` | |
-| Step 1: `a` + `l` $\rightarrow$ `s` `t` `al` `k` `i` `n` `g` `</w>` | (Rule 1) |
-| Step 2: `al` + `k` $\rightarrow$ `s` `t` `alk` `i` `n` `g` `</w>` | (Rule 2) |
-| Step 3: `g` + `</w>` $\rightarrow$ `s` `t` `alk` `i` `n` `g</w>` | (Rule 4) |
-| Step 4: `i` + `n` $\rightarrow$ `s` `t` `alk` `in` `g</w>` | (Rule 5) |
-| Step 5: `in` + `g</w>` $\rightarrow$ `s` `t` `alk` `ing</w>` | (Rule 6) |
-| Step 6: `alk` + `ing</w>` $\rightarrow$ `s` `t` `alking</w>` | (Rule 7) |
+| Step 1: `a` + `l` $\rightarrow$ `s` `t` **`al`** `k` `i` `n` `g` `</w>` | (Rule 1) |
+| Step 2: `al` + `k` $\rightarrow$ `s` `t` **`alk`** `i` `n` `g` `</w>` | (Rule 2) |
+| Step 3: `g` + `</w>` $\rightarrow$ `s` `t` `alk` `i` `n` **`g</w>`** | (Rule 4) |
+| Step 4: `i` + `n` $\rightarrow$ `s` `t` `alk` **`in`** `g</w>` | (Rule 5) |
+| Step 5: `in` + `g</w>` $\rightarrow$ `s` `t` `alk` **`ing</w>`** | (Rule 6) |
+| Step 6: `alk` + `ing</w>` $\rightarrow$ `s` `t` **`alking</w>`** | (Rule 7) |
 
 The algorithm isolates the unknown prefix `s` and `t` at the fundamental character level, while assembling the highly frequent suffix `alking</w>` learned from the training data. The resulting three-token sequence `s`, `t`, and `alking</w>` requires no new mathematical components.
 
@@ -418,9 +416,9 @@ The novel word `awoke`, similarly absent from the original corpus, undergoes an 
 | | |
 |:---|---:|
 | Initial: `a` `w` `o` `k` `e` `</w>` | |
-| Step 1: `k` + `e` $\rightarrow$ `a` `w` `o` `ke` `</w>` | (Rule 12) |
-| Step 2: `o` + `ke` $\rightarrow$ `a` `w` `oke` `</w>` | (Rule 13) |
-| Step 3: `w` + `oke` $\rightarrow$ `a` `woke` `</w>` | (Rule 14) |
+| Step 1: `k` + `e` $\rightarrow$ `a` `w` `o` **`ke`** `</w>` | (Rule 12) |
+| Step 2: `o` + `ke` $\rightarrow$ `a` `w` **`oke`** `</w>` | (Rule 13) |
+| Step 3: `w` + `oke` $\rightarrow$ `a` **`woke`** `</w>` | (Rule 14) |
 
 The algorithm discovers the familiar sequence `woke`, leaving the independent prefix `a` and the final boundary marker `</w>` as separate units.
 
@@ -437,29 +435,7 @@ The tokenization pipeline is now mathematically complete, reliably transforming 
 <h1 id="chapter-5-from-bytes-to-billions">Chapter 5: From Bytes to Billions</h1>
 <!-- SUMMARY: Bridging the theoretical foundation of tokenization to production realities requires replacing arbitrary character sets with a universal byte-level fallback. Tracing the exact algorithm across pure byte integers proves that morphological structure emerges naturally without any requirement for human-readable letters, establishing the strict mathematical dimensions required by the Transformer's embedding matrix. -->
 
-<style>
-  .trace-container code {
-    font-size: 0.75em !important;
-    padding: 0.15em 0.3em !important;
-  }
-  .trace-container td {
-    white-space: nowrap !important;
-  }
-  .trace-container b code {
-    font-weight: 900 !important;
-    color: #9a5b65 !important; /* Dark Rose Gold */
-    background-color: #fdf5f6 !important;
-    border: 1px solid #e0c6cb !important;
-  }
-  /* For dark mode if it exists */
-  @media (prefers-color-scheme: dark) {
-    .trace-container b code {
-      color: #e6b3bc !important;
-      background-color: #3b2a2d !important;
-      border: 1px solid #6b4d53 !important;
-    }
-  }
-</style>
+
 
 The previously demonstrated encoding process relies on a fragile assumption. The initial base vocabulary was strictly limited to the alphabetical characters explicitly observed in the training corpus. When a novel character like an emoji, a foreign script symbol, or a simple unobserved punctuation mark appears during inference, the greedy longest-match algorithm encounters a mathematical dead end. The character cannot be matched to any known token, triggering an out-of-vocabulary failure state that prevents the text from being processed.
 
@@ -584,7 +560,9 @@ A special boundary token, `</w>`, is appended to mark the end of each word. The 
   </tbody>
 </table>
 
-<p>Step 1: <code>a</code> + <code>l</code> &rarr; <b><code>al</code></b>, <code>[97]</code> + <code>[108]</code> &rarr; <b><code>[257]</code></b></p>
+| Step | Operation | Result | Bytes |
+|:---|:---|:---|:---|
+| Step 1 | `a` + `l` | $\rightarrow$ **`al`** | `[97]` + `[108]` $\rightarrow$ **`[257]`** |
 <table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse;">
   <tbody>
     <tr>
@@ -626,7 +604,9 @@ A special boundary token, `</w>`, is appended to mark the end of each word. The 
   </tbody>
 </table>
 
-<p>Step 2: <code>al</code> + <code>k</code> &rarr; <b><code>alk</code></b>, <code>[257]</code> + <code>[107]</code> &rarr; <b><code>[258]</code></b></p>
+| Step | Operation | Result | Bytes |
+|:---|:---|:---|:---|
+| Step 2 | `al` + `k` | $\rightarrow$ **`alk`** | `[257]` + `[107]` $\rightarrow$ **`[258]`** |
 <table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse;">
   <tbody>
     <tr>

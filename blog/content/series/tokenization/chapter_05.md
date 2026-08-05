@@ -1,29 +1,7 @@
 # Part 5: From Bytes to Billions
 <!-- SUMMARY: Bridging the theoretical foundation of tokenization to production realities requires replacing arbitrary character sets with a universal byte-level fallback. Tracing the exact algorithm across pure byte integers proves that morphological structure emerges naturally without any requirement for human-readable letters, establishing the strict mathematical dimensions required by the Transformer's embedding matrix. -->
 
-<style>
-  .trace-container code {
-    font-size: 0.75em !important;
-    padding: 0.15em 0.3em !important;
-  }
-  .trace-container td {
-    white-space: nowrap !important;
-  }
-  .trace-container b code {
-    font-weight: 900 !important;
-    color: #9a5b65 !important; /* Dark Rose Gold */
-    background-color: #fdf5f6 !important;
-    border: 1px solid #e0c6cb !important;
-  }
-  /* For dark mode if it exists */
-  @media (prefers-color-scheme: dark) {
-    .trace-container b code {
-      color: #e6b3bc !important;
-      background-color: #3b2a2d !important;
-      border: 1px solid #6b4d53 !important;
-    }
-  }
-</style>
+
 
 <p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/tokenization-ebook-v1.0.pdf">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p>
 
@@ -150,7 +128,9 @@ A special boundary token, `</w>`, is appended to mark the end of each word. The 
   </tbody>
 </table>
 
-<p>Step 1: <code>a</code> + <code>l</code> &rarr; <b><code>al</code></b>, <code>[97]</code> + <code>[108]</code> &rarr; <b><code>[257]</code></b></p>
+| Step | Operation | Result | Bytes |
+|:---|:---|:---|:---|
+| Step 1 | `a` + `l` | $\rightarrow$ **`al`** | `[97]` + `[108]` $\rightarrow$ **`[257]`** |
 <table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse;">
   <tbody>
     <tr>
@@ -192,7 +172,9 @@ A special boundary token, `</w>`, is appended to mark the end of each word. The 
   </tbody>
 </table>
 
-<p>Step 2: <code>al</code> + <code>k</code> &rarr; <b><code>alk</code></b>, <code>[257]</code> + <code>[107]</code> &rarr; <b><code>[258]</code></b></p>
+| Step | Operation | Result | Bytes |
+|:---|:---|:---|:---|
+| Step 2 | `al` + `k` | $\rightarrow$ **`alk`** | `[257]` + `[107]` $\rightarrow$ **`[258]`** |
 <table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse;">
   <tbody>
     <tr>

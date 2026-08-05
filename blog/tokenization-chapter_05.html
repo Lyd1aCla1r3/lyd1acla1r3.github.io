@@ -101,29 +101,7 @@
     <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Tokenization</a></li><li aria-current="page">Part 5: From Bytes to Billions</li></ol></nav>
         <article class="blog-post">
 <h1>Part 5: From Bytes to Billions</h1>
-<!-- SUMMARY: Bridging the theoretical foundation of tokenization to production realities requires replacing arbitrary character sets with a universal byte-level fallback. Tracing the exact algorithm across pure byte integers proves that morphological structure emerges naturally without any requirement for human-readable letters, establishing the strict mathematical dimensions required by the Transformer's embedding matrix. --><style>
-  .trace-container code {
-    font-size: 0.75em !important;
-    padding: 0.15em 0.3em !important;
-  }
-  .trace-container td {
-    white-space: nowrap !important;
-  }
-  .trace-container b code {
-    font-weight: 900 !important;
-    color: #9a5b65 !important; /* Dark Rose Gold */
-    background-color: #fdf5f6 !important;
-    border: 1px solid #e0c6cb !important;
-  }
-  /* For dark mode if it exists */
-  @media (prefers-color-scheme: dark) {
-    .trace-container b code {
-      color: #e6b3bc !important;
-      background-color: #3b2a2d !important;
-      border: 1px solid #6b4d53 !important;
-    }
-  }
-</style><p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/tokenization-ebook-v1.0.pdf">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p><p>The previously demonstrated encoding process relies on a fragile assumption. The initial base vocabulary was strictly limited to the alphabetical characters explicitly observed in the training corpus. When a novel character like an emoji, a foreign script symbol, or a simple unobserved punctuation mark appears during inference, the greedy longest-match algorithm encounters a mathematical dead end. The character cannot be matched to any known token, triggering an out-of-vocabulary failure state that prevents the text from being processed.</p>
+<!-- SUMMARY: Bridging the theoretical foundation of tokenization to production realities requires replacing arbitrary character sets with a universal byte-level fallback. Tracing the exact algorithm across pure byte integers proves that morphological structure emerges naturally without any requirement for human-readable letters, establishing the strict mathematical dimensions required by the Transformer's embedding matrix. --><p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/tokenization-ebook-v1.0.pdf">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p><p>The previously demonstrated encoding process relies on a fragile assumption. The initial base vocabulary was strictly limited to the alphabetical characters explicitly observed in the training corpus. When a novel character like an emoji, a foreign script symbol, or a simple unobserved punctuation mark appears during inference, the greedy longest-match algorithm encounters a mathematical dead end. The character cannot be matched to any known token, triggering an out-of-vocabulary failure state that prevents the text from being processed.</p>
 <h2>The Universal Byte-Level Foundation</h2>
 <p>Resolving this failure state requires abandoning the concept of text characters entirely. At the lowest physical hardware level, computers store data as bits—microscopic electrical states representing either a 1 or a 0. Software operating systems group these bits into standardized blocks of eight called <em>bytes</em>. Because a byte consists of eight binary positions ($2^8$), it can represent exactly 256 distinct permutations, yielding a fixed range of integer values from 0 to 255.</p>
 <p>Every text symbol, regardless of language or complexity, is fundamentally stored as a sequence of these bytes encoded via the UTF-8 standard. This provides the perfect, finite mathematical foundation for tokenization. Instead of defining the base vocabulary as an unpredictable set of human characters, production systems define their base vocabulary as the 256 raw byte values.</p>
@@ -208,7 +186,22 @@
       <td style="border: none; padding: 0.25rem 0;"><code>[116]</code> <code>[97]</code> <code>[108]</code> <code>[107]</code> <code>[101]</code> <code>[114]</code> <code>[256]</code></td>
     </tr>
   </tbody>
-</table><p>Step 1: <code>a</code> + <code>l</code> &rarr; <b><code>al</code></b>, <code>[97]</code> + <code>[108]</code> &rarr; <b><code>[257]</code></b></p>
+</table><table>
+<thead>
+<tr>
+<th align="left">Step</th>
+<th align="left">Operation</th>
+<th align="left">Result</th>
+<th align="left">Bytes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Step 1</td>
+<td align="left"><code>a</code> + <code>l</code></td>
+<td align="left">$\rightarrow$ <strong><code>al</code></strong></td>
+<td align="left"><code>[97]</code> + <code>[108]</code> $\rightarrow$ <strong><code>[257]</code></strong></td>
+</tr>
+</tbody></table>
 <table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse;">
   <tbody>
     <tr>
@@ -248,7 +241,22 @@
       <td style="border: none; padding: 0.25rem 0;"><code>[116]</code> <b><code>[257]</code></b> <code>[107]</code> <code>[101]</code> <code>[114]</code> <code>[256]</code></td>
     </tr>
   </tbody>
-</table><p>Step 2: <code>al</code> + <code>k</code> &rarr; <b><code>alk</code></b>, <code>[257]</code> + <code>[107]</code> &rarr; <b><code>[258]</code></b></p>
+</table><table>
+<thead>
+<tr>
+<th align="left">Step</th>
+<th align="left">Operation</th>
+<th align="left">Result</th>
+<th align="left">Bytes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Step 2</td>
+<td align="left"><code>al</code> + <code>k</code></td>
+<td align="left">$\rightarrow$ <strong><code>alk</code></strong></td>
+<td align="left"><code>[257]</code> + <code>[107]</code> $\rightarrow$ <strong><code>[258]</code></strong></td>
+</tr>
+</tbody></table>
 <table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse;">
   <tbody>
     <tr>
@@ -312,13 +320,13 @@ $$</p>
 <p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/tokenization-ebook-v1.0.pdf">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p>
 
 <div class="blog-pagination">
-      <a href="transformers-chapter_04.html" class="pagination-link prev">
+      <a href="tokenization-chapter_04.html" class="pagination-link prev">
         <span class="pagination-label">Previous</span>
-        <span class="pagination-title">Part 4: The Attention Score and $\sqrt{d_k}$</span>
+        <span class="pagination-title">Part 4: Encoding and Decoding</span>
       </a>
-      <a href="transformers-chapter_05.html" class="pagination-link next">
+      <a href="transformers-preface.html" class="pagination-link next">
         <span class="pagination-label">Next</span>
-        <span class="pagination-title">Part 5: Causal Masking</span>
+        <span class="pagination-title">Preface: The Big Picture & Tensor Notation</span>
       </a></div>
         </article>
     </div>

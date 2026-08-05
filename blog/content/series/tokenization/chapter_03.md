@@ -30,7 +30,7 @@ The algorithm evaluates the frequency of every adjacent token pair in this initi
 
 | Step | Operation | Result | Frequency |
 |:---|:---|:---|---:|
-| Step 1 | `a` + `l` | $\rightarrow$ `al` | 6 occurrences |
+| Step 1 | `a` + `l` | $\rightarrow$ **`al`** | 6 occurrences |
 
 | |
 |---|
@@ -49,7 +49,7 @@ This operation immediately alters the subsequent frequency distribution. The sec
 
 | Step | Operation | Result | Frequency |
 |:---|:---|:---|---:|
-| Step 2 | `al` + `k` | $\rightarrow$ `alk` | 6 occurrences |
+| Step 2 | `al` + `k` | $\rightarrow$ **`alk`** | 6 occurrences |
 
 | |
 |---|
@@ -68,7 +68,7 @@ The merge operation fuses these tokens, creating the cohesive `alk` unit. The th
 
 | Step | Operation | Result | Frequency |
 |:---|:---|:---|---:|
-| Step 3 | `alk` + `e` | $\rightarrow$ `alke` | 4 occurrences |
+| Step 3 | `alk` + `e` | $\rightarrow$ **`alke`** | 4 occurrences |
 
 After merely three iterations, the counting mechanism derives `alk`, the central morphological root shared by the majority of the corpus. This fragment serves as the structural foundation for *walking*, *walked*, *walker*, *talking*, *talked*, and *talker*. The internal representation of the text compresses significantly.
 
@@ -92,21 +92,21 @@ The subsequent three merge iterations reveal how boundary markers influence the 
 
 | Step | Operation | Result | Frequency |
 |:---|:---|:---|---:|
-| Step 4 | `g` + `</w>` | $\rightarrow$ `g</w>` | 3 occurrences |
+| Step 4 | `g` + `</w>` | $\rightarrow$ **`g</w>`** | 3 occurrences |
 
 Iteration five targets the interior of the suffix, binding the preceding characters.
 
 
 | Step | Operation | Result | Frequency |
 |:---|:---|:---|---:|
-| Step 5 | `i` + `n` | $\rightarrow$ `in` | 3 occurrences |
+| Step 5 | `i` + `n` | $\rightarrow$ **`in`** | 3 occurrences |
 
 Iteration six combines these two newly formed tokens.
 
 
 | Step | Operation | Result | Frequency |
 |:---|:---|:---|---:|
-| Step 6 | `in` + `g</w>` | $\rightarrow$ `ing</w>` | 3 occurrences |
+| Step 6 | `in` + `g</w>` | $\rightarrow$ **`ing</w>`** | 3 occurrences |
 
 This sequence formally registers the morphological `-ing` suffix into the subword vocabulary. The token boundary marker `</w>` guarantees that this newly minted token `ing</w>` specifically represents the suffix at the end of a word, preventing it from incorrectly matching the substring "ing" in the middle of an unrelated word.
 
@@ -117,20 +117,20 @@ The iterative compression rapidly integrates the remaining structure. The next f
 
 | Step | Operation | Result | Frequency |
 |:---|:---|:---|---:|
-| Step 7 | `alk` + `ing</w>` | $\rightarrow$ `alking</w>` | 2 occurrences |
-| Step 8 | `alke` + `d` | $\rightarrow$ `alked` | 2 occurrences |
-| Step 9 | `alke` + `r` | $\rightarrow$ `alker` | 2 occurrences |
-| Step 10 | `alked` + `</w>` | $\rightarrow$ `alked</w>` | 2 occurrences |
-| Step 11 | `alker` + `</w>` | $\rightarrow$ `alker</w>` | 2 occurrences |
+| Step 7 | `alk` + `ing</w>` | $\rightarrow$ **`alking</w>`** | 2 occurrences |
+| Step 8 | `alke` + `d` | $\rightarrow$ **`alked`** | 2 occurrences |
+| Step 9 | `alke` + `r` | $\rightarrow$ **`alker`** | 2 occurrences |
+| Step 10 | `alked` + `</w>` | $\rightarrow$ **`alked</w>`** | 2 occurrences |
+| Step 11 | `alker` + `</w>` | $\rightarrow$ **`alker</w>`** | 2 occurrences |
 
 The initial `alk` fragment transforms into three complete lexical structures: `alking</w>`, `alked</w>`, and `alker</w>`. The counting procedure then evaluates the remaining verb family.
 
 
 | Step | Operation | Result | Frequency |
 |:---|:---|:---|---:|
-| Step 12 | `k` + `e` | $\rightarrow$ `ke` | 2 occurrences |
-| Step 13 | `o` + `ke` | $\rightarrow$ `oke` | 2 occurrences |
-| Step 14 | `w` + `oke` | $\rightarrow$ `woke` | 2 occurrences |
+| Step 12 | `k` + `e` | $\rightarrow$ **`ke`** | 2 occurrences |
+| Step 13 | `o` + `ke` | $\rightarrow$ **`oke`** | 2 occurrences |
+| Step 14 | `w` + `oke` | $\rightarrow$ **`woke`** | 2 occurrences |
 
 After fourteen merge operations, the original sequences of isolated characters transition into large subword fragments. The internal representation of the text demonstrates profound compression.
 

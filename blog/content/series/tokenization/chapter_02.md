@@ -14,11 +14,10 @@ This isolation requires a dedicated mechanism to preserve the original structura
 
 The toy corpus from the preceding article provides a concrete initialization state. The corpus consists of nine distinct verbs, each appearing exactly once. Decomposing these words produces a highly constrained initial vocabulary of thirteen character-level tokens:
 
-| | | | | |
-|---|---|---|---|---|
-| `a` | `d` | `e` | `g` | `i` |
-| `k` | `l` | `n` | `o` | `r` |
-| `t` | `w` | `</w>` | | |
+| | | | | | | |
+|---|---|---|---|---|---|---|
+| `a` | `d` | `e` | `g` | `i` | `k` | `l` |
+| `n` | `o` | `r` | `t` | `w` | `</w>`| |
 
 The words themselves transform into sequences constructed exclusively from this initial character inventory. For example, the string 'walking' maps to a sequence of eight discrete elements: `w`, `a`, `l`, `k`, `i`, `n`, `g`, `</w>`. The entire corpus is processed into this fully atomized state before any compression occurs.
 
@@ -41,11 +40,10 @@ The algorithm identifies the pairs `a` + `l`, `k` + `e`, and `l` + `k` as tied f
 
 The identification of the highest-frequency pair triggers the central update mechanism. The algorithm formally registers a new token representing the concatenation of the selected pair. This new element is appended to the recognized vocabulary, increasing the total size of the vocabulary space by one.
 
-| | | | | |
-|---|---|---|---|---|
-| `a` | `d` | `e` | `g` | `i` |
-| `k` | `l` | `n` | `o` | `r` |
-| `t` | `w` | `</w>` | `al` | |
+| | | | | | | |
+|---|---|---|---|---|---|---|
+| `a` | `d` | `e` | `g` | `i` | `k` | `l` |
+| `n` | `o` | `r` | `t` | `w` | `</w>`| `al` |
 
 Simultaneously, the algorithm sweeps through the entire corpus and replaces every adjacent occurrence of the individual tokens with the new fused token. This structural update reduces the overall sequence length of the corpus. Two discrete dimensions of information are compressed into a single, cohesive unit. For example, the sequence representation of the string 'walking' compresses from eight elements to seven: `w`, `al`, `k`, `i`, `n`, `g`, `</w>`.
 

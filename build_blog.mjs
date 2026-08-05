@@ -32,13 +32,6 @@ function getFilesRecursively(dir, relativePath = '') {
 }
 
 const mdFiles = getFilesRecursively(CONTENT_DIR);
-mdFiles.sort((a, b) => {
-    const aName = a.name.toLowerCase();
-    const bName = b.name.toLowerCase();
-    if (aName.includes('preface') && !bName.includes('preface')) return -1;
-    if (bName.includes('preface') && !aName.includes('preface')) return 1;
-    return aName.localeCompare(bName);
-});
 const postsData = [];
 
 for (const fileObj of mdFiles) {
@@ -128,6 +121,20 @@ for (const fileObj of mdFiles) {
     breadcrumbHtml
   });
 }
+
+postsData.sort((a, b) => {
+    if (a.tier !== b.tier) return a.tier.localeCompare(b.tier);
+    if (a.seriesName !== b.seriesName) {
+        if (!a.seriesName) return 1;
+        if (!b.seriesName) return -1;
+        return a.seriesName.localeCompare(b.seriesName);
+    }
+    const aName = path.basename(a.url).toLowerCase();
+    const bName = path.basename(b.url).toLowerCase();
+    if (aName.includes('preface') && !bName.includes('preface')) return -1;
+    if (bName.includes('preface') && !aName.includes('preface')) return 1;
+    return aName.localeCompare(bName);
+});
 
 const posts = [];
 for (let i = 0; i < postsData.length; i++) {
