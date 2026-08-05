@@ -41,7 +41,7 @@ A critical distinction must be made regarding how the algorithm interacts with t
 
 By initializing the algorithm with this exact 256-token foundation, no string can ever be unencodable. 
 
-Standard encoding tables exhibit a distinct behavioral shift at the [127] boundary, which corresponds to 7F in hexadecimal. The first 128 integer values (0 through 127) are strictly reserved for the classic ASCII character set, which covers all standard English letters, numbers, and basic punctuation. Given there are only 128 of these characters, they fit perfectly inside a single 8-bit byte. For example, the letter `w` maps to the single byte integer `119`.
+Standard encoding tables exhibit a distinct behavioral shift at the `[127]` boundary, which corresponds to `7F` in hexadecimal. The first `128` integer values (`0` through `127`) are strictly reserved for the classic ASCII character set, which covers all standard English letters, numbers, and basic punctuation. Given there are only `128` of these characters, they fit perfectly inside a single 8-bit byte. For example, the letter `w` maps to the single byte integer `119`.
 
 However, the Unicode standard contains over one million symbols. To accommodate this massive scale without breaking compatibility with older 1-byte systems, UTF-8 operates as a *variable-length* encoding. Once a character falls outside that standard English range, the encoding shifts to use multiple bytes. The accented character `é` requires two bytes, specifically `[195]` followed by `[169]`. An emoji like 🚀 requires four bytes, sequentially `[240]`, `[159]`, `[154]`, and `[128]`.
 

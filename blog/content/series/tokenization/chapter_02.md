@@ -43,7 +43,7 @@ The identification of the highest-frequency pair triggers the central update mec
 | | | | | | | |
 |---|---|---|---|---|---|---|
 | `a` | `d` | `e` | `g` | `i` | `k` | `l` |
-| `n` | `o` | `r` | `t` | `w` | `</w>`| `al` |
+| `n` | `o` | `r` | `t` | `w` | `</w>`| **`al`** |
 
 Simultaneously, the algorithm sweeps through the entire corpus and replaces every adjacent occurrence of the individual tokens with the new fused token. This structural update reduces the overall sequence length of the corpus. Two discrete dimensions of information are compressed into a single, cohesive unit. For example, the sequence representation of the string 'walking' compresses from eight elements to seven: `w`, `al`, `k`, `i`, `n`, `g`, `</w>`.
 
