@@ -35,30 +35,10 @@ This isolation requires a dedicated mechanism to preserve the original structura
 
 The toy corpus from the preceding article provides a concrete initialization state. The corpus consists of nine distinct verbs, each appearing exactly once. Decomposing these words produces a highly constrained initial vocabulary of thirteen character-level tokens:
 
-<div class="trace-container">
-<table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse; text-align: center;">
-  <tbody>
-    <tr>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>a</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>d</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>e</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>g</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>i</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>k</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>l</code></b></td>
-    </tr>
-    <tr>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>n</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>o</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>r</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>t</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>w</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>&lt;/w&gt;</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"></td>
-    </tr>
-  </tbody>
-</table>
+<div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2;">
+<b><code>a</code></b> <b><code>d</code></b> <b><code>e</code></b> <b><code>g</code></b> <b><code>i</code></b> <b><code>k</code></b> <b><code>l</code></b> <b><code>n</code></b> <b><code>o</code></b> <b><code>r</code></b> <b><code>t</code></b> <b><code>w</code></b> <b><code>&lt;/w&gt;</code></b>
 </div>
+
 
 
 
@@ -101,30 +81,10 @@ The algorithm identifies the pairs `a` + `l`, `k` + `e`, and `l` + `k` as tied f
 
 The identification of the highest-frequency pair triggers the central update mechanism. The algorithm formally registers a new token representing the concatenation of the selected pair. This new element is appended to the recognized vocabulary, increasing the total size of the vocabulary space by one.
 
-<div class="trace-container">
-<table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse; text-align: center;">
-  <tbody>
-    <tr>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>a</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>d</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>e</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>g</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>i</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>k</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>l</code></b></td>
-    </tr>
-    <tr>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>n</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>o</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>r</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>t</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>w</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>&lt;/w&gt;</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>al</code></b></td>
-    </tr>
-  </tbody>
-</table>
+<div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2;">
+<b><code>a</code></b> <b><code>d</code></b> <b><code>e</code></b> <b><code>g</code></b> <b><code>i</code></b> <b><code>k</code></b> <b><code>l</code></b> <b><code>n</code></b> <b><code>o</code></b> <b><code>r</code></b> <b><code>t</code></b> <b><code>w</code></b> <b><code>&lt;/w&gt;</code></b> <b><code>al</code></b>
 </div>
+
 
 
 
