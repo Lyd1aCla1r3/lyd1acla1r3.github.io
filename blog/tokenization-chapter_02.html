@@ -101,7 +101,28 @@
     <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Tokenization</a></li><li aria-current="page">Part 2: The BPE Training Algorithm</li></ol></nav>
         <article class="blog-post">
 <h1>Part 2: The BPE Training Algorithm</h1>
-<!-- SUMMARY: Constructing an optimized subword vocabulary requires a deterministic compression algorithm rather than manual linguistic rules. Byte Pair Encoding resolves this by initializing a base character vocabulary and executing a greedy, iterative merge operation that systematically fuses the most frequent adjacent tokens into unified semantic structures. --><p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/tokenization-ebook-v1.0.pdf">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p><p>The previous section established that subword tokenization provides the necessary mathematical compromise between the dimensionality explosion of word-level tokenization and the semantic destruction of character-level boundaries. Constructing this precise subword vocabulary requires a data-driven mechanism. Byte Pair Encoding accomplishes this structural transformation through a deterministic, iterative pipeline that binds distinct characters into logical stems and suffixes.</p>
+<style>
+  .trace-container code {
+    font-size: 0.75em !important;
+    padding: 0.15em 0.3em !important;
+  }
+  .trace-container td {
+    white-space: nowrap !important;
+  }
+  .trace-container b code {
+    font-weight: 900 !important;
+    color: #9a5b65 !important;
+    background-color: #fdf5f6 !important;
+    border: 1px solid #e0c6cb !important;
+  }
+  @media (prefers-color-scheme: dark) {
+    .trace-container b code {
+      color: #e6b3bc !important;
+      background-color: #3b2a2d !important;
+      border: 1px solid #6b4d53 !important;
+    }
+  }
+</style><!-- SUMMARY: Constructing an optimized subword vocabulary requires a deterministic compression algorithm rather than manual linguistic rules. Byte Pair Encoding resolves this by initializing a base character vocabulary and executing a greedy, iterative merge operation that systematically fuses the most frequent adjacent tokens into unified semantic structures. --><p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/tokenization-ebook-v1.0.pdf">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p><p>The previous section established that subword tokenization provides the necessary mathematical compromise between the dimensionality explosion of word-level tokenization and the semantic destruction of character-level boundaries. Constructing this precise subword vocabulary requires a data-driven mechanism. Byte Pair Encoding accomplishes this structural transformation through a deterministic, iterative pipeline that binds distinct characters into logical stems and suffixes.</p>
 <h2>Initialization and Boundary Preservation</h2>
 <p>The training algorithm begins by isolating the fundamental building blocks of the language. The entire training corpus is first separated into discrete words, typically delineated by whitespace. Every word is then strictly decomposed into a sequence of individual character tokens.</p>
 <p>This isolation requires a dedicated mechanism to preserve the original structural boundaries of the words. If the algorithm processes the corpus as a continuous stream of characters, it risks merging characters that span across adjacent words, creating unnatural representations. To prevent this bleeding, a dedicated end-of-word marker, denoted as <code>&lt;/w&gt;</code>, is appended to the terminal character of every word sequence.</p>
@@ -111,8 +132,28 @@
 <h2>Pair Frequency Evaluation</h2>
 <p>The core intelligence of the algorithm relies on discovering structural redundancies within these atomized sequences. The system executes a comprehensive scan over the entire corpus, evaluating every instance where two distinct tokens appear adjacent to one another.</p>
 <p>This frequency counting operation tallies the occurrences of every adjacent pair across all words. The goal is to identify the single pair of tokens that co-occur most frequently. In the initialized state of the toy corpus, several character pairings appear repeatedly due to the morphological similarities of the chosen verb families. A tally of the most common adjacent pairs immediately highlights structural patterns:</p>
-<p><code>a</code> + <code>l</code> $\rightarrow$ 6 occurrences<br><code>k</code> + <code>e</code> $\rightarrow$ 6 occurrences<br><code>l</code> + <code>k</code> $\rightarrow$ 6 occurrences<br><code>w</code> + <code>a</code> $\rightarrow$ 4 occurrences  </p>
-<p>The algorithm identifies the pairs <code>a</code> + <code>l</code>, <code>k</code> + <code>e</code>, and <code>l</code> + <code>k</code> as tied for the highest frequency. A deterministic tie-breaking protocol resolves this collision. When multiple pairs share the highest frequency, the algorithm selects the pair that appears first when sorted lexicographically. Comparing the tied pairs, the character <code>a</code> precedes <code>k</code> and <code>l</code> in the alphabet, dictating the selection of the pair <code>a</code> + <code>l</code> for the inaugural merge operation.</p>
+<div class="trace-container">
+<table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse;">
+  <tbody>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>a</code> + <code>l</code> &rarr;</td>
+      <td style="border: none; padding: 0.25rem 0; text-align: right;">6 occurrences</td>
+    </tr>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>k</code> + <code>e</code> &rarr;</td>
+      <td style="border: none; padding: 0.25rem 0; text-align: right;">6 occurrences</td>
+    </tr>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>l</code> + <code>k</code> &rarr;</td>
+      <td style="border: none; padding: 0.25rem 0; text-align: right;">6 occurrences</td>
+    </tr>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>w</code> + <code>a</code> &rarr;</td>
+      <td style="border: none; padding: 0.25rem 0; text-align: right;">4 occurrences</td>
+    </tr>
+  </tbody>
+</table>
+</div><p>The algorithm identifies the pairs <code>a</code> + <code>l</code>, <code>k</code> + <code>e</code>, and <code>l</code> + <code>k</code> as tied for the highest frequency. A deterministic tie-breaking protocol resolves this collision. When multiple pairs share the highest frequency, the algorithm selects the pair that appears first when sorted lexicographically. Comparing the tied pairs, the character <code>a</code> precedes <code>k</code> and <code>l</code> in the alphabet, dictating the selection of the pair <code>a</code> + <code>l</code> for the inaugural merge operation.</p>
 <h2>The Greedy Merge Rule</h2>
 <p>The identification of the highest-frequency pair triggers the central update mechanism. The algorithm formally registers a new token representing the concatenation of the selected pair. This new element is appended to the recognized vocabulary, increasing the total size of the vocabulary space by one.</p>
 <p><code>a</code> <code>d</code> <code>e</code> <code>g</code> <code>i</code> <code>k</code> <code>l</code><br><code>n</code> <code>o</code> <code>r</code> <code>t</code> <code>w</code> <code>&lt;/w&gt;</code> <strong><code>al</code></strong>  </p>

@@ -101,199 +101,186 @@
     <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Tokenization</a></li><li aria-current="page">Part 3: Training BPE by Hand</li></ol></nav>
         <article class="blog-post">
 <h1>Part 3: Training BPE by Hand</h1>
-<!-- SUMMARY: Executing the Byte Pair Encoding algorithm against a concrete corpus reveals exactly how abstract statistical rules collapse character-level data into optimized semantic units. Tracing the frequency counts and merge selections across a fourteen-step compression sequence demonstrates the deterministic derivation of morphological stems and suffixes without linguistic programming. --><p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/tokenization-ebook-v1.0.pdf">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p><p>The formal definition of the Byte Pair Encoding algorithm establishes a greedy, iterative mechanism for subword compression. Executing this mechanism against a concrete corpus reveals exactly how these abstract rules operate in practice. The procedure relies entirely on statistical frequency rather than linguistic programming.</p>
+<style>
+  .trace-container code {
+    font-size: 0.75em !important;
+    padding: 0.15em 0.3em !important;
+  }
+  .trace-container td {
+    white-space: nowrap !important;
+  }
+  .trace-container b code {
+    font-weight: 900 !important;
+    color: #9a5b65 !important;
+    background-color: #fdf5f6 !important;
+    border: 1px solid #e0c6cb !important;
+  }
+  @media (prefers-color-scheme: dark) {
+    .trace-container b code {
+      color: #e6b3bc !important;
+      background-color: #3b2a2d !important;
+      border: 1px solid #6b4d53 !important;
+    }
+  }
+</style><!-- SUMMARY: Executing the Byte Pair Encoding algorithm against a concrete corpus reveals exactly how abstract statistical rules collapse character-level data into optimized semantic units. Tracing the frequency counts and merge selections across a fourteen-step compression sequence demonstrates the deterministic derivation of morphological stems and suffixes without linguistic programming. --><p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/tokenization-ebook-v1.0.pdf">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p><p>The formal definition of the Byte Pair Encoding algorithm establishes a greedy, iterative mechanism for subword compression. Executing this mechanism against a concrete corpus reveals exactly how these abstract rules operate in practice. The procedure relies entirely on statistical frequency rather than linguistic programming.</p>
 <h2>The Initial State</h2>
 <p>The training process begins with the nine distinct verbs defined in the preceding article. Each word is split into individual character tokens, terminated by the <code>&lt;/w&gt;</code> boundary marker. Once the initial state of the corpus is established, the discrete token sequences and their absolute frequencies are tracked across the text.</p>
-<p><code>w</code> <code>a</code> <code>k</code> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br><code>w</code> <code>o</code> <code>k</code> <code>e</code> <code>&lt;/w&gt;</code><br><code>w</code> <code>o</code> <code>k</code> <code>e</code> <code>n</code> <code>&lt;/w&gt;</code><br><code>w</code> <code>a</code> <code>l</code> <code>k</code> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br><code>w</code> <code>a</code> <code>l</code> <code>k</code> <code>e</code> <code>d</code> <code>&lt;/w&gt;</code><br><code>w</code> <code>a</code> <code>l</code> <code>k</code> <code>e</code> <code>r</code> <code>&lt;/w&gt;</code><br><code>t</code> <code>a</code> <code>l</code> <code>k</code> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br><code>t</code> <code>a</code> <code>l</code> <code>k</code> <code>e</code> <code>d</code> <code>&lt;/w&gt;</code><br><code>t</code> <code>a</code> <code>l</code> <code>k</code> <code>e</code> <code>r</code> <code>&lt;/w&gt;</code>  </p>
-<h2>The First Merges: Deriving Roots</h2>
+<div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2;">
+<code>w</code> <code>a</code> <code>k</code> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code> <code>w</code> <code>o</code> <code>k</code> <code>e</code> <code>&lt;/w&gt;</code> <code>w</code> <code>o</code> <code>k</code> <code>e</code> <code>n</code> <code>&lt;/w&gt;</code> <code>w</code> <code>a</code> <code>l</code> <code>k</code> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code> <code>w</code> <code>a</code> <code>l</code> <code>k</code> <code>e</code> <code>d</code> <code>&lt;/w&gt;</code> <code>w</code> <code>a</code> <code>l</code> <code>k</code> <code>e</code> <code>r</code> <code>&lt;/w&gt;</code> <code>t</code> <code>a</code> <code>l</code> <code>k</code> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code> <code>t</code> <code>a</code> <code>l</code> <code>k</code> <code>e</code> <code>d</code> <code>&lt;/w&gt;</code> <code>t</code> <code>a</code> <code>l</code> <code>k</code> <code>e</code> <code>r</code> <code>&lt;/w&gt;</code>
+</div><h2>The First Merges: Deriving Roots</h2>
 <p>The algorithm evaluates the frequency of every adjacent token pair in this initial state. The pairs <code>a</code> + <code>l</code>, <code>k</code> + <code>e</code>, and <code>l</code> + <code>k</code> tie for the highest frequency with six occurrences each. Lexicographical sorting dictates the selection of <code>a</code> + <code>l</code> for the inaugural merge operation. The new token <code>al</code> is formally registered, and the corpus representation is updated globally.</p>
-<table>
-<thead>
-<tr>
-<th align="left">Step</th>
-<th align="left">Operation</th>
-<th align="left">Result</th>
-<th align="right">Frequency</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">Step 1</td>
-<td align="left"><code>a</code> + <code>l</code></td>
-<td align="left">$\rightarrow$ <strong><code>al</code></strong></td>
-<td align="right">6 occurrences</td>
-</tr>
-</tbody></table>
-<p><code>w</code> <code>a</code> <code>k</code> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br><code>w</code> <code>o</code> <code>k</code> <code>e</code> <code>&lt;/w&gt;</code><br><code>w</code> <code>o</code> <code>k</code> <code>e</code> <code>n</code> <code>&lt;/w&gt;</code><br><code>w</code> <strong><code>al</code></strong> <code>k</code> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br><code>w</code> <strong><code>al</code></strong> <code>k</code> <code>e</code> <code>d</code> <code>&lt;/w&gt;</code><br><code>w</code> <strong><code>al</code></strong> <code>k</code> <code>e</code> <code>r</code> <code>&lt;/w&gt;</code><br><code>t</code> <strong><code>al</code></strong> <code>k</code> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br><code>t</code> <strong><code>al</code></strong> <code>k</code> <code>e</code> <code>d</code> <code>&lt;/w&gt;</code><br><code>t</code> <strong><code>al</code></strong> <code>k</code> <code>e</code> <code>r</code> <code>&lt;/w&gt;</code>  </p>
-<p>This operation immediately alters the subsequent frequency distribution. The second merge iteration tallies adjacent pairs across the newly updated corpus. The pair <code>al</code> + <code>k</code> emerges as the most frequent pattern.</p>
-<table>
-<thead>
-<tr>
-<th align="left">Step</th>
-<th align="left">Operation</th>
-<th align="left">Result</th>
-<th align="right">Frequency</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">Step 2</td>
-<td align="left"><strong><code>al</code></strong> + <code>k</code></td>
-<td align="left">$\rightarrow$ <strong><code>alk</code></strong></td>
-<td align="right">6 occurrences</td>
-</tr>
-</tbody></table>
-<p><code>w</code> <code>a</code> <code>k</code> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br><code>w</code> <code>o</code> <code>k</code> <code>e</code> <code>&lt;/w&gt;</code><br><code>w</code> <code>o</code> <code>k</code> <code>e</code> <code>n</code> <code>&lt;/w&gt;</code><br><code>w</code> <strong><code>alk</code></strong> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br><code>w</code> <strong><code>alk</code></strong> <code>e</code> <code>d</code> <code>&lt;/w&gt;</code><br><code>w</code> <strong><code>alk</code></strong> <code>e</code> <code>r</code> <code>&lt;/w&gt;</code><br><code>t</code> <strong><code>alk</code></strong> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br><code>t</code> <strong><code>alk</code></strong> <code>e</code> <code>d</code> <code>&lt;/w&gt;</code><br><code>t</code> <strong><code>alk</code></strong> <code>e</code> <code>r</code> <code>&lt;/w&gt;</code>  </p>
-<p>The merge operation fuses these tokens, creating the cohesive <code>alk</code> unit. The third merge iteration establishes that the pair <code>alk</code> + <code>e</code> occurs four times, binding the root verb to the start of its suffixes.</p>
-<table>
-<thead>
-<tr>
-<th align="left">Step</th>
-<th align="left">Operation</th>
-<th align="left">Result</th>
-<th align="right">Frequency</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">Step 3</td>
-<td align="left"><strong><code>alk</code></strong> + <code>e</code></td>
-<td align="left">$\rightarrow$ <strong><code>alke</code></strong></td>
-<td align="right">4 occurrences</td>
-</tr>
-</tbody></table>
-<p>After merely three iterations, the counting mechanism derives <code>alk</code>, the central morphological root shared by the majority of the corpus. This fragment serves as the structural foundation for <em>walking</em>, <em>walked</em>, <em>walker</em>, <em>talking</em>, <em>talked</em>, and <em>talker</em>. The internal representation of the text compresses significantly.</p>
-<p><code>w</code> <code>a</code> <code>k</code> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br><code>w</code> <code>o</code> <code>k</code> <code>e</code> <code>&lt;/w&gt;</code><br><code>w</code> <code>o</code> <code>k</code> <code>e</code> <code>n</code> <code>&lt;/w&gt;</code><br><code>w</code> <strong><code>alk</code></strong> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br><code>w</code> <strong><code>alke</code></strong> <code>d</code> <code>&lt;/w&gt;</code><br><code>w</code> <strong><code>alke</code></strong> <code>r</code> <code>&lt;/w&gt;</code><br><code>t</code> <strong><code>alk</code></strong> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br><code>t</code> <strong><code>alke</code></strong> <code>d</code> <code>&lt;/w&gt;</code><br><code>t</code> <strong><code>alke</code></strong> <code>r</code> <code>&lt;/w&gt;</code>  </p>
-<h2>Assembling Suffixes</h2>
+<div class="trace-container">
+<table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse;">
+  <tbody>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;">Step 1</td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>a</code> + <code>l</code></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;">&rarr; <b><code>al</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: right;">6 occurrences</td>
+    </tr>
+  </tbody>
+</table>
+</div><div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2;">
+<code>w</code> <code>a</code> <code>k</code> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code> <code>w</code> <code>o</code> <code>k</code> <code>e</code> <code>&lt;/w&gt;</code> <code>w</code> <code>o</code> <code>k</code> <code>e</code> <code>n</code> <code>&lt;/w&gt;</code> <code>w</code> <b><code>al</code></b> <code>k</code> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code> <code>w</code> <b><code>al</code></b> <code>k</code> <code>e</code> <code>d</code> <code>&lt;/w&gt;</code> <code>w</code> <b><code>al</code></b> <code>k</code> <code>e</code> <code>r</code> <code>&lt;/w&gt;</code> <code>t</code> <b><code>al</code></b> <code>k</code> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code> <code>t</code> <b><code>al</code></b> <code>k</code> <code>e</code> <code>d</code> <code>&lt;/w&gt;</code> <code>t</code> <b><code>al</code></b> <code>k</code> <code>e</code> <code>r</code> <code>&lt;/w&gt;</code>
+</div><p>This operation immediately alters the subsequent frequency distribution. The second merge iteration tallies adjacent pairs across the newly updated corpus. The pair <code>al</code> + <code>k</code> emerges as the most frequent pattern.</p>
+<div class="trace-container">
+<table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse;">
+  <tbody>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;">Step 2</td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>al</code></b> + <code>k</code></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;">&rarr; <b><code>alk</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: right;">6 occurrences</td>
+    </tr>
+  </tbody>
+</table>
+</div><div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2;">
+<code>w</code> <code>a</code> <code>k</code> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code> <code>w</code> <code>o</code> <code>k</code> <code>e</code> <code>&lt;/w&gt;</code> <code>w</code> <code>o</code> <code>k</code> <code>e</code> <code>n</code> <code>&lt;/w&gt;</code> <code>w</code> <b><code>alk</code></b> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code> <code>w</code> <b><code>alk</code></b> <code>e</code> <code>d</code> <code>&lt;/w&gt;</code> <code>w</code> <b><code>alk</code></b> <code>e</code> <code>r</code> <code>&lt;/w&gt;</code> <code>t</code> <b><code>alk</code></b> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code> <code>t</code> <b><code>alk</code></b> <code>e</code> <code>d</code> <code>&lt;/w&gt;</code> <code>t</code> <b><code>alk</code></b> <code>e</code> <code>r</code> <code>&lt;/w&gt;</code>
+</div><p>The merge operation fuses these tokens, creating the cohesive <code>alk</code> unit. The third merge iteration establishes that the pair <code>alk</code> + <code>e</code> occurs four times, binding the root verb to the start of its suffixes.</p>
+<div class="trace-container">
+<table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse;">
+  <tbody>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;">Step 3</td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>alk</code></b> + <code>e</code></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;">&rarr; <b><code>alke</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: right;">4 occurrences</td>
+    </tr>
+  </tbody>
+</table>
+</div><p>After merely three iterations, the counting mechanism derives <code>alk</code>, the central morphological root shared by the majority of the corpus. This fragment serves as the structural foundation for <em>walking</em>, <em>walked</em>, <em>walker</em>, <em>talking</em>, <em>talked</em>, and <em>talker</em>. The internal representation of the text compresses significantly.</p>
+<div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2;">
+<code>w</code> <code>a</code> <code>k</code> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code> <code>w</code> <code>o</code> <code>k</code> <code>e</code> <code>&lt;/w&gt;</code> <code>w</code> <code>o</code> <code>k</code> <code>e</code> <code>n</code> <code>&lt;/w&gt;</code> <code>w</code> <b><code>alk</code></b> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code> <code>w</code> <b><code>alke</code></b> <code>d</code> <code>&lt;/w&gt;</code> <code>w</code> <b><code>alke</code></b> <code>r</code> <code>&lt;/w&gt;</code> <code>t</code> <b><code>alk</code></b> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code> <code>t</code> <b><code>alke</code></b> <code>d</code> <code>&lt;/w&gt;</code> <code>t</code> <b><code>alke</code></b> <code>r</code> <code>&lt;/w&gt;</code>
+</div><h2>Assembling Suffixes</h2>
 <p>The subsequent three merge iterations reveal how boundary markers influence the derivation of suffixes. Iteration four evaluates the updated sequences and identifies the highest frequency pair ending the gerund verbs.</p>
-<table>
-<thead>
-<tr>
-<th align="left">Step</th>
-<th align="left">Operation</th>
-<th align="left">Result</th>
-<th align="right">Frequency</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">Step 4</td>
-<td align="left"><code>g</code> + <code>&lt;/w&gt;</code></td>
-<td align="left">$\rightarrow$ <strong><code>g&lt;/w&gt;</code></strong></td>
-<td align="right">3 occurrences</td>
-</tr>
-</tbody></table>
-<p>Iteration five targets the interior of the suffix, binding the preceding characters.</p>
-<table>
-<thead>
-<tr>
-<th align="left">Step</th>
-<th align="left">Operation</th>
-<th align="left">Result</th>
-<th align="right">Frequency</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">Step 5</td>
-<td align="left"><code>i</code> + <code>n</code></td>
-<td align="left">$\rightarrow$ <strong><code>in</code></strong></td>
-<td align="right">3 occurrences</td>
-</tr>
-</tbody></table>
-<p>Iteration six combines these two newly formed tokens.</p>
-<table>
-<thead>
-<tr>
-<th align="left">Step</th>
-<th align="left">Operation</th>
-<th align="left">Result</th>
-<th align="right">Frequency</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">Step 6</td>
-<td align="left"><strong><code>in</code></strong> + <strong><code>g&lt;/w&gt;</code></strong></td>
-<td align="left">$\rightarrow$ <strong><code>ing&lt;/w&gt;</code></strong></td>
-<td align="right">3 occurrences</td>
-</tr>
-</tbody></table>
-<p>This sequence formally registers the morphological <code>-ing</code> suffix into the subword vocabulary. The token boundary marker <code>&lt;/w&gt;</code> guarantees that this newly minted token <code>ing&lt;/w&gt;</code> specifically represents the suffix at the end of a word, preventing it from incorrectly matching the substring &quot;ing&quot; in the middle of an unrelated word.</p>
+<div class="trace-container">
+<table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse;">
+  <tbody>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;">Step 4</td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>g</code> + <code>&lt;/w&gt;</code></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;">&rarr; <b><code>g&lt;/w&gt;</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: right;">3 occurrences</td>
+    </tr>
+  </tbody>
+</table>
+</div><p>Iteration five targets the interior of the suffix, binding the preceding characters.</p>
+<div class="trace-container">
+<table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse;">
+  <tbody>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;">Step 5</td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>i</code> + <code>n</code></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;">&rarr; <b><code>in</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: right;">3 occurrences</td>
+    </tr>
+  </tbody>
+</table>
+</div><p>Iteration six combines these two newly formed tokens.</p>
+<div class="trace-container">
+<table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse;">
+  <tbody>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;">Step 6</td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>in</code></b> + <b><code>g&lt;/w&gt;</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;">&rarr; <b><code>ing&lt;/w&gt;</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: right;">3 occurrences</td>
+    </tr>
+  </tbody>
+</table>
+</div><p>This sequence formally registers the morphological <code>-ing</code> suffix into the subword vocabulary. The token boundary marker <code>&lt;/w&gt;</code> guarantees that this newly minted token <code>ing&lt;/w&gt;</code> specifically represents the suffix at the end of a word, preventing it from incorrectly matching the substring &quot;ing&quot; in the middle of an unrelated word.</p>
 <h2>Accelerated Convergence</h2>
 <p>The iterative compression rapidly integrates the remaining structure. The next five iterations bind the derived roots and suffixes into complete semantic units.</p>
-<table>
-<thead>
-<tr>
-<th align="left">Step</th>
-<th align="left">Operation</th>
-<th align="left">Result</th>
-<th align="right">Frequency</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">Step 7</td>
-<td align="left"><strong><code>alk</code></strong> + <strong><code>ing&lt;/w&gt;</code></strong></td>
-<td align="left">$\rightarrow$ <strong><code>alking&lt;/w&gt;</code></strong></td>
-<td align="right">2 occurrences</td>
-</tr>
-<tr>
-<td align="left">Step 8</td>
-<td align="left"><strong><code>alke</code></strong> + <code>d</code></td>
-<td align="left">$\rightarrow$ <strong><code>alked</code></strong></td>
-<td align="right">2 occurrences</td>
-</tr>
-<tr>
-<td align="left">Step 9</td>
-<td align="left"><strong><code>alke</code></strong> + <code>r</code></td>
-<td align="left">$\rightarrow$ <strong><code>alker</code></strong></td>
-<td align="right">2 occurrences</td>
-</tr>
-<tr>
-<td align="left">Step 10</td>
-<td align="left"><strong><code>alked</code></strong> + <code>&lt;/w&gt;</code></td>
-<td align="left">$\rightarrow$ <strong><code>alked&lt;/w&gt;</code></strong></td>
-<td align="right">2 occurrences</td>
-</tr>
-<tr>
-<td align="left">Step 11</td>
-<td align="left"><strong><code>alker</code></strong> + <code>&lt;/w&gt;</code></td>
-<td align="left">$\rightarrow$ <strong><code>alker&lt;/w&gt;</code></strong></td>
-<td align="right">2 occurrences</td>
-</tr>
-</tbody></table>
-<p>The initial <code>alk</code> fragment transforms into three complete lexical structures: <code>alking&lt;/w&gt;</code>, <code>alked&lt;/w&gt;</code>, and <code>alker&lt;/w&gt;</code>. The counting procedure then evaluates the remaining verb family.</p>
-<table>
-<thead>
-<tr>
-<th align="left">Step</th>
-<th align="left">Operation</th>
-<th align="left">Result</th>
-<th align="right">Frequency</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">Step 12</td>
-<td align="left"><code>k</code> + <code>e</code></td>
-<td align="left">$\rightarrow$ <strong><code>ke</code></strong></td>
-<td align="right">2 occurrences</td>
-</tr>
-<tr>
-<td align="left">Step 13</td>
-<td align="left"><code>o</code> + <strong><code>ke</code></strong></td>
-<td align="left">$\rightarrow$ <strong><code>oke</code></strong></td>
-<td align="right">2 occurrences</td>
-</tr>
-<tr>
-<td align="left">Step 14</td>
-<td align="left"><code>w</code> + <strong><code>oke</code></strong></td>
-<td align="left">$\rightarrow$ <strong><code>woke</code></strong></td>
-<td align="right">2 occurrences</td>
-</tr>
-</tbody></table>
-<p>After fourteen merge operations, the original sequences of isolated characters transition into large subword fragments. The internal representation of the text demonstrates profound compression.</p>
-<p><code>w</code> <code>a</code> <code>k</code> <strong><code>ing&lt;/w&gt;</code></strong><br><strong><code>woke</code></strong> <code>&lt;/w&gt;</code><br><strong><code>woke</code></strong> <code>n</code> <code>&lt;/w&gt;</code><br><code>w</code> <strong><code>alking&lt;/w&gt;</code></strong><br><code>w</code> <strong><code>alked&lt;/w&gt;</code></strong><br><code>w</code> <strong><code>alker&lt;/w&gt;</code></strong><br><code>t</code> <strong><code>alking&lt;/w&gt;</code></strong><br><code>t</code> <strong><code>alked&lt;/w&gt;</code></strong><br><code>t</code> <strong><code>alker&lt;/w&gt;</code></strong>  </p>
-<h2>Finalization of the Vocabulary</h2>
+<div class="trace-container">
+<table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse;">
+  <tbody>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;">Step 7</td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>alk</code></b> + <b><code>ing&lt;/w&gt;</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;">&rarr; <b><code>alking&lt;/w&gt;</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: right;">2 occurrences</td>
+    </tr>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;">Step 8</td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>alke</code></b> + <code>d</code></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;">&rarr; <b><code>alked</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: right;">2 occurrences</td>
+    </tr>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;">Step 9</td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>alke</code></b> + <code>r</code></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;">&rarr; <b><code>alker</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: right;">2 occurrences</td>
+    </tr>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;">Step 10</td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>alked</code></b> + <code>&lt;/w&gt;</code></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;">&rarr; <b><code>alked&lt;/w&gt;</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: right;">2 occurrences</td>
+    </tr>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;">Step 11</td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>alker</code></b> + <code>&lt;/w&gt;</code></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;">&rarr; <b><code>alker&lt;/w&gt;</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: right;">2 occurrences</td>
+    </tr>
+  </tbody>
+</table>
+</div><p>The initial <code>alk</code> fragment transforms into three complete lexical structures: <code>alking&lt;/w&gt;</code>, <code>alked&lt;/w&gt;</code>, and <code>alker&lt;/w&gt;</code>. The counting procedure then evaluates the remaining verb family.</p>
+<div class="trace-container">
+<table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse;">
+  <tbody>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;">Step 12</td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>k</code> + <code>e</code></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;">&rarr; <b><code>ke</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: right;">2 occurrences</td>
+    </tr>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;">Step 13</td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>o</code> + <b><code>ke</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;">&rarr; <b><code>oke</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: right;">2 occurrences</td>
+    </tr>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;">Step 14</td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>w</code> + <b><code>oke</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;">&rarr; <b><code>woke</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: right;">2 occurrences</td>
+    </tr>
+  </tbody>
+</table>
+</div><p>After fourteen merge operations, the original sequences of isolated characters transition into large subword fragments. The internal representation of the text demonstrates profound compression.</p>
+<div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2;">
+<code>w</code> <code>a</code> <code>k</code> <b><code>ing&lt;/w&gt;</code></b> <b><code>woke</code></b> <code>&lt;/w&gt;</code> <b><code>woke</code></b> <code>n</code> <code>&lt;/w&gt;</code> <code>w</code> <b><code>alking&lt;/w&gt;</code></b> <code>w</code> <b><code>alked&lt;/w&gt;</code></b> <code>w</code> <b><code>alker&lt;/w&gt;</code></b> <code>t</code> <b><code>alking&lt;/w&gt;</code></b> <code>t</code> <b><code>alked&lt;/w&gt;</code></b> <code>t</code> <b><code>alker&lt;/w&gt;</code></b>
+</div><h2>Finalization of the Vocabulary</h2>
 <p>The Byte Pair Encoding algorithm naturally halts when the maximum frequency of any adjacent pair drops to 1, because merging a pair that only occurs once offers no further compression benefit. Following step fourteen, the frequency of every remaining adjacent pair in our toy corpus has dropped to exactly 1. Therefore, the training algorithm definitively halts at this exact state. </p>
 <p>The execution of exactly fourteen merge operations yields a deterministic, highly compressed token inventory. It is crucial to distinguish between the final state of the corpus and the final trained vocabulary. The nine sequences shown above represent the completely compressed state of the corpus. The structural update has collapsed the original sequence of isolated characters into larger subword fragments. </p>
 <p>The corpus, however, does not perfectly compress into nine single-token words. This is a fundamental feature of subword tokenization: because the word <em>talking</em> only appears once in this tiny corpus, its leading consonant <code>t</code> never achieves a high enough frequency to merge with its suffix. Rare words are natively preserved as sequences of smaller, common subwords.</p>
 <p>The <em>vocabulary dictionary</em> itself contains exactly 27 items: the 13 initial base characters plus the 14 new subwords generated during the merges. Because the vocabulary size directly dictates the architecture&#39;s input dimensions, the neural network&#39;s embedding matrix will now be instantiated with exactly 27 rows, one for each of these learned tokens.</p>
-<p><code>&lt;/w&gt;</code> <code>a</code> <strong><code>al</code></strong> <strong><code>alk</code></strong> <strong><code>alke</code></strong><br><strong><code>alked</code></strong> <strong><code>alked&lt;/w&gt;</code></strong> <strong><code>alker</code></strong> <strong><code>alker&lt;/w&gt;</code></strong> <strong><code>alking&lt;/w&gt;</code></strong><br><code>d</code> <code>e</code> <code>g</code> <strong><code>g&lt;/w&gt;</code></strong> <code>i</code><br><strong><code>in</code></strong> <strong><code>ing&lt;/w&gt;</code></strong> <code>k</code> <strong><code>ke</code></strong> <code>l</code><br><code>n</code> <code>o</code> <strong><code>oke</code></strong> <code>r</code> <code>t</code><br><code>w</code> <strong><code>woke</code></strong>  </p>
-<p>The statistical frequency analysis successfully identified the structural regularities of the English language. This trained 27-token vocabulary now exists as a fixed, immutable dictionary. The subsequent article explores how this finalized dictionary processes completely new, unseen text through the corresponding encoding algorithm.</p>
+<div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2;">
+<code>&lt;/w&gt;</code> <code>a</code> <b><code>al</code></b> <b><code>alk</code></b> <b><code>alke</code></b> <b><code>alked</code></b> <b><code>alked&lt;/w&gt;</code></b> <b><code>alker</code></b> <b><code>alker&lt;/w&gt;</code></b> <b><code>alking&lt;/w&gt;</code></b> <code>d</code> <code>e</code> <code>g</code> <b><code>g&lt;/w&gt;</code></b> <code>i</code> <b><code>in</code></b> <b><code>ing&lt;/w&gt;</code></b> <code>k</code> <b><code>ke</code></b> <code>l</code> <code>n</code> <code>o</code> <b><code>oke</code></b> <code>r</code> <code>t</code> <code>w</code> <b><code>woke</code></b>
+</div><p>The statistical frequency analysis successfully identified the structural regularities of the English language. This trained 27-token vocabulary now exists as a fixed, immutable dictionary. The subsequent article explores how this finalized dictionary processes completely new, unseen text through the corresponding encoding algorithm.</p>
 <p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/tokenization-ebook-v1.0.pdf">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p>
 
 <div class="blog-pagination">
