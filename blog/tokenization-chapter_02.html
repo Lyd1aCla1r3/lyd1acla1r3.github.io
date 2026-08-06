@@ -124,29 +124,8 @@
 <p>The training algorithm begins by isolating the fundamental building blocks of the language. The entire training corpus is first separated into discrete words, typically delineated by whitespace. Every word is then strictly decomposed into a sequence of individual character tokens.</p>
 <p>This isolation requires a dedicated mechanism to preserve the original structural boundaries of the words. If the algorithm processes the corpus as a continuous stream of characters, it risks merging characters that span across adjacent words, creating unnatural representations. To prevent this bleeding, a dedicated end-of-word marker, denoted as <code>&lt;/w&gt;</code>, is appended to the terminal character of every word sequence.</p>
 <p>The toy corpus from the preceding article provides a concrete initialization state. The corpus consists of nine distinct verbs, each appearing exactly once. Decomposing these words produces a highly constrained initial vocabulary of thirteen character-level tokens:</p>
-<div class="trace-container">
-<table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse; text-align: center;">
-  <tbody>
-    <tr>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>a</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>d</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>e</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>g</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>i</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>k</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>l</code></b></td>
-    </tr>
-    <tr>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>n</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>o</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>r</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>t</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>w</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>&lt;/w&gt;</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"></td>
-    </tr>
-  </tbody>
-</table>
+<div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2;">
+<b><code>a</code></b> <b><code>d</code></b> <b><code>e</code></b> <b><code>g</code></b> <b><code>i</code></b> <b><code>k</code></b> <b><code>l</code></b> <b><code>n</code></b> <b><code>o</code></b> <b><code>r</code></b> <b><code>t</code></b> <b><code>w</code></b> <b><code>&lt;/w&gt;</code></b>
 </div><p>The words themselves transform into sequences constructed exclusively from this initial character inventory. For example, the string &#39;walking&#39; maps to a sequence of eight discrete elements: <code>w</code>, <code>a</code>, <code>l</code>, <code>k</code>, <code>i</code>, <code>n</code>, <code>g</code>, <code>&lt;/w&gt;</code>. The entire corpus is processed into this fully atomized state before any compression occurs.</p>
 <h2>Pair Frequency Evaluation</h2>
 <p>The core intelligence of the algorithm relies on discovering structural redundancies within these atomized sequences. The system executes a comprehensive scan over the entire corpus, evaluating every instance where two distinct tokens appear adjacent to one another.</p>
@@ -175,29 +154,8 @@
 </div><p>The algorithm identifies the pairs <code>a</code> + <code>l</code>, <code>k</code> + <code>e</code>, and <code>l</code> + <code>k</code> as tied for the highest frequency. A deterministic tie-breaking protocol resolves this collision. When multiple pairs share the highest frequency, the algorithm selects the pair that appears first when sorted lexicographically. Comparing the tied pairs, the character <code>a</code> precedes <code>k</code> and <code>l</code> in the alphabet, dictating the selection of the pair <code>a</code> + <code>l</code> for the inaugural merge operation.</p>
 <h2>The Greedy Merge Rule</h2>
 <p>The identification of the highest-frequency pair triggers the central update mechanism. The algorithm formally registers a new token representing the concatenation of the selected pair. This new element is appended to the recognized vocabulary, increasing the total size of the vocabulary space by one.</p>
-<div class="trace-container">
-<table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse; text-align: center;">
-  <tbody>
-    <tr>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>a</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>d</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>e</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>g</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>i</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>k</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>l</code></b></td>
-    </tr>
-    <tr>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>n</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>o</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>r</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>t</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>w</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>&lt;/w&gt;</code></b></td>
-      <td style="border: none; padding: 0.25rem 0;"><b><code>al</code></b></td>
-    </tr>
-  </tbody>
-</table>
+<div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2;">
+<b><code>a</code></b> <b><code>d</code></b> <b><code>e</code></b> <b><code>g</code></b> <b><code>i</code></b> <b><code>k</code></b> <b><code>l</code></b> <b><code>n</code></b> <b><code>o</code></b> <b><code>r</code></b> <b><code>t</code></b> <b><code>w</code></b> <b><code>&lt;/w&gt;</code></b> <b><code>al</code></b>
 </div><p>Simultaneously, the algorithm sweeps through the entire corpus and replaces every adjacent occurrence of the individual tokens with the new fused token. This structural update reduces the overall sequence length of the corpus. Two discrete dimensions of information are compressed into a single, cohesive unit. For example, the sequence representation of the string &#39;walking&#39; compresses from eight elements to seven: <code>w</code>, <code>al</code>, <code>k</code>, <code>i</code>, <code>n</code>, <code>g</code>, <code>&lt;/w&gt;</code>.</p>
 <p>This localized compression logic forms an iterative loop.</p>
 <pre><code class="language-mermaid">graph TD
