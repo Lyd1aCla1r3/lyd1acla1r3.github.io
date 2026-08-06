@@ -11,12 +11,14 @@
     color: #9a5b65 !important;
     background-color: #fdf5f6 !important;
     border: 1px solid #e0c6cb !important;
+    border-radius: 0.4em !important;
   }
   @media (prefers-color-scheme: dark) {
     .trace-container b code {
       color: #e6b3bc !important;
       background-color: #3b2a2d !important;
       border: 1px solid #6b4d53 !important;
+      border-radius: 0.4em !important;
     }
   }
 </style>
