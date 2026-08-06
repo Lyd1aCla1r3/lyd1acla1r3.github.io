@@ -1214,6 +1214,20 @@ html {
   scrollbar-color: var(--rose-gold) transparent;
 }
 
+.series-transformers .katex-display {
+  text-align: left !important;
+}
+
+.series-transformers .katex-display > .katex {
+  text-align: left !important;
+  display: block;
+}
+
+/* ---------- Trace Container Overrides ---------- */
+.trace-container table b code {
+  border-radius: var(--radius-full) !important;
+}
+
 .katex-display::-webkit-scrollbar {
   height: 6px;
 }

@@ -65,7 +65,8 @@
     .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
     .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
     .blog-post table { width: auto; margin: var(--space-2xl) 0; border-collapse: collapse; text-align: left; }
-    .blog-post thead { display: none; }
+    .blog-post th, .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post th { font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border-subtle); }
     .blog-post td { padding: 8px 16px; border: none; }
     .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 4px 10px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; font-size: 0.95rem; color: var(--rose-gold-dark); margin-right: 6px; }
   </style>
@@ -99,7 +100,7 @@
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
     <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Part 19: The Cross-Entropy Loss Function</li></ol></nav>
-        <article class="blog-post">
+        <article class="blog-post series-transformers">
 <h1>Part 19: The Cross-Entropy Loss Function</h1>
 <!-- SUMMARY: The error of the raw predictions is formalized by calculating the cross-entropy loss against the one-hot target distribution. This asymmetric logarithmic penalty heavily punishes confidently incorrect predictions, yielding a mathematically elegant error signal for the network to optimize. --><p>The final softmax operation completes the forward pass by producing a strict probability distribution over the vocabulary for every position in the sequence. Assessing the quality of these predictions requires a rigorous metric that quantifies exactly how incorrect the current hypotheses are. This metric is the loss function, producing the single scalar value that the entire architecture is designed to minimize.</p>
 <p>Measuring the error of these predictions first requires defining a perfect prediction. When the input sequence begins with the start token, the actual next token is the word &quot;i&quot;. The ideal probability distribution would assign a value of 1.0 to the target token and 0.0 to all other tokens. This perfectly certain distribution is identical to the one-hot vectors used to construct the initial embedding matrix. The loss function must calculate the mathematical distance between the predicted distribution and this sharp, one-hot target state.</p>

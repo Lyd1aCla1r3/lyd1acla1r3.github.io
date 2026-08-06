@@ -65,7 +65,8 @@
     .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
     .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
     .blog-post table { width: auto; margin: var(--space-2xl) 0; border-collapse: collapse; text-align: left; }
-    .blog-post thead { display: none; }
+    .blog-post th, .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post th { font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border-subtle); }
     .blog-post td { padding: 8px 16px; border: none; }
     .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 4px 10px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; font-size: 0.95rem; color: var(--rose-gold-dark); margin-right: 6px; }
   </style>
@@ -99,7 +100,7 @@
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
     <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Part 18: Final Softmax and Predictions</li></ol></nav>
-        <article class="blog-post">
+        <article class="blog-post series-transformers">
 <h1>Part 18: Final Softmax and Predictions</h1>
 <!-- SUMMARY: The unbounded vocabulary logits are transformed into a strict probability distribution using the softmax function. Analyzing this distribution reveals the untrained network's maximum mathematical uncertainty, while techniques like temperature scaling and Top-K decoding provide mechanisms to shape this entropy during actual text generation. --><p>Projecting highly contextualized vectors out of the latent model space and back into the vocabulary space yields a matrix of raw scores known as logits. These scalar values assign a geometric magnitude to each of the twelve possible words in the vocabulary. While these magnitudes provide an ordering of likelihood, they do not constitute a mathematically rigorous probability distribution. The values extend across arbitrary bounds and lack the fundamental property of summing to exactly one. Converting these raw signals into actionable predictions requires a normalizing operation.</p>
 <p>The architecture employs the softmax function across the vocabulary dimension of the logits matrix to enforce this transformation. The function operates by exponentiating each scalar value and dividing by the sum of all exponentiated values in that row. Exponentiation guarantees that all resultant values become strictly positive fractions while non-linearly amplifying the differences between scores. A slightly higher logit becomes a significantly higher exponentiated value, creating a dynamic that helps the network confidently select a single token. The subsequent division normalizes the outputs. This bounds all values between zero and one, creating a strict probability distribution where the sum across the vocabulary dimension equals exactly one.</p>

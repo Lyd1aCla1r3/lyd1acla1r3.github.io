@@ -65,7 +65,8 @@
     .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
     .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
     .blog-post table { width: auto; margin: var(--space-2xl) 0; border-collapse: collapse; text-align: left; }
-    .blog-post thead { display: none; }
+    .blog-post th, .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post th { font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border-subtle); }
     .blog-post td { padding: 8px 16px; border: none; }
     .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 4px 10px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; font-size: 0.95rem; color: var(--rose-gold-dark); margin-right: 6px; }
   </style>
@@ -99,7 +100,7 @@
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
     <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Part 13: The MLP Activation and Layer 2 Self-Attention</li></ol></nav>
-        <article class="blog-post">
+        <article class="blog-post series-transformers">
 <h1>Part 13: The MLP Activation and Layer 2 Self-Attention</h1>
 <!-- SUMMARY: The activation function serves as the critical gatekeeper within the feed-forward network, filtering the conceptual matches identified by the first layer. The subsequent linear projection then translates these activated patterns into concrete conceptual updates, writing new features back into the residual stream. As the sequence progresses through the second layer of self-attention, token vectors evolve from isolated definitions into deeply contextualized mathematical representations that evaluate high-level syntactic structures. --><p>The projection matrix from the previous step expanded the residual stream into a twenty-four-dimensional space, effectively querying a vast bank of conceptual keys. The resulting matrix contained a spectrum of positive and negative values, representing the degree of resonance with each learned pattern. The network must now definitively decide which of these patterns are relevant to the current context and discard the rest. This critical filtering operation is the domain of the activation function.</p>
 <p>The toy model employs the Rectified Linear Unit, commonly known as ReLU. The mathematical operation is elegantly simple: any negative value is set to zero, while positive values remain unchanged. Mechanistically, this acts as a strict threshold. If a token vector did not sufficiently match a specific conceptual key, the negative resonance is silenced entirely. The neuron simply does not fire. </p>

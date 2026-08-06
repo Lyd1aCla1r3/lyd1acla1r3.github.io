@@ -65,7 +65,8 @@
     .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
     .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
     .blog-post table { width: auto; margin: var(--space-2xl) 0; border-collapse: collapse; text-align: left; }
-    .blog-post thead { display: none; }
+    .blog-post th, .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post th { font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border-subtle); }
     .blog-post td { padding: 8px 16px; border: none; }
     .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 4px 10px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; font-size: 0.95rem; color: var(--rose-gold-dark); margin-right: 6px; }
   </style>
@@ -99,7 +100,7 @@
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
     <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Part 14: Final Layer 1 Residuals, Norms, and Layer 2 Attention</li></ol></nav>
-        <article class="blog-post">
+        <article class="blog-post series-transformers">
 <h1>Part 14: Final Layer 1 Residuals, Norms, and Layer 2 Attention</h1>
 <!-- SUMMARY: The multi-layer perceptron output is added back into the residual stream, preserving the original contextual information while integrating the newly activated conceptual features. A final layer normalization step stabilizes the vector geometry, preparing the enriched representations for the second layer. The query and key vectors then undergo a fundamental mathematical shift as compound semantic structures are scored using the scaled dot-product. Stabilizing the variance of these unscaled scores prevents softmax saturation and preserves gradient health during backpropagation. --><p>The completion of the Multilayer Perceptron marks the end of the conceptual feature extraction phase. The network has successfully identified relevant patterns within the token vectors and projected those insights back into the original six-dimensional space. The next crucial step involves integrating this newly extracted knowledge with the existing representation.</p>
 <p>This integration occurs via the residual stream. Rather than replacing the prior state entirely, the output of the feed-forward network is added directly to the original token vectors that entered the block. This architectural design ensures that the fundamental identity of the token is preserved alongside its newly refined conceptual context. The additive nature of the residual connection provides a direct gradient path during backpropagation, circumventing the risk of signal decay.</p>

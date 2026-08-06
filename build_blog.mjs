@@ -172,7 +172,8 @@ for (let i = 0; i < postsData.length; i++) {
     .replace('{{TITLE}}', () => post.title)
     .replace('{{BREADCRUMBS}}', () => post.breadcrumbHtml)
     .replace('{{CONTENT}}', () => post.contentHtml)
-    .replace('{{PAGINATION}}', () => paginationHtml);
+    .replace('{{PAGINATION}}', () => paginationHtml)
+    .replace('{{SERIES_CLASS}}', () => post.seriesName ? `series-${post.seriesName}` : '');
     
   const outPath = path.join(BLOG_DIR, post.url);
   fs.writeFileSync(outPath, finalHtml, 'utf-8');

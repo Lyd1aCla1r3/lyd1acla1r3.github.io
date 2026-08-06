@@ -65,7 +65,8 @@
     .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
     .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
     .blog-post table { width: auto; margin: var(--space-2xl) 0; border-collapse: collapse; text-align: left; }
-    .blog-post thead { display: none; }
+    .blog-post th, .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post th { font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border-subtle); }
     .blog-post td { padding: 8px 16px; border: none; }
     .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 4px 10px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; font-size: 0.95rem; color: var(--rose-gold-dark); margin-right: 6px; }
   </style>
@@ -99,7 +100,7 @@
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
     <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-perspectives">Perspectives</a></li><li aria-current="page">The Mathematics of Parallel Training: Teacher Forcing vs. Inference</li></ol></nav>
-        <article class="blog-post">
+        <article class="blog-post ">
 <h1>The Mathematics of Parallel Training: Teacher Forcing vs. Inference</h1>
 <!-- SUMMARY: A step-by-step mathematical walkthrough contrasting the highly parallelized nature of Transformer training with the sequential bottleneck of inference. By utilizing a concrete toy example, the underlying tensor algebra of causal masking and cross-entropy loss is demystified. This renders the mechanics of Teacher Forcing accessible and rigorously proven without relying on abstraction. --><p>A fascinating divergence exists between how large language models are trained and how they operate upon deployment. While a model takes months to process billions of words during training, it generates responses in seconds. This discrepancy stems from a fundamental difference in architecture. Training is massively parallelized, whereas deployment, commonly referred to as inference, is strictly sequential.</p>
 <p>During inference, a model generates text one token at a time. If it must write a paragraph, it cannot write the third sentence without first writing the second. If this same sequential process were used during training, scaling to modern model sizes would be computationally impossible. To solve this, researchers utilize a mathematical technique called Teacher Forcing.</p>
