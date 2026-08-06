@@ -101,13 +101,52 @@
     <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Tokenization</a></li><li aria-current="page">Part 1: Characters, Words, and the Subword Compromise</li></ol></nav>
         <article class="blog-post">
 <h1>Part 1: Characters, Words, and the Subword Compromise</h1>
-<!-- SUMMARY: The translation of raw text into a sequence of integer IDs requires defining a finite vocabulary space. Analyzing word-level and character-level boundaries reveals an inherent mathematical tradeoff between infinite vocabulary expansion and the destruction of semantic meaning, mandating a subword compression algorithm. --><p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/tokenization-ebook-v1.0.pdf">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p><p>The preceding introduction established that neural networks cannot perform mathematical operations on text directly. Instead, these initial raw text strings need to be translated into continuous, $n$-dimensional vectors, where every dimension represents a distinct semantic feature of the string. The strings receive a randomly assigned, discrete integer ID that allows the architecture to look up the corresponding semantic vector in the embedding matrix. This mapping function necessitates a predefined vocabulary: a finite list of recognized textual elements.</p>
+<style>
+  /* Removed font size constraint */
+  .trace-container td {
+    white-space: nowrap !important;
+  }
+  .trace-container b code {
+    font-weight: 900 !important;
+    color: #9a5b65 !important;
+    background-color: #fdf5f6 !important;
+    border: 1px solid #e0c6cb !important;
+    border-radius: 0.4em !important;
+  }
+  @media (prefers-color-scheme: dark) {
+    .trace-container b code {
+      color: #e6b3bc !important;
+      background-color: #3b2a2d !important;
+      border: 1px solid #6b4d53 !important;
+      border-radius: 0.4em !important;
+    }
+  }
+</style><!-- SUMMARY: The translation of raw text into a sequence of integer IDs requires defining a finite vocabulary space. Analyzing word-level and character-level boundaries reveals an inherent mathematical tradeoff between infinite vocabulary expansion and the destruction of semantic meaning, mandating a subword compression algorithm. --><p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/tokenization-ebook-v1.0.pdf">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p><p>The preceding introduction established that neural networks cannot perform mathematical operations on text directly. Instead, these initial raw text strings need to be translated into continuous, $n$-dimensional vectors, where every dimension represents a distinct semantic feature of the string. The strings receive a randomly assigned, discrete integer ID that allows the architecture to look up the corresponding semantic vector in the embedding matrix. This mapping function necessitates a predefined vocabulary: a finite list of recognized textual elements.</p>
 <p>The structural definition of these elements dictates two fundamental properties of the neural network. First, the size of this vocabulary defines the strict memory constraints of the model, as every recognized element requires a dedicated vector in memory. Second, the boundaries of these elements define the semantic capabilities of the architecture, as the model can only learn concepts that are cleanly isolated by its vocabulary.</p>
 <h2>The Word-Level Explosion</h2>
 <p>Defining the vocabulary space around natural word boundaries presents an intuitive starting point. Under this paradigm, every distinct word in a corpus receives a unique integer ID.</p>
 <p>A minimal toy corpus demonstrates the initial viability of this approach. Applying strict word-level boundaries produces a nine-element vocabulary:</p>
-<p><code>waking</code> <code>woke</code> <code>woken</code><br><code>walking</code> <code>walked</code> <code>walker</code><br><code>talking</code> <code>talked</code> <code>talker</code>  </p>
-<p>The structural flaw emerges immediately when scaling this strategy to a realistic production corpus. A modern language contains hundreds of thousands of base words. Adding grammatical permutations, prefixes, suffixes, punctuation combinations, and typographical errors results in unbounded expansion.</p>
+<div class="trace-container">
+<table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse;">
+  <tbody>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>waking</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>woke</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>woken</code></b></td>
+    </tr>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>walking</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>walked</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>walker</code></b></td>
+    </tr>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>talking</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>talked</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>talker</code></b></td>
+    </tr>
+  </tbody>
+</table>
+</div><p>The structural flaw emerges immediately when scaling this strategy to a realistic production corpus. A modern language contains hundreds of thousands of base words. Adding grammatical permutations, prefixes, suffixes, punctuation combinations, and typographical errors results in unbounded expansion.</p>
 <p>Every unique token requires a dedicated row in the architecture&#39;s embedding matrix. A vocabulary of one million distinct words mandates an embedding matrix with one million rows.</p>
 <p>$$
 W_E = \begin{bmatrix}
@@ -121,8 +160,9 @@ $$</p>
 <h2>The Character-Level Destruction</h2>
 <p>Addressing the dimensionality explosion requires constraining the vocabulary size. The opposite extreme of the tokenization spectrum defines the vocabulary around individual characters.</p>
 <p>Applying character-level boundaries to the toy corpus decomposes the text into a tiny, highly constrained vocabulary of thirteen distinct elements, including a designated end-of-word marker <code>&lt;/w&gt;</code>:</p>
-<p><code>a</code> <code>d</code> <code>e</code> <code>g</code> <code>i</code><br><code>k</code> <code>l</code> <code>n</code> <code>o</code> <code>r</code><br><code>t</code> <code>w</code> <code>&lt;/w&gt;</code>  </p>
-<p>This approach completely resolves the memory explosion problem. The embedding matrix shrinks to a negligible size.</p>
+<div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2; text-align: left;">
+<b><code>a</code></b> <b><code>d</code></b> <b><code>e</code></b> <b><code>g</code></b> <b><code>i</code></b> <b><code>k</code></b> <b><code>l</code></b> <b><code>n</code></b> <b><code>o</code></b> <b><code>r</code></b> <b><code>t</code></b> <b><code>w</code></b> <b><code>&lt;/w&gt;</code></b>
+</div><p>This approach completely resolves the memory explosion problem. The embedding matrix shrinks to a negligible size.</p>
 <p>The catastrophic failure of this method lies in the semantic destruction of the sequence. Individual characters carry zero inherent meaning. The sequence <code>t</code>, <code>a</code>, <code>l</code>, <code>k</code> forces the neural network to expend significant computational depth merely to reconstruct the basic semantic unit of conversation. </p>
 <p>The sequence length also expands drastically. The core attention mechanism within a Transformer scales quadratically, requiring every token to mathematically compare itself against every other token in the sequence. If a single word decomposes into six individual characters, the computational cost for that word increases by a factor of thirty-six. A simple paragraph of text transforms into an overwhelmingly long sequence of isolated characters, completely paralyzing the architecture&#39;s ability to process long-range context efficiently.</p>
 <h2>The Subword Compromise</h2>
@@ -130,8 +170,9 @@ $$</p>
 <p>Resolving this tension requires a middle ground that balances vocabulary size against sequence length. A subword tokenization algorithm decomposes rare words into smaller, logical pieces while preserving common words as intact units. This approach achieves the necessary mathematical compromise. </p>
 <p>Decomposing rare and complex words into reusable subword units strictly bounds the overall vocabulary size, preserving memory efficiency. If the architecture encounters an extremely rare word, it does not need to memorize a completely new vector. Instead, it constructs the meaning using common, pre-learned subword pieces it already knows. Simultaneously, preserving common words as single tokens minimizes the overall sequence length, protecting the attention mechanism from quadratic explosion. A common word remains a single token rather than ten isolated characters, drastically reducing the computational penalty during the attention calculation.</p>
 <p>Applying a hypothetical subword algorithm to the toy corpus reveals morphological structures hidden across different verb families. The prefixes <code>walk</code> and <code>talk</code> might remain whole, while common suffixes like <code>ing</code> and <code>ed</code> separate into independent, reusable tokens.</p>
-<p><code>walk</code> <code>talk</code> <code>ing</code> <code>ed</code> <code>er</code>  </p>
-<p>The embedding matrix row corresponding to <code>ing</code> captures the geometric representation of continuous action. The architecture effectively constructs composite representations for novel combinations by adding the learned vector for a stem to the learned vector for a suffix.</p>
+<div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2; text-align: left;">
+<b><code>walk</code></b> <b><code>talk</code></b> <b><code>ing</code></b> <b><code>ed</code></b> <b><code>er</code></b>
+</div><p>The embedding matrix row corresponding to <code>ing</code> captures the geometric representation of continuous action. The architecture effectively constructs composite representations for novel combinations by adding the learned vector for a stem to the learned vector for a suffix.</p>
 <h2>The Mechanism of Merging</h2>
 <p>Achieving this ideal subword state requires a deterministic, data-driven mathematical process rather than a manual set of linguistic rules. Byte Pair Encoding accomplishes this through a systematic sequence of merge operations.</p>
 <p>The algorithm initializes at the absolute character level, assuming zero inherent semantic meaning. The system then scans the training corpus to identify the single most frequent adjacent pair of tokens. Upon identifying this highest-frequency pair, the algorithm fuses the two discrete elements into a single, new token. This operation increments the vocabulary size by one while simultaneously shrinking the overall length of the encoded sequence. For example, merging the individual character tokens <code>i</code> and <code>n</code> into the single token <code>in</code> adds a term to the vocabulary but reduces the representation of the word &#39;walking&#39; by one token, decreasing the overall sequence length the attention mechanism must process.</p>

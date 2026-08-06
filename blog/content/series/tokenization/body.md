@@ -53,6 +53,29 @@ This vocabulary provides the structural variation necessary to demonstrate how B
 
 <h1 id="chapter-1-characters-words-and-the-subword-compromise">Chapter 1: Characters, Words, and the Subword Compromise</h1>
 
+
+<style>
+  /* Removed font size constraint */
+  .trace-container td {
+    white-space: nowrap !important;
+  }
+  .trace-container b code {
+    font-weight: 900 !important;
+    color: #9a5b65 !important;
+    background-color: #fdf5f6 !important;
+    border: 1px solid #e0c6cb !important;
+    border-radius: 0.4em !important;
+  }
+  @media (prefers-color-scheme: dark) {
+    .trace-container b code {
+      color: #e6b3bc !important;
+      background-color: #3b2a2d !important;
+      border: 1px solid #6b4d53 !important;
+      border-radius: 0.4em !important;
+    }
+  }
+</style>
+
 <!-- SUMMARY: The translation of raw text into a sequence of integer IDs requires defining a finite vocabulary space. Analyzing word-level and character-level boundaries reveals an inherent mathematical tradeoff between infinite vocabulary expansion and the destruction of semantic meaning, mandating a subword compression algorithm. -->
 
 The preceding introduction established that neural networks cannot perform mathematical operations on text directly. Instead, these initial raw text strings need to be translated into continuous, $n$-dimensional vectors, where every dimension represents a distinct semantic feature of the string. The strings receive a randomly assigned, discrete integer ID that allows the architecture to look up the corresponding semantic vector in the embedding matrix. This mapping function necessitates a predefined vocabulary: a finite list of recognized textual elements.
@@ -65,9 +88,27 @@ Defining the vocabulary space around natural word boundaries presents an intuiti
 
 A minimal toy corpus demonstrates the initial viability of this approach. Applying strict word-level boundaries produces a nine-element vocabulary:
 
-`waking` `woke` `woken`  
-`walking` `walked` `walker`  
-`talking` `talked` `talker`  
+<div class="trace-container">
+<table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse;">
+  <tbody>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>waking</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>woke</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>woken</code></b></td>
+    </tr>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>walking</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>walked</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>walker</code></b></td>
+    </tr>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>talking</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>talked</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>talker</code></b></td>
+    </tr>
+  </tbody>
+</table>
+</div>
 
 
 The structural flaw emerges immediately when scaling this strategy to a realistic production corpus. A modern language contains hundreds of thousands of base words. Adding grammatical permutations, prefixes, suffixes, punctuation combinations, and typographical errors results in unbounded expansion.
@@ -91,9 +132,9 @@ Addressing the dimensionality explosion requires constraining the vocabulary siz
 
 Applying character-level boundaries to the toy corpus decomposes the text into a tiny, highly constrained vocabulary of thirteen distinct elements, including a designated end-of-word marker `</w>`:
 
-`a` `d` `e` `g` `i`  
-`k` `l` `n` `o` `r`  
-`t` `w` `</w>`  
+<div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2; text-align: left;">
+<b><code>a</code></b> <b><code>d</code></b> <b><code>e</code></b> <b><code>g</code></b> <b><code>i</code></b> <b><code>k</code></b> <b><code>l</code></b> <b><code>n</code></b> <b><code>o</code></b> <b><code>r</code></b> <b><code>t</code></b> <b><code>w</code></b> <b><code>&lt;/w&gt;</code></b>
+</div>
 
 
 This approach completely resolves the memory explosion problem. The embedding matrix shrinks to a negligible size.
@@ -112,7 +153,9 @@ Decomposing rare and complex words into reusable subword units strictly bounds t
 
 Applying a hypothetical subword algorithm to the toy corpus reveals morphological structures hidden across different verb families. The prefixes `walk` and `talk` might remain whole, while common suffixes like `ing` and `ed` separate into independent, reusable tokens.
 
-`walk` `talk` `ing` `ed` `er`  
+<div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2; text-align: left;">
+<b><code>walk</code></b> <b><code>talk</code></b> <b><code>ing</code></b> <b><code>ed</code></b> <b><code>er</code></b>
+</div>
 
 
 The embedding matrix row corresponding to `ing` captures the geometric representation of continuous action. The architecture effectively constructs composite representations for novel combinations by adding the learned vector for a stem to the learned vector for a suffix.
