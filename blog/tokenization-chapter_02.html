@@ -111,12 +111,14 @@
     color: #9a5b65 !important;
     background-color: #fdf5f6 !important;
     border: 1px solid #e0c6cb !important;
+    border-radius: 0.4em !important;
   }
   @media (prefers-color-scheme: dark) {
     .trace-container b code {
       color: #e6b3bc !important;
       background-color: #3b2a2d !important;
       border: 1px solid #6b4d53 !important;
+      border-radius: 0.4em !important;
     }
   }
 </style><!-- SUMMARY: Constructing an optimized subword vocabulary requires a deterministic compression algorithm rather than manual linguistic rules. Byte Pair Encoding resolves this by initializing a base character vocabulary and executing a greedy, iterative merge operation that systematically fuses the most frequent adjacent tokens into unified semantic structures. --><p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/tokenization-ebook-v1.0.pdf">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p><p>The previous section established that subword tokenization provides the necessary mathematical compromise between the dimensionality explosion of word-level tokenization and the semantic destruction of character-level boundaries. Constructing this precise subword vocabulary requires a data-driven mechanism. Byte Pair Encoding accomplishes this structural transformation through a deterministic, iterative pipeline that binds distinct characters into logical stems and suffixes.</p>

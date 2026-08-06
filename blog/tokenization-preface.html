@@ -111,12 +111,14 @@
     color: #9a5b65 !important;
     background-color: #fdf5f6 !important;
     border: 1px solid #e0c6cb !important;
+    border-radius: 0.4em !important;
   }
   @media (prefers-color-scheme: dark) {
     .trace-container b code {
       color: #e6b3bc !important;
       background-color: #3b2a2d !important;
       border: 1px solid #6b4d53 !important;
+      border-radius: 0.4em !important;
     }
   }
 </style><!-- SUMMARY: Neural networks fundamentally operate on numerical tensors, establishing a strict requirement to translate raw text into structured integer sequences. Byte Pair Encoding satisfies this mathematical constraint by statistically discovering subword units, serving as the critical bridge to the initial embedding matrix. --><p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/tokenization-ebook-v1.0.pdf">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p><p>The Transformer architecture relies entirely on continuous vector spaces and linear transformations to process information. Neural networks compute by calculating dot products and multiplying matrices. This strict mathematical reality dictates that raw text cannot be fed directly into the initial embedding matrix. A rigorous translation layer must exist to convert discrete character strings into vectors within an $n$-dimensional space before any neural computation can occur.</p>
