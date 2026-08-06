@@ -2,10 +2,7 @@
 
 
 <style>
-  .trace-container code {
-    font-size: 0.75em !important;
-    padding: 0.15em 0.3em !important;
-  }
+  /* Removed font size constraint */
   .trace-container td {
     white-space: nowrap !important;
   }
@@ -38,8 +35,31 @@ This isolation requires a dedicated mechanism to preserve the original structura
 
 The toy corpus from the preceding article provides a concrete initialization state. The corpus consists of nine distinct verbs, each appearing exactly once. Decomposing these words produces a highly constrained initial vocabulary of thirteen character-level tokens:
 
-`a` `d` `e` `g` `i` `k` `l`  
-`n` `o` `r` `t` `w` `</w>`  
+<div class="trace-container">
+<table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse; text-align: center;">
+  <tbody>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>a</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>d</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>e</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>g</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>i</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>k</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>l</code></b></td>
+    </tr>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>n</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>o</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>r</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>t</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>w</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>&lt;/w&gt;</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
 
 
 The words themselves transform into sequences constructed exclusively from this initial character inventory. For example, the string 'walking' maps to a sequence of eight discrete elements: `w`, `a`, `l`, `k`, `i`, `n`, `g`, `</w>`. The entire corpus is processed into this fully atomized state before any compression occurs.
@@ -81,8 +101,31 @@ The algorithm identifies the pairs `a` + `l`, `k` + `e`, and `l` + `k` as tied f
 
 The identification of the highest-frequency pair triggers the central update mechanism. The algorithm formally registers a new token representing the concatenation of the selected pair. This new element is appended to the recognized vocabulary, increasing the total size of the vocabulary space by one.
 
-`a` `d` `e` `g` `i` `k` `l`  
-`n` `o` `r` `t` `w` `</w>` **`al`**  
+<div class="trace-container">
+<table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse; text-align: center;">
+  <tbody>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>a</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>d</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>e</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>g</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>i</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>k</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>l</code></b></td>
+    </tr>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>n</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>o</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>r</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>t</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>w</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>&lt;/w&gt;</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>al</code></b></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
 
 
 Simultaneously, the algorithm sweeps through the entire corpus and replaces every adjacent occurrence of the individual tokens with the new fused token. This structural update reduces the overall sequence length of the corpus. Two discrete dimensions of information are compressed into a single, cohesive unit. For example, the sequence representation of the string 'walking' compresses from eight elements to seven: `w`, `al`, `k`, `i`, `n`, `g`, `</w>`.

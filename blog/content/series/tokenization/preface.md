@@ -1,10 +1,7 @@
 # Preface: Why Tokenization Matters
 
 <style>
-  .trace-container code {
-    font-size: 0.75em !important;
-    padding: 0.15em 0.3em !important;
-  }
+  /* Removed font size constraint */
   .trace-container td {
     white-space: nowrap !important;
   }
@@ -52,19 +49,19 @@ This series explores the mechanics of Byte Pair Encoding from the ground up. To 
       <td style="border: none; padding: 0.25rem 0; text-align: left;"></td>
     </tr>
     <tr>
-      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>waking</code></td>
-      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>woke</code></td>
-      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>woken</code></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>waking</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>woke</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>woken</code></b></td>
     </tr>
     <tr>
-      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>walking</code></td>
-      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>walked</code></td>
-      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>walker</code></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>walking</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>walked</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>walker</code></b></td>
     </tr>
     <tr>
-      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>talking</code></td>
-      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>talked</code></td>
-      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>talker</code></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>talking</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>talked</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>talker</code></b></td>
     </tr>
   </tbody>
 </table>

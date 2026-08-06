@@ -1,10 +1,7 @@
 # Part 4: Encoding and Decoding
 
 <style>
-  .trace-container code {
-    font-size: 0.75em !important;
-    padding: 0.15em 0.3em !important;
-  }
+  /* Removed font size constraint */
   .trace-container td {
     white-space: nowrap !important;
   }

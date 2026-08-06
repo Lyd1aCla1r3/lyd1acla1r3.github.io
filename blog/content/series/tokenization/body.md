@@ -1,10 +1,7 @@
 <h1 id="preface-why-tokenization-matters">Preface: Why Tokenization Matters</h1>
 
 <style>
-  .trace-container code {
-    font-size: 0.75em !important;
-    padding: 0.15em 0.3em !important;
-  }
+  /* Removed font size constraint */
   .trace-container td {
     white-space: nowrap !important;
   }
@@ -50,19 +47,19 @@ This series explores the mechanics of Byte Pair Encoding from the ground up. To 
       <td style="border: none; padding: 0.25rem 0; text-align: left;"></td>
     </tr>
     <tr>
-      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>waking</code></td>
-      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>woke</code></td>
-      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>woken</code></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>waking</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>woke</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>woken</code></b></td>
     </tr>
     <tr>
-      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>walking</code></td>
-      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>walked</code></td>
-      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>walker</code></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>walking</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>walked</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>walker</code></b></td>
     </tr>
     <tr>
-      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>talking</code></td>
-      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>talked</code></td>
-      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>talker</code></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>talking</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>talked</code></b></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>talker</code></b></td>
     </tr>
   </tbody>
 </table>
@@ -159,10 +156,7 @@ The subsequent article formalizes this training algorithm in detail, as applied 
 
 
 <style>
-  .trace-container code {
-    font-size: 0.75em !important;
-    padding: 0.15em 0.3em !important;
-  }
+  /* Removed font size constraint */
   .trace-container td {
     white-space: nowrap !important;
   }
@@ -193,8 +187,31 @@ This isolation requires a dedicated mechanism to preserve the original structura
 
 The toy corpus from the preceding article provides a concrete initialization state. The corpus consists of nine distinct verbs, each appearing exactly once. Decomposing these words produces a highly constrained initial vocabulary of thirteen character-level tokens:
 
-`a` `d` `e` `g` `i` `k` `l`  
-`n` `o` `r` `t` `w` `</w>`  
+<div class="trace-container">
+<table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse; text-align: center;">
+  <tbody>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>a</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>d</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>e</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>g</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>i</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>k</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>l</code></b></td>
+    </tr>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>n</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>o</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>r</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>t</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>w</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>&lt;/w&gt;</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
 
 
 The words themselves transform into sequences constructed exclusively from this initial character inventory. For example, the string 'walking' maps to a sequence of eight discrete elements: `w`, `a`, `l`, `k`, `i`, `n`, `g`, `</w>`. The entire corpus is processed into this fully atomized state before any compression occurs.
@@ -236,8 +253,31 @@ The algorithm identifies the pairs `a` + `l`, `k` + `e`, and `l` + `k` as tied f
 
 The identification of the highest-frequency pair triggers the central update mechanism. The algorithm formally registers a new token representing the concatenation of the selected pair. This new element is appended to the recognized vocabulary, increasing the total size of the vocabulary space by one.
 
-`a` `d` `e` `g` `i` `k` `l`  
-`n` `o` `r` `t` `w` `</w>` **`al`**  
+<div class="trace-container">
+<table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse; text-align: center;">
+  <tbody>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>a</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>d</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>e</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>g</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>i</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>k</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>l</code></b></td>
+    </tr>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>n</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>o</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>r</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>t</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>w</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>&lt;/w&gt;</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>al</code></b></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
 
 
 Simultaneously, the algorithm sweeps through the entire corpus and replaces every adjacent occurrence of the individual tokens with the new fused token. This structural update reduces the overall sequence length of the corpus. Two discrete dimensions of information are compressed into a single, cohesive unit. For example, the sequence representation of the string 'walking' compresses from eight elements to seven: `w`, `al`, `k`, `i`, `n`, `g`, `</w>`.
@@ -271,10 +311,7 @@ The subsequent article executes this mathematical procedure against the toy corp
 
 
 <style>
-  .trace-container code {
-    font-size: 0.75em !important;
-    padding: 0.15em 0.3em !important;
-  }
+  /* Removed font size constraint */
   .trace-container td {
     white-space: nowrap !important;
   }
@@ -528,9 +565,50 @@ The corpus, however, does not perfectly compress into nine single-token words. T
 
 The *vocabulary dictionary* itself contains exactly 27 items: the 13 initial base characters plus the 14 new subwords generated during the merges. Because the vocabulary size directly dictates the architecture's input dimensions, the neural network's embedding matrix will now be instantiated with exactly 27 rows, one for each of these learned tokens.
 
-<div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2;">
-<code>&lt;/w&gt;</code> <code>a</code> <b><code>al</code></b> <b><code>alk</code></b> <b><code>alke</code></b> <b><code>alked</code></b> <b><code>alked&lt;/w&gt;</code></b> <b><code>alker</code></b> <b><code>alker&lt;/w&gt;</code></b> <b><code>alking&lt;/w&gt;</code></b> <code>d</code> <code>e</code> <code>g</code> <b><code>g&lt;/w&gt;</code></b> <code>i</code> <b><code>in</code></b> <b><code>ing&lt;/w&gt;</code></b> <code>k</code> <b><code>ke</code></b> <code>l</code> <code>n</code> <code>o</code> <b><code>oke</code></b> <code>r</code> <code>t</code> <code>w</code> <b><code>woke</code></b>
+<div class="trace-container">
+<table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse; text-align: center;">
+  <tbody>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>&lt;/w&gt;</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>a</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>al</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>alk</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>alke</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>alked</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>alked&lt;/w&gt;</code></b></td>
+    </tr>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>alker</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>alker&lt;/w&gt;</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>alking&lt;/w&gt;</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>d</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>e</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>g</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>g&lt;/w&gt;</code></b></td>
+    </tr>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>i</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>in</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>ing&lt;/w&gt;</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>k</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>ke</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>l</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>n</code></b></td>
+    </tr>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>o</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>oke</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>r</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>t</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>w</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"><b><code>woke</code></b></td>
+      <td style="border: none; padding: 0.25rem 0;"></td>
+    </tr>
+  </tbody>
+</table>
 </div>
+
+
 
 
 
@@ -543,10 +621,7 @@ The statistical frequency analysis successfully identified the structural regula
 <h1 id="chapter-4-encoding-and-decoding">Chapter 4: Encoding and Decoding</h1>
 
 <style>
-  .trace-container code {
-    font-size: 0.75em !important;
-    padding: 0.15em 0.3em !important;
-  }
+  /* Removed font size constraint */
   .trace-container td {
     white-space: nowrap !important;
   }
