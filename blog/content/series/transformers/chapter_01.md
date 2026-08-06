@@ -1,5 +1,28 @@
 # Part 1: Tokens, One-Hot Encodings, and the Embedding Matrix
 
+
+<style>
+  /* Removed font size constraint */
+  .trace-container td {
+    white-space: nowrap !important;
+  }
+  .trace-container b code {
+    font-weight: 900 !important;
+    color: #9a5b65 !important;
+    background-color: #fdf5f6 !important;
+    border: 1px solid #e0c6cb !important;
+    border-radius: 0.4em !important;
+  }
+  @media (prefers-color-scheme: dark) {
+    .trace-container b code {
+      color: #e6b3bc !important;
+      background-color: #3b2a2d !important;
+      border: 1px solid #6b4d53 !important;
+      border-radius: 0.4em !important;
+    }
+  }
+</style>
+
 <!-- SUMMARY: Translating raw text into a rigorous geometric representation requires mapping discrete tokens into orthogonal one-hot vectors. This process mathematically motivates the necessity of the embedding matrix to compress these isolated dimensions into a dense semantic space, enabling the natural inference of conceptual relationships. -->
 
 <p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
@@ -14,10 +37,9 @@ The objective is to process the sequence `<BOS>` `i` `woke` `up`.
 
 Before processing this sequence, the model needs a predefined universe of concepts to draw from. This universe is the vocabulary. In this example, the vocabulary is restricted to exactly twelve words. 
 
-`<BOS>` `<EOS>` `<PAD>` `i`  
-`we` `woke` `stayed` `up`  
-`late` `early` `today` `yesterday`  
-
+<div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2; text-align: left;">
+<span style="font-size: 0.9em;"><b><code>&lt;BOS&gt;</code></b> <b><code>&lt;EOS&gt;</code></b> <b><code>&lt;PAD&gt;</code></b> <b><code>i</code></b> <b><code>we</code></b> <b><code>woke</code></b> <b><code>stayed</code></b> <b><code>up</code></b> <b><code>late</code></b> <b><code>early</code></b> <b><code>today</code></b> <b><code>yesterday</code></b></span>
+</div>
 Tokenization maps raw text to the corresponding integer indices in this vocabulary list. The index acts as a unique identifier for the concept. 
 
 For this sequence, the mapping is straightforward. 

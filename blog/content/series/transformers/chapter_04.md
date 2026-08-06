@@ -1,5 +1,28 @@
 # Part 4: The Attention Score and $\sqrt{d_k}$
 
+
+<style>
+  /* Removed font size constraint */
+  .trace-container td {
+    white-space: nowrap !important;
+  }
+  .trace-container b code {
+    font-weight: 900 !important;
+    color: #9a5b65 !important;
+    background-color: #fdf5f6 !important;
+    border: 1px solid #e0c6cb !important;
+    border-radius: 0.4em !important;
+  }
+  @media (prefers-color-scheme: dark) {
+    .trace-container b code {
+      color: #e6b3bc !important;
+      background-color: #3b2a2d !important;
+      border: 1px solid #6b4d53 !important;
+      border-radius: 0.4em !important;
+    }
+  }
+</style>
+
 <!-- SUMMARY: Calculating raw attention scores via the dot product exposes a scaling problem in high-dimensional vector spaces. To prevent catastrophic softmax saturation and the resulting gradient decay, the variance is mathematically stabilized by dividing the scores by the square root of the head dimension. -->
 
 <p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
@@ -8,8 +31,9 @@ The previous section established why the Transformer does not calculate attentio
 
 The sequence currently consists of four tokens:
 
-`<BOS>` `i` `woke` `up`  
-
+<div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2; text-align: left;">
+<span style="font-size: 0.9em;"><b><code>&lt;BOS&gt;</code></b> <b><code>i</code></b> <b><code>woke</code></b> <b><code>up</code></b></span>
+</div>
 The actual attention scores must now be calculated. This step quantifies how strongly each token in the sequence should attend to every other token. This is achieved by computing the dot product of every Query vector with every Key vector. 
 
 ## The Dot Product as a Metric of Similarity
