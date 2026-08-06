@@ -1,5 +1,29 @@
 # Part 2: The BPE Training Algorithm
 
+
+<style>
+  .trace-container code {
+    font-size: 0.75em !important;
+    padding: 0.15em 0.3em !important;
+  }
+  .trace-container td {
+    white-space: nowrap !important;
+  }
+  .trace-container b code {
+    font-weight: 900 !important;
+    color: #9a5b65 !important;
+    background-color: #fdf5f6 !important;
+    border: 1px solid #e0c6cb !important;
+  }
+  @media (prefers-color-scheme: dark) {
+    .trace-container b code {
+      color: #e6b3bc !important;
+      background-color: #3b2a2d !important;
+      border: 1px solid #6b4d53 !important;
+    }
+  }
+</style>
+
 <!-- SUMMARY: Constructing an optimized subword vocabulary requires a deterministic compression algorithm rather than manual linguistic rules. Byte Pair Encoding resolves this by initializing a base character vocabulary and executing a greedy, iterative merge operation that systematically fuses the most frequent adjacent tokens into unified semantic structures. -->
 
 <p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/tokenization-ebook-v1.0.pdf">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p>
@@ -26,10 +50,29 @@ The core intelligence of the algorithm relies on discovering structural redundan
 
 This frequency counting operation tallies the occurrences of every adjacent pair across all words. The goal is to identify the single pair of tokens that co-occur most frequently. In the initialized state of the toy corpus, several character pairings appear repeatedly due to the morphological similarities of the chosen verb families. A tally of the most common adjacent pairs immediately highlights structural patterns:
 
-`a` + `l` $\rightarrow$ 6 occurrences  
-`k` + `e` $\rightarrow$ 6 occurrences  
-`l` + `k` $\rightarrow$ 6 occurrences  
-`w` + `a` $\rightarrow$ 4 occurrences  
+<div class="trace-container">
+<table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse;">
+  <tbody>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>a</code> + <code>l</code> &rarr;</td>
+      <td style="border: none; padding: 0.25rem 0; text-align: right;">6 occurrences</td>
+    </tr>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>k</code> + <code>e</code> &rarr;</td>
+      <td style="border: none; padding: 0.25rem 0; text-align: right;">6 occurrences</td>
+    </tr>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>l</code> + <code>k</code> &rarr;</td>
+      <td style="border: none; padding: 0.25rem 0; text-align: right;">6 occurrences</td>
+    </tr>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>w</code> + <code>a</code> &rarr;</td>
+      <td style="border: none; padding: 0.25rem 0; text-align: right;">4 occurrences</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
 
 
 The algorithm identifies the pairs `a` + `l`, `k` + `e`, and `l` + `k` as tied for the highest frequency. A deterministic tie-breaking protocol resolves this collision. When multiple pairs share the highest frequency, the algorithm selects the pair that appears first when sorted lexicographically. Comparing the tied pairs, the character `a` precedes `k` and `l` in the alphabet, dictating the selection of the pair `a` + `l` for the inaugural merge operation.

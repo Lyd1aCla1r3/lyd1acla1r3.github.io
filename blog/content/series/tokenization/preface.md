@@ -1,4 +1,28 @@
 # Preface: Why Tokenization Matters
+
+<style>
+  .trace-container code {
+    font-size: 0.75em !important;
+    padding: 0.15em 0.3em !important;
+  }
+  .trace-container td {
+    white-space: nowrap !important;
+  }
+  .trace-container b code {
+    font-weight: 900 !important;
+    color: #9a5b65 !important;
+    background-color: #fdf5f6 !important;
+    border: 1px solid #e0c6cb !important;
+  }
+  @media (prefers-color-scheme: dark) {
+    .trace-container b code {
+      color: #e6b3bc !important;
+      background-color: #3b2a2d !important;
+      border: 1px solid #6b4d53 !important;
+    }
+  }
+</style>
+
 <!-- SUMMARY: Neural networks fundamentally operate on numerical tensors, establishing a strict requirement to translate raw text into structured integer sequences. Byte Pair Encoding satisfies this mathematical constraint by statistically discovering subword units, serving as the critical bridge to the initial embedding matrix. -->
 
 <p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/tokenization-ebook-v1.0.pdf">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p>
@@ -19,11 +43,33 @@ Several algorithms exist to perform this segmentation, including WordPiece and U
 
 This series explores the mechanics of Byte Pair Encoding from the ground up. To make the abstract process concrete, the algorithm will be executed entirely by hand on a carefully designed toy corpus featuring distinct morphological patterns:
 
-| | | |
-|---|---|---|
-| `waking` | `woke` | `woken` |
-| `walking` | `walked` | `walker` |
-| `talking` | `talked` | `talker` |
+<div class="trace-container">
+<table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse;">
+  <tbody>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"></td>
+    </tr>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>waking</code></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>woke</code></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>woken</code></td>
+    </tr>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>walking</code></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>walked</code></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>walker</code></td>
+    </tr>
+    <tr>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>talking</code></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>talked</code></td>
+      <td style="border: none; padding: 0.25rem 0; text-align: left;"><code>talker</code></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
 
 This vocabulary provides the structural variation necessary to demonstrate how Byte Pair Encoding organically extracts shared stems and suffixes. The corpus groups three distinct root verbs alongside their present, past, and agent noun variations. The shared linguistic suffixes like "ing", "ed", and "er" guarantee that the algorithm will mathematically discover these recurring semantic structures through statistical frequency alone. The subsequent section examines the fundamental tension between character-level and word-level tokenization, mathematically proving why the subword compromise is necessary.
 
