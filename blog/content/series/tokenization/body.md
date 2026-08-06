@@ -40,31 +40,8 @@ Several algorithms exist to perform this segmentation, including WordPiece and U
 
 This series explores the mechanics of Byte Pair Encoding from the ground up. To make the abstract process concrete, the algorithm will be executed entirely by hand on a carefully designed toy corpus featuring distinct morphological patterns:
 
-<div class="trace-container">
-<table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse;">
-  <tbody>
-    <tr>
-      <td style="border: none; padding: 0.25rem 0; text-align: left;"></td>
-      <td style="border: none; padding: 0.25rem 0; text-align: left;"></td>
-      <td style="border: none; padding: 0.25rem 0; text-align: left;"></td>
-    </tr>
-    <tr>
-      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>waking</code></b></td>
-      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>woke</code></b></td>
-      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>woken</code></b></td>
-    </tr>
-    <tr>
-      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>walking</code></b></td>
-      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>walked</code></b></td>
-      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>walker</code></b></td>
-    </tr>
-    <tr>
-      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>talking</code></b></td>
-      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>talked</code></b></td>
-      <td style="border: none; padding: 0.25rem 0; text-align: left;"><b><code>talker</code></b></td>
-    </tr>
-  </tbody>
-</table>
+<div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2; text-align: center;">
+<span style="font-size: 0.9em;"><b><code>waking</code></b> <b><code>woke</code></b> <b><code>woken</code></b> <b><code>walking</code></b> <b><code>walked</code></b> <b><code>walker</code></b> <b><code>talking</code></b> <b><code>talked</code></b> <b><code>talker</code></b></span>
 </div>
 
 
