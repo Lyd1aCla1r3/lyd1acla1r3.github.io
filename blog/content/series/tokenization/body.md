@@ -799,9 +799,10 @@ The tokenization pipeline is now mathematically complete, reliably transforming 
 <!-- SUMMARY: Bridging the theoretical foundation of tokenization to production realities requires replacing arbitrary character sets with a universal byte-level fallback. Tracing the exact algorithm across pure byte integers proves that morphological structure emerges naturally without any requirement for human-readable letters, establishing the strict mathematical dimensions required by the Transformer's embedding matrix. -->
 
 <style>
-  .trace-container code {
-    font-size: 0.75em !important;
-    padding: 0.15em 0.3em !important;
+  .trace-container code, .trace-container table code {
+    font-size: 0.65em !important;
+    padding: 2px 4px !important;
+    margin-right: 2px !important;
   }
   .trace-container td {
     white-space: nowrap !important;
@@ -1078,3 +1079,24 @@ This strict dimensional requirement completes the data transformation pipeline. 
 
 The origin of these dense coordinate vectors constitutes the foundational mechanism of the Transformer architecture. Calculating the exact multi-dimensional coordinates required to capture the semantic meaning of each token will be explored in depth in the next series.
 
+
+<style>
+.trace-container code {
+  color: #8b4f5a !important;
+  background-color: #ffffff !important;
+  border: 1px solid #e0c6cb !important;
+  border-radius: 0.4em !important;
+  padding: 0.2rem 0.4rem !important;
+}
+.trace-container table code {
+  border-radius: 100px !important;
+  padding: 4px 10px !important;
+}
+@media (prefers-color-scheme: dark) {
+  .trace-container code {
+    color: #e6b3bc !important;
+    background-color: #2b1d20 !important;
+    border: 1px solid #6b4d53 !important;
+  }
+}
+</style>

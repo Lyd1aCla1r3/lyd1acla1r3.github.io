@@ -114,6 +114,30 @@ for i, body in enumerate(content_bodies):
         body_content += '\n\n<div style="page-break-before: always;"></div>\n\n'
     body_content += body
 
+# Inject CSS for pill box styling to match the blog
+body_content += """
+<style>
+.trace-container code {
+  color: #8b4f5a !important;
+  background-color: #ffffff !important;
+  border: 1px solid #e0c6cb !important;
+  border-radius: 0.4em !important;
+  padding: 0.2rem 0.4rem !important;
+}
+.trace-container table code {
+  border-radius: 100px !important;
+  padding: 4px 10px !important;
+}
+@media (prefers-color-scheme: dark) {
+  .trace-container code {
+    color: #e6b3bc !important;
+    background-color: #2b1d20 !important;
+    border: 1px solid #6b4d53 !important;
+  }
+}
+</style>
+"""
+
 with open(body_file, 'w') as f:
     f.write(body_content)
 print("Wrote body.md")
