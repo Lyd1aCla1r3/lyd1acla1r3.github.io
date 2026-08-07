@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ebooks — Lydia Pedersen</title>
+  <link rel="stylesheet" href="../css/styles.css?v=1.2">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .blog-list { max-width: 800px; margin: 0 auto; padding: var(--space-4xl) var(--space-md); }
+    .blog-item {
+        background: rgba(255, 255, 255, 0.65);
+        padding: var(--space-xl);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-subtle);
+        margin-bottom: var(--space-lg);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        display: block;
+    }
+    .blog-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 24px var(--rose-gold-subtle);
+    }
+    .blog-item h2 { font-family: var(--font-display); color: var(--text-primary); margin-top: 0; }
+    .blog-item a { text-decoration: none; color: inherit; }
+    .blog-item p { color: var(--text-secondary); line-height: var(--lh-relaxed); margin-bottom: 0; }
+    .blog-item a.download-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: var(--space-md);
+        color: var(--text-accent);
+        font-weight: 500;
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s ease;
+    }
+    .blog-item a.download-link:hover {
+        border-bottom-color: var(--text-accent);
+    }
+  </style>
+</head>
+<body>
+  <!-- Fixed chip visual -->
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
+  <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="../index.html" class="nav__logo" aria-label="Home">lydia<span>.</span>pedersen</a>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="../index.html#about" class="nav__link">About</a></li>
+        <li><a href="../index.html#samples" class="nav__link">Writing</a></li>
+        <li><a href="../index.html#case-studies" class="nav__link">Engineering</a></li>
+        <li><a href="../index.html#skills" class="nav__link">Skills</a></li>
+        <li><a href="../blog/index.html" class="nav__link">Blog</a></li>
+        <li><a href="index.html" class="nav__link">Ebooks</a></li>
+        <li><a href="../index.html#contact" class="nav__link">Contact</a></li>
+      </ul>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="nav__toggle-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-2xl));">
+    <div class="container blog-list">
+        <nav aria-label="breadcrumb" class="breadcrumbs">
+          <ol>
+            <li><a href="../index.html">Home</a></li>
+            <li aria-current="page">Ebooks</li>
+          </ol>
+        </nav>
+        <h1 class="hero__name" style="text-align: center; margin-bottom: var(--space-md);">Ebooks</h1>
+        <p style="text-align: center; color: var(--text-secondary); font-style: italic; margin-bottom: var(--space-2xl);">Deep dives into complex architectures, formatted for long-form reading.</p>
+        
+        <article class="blog-item">
+            <h2>Transformers: From Scratch</h2>
+            <p>A rigorous, geometric deconstruction of the Decoder-only Transformer architecture. This complete series builds the model from the ground up, moving from the vocabulary embedding matrix through the multi-head attention mechanism and residual streams, terminating in the mathematically precise calculation of the cross-entropy loss function.</p>
+            <a href="../assets/docs/transformers-ebook-v1.0.pdf" class="download-link" target="_blank" rel="noopener">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Download PDF
+            </a>
+        </article>
+
+        <article class="blog-item">
+            <h2>Tokenization: Byte Pair Encoding</h2>
+            <p>A step-by-step unrolling of the Byte Pair Encoding algorithm. This collection traces the deterministic compression of character-level data into semantic subword units, proving mathematically how the statistical distribution of language inherently generates structural linguistic features before reaching the neural network.</p>
+            <a href="../assets/docs/tokenization-ebook-v1.0.pdf" class="download-link" target="_blank" rel="noopener">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Download PDF
+            </a>
+        </article>
+
+    </div>
+  </main>
+  <script src="../js/main.js"></script>
+</body>
+</html>

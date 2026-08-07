@@ -152,70 +152,51 @@
 
   <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-2xl));">
     <div class="container blog-list">
-        <nav aria-label="breadcrumb" class="breadcrumbs">
-          <ol>
-            <li><a href="../index.html">Home</a></li>
-            <li aria-current="page">Blog</li>
-          </ol>
-        </nav>
+        <nav aria-label="breadcrumb" class="breadcrumbs"><ol><li><a href="../index.html">Home</a></li><li><a href="index.html#tab-series">Blog</a></li><li aria-current="page">Tokenization Series</li></ol></nav>
         <h1 class="hero__name" style="text-align: center; margin-bottom: var(--space-2xl);">Blog</h1>
         <!-- BLOG_LIST_START -->
 
-        <div class="blog-tabs">
-            <input type="radio" id="tab-perspectives" name="blog-tabs" checked>
-            <label for="tab-perspectives" class="tab-label">Perspectives</label>
-            
-            <input type="radio" id="tab-series" name="blog-tabs">
-            <label for="tab-series" class="tab-label">Series</label>
-            
-            <input type="radio" id="tab-methodology" name="blog-tabs">
-            <label for="tab-methodology" class="tab-label">Validation & Benchmarks</label>
-            
-            <div class="tab-content" id="content-perspectives">
-                <p class="tab-desc">Observations on the evolving landscape of technical enablement, exploring how architectural shifts and emerging tools influence the craft of documentation.</p>
-                
-        <a href="ai-for-code-vs-documentation.html">
-            <article class="blog-item">
-                <h2>AI for Code vs Documentation</h2>
-                <p>As AI radically accelerates software development, maintaining high-quality documentation has become an escalating challenge that simple agentic generation cannot fully resolve. Advancing documentation to a core priority requires keeping humans in the loop to capture the nuanced art and critical context of technical writing.</p>
-            </article>
-        </a>
-        <a href="teacher-forcing-vs-inference.html">
-            <article class="blog-item">
-                <h2>The Mathematics of Parallel Training: Teacher Forcing vs. Inference</h2>
-                <p>A step-by-step mathematical walkthrough contrasting the highly parallelized nature of Transformer training with the sequential bottleneck of inference. By utilizing a concrete toy example, the underlying tensor algebra of causal masking and cross-entropy loss is demystified. This renders the mechanics of Teacher Forcing accessible and rigorously proven without relying on abstraction.</p>
-            </article>
-        </a>
-            </div>
-            
-            <div class="tab-content" id="content-series">
-                <p class="tab-desc">Sequential explorations born from personal curiosity. These collections document my process of deconstructing complex systems and sharing the resulting insights.</p>
-                
-          <a href="series-tokenization.html">
-              <article class="blog-item series-item" style="margin-bottom: var(--space-md);">
-                  <h2>Tokenization Series</h2>
-                  <p>A sequential exploration of Tokenization. (6 chapters)</p>
-              </article>
-          </a>
-          <a href="series-transformers.html">
-              <article class="blog-item series-item" style="margin-bottom: var(--space-md);">
-                  <h2>Transformers Series</h2>
-                  <p>A sequential exploration of Transformers. (25 chapters)</p>
-              </article>
-          </a>
-            </div>
-            
-            <div class="tab-content" id="content-methodology">
-                <p class="tab-desc">Empirical investigations designed to resolve complex architectural questions through rigorous data analysis. Every benchmark is supported by a public repository so you can clone the infrastructure, run the tests, and independently reproduce the findings.</p>
-                
-        <a href="serp-api-benchmark.html">
-            <article class="blog-item">
-                <h2>Benchmarking SERP API Fidelity for AI Overviews</h2>
-                <p>This benchmark evaluates the parsing fidelity and extraction richness of major SERP APIs against the non-deterministic architecture of Google's AI Overviews. By mathematically auditing detection yields and structural data integrity, it rigorously determines which providers are capable of powering enterprise retrieval-augmented generation pipelines.</p>
-            </article>
-        </a>
-            </div>
-        </div>
+          <div class="series-group" style="margin-top: var(--space-2xl);">
+              <div class="series-items">
+                  
+                  <a href="tokenization-preface.html">
+                      <article class="blog-item series-item">
+                          <h2>Preface: Why Tokenization Matters</h2>
+                          <p>Neural networks fundamentally operate on numerical tensors, establishing a strict requirement to translate raw text into structured integer sequences. Byte Pair Encoding satisfies this mathematical constraint by statistically discovering subword units, serving as the critical bridge to the initial embedding matrix.</p>
+                      </article>
+                  </a>
+                  <a href="tokenization-chapter_01.html">
+                      <article class="blog-item series-item">
+                          <h2>Part 1: Characters, Words, and the Subword Compromise</h2>
+                          <p>The translation of raw text into a sequence of integer IDs requires defining a finite vocabulary space. Analyzing word-level and character-level boundaries reveals an inherent mathematical tradeoff between infinite vocabulary expansion and the destruction of semantic meaning, mandating a subword compression algorithm.</p>
+                      </article>
+                  </a>
+                  <a href="tokenization-chapter_02.html">
+                      <article class="blog-item series-item">
+                          <h2>Part 2: The BPE Training Algorithm</h2>
+                          <p>Constructing an optimized subword vocabulary requires a deterministic compression algorithm rather than manual linguistic rules. Byte Pair Encoding resolves this by initializing a base character vocabulary and executing a greedy, iterative merge operation that systematically fuses the most frequent adjacent tokens into unified semantic structures.</p>
+                      </article>
+                  </a>
+                  <a href="tokenization-chapter_03.html">
+                      <article class="blog-item series-item">
+                          <h2>Part 3: Training BPE by Hand</h2>
+                          <p>Executing the Byte Pair Encoding algorithm against a concrete corpus reveals exactly how abstract statistical rules collapse character-level data into optimized semantic units. Tracing the frequency counts and merge selections across a fourteen-step compression sequence demonstrates the deterministic derivation of morphological stems and suffixes without linguistic programming.</p>
+                      </article>
+                  </a>
+                  <a href="tokenization-chapter_04.html">
+                      <article class="blog-item series-item">
+                          <h2>Part 4: Encoding and Decoding</h2>
+                          <p>The deployment of a static vocabulary and ordered list of merge rules enables the rigorous tokenization of novel text. This process mathematically guarantees consistency with the training distribution while gracefully decomposing unseen words into familiar subword units.</p>
+                      </article>
+                  </a>
+                  <a href="tokenization-chapter_05.html">
+                      <article class="blog-item series-item">
+                          <h2>Part 5: From Bytes to Billions</h2>
+                          <p>Bridging the theoretical foundation of tokenization to production realities requires replacing arbitrary character sets with a universal byte-level fallback. Tracing the exact algorithm across pure byte integers proves that morphological structure emerges naturally without any requirement for human-readable letters, establishing the strict mathematical dimensions required by the Transformer's embedding matrix.</p>
+                      </article>
+                  </a>
+              </div>
+          </div>
         <!-- BLOG_LIST_END -->
 
     </div>

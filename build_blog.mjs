@@ -225,9 +225,28 @@ if (posts.length > 0) {
     } else {
        for (const [sName, sPosts] of Object.entries(seriesGroups)) {
           const seriesTitle = sName.charAt(0).toUpperCase() + sName.slice(1).replace(/-/g, ' ');
+          
           seriesHtml += `
-          <div class="series-group">
-              <h3 class="series-title">${seriesTitle}</h3>
+          <a href="series-${sName}.html">
+              <article class="blog-item series-item" style="margin-bottom: var(--space-md);">
+                  <h2>${seriesTitle} Series</h2>
+                  <p>A sequential exploration of ${seriesTitle}. (${sPosts.length} chapters)</p>
+              </article>
+          </a>`;
+          
+          // Generate dedicated series page
+          let seriesPageHtml = indexHtml;
+          seriesPageHtml = seriesPageHtml.replace(
+              /<nav aria-label="breadcrumb" class="breadcrumbs">[\s\S]*?<\/nav>/,
+              `<nav aria-label="breadcrumb" class="breadcrumbs"><ol><li><a href="../index.html">Home</a></li><li><a href="index.html#tab-series">Blog</a></li><li aria-current="page">${seriesTitle} Series</li></ol></nav>`
+          );
+          seriesPageHtml = seriesPageHtml.replace(
+              /<h1 class="hero__name" style="text-align: center; margin-bottom: var(--space-2xl);">Blog<\/h1>/,
+              `<h1 class="hero__name" style="text-align: center; margin-bottom: var(--space-2xl);">${seriesTitle} Series</h1>`
+          );
+          
+          const dedicatedSeriesContent = `
+          <div class="series-group" style="margin-top: var(--space-2xl);">
               <div class="series-items">
                   ${sPosts.map(post => `
                   <a href="${post.url}">
@@ -238,6 +257,13 @@ if (posts.length > 0) {
                   </a>`).join('')}
               </div>
           </div>`;
+          
+          seriesPageHtml = seriesPageHtml.replace(
+              /<!-- BLOG_LIST_START -->[\s\S]*?<!-- BLOG_LIST_END -->/,
+              `<!-- BLOG_LIST_START -->\n${dedicatedSeriesContent}\n        <!-- BLOG_LIST_END -->`
+          );
+          fs.writeFileSync(path.join(BLOG_DIR, `series-${sName}.html`), seriesPageHtml, 'utf-8');
+          console.log(`Generated dedicated series page: series-${sName}.html`);
        }
     }
     
