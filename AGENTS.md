@@ -4,7 +4,9 @@
 
 **CRITICAL RULE:** NEVER modify, edit, or touch any files in the Tokenization blog series again. The styling and content for this series are completely locked and finalized.
 
-This includes all files located in:
+This includes all files located in or related to:
 - `blog/content/series/tokenization/*`
+- `assets/docs/tokenization-ebook-v1.0.pdf`
+- Any code, scripts (e.g., `assemble_and_build.py`), or configuration related exclusively to the tokenization series or its ebook generation.
 
-Do not apply any further formatting, CSS changes, or content updates to these files under any circumstances.
+Do not apply any further formatting, CSS changes, content updates, or script modifications to these files under any circumstances.
