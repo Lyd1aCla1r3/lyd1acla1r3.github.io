@@ -1224,6 +1224,19 @@ html {
 }
 
 /* ---------- Trace Container Overrides ---------- */
+.trace-container code {
+  color: var(--rose-gold-dark) !important;
+  background-color: var(--bg-card) !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: 0.4em !important;
+  padding: 0.2rem 0.4rem !important;
+}
+
+.trace-container table code {
+  border-radius: var(--radius-full) !important;
+  padding: 4px 10px !important;
+}
+
 .trace-container table b code {
   border-radius: var(--radius-full) !important;
 }

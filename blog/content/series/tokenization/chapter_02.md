@@ -38,7 +38,7 @@ This isolation requires a dedicated mechanism to preserve the original structura
 The toy corpus from the preceding article provides a concrete initialization state. The corpus consists of nine distinct verbs, each appearing exactly once. Decomposing these words produces a highly constrained initial vocabulary of thirteen character-level tokens:
 
 <div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2;">
-<b><code>a</code></b> <b><code>d</code></b> <b><code>e</code></b> <b><code>g</code></b> <b><code>i</code></b> <b><code>k</code></b> <b><code>l</code></b> <b><code>n</code></b> <b><code>o</code></b> <b><code>r</code></b> <b><code>t</code></b> <b><code>w</code></b> <b><code>&lt;/w&gt;</code></b>
+<code>a</code> <code>d</code> <code>e</code> <code>g</code> <code>i</code> <code>k</code> <code>l</code> <code>n</code> <code>o</code> <code>r</code> <code>t</code> <code>w</code> <code>&lt;/w&gt;</code>
 </div>
 
 
@@ -84,7 +84,7 @@ The algorithm identifies the pairs `a` + `l`, `k` + `e`, and `l` + `k` as tied f
 The identification of the highest-frequency pair triggers the central update mechanism. The algorithm formally registers a new token representing the concatenation of the selected pair. This new element is appended to the recognized vocabulary, increasing the total size of the vocabulary space by one.
 
 <div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2;">
-<b><code>a</code></b> <b><code>d</code></b> <b><code>e</code></b> <b><code>g</code></b> <b><code>i</code></b> <b><code>k</code></b> <b><code>l</code></b> <b><code>n</code></b> <b><code>o</code></b> <b><code>r</code></b> <b><code>t</code></b> <b><code>w</code></b> <b><code>&lt;/w&gt;</code></b> <b><code>al</code></b>
+<code>a</code> <code>d</code> <code>e</code> <code>g</code> <code>i</code> <code>k</code> <code>l</code> <code>n</code> <code>o</code> <code>r</code> <code>t</code> <code>w</code> <code>&lt;/w&gt;</code> <b><code>al</code></b>
 </div>
 
 

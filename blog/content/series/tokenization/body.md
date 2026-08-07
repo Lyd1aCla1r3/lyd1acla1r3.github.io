@@ -115,7 +115,7 @@ Addressing the dimensionality explosion requires constraining the vocabulary siz
 Applying character-level boundaries to the toy corpus decomposes the text into a tiny, highly constrained vocabulary of thirteen distinct elements, including a designated end-of-word marker `</w>`:
 
 <div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2; text-align: left;">
-<b><code>a</code></b> <b><code>d</code></b> <b><code>e</code></b> <b><code>g</code></b> <b><code>i</code></b> <b><code>k</code></b> <b><code>l</code></b> <b><code>n</code></b> <b><code>o</code></b> <b><code>r</code></b> <b><code>t</code></b> <b><code>w</code></b> <b><code>&lt;/w&gt;</code></b>
+<code>a</code> <code>d</code> <code>e</code> <code>g</code> <code>i</code> <code>k</code> <code>l</code> <code>n</code> <code>o</code> <code>r</code> <code>t</code> <code>w</code> <code>&lt;/w&gt;</code>
 </div>
 
 
@@ -194,7 +194,7 @@ This isolation requires a dedicated mechanism to preserve the original structura
 The toy corpus from the preceding article provides a concrete initialization state. The corpus consists of nine distinct verbs, each appearing exactly once. Decomposing these words produces a highly constrained initial vocabulary of thirteen character-level tokens:
 
 <div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2;">
-<b><code>a</code></b> <b><code>d</code></b> <b><code>e</code></b> <b><code>g</code></b> <b><code>i</code></b> <b><code>k</code></b> <b><code>l</code></b> <b><code>n</code></b> <b><code>o</code></b> <b><code>r</code></b> <b><code>t</code></b> <b><code>w</code></b> <b><code>&lt;/w&gt;</code></b>
+<code>a</code> <code>d</code> <code>e</code> <code>g</code> <code>i</code> <code>k</code> <code>l</code> <code>n</code> <code>o</code> <code>r</code> <code>t</code> <code>w</code> <code>&lt;/w&gt;</code>
 </div>
 
 
@@ -240,7 +240,7 @@ The algorithm identifies the pairs `a` + `l`, `k` + `e`, and `l` + `k` as tied f
 The identification of the highest-frequency pair triggers the central update mechanism. The algorithm formally registers a new token representing the concatenation of the selected pair. This new element is appended to the recognized vocabulary, increasing the total size of the vocabulary space by one.
 
 <div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2;">
-<b><code>a</code></b> <b><code>d</code></b> <b><code>e</code></b> <b><code>g</code></b> <b><code>i</code></b> <b><code>k</code></b> <b><code>l</code></b> <b><code>n</code></b> <b><code>o</code></b> <b><code>r</code></b> <b><code>t</code></b> <b><code>w</code></b> <b><code>&lt;/w&gt;</code></b> <b><code>al</code></b>
+<code>a</code> <code>d</code> <code>e</code> <code>g</code> <code>i</code> <code>k</code> <code>l</code> <code>n</code> <code>o</code> <code>r</code> <code>t</code> <code>w</code> <code>&lt;/w&gt;</code> <b><code>al</code></b>
 </div>
 
 
@@ -308,15 +308,15 @@ The training process begins with the nine distinct verbs defined in the precedin
 
 
 <div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2; text-align: left;">
-<b><code>w</code></b> <b><code>a</code></b> <b><code>k</code></b> <b><code>i</code></b> <b><code>n</code></b> <b><code>g</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>o</code></b> <b><code>k</code></b> <b><code>e</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>o</code></b> <b><code>k</code></b> <b><code>e</code></b> <b><code>n</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>a</code></b> <b><code>l</code></b> <b><code>k</code></b> <b><code>i</code></b> <b><code>n</code></b> <b><code>g</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>a</code></b> <b><code>l</code></b> <b><code>k</code></b> <b><code>e</code></b> <b><code>d</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>a</code></b> <b><code>l</code></b> <b><code>k</code></b> <b><code>e</code></b> <b><code>r</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>t</code></b> <b><code>a</code></b> <b><code>l</code></b> <b><code>k</code></b> <b><code>i</code></b> <b><code>n</code></b> <b><code>g</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>t</code></b> <b><code>a</code></b> <b><code>l</code></b> <b><code>k</code></b> <b><code>e</code></b> <b><code>d</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>t</code></b> <b><code>a</code></b> <b><code>l</code></b> <b><code>k</code></b> <b><code>e</code></b> <b><code>r</code></b> <b><code>&lt;/w&gt;</code></b>
+<code>w</code> <code>a</code> <code>k</code> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <code>o</code> <code>k</code> <code>e</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <code>o</code> <code>k</code> <code>e</code> <code>n</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <code>a</code> <code>l</code> <code>k</code> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <code>a</code> <code>l</code> <code>k</code> <code>e</code> <code>d</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <code>a</code> <code>l</code> <code>k</code> <code>e</code> <code>r</code> <code>&lt;/w&gt;</code><br>
+<code>t</code> <code>a</code> <code>l</code> <code>k</code> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br>
+<code>t</code> <code>a</code> <code>l</code> <code>k</code> <code>e</code> <code>d</code> <code>&lt;/w&gt;</code><br>
+<code>t</code> <code>a</code> <code>l</code> <code>k</code> <code>e</code> <code>r</code> <code>&lt;/w&gt;</code>
 </div>
 
 
@@ -341,15 +341,15 @@ The algorithm evaluates the frequency of every adjacent token pair in this initi
 
 
 <div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2; text-align: left;">
-<b><code>w</code></b> <b><code>a</code></b> <b><code>k</code></b> <b><code>i</code></b> <b><code>n</code></b> <b><code>g</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>o</code></b> <b><code>k</code></b> <b><code>e</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>o</code></b> <b><code>k</code></b> <b><code>e</code></b> <b><code>n</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>al</code></b> <b><code>k</code></b> <b><code>i</code></b> <b><code>n</code></b> <b><code>g</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>al</code></b> <b><code>k</code></b> <b><code>e</code></b> <b><code>d</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>al</code></b> <b><code>k</code></b> <b><code>e</code></b> <b><code>r</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>t</code></b> <b><code>al</code></b> <b><code>k</code></b> <b><code>i</code></b> <b><code>n</code></b> <b><code>g</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>t</code></b> <b><code>al</code></b> <b><code>k</code></b> <b><code>e</code></b> <b><code>d</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>t</code></b> <b><code>al</code></b> <b><code>k</code></b> <b><code>e</code></b> <b><code>r</code></b> <b><code>&lt;/w&gt;</code></b>
+<code>w</code> <code>a</code> <code>k</code> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <code>o</code> <code>k</code> <code>e</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <code>o</code> <code>k</code> <code>e</code> <code>n</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <b><code>al</code></b> <code>k</code> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <b><code>al</code></b> <code>k</code> <code>e</code> <code>d</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <b><code>al</code></b> <code>k</code> <code>e</code> <code>r</code> <code>&lt;/w&gt;</code><br>
+<code>t</code> <b><code>al</code></b> <code>k</code> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br>
+<code>t</code> <b><code>al</code></b> <code>k</code> <code>e</code> <code>d</code> <code>&lt;/w&gt;</code><br>
+<code>t</code> <b><code>al</code></b> <code>k</code> <code>e</code> <code>r</code> <code>&lt;/w&gt;</code>
 </div>
 
 
@@ -372,15 +372,15 @@ This operation immediately alters the subsequent frequency distribution. The sec
 
 
 <div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2; text-align: left;">
-<b><code>w</code></b> <b><code>a</code></b> <b><code>k</code></b> <b><code>i</code></b> <b><code>n</code></b> <b><code>g</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>o</code></b> <b><code>k</code></b> <b><code>e</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>o</code></b> <b><code>k</code></b> <b><code>e</code></b> <b><code>n</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>alk</code></b> <b><code>i</code></b> <b><code>n</code></b> <b><code>g</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>alk</code></b> <b><code>e</code></b> <b><code>d</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>alk</code></b> <b><code>e</code></b> <b><code>r</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>t</code></b> <b><code>alk</code></b> <b><code>i</code></b> <b><code>n</code></b> <b><code>g</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>t</code></b> <b><code>alk</code></b> <b><code>e</code></b> <b><code>d</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>t</code></b> <b><code>alk</code></b> <b><code>e</code></b> <b><code>r</code></b> <b><code>&lt;/w&gt;</code></b>
+<code>w</code> <code>a</code> <code>k</code> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <code>o</code> <code>k</code> <code>e</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <code>o</code> <code>k</code> <code>e</code> <code>n</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <b><code>alk</code></b> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <b><code>alk</code></b> <code>e</code> <code>d</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <b><code>alk</code></b> <code>e</code> <code>r</code> <code>&lt;/w&gt;</code><br>
+<code>t</code> <b><code>alk</code></b> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br>
+<code>t</code> <b><code>alk</code></b> <code>e</code> <code>d</code> <code>&lt;/w&gt;</code><br>
+<code>t</code> <b><code>alk</code></b> <code>e</code> <code>r</code> <code>&lt;/w&gt;</code>
 </div>
 
 
@@ -406,15 +406,15 @@ After merely three iterations, the counting mechanism derives `alk`, the central
 
 
 <div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2; text-align: left;">
-<b><code>w</code></b> <b><code>a</code></b> <b><code>k</code></b> <b><code>i</code></b> <b><code>n</code></b> <b><code>g</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>o</code></b> <b><code>k</code></b> <b><code>e</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>o</code></b> <b><code>k</code></b> <b><code>e</code></b> <b><code>n</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>alk</code></b> <b><code>i</code></b> <b><code>n</code></b> <b><code>g</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>alke</code></b> <b><code>d</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>alke</code></b> <b><code>r</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>t</code></b> <b><code>alk</code></b> <b><code>i</code></b> <b><code>n</code></b> <b><code>g</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>t</code></b> <b><code>alke</code></b> <b><code>d</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>t</code></b> <b><code>alke</code></b> <b><code>r</code></b> <b><code>&lt;/w&gt;</code></b>
+<code>w</code> <code>a</code> <code>k</code> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <code>o</code> <code>k</code> <code>e</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <code>o</code> <code>k</code> <code>e</code> <code>n</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <b><code>alk</code></b> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <b><code>alke</code></b> <code>d</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <b><code>alke</code></b> <code>r</code> <code>&lt;/w&gt;</code><br>
+<code>t</code> <b><code>alk</code></b> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br>
+<code>t</code> <b><code>alke</code></b> <code>d</code> <code>&lt;/w&gt;</code><br>
+<code>t</code> <b><code>alke</code></b> <code>r</code> <code>&lt;/w&gt;</code>
 </div>
 
 
@@ -550,15 +550,15 @@ After fourteen merge operations, the original sequences of isolated characters t
 
 
 <div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2; text-align: left;">
-<b><code>w</code></b> <b><code>a</code></b> <b><code>k</code></b> <b><code>ing&lt;/w&gt;</code></b><br>
-<b><code>woke</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>woke</code></b> <b><code>n</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>alking&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>alked&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>alker&lt;/w&gt;</code></b><br>
-<b><code>t</code></b> <b><code>alking&lt;/w&gt;</code></b><br>
-<b><code>t</code></b> <b><code>alked&lt;/w&gt;</code></b><br>
-<b><code>t</code></b> <b><code>alker&lt;/w&gt;</code></b>
+<code>w</code> <code>a</code> <code>k</code> <b><code>ing&lt;/w&gt;</code></b><br>
+<b><code>woke</code></b> <code>&lt;/w&gt;</code><br>
+<b><code>woke</code></b> <code>n</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <b><code>alking&lt;/w&gt;</code></b><br>
+<code>w</code> <b><code>alked&lt;/w&gt;</code></b><br>
+<code>w</code> <b><code>alker&lt;/w&gt;</code></b><br>
+<code>t</code> <b><code>alking&lt;/w&gt;</code></b><br>
+<code>t</code> <b><code>alked&lt;/w&gt;</code></b><br>
+<code>t</code> <b><code>alker&lt;/w&gt;</code></b>
 </div>
 
 
@@ -574,7 +574,7 @@ The corpus, however, does not perfectly compress into nine single-token words. T
 The *vocabulary dictionary* itself contains exactly 27 items: the 13 initial base characters plus the 14 new subwords generated during the merges. Because the vocabulary size directly dictates the architecture's input dimensions, the neural network's embedding matrix will now be instantiated with exactly 27 rows, one for each of these learned tokens.
 
 <div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2;">
-<b><code>&lt;/w&gt;</code></b> <b><code>a</code></b> <b><code>al</code></b> <b><code>alk</code></b> <b><code>alke</code></b> <b><code>alked</code></b> <b><code>alked&lt;/w&gt;</code></b> <b><code>alker</code></b> <b><code>alker&lt;/w&gt;</code></b> <b><code>alking&lt;/w&gt;</code></b> <b><code>d</code></b> <b><code>e</code></b> <b><code>g</code></b> <b><code>g&lt;/w&gt;</code></b> <b><code>i</code></b> <b><code>in</code></b> <b><code>ing&lt;/w&gt;</code></b> <b><code>k</code></b> <b><code>ke</code></b> <b><code>l</code></b> <b><code>n</code></b> <b><code>o</code></b> <b><code>oke</code></b> <b><code>r</code></b> <b><code>t</code></b> <b><code>w</code></b> <b><code>woke</code></b>
+<code>&lt;/w&gt;</code> <code>a</code> <b><code>al</code></b> <b><code>alk</code></b> <b><code>alke</code></b> <b><code>alked</code></b> <b><code>alked&lt;/w&gt;</code></b> <b><code>alker</code></b> <b><code>alker&lt;/w&gt;</code></b> <b><code>alking&lt;/w&gt;</code></b> <code>d</code> <code>e</code> <code>g</code> <b><code>g&lt;/w&gt;</code></b> <code>i</code> <b><code>in</code></b> <b><code>ing&lt;/w&gt;</code></b> <code>k</code> <b><code>ke</code></b> <code>l</code> <code>n</code> <code>o</code> <b><code>oke</code></b> <code>r</code> <code>t</code> <code>w</code> <b><code>woke</code></b>
 </div>
 
 

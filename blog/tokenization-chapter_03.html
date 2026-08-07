@@ -126,15 +126,15 @@
 <h2>The Initial State</h2>
 <p>The training process begins with the nine distinct verbs defined in the preceding article. Each word is split into individual character tokens, terminated by the <code>&lt;/w&gt;</code> boundary marker. Once the initial state of the corpus is established, the discrete token sequences and their absolute frequencies are tracked across the text.</p>
 <div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2; text-align: left;">
-<b><code>w</code></b> <b><code>a</code></b> <b><code>k</code></b> <b><code>i</code></b> <b><code>n</code></b> <b><code>g</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>o</code></b> <b><code>k</code></b> <b><code>e</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>o</code></b> <b><code>k</code></b> <b><code>e</code></b> <b><code>n</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>a</code></b> <b><code>l</code></b> <b><code>k</code></b> <b><code>i</code></b> <b><code>n</code></b> <b><code>g</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>a</code></b> <b><code>l</code></b> <b><code>k</code></b> <b><code>e</code></b> <b><code>d</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>a</code></b> <b><code>l</code></b> <b><code>k</code></b> <b><code>e</code></b> <b><code>r</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>t</code></b> <b><code>a</code></b> <b><code>l</code></b> <b><code>k</code></b> <b><code>i</code></b> <b><code>n</code></b> <b><code>g</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>t</code></b> <b><code>a</code></b> <b><code>l</code></b> <b><code>k</code></b> <b><code>e</code></b> <b><code>d</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>t</code></b> <b><code>a</code></b> <b><code>l</code></b> <b><code>k</code></b> <b><code>e</code></b> <b><code>r</code></b> <b><code>&lt;/w&gt;</code></b>
+<code>w</code> <code>a</code> <code>k</code> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <code>o</code> <code>k</code> <code>e</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <code>o</code> <code>k</code> <code>e</code> <code>n</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <code>a</code> <code>l</code> <code>k</code> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <code>a</code> <code>l</code> <code>k</code> <code>e</code> <code>d</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <code>a</code> <code>l</code> <code>k</code> <code>e</code> <code>r</code> <code>&lt;/w&gt;</code><br>
+<code>t</code> <code>a</code> <code>l</code> <code>k</code> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br>
+<code>t</code> <code>a</code> <code>l</code> <code>k</code> <code>e</code> <code>d</code> <code>&lt;/w&gt;</code><br>
+<code>t</code> <code>a</code> <code>l</code> <code>k</code> <code>e</code> <code>r</code> <code>&lt;/w&gt;</code>
 </div><h2>The First Merges: Deriving Roots</h2>
 <p>The algorithm evaluates the frequency of every adjacent token pair in this initial state. The pairs <code>a</code> + <code>l</code>, <code>k</code> + <code>e</code>, and <code>l</code> + <code>k</code> tie for the highest frequency with six occurrences each. Lexicographical sorting dictates the selection of <code>a</code> + <code>l</code> for the inaugural merge operation. The new token <code>al</code> is formally registered, and the corpus representation is updated globally.</p>
 <div class="trace-container">
@@ -149,15 +149,15 @@
   </tbody>
 </table>
 </div><div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2; text-align: left;">
-<b><code>w</code></b> <b><code>a</code></b> <b><code>k</code></b> <b><code>i</code></b> <b><code>n</code></b> <b><code>g</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>o</code></b> <b><code>k</code></b> <b><code>e</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>o</code></b> <b><code>k</code></b> <b><code>e</code></b> <b><code>n</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>al</code></b> <b><code>k</code></b> <b><code>i</code></b> <b><code>n</code></b> <b><code>g</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>al</code></b> <b><code>k</code></b> <b><code>e</code></b> <b><code>d</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>al</code></b> <b><code>k</code></b> <b><code>e</code></b> <b><code>r</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>t</code></b> <b><code>al</code></b> <b><code>k</code></b> <b><code>i</code></b> <b><code>n</code></b> <b><code>g</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>t</code></b> <b><code>al</code></b> <b><code>k</code></b> <b><code>e</code></b> <b><code>d</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>t</code></b> <b><code>al</code></b> <b><code>k</code></b> <b><code>e</code></b> <b><code>r</code></b> <b><code>&lt;/w&gt;</code></b>
+<code>w</code> <code>a</code> <code>k</code> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <code>o</code> <code>k</code> <code>e</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <code>o</code> <code>k</code> <code>e</code> <code>n</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <b><code>al</code></b> <code>k</code> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <b><code>al</code></b> <code>k</code> <code>e</code> <code>d</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <b><code>al</code></b> <code>k</code> <code>e</code> <code>r</code> <code>&lt;/w&gt;</code><br>
+<code>t</code> <b><code>al</code></b> <code>k</code> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br>
+<code>t</code> <b><code>al</code></b> <code>k</code> <code>e</code> <code>d</code> <code>&lt;/w&gt;</code><br>
+<code>t</code> <b><code>al</code></b> <code>k</code> <code>e</code> <code>r</code> <code>&lt;/w&gt;</code>
 </div><p>This operation immediately alters the subsequent frequency distribution. The second merge iteration tallies adjacent pairs across the newly updated corpus. The pair <code>al</code> + <code>k</code> emerges as the most frequent pattern.</p>
 <div class="trace-container">
 <table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse;">
@@ -171,15 +171,15 @@
   </tbody>
 </table>
 </div><div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2; text-align: left;">
-<b><code>w</code></b> <b><code>a</code></b> <b><code>k</code></b> <b><code>i</code></b> <b><code>n</code></b> <b><code>g</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>o</code></b> <b><code>k</code></b> <b><code>e</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>o</code></b> <b><code>k</code></b> <b><code>e</code></b> <b><code>n</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>alk</code></b> <b><code>i</code></b> <b><code>n</code></b> <b><code>g</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>alk</code></b> <b><code>e</code></b> <b><code>d</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>alk</code></b> <b><code>e</code></b> <b><code>r</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>t</code></b> <b><code>alk</code></b> <b><code>i</code></b> <b><code>n</code></b> <b><code>g</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>t</code></b> <b><code>alk</code></b> <b><code>e</code></b> <b><code>d</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>t</code></b> <b><code>alk</code></b> <b><code>e</code></b> <b><code>r</code></b> <b><code>&lt;/w&gt;</code></b>
+<code>w</code> <code>a</code> <code>k</code> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <code>o</code> <code>k</code> <code>e</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <code>o</code> <code>k</code> <code>e</code> <code>n</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <b><code>alk</code></b> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <b><code>alk</code></b> <code>e</code> <code>d</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <b><code>alk</code></b> <code>e</code> <code>r</code> <code>&lt;/w&gt;</code><br>
+<code>t</code> <b><code>alk</code></b> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br>
+<code>t</code> <b><code>alk</code></b> <code>e</code> <code>d</code> <code>&lt;/w&gt;</code><br>
+<code>t</code> <b><code>alk</code></b> <code>e</code> <code>r</code> <code>&lt;/w&gt;</code>
 </div><p>The merge operation fuses these tokens, creating the cohesive <code>alk</code> unit. The third merge iteration establishes that the pair <code>alk</code> + <code>e</code> occurs four times, binding the root verb to the start of its suffixes.</p>
 <div class="trace-container">
 <table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse;">
@@ -194,15 +194,15 @@
 </table>
 </div><p>After merely three iterations, the counting mechanism derives <code>alk</code>, the central morphological root shared by the majority of the corpus. This fragment serves as the structural foundation for <em>walking</em>, <em>walked</em>, <em>walker</em>, <em>talking</em>, <em>talked</em>, and <em>talker</em>. The internal representation of the text compresses significantly.</p>
 <div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2; text-align: left;">
-<b><code>w</code></b> <b><code>a</code></b> <b><code>k</code></b> <b><code>i</code></b> <b><code>n</code></b> <b><code>g</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>o</code></b> <b><code>k</code></b> <b><code>e</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>o</code></b> <b><code>k</code></b> <b><code>e</code></b> <b><code>n</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>alk</code></b> <b><code>i</code></b> <b><code>n</code></b> <b><code>g</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>alke</code></b> <b><code>d</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>alke</code></b> <b><code>r</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>t</code></b> <b><code>alk</code></b> <b><code>i</code></b> <b><code>n</code></b> <b><code>g</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>t</code></b> <b><code>alke</code></b> <b><code>d</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>t</code></b> <b><code>alke</code></b> <b><code>r</code></b> <b><code>&lt;/w&gt;</code></b>
+<code>w</code> <code>a</code> <code>k</code> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <code>o</code> <code>k</code> <code>e</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <code>o</code> <code>k</code> <code>e</code> <code>n</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <b><code>alk</code></b> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <b><code>alke</code></b> <code>d</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <b><code>alke</code></b> <code>r</code> <code>&lt;/w&gt;</code><br>
+<code>t</code> <b><code>alk</code></b> <code>i</code> <code>n</code> <code>g</code> <code>&lt;/w&gt;</code><br>
+<code>t</code> <b><code>alke</code></b> <code>d</code> <code>&lt;/w&gt;</code><br>
+<code>t</code> <b><code>alke</code></b> <code>r</code> <code>&lt;/w&gt;</code>
 </div><h2>Assembling Suffixes</h2>
 <p>The subsequent three merge iterations reveal how boundary markers influence the derivation of suffixes. Iteration four evaluates the updated sequences and identifies the highest frequency pair ending the gerund verbs.</p>
 <div class="trace-container">
@@ -304,22 +304,22 @@
 </table>
 </div><p>After fourteen merge operations, the original sequences of isolated characters transition into large subword fragments. The internal representation of the text demonstrates profound compression.</p>
 <div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2; text-align: left;">
-<b><code>w</code></b> <b><code>a</code></b> <b><code>k</code></b> <b><code>ing&lt;/w&gt;</code></b><br>
-<b><code>woke</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>woke</code></b> <b><code>n</code></b> <b><code>&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>alking&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>alked&lt;/w&gt;</code></b><br>
-<b><code>w</code></b> <b><code>alker&lt;/w&gt;</code></b><br>
-<b><code>t</code></b> <b><code>alking&lt;/w&gt;</code></b><br>
-<b><code>t</code></b> <b><code>alked&lt;/w&gt;</code></b><br>
-<b><code>t</code></b> <b><code>alker&lt;/w&gt;</code></b>
+<code>w</code> <code>a</code> <code>k</code> <b><code>ing&lt;/w&gt;</code></b><br>
+<b><code>woke</code></b> <code>&lt;/w&gt;</code><br>
+<b><code>woke</code></b> <code>n</code> <code>&lt;/w&gt;</code><br>
+<code>w</code> <b><code>alking&lt;/w&gt;</code></b><br>
+<code>w</code> <b><code>alked&lt;/w&gt;</code></b><br>
+<code>w</code> <b><code>alker&lt;/w&gt;</code></b><br>
+<code>t</code> <b><code>alking&lt;/w&gt;</code></b><br>
+<code>t</code> <b><code>alked&lt;/w&gt;</code></b><br>
+<code>t</code> <b><code>alker&lt;/w&gt;</code></b>
 </div><h2>Finalization of the Vocabulary</h2>
 <p>The Byte Pair Encoding algorithm naturally halts when the maximum frequency of any adjacent pair drops to 1, because merging a pair that only occurs once offers no further compression benefit. Following step fourteen, the frequency of every remaining adjacent pair in our toy corpus has dropped to exactly 1. Therefore, the training algorithm definitively halts at this exact state. </p>
 <p>The execution of exactly fourteen merge operations yields a deterministic, highly compressed token inventory. It is crucial to distinguish between the final state of the corpus and the final trained vocabulary. The nine sequences shown above represent the completely compressed state of the corpus. The structural update has collapsed the original sequence of isolated characters into larger subword fragments. </p>
 <p>The corpus, however, does not perfectly compress into nine single-token words. This is a fundamental feature of subword tokenization: because the word <em>talking</em> only appears once in this tiny corpus, its leading consonant <code>t</code> never achieves a high enough frequency to merge with its suffix. Rare words are natively preserved as sequences of smaller, common subwords.</p>
 <p>The <em>vocabulary dictionary</em> itself contains exactly 27 items: the 13 initial base characters plus the 14 new subwords generated during the merges. Because the vocabulary size directly dictates the architecture&#39;s input dimensions, the neural network&#39;s embedding matrix will now be instantiated with exactly 27 rows, one for each of these learned tokens.</p>
 <div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2;">
-<b><code>&lt;/w&gt;</code></b> <b><code>a</code></b> <b><code>al</code></b> <b><code>alk</code></b> <b><code>alke</code></b> <b><code>alked</code></b> <b><code>alked&lt;/w&gt;</code></b> <b><code>alker</code></b> <b><code>alker&lt;/w&gt;</code></b> <b><code>alking&lt;/w&gt;</code></b> <b><code>d</code></b> <b><code>e</code></b> <b><code>g</code></b> <b><code>g&lt;/w&gt;</code></b> <b><code>i</code></b> <b><code>in</code></b> <b><code>ing&lt;/w&gt;</code></b> <b><code>k</code></b> <b><code>ke</code></b> <b><code>l</code></b> <b><code>n</code></b> <b><code>o</code></b> <b><code>oke</code></b> <b><code>r</code></b> <b><code>t</code></b> <b><code>w</code></b> <b><code>woke</code></b>
+<code>&lt;/w&gt;</code> <code>a</code> <b><code>al</code></b> <b><code>alk</code></b> <b><code>alke</code></b> <b><code>alked</code></b> <b><code>alked&lt;/w&gt;</code></b> <b><code>alker</code></b> <b><code>alker&lt;/w&gt;</code></b> <b><code>alking&lt;/w&gt;</code></b> <code>d</code> <code>e</code> <code>g</code> <b><code>g&lt;/w&gt;</code></b> <code>i</code> <b><code>in</code></b> <b><code>ing&lt;/w&gt;</code></b> <code>k</code> <b><code>ke</code></b> <code>l</code> <code>n</code> <code>o</code> <b><code>oke</code></b> <code>r</code> <code>t</code> <code>w</code> <b><code>woke</code></b>
 </div><p>The statistical frequency analysis successfully identified the structural regularities of the English language. This trained 27-token vocabulary now exists as a fixed, immutable dictionary. The subsequent article explores how this finalized dictionary processes completely new, unseen text through the corresponding encoding algorithm.</p>
 <p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/tokenization-ebook-v1.0.pdf">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p>
 
