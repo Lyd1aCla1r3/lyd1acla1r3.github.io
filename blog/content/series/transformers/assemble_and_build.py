@@ -125,6 +125,15 @@ for i, body in enumerate(content_bodies):
         body_content += '\n\n<div style="page-break-before: always;"></div>\n\n'
     body_content += body
 
+# Inject CSS for math font size
+body_content += """
+<style>
+.katex-display {
+  font-size: 0.9em !important;
+}
+</style>
+"""
+
 with open(body_file, 'w') as f:
     f.write(body_content)
 print("Wrote body.md")

@@ -2933,3 +2933,9 @@ Crucially, the backward pass stands demystified. The simple difference between t
 
 The Transformer is not an inscrutable black box. It operates as a massive, elegant bilinear engine, moving text through latent space with pristine mathematical precision. By following the numbers from the first embedding to the final gradient step, the physical machinery of modern artificial intelligence becomes visible.
 
+
+<style>
+.katex-display {
+  font-size: 0.9em !important;
+}
+</style>
