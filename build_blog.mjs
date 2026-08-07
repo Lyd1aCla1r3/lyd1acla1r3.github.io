@@ -226,11 +226,18 @@ if (posts.length > 0) {
        for (const [sName, sPosts] of Object.entries(seriesGroups)) {
           const seriesTitle = sName.charAt(0).toUpperCase() + sName.slice(1).replace(/-/g, ' ');
           
+          let seriesDesc = `A sequential exploration of ${seriesTitle}.`;
+          if (sName === 'transformers') {
+              seriesDesc = "A rigorous, geometric deconstruction of the Decoder-only Transformer architecture. This complete series builds the model from the ground up, moving from the vocabulary embedding matrix through the multi-head attention mechanism and residual streams, terminating in the mathematically precise calculation of the cross-entropy loss function.";
+          } else if (sName === 'tokenization') {
+              seriesDesc = "A step-by-step unrolling of the Byte Pair Encoding algorithm. This collection traces the deterministic compression of character-level data into semantic subword units, proving mathematically how the statistical distribution of language inherently generates structural linguistic features before reaching the neural network.";
+          }
+          
           seriesHtml += `
           <a href="series-${sName}.html">
               <article class="blog-item series-item" style="margin-bottom: var(--space-md);">
                   <h2>${seriesTitle} Series</h2>
-                  <p>A sequential exploration of ${seriesTitle}. (${sPosts.length} chapters)</p>
+                  <p>${seriesDesc} <strong>(${sPosts.length} chapters)</strong></p>
               </article>
           </a>`;
           
