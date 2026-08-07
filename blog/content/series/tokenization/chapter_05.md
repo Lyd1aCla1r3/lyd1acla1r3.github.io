@@ -2,9 +2,10 @@
 <!-- SUMMARY: Bridging the theoretical foundation of tokenization to production realities requires replacing arbitrary character sets with a universal byte-level fallback. Tracing the exact algorithm across pure byte integers proves that morphological structure emerges naturally without any requirement for human-readable letters, establishing the strict mathematical dimensions required by the Transformer's embedding matrix. -->
 
 <style>
-  .trace-container code {
-    font-size: 0.75em !important;
-    padding: 0.15em 0.3em !important;
+  .trace-container code, .trace-container table code {
+    font-size: 0.65em !important;
+    padding: 2px 4px !important;
+    margin-right: 2px !important;
   }
   .trace-container td {
     white-space: nowrap !important;
