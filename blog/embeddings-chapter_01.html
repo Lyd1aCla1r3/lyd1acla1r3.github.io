@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Part 6: From Scores to Synthesis: Softmax and The Value Matrix — Lydia Pedersen</title>
+  <title>Part 1: Bridging the Gap - From Token IDs to Vectors — Lydia Pedersen</title>
   <link rel="stylesheet" href="../css/styles.css?v=1.2">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
   <style>
@@ -100,96 +100,72 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Part 6: From Scores to Synthesis: Softmax and The Value Matrix</li></ol></nav>
-        <article class="blog-post series-transformers">
-<h1>Part 6: From Scores to Synthesis: Softmax and The Value Matrix</h1>
-<!-- SUMMARY: The single-head attention mechanism is finalized by leveraging the softmax function to convert unbounded routing scores into a strict probability distribution. A weighted sum against the value matrix is then computed to dynamically synthesize a deeply contextualized geometric representation for each token. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p><p>The previously calculated masked attention scores provide a strict mathematical barrier that prevents information from flowing backward in time through the application of a lower triangular matrix of negative infinity values. The resulting matrix represents the raw geometric alignment between Queries and Keys across all valid time steps.</p>
-<p>These scalar values are mathematically unbounded. Converting them into a stable format capable of driving the core synthesis step of the attention mechanism requires the Softmax function and the introduction of a third fundamental learned matrix: the Value matrix.</p>
-<h2>The Softmax Function: Converting Alignment to Probability</h2>
-<p>The attention scores function as a set of weights to perform a weighted sum. Using the raw unbounded scores directly would cause the magnitude of vectors to compound uncontrollably as information flows deeper into the network. Maintaining mathematical stability requires weights to be strictly positive and to sum exactly to 1 across each row. This is achieved by applying the Softmax function.</p>
-<p>The Softmax function operates by taking the exponential of each input value and dividing it by the sum of all exponentials in that row. Exponentiation maps any real number to a positive value. Dividing by the total sum normalizes these positive values into a strict probability distribution.</p>
-<p>The masked scaled scores from the preceding step are:</p>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Embeddings</a></li><li aria-current="page">Part 1: Bridging the Gap - From Token IDs to Vectors</li></ol></nav>
+        <article class="blog-post series-embeddings">
+<h1>Part 1: Bridging the Gap - From Token IDs to Vectors</h1>
+<style>
+  .trace-container b code {
+    font-weight: 900 !important;
+    color: #9a5b65 !important;
+    background-color: #fdf5f6 !important;
+    border: 1px solid #e0c6cb !important;
+    border-radius: 0.4em !important;
+  }
+  @media (prefers-color-scheme: dark) {
+    .trace-container b code {
+      color: #e6b3bc !important;
+      background-color: #3b2a2d !important;
+      border: 1px solid #6b4d53 !important;
+      border-radius: 0.4em !important;
+    }
+  }
+</style><!-- SUMMARY: Tokenization translates raw text into discrete integer identifiers, but neural networks require continuous representations to perform calculus. The embedding matrix solves this by projecting each discrete token into a high-dimensional vector space via one-hot encoding multiplication, acting as a simple, dense lookup table. --><p>The preceding series on Tokenization established the rigorous mathematical process of transforming variable, unstructured text into discrete integer sequences. Through subword compression algorithms like Byte Pair Encoding, we discovered how a system can organically parse language into a highly optimized, finite vocabulary.</p>
+<p>When text passes through this tokenizer, a word like &quot;walking&quot; might be decomposed into two distinct subword tokens, each mapped to a specific integer ID in our vocabulary:</p>
+<div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2; text-align: left;">
+<b><code>walk</code></b> (ID: 4) &nbsp;&nbsp; <b><code>ing</code></b> (ID: 12)
+</div><p>This is where the Tokenization pipeline ends. However, handing the integer IDs <code>4</code> and <code>12</code> directly to a neural network presents an immediate mathematical dead end. </p>
+<h2>The Problem with Discrete Integers</h2>
+<p>Deep learning models operate through continuous mathematics: matrix multiplication, calculus, and gradient descent. Discrete integer IDs are merely categorical labels; they possess no inherent algebraic meaning. </p>
+<p>If we feed the IDs <code>4</code> and <code>12</code> directly into a neural network, the model will attempt to perform mathematical operations on them. It might deduce that <code>12</code> is three times as large as <code>4</code>. It might conclude that the &quot;distance&quot; between <code>walk</code> (4) and <code>ing</code> (12) is exactly 8. This is mathematically nonsensical. The integer ID <code>4</code> does not mean the concept of walking is &quot;smaller&quot; than the suffix <code>ing</code>. They are just arbitrary index numbers.</p>
+<p>To participate in a neural network, these discrete, categorical IDs must be transformed into continuous, dense vectors where every dimension represents a tunable parameter.</p>
+<h2>The One-Hot Encoding</h2>
+<p>The first step in this transformation is to convert the categorical ID into a mathematically neutral format: a one-hot encoded vector.</p>
+<p>If our total vocabulary size $(V)$ is 9, we can represent the token <code>walk</code> (ID 4) as a vector of length 9 containing all zeros, except for a single <code>1</code> at the 4th index.</p>
 <p>$$
-\text{Scores}_{masked} = \begin{bmatrix}
- 0.45 & -\infty & -\infty & -\infty \\
- 0.59 &  0.87 & -\infty & -\infty \\
--0.09 & -0.20 & -0.26 & -\infty \\
--0.18 & -0.33 & -0.39 & -0.39
-\end{bmatrix}
+\mathbf{x}_{walk} = \begin{bmatrix} 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \end{bmatrix}_{1 \times 9}
 $$</p>
-<p>Applying the Softmax function yields the final attention weights matrix $A$:</p>
+<p>This sparse vector allows the network to process the categorical identity of the token without accidentally inferring any false mathematical magnitude. The <code>1</code> simply states &quot;this token is present&quot;, while the <code>0</code>s state &quot;these other tokens are not&quot;. However, a one-hot vector is completely sparse and contains no semantic depth. We need to project it into a continuous space.</p>
+<h2>The Embedding Matrix ($W_E$)</h2>
+<p>To give these tokens continuous algebraic meaning, we initialize a massive grid of random numbers known as the embedding matrix, typically denoted as $W_E$. </p>
+<p>This matrix serves as a dense lookup table. It contains exactly one row for every possible token in the architecture&#39;s predefined vocabulary, and the width of every row is defined by the network&#39;s internal model dimensionality ($d_{model}$). </p>
+<p>If our vocabulary size $V$ is 9, and our vector dimensionality $d_{model}$ is 512, our embedding matrix requires exactly $9 \times 512$ parameters. At the moment of initialization, every single one of these parameters is just a random decimal number.</p>
+<h2>The Mathematical Extraction</h2>
+<p>How does the network transition from the sparse one-hot vector to the dense 512-dimensional vector? Through standard matrix multiplication.</p>
+<p>By multiplying our one-hot vector $\mathbf{x}_{walk}$ by the embedding matrix $W_E$, the mathematics dictate that all rows multiplied by <code>0</code> are canceled out, leaving only the 4th row (multiplied by <code>1</code>) to pass through. </p>
 <p>$$
-A = \text{Softmax}(\text{Scores}_{masked}) = \begin{bmatrix}
- 1.00 &  0.00 &  0.00 &  0.00 \\
- 0.43 &  0.57 &  0.00 &  0.00 \\
- 0.37 &  0.33 &  0.31 &  0.00 \\
- 0.29 &  0.25 &  0.23 &  0.23
-\end{bmatrix}
+\mathbf{x}_{walk} = \begin{bmatrix} 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \end{bmatrix}_{1 \times 9} \times \begin{bmatrix}
+w_{1,1} & \dots & w_{1,512} \\
+w_{2,1} & \dots & w_{2,512} \\
+w_{3,1} & \dots & w_{3,512} \\
+w_{4,1} & \dots & w_{4,512} \\
+\vdots & \ddots & \vdots \\
+w_{9,1} & \dots & w_{9,512}
+\end{bmatrix}_{9 \times 512}
 $$</p>
-<p>The causal mask functions such that the exponential of negative infinity approaches exactly zero. Masked positions are flawlessly converted into zero-valued weights. The model is now mathematically incapable of extracting information from future tokens. Every row sums precisely to 1, providing a clean probability distribution over all preceding context.</p>
-<h2>The Value Matrix: The Content Payload</h2>
-<p>Computations thus far have focused entirely on routing. The Query and Key matrices exist solely to dictate where information should flow. They measure semantic relevance. They do not represent the information payload itself.</p>
-<p>If the attention weights are the map, the Value matrix is the cargo. The semantic features required to determine relevance are fundamentally different from the semantic features required to predict the next word. The original positional embeddings $X$ are therefore projected into a third distinct subspace using the Value weight matrix $W_V$.</p>
-<p>The embedding dimension $d_{model}$ is 6. This is projected down into a head dimension $d_v$ of 2. The learned weights $W_V$ are defined as:</p>
 <p>$$
-W_V = \begin{bmatrix}
- 0.3 & -0.1 \\
- 0.2 &  0.5 \\
--0.4 &  0.1 \\
- 0.1 &  0.6 \\
--0.3 &  0.2 \\
- 0.5 & -0.4
-\end{bmatrix}
+= \begin{bmatrix} w_{4,1} & w_{4,2} & \dots & w_{4,512} \end{bmatrix}_{1 \times 512}
 $$</p>
-<p>The Value matrix $V$ is calculated by taking the dot product of the positional embeddings $X$ and $W_V$:</p>
-<p>$$
-V = X \cdot W_V = \begin{bmatrix}
- 0.83 &  0.69 \\
- 1.18 &  0.70 \\
- 0.04 & -0.20 \\
--0.36 &  0.00
-\end{bmatrix}
-$$</p>
-<p>The matrix $V$ contains the actual conceptual representations that will be broadcast across the sequence. Each row holds the information payload for a single token in the <code>&lt;BOS&gt;</code> <code>i</code> <code>woke</code> <code>up</code> sequence.</p>
-<h2>The Weighted Sum: Synthesizing Context</h2>
-<p>The culmination of the single head attention mechanism relies on a matrix of routing instructions $A$ and a matrix of information payloads $V$. New contextualized representations are synthesized by computing the dot product of $A$ and $V$.</p>
-<p>This operation physically executes a weighted sum. Every token constructs a new representation of itself by blending together the Value vectors of all preceding tokens according to the probabilities in the attention matrix.</p>
-<pre><code class="language-mermaid">graph TD
-    A(&quot;Attention Weights Matrix A&quot;) --&gt; C(&quot;Weighted Sum Matrix Multiplication&quot;)
-    B(&quot;Value Matrix V&quot;) --&gt; C
-    C --&gt; D(&quot;Contextualized Output H&quot;)
-</code></pre>
-<p>The final head output $H$ is computed as:</p>
-<p>$$
-H = A \cdot V = \begin{bmatrix}
- 1.00 &  0.00 &  0.00 &  0.00 \\
- 0.43 &  0.57 &  0.00 &  0.00 \\
- 0.37 &  0.33 &  0.31 &  0.00 \\
- 0.29 &  0.25 &  0.23 &  0.23
-\end{bmatrix} \cdot \begin{bmatrix}
- 0.83 &  0.69 \\
- 1.18 &  0.70 \\
- 0.04 & -0.20 \\
--0.36 &  0.00
-\end{bmatrix} = \begin{bmatrix}
- 0.83 &  0.69 \\
- 1.03 &  0.70 \\
- 0.70 &  0.42 \\
- 0.46 &  0.32
-\end{bmatrix}
-$$</p>
-<p>The final row corresponding to the token <code>up</code> has a new representation of <code>[0.46, 0.32]</code>. This vector is no longer a static dictionary definition. It is a dynamic, context-aware representation explicitly shaped by the presence of <code>woke</code> and <code>i</code> occurring earlier in the sequence.</p>
-<p>The attention mechanism for a single head is complete. The model operates with three independent attention heads running in parallel. The architecture then reconciles these independent perspectives by projecting them back into the original embedding dimension.</p>
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p>This matrix multiplication is not &quot;learning&quot; anything; it is simply the linear algebra mechanism for selecting a specific row from a table. The token <code>walk</code> has now been successfully mapped from a discrete integer ID into a continuous, 512-dimensional vector of random numbers. </p>
+<p>We have bridged the gap into the continuous vector space. Next, we will explore what these random numbers actually represent, the nature of high-dimensional geometry, and what it means for tokens to be scattered randomly across this newly created mathematical landscape.</p>
 
 <div class="blog-pagination">
-      <a href="transformers-chapter_05.html" class="pagination-link prev">
+      <a href="teacher-forcing-vs-inference.html" class="pagination-link prev">
         <span class="pagination-label">Previous</span>
-        <span class="pagination-title">Part 5: Causal Masking</span>
+        <span class="pagination-title">The Mathematics of Parallel Training: Teacher Forcing vs. Inference</span>
       </a>
-      <a href="transformers-chapter_07.html" class="pagination-link next">
+      <a href="embeddings-chapter_02.html" class="pagination-link next">
         <span class="pagination-label">Next</span>
-        <span class="pagination-title">Part 7: The Projection Matrix and The Cross-Head Mixer</span>
+        <span class="pagination-title">Part 2: The Continuous Vector Space</span>
       </a></div>
         </article>
     </div>

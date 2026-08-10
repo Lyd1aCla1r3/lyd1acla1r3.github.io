@@ -231,6 +231,8 @@ if (posts.length > 0) {
               seriesDesc = "A rigorous, geometric deconstruction of the Decoder-only Transformer architecture. This complete series builds the model from the ground up, moving from the vocabulary embedding matrix through the multi-head attention mechanism and residual streams, terminating in the mathematically precise calculation of the cross-entropy loss function.";
           } else if (sName === 'tokenization') {
               seriesDesc = "A step-by-step unrolling of the Byte Pair Encoding algorithm. This collection traces the deterministic compression of character-level data into semantic subword units, proving mathematically how the statistical distribution of language inherently generates structural linguistic features before reaching the neural network.";
+          } else if (sName === 'embeddings') {
+              seriesDesc = "A mathematical deconstruction of the Word2Vec framework. This series explores how the architectures of Skip-gram and CBOW physically project discrete tokens into dense vector space, terminating in a rigorous unrolling of the backpropagation calculus and Negative Sampling optimization.";
           }
           
           seriesHtml += `

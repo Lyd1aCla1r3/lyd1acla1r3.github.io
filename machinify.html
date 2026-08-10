@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lydia Pedersen × Machinify</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="css/styles.css?v=1.1">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    /* Scoped styles specifically for the Machinify cover letter page to override the 50/50 grid layout */
+    .machinify-page {
+      padding-top: 100px;
+      padding-bottom: 60px;
+    }
+    
+    /* Replaces .about to avoid massive section padding */
+    .machinify-panel {
+      margin-bottom: 3.5rem;
+    }
+
+    .machinify-section-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Standard section headers */
+    .machinify-section-header .section-title {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      margin-bottom: 0.5rem;
+    }
+
+    /* Specific huge font for the intro hello */
+    .machinify-section-header .hello-header {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+    }
+
+    .machinify-section {
+      margin-bottom: 0;
+    }
+
+    /* Contact Row */
+    .contact-row {
+      display: flex;
+      gap: 2.5rem;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: var(--fs-lg);
+      font-weight: var(--fw-semibold);
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .contact-row a, .contact-row span {
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+      border-bottom: none !important;
+    }
+
+    .contact-row a:hover {
+      opacity: 0.7;
+    }
+
+    /* Extend text across screen up to chip design, left aligned */
+    .machinify-narrative {
+      max-width: 900px;
+      margin: 0; 
+    }
+
+    .machinify-narrative p {
+      font-size: var(--fs-md);
+      color: var(--text-secondary);
+      line-height: var(--lh-relaxed);
+      margin-bottom: var(--space-lg);
+    }
+
+    .machinify-narrative p strong {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+    
+    .machinify-narrative a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s ease;
+      border-bottom: 1px solid transparent;
+    }
+    
+    .machinify-narrative a:hover {
+      border-bottom: 1px solid var(--accent);
+    }
+
+    /* Make inline metallic links bolder and visible without border */
+    .machinify-narrative a.metallic-text {
+      font-weight: 700;
+      border-bottom: none !important;
+    }
+    
+    .machinify-narrative a.metallic-text:hover {
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <!-- Fixed background assets from portfolio -->
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
+  <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="index.html" class="nav__logo" aria-label="Home">lydia<span>.</span>pedersen</a>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="index.html" class="nav__link">Back to Portfolio &rarr;</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main id="main-content" class="machinify-page">
+    
+    <!-- Intro -->
+    <section class="machinify-panel" id="intro">
+      <div class="container">
+        <div class="machinify-section-header fade-in">
+          <h2 class="section-title hello-header">Hello Machinify.</h2>
+        </div>
+        <div class="machinify-section">
+          <div class="machinify-narrative fade-in">
+            <p>
+              I built this hidden landing page specifically for the Machinify engineering team. While my <a href="index.html" class="metallic-text">general portfolio</a> covers my broader career, my most relevant work for your L4 AI Engineer role lies in my <a href="index.html#case-studies" class="metallic-text">production AI pipelines</a> and my mathematical breakdowns of <a href="ebooks/transformers/index.html" class="metallic-text">Transformer architectures</a>. 
+            </p>
+            <p>
+              The hardest problem in applied AI is not building an agent that produces a plausible answer. It is encoding human expert judgment into a controlled workflow where every output is traceable, every decision is defensible, and the system fails safely when it encounters something it was not designed to handle. I have spent the past three years solving that specific translation problem: independently designing, shipping, and iterating on four production agentic pipelines in Python, each built from scratch as a custom in-house solution. 
+            </p>
+            <p>
+              I would genuinely welcome the opportunity to discuss how my approach to defensible, evaluation-first agent design aligns with what your team is building.
+            </p>
+            
+            <div class="contact-row">
+              <a href="mailto:lydiaclaire.x@gmail.com" class="metallic-text">lydiaclaire.x@gmail.com</a>
+              <span class="metallic-text">949-466-2819</span>
+              <a href="https://lyd1acla1r3.github.io" class="metallic-text">lyd1acla1r3.github.io</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Architecture -->
+    <section class="machinify-panel" id="architecture">
+      <div class="container">
+        <div class="machinify-section-header fade-in">
+          <h2 class="section-title">Tool-agnostic logic over vendor lock-in.</h2>
+        </div>
+        <div class="machinify-section">
+          <div class="machinify-narrative fade-in">
+            <p>
+              Each pipeline I've built is architected around tool-agnostic logic. I abstract the underlying reasoning of a workflow so that implementation details can change without disrupting the architecture. The field moves weekly, and the systems I build survive that churn because the decision logic is decoupled from any single vendor or framework. When a new capability earns adoption, I swap the integration layer while the governance, the guardrails, the structured outputs, and the audit trail remain intact.
+            </p>
+            <p>
+              That instinct was shaped by fifteen years of evaluating test equipment vendors, where selecting instrumentation suites and compliance modules meant reading specifications in detail, researching competing designs and their trade-offs, and making clear go/no-go decisions based on reliability, scalability, and long-term standards alignment. I apply that same evaluation discipline now when choosing between agent SDKs, reasoning models, and retrieval strategies, and I hold strong, data-backed opinions on when each one earns its cost.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Grounding -->
+    <section class="machinify-panel" id="grounding">
+      <div class="container">
+        <div class="machinify-section-header fade-in">
+          <h2 class="section-title">Every decision must be traceable and defensible.</h2>
+        </div>
+        <div class="machinify-section">
+          <div class="machinify-narrative fade-in">
+            <p>
+              My AI doc writer agent translates raw engineering signals into publication-ready documentation through a seven-stage architecture with isolated personas handling generation, evaluation, routing, and fact-checking under strict temperature boundaries. What enters the prompt at every stage is what I obsess over most, because context engineering determines whether a system produces a defensible finding or an eloquent hallucination. 
+            </p>
+            <p>
+              Context overflow was one of the earliest production failures I had to solve. Rather than flooding downstream mechanisms with full payloads, I engineered slicing and deflation strategies that extract only the relevant signals in stages, preserving full context fidelity without exceeding token budgets. That same discipline carries through to the grounding audit: a zero-temperature fact-checking pass that traces every claim to the raw source material and mandates gap annotations for missing context rather than allowing the model to fabricate. A recovery engine catches failed quality checks, and a circuit breaker trips after two retries to halt the process rather than silently degrade output. Nothing ships that I cannot reproduce and defend.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Evaluation -->
+    <section class="machinify-panel" id="evaluation">
+      <div class="container">
+        <div class="machinify-section-header fade-in">
+          <h2 class="section-title">Building the evaluation harness first.</h2>
+        </div>
+        <div class="machinify-section">
+          <div class="machinify-narrative fade-in">
+            <p>
+              These pipelines are living systems, not static deployments. Output data and team feedback are ingested automatically to inform revisions. I run structured A/B testing and evidence-backed parameter sweeps across prompt configurations, scoring thresholds, and matching algorithms to drive each iteration toward consistent, defensible output. My analytics deflection engine went through a 200-combination parameter sweep to eliminate subjective categorization from its triage taxonomy.
+            </p>
+            <p>
+              I develop exhaustively for edge cases because that is where production systems actually break. I build every evaluation harness before I build the agent it governs, because an agent that passes its own cherry-picked tests but fails on adversarial input is worse than no agent at all. Each pipeline run produces an audit file with specific reason codes that feed directly into the next development cycle. During development itself, I perform tree-of-thought and adversarial self-audits to ground and constrain pipeline behavior, stress-testing assumptions before they harden into architecture.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Safety and Domain -->
+    <section class="machinify-panel" id="safety">
+      <div class="container">
+        <div class="machinify-section-header fade-in">
+          <h2 class="section-title">Zero-risk philosophy and mathematical domain depth.</h2>
+        </div>
+        <div class="machinify-section">
+          <div class="machinify-narrative fade-in">
+            <p>
+              Fifteen years of hardware compliance testing at certification level taught me that "mostly right" is indistinguishable from wrong when the result must survive scrutiny. That conviction governs my approach to privacy and safety, which are non-negotiable structural commitments. My analytics deflection engine scrubs all personally identifiable information through a strict k-anonymity model before extracting any insight, because in domains with regulatory exposure, data that should never have been visible cannot be retroactively unseen. My link governance engine enforces a zero-risk philosophy where only a verified subset of failure categories qualifies for automated remediation. I do not accept arbitrary defaults; every threshold and scoring weight is calibrated through evidence-backed sweeps and validated against industry standards.
+            </p>
+            <p>
+              The domain knowledge runs deep as well. I have authored a 24-chapter, 100-page ebook building an autoregressive Decoder-only Transformer from scratch, calculating the entire forward pass by hand, along with a completed companion series on Byte Pair Encoding tokenization and an ongoing series on vector embeddings. Surface-level familiarity with how these models work produces surface-level engineering, and I go deeper because the architecture decisions that matter most happen at the layer where intuition meets mathematics.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ownership -->
+    <section class="machinify-panel" id="ownership">
+      <div class="container">
+        <div class="machinify-section-header fade-in">
+          <h2 class="section-title">End-to-end pipeline ownership.</h2>
+        </div>
+        <div class="machinify-section">
+          <div class="machinify-narrative fade-in">
+            <p>
+              I took each of these pipelines from a locally tested prototype to a production-grade workflow that my team relied on daily, owning the entire arc from conception through architecture, implementation, evaluation, iteration, and deployment. I proactively identified where repetitive manual processes created friction across departments and built systems to close those gaps before they reached the backlog. My semantic redirect engine exists because I recognized that cross-version documentation routing was a structural failure no commercial tool could address, so I built a four-stage Extract-Embed-Match-Emit pipeline with a deterministic penalty stack to solve it.
+            </p>
+            <p>
+              All of this was built through AI-assisted development as a power user. I live inside agentic tooling to plan, scaffold, refactor, and debug, maintaining fresh context through checkpoints, structured handoffs, and living documents that preserve continuity across long-running engineering sessions. I monitor token consumption and context windows constantly, because prompt engineering is not a technique I apply occasionally; it is the discipline that governs how I think about every input and output in a system.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Load global JS for animations -->
+  <script src="js/main.js"></script>
+</body>
+</html>

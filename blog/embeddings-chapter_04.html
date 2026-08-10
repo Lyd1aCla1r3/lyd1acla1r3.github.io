@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Part 6: From Scores to Synthesis: Softmax and The Value Matrix — Lydia Pedersen</title>
+  <title>Part 4: Training the Space: Backpropagation and Negative Sampling — Lydia Pedersen</title>
   <link rel="stylesheet" href="../css/styles.css?v=1.2">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
   <style>
@@ -100,96 +100,53 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Part 6: From Scores to Synthesis: Softmax and The Value Matrix</li></ol></nav>
-        <article class="blog-post series-transformers">
-<h1>Part 6: From Scores to Synthesis: Softmax and The Value Matrix</h1>
-<!-- SUMMARY: The single-head attention mechanism is finalized by leveraging the softmax function to convert unbounded routing scores into a strict probability distribution. A weighted sum against the value matrix is then computed to dynamically synthesize a deeply contextualized geometric representation for each token. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p><p>The previously calculated masked attention scores provide a strict mathematical barrier that prevents information from flowing backward in time through the application of a lower triangular matrix of negative infinity values. The resulting matrix represents the raw geometric alignment between Queries and Keys across all valid time steps.</p>
-<p>These scalar values are mathematically unbounded. Converting them into a stable format capable of driving the core synthesis step of the attention mechanism requires the Softmax function and the introduction of a third fundamental learned matrix: the Value matrix.</p>
-<h2>The Softmax Function: Converting Alignment to Probability</h2>
-<p>The attention scores function as a set of weights to perform a weighted sum. Using the raw unbounded scores directly would cause the magnitude of vectors to compound uncontrollably as information flows deeper into the network. Maintaining mathematical stability requires weights to be strictly positive and to sum exactly to 1 across each row. This is achieved by applying the Softmax function.</p>
-<p>The Softmax function operates by taking the exponential of each input value and dividing it by the sum of all exponentials in that row. Exponentiation maps any real number to a positive value. Dividing by the total sum normalizes these positive values into a strict probability distribution.</p>
-<p>The masked scaled scores from the preceding step are:</p>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Embeddings</a></li><li aria-current="page">Part 4: Training the Space: Backpropagation and Negative Sampling</li></ol></nav>
+        <article class="blog-post series-embeddings">
+<h1>Part 4: Training the Space: Backpropagation and Negative Sampling</h1>
+<!-- SUMMARY: The optimization of the embedding matrix relies on backpropagation, where the complex derivatives of softmax and cross-entropy algebraically cancel to produce a pure error signal. Because updating the full vocabulary distribution is computationally intractable, Word2Vec employs Negative Sampling to convert the multi-class softmax objective into an efficient binary classification problem. --><p>The forward pass of the Skip-gram architecture concludes by generating a scalar loss value, $L$, representing the error between the network&#39;s predicted probabilities and the ground truth context word. To optimize the randomly initialized embedding matrices ($W_{target}$ and $W_{context}$), we must utilize backpropagation to calculate the gradient of this loss with respect to every individual weight in the network.</p>
+<h2>The Mathematical Cancellation</h2>
+<p>To calculate the gradient of the loss with respect to the raw, pre-softmax logits $\mathbf{z}$, we must apply the chain rule across two notoriously complex functions: the Cross-Entropy loss (which contains logarithmic derivatives) and the Softmax function.</p>
+<p>As demonstrated extensively in our Transformers series, the softmax function is not an element-wise operation. Altering a single logit $z_i$ changes the sum in the denominator, which inversely alters the probability of every other word in the vocabulary. The derivative of a softmax output with respect to its input forms a full Jacobian matrix tracking the interaction of every single output with every single input.</p>
+<p>However, a beautiful mathematical cancellation occurs when applying the chain rule to combine the derivative of the cross-entropy loss with the Jacobian of the softmax function. The complex fractional terms and off-diagonal Jacobian interactions perfectly cancel each other out.</p>
+<p>The gradient of the loss with respect to the raw logits, $\frac{\partial L}{\partial \mathbf{z}}$, simplifies entirely to:</p>
 <p>$$
-\text{Scores}_{masked} = \begin{bmatrix}
- 0.45 & -\infty & -\infty & -\infty \\
- 0.59 &  0.87 & -\infty & -\infty \\
--0.09 & -0.20 & -0.26 & -\infty \\
--0.18 & -0.33 & -0.39 & -0.39
-\end{bmatrix}
+\frac{\partial L}{\partial \mathbf{z}} = \mathbf{\hat{y}} - \mathbf{y}
 $$</p>
-<p>Applying the Softmax function yields the final attention weights matrix $A$:</p>
-<p>$$
-A = \text{Softmax}(\text{Scores}_{masked}) = \begin{bmatrix}
- 1.00 &  0.00 &  0.00 &  0.00 \\
- 0.43 &  0.57 &  0.00 &  0.00 \\
- 0.37 &  0.33 &  0.31 &  0.00 \\
- 0.29 &  0.25 &  0.23 &  0.23
-\end{bmatrix}
-$$</p>
-<p>The causal mask functions such that the exponential of negative infinity approaches exactly zero. Masked positions are flawlessly converted into zero-valued weights. The model is now mathematically incapable of extracting information from future tokens. Every row sums precisely to 1, providing a clean probability distribution over all preceding context.</p>
-<h2>The Value Matrix: The Content Payload</h2>
-<p>Computations thus far have focused entirely on routing. The Query and Key matrices exist solely to dictate where information should flow. They measure semantic relevance. They do not represent the information payload itself.</p>
-<p>If the attention weights are the map, the Value matrix is the cargo. The semantic features required to determine relevance are fundamentally different from the semantic features required to predict the next word. The original positional embeddings $X$ are therefore projected into a third distinct subspace using the Value weight matrix $W_V$.</p>
-<p>The embedding dimension $d_{model}$ is 6. This is projected down into a head dimension $d_v$ of 2. The learned weights $W_V$ are defined as:</p>
-<p>$$
-W_V = \begin{bmatrix}
- 0.3 & -0.1 \\
- 0.2 &  0.5 \\
--0.4 &  0.1 \\
- 0.1 &  0.6 \\
--0.3 &  0.2 \\
- 0.5 & -0.4
-\end{bmatrix}
-$$</p>
-<p>The Value matrix $V$ is calculated by taking the dot product of the positional embeddings $X$ and $W_V$:</p>
-<p>$$
-V = X \cdot W_V = \begin{bmatrix}
- 0.83 &  0.69 \\
- 1.18 &  0.70 \\
- 0.04 & -0.20 \\
--0.36 &  0.00
-\end{bmatrix}
-$$</p>
-<p>The matrix $V$ contains the actual conceptual representations that will be broadcast across the sequence. Each row holds the information payload for a single token in the <code>&lt;BOS&gt;</code> <code>i</code> <code>woke</code> <code>up</code> sequence.</p>
-<h2>The Weighted Sum: Synthesizing Context</h2>
-<p>The culmination of the single head attention mechanism relies on a matrix of routing instructions $A$ and a matrix of information payloads $V$. New contextualized representations are synthesized by computing the dot product of $A$ and $V$.</p>
-<p>This operation physically executes a weighted sum. Every token constructs a new representation of itself by blending together the Value vectors of all preceding tokens according to the probabilities in the attention matrix.</p>
-<pre><code class="language-mermaid">graph TD
-    A(&quot;Attention Weights Matrix A&quot;) --&gt; C(&quot;Weighted Sum Matrix Multiplication&quot;)
-    B(&quot;Value Matrix V&quot;) --&gt; C
-    C --&gt; D(&quot;Contextualized Output H&quot;)
-</code></pre>
-<p>The final head output $H$ is computed as:</p>
-<p>$$
-H = A \cdot V = \begin{bmatrix}
- 1.00 &  0.00 &  0.00 &  0.00 \\
- 0.43 &  0.57 &  0.00 &  0.00 \\
- 0.37 &  0.33 &  0.31 &  0.00 \\
- 0.29 &  0.25 &  0.23 &  0.23
-\end{bmatrix} \cdot \begin{bmatrix}
- 0.83 &  0.69 \\
- 1.18 &  0.70 \\
- 0.04 & -0.20 \\
--0.36 &  0.00
-\end{bmatrix} = \begin{bmatrix}
- 0.83 &  0.69 \\
- 1.03 &  0.70 \\
- 0.70 &  0.42 \\
- 0.46 &  0.32
-\end{bmatrix}
-$$</p>
-<p>The final row corresponding to the token <code>up</code> has a new representation of <code>[0.46, 0.32]</code>. This vector is no longer a static dictionary definition. It is a dynamic, context-aware representation explicitly shaped by the presence of <code>woke</code> and <code>i</code> occurring earlier in the sequence.</p>
-<p>The attention mechanism for a single head is complete. The model operates with three independent attention heads running in parallel. The architecture then reconciles these independent perspectives by projecting them back into the original embedding dimension.</p>
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p>This derivative is stunningly simple. The error signal is exactly the predicted probability distribution minus the one-hot encoded ground truth vector. </p>
+<p>If the correct context word is <code>street</code> (index <code>482</code>), the one-hot ground truth vector $\mathbf{y}$ contains a <code>1.0</code> at index <code>482</code> and <code>0.0</code> everywhere else. If our network predicted a <code>0.14%</code> probability for <code>street</code> and a <code>6%</code> probability for <code>cat</code>, the error signal at the <code>street</code> index is $0.0014 - 1.0 = -0.9986$ (a massive negative gradient, pulling the logit up), while the error signal at the <code>cat</code> index is $0.06 - 0.0 = +0.06$ (a positive gradient, pushing the incorrect logit down).</p>
+<h2>Updating the Matrices</h2>
+<p>This error signal $(\mathbf{\hat{y}} - \mathbf{y})$ represents how much each raw logit must change. By the rules of vector calculus, we propagate this error backward through the matrix multiplications to update the weights.</p>
+<p>To update $W_{context}$, we multiply the error signal by the target word&#39;s hidden state $\mathbf{h}$. To update the target embedding matrix $W_{target}$, we pass the error signal backward through $W_{context}$ to find the gradient for $\mathbf{h}$, and then update the specific row in $W_{target}$ that generated $\mathbf{h}$.</p>
+<p>Through millions of iterations, these cascading gradients physically rotate the vectors. Contextually similar words are pulled together by shared positive gradients, while unrelated words are pushed apart by negative gradients.</p>
+<h2>The Intractability of Softmax</h2>
+<p>While the calculus is elegant, executing this exact mathematical process on a production corpus is computationally intractable. </p>
+<p>The core bottleneck lies in the denominator of the softmax function:
+$$ \sum_{j=1}^{V} e^{z_j} $$</p>
+<p>To calculate the probability of a <em>single</em> context word, the network must compute the dot product of the target vector against <em>every single row</em> in $W_{context}$, exponentiate all $V$ results, and sum them. If the vocabulary size $V$ is 100,000, this requires 100,000 dot products just to process a single word in the corpus. Over billions of training words, this normalization requirement grinds the system to a halt.</p>
+<p>Furthermore, the backpropagation step $\mathbf{\hat{y}} - \mathbf{y}$ requires applying a tiny negative gradient to the remaining 99,999 incorrect words in $W_{context}$, meaning the entire massive matrix must be updated for every single step.</p>
+<h2>Negative Sampling</h2>
+<p>In 2013, the creators of Word2Vec resolved this bottleneck by abandoning the full softmax distribution entirely, introducing a technique called <strong>Negative Sampling</strong>.</p>
+<p>Instead of treating context prediction as a massive multi-class probability distribution across 100,000 words, Negative Sampling reframes it as a simple binary classification problem.</p>
+<p>For a target token <code>walk</code> and its true context word <code>street</code>, we generate one &quot;Positive Sample&quot;: (walk, street) $\rightarrow$ Label: 1.
+We then randomly sample $k$ &quot;Negative Samples&quot; from the vocabulary (words that did not appear in the context, e.g., $k=5$):</p>
+<ul>
+<li>(walk, desk) $\rightarrow$ Label: 0</li>
+<li>(walk, apple) $\rightarrow$ Label: 0</li>
+<li>(walk, cloud) $\rightarrow$ Label: 0</li>
+<li>(walk, jump) $\rightarrow$ Label: 0</li>
+<li>(walk, blue) $\rightarrow$ Label: 0</li>
+</ul>
+<p>Instead of calculating 100,000 dot products, the network calculates exactly 6 dot products. It passes each dot product through a simple sigmoid function (which scales the scalar value between 0 and 1) and calculates the binary cross-entropy loss against the 1 or 0 labels.</p>
+<p>During backpropagation, only the vector for the positive word (<code>street</code>) and the vectors for the 5 negative words are updated. The other 99,994 rows in $W_{context}$ remain completely untouched. This architectural innovation slashed computational costs by orders of magnitude, transforming Vector Embeddings from a theoretical mathematical exercise into the foundational bedrock of modern Natural Language Processing.</p>
 
 <div class="blog-pagination">
-      <a href="transformers-chapter_05.html" class="pagination-link prev">
+      <a href="embeddings-chapter_03.html" class="pagination-link prev">
         <span class="pagination-label">Previous</span>
-        <span class="pagination-title">Part 5: Causal Masking</span>
+        <span class="pagination-title">Part 3: The Architecture and the Forward Pass</span>
       </a>
-      <a href="transformers-chapter_07.html" class="pagination-link next">
+      <a href="tokenization-preface.html" class="pagination-link next">
         <span class="pagination-label">Next</span>
-        <span class="pagination-title">Part 7: The Projection Matrix and The Cross-Head Mixer</span>
+        <span class="pagination-title">Preface: Why Tokenization Matters</span>
       </a></div>
         </article>
     </div>

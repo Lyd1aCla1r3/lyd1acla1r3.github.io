@@ -152,76 +152,39 @@
 
   <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-2xl));">
     <div class="container blog-list">
-        <nav aria-label="breadcrumb" class="breadcrumbs">
-          <ol>
-            <li><a href="../index.html">Home</a></li>
-            <li aria-current="page">Blog</li>
-          </ol>
-        </nav>
+        <nav aria-label="breadcrumb" class="breadcrumbs"><ol><li><a href="../index.html">Home</a></li><li><a href="index.html#tab-series">Blog</a></li><li aria-current="page">Embeddings Series</li></ol></nav>
         <h1 class="hero__name" style="text-align: center; margin-bottom: var(--space-2xl);">Blog</h1>
         <!-- BLOG_LIST_START -->
 
-        <div class="blog-tabs">
-            <input type="radio" id="tab-perspectives" name="blog-tabs" checked>
-            <label for="tab-perspectives" class="tab-label">Perspectives</label>
-            
-            <input type="radio" id="tab-series" name="blog-tabs">
-            <label for="tab-series" class="tab-label">Series</label>
-            
-            <input type="radio" id="tab-methodology" name="blog-tabs">
-            <label for="tab-methodology" class="tab-label">Validation & Benchmarks</label>
-            
-            <div class="tab-content" id="content-perspectives">
-                <p class="tab-desc">Observations on the evolving landscape of technical enablement, exploring how architectural shifts and emerging tools influence the craft of documentation.</p>
-                
-        <a href="ai-for-code-vs-documentation.html">
-            <article class="blog-item">
-                <h2>AI for Code vs Documentation</h2>
-                <p>As AI radically accelerates software development, maintaining high-quality documentation has become an escalating challenge that simple agentic generation cannot fully resolve. Advancing documentation to a core priority requires keeping humans in the loop to capture the nuanced art and critical context of technical writing.</p>
-            </article>
-        </a>
-        <a href="teacher-forcing-vs-inference.html">
-            <article class="blog-item">
-                <h2>The Mathematics of Parallel Training: Teacher Forcing vs. Inference</h2>
-                <p>A step-by-step mathematical walkthrough contrasting the highly parallelized nature of Transformer training with the sequential bottleneck of inference. By utilizing a concrete toy example, the underlying tensor algebra of causal masking and cross-entropy loss is demystified. This renders the mechanics of Teacher Forcing accessible and rigorously proven without relying on abstraction.</p>
-            </article>
-        </a>
-            </div>
-            
-            <div class="tab-content" id="content-series">
-                <p class="tab-desc">Sequential explorations born from personal curiosity. These collections document my process of deconstructing complex systems and sharing the resulting insights.</p>
-                
-          <a href="series-embeddings.html">
-              <article class="blog-item series-item" style="margin-bottom: var(--space-md);">
-                  <h2>Embeddings Series</h2>
-                  <p>A mathematical deconstruction of the Word2Vec framework. This series explores how the architectures of Skip-gram and CBOW physically project discrete tokens into dense vector space, terminating in a rigorous unrolling of the backpropagation calculus and Negative Sampling optimization. <strong>(4 chapters)</strong></p>
-              </article>
-          </a>
-          <a href="series-tokenization.html">
-              <article class="blog-item series-item" style="margin-bottom: var(--space-md);">
-                  <h2>Tokenization Series</h2>
-                  <p>A step-by-step unrolling of the Byte Pair Encoding algorithm. This collection traces the deterministic compression of character-level data into semantic subword units, proving mathematically how the statistical distribution of language inherently generates structural linguistic features before reaching the neural network. <strong>(6 chapters)</strong></p>
-              </article>
-          </a>
-          <a href="series-transformers.html">
-              <article class="blog-item series-item" style="margin-bottom: var(--space-md);">
-                  <h2>Transformers Series</h2>
-                  <p>A rigorous, geometric deconstruction of the Decoder-only Transformer architecture. This complete series builds the model from the ground up, moving from the vocabulary embedding matrix through the multi-head attention mechanism and residual streams, terminating in the mathematically precise calculation of the cross-entropy loss function. <strong>(25 chapters)</strong></p>
-              </article>
-          </a>
-            </div>
-            
-            <div class="tab-content" id="content-methodology">
-                <p class="tab-desc">Empirical investigations designed to resolve complex architectural questions through rigorous data analysis. Every benchmark is supported by a public repository so you can clone the infrastructure, run the tests, and independently reproduce the findings.</p>
-                
-        <a href="serp-api-benchmark.html">
-            <article class="blog-item">
-                <h2>Benchmarking SERP API Fidelity for AI Overviews</h2>
-                <p>This benchmark evaluates the parsing fidelity and extraction richness of major SERP APIs against the non-deterministic architecture of Google's AI Overviews. By mathematically auditing detection yields and structural data integrity, it rigorously determines which providers are capable of powering enterprise retrieval-augmented generation pipelines.</p>
-            </article>
-        </a>
-            </div>
-        </div>
+          <div class="series-group" style="margin-top: var(--space-2xl);">
+              <div class="series-items">
+                  
+                  <a href="embeddings-chapter_01.html">
+                      <article class="blog-item series-item">
+                          <h2>Part 1: Bridging the Gap - From Token IDs to Vectors</h2>
+                          <p>Tokenization translates raw text into discrete integer identifiers, but neural networks require continuous representations to perform calculus. The embedding matrix solves this by projecting each discrete token into a high-dimensional vector space via one-hot encoding multiplication, acting as a simple, dense lookup table.</p>
+                      </article>
+                  </a>
+                  <a href="embeddings-chapter_02.html">
+                      <article class="blog-item series-item">
+                          <h2>Part 2: The Continuous Vector Space</h2>
+                          <p>Projecting discrete tokens into a high-dimensional vector space provides the differentiable manifold required for gradient-based optimization. At initialization, these vectors are drawn from a random distribution, creating an isotropic expanse where all tokens are geometrically orthogonal and devoid of semantic relationships.</p>
+                      </article>
+                  </a>
+                  <a href="embeddings-chapter_03.html">
+                      <article class="blog-item series-item">
+                          <h2>Part 3: The Architecture and the Forward Pass</h2>
+                          <p>To understand how vector embeddings are learned, we must examine the shallow neural network designed to train them. By walking step-by-step through a concrete mathematical example, we observe how a two-layer architecture extracts a dense vector, projects it into raw logits, and uses Softmax and Cross-Entropy Loss to quantify the network's error against the ground truth. We also explore the fundamental limitations of static embeddings, setting the stage for Transformers.</p>
+                      </article>
+                  </a>
+                  <a href="embeddings-chapter_04.html">
+                      <article class="blog-item series-item">
+                          <h2>Part 4: Training the Space: Backpropagation and Negative Sampling</h2>
+                          <p>The optimization of the embedding matrix relies on backpropagation, where the complex derivatives of softmax and cross-entropy algebraically cancel to produce a pure error signal. Because updating the full vocabulary distribution is computationally intractable, Word2Vec employs Negative Sampling to convert the multi-class softmax objective into an efficient binary classification problem.</p>
+                      </article>
+                  </a>
+              </div>
+          </div>
         <!-- BLOG_LIST_END -->
 
     </div>

@@ -1214,12 +1214,12 @@ html {
   scrollbar-color: var(--rose-gold) transparent;
 }
 
-.series-transformers .katex-display {
+.blog-post .katex-display {
   text-align: left !important;
   font-size: 0.9em !important;
 }
 
-.series-transformers .katex-display > .katex {
+.blog-post .katex-display > .katex {
   text-align: left !important;
   display: block;
 }
