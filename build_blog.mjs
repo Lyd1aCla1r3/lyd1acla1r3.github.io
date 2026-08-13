@@ -127,7 +127,10 @@ postsData.sort((a, b) => {
     if (a.seriesName !== b.seriesName) {
         if (!a.seriesName) return 1;
         if (!b.seriesName) return -1;
-        return a.seriesName.localeCompare(b.seriesName);
+        const seriesOrder = { tokenization: 0, embeddings: 1, transformers: 2 };
+        const aOrder = seriesOrder[a.seriesName] ?? 99;
+        const bOrder = seriesOrder[b.seriesName] ?? 99;
+        return aOrder - bOrder;
     }
     const aName = path.basename(a.url).toLowerCase();
     const bName = path.basename(b.url).toLowerCase();
@@ -232,7 +235,7 @@ if (posts.length > 0) {
           } else if (sName === 'tokenization') {
               seriesDesc = "A step-by-step unrolling of the Byte Pair Encoding algorithm. This collection traces the deterministic compression of character-level data into semantic subword units, proving mathematically how the statistical distribution of language inherently generates structural linguistic features before reaching the neural network.";
           } else if (sName === 'embeddings') {
-              seriesDesc = "A mathematical deconstruction of the Word2Vec framework. This series explores how the architectures of Skip-gram and CBOW physically project discrete tokens into dense vector space, terminating in a rigorous unrolling of the backpropagation calculus and Negative Sampling optimization.";
+              seriesDesc = "A complete derivation of end-to-end learned embeddings. This series traces the mathematical journey from discrete token IDs through one-hot encoding, random initialization in high-dimensional space, the forward pass and cross-entropy loss, full backpropagation through both weight matrices, and the emergent semantic geometry that arises from gradient descent at scale.";
           }
           
           seriesHtml += `

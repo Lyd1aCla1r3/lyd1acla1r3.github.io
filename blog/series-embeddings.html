@@ -159,9 +159,15 @@
           <div class="series-group" style="margin-top: var(--space-2xl);">
               <div class="series-items">
                   
+                  <a href="embeddings-preface.html">
+                      <article class="blog-item series-item">
+                          <h2>Preface: The Gap Between Discrete and Continuous</h2>
+                          <p>The preceding Tokenization series terminates with a sequence of discrete integer IDs. The subsequent Transformer series begins with a dense, continuous embedding tensor. This series bridges that gap by deriving the complete mathematical mechanism (from one-hot encoding through gradient descent) by which a static embedding matrix transforms random vectors into a semantically structured geometric space.</p>
+                      </article>
+                  </a>
                   <a href="embeddings-chapter_01.html">
                       <article class="blog-item series-item">
-                          <h2>Part 1: Bridging the Gap - From Token IDs to Vectors</h2>
+                          <h2>Part 1: One-Hot Encoding and the Embedding Matrix</h2>
                           <p>Tokenization translates raw text into discrete integer identifiers, but neural networks require continuous representations to perform calculus. The embedding matrix solves this by projecting each discrete token into a high-dimensional vector space via one-hot encoding multiplication, acting as a simple, dense lookup table.</p>
                       </article>
                   </a>
@@ -173,14 +179,32 @@
                   </a>
                   <a href="embeddings-chapter_03.html">
                       <article class="blog-item series-item">
-                          <h2>Part 3: The Architecture and the Forward Pass</h2>
-                          <p>To understand how vector embeddings are learned, we must examine the shallow neural network designed to train them. By walking step-by-step through a concrete mathematical example, we observe how a two-layer architecture extracts a dense vector, projects it into raw logits, and uses Softmax and Cross-Entropy Loss to quantify the network's error against the ground truth. We also explore the fundamental limitations of static embeddings, setting the stage for Transformers.</p>
+                          <h2>Part 3: The Forward Pass, Softmax, and Cross-Entropy Loss</h2>
+                          <p>Understanding how vector embeddings are learned requires examining the shallow neural network designed to train them. A step-by-step concrete mathematical example demonstrates how a two-layer architecture extracts a dense vector, projects it into raw logits, and uses Softmax and Cross-Entropy Loss to quantify the network's error against the ground truth. The fundamental limitations of static embeddings are also explored, setting the stage for Transformers.</p>
                       </article>
                   </a>
                   <a href="embeddings-chapter_04.html">
                       <article class="blog-item series-item">
-                          <h2>Part 4: Training the Space: Backpropagation and Negative Sampling</h2>
-                          <p>The optimization of the embedding matrix relies on backpropagation, where the complex derivatives of softmax and cross-entropy algebraically cancel to produce a pure error signal. Because updating the full vocabulary distribution is computationally intractable, Word2Vec employs Negative Sampling to convert the multi-class softmax objective into an efficient binary classification problem.</p>
+                          <h2>Part 4: Backpropagation Through Loss and Softmax</h2>
+                          <p>With the loss computed, the gradient signal is traced backwards through the loss and Softmax layer. Each partial derivative is derived from first principles, revealing how the coupled Softmax-Cross-Entropy pipeline collapses into the unified "predicted minus truth" gradient expression.</p>
+                      </article>
+                  </a>
+                  <a href="embeddings-chapter_05.html">
+                      <article class="blog-item series-item">
+                          <h2>Part 5: Backpropagation Through the Weight Matrices</h2>
+                          <p>The backward pass continues through the un-embedding and embedding matrices. By deriving the element-wise gradients for both $W_U$ and $W_E$, and demonstrating how the one-hot sparsity of the input ensures only a single embedding row receives an update, the full end-to-end gradient is computed and the weight update rule is applied.</p>
+                      </article>
+                  </a>
+                  <a href="embeddings-chapter_06.html">
+                      <article class="blog-item series-item">
+                          <h2>Part 6: Convergent Geometry and Linear Substructures</h2>
+                          <p>The cumulative effect of billions of microscopic gradient updates on the embedding matrix reveals how distributional statistics organically produce semantic geometry. The most striking emergent property—linear substructures where vector arithmetic captures semantic relationships—is demonstrated through concrete worked examples.</p>
+                      </article>
+                  </a>
+                  <a href="embeddings-chapter_07.html">
+                      <article class="blog-item series-item">
+                          <h2>Part 7: The Embedding Tensor and the Limits of Static Representations</h2>
+                          <p>The single-token lookup of previous chapters is generalized to full sequence processing, producing the embedding tensor for an entire input sequence. The fundamental limits of static embeddings—context-blindness and order-agnosticism—are identified, and the handoff to the Transformer architecture, whose positional encodings and self-attention mechanism resolve exactly these limitations, is established.</p>
                       </article>
                   </a>
               </div>

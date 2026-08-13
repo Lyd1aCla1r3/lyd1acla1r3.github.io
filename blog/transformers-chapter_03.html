@@ -103,7 +103,7 @@
     <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Part 3: The Motivation for Q, K, and V (Asymmetric Similarity)</li></ol></nav>
         <article class="blog-post series-transformers">
 <h1>Part 3: The Motivation for Q, K, and V (Asymmetric Similarity)</h1>
-<!-- SUMMARY: Symmetric similarity is structurally inadequate for capturing grammatically asymmetric linguistic relationships. Projecting context-aware embeddings into distinct query and key subspaces implements a bilinear form that enables tokens to independently query their surroundings and present complementary information. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p><p>The permutation invariance problem is solved by adding absolute positional encodings to the token embeddings. The sequence <code>&lt;BOS&gt;</code> <code>i</code> <code>woke</code> <code>up</code> is now represented by the $4 \times 6$ matrix $X_{pos}$, which contains both semantic meaning and positional context. </p>
+<!-- SUMMARY: Symmetric similarity is structurally inadequate for capturing grammatically asymmetric linguistic relationships. Projecting context-aware embeddings into distinct query and key subspaces implements a bilinear form that enables tokens to independently query their surroundings and present complementary information. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p><p>The permutation invariance problem is solved by adding absolute positional encodings to the token embeddings. The sequence <code>&lt;BOS&gt;</code> <code>i</code> <code>woke</code> <code>up</code> is now represented by the $4 \times 6$ matrix $X_{pos}$, which contains both semantic meaning and positional context. </p>
 <p>The next step in the Transformer architecture is self-attention. The core mechanism of attention involves discovering which tokens in the sequence are relevant to each other. The simplest way to measure mathematical relevance between two vectors is to calculate their dot product. A naive assumption suggests computing the dot product of every token vector with every other token vector directly.</p>
 <p>This approach is known as computing symmetric similarity. The process involves multiplying $X_{pos}$ by its own transpose $X_{pos}^T$. </p>
 <p>$$ \text{Symmetric Similarity} = X_{pos} \times X_{pos}^T $$</p>
@@ -184,7 +184,7 @@ $$</p>
     
     Dot --&gt; Scores(&quot;Asymmetric Attention Scores (4 x 4)&quot;)
 </code></pre>
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="transformers-chapter_02.html" class="pagination-link prev">

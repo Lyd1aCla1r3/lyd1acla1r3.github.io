@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Part 6: Convergent Geometry and Linear Substructures — Lydia Pedersen</title>
+  <link rel="stylesheet" href="../css/styles.css?v=1.2">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .blog-post {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: var(--space-4xl) var(--space-md);
+        background: var(--bg-card);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 8px 32px rgba(183, 110, 121, 0.05);
+        border: 1px solid var(--border-subtle);
+    }
+    .blog-post h1, .blog-post h2, .blog-post h3 {
+        color: var(--text-primary);
+        font-family: var(--font-display);
+        margin-top: var(--space-2xl);
+        margin-bottom: var(--space-md);
+    }
+    .blog-post h1 { font-size: var(--fs-3xl); margin-top: 0; line-height: 1.1; }
+    .blog-post h2, .blog-post h3 { border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-sm); }
+    .blog-post h2 { font-size: var(--fs-2xl); }
+    .blog-post h3 { font-size: var(--fs-xl); }
+    .blog-post p, .blog-post li {
+        color: var(--text-secondary);
+        line-height: var(--lh-relaxed);
+        margin-bottom: var(--space-md);
+        font-size: var(--fs-md);
+    }
+    .blog-post img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-md);
+        margin: var(--space-lg) 0;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .blog-post a:not(.pagination-link) {
+        color: var(--text-accent);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s ease;
+    }
+    .blog-post a:not(.pagination-link):hover {
+        border-bottom-color: var(--text-accent);
+    }
+    .blog-post {
+        background: rgba(255, 255, 255, 0.65);
+        padding: var(--space-2xl);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-subtle);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .blog-post .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; display: flex; gap: 1rem; align-items: center; }
+    .blog-post .meta span { display: inline-flex; align-items: center; gap: 0.25rem; }
+    .blog-post p { line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1.05rem; }
+    .blog-post ul, .blog-post ol { margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem; }
+    .blog-post li { margin-bottom: 0.5rem; }
+    .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+    .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
+    .blog-post table { width: auto; margin: var(--space-2xl) 0; border-collapse: collapse; text-align: left; }
+    .blog-post th, .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post th { font-weight: 600; color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-subtle); }
+    .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 4px 10px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; font-size: 0.95rem; color: var(--rose-gold-dark); margin-right: 6px; }
+  </style>
+</head>
+<body>
+  <!-- Fixed chip visual (always visible, bottom-left, behind everything) -->
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
+  <!-- Full-screen overlay canvas for the diagonal binary→agent→text animation -->
+  <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="../index.html" class="nav__logo" aria-label="Home">lydia<span>.</span>pedersen</a>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="../index.html#about" class="nav__link">About</a></li>
+        <li><a href="../index.html#samples" class="nav__link">Writing</a></li>
+        <li><a href="../index.html#case-studies" class="nav__link">Engineering</a></li>
+        <li><a href="../index.html#skills" class="nav__link">Skills</a></li>
+        <li><a href="index.html" class="nav__link">Blog</a></li>
+        <li><a href="../ebooks/index.html" class="nav__link">Ebooks</a></li>
+        <li><a href="../index.html#contact" class="nav__link">Contact</a></li>
+      </ul>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="nav__toggle-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-lg));">
+    <div class="container">
+<nav aria-label="breadcrumb" class="breadcrumbs"><ol>
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Embeddings</a></li><li aria-current="page">Part 6: Convergent Geometry and Linear Substructures</li></ol></nav>
+        <article class="blog-post series-embeddings">
+<h1>Part 6: Convergent Geometry and Linear Substructures</h1>
+<!-- SUMMARY: The cumulative effect of billions of microscopic gradient updates on the embedding matrix reveals how distributional statistics organically produce semantic geometry. The most striking emergent property—linear substructures where vector arithmetic captures semantic relationships—is demonstrated through concrete worked examples. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p><p>After a single training step, the vector for <code>brown</code> has shifted by a fraction of a decimal point. One gradient, computed from one sentence, adjusts three numbers by a microscopic amount. This operation repeats across every sentence in the training corpus; every token that participates in a forward pass has its embedding vector nudged by the resulting gradient. A corpus of billions of words means billions of gradient updates, each one a tiny push in the embedding space. This chapter traces the cumulative effect of those pushes—and the geometric structure that organically emerges from them.</p>
+<h2>From One Nudge to a Million</h2>
+<p>In Chapters 4 and 5, the gradient was derived for a single training example: the sequence <code>The</code> <code>quick</code> <code>brown</code> predicting <code>fox</code>. That gradient adjusted exactly one row of $W_E$—the row for <code>brown</code>—in a direction that would make the network slightly more likely to predict <code>fox</code> in this context.</p>
+<p>But <code>brown</code> does not appear only before <code>fox</code>. Across a large training corpus, <code>brown</code> precedes thousands of different words:</p>
+<ul>
+<li><code>brown</code> <code>fox</code> — our toy example</li>
+<li><code>brown</code> <code>bear</code> — a different animal</li>
+<li><code>brown</code> <code>sugar</code> — a food ingredient</li>
+<li><code>brown</code> <code>eyes</code> — a physical description</li>
+<li><code>brown</code> <code>shoes</code> — an article of clothing</li>
+</ul>
+<p>Each of these contexts runs the same pipeline from Chapter 4: a forward pass produces a prediction, the loss measures the error, and backpropagation computes a gradient $\frac{\partial L}{\partial \mathbf{h}} = (\hat{\mathbf{y}} - \mathbf{y}) \cdot W_U^T$ that nudges <code>brown</code>&#39;s vector. But each context produces a <em>different</em> gradient, because the target word is different and the error signal $\hat{\mathbf{y}} - \mathbf{y}$ points in a different direction.</p>
+<p>The learning rate $\alpha$ ensures that no single gradient dominates. Each individual nudge is microscopic. Over millions of iterations, these nudges accumulate <em>statistically</em>: gradient components that are consistently reinforced across many different contexts grow dominant, while components that point in contradictory directions cancel out. The final position of <code>brown</code>&#39;s vector is not determined by any single sentence—it is the aggregate result of every context in which <code>brown</code> ever appeared.</p>
+<p>This is a mathematical realization of the distributional hypothesis introduced in Chapter 3. Chapters 3, 4, and 5 demonstrate the precise mechanism by which a neural network discovers this principle on its own: gradient descent, applied at scale, forces words with similar contextual distributions into similar regions of the embedding space. No explicit notion of &quot;meaning&quot; is ever provided to the network. Meaning emerges as a geometric side effect of learning to predict the next word.</p>
+<h2>Convergent Geometry</h2>
+<p>The distributional hypothesis does not only explain why a single word&#39;s vector stabilizes—it explains why <em>different</em> words end up near each other.</p>
+<p>Consider two words from our toy vocabulary: <code>fox</code> and <code>dog</code>. Both are animals. In a large corpus, when they appear as the input token, they frequently predict the same next words:</p>
+<ul>
+<li><code>The</code> <b><code>fox</code></b> <code>jumps over the fence</code> / <code>The</code> <b><code>dog</code></b> <code>jumps over the fence</code></li>
+<li><code>A wild</code> <b><code>fox</code></b> <code>appeared nearby</code> / <code>A wild</code> <b><code>dog</code></b> <code>appeared nearby</code></li>
+<li><code>The</code> <b><code>fox</code></b> <code>was spotted nearby</code> / <code>The</code> <b><code>dog</code></b> <code>was spotted nearby</code></li>
+</ul><p>This overlap has a direct mathematical consequence. To see it precisely, the gradient formula from Chapters 4 and 5 is traced for two specific training examples, both using <code>jumps</code> (index 4 in our toy vocabulary) as the shared target.</p>
+<p><strong>Example 1: <code>fox</code> as input, predicting <code>jumps</code>.</strong> The network runs the forward pass from Chapter 3—extracting <code>fox</code>&#39;s embedding from $W_E$, projecting through $W_U$, and applying Softmax—to produce a predicted probability distribution. Suppose the network outputs:</p>
+<p>$$
+\hat{\mathbf{y}}_{fox} = \begin{bmatrix} 0.05 & 0.05 & 0.05 & 0.10 & 0.30 & 0.20 & 0.10 & 0.15 \end{bmatrix}
+$$</p>
+<p>The network assigns $30\%$ probability to <code>jumps</code> at index 4. The ground truth $\mathbf{y}$ is a one-hot vector with a $1$ at index 4 and $0$ everywhere else. Computing the error signal $\hat{\mathbf{y}} - \mathbf{y}$ from Chapter 4 element by element:</p>
+<p>$$
+\hat{\mathbf{y}}_{fox} - \mathbf{y} = \begin{bmatrix} 0.05 & 0.05 & 0.05 & 0.10 & \mathbf{-0.70} & 0.20 & 0.10 & 0.15 \end{bmatrix}
+$$</p>
+<p>Seven of the eight components are small positive numbers (the largest is $0.20$ for <code>over</code>). The eighth—at index 4, the correct answer <code>jumps</code>—is $0.30 - 1 = -0.70$: a large negative value whose magnitude is more than three times larger than any other component.</p>
+<p><strong>Example 2: <code>dog</code> as input, also predicting <code>jumps</code>.</strong> In a different sentence, <code>dog</code> is the input token. Because <code>dog</code>&#39;s embedding is different from <code>fox</code>&#39;s, the forward pass produces a different prediction:</p>
+<p>$$
+\hat{\mathbf{y}}_{dog} = \begin{bmatrix} 0.08 & 0.03 & 0.07 & 0.12 & 0.25 & 0.15 & 0.12 & 0.18 \end{bmatrix}
+$$</p>
+<p>But the target is the same word <code>jumps</code>, so $\mathbf{y}$ is the same one-hot vector:</p>
+<p>$$
+\hat{\mathbf{y}}_{dog} - \mathbf{y} = \begin{bmatrix} 0.08 & 0.03 & 0.07 & 0.12 & \mathbf{-0.75} & 0.15 & 0.12 & 0.18 \end{bmatrix}
+$$</p>
+<p>The individual predictions differ, but the structure of the error signal is the same: seven small positive values, and one large negative value at index 4. The dominant component sits at the same index in both cases, because both examples share the same target word.</p>
+<p><strong>From error signal to gradient direction.</strong> The gradient that updates each input token&#39;s embedding is $(\hat{\mathbf{y}} - \mathbf{y}) \cdot W_U^T$. Recall that $W_U^T$ is an $8 \times 3$ matrix (the transpose of our $3 \times 8$ un-embedding matrix). This matrix multiply computes a weighted sum of the rows of $W_U^T$, where the eight components of $\hat{\mathbf{y}} - \mathbf{y}$ serve as the weights. Let $\mathbf{r}_j$ denote row $j$ of $W_U^T$—a 3-dimensional vector representing vocabulary word $j$&#39;s un-embedding weights. Expanding the <code>fox</code> example:</p>
+<p>$$
+\frac{\partial L}{\partial \mathbf{h}_{fox}} = 0.05 \cdot \mathbf{r}_0 + 0.05 \cdot \mathbf{r}_1 + 0.05 \cdot \mathbf{r}_2 + 0.10 \cdot \mathbf{r}_3 - 0.70 \cdot \mathbf{r}_4 + 0.20 \cdot \mathbf{r}_5 + 0.10 \cdot \mathbf{r}_6 + 0.15 \cdot \mathbf{r}_7
+$$</p>
+<p>This is a sum of eight 3-dimensional vectors, each scaled by its coefficient. The term $-0.70 \cdot \mathbf{r}_4$ dominates the sum: its coefficient has the largest magnitude by a factor of more than three, and it is the only negative term. The gradient direction is therefore determined primarily by $\mathbf{r}_4$—the un-embedding weights for <code>jumps</code>.</p>
+<p>For the <code>dog</code> example, the same expansion gives:</p>
+<p>$$
+\frac{\partial L}{\partial \mathbf{h}_{dog}} = 0.08 \cdot \mathbf{r}_0 + 0.03 \cdot \mathbf{r}_1 + 0.07 \cdot \mathbf{r}_2 + 0.12 \cdot \mathbf{r}_3 - 0.75 \cdot \mathbf{r}_4 + 0.15 \cdot \mathbf{r}_5 + 0.12 \cdot \mathbf{r}_6 + 0.18 \cdot \mathbf{r}_7
+$$</p>
+<p>The same row $\mathbf{r}_4$ dominates, with a similarly large negative coefficient ($-0.75$ vs. $-0.70$). The small positive contributions differ between the two examples, but the dominant direction—determined by the shared target <code>jumps</code> through $\mathbf{r}_4$—is the same. Both gradients push both embeddings in approximately the same direction.</p>
+<p>The words <code>fox</code> and <code>dog</code> share <em>many</em> targets across the corpus: <code>jumps</code>, <code>runs</code>, <code>sleeps</code>, <code>was</code>, and countless others. Each shared target places the dominant component of the error signal at the same index, causing both gradients to be pulled through the same row of $W_U^T$. Over millions of training examples, these consistent pushes accumulate, pulling <code>fox</code>&#39;s and <code>dog</code>&#39;s vectors toward the same region of the embedding space. Meanwhile, words that rarely share targets—like <code>fox</code> and <code>over</code>—receive error signals whose dominant components sit at different indices, producing dissimilar gradients that keep their vectors distant.</p>
+<p>The result is <strong>semantic clustering</strong>: after training, the embedding space is no longer the featureless, isotropic expanse described in Chapter 2. It has acquired structure. Animals cluster near other animals. Verbs cluster near other verbs. Adjectives describing color cluster near other color adjectives. None of this structure was programmed into the network—it emerged organically from the statistics of the training data, mediated entirely by the gradient descent process derived in Chapters 4 and 5.</p>
+<h2>Measuring the Geometry</h2>
+<p>To make precise claims like &quot;<code>fox</code> and <code>dog</code> are close in the embedding space,&quot; the geometric relationship between two vectors must be quantified. The standard metric is <strong>cosine similarity</strong>, which measures the cosine of the angle between two vectors in $d$-dimensional space.</p>
+<h3>The Formula</h3>
+<p>Given two vectors $\mathbf{a}$ and $\mathbf{b}$, each with $d$ dimensions, their <strong>dot product</strong> is first defined as the element-wise product of corresponding dimensions, summed into a single scalar:</p>
+<p>$$
+\mathbf{a} \cdot \mathbf{b} = \sum_{m=1}^{d} a_m \cdot b_m
+$$</p>
+<p>Each vector&#39;s <strong>magnitude</strong> (its Euclidean norm) is also required—the length of the vector in $d$-dimensional space:</p>
+<p>$$
+\|\mathbf{a}\| = \sqrt{\sum_{m=1}^{d} a_m^2}
+$$</p>
+<p>Cosine similarity divides the dot product by the product of the two magnitudes. This normalization removes the effect of vector length, isolating the purely directional relationship between the two vectors:</p>
+<p>$$
+\cos(\mathbf{a}, \mathbf{b}) = \frac{\mathbf{a} \cdot \mathbf{b}}{\|\mathbf{a}\| \cdot \|\mathbf{b}\|}
+$$</p>
+<p>The result is a single scalar between $-1$ and $+1$:</p>
+<ul>
+<li><strong>$+1$</strong>: The vectors point in exactly the same direction. Maximum similarity.</li>
+<li><strong>$0$</strong>: The vectors are perpendicular (orthogonal). No directional relationship.</li>
+<li><strong>$-1$</strong>: The vectors point in exactly opposite directions. Maximum dissimilarity.</li>
+</ul>
+<h3>A Concrete Computation</h3>
+<p>To ground this formula in our toy model, consider two hypothetical post-training vectors. After billions of gradient updates, suppose the 3-dimensional vectors for <code>fox</code> and <code>dog</code> have settled at:</p>
+<p>$$
+\mathbf{v}_{fox} = \begin{bmatrix} 0.9 & -0.4 & 0.3 \end{bmatrix}, \quad \mathbf{v}_{dog} = \begin{bmatrix} 0.7 & -0.1 & 0.5 \end{bmatrix}
+$$</p>
+<p><strong>Dot product</strong> — multiply each pair of corresponding dimensions and sum:</p>
+<p>$$
+\mathbf{v}_{fox} \cdot \mathbf{v}_{dog} = (0.9)(0.7) + (-0.4)(-0.1) + (0.3)(0.5) = 0.63 + 0.04 + 0.15 = 0.82
+$$</p>
+<p><strong>Magnitudes</strong> — square each dimension, sum, and take the square root:</p>
+<p>$$
+\|\mathbf{v}_{fox}\| = \sqrt{0.9^2 + (-0.4)^2 + 0.3^2} = \sqrt{0.81 + 0.16 + 0.09} = \sqrt{1.06} \approx 1.030
+$$</p>
+<p>$$
+\|\mathbf{v}_{dog}\| = \sqrt{0.7^2 + (-0.1)^2 + 0.5^2} = \sqrt{0.49 + 0.01 + 0.25} = \sqrt{0.75} \approx 0.866
+$$</p>
+<p><strong>Cosine similarity</strong> — divide the dot product by the product of the magnitudes:</p>
+<p>$$
+\cos(\mathbf{v}_{fox}, \mathbf{v}_{dog}) = \frac{0.82}{1.030 \times 0.866} = \frac{0.82}{0.892} \approx 0.92
+$$</p>
+<p>A cosine similarity of $0.92$—close to the maximum of $+1.0$—reflects the fact that both words are animals that appear in highly overlapping contexts. This contrasts with the result from Chapter 2: at initialization, randomly initialized vectors in high-dimensional space are mutually orthogonal, with cosine similarities near $0.0$. Training transforms the geometry into a space where semantic relationships are encoded as directional proximity.</p>
+<h2>Linear Substructures</h2>
+<p>Beyond semantic clustering, the emergent geometry of trained embeddings exhibits <strong>linear substructures</strong>, where simple vector arithmetic captures semantic and syntactic relationships.</p>
+<p>The most famous example involves the words <code>king</code>, <code>queen</code>, <code>man</code>, and <code>woman</code>. These four words are not in the 8-word toy vocabulary, but the phenomenon they illustrate emerges in any embedding space trained on a sufficiently large corpus. After training, the following vector arithmetic holds to a close approximation:</p>
+<p>$$
+\mathbf{v}_{king} - \mathbf{v}_{man} + \mathbf{v}_{woman} \approx \mathbf{v}_{queen}
+$$</p>
+<p>The difference $\mathbf{v}_{king} - \mathbf{v}_{man}$ is a <strong>displacement vector</strong>—an arrow pointing from <code>man</code>&#39;s position to <code>king</code>&#39;s position in the embedding space. This displacement captures everything that distinguishes <code>king</code> from <code>man</code> while discarding everything they share. What remains is, approximately, the concept of royalty—encoded as a direction and magnitude in the vector space. Adding this same displacement to $\mathbf{v}_{woman}$ translates <code>woman</code>&#39;s position along the &quot;royalty&quot; direction, arriving at a point that combines &quot;woman&quot; with &quot;royalty.&quot; That point is, approximately, where <code>queen</code> sits in the embedding space.</p>
+<p>This is not an isolated curiosity. Trained embedding spaces exhibit consistent linear substructures along many different axes:</p>
+<ul>
+<li><strong>Gender</strong>: $\mathbf{v}_{brother} - \mathbf{v}_{sister} \approx \mathbf{v}_{king} - \mathbf{v}_{queen}$</li>
+<li><strong>Tense</strong>: $\mathbf{v}_{walking} - \mathbf{v}_{walked} \approx \mathbf{v}_{swimming} - \mathbf{v}_{swam}$</li>
+<li><strong>Geography</strong>: $\mathbf{v}_{Paris} - \mathbf{v}_{France} \approx \mathbf{v}_{Tokyo} - \mathbf{v}_{Japan}$</li>
+</ul>
+<p>None of these relationships were explicitly programmed. No loss function asked the network to encode gender as a linear direction, or verb tense as a consistent vector offset. They emerged purely from the distributional statistics of the training corpus—the same gradient descent process from Chapters 4 and 5, operating on the same $(\hat{\mathbf{y}} - \mathbf{y})$ error signal, applied billions of times. The training objective was simply next-token prediction. The geometric structure is a side effect.</p>
+<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p>
+
+<div class="blog-pagination">
+      <a href="embeddings-chapter_05.html" class="pagination-link prev">
+        <span class="pagination-label">Previous</span>
+        <span class="pagination-title">Part 5: Backpropagation Through the Weight Matrices</span>
+      </a>
+      <a href="embeddings-chapter_07.html" class="pagination-link next">
+        <span class="pagination-label">Next</span>
+        <span class="pagination-title">Part 7: The Embedding Tensor and the Limits of Static Representations</span>
+      </a></div>
+        </article>
+    </div>
+  </main>
+  <script src="../js/main.js"></script>
+
+  <!-- KaTeX for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" 
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], fleqn: true});">
+  </script>
+
+  <!-- Mermaid for Diagram Rendering -->
+  <style>
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: var(--space-2xl) 0;
+    }
+    .mermaid svg {
+      filter: drop-shadow(0 4px 16px rgba(183, 110, 121, 0.12));
+    }
+  </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ 
+      startOnLoad: true, 
+      theme: 'base',
+      themeVariables: {
+        fontFamily: "'Outfit', -apple-system, BlinkMacSystemFont, sans-serif",
+        primaryColor: '#ffffff',
+        primaryBorderColor: '#b76e79',
+        primaryTextColor: '#8b4f5a',
+        lineColor: '#b76e79',
+        nodeBorder: '#b76e79',
+        clusterBkg: 'rgba(232, 180, 184, 0.15)',
+        clusterBorder: '#d4a0a0'
+      }
+    });
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      const blocks = document.querySelectorAll('.language-mermaid');
+      blocks.forEach((block) => {
+        const parent = block.parentElement;
+        if (parent.tagName === 'PRE') {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          parent.replaceWith(mermaidDiv);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
