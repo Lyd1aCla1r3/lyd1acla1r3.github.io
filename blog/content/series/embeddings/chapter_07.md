@@ -1,6 +1,6 @@
 # Part 7: The Embedding Tensor and the Limits of Static Representations
 
-<!-- SUMMARY: The single-token lookup of previous chapters is generalized to full sequence processing, producing the embedding tensor for an entire input sequence. The fundamental limits of static embeddings—context-blindness and order-agnosticism—are identified, and the handoff to the Transformer architecture, whose positional encodings and self-attention mechanism resolve exactly these limitations, is established. -->
+<!-- SUMMARY: The single-token lookup of previous chapters is generalized to full sequence processing, producing the embedding tensor for an entire input sequence. The fundamental limits of static embeddings (context-blindness and order-agnosticism) are identified, and the handoff to the Transformer architecture, whose positional encodings and self-attention mechanism resolve exactly these limitations, is established. -->
 
 <p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p>
 

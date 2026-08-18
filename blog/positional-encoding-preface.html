@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preface: The Gap Between Static Geometry and Sequential Structure — Lydia Pedersen</title>
+  <link rel="stylesheet" href="../css/styles.css?v=1.2">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .blog-post {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: var(--space-4xl) var(--space-md);
+        background: var(--bg-card);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 8px 32px rgba(183, 110, 121, 0.05);
+        border: 1px solid var(--border-subtle);
+    }
+    .blog-post h1, .blog-post h2, .blog-post h3 {
+        color: var(--text-primary);
+        font-family: var(--font-display);
+        margin-top: var(--space-2xl);
+        margin-bottom: var(--space-md);
+    }
+    .blog-post h1 { font-size: var(--fs-3xl); margin-top: 0; line-height: 1.1; }
+    .blog-post h2, .blog-post h3 { border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-sm); }
+    .blog-post h2 { font-size: var(--fs-2xl); }
+    .blog-post h3 { font-size: var(--fs-xl); }
+    .blog-post p, .blog-post li {
+        color: var(--text-secondary);
+        line-height: var(--lh-relaxed);
+        margin-bottom: var(--space-md);
+        font-size: var(--fs-md);
+    }
+    .blog-post img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-md);
+        margin: var(--space-lg) 0;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .blog-post a:not(.pagination-link) {
+        color: var(--text-accent);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s ease;
+    }
+    .blog-post a:not(.pagination-link):hover {
+        border-bottom-color: var(--text-accent);
+    }
+    .blog-post {
+        background: rgba(255, 255, 255, 0.65);
+        padding: var(--space-2xl);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-subtle);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .blog-post .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; display: flex; gap: 1rem; align-items: center; }
+    .blog-post .meta span { display: inline-flex; align-items: center; gap: 0.25rem; }
+    .blog-post p { line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1.05rem; }
+    .blog-post ul, .blog-post ol { margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem; }
+    .blog-post li { margin-bottom: 0.5rem; }
+    .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+    .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
+    .blog-post table { width: auto; margin: var(--space-2xl) 0; border-collapse: collapse; text-align: left; }
+    .blog-post th, .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post th { font-weight: 600; color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-subtle); }
+    .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 4px 10px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; font-size: 0.95rem; color: var(--rose-gold-dark); margin-right: 6px; }
+  </style>
+</head>
+<body>
+  <!-- Fixed chip visual (always visible, bottom-left, behind everything) -->
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
+  <!-- Full-screen overlay canvas for the diagonal binary→agent→text animation -->
+  <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="../index.html" class="nav__logo" aria-label="Home">lydia<span>.</span>pedersen</a>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="../index.html#about" class="nav__link">About</a></li>
+        <li><a href="../index.html#samples" class="nav__link">Writing</a></li>
+        <li><a href="../index.html#case-studies" class="nav__link">Engineering</a></li>
+        <li><a href="../index.html#skills" class="nav__link">Skills</a></li>
+        <li><a href="index.html" class="nav__link">Blog</a></li>
+        <li><a href="../ebooks/index.html" class="nav__link">Ebooks</a></li>
+        <li><a href="../index.html#contact" class="nav__link">Contact</a></li>
+      </ul>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="nav__toggle-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-lg));">
+    <div class="container">
+<nav aria-label="breadcrumb" class="breadcrumbs"><ol>
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Positional encoding</a></li><li aria-current="page">Preface: The Gap Between Static Geometry and Sequential Structure</li></ol></nav>
+        <article class="blog-post series-positional-encoding">
+<h1>Preface: The Gap Between Static Geometry and Sequential Structure</h1>
+<!-- SUMMARY: The preceding Embeddings series delivers an embedding tensor that encodes distributional meaning but discards word order entirely. This series bridges that gap by deriving two positional encoding mechanisms from first principles: the historical sinusoidal formula (Vaswani et al., 2017) and Rotary Position Embeddings (RoPE, Su et al., 2021), the mechanism deployed in every frontier language model. --><p><em>Prefer to read this offline? <a href="../assets/docs/positional-encoding-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Positional Encoding Ebook here.</a></em></p><p>The preceding series on Embeddings terminates with an embedding tensor $X \in \mathbb{R}^{T \times d_{model}}$ whose rows encode the distributional signatures of individual words. Each row is a dense, continuous vector shaped by billions of gradient updates into a point whose position in the embedding space reflects the statistical patterns of its token across the training corpus. But this tensor is order-agnostic: the sequences <code>The</code> <code>quick</code> <code>brown</code> <code>fox</code> and <code>fox</code> <code>brown</code> <code>quick</code> <code>The</code> produce the same set of embedding vectors, merely arranged in different rows. The embedding lookup treats each row independently and has no mechanism to encode which word appeared at which position.</p>
+<p>The subsequent series on Transformers requires a tensor that encodes both meaning and position. The self-attention mechanism, which allows each token to attend to every other token in the sequence, is itself a set operation on unordered vectors unless positional information has been injected beforehand. Without that injection, the Transformer cannot distinguish <code>dog</code> <code>bites</code> <code>man</code> from <code>man</code> <code>bites</code> <code>dog</code>.</p>
+<p>This series derives the mathematical mechanisms that bridge that gap.</p>
+<h2>The Scope</h2>
+<p>The derivation proceeds through two distinct positional encoding paradigms, each worked through the same concrete toy model:</p>
+<ul>
+<li><strong>Vocabulary ($V = 8$):</strong> <code>The</code> <code>quick</code> <code>brown</code> <code>fox</code> <code>jumps</code> <code>over</code> <code>lazy</code> <code>dog</code></li>
+<li><strong>Embedding Dimension ($d_{model}$):</strong> 3 dimensions.</li>
+<li><strong>Toy sequence ($T = 4$):</strong> <code>The</code> <code>quick</code> <code>brown</code> <code>fox</code></li>
+</ul>
+<p>The first paradigm is the <strong>sinusoidal absolute positional encoding</strong> introduced by Vaswani et al. (2017) in the original Transformer paper. This mechanism assigns a fixed, deterministic vector to each position in the sequence and adds it element-wise to the embedding vector. It is the historical starting point: the first published solution to the problem of injecting order into a set-based architecture. The series derives the sinusoidal formula from its design constraints, computes every entry of the positional encoding matrix, and demonstrates the addition operation that produces the positionally-enriched tensor.</p>
+<p>The second paradigm is <strong>Rotary Position Embeddings</strong> (RoPE), introduced by Su et al. (2021). As of 2026, RoPE is the positional encoding mechanism used in every major frontier language model, including GPT-4, Claude, Gemini, Llama 3, DeepSeek, Mistral, and Qwen. Rather than adding a positional vector to the embedding, RoPE applies a position-dependent rotation to the query and key vectors inside the attention mechanism, ensuring that the dot product between any two positions depends only on their relative offset. The series derives RoPE from its complex-number foundations, computes every rotation matrix, and proves the relative-distance property that makes it the dominant mechanism in production.</p>
+<p>The sinusoidal derivation is not wasted effort. It establishes the trigonometric vocabulary, the rotation interpretation, and the relative-distance intuition that RoPE generalizes. The two paradigms share a frequency base, and the mathematical progression from additive encoding to rotational encoding is itself the central narrative of the series.</p>
+<p>The Transformers series (which follows this one in the pipeline) includes a brief treatment of sinusoidal positional encoding using a different toy model ($V = 12$, $d_{model} = 6$). Readers who complete both series will recognize the identical mathematical structure applied at different scales.</p>
+<h2>The Architecture</h2>
+<p>The series follows the progression from the order-agnostic embedding tensor to the position-aware representations consumed by the Transformer:</p>
+<ol>
+<li><strong>The Permutation Invariance Problem.</strong> The pairwise dot-product similarity matrix $S = X X^\top$ is computed for the toy sequence and shown to be invariant under row permutations: reordering the sequence changes the labels but not the similarity scores. The embedding tensor carries no positional information.</li>
+<li><strong>Design Constraints and the Sinusoidal Formula.</strong> Five mathematical constraints (uniqueness, boundedness, determinism, smoothness, relative representability) are enumerated, and the sinusoidal positional encoding formula is derived as the function satisfying all five. Every entry of the $4 \times 3$ positional encoding matrix is computed from the formula.</li>
+<li><strong>Element-Wise Addition and the Positionally-Enriched Tensor.</strong> The sinusoidal encoding is added element-wise to the embedding tensor, producing $X_{pos} = X + PE$. The similarity matrix is recomputed and shown to break permutation invariance. The structural limitations of additive absolute encoding (single-layer injection, absolute position labels, length extrapolation degradation) are identified.</li>
+<li><strong>The Query-Key Framework and the Relative Position Requirement.</strong> The minimal query-key dot-product mechanism is introduced at the scope required by RoPE: learned projection matrices $W_Q$ and $W_K$ map embeddings to query and key vectors whose dot product determines relevance scores. The relative position requirement is stated formally.</li>
+<li><strong>Rotary Position Embeddings: Deriving the Rotation Matrix.</strong> The RoPE operation is derived from its complex-number foundations. Each dimension pair of the query and key vectors is represented as a complex number and rotated by a position-dependent angle. The $2 \times 2$ rotation blocks are expanded into the full block-diagonal rotation matrix, and the angular frequency for the toy model is computed.</li>
+<li><strong>Rotary Position Embeddings: Computing the Rotated Vectors.</strong> The rotation matrix is evaluated at every position in the toy sequence, producing four distinct rotation matrices $R_0$ through $R_3$. These matrices are applied to every query and key vector from Chapter 4, producing the rotated vectors consumed by the attention mechanism.</li>
+<li><strong>The Relative-Distance Property of RoPE.</strong> The central algebraic identity $R_m^\top R_n = R_{n-m}$ is proved from the angle-addition formulas for sine and cosine. The identity is verified numerically using the rotated vectors from the previous chapter: the dot product of rotated queries and keys is shown to depend only on relative position offset.</li>
+<li><strong>The Modern Landscape and Frontier Extensions.</strong> Learned absolute PE, relative PE (Shaw et al., 2018), ALiBi (Press et al., 2022), iRoPE (Meta, 2025), and RoPE long-context extensions (YaRN, NTK-aware scaling) are surveyed. Each mechanism is explained through its motivation, its conceptual operation, and the shortcomings that drove the field toward its successor, tracing the evolutionary arc that culminated in RoPE&#39;s dominance.</li>
+</ol>
+<p>Every trigonometric identity is derived explicitly. Every rotation matrix is computed entry by entry. Every abstract result is grounded in the toy vocabulary. The mathematics speaks for itself.</p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/positional-encoding-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Positional Encoding Ebook here.</a></em></p>
+
+<div class="blog-pagination">
+      <a href="embeddings-chapter_07.html" class="pagination-link prev">
+        <span class="pagination-label">Previous</span>
+        <span class="pagination-title">Part 7: The Embedding Tensor and the Limits of Static Representations</span>
+      </a>
+      <a href="positional-encoding-chapter_01.html" class="pagination-link next">
+        <span class="pagination-label">Next</span>
+        <span class="pagination-title">Part 1: The Permutation Invariance Problem</span>
+      </a></div>
+        </article>
+    </div>
+  </main>
+  <script src="../js/main.js"></script>
+
+  <!-- KaTeX for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" 
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], fleqn: true});">
+  </script>
+
+  <!-- Mermaid for Diagram Rendering -->
+  <style>
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: var(--space-2xl) 0;
+    }
+    .mermaid svg {
+      filter: drop-shadow(0 4px 16px rgba(183, 110, 121, 0.12));
+    }
+  </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ 
+      startOnLoad: true, 
+      theme: 'base',
+      themeVariables: {
+        fontFamily: "'Outfit', -apple-system, BlinkMacSystemFont, sans-serif",
+        primaryColor: '#ffffff',
+        primaryBorderColor: '#b76e79',
+        primaryTextColor: '#8b4f5a',
+        lineColor: '#b76e79',
+        nodeBorder: '#b76e79',
+        clusterBkg: 'rgba(232, 180, 184, 0.15)',
+        clusterBorder: '#d4a0a0'
+      }
+    });
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      const blocks = document.querySelectorAll('.language-mermaid');
+      blocks.forEach((block) => {
+        const parent = block.parentElement;
+        if (parent.tagName === 'PRE') {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          parent.replaceWith(mermaidDiv);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

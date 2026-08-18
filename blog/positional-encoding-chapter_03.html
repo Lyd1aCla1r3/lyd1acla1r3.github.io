@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Part 3: Element-Wise Addition and the Positionally-Enriched Tensor — Lydia Pedersen</title>
+  <link rel="stylesheet" href="../css/styles.css?v=1.2">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .blog-post {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: var(--space-4xl) var(--space-md);
+        background: var(--bg-card);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 8px 32px rgba(183, 110, 121, 0.05);
+        border: 1px solid var(--border-subtle);
+    }
+    .blog-post h1, .blog-post h2, .blog-post h3 {
+        color: var(--text-primary);
+        font-family: var(--font-display);
+        margin-top: var(--space-2xl);
+        margin-bottom: var(--space-md);
+    }
+    .blog-post h1 { font-size: var(--fs-3xl); margin-top: 0; line-height: 1.1; }
+    .blog-post h2, .blog-post h3 { border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-sm); }
+    .blog-post h2 { font-size: var(--fs-2xl); }
+    .blog-post h3 { font-size: var(--fs-xl); }
+    .blog-post p, .blog-post li {
+        color: var(--text-secondary);
+        line-height: var(--lh-relaxed);
+        margin-bottom: var(--space-md);
+        font-size: var(--fs-md);
+    }
+    .blog-post img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-md);
+        margin: var(--space-lg) 0;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .blog-post a:not(.pagination-link) {
+        color: var(--text-accent);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s ease;
+    }
+    .blog-post a:not(.pagination-link):hover {
+        border-bottom-color: var(--text-accent);
+    }
+    .blog-post {
+        background: rgba(255, 255, 255, 0.65);
+        padding: var(--space-2xl);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-subtle);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .blog-post .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; display: flex; gap: 1rem; align-items: center; }
+    .blog-post .meta span { display: inline-flex; align-items: center; gap: 0.25rem; }
+    .blog-post p { line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1.05rem; }
+    .blog-post ul, .blog-post ol { margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem; }
+    .blog-post li { margin-bottom: 0.5rem; }
+    .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+    .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
+    .blog-post table { width: auto; margin: var(--space-2xl) 0; border-collapse: collapse; text-align: left; }
+    .blog-post th, .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post th { font-weight: 600; color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-subtle); }
+    .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 4px 10px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; font-size: 0.95rem; color: var(--rose-gold-dark); margin-right: 6px; }
+  </style>
+</head>
+<body>
+  <!-- Fixed chip visual (always visible, bottom-left, behind everything) -->
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
+  <!-- Full-screen overlay canvas for the diagonal binary→agent→text animation -->
+  <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="../index.html" class="nav__logo" aria-label="Home">lydia<span>.</span>pedersen</a>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="../index.html#about" class="nav__link">About</a></li>
+        <li><a href="../index.html#samples" class="nav__link">Writing</a></li>
+        <li><a href="../index.html#case-studies" class="nav__link">Engineering</a></li>
+        <li><a href="../index.html#skills" class="nav__link">Skills</a></li>
+        <li><a href="index.html" class="nav__link">Blog</a></li>
+        <li><a href="../ebooks/index.html" class="nav__link">Ebooks</a></li>
+        <li><a href="../index.html#contact" class="nav__link">Contact</a></li>
+      </ul>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="nav__toggle-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-lg));">
+    <div class="container">
+<nav aria-label="breadcrumb" class="breadcrumbs"><ol>
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Positional encoding</a></li><li aria-current="page">Part 3: Element-Wise Addition and the Positionally-Enriched Tensor</li></ol></nav>
+        <article class="blog-post series-positional-encoding">
+<h1>Part 3: Element-Wise Addition and the Positionally-Enriched Tensor</h1>
+<!-- SUMMARY: The positional encoding matrix is added element-wise to the embedding tensor, producing a positionally-enriched tensor whose similarity matrix differs from the original. Permutation invariance is broken: reversing the input sequence and reapplying position-appropriate encodings yields a different set of pairwise similarities. This chapter computes the enriched tensor, verifies the symmetry-breaking property, and identifies the structural limitations of additive positional encoding that motivate the transition to rotary embeddings. --><p><em>Prefer to read this offline? <a href="../assets/docs/positional-encoding-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Positional Encoding Ebook here.</a></em></p><p>The preceding chapter derived the sinusoidal positional encoding matrix $PE \in \mathbb{R}^{4 \times 3},$ a deterministic function that assigns a unique, bounded vector to each position in the sequence. The embedding tensor $X \in \mathbb{R}^{4 \times 3}$ from Chapter 1 carries the distributional signatures of the tokens <code>The</code>, <code>quick</code>, <code>brown</code>, <code>fox</code> but is invariant under row permutations. This chapter combines the two matrices, producing a tensor in which each row encodes both the identity of the token and the position it occupies.</p>
+<h2>The Addition Operation</h2>
+<p>The positionally-enriched tensor is formed by element-wise addition:</p>
+<p>$$
+X_{pos} = X + PE
+$$</p>
+<p>Both $X$ and $PE$ are $4 \times 3$ matrices. Each entry of $X_{pos}$ is the sum of the corresponding embedding component and the corresponding positional encoding component:</p>
+<p>$$
+(X_{pos})_{tc} = X_{tc} + PE_{tc}
+$$</p>
+<p>for position $t \in \{0, 1, 2, 3\}$ and dimension $c \in \{0, 1, 2\}.$ The operation requires no learned parameters: it is a fixed arithmetic combination of the embedding lookup (from the Embeddings series) and the sinusoidal formula (from Chapter 2).</p>
+<h2>Computing the Enriched Tensor</h2>
+<p>The two matrices to be added:</p>
+<p>$$
+X = \begin{bmatrix} \phantom{-}0.1 & -0.4 & \phantom{-}0.2 \\ \phantom{-}0.5 & \phantom{-}0.1 & -0.8 \\ -0.3 & \phantom{-}0.9 & \phantom{-}0.4 \\ \phantom{-}0.2 & -0.2 & \phantom{-}0.1 \end{bmatrix}, \quad PE = \begin{bmatrix} \phantom{-}0.0000 & \phantom{-}1.0000 & \phantom{-}0.0000 \\ \phantom{-}0.8415 & \phantom{-}0.5403 & \phantom{-}0.0022 \\ \phantom{-}0.9093 & -0.4161 & \phantom{-}0.0043 \\ \phantom{-}0.1411 & -0.9900 & \phantom{-}0.0065 \end{bmatrix}
+$$</p>
+<h3>Position $t = 0$ (<code>The</code>)</h3>
+<p>$$
+(X_{pos})_{0,0} = 0.1000 + 0.0000 = \mathbf{0.1000}
+$$</p>
+<p>$$
+(X_{pos})_{0,1} = -0.4000 + 1.0000 = \mathbf{0.6000}
+$$</p>
+<p>$$
+(X_{pos})_{0,2} = 0.2000 + 0.0000 = \mathbf{0.2000}
+$$</p>
+<p>The positional encoding at $t = 0$ is $\begin{bmatrix} 0 & 1 & 0 \end{bmatrix}$ (the sine components are zero, the cosine is at its maximum). Dimension 1 shifts from $-0.4$ to $0.6,$ a displacement of $+1.0.$ Dimensions 0 and 2 are unchanged.</p>
+<h3>Position $t = 1$ (<code>quick</code>)</h3>
+<p>$$
+(X_{pos})_{1,0} = 0.5000 + 0.8415 = \mathbf{1.3415}
+$$</p>
+<p>$$
+(X_{pos})_{1,1} = 0.1000 + 0.5403 = \mathbf{0.6403}
+$$</p>
+<p>$$
+(X_{pos})_{1,2} = -0.8000 + 0.0022 = \mathbf{-0.7978}
+$$</p>
+<p>At position 1, the $\sin(1)$ and $\cos(1)$ components carry substantial magnitude. Dimension 0 nearly triples (from $0.5$ to $1.3415$). Dimension 2, governed by the slow frequency $\omega_1 \approx 0.002154,$ shifts by less than $0.003.$</p>
+<h3>Position $t = 2$ (<code>brown</code>)</h3>
+<p>$$
+(X_{pos})_{2,0} = -0.3000 + 0.9093 = \mathbf{0.6093}
+$$</p>
+<p>$$
+(X_{pos})_{2,1} = 0.9000 + (-0.4161) = \mathbf{0.4839}
+$$</p>
+<p>$$
+(X_{pos})_{2,2} = 0.4000 + 0.0043 = \mathbf{0.4043}
+$$</p>
+<p>The sign of dimension 0 flips: the original embedding component is $-0.3,$ but the positional encoding adds $0.9093$ (close to the maximum of $\sin$), pulling the sum to $+0.6093.$ Dimension 1 decreases because $\cos(2) \approx \mathbf{-0.4161}$ is negative at 2 radians.</p>
+<h3>Position $t = 3$ (<code>fox</code>)</h3>
+<p>$$
+(X_{pos})_{3,0} = 0.2000 + 0.1411 = \mathbf{0.3411}
+$$</p>
+<p>$$
+(X_{pos})_{3,1} = -0.2000 + (-0.9900) = \mathbf{-1.1900}
+$$</p>
+<p>$$
+(X_{pos})_{3,2} = 0.1000 + 0.0065 = \mathbf{0.1065}
+$$</p>
+<p>At 3 radians ($\approx 171.9°$), $\cos(3) \approx \mathbf{-0.9900}$ is near its negative extreme, pushing dimension 1 to $-1.19.$ This is the most extreme displacement in the matrix: the embedding component ($-0.2$) and the positional component ($-0.99$) reinforce each other.</p>
+<h3>The Complete Positionally-Enriched Tensor</h3>
+<p>$$
+X_{pos} = X + PE = \begin{bmatrix} \phantom{-}0.1000 & \phantom{-}0.6000 & \phantom{-}0.2000 \\ \phantom{-}1.3415 & \phantom{-}0.6403 & -0.7978 \\ \phantom{-}0.6093 & \phantom{-}0.4839 & \phantom{-}0.4043 \\ \phantom{-}0.3411 & -1.1900 & \phantom{-}0.1065 \end{bmatrix}_{4 \times 3}
+$$</p>
+<p>Each row of $X_{pos}$ is no longer the pure distributional signature of a token. Row 2 is not the embedding for <code>brown</code> as it appears across the entire training corpus. It is the embedding for <code>brown</code> combined with the positional fingerprint of position 2 in this specific sequence.</p>
+<h2>The Similarity Matrix After Positional Encoding</h2>
+<p>In Chapter 1, the pairwise dot-product similarity matrix $S = XX^\top$ was computed for the original embedding tensor. That matrix was invariant under row permutations: reordering the sequence rearranged the entries of $S$ without changing any similarity value. The positionally-enriched tensor $X_{pos}$ produces a new similarity matrix:</p>
+<p>$$
+S_{pos} = X_{pos} \, X_{pos}^\top = \begin{bmatrix} \phantom{-}0.1000 & \phantom{-}0.6000 & \phantom{-}0.2000 \\ \phantom{-}1.3415 & \phantom{-}0.6403 & -0.7978 \\ \phantom{-}0.6093 & \phantom{-}0.4839 & \phantom{-}0.4043 \\ \phantom{-}0.3411 & -1.1900 & \phantom{-}0.1065 \end{bmatrix} \begin{bmatrix} \phantom{-}0.1000 & \phantom{-}1.3415 & \phantom{-}0.6093 & \phantom{-}0.3411 \\ \phantom{-}0.6000 & \phantom{-}0.6403 & \phantom{-}0.4839 & -1.1900 \\ \phantom{-}0.2000 & -0.7978 & \phantom{-}0.4043 & \phantom{-}0.1065 \end{bmatrix}
+$$</p>
+<p>Each entry $(S_{pos})_{ij} = \mathbf{x}^{pos}_i \cdot \mathbf{x}^{pos}_j$ is the dot product of the enriched vectors at positions $i$ and $j.$</p>
+<h3>Computing the Entries</h3>
+<p><strong>Diagonal entries</strong> (squared norms of the enriched vectors):</p>
+<p>$$
+(S_{pos})_{00} = (0.1000)^2 + (0.6000)^2 + (0.2000)^2 = \mathbf{0.41}
+$$</p>
+<p>$$
+(S_{pos})_{11} = (1.3415)^2 + (0.6403)^2 + (-0.7978)^2 = \mathbf{2.85}
+$$</p>
+<p>$$
+(S_{pos})_{22} = (0.6093)^2 + (0.4839)^2 + (0.4043)^2 = \mathbf{0.77}
+$$</p>
+<p>$$
+(S_{pos})_{33} = (0.3411)^2 + (-1.1900)^2 + (0.1065)^2 = \mathbf{1.54}
+$$</p>
+<p><strong>Off-diagonal entries</strong> (pairwise similarities):</p>
+<p>$$
+(S_{pos})_{01} = (0.1000)(1.3415) + (0.6000)(0.6403) + (0.2000)(-0.7978)
+$$</p>
+<p>$$
+= 0.1341 + 0.3842 + (-0.1596) = \mathbf{0.36}
+$$</p>
+<p>$$
+(S_{pos})_{02} = (0.1000)(0.6093) + (0.6000)(0.4839) + (0.2000)(0.4043)
+$$</p>
+<p>$$
+= 0.0609 + 0.2903 + 0.0809 = \mathbf{0.43}
+$$</p>
+<p>$$
+(S_{pos})_{03} = (0.1000)(0.3411) + (0.6000)(-1.1900) + (0.2000)(0.1065)
+$$</p>
+<p>$$
+= 0.0341 + (-0.7140) + 0.0213 = \mathbf{-0.66}
+$$</p>
+<p>$$
+(S_{pos})_{12} = (1.3415)(0.6093) + (0.6403)(0.4839) + (-0.7978)(0.4043)
+$$</p>
+<p>$$
+= 0.8174 + 0.3098 + (-0.3226) = \mathbf{0.80}
+$$</p>
+<p>$$
+(S_{pos})_{13} = (1.3415)(0.3411) + (0.6403)(-1.1900) + (-0.7978)(0.1065)
+$$</p>
+<p>$$
+= 0.4576 + (-0.7620) + (-0.0849) = \mathbf{-0.39}
+$$</p>
+<p>$$
+(S_{pos})_{23} = (0.6093)(0.3411) + (0.4839)(-1.1900) + (0.4043)(0.1065)
+$$</p>
+<p>$$
+= 0.2078 + (-0.5758) + 0.0430 = \mathbf{-0.32}
+$$</p>
+<h3>The Complete Similarity Matrix</h3>
+<p>$$
+S_{pos} = \begin{bmatrix} \phantom{-}0.41 & \phantom{-}0.36 & \phantom{-}0.43 & -0.66 \\ \phantom{-}0.36 & \phantom{-}2.85 & \phantom{-}0.80 & -0.39 \\ \phantom{-}0.43 & \phantom{-}0.80 & \phantom{-}0.77 & -0.32 \\ -0.66 & -0.39 & -0.32 & \phantom{-}1.54 \end{bmatrix}
+$$</p>
+<h2>Comparison with the Original Similarity Matrix</h2>
+<p>The original similarity matrix from Chapter 1:</p>
+<p>$$
+S = \begin{bmatrix} \phantom{-}0.21 & -0.15 & -0.31 & \phantom{-}0.12 \\ -0.15 & \phantom{-}0.90 & -0.38 & \phantom{-}0.00 \\ -0.31 & -0.38 & \phantom{-}1.06 & -0.20 \\ \phantom{-}0.12 & \phantom{-}0.00 & -0.20 & \phantom{-}0.09 \end{bmatrix}
+$$</p>
+<p>Every entry has changed. Some qualitative relationships have reversed entirely. In the original $S,$ the similarity between <code>The</code> (position 0) and <code>brown</code> (position 2) was $S_{02} = -0.31$ (the embeddings pointed in roughly opposite directions). After positional encoding, $(S_{pos})_{02} = 0.43$: the enriched vectors are now positively aligned, because the positional components at positions 0 and 2 have shifted both vectors into a region of the space where their dot product is positive.</p>
+<p>The positional encoding has not merely perturbed the similarity scores. It has restructured the geometry of the representation. The enriched vectors encode a superposition of two signals (semantic content and sequential position), and the resulting dot products reflect both.</p>
+<h2>Breaking Permutation Invariance</h2>
+<p>The decisive test is whether the reversed sequence <code>fox</code> <code>brown</code> <code>quick</code> <code>The</code> still produces an equivalent similarity matrix. In Chapter 1, the reversed sequence yielded $S' = PSP^\top$: the same similarity scores, relocated to new matrix positions. The question is whether the same invariance holds after positional encoding.</p>
+<p>The reversal changes which token occupies each position. In the original ordering, <code>The</code> occupies position 0 and <code>fox</code> occupies position 3. In the reversed ordering, <code>fox</code> occupies position 0 and <code>The</code> occupies position 3. Because the positional encoding is a function of position (not of token identity), each token now receives a different positional vector than it received in the original ordering.</p>
+<p>The reversed embedding tensor $X_{rev} = PX$ rearranges the rows of $X$ while leaving their vector components intact:</p>
+<p>$$
+X_{rev} = \begin{bmatrix} \phantom{-}0.2 & -0.2 & \phantom{-}0.1 \\ -0.3 & \phantom{-}0.9 & \phantom{-}0.4 \\ \phantom{-}0.5 & \phantom{-}0.1 & -0.8 \\ \phantom{-}0.1 & -0.4 & \phantom{-}0.2 \end{bmatrix} \begin{matrix} \leftarrow \text{fox} \\ \leftarrow \text{brown} \\ \leftarrow \text{quick} \\ \leftarrow \text{The} \end{matrix}
+$$</p>
+<p>The positionally-enriched reversed tensor is formed by adding the original positional encoding matrix $PE$ to this reversed embedding tensor:</p>
+<p>$$
+X_{pos}^{rev} = X_{rev} + PE = PX + PE
+$$</p>
+<p>Note that $PE$ is the same matrix in both cases: row $t$ of $PE$ always encodes position $t,$ regardless of which token occupies that position. This is the mechanism by which positional encoding breaks the symmetry.</p>
+<p>$$
+X_{pos}^{rev} = \begin{bmatrix} \phantom{-}0.2 & -0.2 & \phantom{-}0.1 \\ -0.3 & \phantom{-}0.9 & \phantom{-}0.4 \\ \phantom{-}0.5 & \phantom{-}0.1 & -0.8 \\ \phantom{-}0.1 & -0.4 & \phantom{-}0.2 \end{bmatrix} + \begin{bmatrix} \phantom{-}0.0000 & \phantom{-}1.0000 & \phantom{-}0.0000 \\ \phantom{-}0.8415 & \phantom{-}0.5403 & \phantom{-}0.0022 \\ \phantom{-}0.9093 & -0.4161 & \phantom{-}0.0043 \\ \phantom{-}0.1411 & -0.9900 & \phantom{-}0.0065 \end{bmatrix} = \begin{bmatrix} \phantom{-}0.2000 & \phantom{-}0.8000 & \phantom{-}0.1000 \\ \phantom{-}0.5415 & \phantom{-}1.4403 & \phantom{-}0.4022 \\ \phantom{-}1.4093 & -0.3161 & -0.7957 \\ \phantom{-}0.2411 & -1.3900 & \phantom{-}0.2065 \end{bmatrix}
+$$</p>
+<p>To compute the similarity matrix of the reversed, positionally-encoded sequence, the pairwise dot products between the rows of $X_{pos}^{rev}$ are computed by multiplying it with its transpose:</p>
+<p>$$
+S_{pos}^{rev} = X_{pos}^{rev} \, (X_{pos}^{rev})^\top = \begin{bmatrix} \phantom{-}0.2000 & \phantom{-}0.8000 & \phantom{-}0.1000 \\ \phantom{-}0.5415 & \phantom{-}1.4403 & \phantom{-}0.4022 \\ \phantom{-}1.4093 & -0.3161 & -0.7957 \\ \phantom{-}0.2411 & -1.3900 & \phantom{-}0.2065 \end{bmatrix} \begin{bmatrix} \phantom{-}0.2000 & \phantom{-}0.5415 & \phantom{-}1.4093 & \phantom{-}0.2411 \\ \phantom{-}0.8000 & \phantom{-}1.4403 & -0.3161 & -1.3900 \\ \phantom{-}0.1000 & \phantom{-}0.4022 & -0.7957 & \phantom{-}0.2065 \end{bmatrix}
+$$</p>
+<p>Performing these multiplications yields the new similarity scores:</p>
+<p>$$
+S_{pos}^{rev} = \begin{bmatrix} \phantom{-}0.69 & \phantom{-}1.30 & -0.05 & -1.04 \\ \phantom{-}1.30 & \phantom{-}2.53 & -0.01 & -1.79 \\ -0.05 & -0.01 & \phantom{-}2.72 & \phantom{-}0.61 \\ -1.04 & -1.79 & \phantom{-}0.61 & \phantom{-}2.03 \end{bmatrix}
+$$</p>
+<h3>The Symmetry Is Broken</h3>
+<p>In Chapter 1, the similarity between <code>fox</code> and <code>brown</code> was $-0.20$ regardless of their positions in the sequence. After positional encoding, the similarity between these two tokens depends on where they appear:</p>
+<table>
+<thead>
+<tr>
+<th>Token Pair</th>
+<th>Original $S$</th>
+<th>$S_{pos}$ (original order)</th>
+<th>$S_{pos}^{rev}$ (reversed order)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>(<code>The</code>, <code>quick</code>)</td>
+<td>$-0.15$</td>
+<td>$\phantom{-}0.36$</td>
+<td>$\phantom{-}0.61$</td>
+</tr>
+<tr>
+<td>(<code>The</code>, <code>brown</code>)</td>
+<td>$-0.31$</td>
+<td>$\phantom{-}0.43$</td>
+<td>$-1.79$</td>
+</tr>
+<tr>
+<td>(<code>The</code>, <code>fox</code>)</td>
+<td>$\phantom{-}0.12$</td>
+<td>$-0.66$</td>
+<td>$-1.04$</td>
+</tr>
+<tr>
+<td>(<code>quick</code>, <code>brown</code>)</td>
+<td>$-0.38$</td>
+<td>$\phantom{-}0.80$</td>
+<td>$-0.01$</td>
+</tr>
+<tr>
+<td>(<code>quick</code>, <code>fox</code>)</td>
+<td>$\phantom{-}0.00$</td>
+<td>$-0.39$</td>
+<td>$-0.05$</td>
+</tr>
+<tr>
+<td>(<code>brown</code>, <code>fox</code>)</td>
+<td>$-0.20$</td>
+<td>$-0.32$</td>
+<td>$\phantom{-}1.30$</td>
+</tr>
+</tbody></table>
+<p>No pair retains the same similarity across the two orderings. The entry for (<code>brown</code>, <code>fox</code>) shifts from $-0.32$ in the original ordering to $1.30$ in the reversed ordering, a change not only in magnitude but in sign. The sequences <code>The</code> <code>quick</code> <code>brown</code> <code>fox</code> and <code>fox</code> <code>brown</code> <code>quick</code> <code>The</code> are no longer indistinguishable to any mechanism that computes dot-product similarities between the enriched vectors.</p>
+<p>The algebraic reason is direct. In Chapter 1, $S' = PSP^\top$ held because $PX$ was simply a rearrangement of the same row vectors. After positional encoding, $X_{pos}^{rev} = PX + PE \neq P(X + PE) = PX_{pos}.$ The positional encoding matrix $PE$ is added based on position, not based on token identity. Permuting the tokens and then adding position-based encodings produces different vectors than adding the encodings first and then permuting.</p>
+<h2>The Meaning of a Positionally-Enriched Vector</h2>
+<p>The vector for <code>brown</code> in the original embedding tensor $X$ is $\begin{bmatrix} -0.3 & \phantom{-}0.9 & \phantom{-}0.4 \end{bmatrix}.$ This is the abstract distributional signature shared by every occurrence of <code>brown</code> across the training corpus: <code>brown</code> at position 0, <code>brown</code> at position 47, <code>brown</code> at position 1000 all receive the same vector.</p>
+<p>After positional encoding, the vector for <code>brown</code> at position 2 is $\begin{bmatrix} 0.6093 & 0.4839 & 0.4043 \end{bmatrix}.$ This is not the universal distributional signature of <code>brown</code>. It is <code>brown</code> at position 2 in this specific sequence. If <code>brown</code> appeared at position 5, it would receive a different positional encoding ($\mathbf{p}_5 \neq \mathbf{p}_2$) and produce a different enriched vector. The embedding now carries two signals: what the token means (from $X$) and where it occurs (from $PE$).</p>
+<h2>The Information-Theoretic Cost of Additive Encoding</h2>
+<p>The addition $X_{pos} = X + PE$ superimposes the semantic signal and the positional signal in the same $d_{model}$ dimensions. The three components of the enriched vector for <code>brown</code> at position 2 ($0.6093,$ $0.4839,$ $0.4043$) encode both the distributional identity of <code>brown</code> and the positional fingerprint of position 2, entangled in each coordinate.</p>
+<p>This element-wise addition irreversibly fuses the two signals. Given only the enriched sum $0.6093$ from the first component, there is no algebraic method to separate it back into its constituent parts ($-0.3$ and $0.9093$) without providing the independent positional vector $\mathbf{p}_2.$ The original embedding and the positional encoding are permanently entangled. Because the semantic meaning of the token and its sequential position must share the exact same $d_{model} = 3$ numerical coordinates, they compete for representational space. The network must expend parameter capacity in its subsequent layers (attention and feedforward transformations) to isolate and utilize these intertwined signals.</p>
+<p>An alternative approach would concatenate the two signals rather than add them, producing vectors of dimension $2 \cdot d_{model}.$ Concatenation preserves both signals without interference but doubles the dimensionality, doubling the computational cost of every subsequent matrix multiplication. In production, $d_{model}$ is typically 4096 or larger; doubling it is prohibitively expensive. The additive approach accepts the cost of superposition to avoid the cost of doubled dimensionality.</p>
+<p>A third approach (introduced in Chapter 4) avoids adding anything to the embedding at all, instead encoding position through a geometric operation applied inside the attention mechanism. This avoids both the superposition cost of addition and the dimensionality cost of concatenation.</p>
+<h2>Structural Limitations of Absolute Additive Positional Encoding</h2>
+<p>The sinusoidal positional encoding satisfies the five design constraints enumerated in Chapter 2 and successfully breaks permutation invariance, as verified above. Three structural properties of the additive mechanism limit its effectiveness in practice.</p>
+<h3>Single-Layer Injection</h3>
+<p>The positional encoding is added to the embedding tensor once, at the input to the first layer of the Transformer. Subsequent layers (attention, layer normalization, feedforward networks) transform the enriched vectors through nonlinear operations. With each successive transformation, the positional signal becomes increasingly entangled with the semantic signal and increasingly diluted. By the deeper layers of a model with dozens or hundreds of layers, the positional information injected at the input may have degraded substantially.</p>
+<p>The model has no mechanism to refresh the positional signal at intermediate layers. Whatever positional information reaches the deeper layers must survive the intervening transformations intact. Empirical evidence confirms the limitation: models using additive positional encoding show degraded position-sensitivity in their deeper layers.</p>
+<h3>Absolute Position Labels</h3>
+<p>The sinusoidal encoding assigns a fixed vector to each absolute position: position 0 always receives $\begin{bmatrix} 0 & 1 & 0 \end{bmatrix},$ position 1 always receives $\begin{bmatrix} 0.8415 & 0.5403 & 0.0022 \end{bmatrix},$ and so on, regardless of the sequence length or context. The token at position 5 carries the label &quot;I am at position 5,&quot; not the relationally richer signal &quot;I am 3 positions after the token at position 2.&quot;</p>
+<p>Chapter 2 demonstrated that the sinusoidal formula satisfies relative representability (the relationship between any two positions can be expressed as a fixed rotation by angle $\omega \Delta$). This property exists in the encoding, but the additive injection mechanism does not exploit it directly. The positional signal is added to the embedding before the linear projections that produce the query and key vectors used in attention. After projection, the positional and semantic components are linearly combined, and the clean rotational relationship between positions is obscured by the projection weights. The model must learn to extract relative positional information from the entangled representation, rather than receiving it in a form that is relative by construction.</p>
+<h3>Length Extrapolation Degradation</h3>
+<p>A model trained on sequences of maximum length $T_{train}$ encounters the positional encoding vectors $\mathbf{p}_0$ through $\mathbf{p}_{T_{train} - 1}$ during training. At inference, if a sequence of length $T > T_{train}$ is presented, the model must process positional vectors $\mathbf{p}_{T_{train}}, \ldots, \mathbf{p}_{T - 1}$ that it has never seen.</p>
+<p>The sinusoidal formula produces well-defined values at any position $t$ (unlike learned positional embeddings, which have no representation beyond $T_{max}$). The values at unseen positions are valid points on the sinusoidal curves. The difficulty is that the model&#39;s learned attention patterns were calibrated to the range of positional encodings seen during training, and the statistical distribution of enriched vectors at positions beyond $T_{train}$ differs from what the model was trained on. In practice, this distributional shift causes performance degradation on sequences longer than the training length, even though the encoding itself remains mathematically well-defined.</p>
+<h2>Looking Forward</h2>
+<p>The three limitations share a common root: the additive mechanism treats positional encoding as a preprocessing step, applied once to the input and then left to survive the subsequent computation. The position information is a static addendum to the embedding, not an active participant in the attention computation that determines which tokens attend to which.</p>
+<p>The next chapter introduces the query-key framework that underlies the attention mechanism and formalizes the requirement that positional encoding should produce relevance scores that depend on relative position, not absolute position labels. That requirement motivates a fundamentally different approach: encoding position not by adding a vector to the embedding, but by rotating vectors inside the attention mechanism itself.</p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/positional-encoding-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Positional Encoding Ebook here.</a></em></p>
+
+<div class="blog-pagination">
+      <a href="positional-encoding-chapter_02.html" class="pagination-link prev">
+        <span class="pagination-label">Previous</span>
+        <span class="pagination-title">Part 2: Design Constraints and the Sinusoidal Formula</span>
+      </a>
+      <a href="positional-encoding-chapter_04.html" class="pagination-link next">
+        <span class="pagination-label">Next</span>
+        <span class="pagination-title">Part 4: The Query-Key Framework and the Relative Position Requirement</span>
+      </a></div>
+        </article>
+    </div>
+  </main>
+  <script src="../js/main.js"></script>
+
+  <!-- KaTeX for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" 
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], fleqn: true});">
+  </script>
+
+  <!-- Mermaid for Diagram Rendering -->
+  <style>
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: var(--space-2xl) 0;
+    }
+    .mermaid svg {
+      filter: drop-shadow(0 4px 16px rgba(183, 110, 121, 0.12));
+    }
+  </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ 
+      startOnLoad: true, 
+      theme: 'base',
+      themeVariables: {
+        fontFamily: "'Outfit', -apple-system, BlinkMacSystemFont, sans-serif",
+        primaryColor: '#ffffff',
+        primaryBorderColor: '#b76e79',
+        primaryTextColor: '#8b4f5a',
+        lineColor: '#b76e79',
+        nodeBorder: '#b76e79',
+        clusterBkg: 'rgba(232, 180, 184, 0.15)',
+        clusterBorder: '#d4a0a0'
+      }
+    });
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      const blocks = document.querySelectorAll('.language-mermaid');
+      blocks.forEach((block) => {
+        const parent = block.parentElement;
+        if (parent.tagName === 'PRE') {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          parent.replaceWith(mermaidDiv);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

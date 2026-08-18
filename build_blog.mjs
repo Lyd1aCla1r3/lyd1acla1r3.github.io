@@ -127,7 +127,7 @@ postsData.sort((a, b) => {
     if (a.seriesName !== b.seriesName) {
         if (!a.seriesName) return 1;
         if (!b.seriesName) return -1;
-        const seriesOrder = { tokenization: 0, embeddings: 1, transformers: 2 };
+        const seriesOrder = { tokenization: 0, embeddings: 1, 'positional-encoding': 2, transformers: 3 };
         const aOrder = seriesOrder[a.seriesName] ?? 99;
         const bOrder = seriesOrder[b.seriesName] ?? 99;
         return aOrder - bOrder;
@@ -231,11 +231,13 @@ if (posts.length > 0) {
           
           let seriesDesc = `A sequential exploration of ${seriesTitle}.`;
           if (sName === 'transformers') {
-              seriesDesc = "A rigorous, geometric deconstruction of the Decoder-only Transformer architecture. This complete series builds the model from the ground up, moving from the vocabulary embedding matrix through the multi-head attention mechanism and residual streams, terminating in the mathematically precise calculation of the cross-entropy loss function.";
+              seriesDesc = "A geometric deconstruction of the Decoder-only Transformer architecture. This complete series builds the model from the ground up, moving from the vocabulary embedding matrix through the multi-head attention mechanism and residual streams, terminating in the mathematically precise calculation of the cross-entropy loss function.";
           } else if (sName === 'tokenization') {
               seriesDesc = "A step-by-step unrolling of the Byte Pair Encoding algorithm. This collection traces the deterministic compression of character-level data into semantic subword units, proving mathematically how the statistical distribution of language inherently generates structural linguistic features before reaching the neural network.";
           } else if (sName === 'embeddings') {
               seriesDesc = "A complete derivation of end-to-end learned embeddings. This series traces the mathematical journey from discrete token IDs through one-hot encoding, random initialization in high-dimensional space, the forward pass and cross-entropy loss, full backpropagation through both weight matrices, and the emergent semantic geometry that arises from gradient descent at scale.";
+          } else if (sName === 'positional-encoding') {
+              seriesDesc = "A first-principles derivation of positional encoding mechanisms for sequence-aware neural architectures. This series traces the mathematical journey from the order-agnostic embedding tensor through the historical sinusoidal formula, element-wise injection, the query-key dot-product framework, and the full derivation of Rotary Position Embeddings (RoPE), the mechanism used in every frontier language model.";
           }
           
           seriesHtml += `

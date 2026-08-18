@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Part 4: The Query-Key Framework and the Relative Position Requirement — Lydia Pedersen</title>
+  <link rel="stylesheet" href="../css/styles.css?v=1.2">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .blog-post {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: var(--space-4xl) var(--space-md);
+        background: var(--bg-card);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 8px 32px rgba(183, 110, 121, 0.05);
+        border: 1px solid var(--border-subtle);
+    }
+    .blog-post h1, .blog-post h2, .blog-post h3 {
+        color: var(--text-primary);
+        font-family: var(--font-display);
+        margin-top: var(--space-2xl);
+        margin-bottom: var(--space-md);
+    }
+    .blog-post h1 { font-size: var(--fs-3xl); margin-top: 0; line-height: 1.1; }
+    .blog-post h2, .blog-post h3 { border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-sm); }
+    .blog-post h2 { font-size: var(--fs-2xl); }
+    .blog-post h3 { font-size: var(--fs-xl); }
+    .blog-post p, .blog-post li {
+        color: var(--text-secondary);
+        line-height: var(--lh-relaxed);
+        margin-bottom: var(--space-md);
+        font-size: var(--fs-md);
+    }
+    .blog-post img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-md);
+        margin: var(--space-lg) 0;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .blog-post a:not(.pagination-link) {
+        color: var(--text-accent);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s ease;
+    }
+    .blog-post a:not(.pagination-link):hover {
+        border-bottom-color: var(--text-accent);
+    }
+    .blog-post {
+        background: rgba(255, 255, 255, 0.65);
+        padding: var(--space-2xl);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-subtle);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .blog-post .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; display: flex; gap: 1rem; align-items: center; }
+    .blog-post .meta span { display: inline-flex; align-items: center; gap: 0.25rem; }
+    .blog-post p { line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1.05rem; }
+    .blog-post ul, .blog-post ol { margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem; }
+    .blog-post li { margin-bottom: 0.5rem; }
+    .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+    .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
+    .blog-post table { width: auto; margin: var(--space-2xl) 0; border-collapse: collapse; text-align: left; }
+    .blog-post th, .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post th { font-weight: 600; color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-subtle); }
+    .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 4px 10px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; font-size: 0.95rem; color: var(--rose-gold-dark); margin-right: 6px; }
+  </style>
+</head>
+<body>
+  <!-- Fixed chip visual (always visible, bottom-left, behind everything) -->
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
+  <!-- Full-screen overlay canvas for the diagonal binary→agent→text animation -->
+  <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="../index.html" class="nav__logo" aria-label="Home">lydia<span>.</span>pedersen</a>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="../index.html#about" class="nav__link">About</a></li>
+        <li><a href="../index.html#samples" class="nav__link">Writing</a></li>
+        <li><a href="../index.html#case-studies" class="nav__link">Engineering</a></li>
+        <li><a href="../index.html#skills" class="nav__link">Skills</a></li>
+        <li><a href="index.html" class="nav__link">Blog</a></li>
+        <li><a href="../ebooks/index.html" class="nav__link">Ebooks</a></li>
+        <li><a href="../index.html#contact" class="nav__link">Contact</a></li>
+      </ul>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="nav__toggle-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-lg));">
+    <div class="container">
+<nav aria-label="breadcrumb" class="breadcrumbs"><ol>
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Positional encoding</a></li><li aria-current="page">Part 4: The Query-Key Framework and the Relative Position Requirement</li></ol></nav>
+        <article class="blog-post series-positional-encoding">
+<h1>Part 4: The Query-Key Framework and the Relative Position Requirement</h1>
+<!-- SUMMARY: The attention mechanism computes relevance scores between token positions using learned query and key projections. This chapter introduces the minimal query-key framework, computes the relevance score matrix for the toy model, and demonstrates that the scores are invariant under input permutations. The relative position requirement is stated formally, additive sinusoidal encoding is shown to violate it structurally, and Rotary Position Embeddings are previewed as the mechanism that satisfies it by construction. --><p><em>Prefer to read this offline? <a href="../assets/docs/positional-encoding-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Positional Encoding Ebook here.</a></em></p><p>The preceding chapter demonstrated that additive sinusoidal positional encoding breaks permutation invariance in the dot-product similarity matrix $S_{pos} = X_{pos} X_{pos}^\top$. The three structural limitations identified (single-layer injection, absolute position labels, length extrapolation degradation) share a common root: the positional signal is added to the embedding once as a preprocessing step and then left to survive the subsequent computation.</p>
+<p>This chapter introduces the specific component of the Transformer architecture where positional information has its greatest impact: the query-key dot product that determines which positions attend to which. The full attention mechanism (scoring, normalization, value aggregation) is the subject of the Transformers series. This chapter introduces only the two projections and the dot product that Rotary Position Embeddings operate on.</p>
+<h2>Query and Key Projections</h2>
+<p>The attention mechanism requires a mechanism for each position in the sequence to assess the relevance of every other position. This assessment is performed through two learned linear projections that transform each embedding vector into two distinct roles.</p>
+<p>Given the embedding vector $\mathbf{x}_t \in \mathbb{R}^{d_{model}}$ at position $t$, two projection matrices produce:</p>
+<p>$$
+\mathbf{q}_t = W_Q \, \mathbf{x}_t \qquad \text{(query vector)}
+$$</p>
+<p>$$
+\mathbf{k}_t = W_K \, \mathbf{x}_t \qquad \text{(key vector)}
+$$</p>
+<p>where $W_Q, W_K \in \mathbb{R}^{d_{model} \times d_{model}}$ are learned parameter matrices. The query vector $\mathbf{q}_t$ encodes the question &quot;what information does position $t$ seek?&quot; and the key vector $\mathbf{k}_t$ encodes the answer &quot;what information does position $t$ offer.&quot;</p>
+<p>The <strong>relevance score</strong> between position $m$ (the querying position) and position $n$ (the attended position) is the dot product:</p>
+<p>$$
+a_{mn} = \mathbf{q}_m^\top \mathbf{k}_n
+$$</p>
+<p>Because both $\mathbf{q}_m$ and $\mathbf{k}_n$ are $d_{model} \times 1$ column vectors, the first vector must be transposed into a $1 \times d_{model}$ row vector to compute the scalar dot product via matrix multiplication. Moving the transpose to the second vector ($\mathbf{q}_m \mathbf{k}_n^\top$) would incorrectly compute a full $d_{model} \times d_{model}$ matrix. Reversing the order of the vectors entirely ($\mathbf{k}_n^\top \mathbf{q}_m$) computes the exact same scalar value, but standard mathematical convention places the querying vector on the left.</p>
+<p>A large positive score indicates that position $m$ considers position $n$ highly relevant; a score near zero indicates low relevance; a negative score indicates that the content at position $n$ is actively irrelevant to the query at position $m$. The matrix $A \in \mathbb{R}^{T \times T}$ of all pairwise relevance scores determines the flow of information across the sequence.</p>
+<p>The score $a_{mn}$ is not symmetric in general: position $m$ may consider position $n$ relevant without the converse holding, because $W_Q \neq W_K$ and therefore $\mathbf{q}_m^\top \mathbf{k}_n \neq \mathbf{q}_n^\top \mathbf{k}_m$.</p>
+<h2>Defining the Projection Matrices</h2>
+<p>For the toy model with $d_{model} = 3$, the projection matrices $W_Q$ and $W_K$ are $3 \times 3$. The following hand-chosen values produce non-trivial projections with entries small enough for manual verification:</p>
+<p>$$
+W_Q = \begin{bmatrix} \phantom{-}0.2 & \phantom{-}0.1 & -0.3 \\ -0.1 & \phantom{-}0.4 & \phantom{-}0.2 \\ \phantom{-}0.3 & -0.2 & \phantom{-}0.5 \end{bmatrix}, \qquad W_K = \begin{bmatrix} \phantom{-}0.1 & \phantom{-}0.3 & -0.2 \\ \phantom{-}0.4 & -0.1 & \phantom{-}0.1 \\ -0.2 & \phantom{-}0.2 & \phantom{-}0.3 \end{bmatrix}
+$$</p>
+<p>In a trained model, these matrices are learned through gradient descent. The distinct values of $W_Q$ and $W_K$ allow query and key vectors to capture different aspects of the same embedding vector, which is essential for the asymmetric nature of the relevance computation.</p>
+<h2>Computing the Query Vectors</h2>
+<p>Each query vector $\mathbf{q}_t = W_Q \, \mathbf{x}_t$ is a matrix-vector product. For the four positions of the toy sequence:</p>
+<h3>Position $t = 0$ (<code>The</code>), $\mathbf{x}_0 = \begin{bmatrix} \phantom{-}0.1 & -0.4 & \phantom{-}0.2 \end{bmatrix}^\top$</h3>
+<p>$$
+q_0[0] = (0.2)(0.1) + (0.1)(-0.4) + (-0.3)(0.2) = \mathbf{-0.08}
+$$</p>
+<p>$$
+q_0[1] = (-0.1)(0.1) + (0.4)(-0.4) + (0.2)(0.2) = \mathbf{-0.13}
+$$</p>
+<p>$$
+q_0[2] = (0.3)(0.1) + (-0.2)(-0.4) + (0.5)(0.2) = \mathbf{0.21}
+$$</p>
+<p>$$
+\mathbf{q}_0 = \begin{bmatrix} -0.08 \\ -0.13 \\ \phantom{-}0.21 \end{bmatrix}
+$$</p>
+<h3>Position $t = 1$ (<code>quick</code>), $\mathbf{x}_1 = \begin{bmatrix} \phantom{-}0.5 & \phantom{-}0.1 & -0.8 \end{bmatrix}^\top$</h3>
+<p>$$
+q_1[0] = (0.2)(0.5) + (0.1)(0.1) + (-0.3)(-0.8) = \mathbf{0.35}
+$$</p>
+<p>$$
+q_1[1] = (-0.1)(0.5) + (0.4)(0.1) + (0.2)(-0.8) = \mathbf{-0.17}
+$$</p>
+<p>$$
+q_1[2] = (0.3)(0.5) + (-0.2)(0.1) + (0.5)(-0.8) = \mathbf{-0.27}
+$$</p>
+<p>$$
+\mathbf{q}_1 = \begin{bmatrix} \phantom{-}0.35 \\ -0.17 \\ -0.27 \end{bmatrix}
+$$</p>
+<h3>Position $t = 2$ (<code>brown</code>), $\mathbf{x}_2 = \begin{bmatrix} -0.3 & \phantom{-}0.9 & \phantom{-}0.4 \end{bmatrix}^\top$</h3>
+<p>$$
+q_2[0] = (0.2)(-0.3) + (0.1)(0.9) + (-0.3)(0.4) = \mathbf{-0.09}
+$$</p>
+<p>$$
+q_2[1] = (-0.1)(-0.3) + (0.4)(0.9) + (0.2)(0.4) = \mathbf{0.47}
+$$</p>
+<p>$$
+q_2[2] = (0.3)(-0.3) + (-0.2)(0.9) + (0.5)(0.4) = \mathbf{-0.07}
+$$</p>
+<p>$$
+\mathbf{q}_2 = \begin{bmatrix} -0.09 \\ \phantom{-}0.47 \\ -0.07 \end{bmatrix}
+$$</p>
+<h3>Position $t = 3$ (<code>fox</code>), $\mathbf{x}_3 = \begin{bmatrix} \phantom{-}0.2 & -0.2 & \phantom{-}0.1 \end{bmatrix}^\top$</h3>
+<p>$$
+q_3[0] = (0.2)(0.2) + (0.1)(-0.2) + (-0.3)(0.1) = \mathbf{-0.01}
+$$</p>
+<p>$$
+q_3[1] = (-0.1)(0.2) + (0.4)(-0.2) + (0.2)(0.1) = \mathbf{-0.08}
+$$</p>
+<p>$$
+q_3[2] = (0.3)(0.2) + (-0.2)(-0.2) + (0.5)(0.1) = \mathbf{0.15}
+$$</p>
+<p>$$
+\mathbf{q}_3 = \begin{bmatrix} -0.01 \\ -0.08 \\ \phantom{-}0.15 \end{bmatrix}
+$$</p>
+<h2>Computing the Key Vectors</h2>
+<p>Each key vector $\mathbf{k}_t = W_K \, \mathbf{x}_t$ is computed identically, using $W_K$ in place of $W_Q$.</p>
+<h3>Position $t = 0$ (<code>The</code>)</h3>
+<p>$$
+k_0[0] = (0.1)(0.1) + (0.3)(-0.4) + (-0.2)(0.2) = \mathbf{-0.15}
+$$</p>
+<p>$$
+k_0[1] = (0.4)(0.1) + (-0.1)(-0.4) + (0.1)(0.2) = \mathbf{0.10}
+$$</p>
+<p>$$
+k_0[2] = (-0.2)(0.1) + (0.2)(-0.4) + (0.3)(0.2) = \mathbf{-0.04}
+$$</p>
+<p>$$
+\mathbf{k}_0 = \begin{bmatrix} -0.15 \\ \phantom{-}0.10 \\ -0.04 \end{bmatrix}
+$$</p>
+<h3>Position $t = 1$ (<code>quick</code>)</h3>
+<p>$$
+k_1[0] = (0.1)(0.5) + (0.3)(0.1) + (-0.2)(-0.8) = \mathbf{0.24}
+$$</p>
+<p>$$
+k_1[1] = (0.4)(0.5) + (-0.1)(0.1) + (0.1)(-0.8) = \mathbf{0.11}
+$$</p>
+<p>$$
+k_1[2] = (-0.2)(0.5) + (0.2)(0.1) + (0.3)(-0.8) = \mathbf{-0.32}
+$$</p>
+<p>$$
+\mathbf{k}_1 = \begin{bmatrix} \phantom{-}0.24 \\ \phantom{-}0.11 \\ -0.32 \end{bmatrix}
+$$</p>
+<h3>Position $t = 2$ (<code>brown</code>)</h3>
+<p>$$
+k_2[0] = (0.1)(-0.3) + (0.3)(0.9) + (-0.2)(0.4) = \mathbf{0.16}
+$$</p>
+<p>$$
+k_2[1] = (0.4)(-0.3) + (-0.1)(0.9) + (0.1)(0.4) = \mathbf{-0.17}
+$$</p>
+<p>$$
+k_2[2] = (-0.2)(-0.3) + (0.2)(0.9) + (0.3)(0.4) = \mathbf{0.36}
+$$</p>
+<p>$$
+\mathbf{k}_2 = \begin{bmatrix} \phantom{-}0.16 \\ -0.17 \\ \phantom{-}0.36 \end{bmatrix}
+$$</p>
+<h3>Position $t = 3$ (<code>fox</code>)</h3>
+<p>$$
+k_3[0] = (0.1)(0.2) + (0.3)(-0.2) + (-0.2)(0.1) = \mathbf{-0.06}
+$$</p>
+<p>$$
+k_3[1] = (0.4)(0.2) + (-0.1)(-0.2) + (0.1)(0.1) = \mathbf{0.11}
+$$</p>
+<p>$$
+k_3[2] = (-0.2)(0.2) + (0.2)(-0.2) + (0.3)(0.1) = \mathbf{-0.05}
+$$</p>
+<p>$$
+\mathbf{k}_3 = \begin{bmatrix} -0.06 \\ \phantom{-}0.11 \\ -0.05 \end{bmatrix}
+$$</p>
+<h2>The Relevance Score Matrix</h2>
+<p>The full $4 \times 4$ relevance score matrix $A$ contains the dot product $a_{ij} = \mathbf{q}_i^\top \mathbf{k}_j$ for every pair of positions. Each entry measures how relevant position $j$ is to the query at position $i$.</p>
+<p><strong>Row 0</strong> (<code>The</code> queries each position):</p>
+<p>$$
+a_{00} = (-0.08)(-0.15) + (-0.13)(0.10) + (0.21)(-0.04) = \mathbf{-0.0094}
+$$</p>
+<p>$$
+a_{01} = (-0.08)(0.24) + (-0.13)(0.11) + (0.21)(-0.32) = \mathbf{-0.1007}
+$$</p>
+<p>$$
+a_{02} = (-0.08)(0.16) + (-0.13)(-0.17) + (0.21)(0.36) = \mathbf{0.0849}
+$$</p>
+<p>$$
+a_{03} = (-0.08)(-0.06) + (-0.13)(0.11) + (0.21)(-0.05) = \mathbf{-0.0200}
+$$</p>
+<p><strong>Row 1</strong> (<code>quick</code> queries each position):</p>
+<p>$$
+a_{10} = (0.35)(-0.15) + (-0.17)(0.10) + (-0.27)(-0.04) = \mathbf{-0.0587}
+$$</p>
+<p>$$
+a_{11} = (0.35)(0.24) + (-0.17)(0.11) + (-0.27)(-0.32) = \mathbf{0.1517}
+$$</p>
+<p>$$
+a_{12} = (0.35)(0.16) + (-0.17)(-0.17) + (-0.27)(0.36) = \mathbf{-0.0123}
+$$</p>
+<p>$$
+a_{13} = (0.35)(-0.06) + (-0.17)(0.11) + (-0.27)(-0.05) = \mathbf{-0.0262}
+$$</p>
+<p><strong>Row 2</strong> (<code>brown</code> queries each position):</p>
+<p>$$
+a_{20} = (-0.09)(-0.15) + (0.47)(0.10) + (-0.07)(-0.04) = \mathbf{0.0633}
+$$</p>
+<p>$$
+a_{21} = (-0.09)(0.24) + (0.47)(0.11) + (-0.07)(-0.32) = \mathbf{0.0525}
+$$</p>
+<p>$$
+a_{22} = (-0.09)(0.16) + (0.47)(-0.17) + (-0.07)(0.36) = \mathbf{-0.1195}
+$$</p>
+<p>$$
+a_{23} = (-0.09)(-0.06) + (0.47)(0.11) + (-0.07)(-0.05) = \mathbf{0.0606}
+$$</p>
+<p><strong>Row 3</strong> (<code>fox</code> queries each position):</p>
+<p>$$
+a_{30} = (-0.01)(-0.15) + (-0.08)(0.10) + (0.15)(-0.04) = \mathbf{-0.0125}
+$$</p>
+<p>$$
+a_{31} = (-0.01)(0.24) + (-0.08)(0.11) + (0.15)(-0.32) = \mathbf{-0.0592}
+$$</p>
+<p>$$
+a_{32} = (-0.01)(0.16) + (-0.08)(-0.17) + (0.15)(0.36) = \mathbf{0.0660}
+$$</p>
+<p>$$
+a_{33} = (-0.01)(-0.06) + (-0.08)(0.11) + (0.15)(-0.05) = \mathbf{-0.0157}
+$$</p>
+<h3>The Complete Relevance Score Matrix</h3>
+<p>$$
+A = \begin{bmatrix} -0.0094 & -0.1007 & \phantom{-}0.0849 & -0.0200 \\ -0.0587 & \phantom{-}0.1517 & -0.0123 & -0.0262 \\ \phantom{-}0.0633 & \phantom{-}0.0525 & -0.1195 & \phantom{-}0.0606 \\ -0.0125 & -0.0592 & \phantom{-}0.0660 & -0.0157 \end{bmatrix}
+$$</p>
+<p>The matrix is not symmetric: $a_{01} = -0.1007$ but $a_{10} = -0.0587$. Position 0 (<code>The</code>) considers position 1 (<code>quick</code>) moderately irrelevant, while position 1 (<code>quick</code>) considers position 0 (<code>The</code>) less irrelevant. This asymmetry is a direct consequence of $W_Q \neq W_K$: the two matrices extract different linear combinations of the embedding components, so the dot product $\mathbf{q}_m^\top \mathbf{k}_n$ is not the same operation as $\mathbf{q}_n^\top \mathbf{k}_m$.</p>
+<h2>Permutation Invariance in the Relevance Score Matrix</h2>
+<p>The similarity matrix $S = XX^\top$ from Chapter 1 exhibited permutation invariance: reversing the sequence produced $S' = PSP^\top$, a rearrangement of the same scores. The relevance score matrix $A$ inherits this invariance.</p>
+<p>The step-by-step vector projections ($\mathbf{q}_t = W_Q \mathbf{x}_t$) treat each embedding as a $3 \times 1$ column vector. In the full $4 \times 3$ embedding tensor $X$, however, each token&#39;s embedding is a row ($\mathbf{x}_t^\top$).</p>
+<p>To compute the entire set of queries simultaneously as a single matrix operation, the projection equation is transposed:</p>
+<p>$$
+\mathbf{q}_t^\top = (W_Q \mathbf{x}_t)^\top = \mathbf{x}_t^\top W_Q^\top
+$$</p>
+<p>Multiplying a row vector by $W_Q^\top$ projects it into a query row. Stacking all four positions into the full $4 \times 3$ matrix $Q$ reveals the complete operation:</p>
+<p>$$
+Q = \begin{bmatrix} \leftarrow & \mathbf{q}_0^\top & \rightarrow \\ \leftarrow & \mathbf{q}_1^\top & \rightarrow \\ \leftarrow & \mathbf{q}_2^\top & \rightarrow \\ \leftarrow & \mathbf{q}_3^\top & \rightarrow \end{bmatrix} = \begin{bmatrix} \leftarrow & \mathbf{x}_0^\top & \rightarrow \\ \leftarrow & \mathbf{x}_1^\top & \rightarrow \\ \leftarrow & \mathbf{x}_2^\top & \rightarrow \\ \leftarrow & \mathbf{x}_3^\top & \rightarrow \end{bmatrix} W_Q^\top = X W_Q^\top
+$$</p>
+<p>The same derivation applies to the key vectors, yielding the compact matrix definitions:</p>
+<p>$$
+Q = X W_Q^\top, \qquad K = X W_K^\top
+$$</p>
+<p>For the reversed sequence <code>fox</code> <code>brown</code> <code>quick</code> <code>The</code>, the embedding tensor is permuted: $X_{rev} = PX$. To see exactly why the linear projections cannot break this permutation, the row operations can be tracked visually.</p>
+<p>First, consider projecting the permuted tensor ($X_{rev} W_Q^\top$). The permutation matrix $P$ moves the rows of $X$ into reverse order, and then the projection $W_Q^\top$ transforms each row:</p>
+<p>$$
+Q_{rev} = (PX) W_Q^\top = \begin{bmatrix} 0 & 0 & 0 & 1 \\ 0 & 0 & 1 & 0 \\ 0 & 1 & 0 & 0 \\ 1 & 0 & 0 & 0 \end{bmatrix} \begin{bmatrix} \leftarrow & \mathbf{x}_0^\top & \rightarrow \\ \leftarrow & \mathbf{x}_1^\top & \rightarrow \\ \leftarrow & \mathbf{x}_2^\top & \rightarrow \\ \leftarrow & \mathbf{x}_3^\top & \rightarrow \end{bmatrix} W_Q^\top
+$$</p>
+<p>$$
+= \begin{bmatrix} \leftarrow & \mathbf{x}_3^\top & \rightarrow \\ \leftarrow & \mathbf{x}_2^\top & \rightarrow \\ \leftarrow & \mathbf{x}_1^\top & \rightarrow \\ \leftarrow & \mathbf{x}_0^\top & \rightarrow \end{bmatrix} W_Q^\top = \begin{bmatrix} \leftarrow & \mathbf{q}_3^\top & \rightarrow \\ \leftarrow & \mathbf{q}_2^\top & \rightarrow \\ \leftarrow & \mathbf{q}_1^\top & \rightarrow \\ \leftarrow & \mathbf{q}_0^\top & \rightarrow \end{bmatrix}
+$$</p>
+<p>Now consider permuting the already-projected query matrix ($PQ$). Here, $X$ is projected into query vectors first, and then the permutation matrix $P$ shuffles those query vectors into reverse order:</p>
+<p>$$
+PQ = \begin{bmatrix} 0 & 0 & 0 & 1 \\ 0 & 0 & 1 & 0 \\ 0 & 1 & 0 & 0 \\ 1 & 0 & 0 & 0 \end{bmatrix} \left( \begin{bmatrix} \leftarrow & \mathbf{x}_0^\top & \rightarrow \\ \leftarrow & \mathbf{x}_1^\top & \rightarrow \\ \leftarrow & \mathbf{x}_2^\top & \rightarrow \\ \leftarrow & \mathbf{x}_3^\top & \rightarrow \end{bmatrix} W_Q^\top \right)
+$$</p>
+<p>$$
+= \begin{bmatrix} 0 & 0 & 0 & 1 \\ 0 & 0 & 1 & 0 \\ 0 & 1 & 0 & 0 \\ 1 & 0 & 0 & 0 \end{bmatrix} \begin{bmatrix} \leftarrow & \mathbf{q}_0^\top & \rightarrow \\ \leftarrow & \mathbf{q}_1^\top & \rightarrow \\ \leftarrow & \mathbf{q}_2^\top & \rightarrow \\ \leftarrow & \mathbf{q}_3^\top & \rightarrow \end{bmatrix} = \begin{bmatrix} \leftarrow & \mathbf{q}_3^\top & \rightarrow \\ \leftarrow & \mathbf{q}_2^\top & \rightarrow \\ \leftarrow & \mathbf{q}_1^\top & \rightarrow \\ \leftarrow & \mathbf{q}_0^\top & \rightarrow \end{bmatrix}
+$$</p>
+<p>Both paths produce the exact same matrix. Multiplication on the left ($PX$) rearranges the row order without modifying the vectors themselves. Multiplication on the right ($X W_Q^\top$) projects each vector independently; the query vector for a given token is computed solely from its own embedding, completely unaffected by the other tokens in the sequence. Because the left-side permutation only alters positions and the right-side projection only alters internal values, the two operations never interfere. Projecting a shuffled sequence yields the exact same matrix as shuffling a projected sequence.</p>
+<p>The same visual expansion holds for the key matrix ($K_{rev} = PK$).</p>
+<p>This property is significant because it proves that the linear projections of the attention mechanism cannot break permutation invariance on their own. The relevance score matrix for the permuted sequence inherits the exact same invariance as the original dot-product similarity matrix $S = X X^\top$:</p>
+<p>$$
+A_{rev} = Q_{rev} \, K_{rev}^\top = (PQ)(PK)^\top = PQ K^\top P^\top = P A P^\top
+$$</p>
+<p>The same algebraic identity that governed $S' = PSP^\top$ in Chapter 1 governs the relevance score matrix. Computing $A_{rev}$ directly from the permuted embedding tensor:</p>
+<p>$$
+A_{rev} = \begin{bmatrix} -0.0157 & \phantom{-}0.0660 & -0.0592 & -0.0125 \\ \phantom{-}0.0606 & -0.1195 & \phantom{-}0.0525 & \phantom{-}0.0633 \\ -0.0262 & -0.0123 & \phantom{-}0.1517 & -0.0587 \\ -0.0200 & \phantom{-}0.0849 & -0.1007 & -0.0094 \end{bmatrix}
+$$</p>
+<p>Every score in $A$ appears in $A_{rev}$, relocated according to the permutation. The self-relevance of <code>quick</code> is $a_{11} = 0.1517$ in the original ordering and $(A_{rev})_{22} = 0.1517$ in the reversed ordering (because <code>quick</code> moved from position 1 to position 2). The score from <code>brown</code> querying <code>fox</code> is $a_{23} = 0.0606$ in the original and $(A_{rev})_{10} = 0.0606$ in the reversed ordering.</p>
+<div style="font-size: 0.9em;"><table>
+<thead>
+<tr>
+<th>Token Pair</th>
+<th>Score in $A$</th>
+<th>Position in $A$</th>
+<th>Score in $A_{rev}$</th>
+<th>Position in $A_{rev}$</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>The</code> queries <code>quick</code></td>
+<td>$-0.1007$</td>
+<td>$A_{01}$</td>
+<td>$-0.1007$</td>
+<td>$(A_{rev})_{32}$</td>
+</tr>
+<tr>
+<td><code>quick</code> queries <code>quick</code></td>
+<td>$\phantom{-}0.1517$</td>
+<td>$A_{11}$</td>
+<td>$\phantom{-}0.1517$</td>
+<td>$(A_{rev})_{22}$</td>
+</tr>
+<tr>
+<td><code>quick</code> queries <code>brown</code></td>
+<td>$-0.0123$</td>
+<td>$A_{12}$</td>
+<td>$-0.0123$</td>
+<td>$(A_{rev})_{21}$</td>
+</tr>
+<tr>
+<td><code>brown</code> queries <code>fox</code></td>
+<td>$\phantom{-}0.0606$</td>
+<td>$A_{23}$</td>
+<td>$\phantom{-}0.0606$</td>
+<td>$(A_{rev})_{10}$</td>
+</tr>
+<tr>
+<td><code>fox</code> queries <code>brown</code></td>
+<td>$\phantom{-}0.0660$</td>
+<td>$A_{32}$</td>
+<td>$\phantom{-}0.0660$</td>
+<td>$(A_{rev})_{01}$</td>
+</tr>
+</tbody></table>
+</div><p>The permutation invariance problem from Chapter 1 manifests identically in the query-key relevance scores. The sequences <code>The</code> <code>quick</code> <code>brown</code> <code>fox</code> and <code>fox</code> <code>brown</code> <code>quick</code> <code>The</code> produce the same set of relevance scores, differing only in their assignment to matrix positions. No mechanism operating on these scores can distinguish the two orderings.</p>
+<h2>The Relative Position Requirement</h2>
+<p>The fundamental problem is not merely that the relevance scores lack positional information. The problem is more specific: the ideal positional encoding should produce scores that depend on the <em>relative</em> offset between positions, not on their absolute indices.</p>
+<p>The requirement can be stated formally. A positional encoding function $f$ transforms query and key vectors into position-aware variants:</p>
+<p>$$
+\tilde{\mathbf{q}}_m = f(\mathbf{q}_m, m), \qquad \tilde{\mathbf{k}}_n = f(\mathbf{k}_n, n)
+$$</p>
+<p>The encoded relevance score is:</p>
+<p>$$
+\tilde{a}_{mn} = \tilde{\mathbf{q}}_m^\top \tilde{\mathbf{k}}_n
+$$</p>
+<p>The <strong>relative position requirement</strong> is that $\tilde{a}_{mn}$ depends on the content vectors $\mathbf{q}_m, \mathbf{k}_n$ and the relative offset $\Delta = m - n$, but not on the absolute positions $m$ and $n$ individually. Formally, for any positions $m, n, m', n'$ with $m - n = m' - n'$:</p>
+<p>$$
+f(\mathbf{q}, m)^\top f(\mathbf{k}, n) = f(\mathbf{q}, m')^\top f(\mathbf{k}, n')
+$$</p>
+<p>for the same content vectors $\mathbf{q}$ and $\mathbf{k}$. The score between <code>quick</code> and <code>fox</code> separated by an offset of 2 should be the same whether they occupy positions $(1, 3)$ or positions $(5, 7)$ or positions $(100, 102)$, provided the content vectors are identical.</p>
+<p>This requirement aligns with a linguistic observation: the relationship between two tokens typically depends on how far apart they are, not on where in the sequence they happen to appear. A verb that is three positions after its subject carries the same syntactic relationship regardless of whether the subject appears at position 0 or position 50.</p>
+<h2>Why Additive Sinusoidal PE Fails the Relative Position Requirement</h2>
+<p>Chapter 3 demonstrated that additive sinusoidal PE successfully breaks permutation invariance. The question is whether it satisfies the relative position requirement in the query-key dot product.</p>
+<p>With additive PE, the positionally-enriched embedding is $\mathbf{x}_t^{pos} = \mathbf{x}_t + \mathbf{p}_t$, where $\mathbf{p}_t$ is the sinusoidal encoding at position $t$. The query and key vectors become:</p>
+<p>$$
+\mathbf{q}_m^{pos} = W_Q (\mathbf{x}_m + \mathbf{p}_m) = W_Q \mathbf{x}_m + W_Q \mathbf{p}_m = \mathbf{q}_m + W_Q \mathbf{p}_m
+$$</p>
+<p>$$
+\mathbf{k}_n^{pos} = W_K (\mathbf{x}_n + \mathbf{p}_n) = W_K \mathbf{x}_n + W_K \mathbf{p}_n = \mathbf{k}_n + W_K \mathbf{p}_n
+$$</p>
+<p>The linearity of the projection produces a clean decomposition: each positionally-encoded query (or key) is the sum of a content component and a position component. The relevance score expands as a four-term product:</p>
+<p>$$
+(\mathbf{q}_m^{pos})^\top \mathbf{k}_n^{pos} = (\mathbf{q}_m + W_Q \mathbf{p}_m)^\top (\mathbf{k}_n + W_K \mathbf{p}_n)
+$$</p>
+<p>$$
+= \underbrace{\mathbf{q}_m^\top \mathbf{k}_n}_{\text{content-content}} + \underbrace{\mathbf{q}_m^\top W_K \mathbf{p}_n}_{\text{content-position}} + \underbrace{(W_Q \mathbf{p}_m)^\top \mathbf{k}_n}_{\text{position-content}} + \underbrace{(W_Q \mathbf{p}_m)^\top W_K \mathbf{p}_n}_{\text{position-position}}
+$$</p>
+<p>The first term is the original content-only relevance score (invariant to position). The fourth term depends only on the positions $m$ and $n$ (invariant to content). But the second and third terms are cross-terms that entangle content and absolute position: $\mathbf{q}_m^\top W_K \mathbf{p}_n$ depends on the content at position $m$ and the absolute position $n$, not the relative offset $m - n$.</p>
+<p>To verify concretely, the four-term decomposition for the pair (<code>The</code>, <code>quick</code>) at positions $(m = 0, n = 1)$:</p>
+<p>$$
+\text{content-content: } \mathbf{q}_0^\top \mathbf{k}_1 = -0.1007
+$$</p>
+<p>$$
+\text{content-position: } \mathbf{q}_0^\top W_K \mathbf{p}_1 = -0.0689
+$$</p>
+<p>$$
+\text{position-content: } (W_Q \mathbf{p}_0)^\top \mathbf{k}_1 = 0.1320
+$$</p>
+<p>$$
+\text{position-position: } (W_Q \mathbf{p}_0)^\top W_K \mathbf{p}_1 = 0.1496
+$$</p>
+<p>$$
+\text{sum} = -0.1007 + (-0.0689) + 0.1320 + 0.1496 = \mathbf{0.1120}
+$$</p>
+<p>The cross-terms ($-0.0689$ and $0.1320$) depend on the specific absolute positions 0 and 1, not on the offset $\Delta = 0 - 1 = -1$. If the same tokens appeared at positions $(5, 6)$ (same offset $\Delta = -1$, same content), the cross-terms would differ because $\mathbf{p}_5 \neq \mathbf{p}_0$ and $\mathbf{p}_6 \neq \mathbf{p}_1$.</p>
+<p>The sinusoidal formula does encode a rotational relationship between positions: Chapter 2 demonstrated that the positional encoding satisfies relative representability (the relationship between any two positions can be expressed as a fixed rotation). But the additive injection mechanism does not preserve this relationship through the projection. After multiplication by $W_Q$ and $W_K$, the rotational structure of the positional encodings is obscured by the projection weights, and the clean relative-distance property is lost.</p>
+<h2>Preview: Rotation as Position Encoding</h2>
+<p>The relative position requirement demands that the relevance score $\tilde{\mathbf{q}}_m^\top \tilde{\mathbf{k}}_n$ depend only on content and relative offset. The failure of additive PE stems from a structural mismatch: the positional signal is injected <em>before</em> the projection, and the projection entangles it with content in a way that breaks the relative-distance property.</p>
+<p>The solution is to encode position <em>after</em> the projection, directly on the query and key vectors themselves. Rotary Position Embeddings (RoPE) apply a position-dependent rotation to each query and key vector:</p>
+<p>$$
+\tilde{\mathbf{q}}_m = R_m \, \mathbf{q}_m, \qquad \tilde{\mathbf{k}}_n = R_n \, \mathbf{k}_n
+$$</p>
+<p>where $R_t$ is a rotation matrix that depends on position $t$. The dot product of rotated vectors satisfies:</p>
+<p>$$
+\tilde{\mathbf{q}}_m^\top \tilde{\mathbf{k}}_n = (R_m \mathbf{q}_m)^\top (R_n \mathbf{k}_n) = \mathbf{q}_m^\top R_m^\top R_n \, \mathbf{k}_n = \mathbf{q}_m^\top R_{n-m} \, \mathbf{k}_n
+$$</p>
+<p>The product $R_m^\top R_n$ collapses to a single rotation $R_{n-m}$ that depends only on the offset $\Delta = n - m$, because rotation matrices compose by adding angles. The resulting score depends on the content vectors and the relative offset, satisfying the requirement by algebraic construction rather than by learned approximation.</p>
+<p>Nothing is added to the embedding vectors. No information is superimposed in the same dimensions. The positional signal is encoded in the geometric orientation of the query and key vectors, not in their coordinates. The next chapter derives the rotation matrix, computes it for every position in the toy model, and applies it to the query and key vectors computed in this chapter.</p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/positional-encoding-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Positional Encoding Ebook here.</a></em></p>
+
+<div class="blog-pagination">
+      <a href="positional-encoding-chapter_03.html" class="pagination-link prev">
+        <span class="pagination-label">Previous</span>
+        <span class="pagination-title">Part 3: Element-Wise Addition and the Positionally-Enriched Tensor</span>
+      </a>
+      <a href="positional-encoding-chapter_05.html" class="pagination-link next">
+        <span class="pagination-label">Next</span>
+        <span class="pagination-title">Part 5: Rotary Position Embeddings: Deriving the Rotation Matrix</span>
+      </a></div>
+        </article>
+    </div>
+  </main>
+  <script src="../js/main.js"></script>
+
+  <!-- KaTeX for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" 
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], fleqn: true});">
+  </script>
+
+  <!-- Mermaid for Diagram Rendering -->
+  <style>
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: var(--space-2xl) 0;
+    }
+    .mermaid svg {
+      filter: drop-shadow(0 4px 16px rgba(183, 110, 121, 0.12));
+    }
+  </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ 
+      startOnLoad: true, 
+      theme: 'base',
+      themeVariables: {
+        fontFamily: "'Outfit', -apple-system, BlinkMacSystemFont, sans-serif",
+        primaryColor: '#ffffff',
+        primaryBorderColor: '#b76e79',
+        primaryTextColor: '#8b4f5a',
+        lineColor: '#b76e79',
+        nodeBorder: '#b76e79',
+        clusterBkg: 'rgba(232, 180, 184, 0.15)',
+        clusterBorder: '#d4a0a0'
+      }
+    });
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      const blocks = document.querySelectorAll('.language-mermaid');
+      blocks.forEach((block) => {
+        const parent = block.parentElement;
+        if (parent.tagName === 'PRE') {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          parent.replaceWith(mermaidDiv);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

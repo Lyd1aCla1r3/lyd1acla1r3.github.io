@@ -717,7 +717,7 @@ After this single training step, the 3-dimensional vector for `brown` has shifte
 
 <h1 id="chapter-6-convergent-geometry-and-linear-substructures">Chapter 6: Convergent Geometry and Linear Substructures</h1>
 
-<!-- SUMMARY: The cumulative effect of billions of microscopic gradient updates on the embedding matrix reveals how distributional statistics organically produce semantic geometry. The most striking emergent property—linear substructures where vector arithmetic captures semantic relationships—is demonstrated through concrete worked examples. -->
+<!-- SUMMARY: The cumulative effect of billions of microscopic gradient updates on the embedding matrix reveals how distributional statistics organically produce semantic geometry. The emergent property (linear substructures where vector arithmetic captures semantic relationships) is demonstrated through concrete worked examples. -->
 
 After a single training step, the vector for `brown` has shifted by a fraction of a decimal point. One gradient, computed from one sentence, adjusts three numbers by a microscopic amount. This operation repeats across every sentence in the training corpus; every token that participates in a forward pass has its embedding vector nudged by the resulting gradient. A corpus of billions of words means billions of gradient updates, each one a tiny push in the embedding space. This chapter traces the cumulative effect of those pushes—and the geometric structure that organically emerges from them.
 
@@ -903,7 +903,7 @@ None of these relationships were explicitly programmed. No loss function asked t
 
 <h1 id="chapter-7-the-embedding-tensor-and-the-limits-of-static-representations">Chapter 7: The Embedding Tensor and the Limits of Static Representations</h1>
 
-<!-- SUMMARY: The single-token lookup of previous chapters is generalized to full sequence processing, producing the embedding tensor for an entire input sequence. The fundamental limits of static embeddings—context-blindness and order-agnosticism—are identified, and the handoff to the Transformer architecture, whose positional encodings and self-attention mechanism resolve exactly these limitations, is established. -->
+<!-- SUMMARY: The single-token lookup of previous chapters is generalized to full sequence processing, producing the embedding tensor for an entire input sequence. The fundamental limits of static embeddings (context-blindness and order-agnosticism) are identified, and the handoff to the Transformer architecture, whose positional encodings and self-attention mechanism resolve exactly these limitations, is established. -->
 
 The previous chapter established the convergent geometry and linear substructures that emerge from gradient descent at scale. This chapter examines how these embeddings operate when processing full sequences rather than individual tokens.
 

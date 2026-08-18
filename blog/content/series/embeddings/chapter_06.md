@@ -1,6 +1,6 @@
 # Part 6: Convergent Geometry and Linear Substructures
 
-<!-- SUMMARY: The cumulative effect of billions of microscopic gradient updates on the embedding matrix reveals how distributional statistics organically produce semantic geometry. The most striking emergent property—linear substructures where vector arithmetic captures semantic relationships—is demonstrated through concrete worked examples. -->
+<!-- SUMMARY: The cumulative effect of billions of microscopic gradient updates on the embedding matrix reveals how distributional statistics organically produce semantic geometry. The emergent property (linear substructures where vector arithmetic captures semantic relationships) is demonstrated through concrete worked examples. -->
 
 <p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p>
 

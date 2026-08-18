@@ -152,59 +152,65 @@
 
   <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-2xl));">
     <div class="container blog-list">
-        <nav aria-label="breadcrumb" class="breadcrumbs"><ol><li><a href="../index.html">Home</a></li><li><a href="index.html#tab-series">Blog</a></li><li aria-current="page">Embeddings Series</li></ol></nav>
+        <nav aria-label="breadcrumb" class="breadcrumbs"><ol><li><a href="../index.html">Home</a></li><li><a href="index.html#tab-series">Blog</a></li><li aria-current="page">Positional encoding Series</li></ol></nav>
         <h1 class="hero__name" style="text-align: center; margin-bottom: var(--space-2xl);">Blog</h1>
         <!-- BLOG_LIST_START -->
 
           <div class="series-group" style="margin-top: var(--space-2xl);">
               <div class="series-items">
                   
-                  <a href="embeddings-preface.html">
+                  <a href="positional-encoding-preface.html">
                       <article class="blog-item series-item">
-                          <h2>Preface: The Gap Between Discrete and Continuous</h2>
-                          <p>The preceding Tokenization series terminates with a sequence of discrete integer IDs. The subsequent Transformer series begins with a dense, continuous embedding tensor. This series bridges that gap by deriving the complete mathematical mechanism (from one-hot encoding through gradient descent) by which a static embedding matrix transforms random vectors into a semantically structured geometric space.</p>
+                          <h2>Preface: The Gap Between Static Geometry and Sequential Structure</h2>
+                          <p>The preceding Embeddings series delivers an embedding tensor that encodes distributional meaning but discards word order entirely. This series bridges that gap by deriving two positional encoding mechanisms from first principles: the historical sinusoidal formula (Vaswani et al., 2017) and Rotary Position Embeddings (RoPE, Su et al., 2021), the mechanism deployed in every frontier language model.</p>
                       </article>
                   </a>
-                  <a href="embeddings-chapter_01.html">
+                  <a href="positional-encoding-chapter_01.html">
                       <article class="blog-item series-item">
-                          <h2>Part 1: One-Hot Encoding and the Embedding Matrix</h2>
-                          <p>Tokenization translates raw text into discrete integer identifiers, but neural networks require continuous representations to perform calculus. The embedding matrix solves this by projecting each discrete token into a high-dimensional vector space via one-hot encoding multiplication, acting as a simple, dense lookup table.</p>
+                          <h2>Part 1: The Permutation Invariance Problem</h2>
+                          <p>The embedding tensor from the preceding series encodes distributional meaning but is invariant under row permutations: reordering the input sequence rearranges the pairwise similarity matrix without changing any similarity score. This chapter formalizes the problem with permutation matrices and the full dot-product similarity computation, establishing the need for a mechanism that injects positional information.</p>
                       </article>
                   </a>
-                  <a href="embeddings-chapter_02.html">
+                  <a href="positional-encoding-chapter_02.html">
                       <article class="blog-item series-item">
-                          <h2>Part 2: The Continuous Vector Space</h2>
-                          <p>Projecting discrete tokens into a high-dimensional vector space provides the differentiable manifold required for gradient-based optimization. At initialization, these vectors are drawn from a random distribution, creating an isotropic expanse where all tokens are geometrically orthogonal and devoid of semantic relationships.</p>
+                          <h2>Part 2: Design Constraints and the Sinusoidal Formula</h2>
+                          <p>Five mathematical constraints define the requirements for a positional encoding: uniqueness, boundedness, determinism, smoothness, and relative representability. The sinusoidal formula from Vaswani et al. (2017) satisfies all five. This chapter derives the formula, computes every entry of the positional encoding matrix for the toy model, and verifies each constraint against the computed values.</p>
                       </article>
                   </a>
-                  <a href="embeddings-chapter_03.html">
+                  <a href="positional-encoding-chapter_03.html">
                       <article class="blog-item series-item">
-                          <h2>Part 3: The Forward Pass, Softmax, and Cross-Entropy Loss</h2>
-                          <p>Understanding how vector embeddings are learned requires examining the shallow neural network designed to train them. A step-by-step concrete mathematical example demonstrates how a two-layer architecture extracts a dense vector, projects it into raw logits, and uses Softmax and Cross-Entropy Loss to quantify the network's error against the ground truth. The fundamental limitations of static embeddings are also explored, setting the stage for Transformers.</p>
+                          <h2>Part 3: Element-Wise Addition and the Positionally-Enriched Tensor</h2>
+                          <p>The positional encoding matrix is added element-wise to the embedding tensor, producing a positionally-enriched tensor whose similarity matrix differs from the original. Permutation invariance is broken: reversing the input sequence and reapplying position-appropriate encodings yields a different set of pairwise similarities. This chapter computes the enriched tensor, verifies the symmetry-breaking property, and identifies the structural limitations of additive positional encoding that motivate the transition to rotary embeddings.</p>
                       </article>
                   </a>
-                  <a href="embeddings-chapter_04.html">
+                  <a href="positional-encoding-chapter_04.html">
                       <article class="blog-item series-item">
-                          <h2>Part 4: Backpropagation Through Loss and Softmax</h2>
-                          <p>With the loss computed, the gradient signal is traced backwards through the loss and Softmax layer. Each partial derivative is derived from first principles, revealing how the coupled Softmax-Cross-Entropy pipeline collapses into the unified "predicted minus truth" gradient expression.</p>
+                          <h2>Part 4: The Query-Key Framework and the Relative Position Requirement</h2>
+                          <p>The attention mechanism computes relevance scores between token positions using learned query and key projections. This chapter introduces the minimal query-key framework, computes the relevance score matrix for the toy model, and demonstrates that the scores are invariant under input permutations. The relative position requirement is stated formally, additive sinusoidal encoding is shown to violate it structurally, and Rotary Position Embeddings are previewed as the mechanism that satisfies it by construction.</p>
                       </article>
                   </a>
-                  <a href="embeddings-chapter_05.html">
+                  <a href="positional-encoding-chapter_05.html">
                       <article class="blog-item series-item">
-                          <h2>Part 5: Backpropagation Through the Weight Matrices</h2>
-                          <p>The backward pass continues through the un-embedding and embedding matrices. By deriving the element-wise gradients for both $W_U$ and $W_E$, and demonstrating how the one-hot sparsity of the input ensures only a single embedding row receives an update, the full end-to-end gradient is computed and the weight update rule is applied.</p>
+                          <h2>Part 5: Rotary Position Embeddings: Deriving the Rotation Matrix</h2>
+                          <p>Rotary Position Embeddings (RoPE) encode position by rotating query and key vectors rather than adding to embeddings. This chapter derives the rotation matrix from complex number multiplication, shows how individual dimension-pair rotations combine into a block-diagonal matrix, handles the odd-dimension edge case for the toy model, and computes the angular frequency that will drive the rotations in the next chapter.</p>
                       </article>
                   </a>
-                  <a href="embeddings-chapter_06.html">
+                  <a href="positional-encoding-chapter_06.html">
                       <article class="blog-item series-item">
-                          <h2>Part 6: Convergent Geometry and Linear Substructures</h2>
-                          <p>The cumulative effect of billions of microscopic gradient updates on the embedding matrix reveals how distributional statistics organically produce semantic geometry. The emergent property (linear substructures where vector arithmetic captures semantic relationships) is demonstrated through concrete worked examples.</p>
+                          <h2>Part 6: Rotary Position Embeddings: Computing the Rotated Vectors</h2>
+                          <p>The rotation matrix derived in the preceding chapter is evaluated at every position in the toy sequence. Each 3×3 matrix is computed from cos(t) and sin(t), producing four distinct rotation matrices R_0 through R_3. These matrices are applied to every query and key vector from Chapter 4, producing the rotated vectors that the Transformer's attention mechanism will consume. The orthogonality of the rotation matrices guarantees that vector norms are preserved.</p>
                       </article>
                   </a>
-                  <a href="embeddings-chapter_07.html">
+                  <a href="positional-encoding-chapter_07.html">
                       <article class="blog-item series-item">
-                          <h2>Part 7: The Embedding Tensor and the Limits of Static Representations</h2>
-                          <p>The single-token lookup of previous chapters is generalized to full sequence processing, producing the embedding tensor for an entire input sequence. The fundamental limits of static embeddings (context-blindness and order-agnosticism) are identified, and the handoff to the Transformer architecture, whose positional encodings and self-attention mechanism resolve exactly these limitations, is established.</p>
+                          <h2>Part 7: The Relative-Distance Property of RoPE</h2>
+                          <p>The central property of Rotary Position Embeddings is proved from first principles: the dot product of rotated query and key vectors depends only on content and relative position offset. The rotation composition identity is derived via the angle-addition identities for sine and cosine, verified numerically with the toy model, and the full post-RoPE relevance score matrix is computed and compared with the pre-RoPE baseline.</p>
+                      </article>
+                  </a>
+                  <a href="positional-encoding-chapter_08.html">
+                      <article class="blog-item series-item">
+                          <h2>Part 8: The Modern Landscape and Frontier Extensions</h2>
+                          <p>A conceptual survey of positional encoding mechanisms beyond sinusoidal absolute PE and RoPE. Each mechanism is motivated by the shortcoming of its predecessor: learned absolute embeddings trade structural guarantees for expressive flexibility but impose a hard sequence-length ceiling, relative position biases move position information into the attention computation but require learned parameters, ALiBi achieves zero-parameter simplicity but assumes a rigid linear decay, iRoPE selectively removes positional encoding from layers that do not need it, and frequency-scaling extensions address RoPE's length extrapolation problem. The series closes by connecting the positionally-enriched tensor to the Transformer attention mechanism.</p>
                       </article>
                   </a>
               </div>
