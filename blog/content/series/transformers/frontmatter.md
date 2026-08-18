@@ -25,7 +25,7 @@
 <li style='margin-bottom: 8px;'><a href='#chapter-1-tokens-one-hot-encodings-and-the-embedding-matrix' style='color: var(--primary-color); text-decoration: none;'>Chapter 1: Tokens, One-Hot Encodings, and the Embedding Matrix</a></li>
 <li style='margin-bottom: 8px;'><a href='#chapter-2-the-permutation-invariance-problem--positional-encoding' style='color: var(--primary-color); text-decoration: none;'>Chapter 2: The Permutation Invariance Problem & Positional Encoding</a></li>
 <li style='margin-bottom: 8px;'><a href='#chapter-3-the-motivation-for-q-k-and-v-asymmetric-similarity' style='color: var(--primary-color); text-decoration: none;'>Chapter 3: The Motivation for Q, K, and V (Asymmetric Similarity)</a></li>
-<li style='margin-bottom: 8px;'><a href='#chapter-4-the-attention-score-and-$\sqrt{d_k}$' style='color: var(--primary-color); text-decoration: none;'>Chapter 4: The Attention Score and $\sqrt{d_k}$</a></li>
+<li style='margin-bottom: 8px;'><a href='#chapter-4-the-attention-score-and-√d_k' style='color: var(--primary-color); text-decoration: none;'>Chapter 4: The Attention Score and √d_k</a></li>
 <li style='margin-bottom: 8px;'><a href='#chapter-5-causal-masking' style='color: var(--primary-color); text-decoration: none;'>Chapter 5: Causal Masking</a></li>
 <li style='margin-bottom: 8px;'><a href='#chapter-6-from-scores-to-synthesis-softmax-and-the-value-matrix' style='color: var(--primary-color); text-decoration: none;'>Chapter 6: From Scores to Synthesis: Softmax and The Value Matrix</a></li>
 <li style='margin-bottom: 8px;'><a href='#chapter-7-the-projection-matrix-and-the-cross-head-mixer' style='color: var(--primary-color); text-decoration: none;'>Chapter 7: The Projection Matrix and The Cross-Head Mixer</a></li>

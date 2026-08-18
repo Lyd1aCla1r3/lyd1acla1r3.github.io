@@ -1,4 +1,4 @@
-# Part 4: The Attention Score and $\sqrt{d_k}$
+# Part 4: The Attention Score and √d_k
 
 
 <style>

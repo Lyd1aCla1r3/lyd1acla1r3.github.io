@@ -227,7 +227,7 @@ if (posts.length > 0) {
        seriesHtml = '<p style="text-align: center; color: var(--text-muted); font-style: italic;">No series available yet.</p>';
     } else {
        for (const [sName, sPosts] of Object.entries(seriesGroups)) {
-          const seriesTitle = sName.charAt(0).toUpperCase() + sName.slice(1).replace(/-/g, ' ');
+          const seriesTitle = sName.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
           
           let seriesDesc = `A sequential exploration of ${seriesTitle}.`;
           if (sName === 'transformers') {

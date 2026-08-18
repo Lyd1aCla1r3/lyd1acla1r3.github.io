@@ -82,7 +82,7 @@ for filename in files:
         title = title_match.group(1)
         anchor = title.lower().replace(' ', '-').replace(':', '').replace('&', '').replace('(', '').replace(')', '').replace(',', '').replace('.', '')
         toc += f"<li style='margin-bottom: 8px;'><a href='#{anchor}' style='color: var(--primary-color); text-decoration: none;'>{title}</a></li>\n"
-        content = re.sub(r'^#\s+(.+)$', lambda m: f'<h1 id="{anchor}">{title}</h1>', content, count=1, flags=re.MULTILINE)
+        content = re.sub(r'^#\s+(.+)$', lambda m: f'<a id="{anchor}"></a>\n# {title}', content, count=1, flags=re.MULTILINE)
         
     # Colon-context sticking (prevent page breaks between intro text and math/code)
     content = re.sub(r'(:)\n+(\s*```)', r'\1\n<div style="page-break-after: avoid;"></div>\n\n\2', content)
