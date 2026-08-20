@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lydia Pedersen × Tempo</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="css/styles.css?v=1.1">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .machinify-page {
+      padding-top: 100px;
+      padding-bottom: 60px;
+    }
+    
+    .machinify-panel {
+      margin-bottom: 3.5rem;
+    }
+
+    .machinify-section-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .machinify-section-header .section-title {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      margin-bottom: 0.5rem;
+    }
+
+    .machinify-section-header .hello-header {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+    }
+
+    .machinify-section {
+      margin-bottom: 0;
+    }
+
+    .contact-row {
+      display: flex;
+      gap: 2.5rem;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: var(--fs-lg);
+      font-weight: var(--fw-semibold);
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .contact-row a, .contact-row span {
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+      border-bottom: none !important;
+    }
+
+    .contact-row a:hover {
+      opacity: 0.7;
+    }
+
+    .machinify-narrative {
+      max-width: 900px;
+      margin: 0; 
+    }
+
+    .machinify-narrative p {
+      font-size: var(--fs-md);
+      color: var(--text-secondary);
+      line-height: var(--lh-relaxed);
+      margin-bottom: var(--space-lg);
+    }
+
+    .machinify-narrative p strong {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+    
+    .machinify-narrative a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s ease;
+      border-bottom: 1px solid transparent;
+    }
+    
+    .machinify-narrative a:hover {
+      border-bottom: 1px solid var(--accent);
+    }
+
+    .machinify-narrative a.metallic-text {
+      font-weight: 700;
+      border-bottom: none !important;
+    }
+    
+    .machinify-narrative a.metallic-text:hover {
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
+  <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="index.html" class="nav__logo" aria-label="Home">lydia<span>.</span>pedersen</a>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="index.html" class="nav__link">Back to Portfolio &rarr;</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main id="main-content" class="machinify-page">
+    
+    <!-- Intro -->
+    <section class="machinify-panel" id="intro">
+      <div class="container">
+        <div class="machinify-section-header fade-in">
+          <h2 class="section-title hello-header">Hello Tempo.</h2>
+        </div>
+        <div class="machinify-section">
+          <div class="machinify-narrative fade-in">
+            <p>
+              I built this page specifically for the Tempo AI Ops team. My <a href="index.html" class="metallic-text">general portfolio</a> covers my broader career, but the most relevant work for your AI Builder role lives in my <a href="index.html#case-studies" class="metallic-text">production AI pipelines</a> and my technical blog series on <a href="blog/series-transformers.html" class="metallic-text">Transformer architecture</a>, <a href="blog/series-tokenization.html" class="metallic-text">tokenization</a>, <a href="blog/series-embeddings.html" class="metallic-text">vector embeddings</a>, and <a href="blog/series-positional-encoding.html" class="metallic-text">positional encoding</a>.
+            </p>
+            <p>
+              The gap between a working AI prototype and a system that an operations lead or a finance manager actually trusts enough to change how they work is almost entirely a people problem. I have spent three years on both sides of that gap, building production AI pipelines and staying with them until the teams they served genuinely relied on them. That AI Ops sits across the entire company matches how I already think about the work, and I would welcome the chance to discuss how that approach fits what your team is building.
+            </p>
+            <div class="contact-row">
+              <a href="mailto:lydiaclaire.x@gmail.com" class="metallic-text">lydiaclaire.x@gmail.com</a>
+              <span class="metallic-text">949-466-2819</span>
+              <a href="https://lyd1acla1r3.github.io" class="metallic-text">lyd1acla1r3.github.io</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Adoption -->
+    <section class="machinify-panel" id="adoption">
+      <div class="container">
+        <div class="machinify-section-header fade-in">
+          <h2 class="section-title">Adoption is the actual deliverable.</h2>
+        </div>
+        <div class="machinify-section">
+          <div class="machinify-narrative fade-in">
+            <p>
+              The four pipelines I built were never isolated engineering projects. Each one started because I sat with a team, mapped how their process actually worked, and identified where manual, repetitive decisions were creating friction that no one had time to fix. The automation I designed respected the real complexity of those workflows rather than flattening them into something a general-purpose tool could handle. That meant deciding carefully what to automate, what to assist, and what to leave with a person, because getting that boundary wrong is how you build something technically sound that nobody uses.
+            </p>
+            <p>
+              I built reference architectures so process owners could extend workflows on their own. I integrated automated systems into business review cycles so the people closest to the work had a direct hand in shaping how the automation evolved. I coached cross-functional partners through what AI could and could not do, because honest expectation-setting builds more trust than a polished demo ever will. The systems that stuck were the ones people helped shape, not the ones handed to them fully formed.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Governance -->
+    <section class="machinify-panel" id="governance">
+      <div class="container">
+        <div class="machinify-section-header fade-in">
+          <h2 class="section-title">Governance belongs in the first sketch.</h2>
+        </div>
+        <div class="machinify-section">
+          <div class="machinify-narrative fade-in">
+            <p>
+              Retrofitting governance is how projects stall. Privacy boundaries, audit trails, human approval gates, and clear escalation paths are not features I add once a prototype earns confidence; they are the architectural commitments that allow a prototype to earn confidence in the first place. When a system touches real operational data, the people relying on it need to understand not just what it did but why, and they need to know it will stop rather than guess when it encounters something it was not designed to handle.
+            </p>
+            <p>
+              Fifteen years of hardware compliance testing taught me to treat that discipline as a certification requirement, not an aspiration, and it still shapes every system I architect.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Shared Infrastructure -->
+    <section class="machinify-panel" id="infrastructure">
+      <div class="container">
+        <div class="machinify-section-header fade-in">
+          <h2 class="section-title">One agent is a project. Shared infrastructure is a practice.</h2>
+        </div>
+        <div class="machinify-section">
+          <div class="machinify-narrative fade-in">
+            <p>
+              I have built reusable patterns, retrieval layers, and evaluation standards specifically so that each new automation does not start from scratch, and so that consistency and security scale alongside the number of agents a team ships. I live inside agentic coding tools like Claude Code to move quickly, and I have wired together systems that were never designed to communicate, connecting engineering workflows to task tracking, analytics to reporting, and content changes to downstream automation.
+            </p>
+            <p>
+              The instinct for making careful infrastructure decisions that hold up over time comes from years of evaluating competing designs against long-term reliability requirements, and it translates directly into how I choose between vendors, retrieval strategies, and architectural patterns now.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
