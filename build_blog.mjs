@@ -256,7 +256,7 @@ if (posts.length > 0) {
           );
           seriesPageHtml = seriesPageHtml.replace(
               /<h1 class="hero__name" style="text-align: center; margin-bottom: var\(--space-2xl\);">Blog<\/h1>/,
-              `<h1 class="hero__name" style="text-align: center; margin-bottom: 0;">Blog</h1>\n          <h2 class="metallic-text" style="text-align: center; font-size: clamp(2rem, 4vw, 2.5rem); margin-top: 10px; margin-bottom: var(--space-md); font-family: var(--font-display);">${seriesTitle} Series</h2>\n          <p style="text-align: center; max-width: 800px; margin: 0 auto var(--space-2xl) auto; color: var(--text-secondary); font-size: 1.1rem; line-height: 1.6;">${seriesDesc}</p>`
+              `<h1 class="hero__name" style="text-align: center; margin-bottom: 0;">Blog</h1>\n          <h2 class="metallic-text" style="text-align: center; font-size: clamp(2rem, 4vw, 2.5rem); margin-top: 10px; margin-bottom: var(--space-2xl); font-family: var(--font-display);">${seriesTitle} Series</h2>`
           );
           
           const dedicatedSeriesContent = `
