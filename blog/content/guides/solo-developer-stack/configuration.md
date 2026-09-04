@@ -25,7 +25,7 @@ graph TD
     CC --> ChromaDB
 ```
 
-The architecture has two distinct halves. The upper half handles interactive development: a developer works through Claude Code in the terminal, which connects to MCP servers for structured access to the filesystem, Git history, and web content. When a task benefits from a local model, Claude Code routes the request to Ollama running on the same machine. The lower half handles knowledge retrieval: Docling parses project documentation into clean text, ChromaDB stores the resulting embeddings, and Claude Code queries ChromaDB to retrieve relevant context during coding sessions.
+The architecture divides into two functional paths. The interactive development path centers on a developer working through Claude Code in the terminal, which connects to MCP servers for structured access to the filesystem, Git history, and web content. When a task benefits from a local model, Claude Code routes the request to Ollama running on the same machine. The knowledge retrieval path handles documentation: Docling parses project documentation into clean text, ChromaDB stores the resulting embeddings, and Claude Code queries ChromaDB to retrieve relevant context during coding sessions.
 
 The absence of several ecosystem layers is deliberate. There is no gateway because a single developer interacting with one commercial provider and one local model does not need traffic routing, failover, or multi-tenant cost tracking. There is no orchestrator because the coding agent handles task decomposition internally rather than coordinating multiple specialized agents. There is no dedicated observability platform because manual inspection of agent outputs is sufficient at solo scale.
 

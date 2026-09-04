@@ -416,11 +416,11 @@ vllm serve /path/to/fine-tuned-airgapped \
 Add the fine-tuned model to the LiteLLM configuration:
 
 ```yaml
-  - model_name: llama-8b-finetuned
-    litellm_params:
-      model: openai/llama-8b-finetuned
-      api_base: http://vllm-server:8002/v1
-      api_key: token-not-used
+- model_name: llama-8b-finetuned
+  litellm_params:
+    model: openai/llama-8b-finetuned
+    api_base: http://vllm-server:8002/v1
+    api_key: token-not-used
 ```
 
 **Verification**:

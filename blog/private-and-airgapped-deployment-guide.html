@@ -409,11 +409,11 @@ print(f&quot;Fine-tuned model saved to {OUTPUT_DIR}&quot;)
   --served-model-name llama-8b-finetuned
 </code></pre>
 <p>Add the fine-tuned model to the LiteLLM configuration:</p>
-<pre><code class="language-yaml">  - model_name: llama-8b-finetuned
-    litellm_params:
-      model: openai/llama-8b-finetuned
-      api_base: http://vllm-server:8002/v1
-      api_key: token-not-used
+<pre><code class="language-yaml">- model_name: llama-8b-finetuned
+  litellm_params:
+    model: openai/llama-8b-finetuned
+    api_base: http://vllm-server:8002/v1
+    api_key: token-not-used
 </code></pre>
 <p><strong>Verification</strong>:</p>
 <pre><code class="language-python">import unsloth
