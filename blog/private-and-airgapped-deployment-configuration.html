@@ -115,10 +115,10 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: AI Tooling</a></li><li aria-current="page">Private and Airgapped Deployment</li></ol></nav>
-        <article class="blog-post series-ai-tooling">
+    <li><a href="index.html">Blog</a></li><li><a href="guide-private-and-airgapped-deployment.html">Guides: Private And Airgapped Deployment</a></li><li aria-current="page">Private and Airgapped Deployment</li></ol></nav>
+        <article class="blog-post ">
 <h1>Private and Airgapped Deployment</h1>
-<!-- SUMMARY: A complete configuration walkthrough assembling LlamaIndex, LangGraph, MCP servers, LiteLLM, vLLM, SGLang, Qdrant, Docling, Arize Phoenix, and Unsloth into a self-contained AI system that operates entirely within a network perimeter with zero external connectivity. The architecture replaces every commercial API dependency from the enterprise pipeline with self-hosted alternatives, addresses offline model acquisition, and closes the fine-tuning loop entirely on-premises. --><p>The previous post assembled an enterprise pipeline that routes traffic through LiteLLM to both commercial APIs and self-hosted vLLM endpoints, with Langfuse capturing traces across all layers and Weaviate providing multi-tenant vector storage. That configuration assumes reliable internet connectivity for commercial model access, cloud-hosted embedding APIs, and dependency downloads during deployment. Organizations operating in regulated environments, including government, defense, healthcare, and financial services, face a constraint that invalidates this assumption: no data leaves the network perimeter, and no external service receives inbound connections. Every component in the stack must run on-premises, every model must be acquired and transferred offline, and the system must operate indefinitely without internet access.</p>
+<!-- SUMMARY: A complete configuration walkthrough assembling LlamaIndex, LangGraph, MCP servers, LiteLLM, vLLM, SGLang, Qdrant, Docling, Arize Phoenix, and Unsloth into a self-contained AI system that operates entirely within a network perimeter with zero external connectivity. The architecture replaces every commercial API dependency from the enterprise pipeline with self-hosted alternatives, addresses offline model acquisition, and closes the fine-tuning loop entirely on-premises. --><p>Enterprise AI pipelines that route traffic through commercial APIs and cloud-hosted services assume reliable internet connectivity for model access, embedding APIs, and dependency downloads during deployment. Organizations operating in regulated environments, including government, defense, healthcare, and financial services, face a constraint that invalidates this assumption: no data leaves the network perimeter, and no external service receives inbound connections. Every component in the stack must run on-premises, every model must be acquired and transferred offline, and the system must operate indefinitely without internet access.</p>
 <h2>The Problem</h2>
 <p>An organization operating in a regulated or classified environment must deploy AI capabilities entirely within an isolated network. The requirements span the same nine ecosystem layers as the enterprise pipeline, but with an additional constraint at every layer: zero external connectivity.</p>
 <p>The system must coordinate multi-step workflows through an orchestrator with persistent state, because classified analysis tasks involve long-running pipelines that span hours or days and must survive component restarts. A framework must provide retrieval-augmented generation over internal document collections, because the organization&#39;s primary use case is answering questions from classified or proprietary knowledge bases. Model inference must run on local GPU hardware, with the gateway routing between multiple internal model deployments rather than between internal and commercial endpoints. The vector database must deploy as a self-contained binary or container with no cloud dependencies. Document parsing must run locally without sending any content to external services. Observability must trace every interaction for audit compliance, with the tracing platform itself running on internal infrastructure. Fine-tuning must operate entirely on-premises, using locally stored training data to produce specialized models that deploy to the local serving infrastructure.</p>
@@ -207,7 +207,7 @@
 <li><strong>Observability</strong>: Langfuse can replace Arize Phoenix if the organization prioritizes production trace capture and cost attribution over embedding diagnostics. Both run self-hosted; the choice depends on which diagnostic capabilities match the deployment&#39;s primary needs.</li>
 <li><strong>Fine-Tuning</strong>: HF TRL can replace Unsloth if GPU memory is not a constraint and the team prefers the broader Hugging Face training ecosystem. Axolotl can replace Unsloth if YAML-driven training configuration is preferred over Python scripts.</li>
 </ul>
-<p>This configuration demonstrates that the complete AI application stack, from document ingestion through agent orchestration to fine-tuned model deployment, operates within a sealed network perimeter. The companion setup guide provides step-by-step installation and wiring instructions for each component, including the air-gap transfer procedures for pre-staging models and dependencies. The next post shifts from deployment topology to application architecture, assembling a RAG-first knowledge system optimized for retrieval quality over model sophistication.</p>
+<p>This configuration demonstrates that the complete AI application stack, from document ingestion through agent orchestration to fine-tuned model deployment, operates within a sealed network perimeter. The companion setup guide provides step-by-step installation and wiring instructions for each component, including the air-gap transfer procedures for pre-staging models and dependencies.</p>
 <h2>References</h2>
 <ol>
 <li>LlamaIndex Documentation, LlamaIndex Inc.</li>
@@ -222,14 +222,10 @@
 <li>Unsloth Documentation, Unsloth AI.</li>
 </ol>
 
-<div class="blog-pagination">
-      <a href="ai-tooling-chapter_08.html" class="pagination-link prev">
-        <span class="pagination-label">Previous</span>
-        <span class="pagination-title">Enterprise Agentic Pipeline</span>
-      </a>
-      <a href="ai-tooling-chapter_10.html" class="pagination-link next">
+<div class="blog-pagination"><div style="flex: 1;"></div>
+      <a href="private-and-airgapped-deployment-guide.html" class="pagination-link next">
         <span class="pagination-label">Next</span>
-        <span class="pagination-title">RAG-First Knowledge System</span>
+        <span class="pagination-title">Private and Airgapped Deployment: Setup Guide</span>
       </a></div>
         </article>
     </div>

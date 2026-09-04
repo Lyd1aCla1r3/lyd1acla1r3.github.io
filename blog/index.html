@@ -71,7 +71,8 @@
 
     #tab-perspectives:checked ~ #content-perspectives,
     #tab-series:checked ~ #content-series,
-    #tab-methodology:checked ~ #content-methodology {
+    #tab-methodology:checked ~ #content-methodology,
+    #tab-guides:checked ~ #content-guides {
         display: block;
     }
 
@@ -171,6 +172,9 @@
             <input type="radio" id="tab-methodology" name="blog-tabs">
             <label for="tab-methodology" class="tab-label">Validation & Benchmarks</label>
             
+            <input type="radio" id="tab-guides" name="blog-tabs">
+            <label for="tab-guides" class="tab-label">Guides</label>
+            
             <div class="tab-content" id="content-perspectives">
                 <p class="tab-desc">Observations on the evolving landscape of technical enablement, exploring how architectural shifts and emerging tools influence the craft of documentation.</p>
                 
@@ -218,7 +222,7 @@
           <a href="series-ai-tooling.html">
               <article class="blog-item series-item" style="margin-bottom: var(--space-md);">
                   <h2>AI Tooling Series</h2>
-                  <p>A structural mapping of the agentic AI ecosystem, categorizing infrastructure components, comparing orchestration frameworks, and providing reproducible configuration guides for deploying specialized environments. <strong>(17 chapters)</strong></p>
+                  <p>A structural mapping of the agentic AI ecosystem. This series categorizes infrastructure components from model routers and vector databases through orchestration frameworks and evaluation platforms, tracing how each layer connects to the coding agents that drive AI-augmented development workflows. <strong>(7 chapters)</strong></p>
               </article>
           </a>
             </div>
@@ -232,6 +236,41 @@
                 <p>This benchmark evaluates the parsing fidelity and extraction richness of major SERP APIs against the non-deterministic architecture of Google's AI Overviews. By mathematically auditing detection yields and structural data integrity, it rigorously determines which providers are capable of powering enterprise retrieval-augmented generation pipelines.</p>
             </article>
         </a>
+            </div>
+            
+            <div class="tab-content" id="content-guides">
+                <p class="tab-desc">Reproducible architecture walkthroughs pairing a configuration rationale post with a step-by-step setup guide. Each guide assembles a complete, working AI system from the tools surveyed in the AI Tooling series.</p>
+                
+          <a href="guide-solo-developer-stack.html">
+              <article class="blog-item series-item" style="margin-bottom: var(--space-md);">
+                  <h2>Solo Developer Stack</h2>
+                  <p>A complete configuration walkthrough assembling Claude Code, MCP servers, Ollama, ChromaDB, and Docling into a local-first AI development environment for a single developer. The architecture eliminates cloud infrastructure dependencies for supplementary tooling while providing agentic coding assistance, local model inference, and a lightweight retrieval-augmented generation pipeline. <strong>(2 articles)</strong></p>
+              </article>
+          </a>
+          <a href="guide-enterprise-agentic-pipeline.html">
+              <article class="blog-item series-item" style="margin-bottom: var(--space-md);">
+                  <h2>Enterprise Agentic Pipeline</h2>
+                  <p>A complete configuration walkthrough assembling LangChain, LangGraph, MCP servers, LiteLLM, Weaviate, Unstructured, Langfuse, vLLM, and HF TRL into a governed multi-agent system for enterprise engineering organizations. The architecture introduces orchestrated agent coordination, gateway-enforced cost and compliance controls, production observability, and a closed-loop fine-tuning pipeline that the solo developer configuration intentionally omitted. <strong>(2 articles)</strong></p>
+              </article>
+          </a>
+          <a href="guide-private-and-airgapped-deployment.html">
+              <article class="blog-item series-item" style="margin-bottom: var(--space-md);">
+                  <h2>Private and Airgapped Deployment</h2>
+                  <p>A complete configuration walkthrough assembling LlamaIndex, LangGraph, MCP servers, LiteLLM, vLLM, SGLang, Qdrant, Docling, Arize Phoenix, and Unsloth into a self-contained AI system that operates entirely within a network perimeter with zero external connectivity. The architecture replaces every commercial API dependency from the enterprise pipeline with self-hosted alternatives, addresses offline model acquisition, and closes the fine-tuning loop entirely on-premises. <strong>(2 articles)</strong></p>
+              </article>
+          </a>
+          <a href="guide-rag-first-knowledge-system.html">
+              <article class="blog-item series-item" style="margin-bottom: var(--space-md);">
+                  <h2>RAG First Knowledge System</h2>
+                  <p>A complete configuration walkthrough assembling LlamaIndex, MCP servers, LiteLLM, Pinecone, LlamaParse, Firecrawl, and Braintrust into a retrieval-augmented generation system optimized for answer quality over a large, continuously evolving document corpus. The architecture prioritizes ingestion pipeline design, chunking strategy selection, and retrieval evaluation rather than model serving infrastructure, reflecting the principle that retrieval quality dominates answer quality in knowledge-heavy applications. <strong>(2 articles)</strong></p>
+              </article>
+          </a>
+          <a href="guide-evaluation-driven-development-loop.html">
+              <article class="blog-item series-item" style="margin-bottom: var(--space-md);">
+                  <h2>Evaluation Driven Development Loop</h2>
+                  <p>A complete configuration walkthrough assembling LangChain or LlamaIndex, Langfuse, Braintrust, Unsloth, vLLM, and LiteLLM into a continuous improvement cycle that captures production traces, curates evaluation datasets, scores output quality across experiments, fine-tunes specialized models from high-quality examples, deploys fine-tuned checkpoints alongside base models, and routes traffic between variants for data-driven comparison. The architecture treats systematic quality measurement as the primary engineering discipline rather than an afterthought applied to a finished system. <strong>(2 articles)</strong></p>
+              </article>
+          </a>
             </div>
         </div>
         <!-- BLOG_LIST_END -->

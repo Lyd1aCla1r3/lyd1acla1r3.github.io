@@ -115,10 +115,10 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: AI Tooling</a></li><li aria-current="page">RAG-First Knowledge System</li></ol></nav>
-        <article class="blog-post series-ai-tooling">
+    <li><a href="index.html">Blog</a></li><li><a href="guide-rag-first-knowledge-system.html">Guides: RAG First Knowledge System</a></li><li aria-current="page">RAG-First Knowledge System</li></ol></nav>
+        <article class="blog-post ">
 <h1>RAG-First Knowledge System</h1>
-<!-- SUMMARY: A complete configuration walkthrough assembling LlamaIndex, MCP servers, LiteLLM, Pinecone, LlamaParse, Firecrawl, and Braintrust into a retrieval-augmented generation system optimized for answer quality over a large, continuously evolving document corpus. The architecture prioritizes ingestion pipeline design, chunking strategy selection, and retrieval evaluation rather than model serving infrastructure, reflecting the principle that retrieval quality dominates answer quality in knowledge-heavy applications. --><p>The previous post assembled an airgapped deployment where every component runs within a sealed network perimeter, with vLLM and SGLang serving open-weight models on local GPU hardware, Qdrant storing vectors in a single-binary deployment, and Docling parsing documents without any external connectivity. That configuration optimizes for infrastructure constraints: the primary engineering challenge is making the stack function in isolation. This post addresses a different bottleneck. When an organization&#39;s primary objective is answering natural-language questions from a large, heterogeneous knowledge base, the quality of retrieved context determines the quality of generated answers far more than model selection does. A state-of-the-art language model producing a response from irrelevant or poorly chunked context will generate confident, well-structured nonsense. A competent model producing a response from precisely retrieved, well-structured context will generate accurate, grounded answers. This configuration optimizes the entire pipeline for retrieval quality.</p>
+<!-- SUMMARY: A complete configuration walkthrough assembling LlamaIndex, MCP servers, LiteLLM, Pinecone, LlamaParse, Firecrawl, and Braintrust into a retrieval-augmented generation system optimized for answer quality over a large, continuously evolving document corpus. The architecture prioritizes ingestion pipeline design, chunking strategy selection, and retrieval evaluation rather than model serving infrastructure, reflecting the principle that retrieval quality dominates answer quality in knowledge-heavy applications. --><p>When an organization&#39;s primary objective is answering natural-language questions from a large, heterogeneous knowledge base, the quality of retrieved context determines the quality of generated answers far more than model selection does. A state-of-the-art language model producing a response from irrelevant or poorly chunked context will generate confident, well-structured nonsense. A competent model producing a response from precisely retrieved, well-structured context will generate accurate, grounded answers. This configuration optimizes the entire pipeline for retrieval quality.</p>
 <h2>The Problem</h2>
 <p>An organization maintains a knowledge base spanning thousands of documents across multiple formats: technical PDFs with complex tables and figures, internal wikis with hyperlinked content, web-hosted documentation that updates continuously, and structured reports with nested sections. Knowledge workers need to ask natural-language questions and receive accurate, cited answers drawn from this corpus.</p>
 <p>The system must handle two distinct document acquisition patterns. Static documents, including PDFs, Word files, and archived reports, arrive in batches and require format-aware parsing that preserves table structures, figure captions, and section hierarchies. Live web content, including documentation sites, knowledge bases, and internal wikis, changes continuously and requires periodic crawling to keep the index current. A single parser cannot handle both patterns: PDF parsing requires layout analysis and OCR capabilities, while web crawling requires JavaScript rendering, link traversal, and rate limiting.</p>
@@ -198,7 +198,7 @@
 <li><strong>Observability</strong>: Langfuse can replace Braintrust if the primary need is production trace capture rather than retrieval evaluation scoring. Arize Phoenix can replace Braintrust if embedding drift detection and cluster visualization are the primary diagnostic needs.</li>
 <li><strong>Gateway</strong>: Portkey can replace LiteLLM if the organization needs built-in semantic caching to reduce embedding costs on repeated or similar queries. The tradeoff is a smaller self-hosting footprint in exchange for additional managed-service dependency.</li>
 </ul>
-<p>This configuration demonstrates that the highest-leverage optimization in a knowledge-heavy application is not model selection or prompt engineering, but the ingestion-chunking-embedding pipeline that determines what context the model receives. The companion setup guide provides step-by-step installation and wiring instructions for each component in this configuration. The next post shifts from retrieval optimization to systematic quality measurement, assembling an evaluation-driven development loop that applies structured scoring and experiment tracking to any AI application.</p>
+<p>This configuration demonstrates that the highest-leverage optimization in a knowledge-heavy application is not model selection or prompt engineering, but the ingestion-chunking-embedding pipeline that determines what context the model receives. The companion setup guide provides step-by-step installation and wiring instructions for each component in this configuration.</p>
 <h2>References</h2>
 <ol>
 <li>LlamaIndex Documentation, LlamaIndex Inc.</li>
@@ -210,14 +210,10 @@
 <li>Braintrust Documentation, Braintrust Data Inc.</li>
 </ol>
 
-<div class="blog-pagination">
-      <a href="ai-tooling-chapter_09.html" class="pagination-link prev">
-        <span class="pagination-label">Previous</span>
-        <span class="pagination-title">Private and Airgapped Deployment</span>
-      </a>
-      <a href="ai-tooling-chapter_11.html" class="pagination-link next">
+<div class="blog-pagination"><div style="flex: 1;"></div>
+      <a href="rag-first-knowledge-system-guide.html" class="pagination-link next">
         <span class="pagination-label">Next</span>
-        <span class="pagination-title">Evaluation-Driven Development Loop</span>
+        <span class="pagination-title">RAG-First Knowledge System: Setup Guide</span>
       </a></div>
         </article>
     </div>

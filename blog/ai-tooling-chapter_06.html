@@ -298,7 +298,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <p><strong>Observability tools</strong> trace orchestrator workflows. When a LangGraph graph or CrewAI crew executes, callback handlers and OpenTelemetry dispatchers export traces to Langfuse, Arize Phoenix, or W&amp;B Weave. These traces capture every model call, tool invocation, latency measurement, and token cost across the full execution path.</p>
 <p><strong>Model serving infrastructure</strong> provides the inference runtime for self-hosted models. When a gateway routes a request to a locally hosted model rather than a commercial API, vLLM, SGLang, or Ollama handles the actual inference. Fine-tuned model checkpoints exported using Unsloth, Axolotl, or TRL are loaded by these serving engines for production use.</p>
 <p><strong>Fine-tuning platforms</strong> produce the specialized models that serving infrastructure deploys. The fine-tuning-to-serving pipeline typically flows from training using Unsloth, Axolotl, or TRL on GPU infrastructure to export, like LoRA adapters or merged checkpoints, to deployment, loaded by vLLM, SGLang, or Ollama. Evaluation tools measure whether the fine-tuned model improves over the base model before deployment.</p>
-<p>The next five posts in this series assemble these components into complete, working configurations: a solo developer stack, an enterprise agentic pipeline, a private/airgapped deployment, a RAG-first knowledge system, and an evaluation-driven development loop. Each configuration post includes a companion setup guide with reproducible, step-by-step installation and wiring instructions.</p>
+<p>The companion Guides section assembles these components into complete, working configurations: a solo developer stack, an enterprise agentic pipeline, a private/airgapped deployment, a RAG-first knowledge system, and an evaluation-driven development loop. Each guide pairs an architecture walkthrough with a step-by-step setup guide covering reproducible installation and wiring instructions.</p>
 <h2>References</h2>
 <ol>
 <li>Langfuse Documentation, Langfuse GmbH.</li>
@@ -321,11 +321,7 @@ document.addEventListener('DOMContentLoaded', function() {
       <a href="ai-tooling-chapter_05.html" class="pagination-link prev">
         <span class="pagination-label">Previous</span>
         <span class="pagination-title">Data Infrastructure</span>
-      </a>
-      <a href="ai-tooling-chapter_07.html" class="pagination-link next">
-        <span class="pagination-label">Next</span>
-        <span class="pagination-title">Solo Developer Stack</span>
-      </a></div>
+      </a><div style="flex: 1;"></div></div>
         </article>
     </div>
   </main>

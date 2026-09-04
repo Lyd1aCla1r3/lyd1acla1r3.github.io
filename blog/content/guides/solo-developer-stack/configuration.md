@@ -2,7 +2,7 @@
 
 <!-- SUMMARY: A complete configuration walkthrough assembling Claude Code, MCP servers, Ollama, ChromaDB, and Docling into a local-first AI development environment for a single developer. The architecture eliminates cloud infrastructure dependencies for supplementary tooling while providing agentic coding assistance, local model inference, and a lightweight retrieval-augmented generation pipeline. -->
 
-The previous post mapped how each supporting ecosystem component connects to coding agents, frameworks, and orchestrators. That architectural map serves as a menu of options; the remaining challenge is selecting and wiring specific components into a coherent, working system. This post assembles the first such configuration: a local-first AI development stack for a single developer.
+The AI Tooling series maps how each supporting ecosystem component connects to coding agents, frameworks, and orchestrators. That architectural map serves as a menu of options; the remaining challenge is selecting and wiring specific components into a coherent, working system. This configuration assembles the first such selection: a local-first AI development stack for a single developer.
 
 ## The Problem
 
@@ -94,7 +94,7 @@ The second sacrifice is observability. Without Langfuse, Braintrust, or a simila
 - **Memory**: Qdrant in single-binary mode can replace ChromaDB if the developer needs advanced filtering capabilities or expects the dataset to grow beyond ChromaDB's embedded-mode comfort zone.
 - **Knowledge Management**: LlamaParse can replace Docling if the developer's documents contain visually complex layouts where cloud-based vision-language models produce higher-quality extraction. The trade-off is a cloud dependency and a per-page cost.
 
-This configuration establishes the foundation: a single developer, one machine, and a complete AI-augmented development workflow. The companion setup guide provides step-by-step installation and wiring instructions for each component in this configuration. The next post scales this pattern to an enterprise context, introducing multi-agent orchestration, governed gateway routing, and production observability across teams.
+This configuration establishes the foundation: a single developer, one machine, and a complete AI-augmented development workflow. The companion setup guide provides step-by-step installation and wiring instructions for each component in this configuration.
 
 ## References
 

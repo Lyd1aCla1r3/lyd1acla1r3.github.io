@@ -40,8 +40,11 @@ for (const fileObj of mdFiles) {
   const parts = relPath.split(path.sep);
   const topLevelDir = parts.length > 1 ? parts[0] : 'uncategorized';
   let seriesName = null;
+  let guideName = null;
   if (topLevelDir === 'series' && parts.length > 2) {
     seriesName = parts[1]; // e.g. transformers
+  } else if (topLevelDir === 'guides' && parts.length > 2) {
+    guideName = parts[1]; // e.g. solo-developer-stack
   }
   
   const markdown = fs.readFileSync(filePath, 'utf-8');
@@ -96,6 +99,7 @@ for (const fileObj of mdFiles) {
   let tabId = 'tab-perspectives';
   if (topLevelDir === 'series') tabId = 'tab-series';
   if (topLevelDir === 'validation-and-benchmarks') tabId = 'tab-methodology';
+  if (topLevelDir === 'guides') tabId = 'tab-guides';
 
   if (topLevelDir === 'series' && seriesName) {
       let seriesDisplay = seriesName.split('-').map(word => {
@@ -103,6 +107,13 @@ for (const fileObj of mdFiles) {
           return word.charAt(0).toUpperCase() + word.slice(1);
       }).join(' ');
       breadcrumbHtml += `<li><a href="index.html#${tabId}">Series: ${seriesDisplay}</a></li>`;
+  } else if (topLevelDir === 'guides' && guideName) {
+      let guideDisplay = guideName.split('-').map(word => {
+          if (word.toLowerCase() === 'rag') return 'RAG';
+          if (word.toLowerCase() === 'ai') return 'AI';
+          return word.charAt(0).toUpperCase() + word.slice(1);
+      }).join(' ');
+      breadcrumbHtml += `<li><a href="guide-${guideName}.html">Guides: ${guideDisplay}</a></li>`;
   } else if (topLevelDir !== 'uncategorized') {
       breadcrumbHtml += `<li><a href="index.html#${tabId}">${tierDisplay}</a></li>`;
   }
@@ -112,6 +123,8 @@ for (const fileObj of mdFiles) {
   let outFilename = fileObj.name.replace('.md', '.html');
   if (seriesName) {
     outFilename = `${seriesName}-${outFilename}`;
+  } else if (guideName) {
+    outFilename = `${guideName}-${outFilename}`;
   }
   
   postsData.push({
@@ -120,6 +133,7 @@ for (const fileObj of mdFiles) {
     url: outFilename,
     tier: topLevelDir,
     seriesName: seriesName,
+    guideName: guideName,
     contentHtml,
     breadcrumbHtml
   });
@@ -145,8 +159,24 @@ postsData.sort((a, b) => {
 const posts = [];
 for (let i = 0; i < postsData.length; i++) {
   const post = postsData[i];
-  const prevPost = i > 0 ? postsData[i - 1] : null;
-  const nextPost = i < postsData.length - 1 ? postsData[i + 1] : null;
+  let prevPost, nextPost;
+
+  if (post.guideName) {
+    // Scope pagination within the guide group only
+    const guideGroupPosts = postsData.filter(p => p.guideName === post.guideName);
+    const idxInGroup = guideGroupPosts.indexOf(post);
+    prevPost = idxInGroup > 0 ? guideGroupPosts[idxInGroup - 1] : null;
+    nextPost = idxInGroup < guideGroupPosts.length - 1 ? guideGroupPosts[idxInGroup + 1] : null;
+  } else {
+    prevPost = i > 0 ? postsData[i - 1] : null;
+    nextPost = i < postsData.length - 1 ? postsData[i + 1] : null;
+    // Prevent pagination across tier boundaries
+    if (prevPost && prevPost.tier !== post.tier) prevPost = null;
+    if (nextPost && nextPost.tier !== post.tier) nextPost = null;
+    // Within series, prevent pagination across different series
+    if (prevPost && post.seriesName && prevPost.seriesName !== post.seriesName) prevPost = null;
+    if (nextPost && post.seriesName && nextPost.seriesName !== post.seriesName) nextPost = null;
+  }
 
   let paginationHtml = '<div class="blog-pagination">';
   if (prevPost) {
@@ -190,7 +220,8 @@ for (let i = 0; i < postsData.length; i++) {
     summary: post.summary,
     url: post.url,
     tier: post.tier,
-    seriesName: post.seriesName
+    seriesName: post.seriesName,
+    guideName: post.guideName
   });
 }
 
@@ -242,7 +273,7 @@ if (posts.length > 0) {
           } else if (sName === 'positional-encoding') {
               seriesDesc = "A first-principles derivation of positional encoding mechanisms for sequence-aware neural architectures. This series traces the mathematical journey from the order-agnostic embedding tensor through the historical sinusoidal formula, element-wise injection, the query-key dot-product framework, and the full derivation of Rotary Position Embeddings (RoPE), the mechanism used in every frontier language model.";
           } else if (sName === 'ai-tooling') {
-              seriesDesc = "A structural mapping of the agentic AI ecosystem, categorizing infrastructure components, comparing orchestration frameworks, and providing reproducible configuration guides for deploying specialized environments.";
+              seriesDesc = "A structural mapping of the agentic AI ecosystem. This series categorizes infrastructure components from model routers and vector databases through orchestration frameworks and evaluation platforms, tracing how each layer connects to the coding agents that drive AI-augmented development workflows.";
           }
           
           seriesHtml += `
@@ -286,6 +317,89 @@ if (posts.length > 0) {
        }
     }
     
+    // Group guide posts by guideName
+    const guidePosts = posts.filter(p => p.tier === 'guides');
+    const guideGroups = {};
+    for (const p of guidePosts) {
+      if (!guideGroups[p.guideName]) guideGroups[p.guideName] = [];
+      guideGroups[p.guideName].push(p);
+    }
+
+    // Define guide display order
+    const guideOrder = [
+      'solo-developer-stack',
+      'enterprise-agentic-pipeline',
+      'private-and-airgapped-deployment',
+      'rag-first-knowledge-system',
+      'evaluation-driven-development-loop'
+    ];
+
+    function formatGuideName(gName) {
+      return gName.split('-').map(word => {
+        if (word.toLowerCase() === 'rag') return 'RAG';
+        if (word.toLowerCase() === 'ai') return 'AI';
+        if (word.toLowerCase() === 'and') return 'and';
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      }).join(' ');
+    }
+
+    let guidesHtml = '';
+    if (Object.keys(guideGroups).length === 0) {
+       guidesHtml = '<p style="text-align: center; color: var(--text-muted); font-style: italic;">No guides available yet.</p>';
+    } else {
+       const sortedGuideNames = Object.keys(guideGroups).sort((a, b) => {
+         const aIdx = guideOrder.indexOf(a);
+         const bIdx = guideOrder.indexOf(b);
+         return (aIdx === -1 ? 99 : aIdx) - (bIdx === -1 ? 99 : bIdx);
+       });
+       for (const gName of sortedGuideNames) {
+          const gPosts = guideGroups[gName];
+          const guideTitle = formatGuideName(gName);
+          // Use the configuration article's summary as the card description
+          const configPost = gPosts.find(p => p.url.includes('configuration'));
+          const guideDesc = configPost ? configPost.summary : `Architecture walkthrough and setup guide for ${guideTitle}.`;
+          
+          guidesHtml += `
+          <a href="guide-${gName}.html">
+              <article class="blog-item series-item" style="margin-bottom: var(--space-md);">
+                  <h2>${guideTitle}</h2>
+                  <p>${guideDesc} <strong>(${gPosts.length} articles)</strong></p>
+              </article>
+          </a>`;
+          
+          // Generate dedicated guide group page
+          let guidePageHtml = indexHtml;
+          guidePageHtml = guidePageHtml.replace(
+              /<nav aria-label="breadcrumb" class="breadcrumbs">[\s\S]*?<\/nav>/,
+              `<nav aria-label="breadcrumb" class="breadcrumbs"><ol><li><a href="../index.html">Home</a></li><li><a href="index.html#tab-guides">Blog</a></li><li aria-current="page">${guideTitle}</li></ol></nav>`
+          );
+          guidePageHtml = guidePageHtml.replace(
+              /<h1 class="hero__name" style="text-align: center; margin-bottom: var\(--space-2xl\);">Blog<\/h1>/,
+              `<h1 class="hero__name" style="text-align: center; margin-bottom: 0;">Blog</h1>\n          <h2 class="metallic-text" style="text-align: center; font-size: clamp(2rem, 4vw, 2.5rem); margin-top: 10px; margin-bottom: var(--space-2xl); font-family: var(--font-display);">${guideTitle}</h2>`
+          );
+          
+          const dedicatedGuideContent = `
+          <div class="series-group" style="margin-top: var(--space-2xl);">
+              <div class="series-items">
+                  ${gPosts.map(post => `
+                  <a href="${post.url}">
+                      <article class="blog-item series-item">
+                          <h2>${post.title}</h2>
+                          <p>${post.summary}</p>
+                      </article>
+                  </a>`).join('')}
+              </div>
+          </div>`;
+          
+          guidePageHtml = guidePageHtml.replace(
+              /<!-- BLOG_LIST_START -->[\s\S]*?<!-- BLOG_LIST_END -->/,
+              `<!-- BLOG_LIST_START -->\n${dedicatedGuideContent}\n        <!-- BLOG_LIST_END -->`
+          );
+          fs.writeFileSync(path.join(BLOG_DIR, `guide-${gName}.html`), guidePageHtml, 'utf-8');
+          console.log(`Generated dedicated guide page: guide-${gName}.html`);
+       }
+    }
+
     const blogListHtml = `
         <div class="blog-tabs">
             <input type="radio" id="tab-perspectives" name="blog-tabs" checked>
@@ -296,6 +410,9 @@ if (posts.length > 0) {
             
             <input type="radio" id="tab-methodology" name="blog-tabs">
             <label for="tab-methodology" class="tab-label">Validation & Benchmarks</label>
+            
+            <input type="radio" id="tab-guides" name="blog-tabs">
+            <label for="tab-guides" class="tab-label">Guides</label>
             
             <div class="tab-content" id="content-perspectives">
                 <p class="tab-desc">Observations on the evolving landscape of technical enablement, exploring how architectural shifts and emerging tools influence the craft of documentation.</p>
@@ -310,6 +427,11 @@ if (posts.length > 0) {
             <div class="tab-content" id="content-methodology">
                 <p class="tab-desc">Empirical investigations designed to resolve complex architectural questions through rigorous data analysis. Every benchmark is supported by a public repository so you can clone the infrastructure, run the tests, and independently reproduce the findings.</p>
                 ${methodologyHtml}
+            </div>
+            
+            <div class="tab-content" id="content-guides">
+                <p class="tab-desc">Reproducible architecture walkthroughs pairing a configuration rationale post with a step-by-step setup guide. Each guide assembles a complete, working AI system from the tools surveyed in the AI Tooling series.</p>
+                ${guidesHtml}
             </div>
         </div>`;
         

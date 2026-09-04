@@ -115,10 +115,10 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: AI Tooling</a></li><li aria-current="page">Solo Developer Stack</li></ol></nav>
-        <article class="blog-post series-ai-tooling">
+    <li><a href="index.html">Blog</a></li><li><a href="guide-solo-developer-stack.html">Guides: Solo Developer Stack</a></li><li aria-current="page">Solo Developer Stack</li></ol></nav>
+        <article class="blog-post ">
 <h1>Solo Developer Stack</h1>
-<!-- SUMMARY: A complete configuration walkthrough assembling Claude Code, MCP servers, Ollama, ChromaDB, and Docling into a local-first AI development environment for a single developer. The architecture eliminates cloud infrastructure dependencies for supplementary tooling while providing agentic coding assistance, local model inference, and a lightweight retrieval-augmented generation pipeline. --><p>The previous post mapped how each supporting ecosystem component connects to coding agents, frameworks, and orchestrators. That architectural map serves as a menu of options; the remaining challenge is selecting and wiring specific components into a coherent, working system. This post assembles the first such configuration: a local-first AI development stack for a single developer.</p>
+<!-- SUMMARY: A complete configuration walkthrough assembling Claude Code, MCP servers, Ollama, ChromaDB, and Docling into a local-first AI development environment for a single developer. The architecture eliminates cloud infrastructure dependencies for supplementary tooling while providing agentic coding assistance, local model inference, and a lightweight retrieval-augmented generation pipeline. --><p>The AI Tooling series maps how each supporting ecosystem component connects to coding agents, frameworks, and orchestrators. That architectural map serves as a menu of options; the remaining challenge is selecting and wiring specific components into a coherent, working system. This configuration assembles the first such selection: a local-first AI development stack for a single developer.</p>
 <h2>The Problem</h2>
 <p>A developer working on a personal project or a small-team codebase needs AI assistance across the development workflow. The requirements include an agentic coding tool that can read, write, and reason about code across an entire repository; access to local models for tasks where commercial API calls are unnecessary or undesirable; and a lightweight retrieval pipeline for searching project documentation, design specs, and reference material by meaning rather than by keyword.</p>
 <p>The constraints are equally specific. The system should run on a single workstation without requiring cloud infrastructure management, container orchestration, or GPU cluster provisioning. Per-API-call costs beyond the primary coding agent subscription should be minimal or zero. The configuration should remain simple enough for one person to install, maintain, and debug without dedicated DevOps support.</p>
@@ -171,7 +171,7 @@
 <li><strong>Memory</strong>: Qdrant in single-binary mode can replace ChromaDB if the developer needs advanced filtering capabilities or expects the dataset to grow beyond ChromaDB&#39;s embedded-mode comfort zone.</li>
 <li><strong>Knowledge Management</strong>: LlamaParse can replace Docling if the developer&#39;s documents contain visually complex layouts where cloud-based vision-language models produce higher-quality extraction. The trade-off is a cloud dependency and a per-page cost.</li>
 </ul>
-<p>This configuration establishes the foundation: a single developer, one machine, and a complete AI-augmented development workflow. The companion setup guide provides step-by-step installation and wiring instructions for each component in this configuration. The next post scales this pattern to an enterprise context, introducing multi-agent orchestration, governed gateway routing, and production observability across teams.</p>
+<p>This configuration establishes the foundation: a single developer, one machine, and a complete AI-augmented development workflow. The companion setup guide provides step-by-step installation and wiring instructions for each component in this configuration.</p>
 <h2>References</h2>
 <ol>
 <li>Claude Code Documentation, Anthropic.</li>
@@ -183,14 +183,10 @@
 <li>MCP Git Server, Model Context Protocol Reference Implementations.</li>
 </ol>
 
-<div class="blog-pagination">
-      <a href="ai-tooling-chapter_06.html" class="pagination-link prev">
-        <span class="pagination-label">Previous</span>
-        <span class="pagination-title">Runtime Infrastructure</span>
-      </a>
-      <a href="ai-tooling-chapter_08.html" class="pagination-link next">
+<div class="blog-pagination"><div style="flex: 1;"></div>
+      <a href="solo-developer-stack-guide.html" class="pagination-link next">
         <span class="pagination-label">Next</span>
-        <span class="pagination-title">Enterprise Agentic Pipeline</span>
+        <span class="pagination-title">Solo Developer Stack: Setup Guide</span>
       </a></div>
         </article>
     </div>

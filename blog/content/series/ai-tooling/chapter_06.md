@@ -252,7 +252,7 @@ Each supporting layer plugs into the primary tools, coding agents, frameworks, o
 
 **Fine-tuning platforms** produce the specialized models that serving infrastructure deploys. The fine-tuning-to-serving pipeline typically flows from training using Unsloth, Axolotl, or TRL on GPU infrastructure to export, like LoRA adapters or merged checkpoints, to deployment, loaded by vLLM, SGLang, or Ollama. Evaluation tools measure whether the fine-tuned model improves over the base model before deployment.
 
-The next five posts in this series assemble these components into complete, working configurations: a solo developer stack, an enterprise agentic pipeline, a private/airgapped deployment, a RAG-first knowledge system, and an evaluation-driven development loop. Each configuration post includes a companion setup guide with reproducible, step-by-step installation and wiring instructions.
+The companion Guides section assembles these components into complete, working configurations: a solo developer stack, an enterprise agentic pipeline, a private/airgapped deployment, a RAG-first knowledge system, and an evaluation-driven development loop. Each guide pairs an architecture walkthrough with a step-by-step setup guide covering reproducible installation and wiring instructions.
 
 ## References
 
