@@ -69,6 +69,16 @@
     .blog-post th { font-weight: 600; color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-subtle); }
     .blog-post td { padding: 8px 16px; border: none; }
     .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 4px 10px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; font-size: 0.95rem; color: var(--rose-gold-dark); margin-right: 6px; }
+    
+    /* Post Tabs */
+    .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
+    .post-tabs::-webkit-scrollbar { display: none; }
+    .post-tab-btn { padding: 8px 16px; border: none; background: transparent; color: var(--text-muted); font-family: var(--font-display); font-size: 1rem; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; white-space: nowrap; transition: color 0.2s, border-color 0.2s; }
+    .post-tab-btn:hover { color: var(--text-primary); }
+    .post-tab-btn.active { color: var(--text-accent); border-bottom-color: var(--text-accent); font-weight: 500; }
+    .post-tab-content { display: none; padding-top: var(--space-md); }
+    .post-tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body>
@@ -100,7 +110,7 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Positional encoding</a></li><li aria-current="page">Part 3: Element-Wise Addition and the Positionally-Enriched Tensor</li></ol></nav>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Positional Encoding</a></li><li aria-current="page">Part 3: Element-Wise Addition and the Positionally-Enriched Tensor</li></ol></nav>
         <article class="blog-post series-positional-encoding">
 <h1>Part 3: Element-Wise Addition and the Positionally-Enriched Tensor</h1>
 <!-- SUMMARY: The positional encoding matrix is added element-wise to the embedding tensor, producing a positionally-enriched tensor whose similarity matrix differs from the original. Permutation invariance is broken: reversing the input sequence and reapplying position-appropriate encodings yields a different set of pairwise similarities. This chapter computes the enriched tensor, verifies the symmetry-breaking property, and identifies the structural limitations of additive positional encoding that motivate the transition to rotary embeddings. --><p><em>Prefer to read this offline? <a href="../assets/docs/positional-encoding-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Positional Encoding Ebook here.</a></em></p><p>The preceding chapter derived the sinusoidal positional encoding matrix $PE \in \mathbb{R}^{4 \times 3},$ a deterministic function that assigns a unique, bounded vector to each position in the sequence. The embedding tensor $X \in \mathbb{R}^{4 \times 3}$ from Chapter 1 carries the distributional signatures of the tokens <code>The</code>, <code>quick</code>, <code>brown</code>, <code>fox</code> but is invariant under row permutations. This chapter combines the two matrices, producing a tensor in which each row encodes both the identity of the token and the position it occupies.</p>
@@ -369,6 +379,7 @@ $$</p>
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
     mermaid.initialize({ 
       startOnLoad: true, 
+      securityLevel: 'loose',
       theme: 'base',
       themeVariables: {
         fontFamily: "'Outfit', -apple-system, BlinkMacSystemFont, sans-serif",
@@ -383,6 +394,7 @@ $$</p>
     });
     
     document.addEventListener('DOMContentLoaded', () => {
+      // Mermaid
       const blocks = document.querySelectorAll('.language-mermaid');
       blocks.forEach((block) => {
         const parent = block.parentElement;
@@ -392,6 +404,26 @@ $$</p>
           mermaidDiv.textContent = block.textContent;
           parent.replaceWith(mermaidDiv);
         }
+      });
+      
+      // Tabs
+      const tabGroups = document.querySelectorAll('[data-tab-group]');
+      tabGroups.forEach(group => {
+        const buttons = group.querySelectorAll('[data-tab]');
+        const contents = group.querySelectorAll('[data-tab-content]');
+        
+        buttons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const target = btn.getAttribute('data-tab');
+            
+            buttons.forEach(b => b.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+            
+            btn.classList.add('active');
+            const targetContent = group.querySelector(`[data-tab-content="${target}"]`);
+            if (targetContent) targetContent.classList.add('active');
+          });
+        });
       });
     });
   </script>

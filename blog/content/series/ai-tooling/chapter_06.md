@@ -1,0 +1,272 @@
+# Runtime Infrastructure
+
+<!-- SUMMARY: An examination of the model lifecycle layer, covering dedicated serving engines for deploying open-weight models in production, fine-tuning platforms for embedding task-specific behavior into model weights, observability and evaluation tools for tracing and scoring LLM application outputs, and a capstone section mapping how all supporting ecosystem components interconnect. -->
+
+The previous posts covered connectivity to external services and data infrastructure for retrieval. This post shifts to the model layer itself: the engines that serve open-weight models, the platforms that customize them through fine-tuning, and the observability tools that trace and evaluate their outputs. A capstone section maps how all the supporting ecosystem components interconnect.
+
+<style>
+.eco-profile-panel {
+    border: 1.5px solid rgba(183,110,121,0.18);
+    border-radius: 10px;
+    padding: 14px 22px 18px 22px;
+    margin-bottom: 1.5rem;
+    background: rgba(255,255,255,0.85);
+    transition: border-color 0.3s ease, background 0.3s ease;
+}
+.eco-profile-panel .post-tab-content h3 {
+    margin-top: 0 !important;
+}
+.eco-profile-panel .post-tab-content.active {
+    padding-top: 0;
+}
+</style>
+
+<script>
+var _ecoServingColors = {
+    'vllm':      { border: 'rgba(183,110,121,0.35)', bg: 'rgba(251,243,244,0.6)' },
+    'sglang':    { border: 'rgba(192,120,136,0.35)', bg: 'rgba(251,241,243,0.6)' },
+    'ollama':    { border: 'rgba(192,136,104,0.35)', bg: 'rgba(251,244,239,0.6)' },
+    'llamacpp':  { border: 'rgba(184,144,40,0.35)',  bg: 'rgba(252,247,236,0.6)' }
+};
+var _ecoFinetuneColors = {
+    'hf-trl':    { border: 'rgba(183,110,121,0.35)', bg: 'rgba(251,243,244,0.6)' },
+    'unsloth':   { border: 'rgba(192,120,136,0.35)', bg: 'rgba(251,241,243,0.6)' },
+    'axolotl':   { border: 'rgba(192,136,104,0.35)', bg: 'rgba(251,244,239,0.6)' },
+    'openai-ft': { border: 'rgba(184,144,40,0.35)',  bg: 'rgba(252,247,236,0.6)' }
+};
+var _ecoObsColors = {
+    'langfuse':  { border: 'rgba(183,110,121,0.35)', bg: 'rgba(251,243,244,0.6)' },
+    'braintrust': { border: 'rgba(192,120,136,0.35)', bg: 'rgba(251,241,243,0.6)' },
+    'phoenix':   { border: 'rgba(192,136,104,0.35)', bg: 'rgba(251,244,239,0.6)' },
+    'weave':     { border: 'rgba(184,144,40,0.35)',  bg: 'rgba(252,247,236,0.6)' }
+};
+
+function _ecoBindPanel(panelId, colorMap) {
+    var panel = document.getElementById(panelId);
+    if (!panel) return;
+    var btns = panel.parentElement.querySelectorAll('[data-tab]');
+    btns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var key = this.getAttribute('data-tab');
+            var colors = colorMap[key];
+            if (colors && panel) {
+                panel.style.borderColor = colors.border;
+                panel.style.background = colors.bg;
+            }
+        });
+    });
+    var keys = Object.keys(colorMap);
+    if (keys.length > 0) {
+        var firstColors = colorMap[keys[0]];
+        if (firstColors && panel) {
+            panel.style.borderColor = firstColors.border;
+            panel.style.background = firstColors.bg;
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    _ecoBindPanel('eco-serving-panel', _ecoServingColors);
+    _ecoBindPanel('eco-finetune-panel', _ecoFinetuneColors);
+    _ecoBindPanel('eco-obs-panel', _ecoObsColors);
+});
+</script>
+
+## Model Serving Infrastructure
+
+If a developer uses a commercial API like OpenAI or Anthropic, they do not need to worry about hardware. The provider owns the GPUs and the model files; the developer's application sends a prompt over the internet, the provider's GPUs do the math, and the API sends back the generated text. 
+
+However, many teams choose to run open-weight models locally for absolute data privacy, cost control, or to run custom fine-tuned models. To do this, they need a server equipped with GPUs, and they must download the model files. A model consists of three main components: the **weights**, massive files containing billions of decimal numbers representing the trained neural network; a **tokenizer**, a dictionary mapping text to numbers; and a **config file**, a JSON blueprint defining the network's architecture, such as the number of layers, attention heads, context window size, and activation functions.
+
+"Serving" a model means copying those massive weight files from the hard drive into the GPU's ultra-fast memory (VRAM), where they sit permanently. To actually perform the math, developers rely on deep learning frameworks. The industry standard is PyTorch, a foundational Python library that translates high-level code into the low-level instructions required to run neural networks on graphics cards. The GPU uses its compute cores to run this math against the model weights, and it uses whatever VRAM is left over to handle incoming user requests. 
+
+This leftover VRAM is the primary bottleneck. Running a basic PyTorch script to serve a model is inadequate for production because of how it manages this memory. LLMs generate text one token at a time, using a "Key-Value (KV) cache" as short-term memory to remember previous computations. A basic script pre-allocates a massive, fixed-size block of GPU memory for every user's KV cache based on the maximum possible response length. If a user's response is short, 80% of their assigned memory block sits locked and entirely empty, a condition known as internal fragmentation. If a server tries to batch many users concurrently, this fragmentation eats up all the remaining VRAM instantly. 
+
+Worse, if too many users connect at once and the VRAM fills up entirely, the server experiences "KV cache starvation": no user has room to generate their next token, and the entire system deadlocks. Dedicated serving engines solve these problems through advanced memory paging, eliminating fragmentation, and automated triage systems, pausing users to prevent deadlocks, exposing a clean API that applications can call exactly as they would call OpenAI.
+
+<div data-tab-group="serving">
+  <div class="post-tabs">
+    <button class="post-tab-btn active" data-tab="vllm">vLLM</button>
+    <button class="post-tab-btn" data-tab="sglang">SGLang</button>
+    <button class="post-tab-btn" data-tab="ollama">Ollama</button>
+    <button class="post-tab-btn" data-tab="llamacpp">llama.cpp</button>
+  </div>
+
+  <div class="eco-profile-panel" id="eco-serving-panel">
+
+  <div class="post-tab-content active" data-tab-content="vllm">
+    <h3>vLLM</h3>
+    <p><strong>Maker:</strong> vLLM Team / UC Berkeley LMSYS Community<br><strong>License:</strong> Open-source (Apache 2.0)</p>
+    <p>vLLM is the de facto standard for production multi-user model serving. Its core innovation, PagedAttention, solves the memory fragmentation problem discussed above. Instead of forcing the GPU to find one massive, unbroken block of memory for a user's KV cache, PagedAttention breaks the cache into tiny blocks. As the model generates each new token, it simply grabs the next available tiny block of memory wherever it happens to be on the GPU, and links them together logically. When the response finishes, all those scattered blocks are instantly wiped clean for the next user. This allows the server to pack users in tightly without wasting space. To prevent KV cache starvation, where too many users fill the memory and freeze the system, vLLM uses preemption and swapping: it acts as a triage bouncer, pausing some users and moving their in-progress cache off the GPU and into the computer's slower CPU RAM. This lets active users finish, after which vLLM swaps the paused users back in to resume generating.</p>
+    <p>vLLM also provides tools to overcome the physical limits of hardware when models are too massive for a single GPU. It uses "tensor parallelism" to divide the math of a single layer across multiple GPUs within the same server. Multiple GPUs can process different attention heads simultaneously because the math consists of independent matrix multiplications, drastically reducing the time it takes to generate a token. The GPUs then synchronize their answers at the end of the layer. To scale across entirely different servers, it uses "pipeline parallelism." This acts like an assembly line: Server A runs the first ten layers of the model, and passes the result to Server B to run the next ten layers. To prevent Server B from sitting idle while waiting, the pipeline processes multiple user requests concurrently, ensuring the assembly line stays full. To speed up text generation, it uses "speculative decoding," which exploits the fact that reading a model's weights from memory is the ultimate bottleneck. A tiny, fast model sequentially guesses the next five tokens. Then, the large model takes all five guesses and processes them simultaneously in a single parallel step. The large model only has to fetch its massive weight files from memory once to verify all five guesses, generating multiple tokens for the time-cost of one. Finally, it uses "prefix caching": if fifty users all send the same long system prompt, vLLM calculates the KV cache for that prompt once and shares those memory blocks across all fifty users. It runs on the widest range of hardware in this category, including NVIDIA, AMD, Intel, and Google TPUs, and provides a drop-in OpenAI-compatible API endpoint.</p>
+    <p><em>Pricing: Free and open-source.</em></p>
+  </div>
+
+  <div class="post-tab-content" data-tab-content="sglang">
+    <h3>SGLang</h3>
+    <p><strong>Maker:</strong> LMSYS Organization / RadixArk<br><strong>License:</strong> Open-source (Apache 2.0)</p>
+    <p>SGLang is designed specifically to accelerate complex agent workflows. Its first major innovation is RadixAttention, which solves the inefficiency of repeatedly processing the same system prompts. It stores the KV cache of previous prompts in a structure similar to a computer file system, known as a Radix Tree. If a new prompt shares the exact same starting sequence, known as a prefix, as a previous prompt, such as a multi-turn chat that always starts with the same large system instructions, SGLang instantly retrieves the saved math for that prefix and only computes the new words. This accelerates "branching conversations", where an agent generates multiple different possible responses from the exact same starting point to determine the best outcome.</p>
+    <p>Second, it solves the structured output problem. When applications require a model to output strict JSON data, models frequently fail by forgetting a comma or adding conversational filler. SGLang enforces strict formatting rules during generation: if a JSON schema dictates a quotation mark, and the model attempts to generate a letter, SGLang physically blocks the invalid token. It uses specialized compilers to perform these checks instantly, preventing the severe generation slowdowns that usually accompany strict output enforcement.</p>
+    <p>Finally, SGLang eliminates the "internet shipping cost" for multi-step agent tasks. A standard agent operates as a loop running on an application server: ask the model a question, wait for the response to travel across the internet, analyze the response, and send a follow-up question back across the internet. If a task requires fifty steps, the application pays that network delay fifty times. To solve this, SGLang provides a specialized scripting language, a Domain-Specific Language. Just as a developer writes a SQL query to execute a complex search entirely inside a database server, a developer can write an agent loop in this DSL and send the entire script to the SGLang server. The GPU server executes the complete 50-step loop internally, feeding the output of one step directly into the next at memory speed, and only sends the final finished answer back over the network. It supports NVIDIA, AMD, and Google TPUs.</p>
+    <p><em>Pricing: Free and open-source.</em></p>
+  </div>
+
+  <div class="post-tab-content" data-tab-content="ollama">
+    <h3>Ollama</h3>
+    <p><strong>Maker:</strong> Ollama Inc.<br><strong>License:</strong> Open-source (MIT License)</p>
+    <p>Ollama prioritizes local developer experience over production throughput. Unlike production engines like vLLM and SGLang that require a complex manual setup, such as locating and downloading massive weight files, installing Python and deep learning frameworks, configuring complex GPU software drivers like NVIDIA CUDA, and writing custom scripts to load the model, Ollama replaces this entire process with a single self-contained application that runs natively on Mac, Windows, and Linux without requiring external dependencies.</p>
+    <p>Under the hood, Ollama is a user-friendly wrapper written in Go that embeds the <code>llama.cpp</code> mathematical library to perform the actual neural network computations. When a developer types <code>ollama run llama3.1</code>, the wrapper software automatically reaches out to a central registry, downloads the open-weight model files, and spins up a local web server. It detects the system's hardware automatically, routing the math to Apple Silicon, NVIDIA, or AMD processors without manual configuration.</p>
+    <p>Ollama also simplifies ongoing maintenance. While other engines require developers to manually hunt down hidden cache folders to delete massive model files, Ollama uses familiar commands, such as <code>ollama pull</code>, <code>ollama list</code>, and <code>ollama rm</code>, to download, track, and delete models to manage hard drive space. Developers can use "Modelfiles" to save custom configurations, taking a base model and baking in a specific system prompt and temperature setting to create a specialized assistant that can be invoked by name. It exposes an OpenAI-compatible endpoint so that coding agents and frameworks can talk to the local model exactly as they would talk to OpenAI.</p>
+    <p>The trade-off is concurrency. While the underlying <code>llama.cpp</code> engine is capable of advanced memory techniques like continuous batching, Ollama intentionally hides these controls. To guarantee stability and prevent out-of-memory crashes on a laptop, it relies on sequential queuing. This makes it unsuitable for high-volume production APIs but practical for individual developer workstations and strictly secured offline environments, where machines are physically disconnected from the internet and cannot access cloud APIs. Ollama integrates with Continue.dev, Open WebUI, Cursor, LangChain, LlamaIndex, and LiteLLM.</p>
+    <p><em>Pricing: Free and open-source.</em></p>
+  </div>
+
+  <div class="post-tab-content" data-tab-content="llamacpp">
+    <h3>llama.cpp</h3>
+    <p><strong>Maker:</strong> Georgi Gerganov / ggml-org<br><strong>License:</strong> Open-source (MIT License)</p>
+    <p>llama.cpp is the foundational C/C++ inference engine that underlies Ollama and several other local inference tools. While Ollama acts as a user-friendly wrapper that hides the complexity of downloading models and managing memory, llama.cpp can be run entirely on its own as a standalone solution for developers who want raw control. It ships with a barebones server program, <code>llama-server</code>, that exposes every advanced tuning knob, including continuous batching for high concurrency. However, running it directly sacrifices the seamless user experience: developers must manually download massive model files from a provider like Hugging Face, configure file paths, and launch the server using complex command-line flags.</p>
+    <p>At the engine layer, it defines and maintains the GGUF file format, a single portable file bundling model weights, tokenizer vocabulary, and tensor metadata. It also supports advanced quantization, which compresses the model's math to fit into smaller RAM. Instead of applying uniform compression that degrades the model's reasoning, it uses techniques like importance matrices to track which specific neural pathways are used most frequently. It preserves those critical weights at high precision while aggressively compressing the rest down to as low as 1.5 bits. It implements hybrid RAM/VRAM offloading for models that exceed GPU capacity. Its zero-dependency compilation with no Python or PyTorch makes it the most portable option in this category, running natively on CPUs with SIMD extensions such as AVX, AVX2, AVX-512, and ARM NEON, Apple Metal, NVIDIA CUDA, AMD HIP/ROCm, Vulkan, SYCL, and OpenCL. llama.cpp is the engine of choice for edge deployments, embedded systems, and environments requiring minimal dependencies and maximum hardware portability. It integrates with LangChain, LlamaIndex, and the <code>llama-cpp-python</code> bindings.</p>
+    <p><em>Pricing: Free and open-source.</em></p>
+  </div>
+
+  </div>
+</div>
+
+**Choosing between them**: Ollama serves individual developers who need local, zero-configuration model execution for prototyping and testing. vLLM serves teams deploying models as production APIs with high concurrent request volume and broad hardware compatibility. SGLang serves teams running complex agentic or structured-output workloads where prefix caching and grammar-constrained decoding provide measurable performance gains. llama.cpp serves edge deployments and environments requiring minimal dependencies and maximum hardware portability. Hugging Face Text Generation Inference (TGI), previously a common production option, has been placed in maintenance mode by Hugging Face, with production recommendations directed toward vLLM and SGLang.
+
+## Fine-Tuning Platforms
+
+Prompting, writing instructions that steer a model's behavior, and retrieval-augmented generation, providing relevant context from external sources, handle the majority of LLM application needs. However, certain use cases expose their limits. A customer support system that must always respond in a specific JSON schema may produce malformed outputs 5% of the time, regardless of how precisely the prompt specifies the format. A medical documentation tool that must match a particular clinical writing style may drift from the style across long documents. A classification system that must categorize tickets into 50 fine-grained categories with 98% accuracy may plateau at 90% with prompting alone.
+
+Fine-tuning modifies the model's weights by training on task-specific examples, embedding the desired behavior directly into the model rather than describing it in the prompt. The result is typically a smaller model that outperforms a larger general-purpose model on the specific task, with lower latency and token cost because the lengthy system prompt that previously described the desired behavior is no longer needed.
+
+The decision to fine-tune depends on the nature of the failure. If the model lacks **knowledge**, such as internal company policies, recent events, or proprietary data, RAG is the appropriate solution because it provides dynamic, updateable context without retraining. If the model lacks **behavioral consistency**, knowing what to do but not reliably producing the correct format, style, or classification, fine-tuning addresses the gap because it modifies how the model generates output rather than what information it has access to. The most demanding production systems combine both: fine-tuning for behavioral reliability and RAG for dynamic knowledge.
+
+<div data-tab-group="finetuning">
+  <div class="post-tabs">
+    <button class="post-tab-btn active" data-tab="hf-trl">HF TRL + PEFT</button>
+    <button class="post-tab-btn" data-tab="unsloth">Unsloth</button>
+    <button class="post-tab-btn" data-tab="axolotl">Axolotl</button>
+    <button class="post-tab-btn" data-tab="openai-ft">OpenAI / Managed APIs</button>
+  </div>
+
+  <div class="eco-profile-panel" id="eco-finetune-panel">
+
+  <div class="post-tab-content active" data-tab-content="hf-trl">
+    <h3>Hugging Face TRL and PEFT</h3>
+    <p><strong>Maker:</strong> Hugging Face<br><strong>License:</strong> Open-source (Apache 2.0)</p>
+    <p>TRL and PEFT are the foundational Python libraries that the rest of the open-source fine-tuning ecosystem builds upon. The problem they solve is standardization: without them, developers would have to write complex PyTorch math from scratch to train a model. TRL provides the pre-built training loops. It includes tools for teaching a model to follow direct instructions, known as Supervised Fine-Tuning, and tools for teaching a model to evaluate and prefer certain types of nuanced answers over others, known as Preference Alignment.</p>
+    <p>PEFT solves the hardware bottleneck. Updating all the mathematical weights of a massive model normally requires a cluster of expensive data-center GPUs because the system must calculate and store adjustments for billions of numbers simultaneously. PEFT uses "adapter" techniques, most commonly LoRA. Instead of modifying the original model, it locks the model's billions of weights so they cannot be changed. It then injects a tiny set of new, placeholder weights, the adapter, alongside them. During training, the system only calculates adjustments for this tiny new module. The memory required drops by up to 99% because it is only updating a few million numbers instead of several billion, allowing developers to fine-tune massive models on a single standard graphics card.</p>
+    <p><em>Pricing: The libraries are free and open-source, with paid managed cloud compute available.</em></p>
+  </div>
+
+  <div class="post-tab-content" data-tab-content="unsloth">
+    <h3>Unsloth</h3>
+    <p><strong>Maker:</strong> Unsloth AI<br><strong>License:</strong> Open-source (Apache 2.0 core, AGPL-3.0 for some components)</p>
+    <p>Even with memory-saving techniques like LoRA, training a model is slow and memory-intensive because of how standard PyTorch handles calculus. When a neural network learns, it calculates gradients, the math required to adjust the weights. Standard PyTorch breaks this calculus into many separate steps, forcing the GPU to constantly shuffle data back and forth between its storage memory and its compute cores. This data movement is the primary bottleneck.</p>
+    <p>Unsloth solves this by hot-swapping the slow PyTorch calculus operations with specialized, custom-written GPU scripts. These scripts do all the calculus in one fast sweep while the data is already inside the compute cores. It still integrates with PyTorch to handle data loading and model management, but it replaces the actual math execution. This increases training speed by up to 5x and cuts memory usage by 80%, allowing a 70-billion-parameter model to be fine-tuned on a single consumer GPU with 24GB of memory. It supports all standard instruction and preference training methods and exports the finished adapter files into formats ready for local serving tools like Ollama.</p>
+    <p><em>Pricing: The core engine is free and open-source, with commercial licenses required for advanced multi-GPU scaling.</em></p>
+  </div>
+
+  <div class="post-tab-content" data-tab-content="axolotl">
+    <h3>Axolotl</h3>
+    <p><strong>Maker:</strong> OpenAccess AI Collective / Axolotl AI Cloud<br><strong>License:</strong> Open-source (Apache 2.0)</p>
+    <p>While Hugging Face provides the building blocks and Unsloth optimizes the math, building a complete training pipeline still requires writing complex Python scripts to glue the dataset processing, the training loops, and the memory optimizations together. Axolotl eliminates the Python code entirely.</p>
+    <p>It takes a configuration-driven approach. A developer simply writes a single YAML text file describing what base model to use, what dataset to load, and which training techniques to apply. Axolotl handles all the orchestration automatically. It excels at distributed training. When a model is too big for one graphics card, Axolotl automatically splits the math across multiple cards using advanced partitioning libraries, such as DeepSpeed. It also handles the messy work of packing multiple short training examples into a single sequence so the GPU never sits idle. Axolotl is the tool of choice for teams that want reproducible, scriptless training across large GPU clusters.</p>
+    <p><em>Pricing: Free and open-source, with users paying their underlying cloud providers for GPU time.</em></p>
+  </div>
+
+  <div class="post-tab-content" data-tab-content="openai-ft">
+    <h3>OpenAI Fine-Tuning API and Managed Cloud Providers</h3>
+    <p><strong>Maker:</strong> OpenAI (proprietary); Together AI (open-weight managed cloud)<br><strong>License:</strong> Proprietary SaaS</p>
+    <p>Setting up a Linux server, installing GPU drivers, downloading weights, and fighting with out-of-memory errors is a distraction for teams that just want a customized model. Fully managed services eliminate the infrastructure entirely.</p>
+    <p>With OpenAI's Fine-Tuning API, a developer uploads a spreadsheet, a JSONL file, of training examples. The platform validates the data, spins up the necessary GPU cluster in the background, trains the model, and immediately hosts the finished model behind a permanent API endpoint with built-in autoscaling. The trade-off is control and lock-in: developers cannot tweak the low-level math or memory settings, and the final trained weights are kept secret by OpenAI and cannot be downloaded or hosted elsewhere. Together AI offers a similar managed experience but for open-weight models, such as Llama 3. A developer uploads their data, Together AI handles the training on its cloud GPUs, and the developer can either host the result on Together's API or download the finished weights to run locally.</p>
+    <p><em>Pricing: Managed platforms charge per-token fees for the training run and subsequent usage of the hosted endpoint.</em></p>
+  </div>
+
+  </div>
+</div>
+
+## Observability and Evaluation
+
+Traditional software monitoring tracks uptime, latency, and error rates. For deterministic software, these metrics suffice: if the server returns HTTP 200, the system is working. However, LLM-powered applications are non-deterministic. The same prompt can produce different outputs across runs. An agent can successfully complete a workflow, with no errors and low latency, while producing a factually incorrect result. A RAG pipeline can return chunks from the vector database, meaning retrieval succeeded, but the retrieved chunks may be irrelevant to the question. Operational metrics alone cannot detect these failures.
+
+Observability and evaluation are related but distinct concerns. **Observability** answers the question of what happened: capturing the full execution trace of a request, including every model call, tool invocation, token count, latency measurement, and cost. It is the runtime visibility layer that enables debugging and root-cause analysis. **Evaluation** answers whether the output is correct: scoring model outputs against ground-truth datasets, applying LLM-as-judge metrics, and detecting quality regressions. Some tools focus primarily on one concern; the most widely used tools handle both. The operational loop connecting these concerns works as follows: observability tools surface problematic production traces; teams extract those traces into evaluation datasets; evaluation runs validate prompt or model changes against the datasets; and passing evaluations gate re-deployment to production.
+
+<div data-tab-group="observability">
+  <div class="post-tabs">
+    <button class="post-tab-btn active" data-tab="langfuse">Langfuse</button>
+    <button class="post-tab-btn" data-tab="braintrust">Braintrust</button>
+    <button class="post-tab-btn" data-tab="phoenix">Arize Phoenix</button>
+    <button class="post-tab-btn" data-tab="weave">W&B Weave</button>
+  </div>
+
+  <div class="eco-profile-panel" id="eco-obs-panel">
+
+  <div class="post-tab-content active" data-tab-content="langfuse">
+    <h3>Langfuse</h3>
+    <p><strong>Maker:</strong> Langfuse GmbH<br><strong>Focus:</strong> Balanced observability and evaluation (open-source, MIT License)</p>
+    <p>Langfuse is the most widely adopted open-source LLM observability platform. Its traces capture hierarchical spans of multi-turn conversations, tool calls, retrieved context, latency, and token consumption. Beyond tracing, it provides centralized prompt management with version control and an interactive playground for testing iterations across providers, LLM-as-judge evaluators and manual annotation queues for scoring outputs, and dataset management that creates benchmark datasets directly from production logs for comparative offline evaluation. Cost and token analytics track granular spend mapped to specific models, users, and release versions. Langfuse supports OpenTelemetry export, allowing teams to forward these specialized LLM traces into central enterprise monitoring dashboards like Datadog or Splunk, and integrates with LangChain, LangGraph, LlamaIndex, LiteLLM, DSPy, and Haystack.</p>
+    <p><em>Pricing: The self-hosted version is free and open-source. The managed cloud offers a free tier, transitioning to flat-rate monthly subscriptions for production and enterprise tiers.</em></p>
+  </div>
+
+  <div class="post-tab-content" data-tab-content="braintrust">
+    <h3>Braintrust</h3>
+    <p><strong>Maker:</strong> Braintrust Data, Inc.<br><strong>Focus:</strong> Evaluation-first CI/CD testing (proprietary SaaS, open-source SDKs)</p>
+    <p>Braintrust takes an evaluation-first approach, designed around CI/CD regression testing rather than production tracing. Its core workflow runs parallelized offline evaluations against versioned datasets in development and CI pipelines to prevent quality regressions before deployment. Developers define scoring rubrics using programmatic code-based evaluators, LLM-as-judge templates, or the open-source <code>autoevals</code> library, and Braintrust tracks score changes across experiments. Production edge cases and failed traces convert directly into regression test datasets with one click, creating a continuous improvement loop. Beyond evaluation, Braintrust includes an AI Proxy that provides caching, rate limiting, load balancing, and unified API keys. Combining a gateway and an evaluator provides a significant architectural advantage: zero-code instrumentation. Instead of installing a tracing SDK into the application code, developers simply route their API calls through the proxy. The proxy automatically captures every prompt, response, and latency metric because it physically handles the traffic, making it frictionless to turn live production traffic into evaluation datasets without configuring two separate systems. Braintrust integrates with LangChain, LangGraph, LlamaIndex, Instructor, and the Vercel AI SDK.</p>
+    <p><em>Pricing: Offers a free tier for initial testing, transitioning to flat-rate monthly subscriptions for production and custom enterprise plans.</em></p>
+  </div>
+
+  <div class="post-tab-content" data-tab-content="phoenix">
+    <h3>Arize Phoenix</h3>
+    <p><strong>Maker:</strong> Arize AI<br><strong>Focus:</strong> Observability with RAG and embedding diagnostics (source-available, Elastic License 2.0)</p>
+    <p>Arize Phoenix specializes in vector embedding visualization for RAG diagnostics. Its UMAP projections let developers visually identify retrieval clusters, embedding drift, and coverage gaps in vector stores, answering questions regarding whether certain topics are underrepresented in the index or whether the distribution of queries has shifted since last month. Phoenix uses OpenTelemetry and OpenInference standards for trace capture, avoiding vendor lock-in in the telemetry layer. Built-in evaluators cover QA correctness, hallucination detection, document relevance, and toxicity scoring. Phoenix Intelligence (PXI) provides a conversational AI assistant that analyzes trace logs and identifies error patterns. Phoenix integrates with LangChain, LangGraph, LlamaIndex, DSPy, Haystack, Semantic Kernel, CrewAI, and AutoGen.</p>
+    <p><em>Pricing: The self-hosted version is completely free. The managed cloud offers a free tier, scaling to flat-rate monthly subscriptions for production and enterprise usage.</em></p>
+  </div>
+
+  <div class="post-tab-content" data-tab-content="weave">
+    <h3>Weights and Biases Weave</h3>
+    <p><strong>Maker:</strong> Weights and Biases, Inc.<br><strong>Focus:</strong> Observability with lineage and experiment tracking (Apache 2.0 SDK, proprietary platform)</p>
+    <p>Weave is the LLM application monitoring tool built by Weights and Biases (W&B). While classical W&B tracks model <em>training</em>, Weave tracks model <em>usage</em> in applications. It does this through decorator-based tracing. A developer simply adds the <code>@weave.op</code> decorator above any Python function in their application, such as the function that fetches database context or the function that calls the LLM. Weave then automatically records every time that function runs, capturing its inputs, outputs, latency, and the exact version of the code that executed. For teams already using W&B for classical ML experiment tracking, including model training, hyperparameter sweeps, and artifact versioning, Weave extends the same dashboard and lineage system to their generative AI applications, providing a unified view across both workloads. Its evaluation engine supports custom programmatic scorers, human scoring, and LLM-as-judge metrics, with automatic tracking of how scores change across prompt iterations, model versions, and configuration states. Cost, latency, and token monitoring display real-time aggregations across deployed applications. Weave integrates with LangChain, LangGraph, LlamaIndex, DSPy, and Hugging Face.</p>
+    <p><em>Pricing: Offers a free tier for individuals and academics, scaling to a per-user monthly subscription for teams and custom enterprise contracts.</em></p>
+  </div>
+
+  </div>
+</div>
+
+## How the Pieces Connect
+
+Each supporting layer plugs into the primary tools, coding agents, frameworks, orchestrators, at specific integration points:
+
+**MCP** connects coding agents and frameworks to external tools and data sources. Instead of each agent maintaining its own GitHub integration, database connector, or filesystem bridge, it connects to MCP servers that expose these capabilities through the standardized protocol. Frameworks like LangChain and LlamaIndex consume MCP servers as tool providers in the same way they consume native tool definitions.
+
+**Gateways** sit between frameworks, orchestrators, and model providers. When a LangChain application or a CrewAI crew needs to call a model, the request passes through the gateway, which handles provider selection, fallback routing, rate limiting, cost tracking, and API normalization. Observability tools receive traces and cost metrics from the gateway layer.
+
+**Vector databases** feed context to frameworks and orchestrators for retrieval-augmented generation. LangChain and LlamaIndex both provide native retrievers for all five vector databases covered above. The vector database stores embeddings produced by embedding models and returns the most semantically relevant chunks when an agent or framework queries it.
+
+**Knowledge management pipelines** feed the vector databases. Documents are parsed using tools like LlamaParse, Unstructured, and Docling, chunked, embedded, and loaded into the vector store. Web content is scraped and cleaned using Firecrawl, then follows the same embedding and indexing path. The quality of the parsing and chunking directly determines the quality of retrieval downstream.
+
+**Observability tools** trace orchestrator workflows. When a LangGraph graph or CrewAI crew executes, callback handlers and OpenTelemetry dispatchers export traces to Langfuse, Arize Phoenix, or W&B Weave. These traces capture every model call, tool invocation, latency measurement, and token cost across the full execution path.
+
+**Model serving infrastructure** provides the inference runtime for self-hosted models. When a gateway routes a request to a locally hosted model rather than a commercial API, vLLM, SGLang, or Ollama handles the actual inference. Fine-tuned model checkpoints exported using Unsloth, Axolotl, or TRL are loaded by these serving engines for production use.
+
+**Fine-tuning platforms** produce the specialized models that serving infrastructure deploys. The fine-tuning-to-serving pipeline typically flows from training using Unsloth, Axolotl, or TRL on GPU infrastructure to export, like LoRA adapters or merged checkpoints, to deployment, loaded by vLLM, SGLang, or Ollama. Evaluation tools measure whether the fine-tuned model improves over the base model before deployment.
+
+The next five posts in this series assemble these components into complete, working configurations: a solo developer stack, an enterprise agentic pipeline, a private/airgapped deployment, a RAG-first knowledge system, and an evaluation-driven development loop. Each configuration post includes a companion setup guide with reproducible, step-by-step installation and wiring instructions.
+
+## References
+
+1. Langfuse Documentation, Langfuse GmbH.
+2. Braintrust Documentation, Braintrust Data Inc.
+3. Arize Phoenix Documentation, Arize AI.
+4. Weights and Biases Weave Documentation, Weights and Biases Inc.
+5. vLLM Documentation, vLLM Project.
+6. SGLang Documentation, LMSYS Organization.
+7. Ollama Documentation, Ollama Inc.
+8. llama.cpp, Georgi Gerganov and ggml-org.
+9. Hugging Face TRL Documentation, Hugging Face.
+10. Hugging Face PEFT Documentation, Hugging Face.
+11. Unsloth Documentation, Unsloth AI.
+12. Axolotl Documentation, OpenAccess AI Collective.
+13. OpenAI Fine-Tuning API Documentation, OpenAI.
+14. Together AI Fine-Tuning Documentation, Together AI.

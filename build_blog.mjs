@@ -98,7 +98,10 @@ for (const fileObj of mdFiles) {
   if (topLevelDir === 'validation-and-benchmarks') tabId = 'tab-methodology';
 
   if (topLevelDir === 'series' && seriesName) {
-      let seriesDisplay = seriesName.charAt(0).toUpperCase() + seriesName.slice(1).replace(/-/g, ' ');
+      let seriesDisplay = seriesName.split('-').map(word => {
+          if (word.toLowerCase() === 'ai') return 'AI';
+          return word.charAt(0).toUpperCase() + word.slice(1);
+      }).join(' ');
       breadcrumbHtml += `<li><a href="index.html#${tabId}">Series: ${seriesDisplay}</a></li>`;
   } else if (topLevelDir !== 'uncategorized') {
       breadcrumbHtml += `<li><a href="index.html#${tabId}">${tierDisplay}</a></li>`;
@@ -127,7 +130,7 @@ postsData.sort((a, b) => {
     if (a.seriesName !== b.seriesName) {
         if (!a.seriesName) return 1;
         if (!b.seriesName) return -1;
-        const seriesOrder = { tokenization: 0, embeddings: 1, 'positional-encoding': 2, transformers: 3 };
+        const seriesOrder = { tokenization: 0, embeddings: 1, 'positional-encoding': 2, transformers: 3, 'ai-tooling': 4 };
         const aOrder = seriesOrder[a.seriesName] ?? 99;
         const bOrder = seriesOrder[b.seriesName] ?? 99;
         return aOrder - bOrder;
@@ -227,7 +230,7 @@ if (posts.length > 0) {
        seriesHtml = '<p style="text-align: center; color: var(--text-muted); font-style: italic;">No series available yet.</p>';
     } else {
        for (const [sName, sPosts] of Object.entries(seriesGroups)) {
-          const seriesTitle = sName.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+          const seriesTitle = sName.split('-').map(word => word.toLowerCase() === 'ai' ? 'AI' : word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
           
           let seriesDesc = `A sequential exploration of ${seriesTitle}.`;
           if (sName === 'transformers') {
@@ -238,6 +241,8 @@ if (posts.length > 0) {
               seriesDesc = "A complete derivation of end-to-end learned embeddings. This series traces the mathematical journey from discrete token IDs through one-hot encoding, random initialization in high-dimensional space, the forward pass and cross-entropy loss, full backpropagation through both weight matrices, and the emergent semantic geometry that arises from gradient descent at scale.";
           } else if (sName === 'positional-encoding') {
               seriesDesc = "A first-principles derivation of positional encoding mechanisms for sequence-aware neural architectures. This series traces the mathematical journey from the order-agnostic embedding tensor through the historical sinusoidal formula, element-wise injection, the query-key dot-product framework, and the full derivation of Rotary Position Embeddings (RoPE), the mechanism used in every frontier language model.";
+          } else if (sName === 'ai-tooling') {
+              seriesDesc = "A structural mapping of the agentic AI ecosystem, categorizing infrastructure components, comparing orchestration frameworks, and providing reproducible configuration guides for deploying specialized environments.";
           }
           
           seriesHtml += `

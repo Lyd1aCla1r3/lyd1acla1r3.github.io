@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connectivity and Routing — Lydia Pedersen</title>
+  <link rel="stylesheet" href="../css/styles.css?v=1.2">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .blog-post {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: var(--space-4xl) var(--space-md);
+        background: var(--bg-card);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 8px 32px rgba(183, 110, 121, 0.05);
+        border: 1px solid var(--border-subtle);
+    }
+    .blog-post h1, .blog-post h2, .blog-post h3 {
+        color: var(--text-primary);
+        font-family: var(--font-display);
+        margin-top: var(--space-2xl);
+        margin-bottom: var(--space-md);
+    }
+    .blog-post h1 { font-size: var(--fs-3xl); margin-top: 0; line-height: 1.1; }
+    .blog-post h2, .blog-post h3 { border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-sm); }
+    .blog-post h2 { font-size: var(--fs-2xl); }
+    .blog-post h3 { font-size: var(--fs-xl); }
+    .blog-post p, .blog-post li {
+        color: var(--text-secondary);
+        line-height: var(--lh-relaxed);
+        margin-bottom: var(--space-md);
+        font-size: var(--fs-md);
+    }
+    .blog-post img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-md);
+        margin: var(--space-lg) 0;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .blog-post a:not(.pagination-link) {
+        color: var(--text-accent);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s ease;
+    }
+    .blog-post a:not(.pagination-link):hover {
+        border-bottom-color: var(--text-accent);
+    }
+    .blog-post {
+        background: rgba(255, 255, 255, 0.65);
+        padding: var(--space-2xl);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-subtle);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .blog-post .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; display: flex; gap: 1rem; align-items: center; }
+    .blog-post .meta span { display: inline-flex; align-items: center; gap: 0.25rem; }
+    .blog-post p { line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1.05rem; }
+    .blog-post ul, .blog-post ol { margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem; }
+    .blog-post li { margin-bottom: 0.5rem; }
+    .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+    .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
+    .blog-post table { width: auto; margin: var(--space-2xl) 0; border-collapse: collapse; text-align: left; }
+    .blog-post th, .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post th { font-weight: 600; color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-subtle); }
+    .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 4px 10px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; font-size: 0.95rem; color: var(--rose-gold-dark); margin-right: 6px; }
+    
+    /* Post Tabs */
+    .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
+    .post-tabs::-webkit-scrollbar { display: none; }
+    .post-tab-btn { padding: 8px 16px; border: none; background: transparent; color: var(--text-muted); font-family: var(--font-display); font-size: 1rem; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; white-space: nowrap; transition: color 0.2s, border-color 0.2s; }
+    .post-tab-btn:hover { color: var(--text-primary); }
+    .post-tab-btn.active { color: var(--text-accent); border-bottom-color: var(--text-accent); font-weight: 500; }
+    .post-tab-content { display: none; padding-top: var(--space-md); }
+    .post-tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+  <!-- Fixed chip visual (always visible, bottom-left, behind everything) -->
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
+  <!-- Full-screen overlay canvas for the diagonal binary→agent→text animation -->
+  <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="../index.html" class="nav__logo" aria-label="Home">lydia<span>.</span>pedersen</a>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="../index.html#about" class="nav__link">About</a></li>
+        <li><a href="../index.html#samples" class="nav__link">Writing</a></li>
+        <li><a href="../index.html#case-studies" class="nav__link">Engineering</a></li>
+        <li><a href="../index.html#skills" class="nav__link">Skills</a></li>
+        <li><a href="index.html" class="nav__link">Blog</a></li>
+        <li><a href="../ebooks/index.html" class="nav__link">Ebooks</a></li>
+        <li><a href="../index.html#contact" class="nav__link">Contact</a></li>
+      </ul>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="nav__toggle-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-lg));">
+    <div class="container">
+<nav aria-label="breadcrumb" class="breadcrumbs"><ol>
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: AI Tooling</a></li><li aria-current="page">Connectivity and Routing</li></ol></nav>
+        <article class="blog-post series-ai-tooling">
+<h1>Connectivity and Routing</h1>
+<!-- SUMMARY: A detailed examination of the two protocol layers connecting AI applications to external services and model providers, covering the Model Context Protocol for standardized tool and data access, and AI gateways and routers for unified multi-provider traffic management. --><p>The tools covered in previous posts do not operate in isolation. A coding agent needs connections to external data sources, and an orchestrator needs to route requests across multiple model providers. This post covers two protocol layers that solve these connectivity problems.</p>
+<style>
+.eco-profile-panel {
+    border: 1.5px solid rgba(183,110,121,0.18);
+    border-radius: 10px;
+    padding: 14px 22px 18px 22px;
+    margin-bottom: 1.5rem;
+    background: rgba(255,255,255,0.85);
+    transition: border-color 0.3s ease, background 0.3s ease;
+}
+.eco-profile-panel .post-tab-content h3 {
+    margin-top: 0 !important;
+}
+.eco-profile-panel .post-tab-content.active {
+    padding-top: 0;
+}
+</style><script>
+var _ecoGatewayColors = {
+    'litellm':    { border: 'rgba(183,110,121,0.35)', bg: 'rgba(251,243,244,0.6)' },
+    'portkey':    { border: 'rgba(192,120,136,0.35)', bg: 'rgba(251,241,243,0.6)' },
+    'notdiamond': { border: 'rgba(192,136,104,0.35)', bg: 'rgba(251,244,239,0.6)' },
+    'openrouter': { border: 'rgba(184,144,40,0.35)',  bg: 'rgba(252,247,236,0.6)' }
+};
+
+function _ecoBindPanel(panelId, colorMap) {
+    var panel = document.getElementById(panelId);
+    if (!panel) return;
+    var btns = panel.parentElement.querySelectorAll('[data-tab]');
+    btns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var key = this.getAttribute('data-tab');
+            var colors = colorMap[key];
+            if (colors && panel) {
+                panel.style.borderColor = colors.border;
+                panel.style.background = colors.bg;
+            }
+        });
+    });
+    var keys = Object.keys(colorMap);
+    if (keys.length > 0) {
+        var firstColors = colorMap[keys[0]];
+        if (firstColors && panel) {
+            panel.style.borderColor = firstColors.border;
+            panel.style.background = firstColors.bg;
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    _ecoBindPanel('eco-gateway-panel', _ecoGatewayColors);
+});
+</script><h2>Model Context Protocol (MCP)</h2>
+<p>Before MCP, connecting an AI tool to an external service required a custom integration for every client-service pair. Cursor needed its own GitHub integration, its own database connector, its own filesystem bridge. So did Copilot. So did Claude Code. So did every framework and orchestrator. If there were N AI clients and M external services, the ecosystem needed N×M custom integrations, each with its own authentication scheme, data format, and maintenance burden. Adding one new service meant writing N new integrations. Adding one new AI client meant writing M new integrations.</p>
+<p>The Model Context Protocol, created by Anthropic and released as an open standard under the MIT License, solves this by defining a single interface between AI clients and external services. The analogy is USB: before USB, every device needed its own proprietary connector. USB standardized the plug, so any device works with any computer. MCP standardizes the protocol, so any MCP-compatible AI client can connect to any MCP-compatible server.</p>
+<p>MCP defines three primitives. <strong>Tools</strong> are executable functions that a server exposes, such as creating a GitHub issue, running a database query, or writing a file. <strong>Resources</strong> provide structured or unstructured data that a server can serve on demand, such as the contents of a repository, a database schema, or a document. <strong>Prompts</strong> are reusable instruction templates that a server offers to guide specific workflows. The protocol uses JSON-RPC 2.0 for message framing, with two transport options. The first is local process communication over <code>stdio</code>: the &quot;server&quot; is simply a software script, like a Node.js or Python file, downloaded to the local machine, which the client application launches as a background subprocess. The second is remote communication over Streamable HTTP with Server-Sent Events, where the server software is hosted on a different machine across the network.</p>
+<p><strong>Adoption</strong> has been broad. On the client side, Claude Desktop, Claude Code, Cursor, GitHub Copilot, Windsurf, Cline, and Zed all implement MCP client runtimes. On the framework side, LangChain via <code>@langchain/mcp-adapters</code>, LlamaIndex, and LiteLLM consume MCP servers as modular tool providers. On the server side, the ecosystem includes reference implementations for common needs, including filesystem access, Git operations, web content fetching, and persistent memory via a knowledge graph, and vendor-maintained servers like the GitHub MCP server, which was the first major platform server to support remote deployment with OAuth 2.0 authentication.</p>
+<p><strong>Registries</strong> address the discovery and installation problem. Developers publish their MCP servers to central public catalogs, like Smithery, Glama, or PulseMCP, so others can discover them. Configurations are not automatically provisioned for every server in the catalog. Instead, a user browses the registry, selects a specific server they need, for example, a PostgreSQL connector, and triggers an installation. A tool like Smithery automates this step: it downloads the selected server code and writes a configuration file telling the user&#39;s specific AI client, like Claude Desktop, exactly how and where to launch that server on the local machine.</p>
+<p>MCP is not without limitations. It currently struggles with both halves of security: authentication by verifying who is connecting and authorization by restricting what they can do. On the authentication side, the challenge applies to remote servers. The client software must authenticate with the remote server, but standards are still evolving; clients handle OAuth logins and stateful sessions inconsistently when connecting over the internet. On the authorization side, the protocol lacks fine-grained Role-Based Access Control (RBAC). For remote servers, developers can often mitigate this flaw by scoping the underlying API tokens, for example, by supplying a GitHub token restricted to read-only access. For local servers, the challenge is acute. When a local AI client launches a local MCP server, the server runs as a background process that inherits all of the user&#39;s broad operating system permissions. There is no built-in way to restrict the AI client to a safer subset of those permissions. If the server exposes a &quot;delete_file&quot; tool, the AI client can use it, because the underlying server process has the OS permission to delete files. There is no standard way to configure the server to say &quot;allow this client to read files, but deny delete requests,&quot; creating exposure to prompt injection attacks where untrusted data could instruct the model to invoke destructive tools. Furthermore, exposing many MCP tools simultaneously injects large JSON schema definitions into the model&#39;s context window, increasing token costs and potentially degrading reasoning accuracy. Most <code>stdio</code> implementations spawn direct subprocesses without default isolation or resource containment.</p>
+<h2>AI Gateways and Routers</h2>
+<p>When an application uses a single model provider, only OpenAI, or only Anthropic, the integration is straightforward: import the SDK, pass an API key, make calls. However, production systems rarely stay on one provider. Different models excel at different tasks, such as smaller models for classification and larger models for reasoning. Providers experience outages and rate limits. Pricing varies by an order of magnitude. A team that hardcodes a single provider&#39;s SDK into its application creates a coupling that makes provider switching, fallback routing, and cost optimization difficult.</p>
+<p>AI gateways and routers sit between the application and multiple model providers, abstracting away provider-specific differences. While often grouped together, the terms &quot;gateway&quot; and &quot;router&quot; describe distinct layers of routing.</p>
+<p>A <strong>gateway</strong> operates at the infrastructure layer, performing <em>operational routing</em>. It acts as a reverse proxy that routes traffic between identical or equivalent endpoints to ensure uptime and manage infrastructure constraints. For example, if an OpenAI endpoint hits a rate limit, the gateway automatically routes the next request to an Azure OpenAI fallback endpoint. Gateways also provide <em>multi-tenancy</em> through virtual API keys. Merely sharing a single provider API key across a company is a security and budgeting nightmare. Instead, the company stores its real provider keys securely in the gateway. The gateway then generates unique &quot;virtual&quot; API keys for each internal application, or tenant. In software, a tenant is a logical boundary rather than a physical one. These applications can be distributed across different servers or cloud environments. When an application makes a request over the network using its virtual key, the gateway authenticates the tenant, logs their specific usage, enforces team-specific budget caps, and swaps the virtual key for the real provider key before forwarding the request. This allows fifty different distributed teams to share one corporate provider account while remaining strictly isolated from each other.</p>
+<p>A <strong>router</strong> operates at the semantic layer, performing <em>intelligence routing</em>. Instead of rule-based dispatch for uptime, a router uses machine learning meta-models to inspect the text of the prompt and determine which model is best suited to answer it. A simple factual question gets routed to a fast, inexpensive model. A complex reasoning task gets routed to a larger, more capable model.</p>
+<p>In production, these tools compose. An application sends a request to a gateway, which consults a router to pick the best model for the prompt, and then the gateway executes the call.</p>
+<div data-tab-group="gateways">
+  <div class="post-tabs">
+    <button class="post-tab-btn active" data-tab="litellm">LiteLLM</button>
+    <button class="post-tab-btn" data-tab="portkey">Portkey</button>
+    <button class="post-tab-btn" data-tab="notdiamond">Not Diamond</button>
+    <button class="post-tab-btn" data-tab="openrouter">OpenRouter</button>
+  </div>  <div class="eco-profile-panel" id="eco-gateway-panel">  <div class="post-tab-content active" data-tab-content="litellm">
+    <h3>LiteLLM</h3>
+    <p><strong>Maker:</strong> BerriAI<br><strong>Type:</strong> Open-source gateway and proxy (MIT License)</p>
+    <p>LiteLLM is the most widely adopted open-source AI gateway. It provides a unified OpenAI-compatible interface that translates requests to 100+ provider APIs, including OpenAI, Anthropic, AWS Bedrock, Google Vertex AI, Azure OpenAI, Ollama, Groq, Mistral, and others, with minimal latency overhead of around 8ms P95. The proxy handles operational traffic management, such as round-robin load balancing, automated retries, and fallback routing during outages, spend tracking with programmatic budget caps at the user, team, or virtual API key level, and input/output guardrail integration. Observability traces export to Langfuse, OpenTelemetry, Datadog, Prometheus, and other backends. LiteLLM integrates with LangChain, LlamaIndex, CrewAI, AutoGen, and Instructor as a drop-in model provider.</p>
+    <p><em>Pricing: The core proxy and Python SDK are free and open-source. An enterprise tier offers advanced governance features with custom pricing.</em></p>
+  </div>  <div class="post-tab-content" data-tab-content="portkey">
+    <h3>Portkey</h3>
+    <p><strong>Maker:</strong> Portkey AI<br><strong>Type:</strong> Open-source gateway with control plane (MIT License core)</p>
+    <p>Portkey bundles the operational proxy capabilities of a gateway with tooling that approaches an observability platform. Beyond standard load balancing, fallback routing, and retry logic, it adds a semantic caching engine that stores responses for vector-similar prompts, reducing redundant inference costs and latency when the same type of question recurs. In-path guardrails and privacy filters handle PII redaction and safety policy enforcement before requests reach the model provider. Portkey supports 1,600+ models across 30+ providers and centralized virtual API key management for credential isolation. It also provides real-time distributed request tracing. While standard tracing tracks how long a function takes to run inside a single application, distributed request tracing tracks a request as it crosses network boundaries, stitching together the timeline from the user's application, through the gateway, to the external provider, and back.</p>
+    <p><em>Pricing: The open-source core is free to self-host. The managed cloud offers a free tier, transitioning to flat-rate monthly subscriptions for production and enterprise deployments.</em></p>
+  </div>  <div class="post-tab-content" data-tab-content="notdiamond">
+    <h3>Not Diamond</h3>
+    <p><strong>Maker:</strong> Not Diamond Inc.<br><strong>Type:</strong> Intelligent model router (proprietary)</p>
+    <p>Not Diamond occupies a different architectural layer from LiteLLM and Portkey. Rather than proxying and normalizing API traffic for infrastructure reasons, it analyzes the semantic content and complexity of each prompt using predictive meta-models and dispatches the query to whichever model is predicted to perform best for that specific input. Users configure the router by defining explicit trade-offs between response quality, latency, and token cost. Organizations can also train custom routing models on their own evaluation data, teaching the router how to optimize dispatch for their specific domain. Not Diamond provides specialized routing for multi-step agent trajectories and coding workflows. SDKs are available in Python and TypeScript, with integrations for LangChain and LlamaIndex.</p>
+    <p><em>Pricing: Uses consumption-based billing per million tokens routed, along with a free tier for initial testing.</em></p>
+  </div>  <div class="post-tab-content" data-tab-content="openrouter">
+    <h3>OpenRouter</h3>
+    <p><strong>Maker:</strong> OpenRouter Inc., acquired by Stripe in August 2026<br><strong>Type:</strong> Model marketplace and API aggregator (proprietary)</p>
+    <p>OpenRouter is a managed marketplace. It provides access to 500+ models from 60+ providers through a single API key and billing account, eliminating the need to maintain individual vendor contracts, credit minimums, and separate billing for each provider. For open-weight models hosted by multiple providers, such as Llama or Mistral, OpenRouter performs automatic provider-level arbitrage, routing requests to whichever host offers the lowest price at that moment. The API is OpenAI-compatible and supports structured outputs, such as JSON schema, tool/function calling, and multimodal inputs. A free model catalog provides rate-limited access to select open-source models for testing. OpenRouter integrates with Cursor, Continue.dev, Aider, LangChain, LlamaIndex, and any OpenAI SDK client via <code>base_url</code> reconfiguration.</p>
+    <p><em>Pricing: Users pay the underlying provider's consumption rate plus a percentage-based transaction fee on credit purchases.</em></p>
+  </div>  </div>
+</div><p>The next post covers data infrastructure. It examines vector databases for storing and retrieving semantic context alongside knowledge management pipelines for preparing raw documents.</p>
+<h2>References</h2>
+<ol>
+<li>Model Context Protocol Specification, Anthropic.</li>
+<li>GitHub MCP Server, GitHub.</li>
+<li>Smithery MCP Registry, Smithery AI.</li>
+<li>LiteLLM Documentation, BerriAI.</li>
+<li>Portkey Documentation, Portkey AI.</li>
+<li>Not Diamond Documentation, Not Diamond Inc.</li>
+<li>OpenRouter Documentation, OpenRouter Inc.</li>
+</ol>
+
+<div class="blog-pagination">
+      <a href="ai-tooling-chapter_03.html" class="pagination-link prev">
+        <span class="pagination-label">Previous</span>
+        <span class="pagination-title">Agent Orchestrators Compared</span>
+      </a>
+      <a href="ai-tooling-chapter_05.html" class="pagination-link next">
+        <span class="pagination-label">Next</span>
+        <span class="pagination-title">Data Infrastructure</span>
+      </a></div>
+        </article>
+    </div>
+  </main>
+  <script src="../js/main.js"></script>
+
+  <!-- KaTeX for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" 
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], fleqn: true});">
+  </script>
+
+  <!-- Mermaid for Diagram Rendering -->
+  <style>
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: var(--space-2xl) 0;
+    }
+    .mermaid svg {
+      filter: drop-shadow(0 4px 16px rgba(183, 110, 121, 0.12));
+    }
+  </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ 
+      startOnLoad: true, 
+      securityLevel: 'loose',
+      theme: 'base',
+      themeVariables: {
+        fontFamily: "'Outfit', -apple-system, BlinkMacSystemFont, sans-serif",
+        primaryColor: '#ffffff',
+        primaryBorderColor: '#b76e79',
+        primaryTextColor: '#8b4f5a',
+        lineColor: '#b76e79',
+        nodeBorder: '#b76e79',
+        clusterBkg: 'rgba(232, 180, 184, 0.15)',
+        clusterBorder: '#d4a0a0'
+      }
+    });
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      // Mermaid
+      const blocks = document.querySelectorAll('.language-mermaid');
+      blocks.forEach((block) => {
+        const parent = block.parentElement;
+        if (parent.tagName === 'PRE') {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          parent.replaceWith(mermaidDiv);
+        }
+      });
+      
+      // Tabs
+      const tabGroups = document.querySelectorAll('[data-tab-group]');
+      tabGroups.forEach(group => {
+        const buttons = group.querySelectorAll('[data-tab]');
+        const contents = group.querySelectorAll('[data-tab-content]');
+        
+        buttons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const target = btn.getAttribute('data-tab');
+            
+            buttons.forEach(b => b.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+            
+            btn.classList.add('active');
+            const targetContent = group.querySelector(`[data-tab-content="${target}"]`);
+            if (targetContent) targetContent.classList.add('active');
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

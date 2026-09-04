@@ -69,6 +69,16 @@
     .blog-post th { font-weight: 600; color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-subtle); }
     .blog-post td { padding: 8px 16px; border: none; }
     .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 4px 10px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; font-size: 0.95rem; color: var(--rose-gold-dark); margin-right: 6px; }
+    
+    /* Post Tabs */
+    .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
+    .post-tabs::-webkit-scrollbar { display: none; }
+    .post-tab-btn { padding: 8px 16px; border: none; background: transparent; color: var(--text-muted); font-family: var(--font-display); font-size: 1rem; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; white-space: nowrap; transition: color 0.2s, border-color 0.2s; }
+    .post-tab-btn:hover { color: var(--text-primary); }
+    .post-tab-btn.active { color: var(--text-accent); border-bottom-color: var(--text-accent); font-weight: 500; }
+    .post-tab-content { display: none; padding-top: var(--space-md); }
+    .post-tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body>
@@ -100,7 +110,7 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Positional encoding</a></li><li aria-current="page">Part 6: Rotary Position Embeddings: Computing the Rotated Vectors</li></ol></nav>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Positional Encoding</a></li><li aria-current="page">Part 6: Rotary Position Embeddings: Computing the Rotated Vectors</li></ol></nav>
         <article class="blog-post series-positional-encoding">
 <h1>Part 6: Rotary Position Embeddings: Computing the Rotated Vectors</h1>
 <!-- SUMMARY: The rotation matrix derived in the preceding chapter is evaluated at every position in the toy sequence. Each 3×3 matrix is computed from cos(t) and sin(t), producing four distinct rotation matrices R_0 through R_3. These matrices are applied to every query and key vector from Chapter 4, producing the rotated vectors that the Transformer's attention mechanism will consume. The orthogonality of the rotation matrices guarantees that vector norms are preserved. --><p><em>Prefer to read this offline? <a href="../assets/docs/positional-encoding-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Positional Encoding Ebook here.</a></em></p><p>The preceding chapter derived the $3 \times 3$ rotation matrix for the toy model&#39;s odd-dimensional embedding space ($d_{model} = 3$). The upper-left $2 \times 2$ block rotates the complete dimension pair (dimensions 0 and 1) by the position-dependent angle $t \cdot \theta_0 = t$ radians, while the lower-right $1 \times 1$ identity block passes dimension 2 through unchanged. This chapter evaluates that matrix at every position in the toy sequence, proves its orthogonality, and applies the resulting rotations to every query and key vector.</p>
@@ -351,6 +361,7 @@ $$</p>
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
     mermaid.initialize({ 
       startOnLoad: true, 
+      securityLevel: 'loose',
       theme: 'base',
       themeVariables: {
         fontFamily: "'Outfit', -apple-system, BlinkMacSystemFont, sans-serif",
@@ -365,6 +376,7 @@ $$</p>
     });
     
     document.addEventListener('DOMContentLoaded', () => {
+      // Mermaid
       const blocks = document.querySelectorAll('.language-mermaid');
       blocks.forEach((block) => {
         const parent = block.parentElement;
@@ -374,6 +386,26 @@ $$</p>
           mermaidDiv.textContent = block.textContent;
           parent.replaceWith(mermaidDiv);
         }
+      });
+      
+      // Tabs
+      const tabGroups = document.querySelectorAll('[data-tab-group]');
+      tabGroups.forEach(group => {
+        const buttons = group.querySelectorAll('[data-tab]');
+        const contents = group.querySelectorAll('[data-tab-content]');
+        
+        buttons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const target = btn.getAttribute('data-tab');
+            
+            buttons.forEach(b => b.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+            
+            btn.classList.add('active');
+            const targetContent = group.querySelector(`[data-tab-content="${target}"]`);
+            if (targetContent) targetContent.classList.add('active');
+          });
+        });
       });
     });
   </script>

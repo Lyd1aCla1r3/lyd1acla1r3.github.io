@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coding Agents Compared — Lydia Pedersen</title>
+  <link rel="stylesheet" href="../css/styles.css?v=1.2">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .blog-post {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: var(--space-4xl) var(--space-md);
+        background: var(--bg-card);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 8px 32px rgba(183, 110, 121, 0.05);
+        border: 1px solid var(--border-subtle);
+    }
+    .blog-post h1, .blog-post h2, .blog-post h3 {
+        color: var(--text-primary);
+        font-family: var(--font-display);
+        margin-top: var(--space-2xl);
+        margin-bottom: var(--space-md);
+    }
+    .blog-post h1 { font-size: var(--fs-3xl); margin-top: 0; line-height: 1.1; }
+    .blog-post h2, .blog-post h3 { border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-sm); }
+    .blog-post h2 { font-size: var(--fs-2xl); }
+    .blog-post h3 { font-size: var(--fs-xl); }
+    .blog-post p, .blog-post li {
+        color: var(--text-secondary);
+        line-height: var(--lh-relaxed);
+        margin-bottom: var(--space-md);
+        font-size: var(--fs-md);
+    }
+    .blog-post img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-md);
+        margin: var(--space-lg) 0;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .blog-post a:not(.pagination-link) {
+        color: var(--text-accent);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s ease;
+    }
+    .blog-post a:not(.pagination-link):hover {
+        border-bottom-color: var(--text-accent);
+    }
+    .blog-post {
+        background: rgba(255, 255, 255, 0.65);
+        padding: var(--space-2xl);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-subtle);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .blog-post .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; display: flex; gap: 1rem; align-items: center; }
+    .blog-post .meta span { display: inline-flex; align-items: center; gap: 0.25rem; }
+    .blog-post p { line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1.05rem; }
+    .blog-post ul, .blog-post ol { margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem; }
+    .blog-post li { margin-bottom: 0.5rem; }
+    .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+    .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
+    .blog-post table { width: auto; margin: var(--space-2xl) 0; border-collapse: collapse; text-align: left; }
+    .blog-post th, .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post th { font-weight: 600; color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-subtle); }
+    .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 4px 10px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; font-size: 0.95rem; color: var(--rose-gold-dark); margin-right: 6px; }
+    
+    /* Post Tabs */
+    .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
+    .post-tabs::-webkit-scrollbar { display: none; }
+    .post-tab-btn { padding: 8px 16px; border: none; background: transparent; color: var(--text-muted); font-family: var(--font-display); font-size: 1rem; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; white-space: nowrap; transition: color 0.2s, border-color 0.2s; }
+    .post-tab-btn:hover { color: var(--text-primary); }
+    .post-tab-btn.active { color: var(--text-accent); border-bottom-color: var(--text-accent); font-weight: 500; }
+    .post-tab-content { display: none; padding-top: var(--space-md); }
+    .post-tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+  <!-- Fixed chip visual (always visible, bottom-left, behind everything) -->
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
+  <!-- Full-screen overlay canvas for the diagonal binary→agent→text animation -->
+  <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="../index.html" class="nav__logo" aria-label="Home">lydia<span>.</span>pedersen</a>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="../index.html#about" class="nav__link">About</a></li>
+        <li><a href="../index.html#samples" class="nav__link">Writing</a></li>
+        <li><a href="../index.html#case-studies" class="nav__link">Engineering</a></li>
+        <li><a href="../index.html#skills" class="nav__link">Skills</a></li>
+        <li><a href="index.html" class="nav__link">Blog</a></li>
+        <li><a href="../ebooks/index.html" class="nav__link">Ebooks</a></li>
+        <li><a href="../index.html#contact" class="nav__link">Contact</a></li>
+      </ul>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="nav__toggle-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-lg));">
+    <div class="container">
+<nav aria-label="breadcrumb" class="breadcrumbs"><ol>
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: AI Tooling</a></li><li aria-current="page">Coding Agents Compared</li></ol></nav>
+        <article class="blog-post series-ai-tooling">
+<h1>Coding Agents Compared</h1>
+<!-- SUMMARY: A deep-dive comparison of Cursor, GitHub Copilot, Windsurf, Cline, Claude Code, and Antigravity, including tabbed profiles and feature matrices. --><p>Writing code involves repetitive tasks: renaming variables across files, running test suites after changes, and searching through unfamiliar codebases for relevant logic. Developers spend significant time context-switching between the editor, the terminal, and external documentation. Coding agents automate these workflows by giving a language model direct access to the development environment. The agent reads the codebase, proposes multi-file edits, runs terminal commands, and iterates based on build or test results. Unlike basic autocomplete, which suggests the next few tokens of code, a coding agent operates at the task level, taking instructions like &quot;add input validation to all API endpoints&quot; or &quot;refactor this module to use dependency injection.&quot;</p>
+<p>Before AI-native IDEs existed, developers relied on web chat interfaces to generate code, then manually copied snippets back and forth into their editor. This process loses the broader repository context, forcing the developer to repeatedly explain how the project is structured. Standard editor plugins improved on this by bringing AI into the editor, but they remain constrained by the extension APIs of their host editors, limiting their ability to orchestrate complex, multi-file refactors or modify the editor&#39;s core behavior. The tools in this post represent six distinct approaches to solving these problems, selected for their adoption, architectural distinctiveness, and ecosystem influence: two AI-native IDEs, Cursor and Windsurf; two editor extensions, GitHub Copilot and Cline; one CLI tool, Claude Code; and one orchestration platform, Antigravity.</p>
+<style>
+.agent-profile-panel {
+    border: 1.5px solid rgba(183,110,121,0.18);
+    border-radius: 10px;
+    padding: 14px 22px 18px 22px;
+    margin-bottom: 1.5rem;
+    background: rgba(255,255,255,0.85);
+    transition: border-color 0.3s ease, background 0.3s ease;
+}
+.agent-profile-panel .post-tab-content h3 {
+    margin-top: 0 !important;
+}
+.agent-profile-panel .post-tab-content.active {
+    padding-top: 0;
+}
+</style><script>
+var _agentColors = {
+    'cursor':       { border: 'rgba(183,110,121,0.35)', bg: 'rgba(251,243,244,0.6)' },
+    'windsurf':     { border: 'rgba(192,120,136,0.35)', bg: 'rgba(251,241,243,0.6)' },
+    'copilot':      { border: 'rgba(192,136,104,0.35)', bg: 'rgba(251,244,239,0.6)' },
+    'cline':        { border: 'rgba(184,144,40,0.35)',  bg: 'rgba(252,247,236,0.6)' },
+    'claude':       { border: 'rgba(168,104,104,0.35)', bg: 'rgba(250,241,239,0.6)' },
+    'antigravity':  { border: 'rgba(184,128,88,0.35)',  bg: 'rgba(251,243,237,0.6)' }
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+    var panel = document.getElementById('agent-profile-panel');
+    if (!panel) return;
+    var btns = panel.parentElement.querySelectorAll('[data-tab]');
+    btns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var key = this.getAttribute('data-tab');
+            var colors = _agentColors[key];
+            if (colors && panel) {
+                panel.style.borderColor = colors.border;
+                panel.style.background = colors.bg;
+            }
+        });
+    });
+    var firstColors = _agentColors['cursor'];
+    if (firstColors && panel) {
+        panel.style.borderColor = firstColors.border;
+        panel.style.background = firstColors.bg;
+    }
+});
+</script><div data-tab-group="agents">
+  <div class="post-tabs">
+    <button class="post-tab-btn active" data-tab="cursor">Cursor</button>
+    <button class="post-tab-btn" data-tab="windsurf">Windsurf</button>
+    <button class="post-tab-btn" data-tab="copilot">GitHub Copilot</button>
+    <button class="post-tab-btn" data-tab="cline">Cline</button>
+    <button class="post-tab-btn" data-tab="claude">Claude Code</button>
+    <button class="post-tab-btn" data-tab="antigravity">Antigravity</button>
+  </div>  <div class="agent-profile-panel" id="agent-profile-panel">  <div class="post-tab-content active" data-tab-content="cursor">
+    <h3>Cursor</h3>
+    <p><strong>Maker:</strong> Anysphere<br><strong>Architecture:</strong> AI-native IDE (VS Code fork)</p>
+    <p>Cursor was the first AI-native IDE to gain widespread adoption, establishing the category. Rather than bolting AI onto an existing editor through a plugin, Cursor forks VS Code entirely, retaining full compatibility with its extensions and settings while gaining unrestricted access to the editor's internals. This architectural choice means the AI is not limited by an extension API. It can modify how the editor renders diffs, intercept file save events, control the integrated terminal, and reshape the editing experience at the deepest level.</p>
+    <p>The practical result is an Agent Mode that operates as a full participant in the development environment. The agent autonomously searches through files, reads external documentation, runs terminal commands, and applies edits across multiple files simultaneously. Cursor controls the editor itself, not just a sidebar panel, allowing it to present multi-file changes as inline diffs within the natural editing flow rather than as disconnected chat output that needs to be manually applied.</p>
+    <p>Like several tools in this comparison, Cursor builds a persistent embedding index of the repository, allowing the model to retrieve semantically relevant code before generating a response. It uses a hybrid search architecture that combines vector-based semantic retrieval, for finding conceptually related code even when naming conventions differ, with a fast trigram grep engine for precise symbol and string matches. The combination of deep editor integration and codebase indexing allows the agent to verify its own work by running builds and tests, then iterating on failures without developer intervention.</p>
+  </div>  <div class="post-tab-content" data-tab-content="windsurf">
+    <h3>Windsurf</h3>
+    <p><strong>Maker:</strong> Codeium (core team acqui-hired by Google; Windsurf brand and codebase acquired by Cognition AI)<br><strong>Architecture:</strong> AI-native IDE (VS Code fork)</p>
+    <p>Most coding agents operate in a reactive loop: they wait for the developer to write a prompt, process it, and return a response. Between prompts, the agent is idle. It has no awareness of what the developer is doing in the editor, what files have changed, or what errors the linter is reporting. Every new request starts from a blank conversational slate, requiring the developer to re-establish context each time.</p>
+    <p>Windsurf's primary differentiator is its proactive assistance model, implemented through an architecture called Cascade. Cascade is not a model itself, but an agentic execution system that orchestrates both proprietary models, including Codeium's SWE-1 model family fine-tuned specifically for code reasoning, and third-party frontier models such as Claude and GPT-4o. Unlike a standard chat interface, Cascade maintains a continuous background understanding of the workspace. It passively monitors file changes, linter output, and terminal errors in real time, enabling it to suggest fixes or next steps without requiring the developer to copy-paste errors into a chat prompt.</p>
+    <p>This proactive model is most visible in a feature called Supercomplete. Standard autocomplete predicts text at the current cursor position. Supercomplete evaluates recent edits across multiple files, codebase index context, and cursor movement patterns to predict the developer's intent at a broader level. It can suggest multi-line edits, deletions, and signature changes that span dependent files. By coupling these predictions with real-time awareness of the workspace state, the system reduces the number of explicit prompts required to complete a multi-file task.</p>
+  </div>  <div class="post-tab-content" data-tab-content="copilot">
+    <h3>GitHub Copilot</h3>
+    <p><strong>Maker:</strong> GitHub / Microsoft<br><strong>Architecture:</strong> IDE extension + CLI + Web</p>
+    <p>Developers working in established enterprise environments often operate under strict constraints. They may be locked into specific editors like Visual Studio or JetBrains due to company policy, specialized tooling requirements, or deeply ingrained team workflows. For these teams, adopting a completely new IDE fork introduces unacceptable friction and requires navigating complex security and compliance hurdles. They need an agent that integrates into their existing environment rather than replacing it.</p>
+    <p>GitHub Copilot addresses this requirement through the broadest editor coverage of any tool in this comparison. It began as an inline autocomplete extension and has evolved into a task-level agent with chat interfaces, agent mode, and web-based planning environments. It ships as an extension for VS Code, Visual Studio, the JetBrains suite, Xcode, and Eclipse. It also provides a dedicated command-line interface and a web-based agent accessible directly from GitHub.com.</p>
+    <p>The primary differentiator for Copilot is its native connection to the GitHub platform. While most coding agents only see the local file system, Copilot has built-in, zero-configuration access to GitHub Issues, pull requests, and discussion threads. When tasked with fixing a bug, the agent can read the original issue report, review the discussion thread where the team debated the solution, and analyze the specific pull request that introduced the regression, all alongside the local codebase. For enterprise teams centralized on GitHub, this built-in connectivity eliminates the need to configure external integrations for project management context that other tools would require an MCP server to access.</p>
+  </div>  <div class="post-tab-content" data-tab-content="cline">
+    <h3>Cline</h3>
+    <p><strong>Maker:</strong> Open Source (Apache 2.0)<br><strong>Architecture:</strong> VS Code extension</p>
+    <p>Proprietary coding agents typically operate as closed systems. They force developers to use a specific set of models, abstract away the system prompts that govern the agent's behavior, and route data through vendor-controlled servers. This lack of transparency prevents developers from inspecting how data is used or customizing the agent's reasoning process for niche use cases. For security-conscious organizations and developers who want complete control over their tooling, sending proprietary source code to a black-box service introduces unacceptable risk. They require a transparent system where they control the data flow and the underlying intelligence.</p>
+    <p>Cline provides an open-source alternative that prioritizes transparency and developer control. Deployed as a VS Code extension, it operates on a "bring your own key" (BYOK) model. Developers provide API keys for the language models of their choice, whether that is a cloud provider like OpenAI or a local model running on their own hardware. The key distinction is that requests travel directly from the developer's machine to whichever model provider the developer selected, without being routed through Cline's own infrastructure first. Proprietary coding agents act as intermediaries, proxying requests through their own servers, where request data is subject to the vendor's policies. Cline removes that intermediary entirely. The extension also exposes the entire reasoning loop, allowing the developer to see exactly what context the agent is reading, what tools it is calling, and what prompts are being generated.</p>
+    <p>Cline is open source, so the transparency extends beyond the runtime reasoning loop to the agent's own source code. A developer can read exactly how Cline constructs its system prompts, how it decides which files to include as context, and how it formats tool calls. If the default behavior does not fit a specific workflow, the developer can modify the agent itself, adjusting prompt templates, changing context selection heuristics, or adding custom pre-processing steps. This level of access is unavailable in proprietary tools, where the agent's internal logic is a trade secret. For organizations that require a full security audit of every tool that touches their codebase, Cline is the only coding agent in this comparison where the complete implementation can be reviewed, forked, and self-hosted.</p>
+  </div>  <div class="post-tab-content" data-tab-content="claude">
+    <h3>Claude Code</h3>
+    <p><strong>Maker:</strong> Anthropic<br><strong>Architecture:</strong> CLI-based agent</p>
+    <p>A significant segment of the developer community prefers to work exclusively in the terminal. They rely on extensively customized, keyboard-driven environments using tools like Neovim, tmux, and standard Unix utilities. For these developers, graphical IDE integrations are often perceived as intrusive, resource-heavy, and disruptive to their established workflows. IDE-bound agents force them to abandon their preferred environment and adopt a graphical interface just to access AI assistance. And while IDE agents excel at interactive use, a CLI tool is the natural fit for automation: it can be invoked as a single command, piped into other tools, and run on headless CI servers that have no graphical display at all.</p>
+    <p>Claude Code operates entirely as a command-line interface tool. Deployed as either a standalone binary or an npm package, it interacts directly with the file system, reads source code, runs shell commands, executes test suites, and commits changes using standard Git workflows. A developer can navigate to a project directory in their terminal, invoke the agent, and describe a complex refactoring task. The agent handles the file modifications and command executions headlessly, printing its reasoning and progress directly to the standard output stream.</p>
+    <p>It integrates into existing shell-based workflows by running in the terminal. It can be piped into other command-line utilities, driven by bash scripts, and deployed in headless server environments. This makes it a natural fit for DevOps tasks, infrastructure-as-code management, and automated continuous integration loops where a graphical user interface is unavailable. Claude Code also supports sub-agent delegation: the primary agent can spawn isolated sub-tasks that execute in their own context windows and return concise results, preventing exploratory work from polluting the main conversation.</p>
+  </div>  <div class="post-tab-content" data-tab-content="antigravity">
+    <h3>Antigravity</h3>
+    <p><strong>Maker:</strong> Google DeepMind<br><strong>Architecture:</strong> Agent orchestration IDE + CLI + SDK</p>
+    <p>Complex software engineering tasks rarely fall into a single domain. Building a new feature requires updating a database schema, modifying the backend API, adjusting frontend state management, and writing deployment scripts. Most coding agents handle this by working through each concern sequentially in a single context, which can lead to context window overflow or loss of focus on large tasks. Some agents, including Claude Code, can spawn sub-tasks to distribute work, and any developer can tell any agent to work on a separate git branch for safety. These are standard capabilities, not unique to any one tool.</p>
+    <p>What distinguishes Antigravity is that orchestration is a first-class platform concern rather than an emergent behavior of the underlying model. The platform provides explicit infrastructure for defining specialized agent types, assigning different language models to different agent roles, and managing sub-agent lifecycles. Rather than the model itself deciding when to delegate, as with Claude Code's task spawning, the platform manages the routing: a developer or the primary agent can specify that database work should use one model while frontend work uses another, and the platform handles the assignment, context isolation, and result aggregation. This multi-model routing within a single workflow is managed at the infrastructure level.</p>
+    <p>Antigravity's workspace branching operates similarly: while any coding agent can be instructed to create a git branch, the platform automates workspace isolation at the file system level, cloning the working directory into a sandboxed environment before the agent begins. The developer does not need to remember to instruct the agent to branch. The platform also provides access through three interfaces, including an IDE, a command-line tool, and a Python SDK, allowing the same orchestration primitives to be used interactively, from the terminal, or programmatically within larger systems.</p>
+  </div>  </div>
+</div><h2>Comparison Tables</h2>
+<p>Selecting a coding agent depends heavily on the existing development environment, budget, and the types of tasks the developer needs to automate. The tables below compare the six tools across five dimensions. Each table is followed by a brief synthesis of the key takeaway.</p>
+<h3>Architecture and Runtime Requirements</h3>
+<p>A coding agent&#39;s deployment model determines how it integrates into the developer&#39;s existing environment. The <strong>Architecture</strong> column describes what kind of software the tool is, such as a standalone application, extension, or command-line binary. The <strong>Deployment</strong> column describes how it is installed.</p>
+<table>
+<thead>
+<tr>
+<th>Use Case</th>
+<th>Tool</th>
+<th>Architecture</th>
+<th>Deployment</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Full IDE replacement</td>
+<td><strong>Cursor</strong></td>
+<td>VS Code fork</td>
+<td>Standalone application</td>
+</tr>
+<tr>
+<td>Full IDE replacement</td>
+<td><strong>Windsurf</strong></td>
+<td>VS Code fork</td>
+<td>Standalone application</td>
+</tr>
+<tr>
+<td>Keep existing editor</td>
+<td><strong>GitHub Copilot</strong></td>
+<td>Extension + CLI + Web</td>
+<td>Extension for VS Code, JetBrains, Xcode, Eclipse</td>
+</tr>
+<tr>
+<td>Keep existing editor</td>
+<td><strong>Cline</strong></td>
+<td>Extension</td>
+<td>Extension for VS Code</td>
+</tr>
+<tr>
+<td>Terminal-first workflow</td>
+<td><strong>Claude Code</strong></td>
+<td>CLI</td>
+<td>Standalone binary or npm package</td>
+</tr>
+<tr>
+<td>Orchestration and workspaces</td>
+<td><strong>Antigravity</strong></td>
+<td>IDE + CLI + SDK</td>
+<td>Standalone application + CLI</td>
+</tr>
+</tbody></table>
+<p>A VS Code fork provides the tightest integration (the agent controls the entire editor) but requires the developer to migrate settings and extensions from their current editor. An extension preserves the existing environment but is constrained by the host editor&#39;s extension API, which may limit what the agent can do. A CLI tool imposes no editor requirements at all, but provides no graphical interface for reviewing diffs or navigating code.</p>
+<h3>Core Capabilities</h3>
+<p>Beyond generating text, a coding agent needs to interact with the development environment. The <strong>Codebase Indexing</strong> column distinguishes tools that build a persistent searchable index of the entire repository ahead of time, known as pre-indexed, from those that search files on each request using text-matching tools like ripgrep, known as on-demand search. Pre-indexing enables the agent to find semantically related code across the project, while on-demand search is limited to exact or pattern-based matches. <strong>Built-in Browser Automation</strong> indicates whether the tool ships with native browser control out of the box, without requiring additional MCP server setup. Since all six tools are MCP clients, any of them can add browser automation by connecting a Playwright or Puppeteer MCP server.</p>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Cursor</th>
+<th>Windsurf</th>
+<th>Copilot</th>
+<th>Cline</th>
+<th>Claude Code</th>
+<th>Antigravity</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>File editing</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Terminal execution</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Codebase indexing</td>
+<td>Pre-indexed</td>
+<td>Pre-indexed</td>
+<td>Pre-indexed</td>
+<td>On-demand search</td>
+<td>On-demand search</td>
+<td>Pre-indexed</td>
+</tr>
+<tr>
+<td>Built-in browser automation</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>Yes (native Puppeteer)</td>
+<td>No</td>
+<td>Yes (via sub-agent)</td>
+</tr>
+<tr>
+<td>Multi-file refactor</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Sub-agent delegation</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+</tbody></table>
+<p>All six tools can edit files and run terminal commands. The primary difference is in context retrieval. Pre-indexed tools compute embeddings for the repository and retrieve semantically relevant code before generating a response, which helps the model find related logic even when exact keywords do not match. On-demand search tools run file system searches, such as ripgrep or glob matching, on each request, which is fast for exact matches but can miss semantically related code that uses different naming conventions.</p>
+<h3>Pricing and Model Support</h3>
+<p>Coding agents follow two pricing strategies. <strong>Subscription</strong> tools charge a monthly fee that bundles model access, so the developer pays one flat rate and does not manage API keys or per-token costs. <strong>BYOK (Bring Your Own Key)</strong> tools require the developer to provide their own API keys from a model provider, paying that provider directly for each token processed. Most tools now support both: a subscription tier that includes bundled model access, plus the option to connect additional models via API keys.</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Pricing</th>
+<th>Bundled Model Access</th>
+<th>BYOK</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Cursor</strong></td>
+<td>Subscription, including free tier, Pro, and Business</td>
+<td>Yes, including Claude, GPT, and Gemini</td>
+<td>Yes, for any OpenAI-compatible endpoint, Anthropic, Google, Azure, and Bedrock</td>
+</tr>
+<tr>
+<td><strong>Windsurf</strong></td>
+<td>Subscription, including free tier and paid tiers</td>
+<td>Yes, including SWE-1 proprietary, Claude, and GPT-4o</td>
+<td>Yes, for Anthropic, OpenAI, and supported providers</td>
+</tr>
+<tr>
+<td><strong>GitHub Copilot</strong></td>
+<td>Subscription, including free tier, Individual, Business, and Enterprise</td>
+<td>Yes, including OpenAI, Claude, and Gemini</td>
+<td>Yes, for Anthropic, OpenAI, Google, Azure, Bedrock, Ollama, and OpenAI-compatible endpoints</td>
+</tr>
+<tr>
+<td><strong>Cline</strong></td>
+<td>Free and open source</td>
+<td>No, BYOK required</td>
+<td>Yes, for any provider including local models</td>
+</tr>
+<tr>
+<td><strong>Claude Code</strong></td>
+<td>Pay-per-token or subscription, including Pro, Max, Team, and Enterprise</td>
+<td>Yes, Claude models via subscription tiers</td>
+<td>Yes, for Anthropic API keys</td>
+</tr>
+<tr>
+<td><strong>Antigravity</strong></td>
+<td>Subscription, including free tier, Pro, and Ultra</td>
+<td>Yes, including Gemini, Claude, and others via subscription</td>
+<td>Yes, connect additional providers via API key</td>
+</tr>
+</tbody></table>
+<p>The trade-off is predictability versus flexibility. Subscription tiers provide a fixed monthly cost, making budgeting straightforward. BYOK provides maximum flexibility, allowing any model from any provider including locally-hosted models, but shifts cost management to the developer. The convergence toward supporting both models means the choice increasingly comes down to which bundled models and editor integrations best fit the team&#39;s existing workflow.</p>
+<h3>Integration Points</h3>
+<p>Agents need to connect to external systems, such as databases, issue trackers, and cloud services, to complete real-world tasks. All six tools in this comparison are <strong>MCP clients</strong>, meaning they can all connect to any Model Context Protocol server as described in the preface [1]. MCP is a shared baseline capability, not a differentiator. The columns below focus on what varies across tools: <strong>Extension Ecosystem</strong> describes what plugin systems are available for adding third-party functionality, and <strong>Native Platform Integrations</strong> lists built-in connections to specific services that ship with the tool and require no additional configuration.</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>MCP Client</th>
+<th>Extension Ecosystem</th>
+<th>Native Platform Integrations</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Cursor</strong></td>
+<td>Yes</td>
+<td>VS Code extensions</td>
+<td>None</td>
+</tr>
+<tr>
+<td><strong>Windsurf</strong></td>
+<td>Yes</td>
+<td>VS Code extensions, integrated MCP marketplace</td>
+<td>None</td>
+</tr>
+<tr>
+<td><strong>GitHub Copilot</strong></td>
+<td>Yes</td>
+<td>VS Code, JetBrains, Xcode, Eclipse extensions</td>
+<td>GitHub Issues, PRs, and Discussions built-in</td>
+</tr>
+<tr>
+<td><strong>Cline</strong></td>
+<td>Yes</td>
+<td>VS Code extensions</td>
+<td>None</td>
+</tr>
+<tr>
+<td><strong>Claude Code</strong></td>
+<td>Yes</td>
+<td>None, as it is a CLI tool</td>
+<td>None</td>
+</tr>
+<tr>
+<td><strong>Antigravity</strong></td>
+<td>Yes</td>
+<td>Custom skill and tool system</td>
+<td>Sub-agent delegation as a native integration mechanism</td>
+</tr>
+</tbody></table>
+<p>Since all six tools support MCP, any of them can connect to the same set of MCP servers, such as a Postgres, Slack, or Jira MCP server, with identical configuration. The differentiator is what each tool provides <em>beyond</em> MCP. Copilot is the only tool with a native, zero-configuration connection to a major platform such as GitHub, giving it access to issues, pull requests, and discussions without the developer setting up an MCP server for those services. The other tools can access GitHub data through an MCP server, but that requires finding or building one and configuring the connection.</p>
+<h3>Strongest Use Cases and Known Limitations</h3>
+<p>Each tool is optimized for a specific development workflow and carries trade-offs that make it less suitable for others.</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Strongest Use Case</th>
+<th>Known Limitation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Cursor</strong></td>
+<td>Rapid full-stack development with deep codebase context and inline diffs</td>
+<td>Proprietary features, such as Tab and Fast Apply, require subscription and cannot use BYOK models</td>
+</tr>
+<tr>
+<td><strong>Windsurf</strong></td>
+<td>Proactive, repository-wide refactoring with minimal prompting</td>
+<td>Ownership transition, via Google acqui-hire and Cognition acquisition, creates uncertainty about the product&#39;s long-term roadmap</td>
+</tr>
+<tr>
+<td><strong>GitHub Copilot</strong></td>
+<td>Enterprise teams centralized on the GitHub platform</td>
+<td>Tightest integration is within the Microsoft/GitHub ecosystem; teams not using GitHub get less value from native connectors</td>
+</tr>
+<tr>
+<td><strong>Cline</strong></td>
+<td>Transparent, privacy-first workflows with full model flexibility</td>
+<td>No bundled models; requires the developer to configure API keys and manage per-token costs</td>
+</tr>
+<tr>
+<td><strong>Claude Code</strong></td>
+<td>Terminal-based automation, CI/CD scripting, and headless workflows</td>
+<td>No graphical interface for reviewing multi-file diffs visually</td>
+</tr>
+<tr>
+<td><strong>Antigravity</strong></td>
+<td>Complex multi-domain tasks requiring platform-level orchestration and multi-model routing</td>
+<td>Sub-agent orchestration and workspace branching introduce a steeper learning curve than single-agent tools</td>
+</tr>
+</tbody></table>
+<p>Developers working alone on greenfield projects often choose an AI-native IDE for speed. Enterprise developers working in regulated environments lean toward established extensions with strict data governance. Developers needing transparency and control prefer open-source tools with BYOK capabilities. Teams tackling large, multi-domain codebases benefit from orchestration-first platforms that can delegate specialized subtasks.</p>
+<h2>References</h2>
+<ol>
+<li>Model Context Protocol Specification, Linux Foundation Agentic AI.</li>
+</ol>
+
+<div class="blog-pagination">
+      <a href="ai-tooling-preface.html" class="pagination-link prev">
+        <span class="pagination-label">Previous</span>
+        <span class="pagination-title">Preface: The AI Tooling Landscape</span>
+      </a>
+      <a href="ai-tooling-chapter_02.html" class="pagination-link next">
+        <span class="pagination-label">Next</span>
+        <span class="pagination-title">Agent Frameworks Compared</span>
+      </a></div>
+        </article>
+    </div>
+  </main>
+  <script src="../js/main.js"></script>
+
+  <!-- KaTeX for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" 
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], fleqn: true});">
+  </script>
+
+  <!-- Mermaid for Diagram Rendering -->
+  <style>
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: var(--space-2xl) 0;
+    }
+    .mermaid svg {
+      filter: drop-shadow(0 4px 16px rgba(183, 110, 121, 0.12));
+    }
+  </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ 
+      startOnLoad: true, 
+      securityLevel: 'loose',
+      theme: 'base',
+      themeVariables: {
+        fontFamily: "'Outfit', -apple-system, BlinkMacSystemFont, sans-serif",
+        primaryColor: '#ffffff',
+        primaryBorderColor: '#b76e79',
+        primaryTextColor: '#8b4f5a',
+        lineColor: '#b76e79',
+        nodeBorder: '#b76e79',
+        clusterBkg: 'rgba(232, 180, 184, 0.15)',
+        clusterBorder: '#d4a0a0'
+      }
+    });
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      // Mermaid
+      const blocks = document.querySelectorAll('.language-mermaid');
+      blocks.forEach((block) => {
+        const parent = block.parentElement;
+        if (parent.tagName === 'PRE') {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          parent.replaceWith(mermaidDiv);
+        }
+      });
+      
+      // Tabs
+      const tabGroups = document.querySelectorAll('[data-tab-group]');
+      tabGroups.forEach(group => {
+        const buttons = group.querySelectorAll('[data-tab]');
+        const contents = group.querySelectorAll('[data-tab-content]');
+        
+        buttons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const target = btn.getAttribute('data-tab');
+            
+            buttons.forEach(b => b.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+            
+            btn.classList.add('active');
+            const targetContent = group.querySelector(`[data-tab-content="${target}"]`);
+            if (targetContent) targetContent.classList.add('active');
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>
