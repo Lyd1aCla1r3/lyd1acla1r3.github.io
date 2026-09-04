@@ -381,13 +381,16 @@ if (posts.length > 0) {
           const dedicatedGuideContent = `
           <div class="series-group" style="margin-top: var(--space-2xl);">
               <div class="series-items">
-                  ${gPosts.map(post => `
+                  ${gPosts.map(post => {
+                      const displayTitle = post.url.includes('configuration') ? 'Configuration' : 'Setup Guide';
+                      return `
                   <a href="${post.url}">
                       <article class="blog-item series-item">
-                          <h2>${post.title}</h2>
+                          <h2>${displayTitle}</h2>
                           <p>${post.summary}</p>
                       </article>
-                  </a>`).join('')}
+                  </a>`;
+                  }).join('')}
               </div>
           </div>`;
           
