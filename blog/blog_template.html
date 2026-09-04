@@ -69,6 +69,11 @@
     .blog-post th { font-weight: 600; color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-subtle); }
     .blog-post td { padding: 8px 16px; border: none; }
     .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 4px 10px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; font-size: 0.95rem; color: var(--rose-gold-dark); margin-right: 6px; }
+
+    /* Responsive: horizontally scroll tables on mobile */
+    @media (max-width: 768px) {
+      .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
