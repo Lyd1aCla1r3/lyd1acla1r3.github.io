@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enterprise Agentic Pipeline — Lydia Pedersen</title>
+  <link rel="stylesheet" href="../css/styles.css?v=1.2">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .blog-post {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: var(--space-4xl) var(--space-md);
+        background: var(--bg-card);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 8px 32px rgba(183, 110, 121, 0.05);
+        border: 1px solid var(--border-subtle);
+    }
+    .blog-post h1, .blog-post h2, .blog-post h3 {
+        color: var(--text-primary);
+        font-family: var(--font-display);
+        margin-top: var(--space-2xl);
+        margin-bottom: var(--space-md);
+    }
+    .blog-post h1 { font-size: var(--fs-3xl); margin-top: 0; line-height: 1.1; }
+    .blog-post h2, .blog-post h3 { border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-sm); }
+    .blog-post h2 { font-size: var(--fs-2xl); }
+    .blog-post h3 { font-size: var(--fs-xl); }
+    .blog-post p, .blog-post li {
+        color: var(--text-secondary);
+        line-height: var(--lh-relaxed);
+        margin-bottom: var(--space-md);
+        font-size: var(--fs-md);
+    }
+    .blog-post img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-md);
+        margin: var(--space-lg) 0;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .blog-post a:not(.pagination-link) {
+        color: var(--text-accent);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s ease;
+    }
+    .blog-post a:not(.pagination-link):hover {
+        border-bottom-color: var(--text-accent);
+    }
+    .blog-post {
+        background: rgba(255, 255, 255, 0.65);
+        padding: var(--space-2xl);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-subtle);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .blog-post .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; display: flex; gap: 1rem; align-items: center; }
+    .blog-post .meta span { display: inline-flex; align-items: center; gap: 0.25rem; }
+    .blog-post p { line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1.05rem; }
+    .blog-post ul, .blog-post ol { margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem; }
+    .blog-post li { margin-bottom: 0.5rem; }
+    .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+    .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
+    .blog-post table { width: auto; margin: var(--space-2xl) 0; border-collapse: collapse; text-align: left; }
+    .blog-post th, .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post th { font-weight: 600; color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-subtle); }
+    .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 4px 10px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; font-size: 0.95rem; color: var(--rose-gold-dark); margin-right: 6px; }
+
+    /* Responsive: horizontally scroll tables on mobile */
+    @media (max-width: 768px) {
+      .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
+    }
+    
+    /* Post Tabs */
+    .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
+    .post-tabs::-webkit-scrollbar { display: none; }
+    .post-tab-btn { padding: 8px 16px; border: none; background: transparent; color: var(--text-muted); font-family: var(--font-display); font-size: 1rem; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; white-space: nowrap; transition: color 0.2s, border-color 0.2s; }
+    .post-tab-btn:hover { color: var(--text-primary); }
+    .post-tab-btn.active { color: var(--text-accent); border-bottom-color: var(--text-accent); font-weight: 500; }
+    .post-tab-content { display: none; padding-top: var(--space-md); }
+    .post-tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+  <!-- Fixed chip visual (always visible, bottom-left, behind everything) -->
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
+  <!-- Full-screen overlay canvas for the diagonal binary→agent→text animation -->
+  <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="../index.html" class="nav__logo" aria-label="Home">lydia<span>.</span>pedersen</a>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="../index.html#about" class="nav__link">About</a></li>
+        <li><a href="../index.html#samples" class="nav__link">Writing</a></li>
+        <li><a href="../index.html#case-studies" class="nav__link">Engineering</a></li>
+        <li><a href="../index.html#skills" class="nav__link">Skills</a></li>
+        <li><a href="index.html" class="nav__link">Blog</a></li>
+        <li><a href="../ebooks/index.html" class="nav__link">Ebooks</a></li>
+        <li><a href="../index.html#contact" class="nav__link">Contact</a></li>
+      </ul>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="nav__toggle-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-lg));">
+    <div class="container">
+<nav aria-label="breadcrumb" class="breadcrumbs"><ol>
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: AI Tooling</a></li><li aria-current="page">Enterprise Agentic Pipeline</li></ol></nav>
+        <article class="blog-post series-ai-tooling">
+<h1>Enterprise Agentic Pipeline</h1>
+<!-- SUMMARY: A complete configuration walkthrough assembling LangChain, LangGraph, MCP servers, LiteLLM, Weaviate, Unstructured, Langfuse, vLLM, and HF TRL into a governed multi-agent system for enterprise engineering organizations. The architecture introduces orchestrated agent coordination, gateway-enforced cost and compliance controls, production observability, and a closed-loop fine-tuning pipeline that the solo developer configuration intentionally omitted. --><p>The previous post assembled a local-first stack for a single developer, with one coding agent handling task decomposition internally and no need for traffic governance, multi-agent coordination, or production tracing. That configuration works because one person generates a manageable volume of requests, maintains full visibility into agent behavior through direct observation, and has no compliance obligations requiring audit trails. An engineering organization operating at team scale faces a categorically different set of constraints: multiple teams share model infrastructure, cost allocation requires granular tracking per team and project, regulatory or internal compliance policies demand immutable audit logs of every model interaction, long-running workflows must survive individual component failures, and specialized agents must coordinate on tasks that no single agent can complete alone. This post assembles a configuration that addresses each of these requirements.</p>
+<h2>The Problem</h2>
+<p>An engineering organization needs a governed, multi-agent system that routes requests across multiple model providers, enforces cost and compliance constraints, maintains audit trails, and recovers from failures in long-running workflows.</p>
+<p>The requirements span nine ecosystem layers. The system must coordinate multiple specialized agents through an orchestrator that tracks workflow state and supports human approval gates. A unified gateway must abstract away provider-specific APIs, enforce team-level budget caps, and route traffic between commercial endpoints and self-hosted models based on cost, latency, and data-sensitivity policies. The knowledge pipeline must handle enterprise document formats, including scanned PDFs, PowerPoint decks, and HTML archives, at volumes measured in hundreds of thousands of documents. The vector database must support multi-tenant isolation so that different teams&#39; proprietary data remains separated. Observability must trace every model call, tool invocation, token cost, and latency measurement across the full execution path, with export to enterprise monitoring systems. A fine-tuning pipeline must convert production traces into training datasets, produce specialized models, and deploy them alongside the base models for A/B comparison.</p>
+<p>The solo developer configuration intentionally omitted six of these nine layers. This configuration fills every gap.</p>
+<h2>Architecture Overview</h2>
+<pre><code class="language-mermaid">graph TD
+    App(&quot;User Application&quot;) --&gt; LG(&quot;LangGraph Orchestrator&quot;)
+    LG --&gt; Agent1(&quot;LangChain Agent: Research&quot;)
+    LG --&gt; Agent2(&quot;LangChain Agent: Analysis&quot;)
+    LG --&gt; Agent3(&quot;LangChain Agent: Writing&quot;)
+    Agent1 --&gt; MCP(&quot;MCP Servers: Internal Tools&quot;)
+    Agent2 --&gt; MCP
+    Agent3 --&gt; MCP
+    Agent1 --&gt; LiteLLM(&quot;LiteLLM Gateway&quot;)
+    Agent2 --&gt; LiteLLM
+    Agent3 --&gt; LiteLLM
+    LiteLLM --&gt; Commercial(&quot;Commercial APIs&quot;)
+    LiteLLM --&gt; vLLM(&quot;vLLM: Self-Hosted Models&quot;)
+    Unstructured(&quot;Unstructured Pipeline&quot;) --&gt; Weaviate(&quot;Weaviate Vector Store&quot;)
+    Agent1 --&gt; Weaviate
+    Agent2 --&gt; Weaviate
+    Agent3 --&gt; Weaviate
+    TRL(&quot;HF TRL Fine-Tuning&quot;) --&gt; vLLM
+    Langfuse(&quot;Langfuse Observability&quot;) -. traces .-&gt; LG
+    Langfuse -. traces .-&gt; LiteLLM
+    Langfuse -. traces .-&gt; Agent1
+    Langfuse -. traces .-&gt; Agent2
+    Langfuse -. traces .-&gt; Agent3
+</code></pre>
+<p>The architecture divides into four functional zones. The orchestration zone at the top manages workflow state: a user application submits a task to LangGraph, which decomposes it into subtasks and dispatches them to specialized LangChain agents. The connectivity zone in the middle provides two types of access: MCP servers connect agents to internal tools, databases, and ticketing systems, while LiteLLM routes model requests to either commercial APIs or self-hosted vLLM instances based on routing policy. The knowledge zone on the left handles document ingestion: Unstructured parses enterprise documents into clean text, and Weaviate stores the resulting embeddings with multi-tenant isolation so that each team&#39;s data remains segregated. The model lifecycle zone at the bottom closes the improvement loop: HF TRL fine-tunes specialized models from curated production data, and the resulting checkpoints deploy to vLLM for serving alongside base models.</p>
+<p>Langfuse traces span all four zones. Dotted lines in the diagram represent observability connections rather than request flow. Every model call, tool invocation, and orchestration decision emits trace data to Langfuse, producing a complete audit trail of each workflow execution.</p>
+<h2>Component Selection</h2>
+<h3>Framework Layer: LangChain</h3>
+<p>LangChain, profiled in the Agent Frameworks Compared post, provides the broadest integration surface in the framework category. Its chain and agent abstractions standardize how applications construct prompts, invoke tools, and process model responses across providers. The mature ecosystem includes pre-built integrations with every tool in this configuration: Weaviate retrievers, LiteLLM model wrappers, MCP tool adapters via <code>@langchain/mcp-adapters</code>, and Langfuse callback handlers.</p>
+<p>For an enterprise configuration, LangChain&#39;s integration breadth matters more than raw framework performance. An organization standardizing on LangChain gains a common programming model across teams, a shared library of tool integrations, and the ability to swap underlying components without rewriting application logic. If the organization later migrates from Weaviate to Pinecone, or from LiteLLM to Portkey, the change is confined to a configuration swap rather than an application rewrite.</p>
+<h3>Orchestrator Layer: LangGraph</h3>
+<p>LangGraph, profiled in the Agent Orchestrators Compared post, extends LangChain with persistent state management and graph-based workflow orchestration. Where LangChain provides the building blocks for individual agents, LangGraph provides the control plane that coordinates multiple agents across multi-step workflows.</p>
+<p>Three LangGraph capabilities address enterprise-specific requirements. First, persistent state: LangGraph checkpoints the full workflow state after every node execution, enabling recovery from failures without re-running completed steps. If an agent in step 7 of a 15-step workflow encounters a transient API error, the orchestrator resumes from step 7 after the error resolves rather than restarting from step 1. Second, human-in-the-loop gates: LangGraph supports interrupt nodes that pause workflow execution and wait for human approval before proceeding. A financial analysis workflow can generate a report draft and then pause for a compliance officer&#39;s sign-off before the final agent distributes the report. Third, parallel branching: LangGraph executes independent subtasks concurrently, reducing end-to-end latency for workflows where multiple agents can operate simultaneously.</p>
+<h3>Connectivity Layer: MCP Servers</h3>
+<p>MCP servers, profiled in the Connectivity and Routing post, standardize how LangChain agents access internal enterprise services. The solo developer configuration used three MCP servers for filesystem, Git, and web search access. An enterprise deployment typically adds servers for internal databases, REST APIs, ticketing systems like Jira or ServiceNow, and document management platforms.</p>
+<p>The standardization benefit compounds at organizational scale. Without MCP, each team building a LangChain agent would write custom tool integrations for the same internal services, producing N duplicate implementations with inconsistent authentication handling, error semantics, and maintenance burdens. A shared library of MCP servers gives every team&#39;s agents uniform access to the same internal services through a single protocol, with authentication and authorization handled at the server level rather than reimplemented in every agent.</p>
+<h3>Gateway Layer: LiteLLM</h3>
+<p>LiteLLM, profiled in the Connectivity and Routing post, provides the unified gateway between LangChain agents and model providers. In this configuration, LiteLLM handles four enterprise concerns that the solo developer stack had no need for.</p>
+<p><strong>Multi-provider abstraction</strong>: LiteLLM translates a single OpenAI-compatible API call into provider-specific requests for OpenAI, Anthropic, AWS Bedrock, Google Vertex AI, Azure OpenAI, and self-hosted vLLM endpoints. Agents and framework code never import a provider-specific SDK; every model call passes through LiteLLM&#39;s unified interface.</p>
+<p><strong>Cost governance</strong>: LiteLLM generates virtual API keys for each team, enabling per-team budget caps, spend tracking, and usage analytics. A platform team distributes virtual keys to the research, engineering, and product teams, each with monthly spend limits. When a team approaches its budget cap, LiteLLM throttles or rejects requests rather than allowing unbounded spend against the organization&#39;s provider accounts.</p>
+<p><strong>Routing policy</strong>: LiteLLM routes requests based on configurable rules. Requests involving sensitive data route to the self-hosted vLLM deployment, which keeps data within the network perimeter. General-purpose requests route to commercial APIs for higher throughput. Fallback rules redirect traffic when a provider experiences an outage.</p>
+<p><strong>Observability integration</strong>: LiteLLM exports trace data, including token counts, latency measurements, and cost calculations, directly to Langfuse via its built-in callback system. Every model call across the organization flows through LiteLLM and automatically appears in the Langfuse dashboard without per-application instrumentation.</p>
+<h3>Memory Layer: Weaviate</h3>
+<p>Weaviate, profiled in the Data Infrastructure post, provides the vector database layer for enterprise retrieval-augmented generation. Two Weaviate capabilities differentiate it from the solo developer configuration&#39;s ChromaDB deployment.</p>
+<p><strong>Multi-tenancy</strong>: Weaviate isolates tenant data at the storage level, ensuring that the legal team&#39;s contract embeddings and the engineering team&#39;s codebase embeddings occupy separate partitions. Queries execute within a single tenant&#39;s partition by default, preventing cross-contamination of retrieval results. ChromaDB&#39;s embedded mode does not provide this isolation.</p>
+<p><strong>Hybrid search</strong>: Weaviate combines dense vector search with BM25 keyword search in a single query. Dense vectors excel at semantic similarity, finding documents that discuss the same concept in different words. BM25 excels at exact keyword matching, finding documents that contain a specific product name, error code, or identifier. Enterprise knowledge bases contain both types of queries. A support agent searching for &quot;authentication timeout errors in the billing module&quot; benefits from semantic similarity for &quot;authentication timeout&quot; and exact keyword matching for &quot;billing module.&quot;</p>
+<p>Weaviate runs self-hosted on the organization&#39;s infrastructure, keeping all vector data and queries within the network perimeter. LangChain provides a native Weaviate retriever that agents use to query the vector store during task execution.</p>
+<h3>Knowledge Management Layer: Unstructured</h3>
+<p>Unstructured, profiled in the Data Infrastructure post, handles enterprise document parsing at scale. The solo developer configuration used Docling for parsing project documentation on a single machine. Enterprise document repositories contain formats and volumes that require a different approach.</p>
+<p>Unstructured processes PDFs with complex table layouts, scanned images requiring OCR, PowerPoint presentations, HTML archives, and email threads. Its pipeline architecture supports batch processing of document collections measured in hundreds of thousands of files, with configurable chunking strategies that preserve document structure. The chunking step is not a trivial text split: Unstructured maintains semantic boundaries, keeping table rows together, preserving list items as units, and respecting section headers as chunk boundaries.</p>
+<p>The Unstructured-to-Weaviate pipeline mirrors the Docling-to-ChromaDB pipeline from the solo developer configuration, but at enterprise scale: Unstructured parses and chunks documents, an embedding model converts chunks to vectors, and the vectors load into Weaviate with tenant-specific metadata tags. The pipeline runs as a scheduled batch job or event-driven process that triggers when new documents appear in the source repository.</p>
+<h3>Observability Layer: Langfuse</h3>
+<p>Langfuse, profiled in the Runtime Infrastructure post, provides the observability backbone for the entire enterprise pipeline. In this configuration, Langfuse serves three functions beyond basic tracing.</p>
+<p><strong>Governance audit trails</strong>: Every model interaction across the organization, including the full prompt, the complete response, the token count, the cost, and the latency, is captured in Langfuse&#39;s trace store. Compliance teams can query these traces to verify that agents operated within policy boundaries during any specific time window. The traces are immutable once recorded, providing a tamper-evident audit log.</p>
+<p><strong>Cost attribution</strong>: Langfuse receives cost data from LiteLLM&#39;s callback integration and maps it to specific users, teams, and applications using session and trace metadata. Monthly cost reports break down spending by team, model, and use case, enabling the platform team to identify cost hotspots and optimize routing policies.</p>
+<p><strong>Dataset curation for fine-tuning</strong>: Langfuse&#39;s production traces provide the raw material for fine-tuning datasets. The platform team identifies high-quality agent interactions from production traces, annotates them as training examples, and exports them as structured datasets. This trace-to-training pipeline is the first step in the fine-tuning feedback loop described in the model lifecycle section below.</p>
+<p>Langfuse runs self-hosted and exports OpenTelemetry data to the organization&#39;s existing monitoring infrastructure, whether Datadog, Splunk, Grafana, or another backend. LangChain, LangGraph, and LiteLLM all provide native Langfuse integrations through callback handlers.</p>
+<h3>Serving Layer: vLLM</h3>
+<p>vLLM, profiled in the Runtime Infrastructure post, serves self-hosted models behind an OpenAI-compatible API endpoint. The solo developer configuration used Ollama for local inference because operational simplicity outweighed throughput requirements. Enterprise deployments reverse this priority.</p>
+<p>vLLM&#39;s PagedAttention memory management enables high-concurrency serving, handling hundreds of simultaneous requests without the memory fragmentation that limits simpler serving engines. Tensor parallelism distributes inference across multiple GPUs within a server, and pipeline parallelism distributes across multiple servers, enabling the organization to serve large models that exceed the memory capacity of a single GPU. Prefix caching deduplicates the KV cache computation when multiple requests share the same system prompt, which is common in enterprise applications where all agents use standardized instruction templates.</p>
+<p>In this configuration, vLLM serves two categories of models. Base open-weight models provide general-purpose inference for tasks where commercial API costs are prohibitive at the organization&#39;s request volume. Fine-tuned models produced by the HF TRL pipeline provide specialized inference for tasks where the base models underperform. LiteLLM routes requests to either category based on the routing policy, and both categories expose identical OpenAI-compatible endpoints.</p>
+<h3>Fine-Tuning Layer: HF TRL</h3>
+<p>HF TRL, profiled in the Runtime Infrastructure post, provides the training pipeline for producing specialized models from production data. The fine-tuning workflow in this configuration follows a four-stage loop.</p>
+<p><strong>Stage 1: Trace collection</strong>: Langfuse captures production traces from all agents operating in the pipeline. The platform team reviews these traces and identifies interactions where the agent performed well and interactions where it underperformed.</p>
+<p><strong>Stage 2: Dataset curation</strong>: High-quality traces are exported from Langfuse as instruction-response pairs in the format TRL expects. Low-quality traces are annotated with corrected responses, creating preference pairs for alignment training.</p>
+<p><strong>Stage 3: Training</strong>: TRL runs supervised fine-tuning on the curated instruction dataset, optionally followed by Direct Preference Optimization (DPO) on the preference pairs. PEFT&#39;s LoRA adapters keep GPU memory requirements manageable, enabling fine-tuning on a small cluster of GPUs rather than requiring datacenter-scale hardware.</p>
+<p><strong>Stage 4: Deployment</strong>: The fine-tuned model checkpoint loads into vLLM as an additional endpoint. LiteLLM&#39;s routing policy allocates a percentage of traffic to the fine-tuned model while the remaining traffic continues to use the base model. Langfuse traces from both models feed back into the evaluation pipeline, enabling data-driven comparison of base versus fine-tuned performance. If the fine-tuned model outperforms the base model on the evaluation metrics, the routing policy shifts more traffic to the fine-tuned variant.</p>
+<h2>Integration Walkthrough</h2>
+<p>The components wire together through five integration paths.</p>
+<p><strong>LangGraph to LangChain agents</strong>: LangGraph defines a directed graph where each node contains a LangChain agent specialized for a specific task. The orchestrator manages the control flow: it initializes the workflow state, dispatches subtasks to the appropriate agent nodes, collects their outputs, and decides the next step based on the graph&#39;s conditional edges. State persistence through LangGraph&#39;s checkpointing mechanism means that the full workflow context, every intermediate result and decision, survives process restarts.</p>
+<p><strong>LangChain agents to LiteLLM</strong>: Each LangChain agent is configured with a LiteLLM model wrapper that points to the LiteLLM proxy endpoint rather than a provider-specific API. The agent code contains no provider-specific imports or API keys. LiteLLM receives the request, applies routing rules to select the target provider or self-hosted endpoint, attaches the real API credentials, and forwards the translated request. The response follows the reverse path through LiteLLM back to the agent.</p>
+<p><strong>LangChain agents to MCP servers</strong>: LangChain&#39;s MCP adapter package discovers and binds MCP server tools at runtime. When an agent needs to query an internal database, create a Jira ticket, or access a document management system, it invokes the corresponding MCP tool. The MCP server handles the actual service interaction and returns structured results to the agent.</p>
+<p><strong>Unstructured to Weaviate</strong>: The knowledge pipeline runs as a scheduled batch process. Unstructured reads documents from the source repository, applies format-specific parsers and OCR as needed, chunks the parsed output with structure-aware boundaries, and writes the chunks to an intermediate staging store. An embedding step converts chunks to vectors using the organization&#39;s embedding model, routed through LiteLLM. The vectors load into Weaviate with tenant-specific metadata, making them available for retrieval by LangChain agents operating within that tenant&#39;s scope.</p>
+<p><strong>Langfuse across all layers</strong>: Langfuse callback handlers attach to LangChain agents, LangGraph&#39;s orchestrator, and LiteLLM&#39;s proxy. Every model call, tool invocation, and orchestration decision emits a trace span to Langfuse. The callback configuration happens once at application initialization; individual agent code does not need explicit trace instrumentation. Langfuse&#39;s OpenTelemetry exporter forwards aggregated metrics and trace data to the organization&#39;s central monitoring system.</p>
+<h2>Tradeoffs and Alternatives</h2>
+<p>This configuration optimizes for governance, observability, and multi-team coordination. Every model interaction is traced, every dollar of spend is attributed to a specific team, and workflow state persists across failures.</p>
+<p>The primary cost is operational complexity. Running LangGraph, LiteLLM, Weaviate, vLLM, Langfuse, and the Unstructured pipeline each require dedicated infrastructure, monitoring, and maintenance. A platform engineering team is necessary to operate this stack; no single developer can reasonably manage all nine components. The infrastructure footprint includes GPU servers for vLLM, a database backend for LangGraph&#39;s state persistence, storage for Weaviate&#39;s vector indices, and a server for Langfuse&#39;s trace store.</p>
+<p>The second cost is latency. Every request traverses multiple network hops: from the application to LangGraph, from LangGraph to a LangChain agent, from the agent through LiteLLM to the model provider, and back through the same chain. Observability callbacks add processing overhead at each hop. For latency-sensitive applications, the overhead of full-stack tracing and gateway routing is measurable, typically adding 10-50ms of end-to-end latency per request.</p>
+<p><strong>Alternative substitutions at each layer</strong>:</p>
+<ul>
+<li><strong>Framework</strong>: LlamaIndex can replace LangChain if the application&#39;s primary workload is retrieval-augmented generation rather than general-purpose agent tooling. LlamaIndex&#39;s native index abstractions provide tighter integration with the retrieval pipeline at the cost of a narrower tool ecosystem.</li>
+<li><strong>Orchestrator</strong>: CrewAI can replace LangGraph if the team prefers a role-based agent model over a graph-based workflow model. CrewAI simplifies agent configuration by defining agents as roles with natural-language descriptions rather than graph nodes, but it provides less granular control over state persistence and conditional branching.</li>
+<li><strong>Gateway</strong>: Portkey can replace LiteLLM if the organization needs built-in semantic caching or in-path PII redaction. Portkey provides both features natively, reducing the need for separate middleware components.</li>
+<li><strong>Memory</strong>: Qdrant can replace Weaviate if the organization prioritizes single-binary deployment simplicity over Weaviate&#39;s hybrid search capabilities. Pinecone can replace Weaviate if the organization prefers a fully managed service and does not require self-hosting.</li>
+<li><strong>Knowledge Management</strong>: Docling can replace Unstructured if the document corpus consists primarily of PDFs and Word documents without the format diversity that Unstructured specializes in. LlamaParse can replace Unstructured if the organization is comfortable with a cloud-based parsing service.</li>
+<li><strong>Observability</strong>: Braintrust can replace Langfuse if the primary concern is evaluation and CI/CD regression testing rather than production trace capture. Arize Phoenix can replace Langfuse if RAG embedding diagnostics and drift detection are the dominant observability needs.</li>
+<li><strong>Serving</strong>: SGLang can replace vLLM if the workload involves heavy structured output generation or branching agent conversations where RadixAttention provides measurable throughput gains.</li>
+<li><strong>Fine-Tuning</strong>: Unsloth can replace HF TRL if GPU memory is constrained and training speed is the priority. Axolotl can replace HF TRL if the team prefers YAML-driven configuration over Python training scripts.</li>
+</ul>
+<p>This configuration moves from individual productivity to organizational capability: governed model access, auditable agent behavior, and a closed-loop pipeline from production traces to fine-tuned models. The companion setup guide provides step-by-step installation and wiring instructions for each component in this configuration. The next post applies similar architectural rigor to an entirely different constraint: deploying an AI system in an environment where no data can leave the network perimeter.</p>
+<h2>References</h2>
+<ol>
+<li>LangChain Documentation, LangChain Inc.</li>
+<li>LangGraph Documentation, LangChain Inc.</li>
+<li>Model Context Protocol Specification, Anthropic.</li>
+<li>LiteLLM Documentation, BerriAI.</li>
+<li>Weaviate Documentation, Weaviate B.V.</li>
+<li>Unstructured Documentation, Unstructured Technologies.</li>
+<li>Langfuse Documentation, Langfuse GmbH.</li>
+<li>vLLM Documentation, vLLM Project.</li>
+<li>Hugging Face TRL Documentation, Hugging Face.</li>
+<li>Hugging Face PEFT Documentation, Hugging Face.</li>
+</ol>
+
+<div class="blog-pagination">
+      <a href="ai-tooling-chapter_07.html" class="pagination-link prev">
+        <span class="pagination-label">Previous</span>
+        <span class="pagination-title">Solo Developer Stack</span>
+      </a>
+      <a href="ai-tooling-chapter_09.html" class="pagination-link next">
+        <span class="pagination-label">Next</span>
+        <span class="pagination-title">Private and Airgapped Deployment</span>
+      </a></div>
+        </article>
+    </div>
+  </main>
+  <script src="../js/main.js"></script>
+
+  <!-- KaTeX for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" 
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], fleqn: true});">
+  </script>
+
+  <!-- Mermaid for Diagram Rendering -->
+  <style>
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: var(--space-2xl) 0;
+    }
+    .mermaid svg {
+      filter: drop-shadow(0 4px 16px rgba(183, 110, 121, 0.12));
+    }
+  </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ 
+      startOnLoad: true, 
+      securityLevel: 'loose',
+      theme: 'base',
+      themeVariables: {
+        fontFamily: "'Outfit', -apple-system, BlinkMacSystemFont, sans-serif",
+        primaryColor: '#ffffff',
+        primaryBorderColor: '#b76e79',
+        primaryTextColor: '#8b4f5a',
+        lineColor: '#b76e79',
+        nodeBorder: '#b76e79',
+        clusterBkg: 'rgba(232, 180, 184, 0.15)',
+        clusterBorder: '#d4a0a0'
+      }
+    });
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      // Mermaid
+      const blocks = document.querySelectorAll('.language-mermaid');
+      blocks.forEach((block) => {
+        const parent = block.parentElement;
+        if (parent.tagName === 'PRE') {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          parent.replaceWith(mermaidDiv);
+        }
+      });
+      
+      // Tabs
+      const tabGroups = document.querySelectorAll('[data-tab-group]');
+      tabGroups.forEach(group => {
+        const buttons = group.querySelectorAll('[data-tab]');
+        const contents = group.querySelectorAll('[data-tab-content]');
+        
+        buttons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const target = btn.getAttribute('data-tab');
+            
+            buttons.forEach(b => b.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+            
+            btn.classList.add('active');
+            const targetContent = group.querySelector(`[data-tab-content="${target}"]`);
+            if (targetContent) targetContent.classList.add('active');
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

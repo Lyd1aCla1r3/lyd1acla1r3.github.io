@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evaluation-Driven Development Loop: Setup Guide — Lydia Pedersen</title>
+  <link rel="stylesheet" href="../css/styles.css?v=1.2">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .blog-post {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: var(--space-4xl) var(--space-md);
+        background: var(--bg-card);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 8px 32px rgba(183, 110, 121, 0.05);
+        border: 1px solid var(--border-subtle);
+    }
+    .blog-post h1, .blog-post h2, .blog-post h3 {
+        color: var(--text-primary);
+        font-family: var(--font-display);
+        margin-top: var(--space-2xl);
+        margin-bottom: var(--space-md);
+    }
+    .blog-post h1 { font-size: var(--fs-3xl); margin-top: 0; line-height: 1.1; }
+    .blog-post h2, .blog-post h3 { border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-sm); }
+    .blog-post h2 { font-size: var(--fs-2xl); }
+    .blog-post h3 { font-size: var(--fs-xl); }
+    .blog-post p, .blog-post li {
+        color: var(--text-secondary);
+        line-height: var(--lh-relaxed);
+        margin-bottom: var(--space-md);
+        font-size: var(--fs-md);
+    }
+    .blog-post img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-md);
+        margin: var(--space-lg) 0;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .blog-post a:not(.pagination-link) {
+        color: var(--text-accent);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s ease;
+    }
+    .blog-post a:not(.pagination-link):hover {
+        border-bottom-color: var(--text-accent);
+    }
+    .blog-post {
+        background: rgba(255, 255, 255, 0.65);
+        padding: var(--space-2xl);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-subtle);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .blog-post .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; display: flex; gap: 1rem; align-items: center; }
+    .blog-post .meta span { display: inline-flex; align-items: center; gap: 0.25rem; }
+    .blog-post p { line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1.05rem; }
+    .blog-post ul, .blog-post ol { margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem; }
+    .blog-post li { margin-bottom: 0.5rem; }
+    .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+    .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
+    .blog-post table { width: auto; margin: var(--space-2xl) 0; border-collapse: collapse; text-align: left; }
+    .blog-post th, .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post th { font-weight: 600; color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-subtle); }
+    .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 4px 10px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; font-size: 0.95rem; color: var(--rose-gold-dark); margin-right: 6px; }
+
+    /* Responsive: horizontally scroll tables on mobile */
+    @media (max-width: 768px) {
+      .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
+    }
+    
+    /* Post Tabs */
+    .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
+    .post-tabs::-webkit-scrollbar { display: none; }
+    .post-tab-btn { padding: 8px 16px; border: none; background: transparent; color: var(--text-muted); font-family: var(--font-display); font-size: 1rem; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; white-space: nowrap; transition: color 0.2s, border-color 0.2s; }
+    .post-tab-btn:hover { color: var(--text-primary); }
+    .post-tab-btn.active { color: var(--text-accent); border-bottom-color: var(--text-accent); font-weight: 500; }
+    .post-tab-content { display: none; padding-top: var(--space-md); }
+    .post-tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+  <!-- Fixed chip visual (always visible, bottom-left, behind everything) -->
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
+  <!-- Full-screen overlay canvas for the diagonal binary→agent→text animation -->
+  <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="../index.html" class="nav__logo" aria-label="Home">lydia<span>.</span>pedersen</a>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="../index.html#about" class="nav__link">About</a></li>
+        <li><a href="../index.html#samples" class="nav__link">Writing</a></li>
+        <li><a href="../index.html#case-studies" class="nav__link">Engineering</a></li>
+        <li><a href="../index.html#skills" class="nav__link">Skills</a></li>
+        <li><a href="index.html" class="nav__link">Blog</a></li>
+        <li><a href="../ebooks/index.html" class="nav__link">Ebooks</a></li>
+        <li><a href="../index.html#contact" class="nav__link">Contact</a></li>
+      </ul>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="nav__toggle-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-lg));">
+    <div class="container">
+<nav aria-label="breadcrumb" class="breadcrumbs"><ol>
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: AI Tooling</a></li><li aria-current="page">Evaluation-Driven Development Loop: Setup Guide</li></ol></nav>
+        <article class="blog-post series-ai-tooling">
+<h1>Evaluation-Driven Development Loop: Setup Guide</h1>
+<!-- SUMMARY: A step-by-step installation and configuration guide for assembling the Evaluation-Driven Development Loop, covering Langfuse deployment for production trace capture, Braintrust setup for evaluation scoring and experiment management, Unsloth installation for memory-efficient fine-tuning, vLLM configuration for multi-model serving with LoRA adapter support, and LiteLLM weighted routing for A/B traffic distribution, with integration wiring scripts and end-to-end verification steps. --><p>The Evaluation-Driven Development Loop architecture chapter explains the rationale behind each component selection, the continuous improvement cycle, and the principle that systematic quality measurement replaces intuition-based prompt iteration. This guide provides the concrete installation commands, configuration snippets, and wiring steps needed to bring that architecture to a working state.</p>
+<h2>Prerequisites</h2>
+<ul>
+<li><strong>Operating system</strong>: Linux with NVIDIA GPU drivers for vLLM and Unsloth. macOS or Windows can run Langfuse, Braintrust, and LiteLLM components without GPU hardware.</li>
+<li><strong>Python</strong>: Version 3.10 or later, with <code>pip</code> available</li>
+<li><strong>Docker</strong>: Required for Langfuse self-hosted deployment</li>
+<li><strong>GPU hardware</strong>: At least one NVIDIA GPU with 24GB+ VRAM for Unsloth fine-tuning and vLLM serving. Multi-GPU configurations enable larger models.</li>
+<li><strong>API keys</strong>: The following service accounts are required before proceeding:<ul>
+<li><strong>Braintrust</strong>: API key from the Braintrust console</li>
+<li><strong>LLM provider</strong>: At least one commercial model provider API key for baseline inference</li>
+</ul>
+</li>
+<li><strong>Existing application</strong>: A running AI application built with LangChain or LlamaIndex that produces outputs to evaluate. Any configuration from prior chapters in this series can serve as the application under evaluation.</li>
+</ul>
+<h2>Step 1: Langfuse</h2>
+<p>Langfuse provides production trace capture. A Docker Compose deployment runs the full Langfuse stack with a PostgreSQL backend.</p>
+<p>Create <code>docker-compose-langfuse.yaml</code>:</p>
+<pre><code class="language-yaml">services:
+  langfuse-server:
+    image: langfuse/langfuse:2
+    ports:
+      - &quot;3000:3000&quot;
+    environment:
+      DATABASE_URL: postgresql://langfuse:langfuse@langfuse-db:5432/langfuse
+      NEXTAUTH_SECRET: a-random-secret-string
+      NEXTAUTH_URL: http://localhost:3000
+      SALT: a-random-salt-string
+    depends_on:
+      - langfuse-db
+
+  langfuse-db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: langfuse
+      POSTGRES_PASSWORD: langfuse
+      POSTGRES_DB: langfuse
+    volumes:
+      - langfuse_pgdata:/var/lib/postgresql/data
+
+volumes:
+  langfuse_pgdata:
+</code></pre>
+<pre><code class="language-bash">docker compose -f docker-compose-langfuse.yaml up -d
+</code></pre>
+<p>After startup, access the Langfuse dashboard at <code>http://localhost:3000</code>, create a project, and generate API keys.</p>
+<p>Install the Langfuse Python SDK:</p>
+<pre><code class="language-bash">pip install langfuse
+</code></pre>
+<p>Set environment variables:</p>
+<pre><code class="language-bash">export LANGFUSE_PUBLIC_KEY=&quot;pk-lf-...&quot;
+export LANGFUSE_SECRET_KEY=&quot;sk-lf-...&quot;
+export LANGFUSE_HOST=&quot;http://localhost:3000&quot;
+</code></pre>
+<p><strong>Verification</strong>:</p>
+<pre><code class="language-bash">curl http://localhost:3000/api/public/health
+</code></pre>
+<p>A successful deployment returns a health status indicating the server and database are operational.</p>
+<h2>Step 2: Braintrust</h2>
+<p>Braintrust provides evaluation scoring, dataset versioning, and experiment comparison. Install the SDK:</p>
+<pre><code class="language-bash">pip install braintrust
+</code></pre>
+<p>Set the API key:</p>
+<pre><code class="language-bash">export BRAINTRUST_API_KEY=&quot;br-...&quot;
+</code></pre>
+<p>Create an evaluation project and an initial dataset:</p>
+<pre><code class="language-python">import braintrust
+
+client = braintrust.init(project=&quot;eval-loop-demo&quot;)
+
+dataset = client.create_dataset(
+    name=&quot;baseline-eval-v1&quot;,
+    description=&quot;Baseline evaluation dataset for quality measurement&quot;
+)
+
+dataset.insert(
+    input=&quot;Summarize the key benefits of container orchestration.&quot;,
+    expected=&quot;Container orchestration automates deployment, scaling, and management &quot;
+             &quot;of containerized applications. It handles load balancing, service &quot;
+             &quot;discovery, and self-healing across cluster nodes.&quot;,
+    metadata={&quot;category&quot;: &quot;infrastructure&quot;, &quot;difficulty&quot;: &quot;standard&quot;}
+)
+
+dataset.insert(
+    input=&quot;Explain the difference between LoRA and full fine-tuning.&quot;,
+    expected=&quot;LoRA trains low-rank adapter matrices that attach to frozen base model &quot;
+             &quot;weights, requiring a fraction of the memory and compute. Full &quot;
+             &quot;fine-tuning updates all model parameters, producing potentially &quot;
+             &quot;higher quality at significantly greater resource cost.&quot;,
+    metadata={&quot;category&quot;: &quot;ml-ops&quot;, &quot;difficulty&quot;: &quot;standard&quot;}
+)
+
+print(f&quot;Dataset &#39;{dataset.name}&#39; created with {dataset.num_records} records.&quot;)
+</code></pre>
+<p><strong>Verification</strong>:</p>
+<pre><code class="language-python">import braintrust
+print(&quot;Braintrust imported successfully.&quot;)
+</code></pre>
+<p>A successful installation prints the confirmation message. Full verification requires creating a project and inserting evaluation records through the SDK.</p>
+<h2>Step 3: Unsloth</h2>
+<p>Unsloth provides memory-efficient fine-tuning with custom CUDA kernels. Installation requires a Linux system with NVIDIA GPU drivers and CUDA toolkit.</p>
+<pre><code class="language-bash">pip install unsloth
+</code></pre>
+<p>For systems without CUDA support, install the CPU-compatible subset for data preparation and export workflows:</p>
+<pre><code class="language-bash">pip install unsloth-zoo
+</code></pre>
+<p>Install additional training dependencies:</p>
+<pre><code class="language-bash">pip install datasets transformers accelerate bitsandbytes
+</code></pre>
+<p><strong>Verification</strong>:</p>
+<pre><code class="language-python">from unsloth import FastLanguageModel
+print(&quot;Unsloth imported successfully.&quot;)
+</code></pre>
+<p>A successful installation prints the confirmation message without CUDA errors. Full verification requires loading a model and confirming GPU memory allocation.</p>
+<h2>Step 4: vLLM</h2>
+<p>vLLM provides high-throughput model serving with LoRA adapter support. Installation requires a Linux system with NVIDIA GPU drivers and CUDA toolkit.</p>
+<pre><code class="language-bash">pip install vllm
+</code></pre>
+<p>Start vLLM with LoRA adapter support enabled:</p>
+<pre><code class="language-bash">vllm serve meta-llama/Llama-3.1-8B-Instruct \
+  --host 0.0.0.0 \
+  --port 8000 \
+  --enable-lora \
+  --max-lora-rank 64 \
+  --max-model-len 8192
+</code></pre>
+<p>The <code>--enable-lora</code> flag activates LoRA adapter hot-loading. The <code>--max-lora-rank</code> parameter sets the maximum rank for loaded adapters, which must match or exceed the rank used during Unsloth training.</p>
+<p>To load a fine-tuned LoRA adapter after training:</p>
+<pre><code class="language-bash">curl -X POST http://localhost:8000/v1/load_lora_adapter \
+  -H &quot;Content-Type: application/json&quot; \
+  -d &#39;{
+    &quot;lora_name&quot;: &quot;finetuned-v1&quot;,
+    &quot;lora_path&quot;: &quot;/path/to/unsloth-output/lora-adapter&quot;
+  }&#39;
+</code></pre>
+<p><strong>Verification</strong>:</p>
+<pre><code class="language-bash">curl http://localhost:8000/v1/models
+</code></pre>
+<p>A successful deployment returns a JSON list containing the base model. After loading a LoRA adapter, the list includes both the base model and the adapter variant.</p>
+<h2>Step 5: LiteLLM Gateway with Weighted Routing</h2>
+<p>LiteLLM provides unified routing with weighted traffic distribution for A/B comparison between model variants.</p>
+<pre><code class="language-bash">pip install litellm uvicorn
+</code></pre>
+<p>Create <code>litellm_config.yaml</code> with weighted routing between base and fine-tuned models:</p>
+<pre><code class="language-yaml">model_list:
+  - model_name: app-model
+    litellm_params:
+      model: openai/meta-llama/Llama-3.1-8B-Instruct
+      api_base: http://localhost:8000/v1
+      api_key: token-placeholder
+    model_info:
+      id: base-model
+    weight: 90
+
+  - model_name: app-model
+    litellm_params:
+      model: openai/finetuned-v1
+      api_base: http://localhost:8000/v1
+      api_key: token-placeholder
+    model_info:
+      id: finetuned-v1
+    weight: 10
+
+  - model_name: gpt-4o-judge
+    litellm_params:
+      model: openai/gpt-4o
+      api_key: os.environ/OPENAI_API_KEY
+
+litellm_settings:
+  success_callback: [&quot;langfuse&quot;]
+
+general_settings:
+  master_key: sk-eval-master-key
+</code></pre>
+<p>The two entries with <code>model_name: app-model</code> create a weighted routing group. LiteLLM routes 90% of requests to the base model and 10% to the fine-tuned variant. The <code>model_info.id</code> field propagates through to Langfuse traces as metadata, enabling Braintrust evaluations to separate results by model variant.</p>
+<p>Set environment variables:</p>
+<pre><code class="language-bash">export OPENAI_API_KEY=&quot;sk-...&quot;
+export LANGFUSE_PUBLIC_KEY=&quot;pk-lf-...&quot;
+export LANGFUSE_SECRET_KEY=&quot;sk-lf-...&quot;
+export LANGFUSE_HOST=&quot;http://localhost:3000&quot;
+</code></pre>
+<p>Start the LiteLLM proxy:</p>
+<pre><code class="language-bash">litellm --config litellm_config.yaml --host 0.0.0.0 --port 4000
+</code></pre>
+<p><strong>Verification</strong>:</p>
+<pre><code class="language-bash">curl http://localhost:4000/v1/models \
+  -H &quot;Authorization: Bearer sk-eval-master-key&quot;
+</code></pre>
+<p>A successful deployment returns a JSON list of the configured models including the weighted routing group.</p>
+<h2>Wiring the Components</h2>
+<p>With all components installed individually, the final step connects them into the continuous improvement cycle described in the architecture chapter.</p>
+<h3>Langfuse Trace Capture Integration</h3>
+<p>Save the following script as <code>scripts/traced_application.py</code>. It demonstrates Langfuse trace capture for both LangChain and LlamaIndex applications:</p>
+<pre><code class="language-python">import os
+from langfuse.callback import CallbackHandler as LangfuseHandler
+
+langfuse_handler = LangfuseHandler(
+    public_key=os.environ[&quot;LANGFUSE_PUBLIC_KEY&quot;],
+    secret_key=os.environ[&quot;LANGFUSE_SECRET_KEY&quot;],
+    host=os.environ.get(&quot;LANGFUSE_HOST&quot;, &quot;http://localhost:3000&quot;),
+)
+
+# --- LangChain application example ---
+from langchain_openai import ChatOpenAI
+from langchain_core.messages import HumanMessage, SystemMessage
+
+llm = ChatOpenAI(
+    model=&quot;app-model&quot;,
+    base_url=&quot;http://localhost:4000/v1&quot;,
+    api_key=&quot;sk-eval-master-key&quot;,
+    temperature=0,
+)
+
+messages = [
+    SystemMessage(content=&quot;Provide concise, factual responses.&quot;),
+    HumanMessage(content=&quot;Explain the difference between LoRA and full fine-tuning.&quot;),
+]
+
+response = llm.invoke(messages, config={&quot;callbacks&quot;: [langfuse_handler]})
+
+print(&quot;Response:&quot;, response.content)
+print(&quot;Trace exported to Langfuse.&quot;)
+</code></pre>
+<h3>Langfuse-to-Braintrust Dataset Curation</h3>
+<p>Save the following script as <code>scripts/curate_dataset.py</code>. It queries Langfuse for production traces and creates a Braintrust evaluation dataset:</p>
+<pre><code class="language-python">import os
+from langfuse import Langfuse
+import braintrust
+
+langfuse = Langfuse(
+    public_key=os.environ[&quot;LANGFUSE_PUBLIC_KEY&quot;],
+    secret_key=os.environ[&quot;LANGFUSE_SECRET_KEY&quot;],
+    host=os.environ.get(&quot;LANGFUSE_HOST&quot;, &quot;http://localhost:3000&quot;),
+)
+
+traces = langfuse.fetch_traces(limit=100).data
+print(f&quot;Fetched {len(traces)} traces from Langfuse.&quot;)
+
+client = braintrust.init(project=&quot;eval-loop-demo&quot;)
+dataset = client.create_dataset(
+    name=&quot;production-traces-v1&quot;,
+    description=&quot;Evaluation dataset curated from production traces&quot;
+)
+
+curated_count = 0
+for trace in traces:
+    if not trace.input or not trace.output:
+        continue
+
+    input_text = trace.input
+    if isinstance(input_text, dict):
+        input_text = input_text.get(&quot;content&quot;, str(input_text))
+    if isinstance(input_text, list):
+        input_text = str(input_text)
+
+    output_text = trace.output
+    if isinstance(output_text, dict):
+        output_text = output_text.get(&quot;content&quot;, str(output_text))
+
+    model_id = trace.metadata.get(&quot;model_id&quot;, &quot;unknown&quot;) if trace.metadata else &quot;unknown&quot;
+
+    dataset.insert(
+        input=str(input_text),
+        expected=str(output_text),
+        metadata={
+            &quot;trace_id&quot;: trace.id,
+            &quot;model_id&quot;: model_id,
+            &quot;timestamp&quot;: str(trace.timestamp),
+        }
+    )
+    curated_count += 1
+
+print(f&quot;Curated {curated_count} traces into dataset &#39;{dataset.name}&#39;.&quot;)
+</code></pre>
+<h3>Braintrust Evaluation Pipeline</h3>
+<p>Save the following script as <code>scripts/evaluate_models.py</code>. It runs the production application against a Braintrust dataset and scores outputs on multiple quality dimensions:</p>
+<pre><code class="language-python">import os
+import braintrust
+from langchain_openai import ChatOpenAI
+from langchain_core.messages import HumanMessage, SystemMessage
+
+llm = ChatOpenAI(
+    model=&quot;app-model&quot;,
+    base_url=&quot;http://localhost:4000/v1&quot;,
+    api_key=&quot;sk-eval-master-key&quot;,
+    temperature=0,
+)
+
+judge_llm = ChatOpenAI(
+    model=&quot;gpt-4o-judge&quot;,
+    base_url=&quot;http://localhost:4000/v1&quot;,
+    api_key=&quot;sk-eval-master-key&quot;,
+    temperature=0,
+)
+
+
+def app_task(input_text):
+    messages = [
+        SystemMessage(content=&quot;Provide concise, factual responses.&quot;),
+        HumanMessage(content=input_text),
+    ]
+    response = llm.invoke(messages)
+    return {&quot;answer&quot;: response.content}
+
+
+def faithfulness_scorer(output, expected):
+    expected_lower = expected.lower()
+    answer_lower = output[&quot;answer&quot;].lower()
+    key_phrases = [p.strip() for p in expected_lower.split(&quot;.&quot;) if p.strip()]
+    matches = sum(1 for p in key_phrases if p in answer_lower)
+    return matches / max(len(key_phrases), 1)
+
+
+def llm_judge_scorer(output, expected):
+    judge_prompt = (
+        f&quot;Rate the following response on a scale of 0.0 to 1.0 for accuracy &quot;
+        f&quot;and completeness compared to the expected answer.\n\n&quot;
+        f&quot;Expected: {expected}\n\n&quot;
+        f&quot;Actual: {output[&#39;answer&#39;]}\n\n&quot;
+        f&quot;Respond with only a decimal number between 0.0 and 1.0.&quot;
+    )
+    messages = [HumanMessage(content=judge_prompt)]
+    response = judge_llm.invoke(messages)
+    try:
+        return float(response.content.strip())
+    except ValueError:
+        return 0.0
+
+
+eval_result = braintrust.Eval(
+    &quot;eval-loop-demo&quot;,
+    data=lambda: [
+        {
+            &quot;input&quot;: &quot;Summarize the key benefits of container orchestration.&quot;,
+            &quot;expected&quot;: &quot;Container orchestration automates deployment, scaling, &quot;
+                        &quot;and management of containerized applications. It handles &quot;
+                        &quot;load balancing, service discovery, and self-healing &quot;
+                        &quot;across cluster nodes.&quot;,
+        },
+        {
+            &quot;input&quot;: &quot;Explain the difference between LoRA and full fine-tuning.&quot;,
+            &quot;expected&quot;: &quot;LoRA trains low-rank adapter matrices that attach to &quot;
+                        &quot;frozen base model weights, requiring a fraction of the &quot;
+                        &quot;memory and compute. Full fine-tuning updates all model &quot;
+                        &quot;parameters, producing potentially higher quality at &quot;
+                        &quot;significantly greater resource cost.&quot;,
+        },
+    ],
+    task=lambda input: app_task(input),
+    scores=[faithfulness_scorer, llm_judge_scorer],
+)
+
+print(&quot;Evaluation complete. View results in the Braintrust dashboard.&quot;)
+</code></pre>
+<h3>Unsloth Fine-Tuning from Evaluation Data</h3>
+<p>Save the following script as <code>scripts/finetune_from_eval.py</code>. It trains a LoRA adapter using high-quality examples from the evaluation pipeline:</p>
+<pre><code class="language-python">from unsloth import FastLanguageModel
+from trl import SFTTrainer, SFTConfig
+from datasets import load_dataset
+
+MODEL_NAME = &quot;meta-llama/Llama-3.1-8B-Instruct&quot;
+OUTPUT_DIR = &quot;./eval-finetuned-adapter&quot;
+MAX_SEQ_LEN = 2048
+
+model, tokenizer = FastLanguageModel.from_pretrained(
+    model_name=MODEL_NAME,
+    max_seq_length=MAX_SEQ_LEN,
+    load_in_4bit=True,
+)
+
+model = FastLanguageModel.get_peft_model(
+    model,
+    r=16,
+    lora_alpha=32,
+    target_modules=[
+        &quot;q_proj&quot;, &quot;k_proj&quot;, &quot;v_proj&quot;, &quot;o_proj&quot;,
+        &quot;gate_proj&quot;, &quot;up_proj&quot;, &quot;down_proj&quot;,
+    ],
+    lora_dropout=0,
+    bias=&quot;none&quot;,
+)
+
+dataset = load_dataset(&quot;json&quot;, data_files=&quot;training_data.jsonl&quot;, split=&quot;train&quot;)
+
+training_config = SFTConfig(
+    output_dir=OUTPUT_DIR,
+    num_train_epochs=3,
+    per_device_train_batch_size=4,
+    gradient_accumulation_steps=4,
+    learning_rate=2e-4,
+    logging_steps=10,
+    save_steps=100,
+    max_seq_length=MAX_SEQ_LEN,
+)
+
+trainer = SFTTrainer(
+    model=model,
+    train_dataset=dataset,
+    args=training_config,
+    tokenizer=tokenizer,
+)
+
+trainer.train()
+model.save_pretrained(OUTPUT_DIR)
+tokenizer.save_pretrained(OUTPUT_DIR)
+print(f&quot;LoRA adapter saved to {OUTPUT_DIR}&quot;)
+print(f&quot;Load into vLLM with: curl -X POST http://localhost:8000/v1/load_lora_adapter \\&quot;)
+print(f&quot;  -d &#39;{{\&quot;lora_name\&quot;: \&quot;finetuned-v1\&quot;, \&quot;lora_path\&quot;: \&quot;{OUTPUT_DIR}\&quot;}}&#39;&quot;)
+</code></pre>
+<p>The <code>training_data.jsonl</code> file should contain one JSON object per line with instruction-response pairs derived from high-scoring Braintrust evaluation records:</p>
+<pre><code class="language-json">{&quot;text&quot;: &quot;&lt;|begin_of_text|&gt;&lt;|start_header_id|&gt;user&lt;|end_header_id|&gt;\n\nSummarize the key benefits of container orchestration.&lt;|eot_id|&gt;&lt;|start_header_id|&gt;assistant&lt;|end_header_id|&gt;\n\nContainer orchestration automates deployment, scaling, and management of containerized applications...&lt;|eot_id|&gt;&quot;}
+</code></pre>
+<h3>A/B Routing Weight Adjustment</h3>
+<p>After evaluation results confirm the fine-tuned model&#39;s quality, adjust LiteLLM&#39;s routing weights by updating <code>litellm_config.yaml</code>:</p>
+<pre><code class="language-yaml">model_list:
+  - model_name: app-model
+    litellm_params:
+      model: openai/meta-llama/Llama-3.1-8B-Instruct
+      api_base: http://localhost:8000/v1
+      api_key: token-placeholder
+    model_info:
+      id: base-model
+    weight: 50
+
+  - model_name: app-model
+    litellm_params:
+      model: openai/finetuned-v1
+      api_base: http://localhost:8000/v1
+      api_key: token-placeholder
+    model_info:
+      id: finetuned-v1
+    weight: 50
+</code></pre>
+<p>Restart the LiteLLM proxy to apply the new weights. The traffic split shifts from 90/10 to 50/50, increasing the fine-tuned model&#39;s production exposure for further evaluation.</p>
+<h2>Verification</h2>
+<p>The following end-to-end checks confirm that all components are installed, wired, and operational.</p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Command</th>
+<th>Expected Result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Langfuse server</td>
+<td><code>curl http://localhost:3000/api/public/health</code></td>
+<td>Returns health status</td>
+</tr>
+<tr>
+<td>Langfuse SDK</td>
+<td><code>python -c &quot;import langfuse; print(&#39;OK&#39;)&quot;</code></td>
+<td>Prints &quot;OK&quot;</td>
+</tr>
+<tr>
+<td>Braintrust</td>
+<td><code>python -c &quot;import braintrust; print(&#39;OK&#39;)&quot;</code></td>
+<td>Prints &quot;OK&quot;</td>
+</tr>
+<tr>
+<td>Unsloth</td>
+<td><code>python -c &quot;from unsloth import FastLanguageModel; print(&#39;OK&#39;)&quot;</code></td>
+<td>Prints &quot;OK&quot;</td>
+</tr>
+<tr>
+<td>vLLM</td>
+<td><code>curl http://localhost:8000/v1/models</code></td>
+<td>Returns loaded model list</td>
+</tr>
+<tr>
+<td>LiteLLM proxy</td>
+<td><code>curl http://localhost:4000/v1/models -H &quot;Authorization: Bearer sk-eval-master-key&quot;</code></td>
+<td>Returns JSON model list with weighted routing group</td>
+</tr>
+<tr>
+<td>Traced application</td>
+<td><code>python scripts/traced_application.py</code></td>
+<td>Prints response and Langfuse trace confirmation</td>
+</tr>
+<tr>
+<td>Dataset curation</td>
+<td><code>python scripts/curate_dataset.py</code></td>
+<td>Reports curated trace count and dataset name</td>
+</tr>
+<tr>
+<td>Model evaluation</td>
+<td><code>python scripts/evaluate_models.py</code></td>
+<td>Prints evaluation scores and directs to Braintrust dashboard</td>
+</tr>
+<tr>
+<td>Fine-tuning</td>
+<td><code>python scripts/finetune_from_eval.py</code> with sample <code>training_data.jsonl</code></td>
+<td>Saves LoRA adapter to output directory</td>
+</tr>
+</tbody></table>
+<p>The Evaluation-Driven Development Loop is operational once all ten checks pass. The architecture chapter provides the rationale behind each component selection, the continuous improvement cycle design, and the evaluation principles governing how production traces convert into measurable quality gains.</p>
+<h2>References</h2>
+<ol>
+<li>Langfuse Self-Hosting Documentation, Langfuse GmbH.</li>
+<li>Langfuse Python SDK Documentation, Langfuse GmbH.</li>
+<li>Braintrust Documentation, Braintrust Data Inc.</li>
+<li>Unsloth Documentation, Unsloth AI.</li>
+<li>vLLM Documentation, vLLM Project.</li>
+<li>vLLM LoRA Adapter Documentation, vLLM Project.</li>
+<li>LiteLLM Proxy Documentation, BerriAI.</li>
+<li>Hugging Face TRL Documentation, Hugging Face.</li>
+</ol>
+
+<div class="blog-pagination">
+      <a href="ai-tooling-guide_10.html" class="pagination-link prev">
+        <span class="pagination-label">Previous</span>
+        <span class="pagination-title">RAG-First Knowledge System: Setup Guide</span>
+      </a>
+      <a href="serp-api-benchmark.html" class="pagination-link next">
+        <span class="pagination-label">Next</span>
+        <span class="pagination-title">Benchmarking SERP API Fidelity for AI Overviews</span>
+      </a></div>
+        </article>
+    </div>
+  </main>
+  <script src="../js/main.js"></script>
+
+  <!-- KaTeX for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" 
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], fleqn: true});">
+  </script>
+
+  <!-- Mermaid for Diagram Rendering -->
+  <style>
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: var(--space-2xl) 0;
+    }
+    .mermaid svg {
+      filter: drop-shadow(0 4px 16px rgba(183, 110, 121, 0.12));
+    }
+  </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ 
+      startOnLoad: true, 
+      securityLevel: 'loose',
+      theme: 'base',
+      themeVariables: {
+        fontFamily: "'Outfit', -apple-system, BlinkMacSystemFont, sans-serif",
+        primaryColor: '#ffffff',
+        primaryBorderColor: '#b76e79',
+        primaryTextColor: '#8b4f5a',
+        lineColor: '#b76e79',
+        nodeBorder: '#b76e79',
+        clusterBkg: 'rgba(232, 180, 184, 0.15)',
+        clusterBorder: '#d4a0a0'
+      }
+    });
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      // Mermaid
+      const blocks = document.querySelectorAll('.language-mermaid');
+      blocks.forEach((block) => {
+        const parent = block.parentElement;
+        if (parent.tagName === 'PRE') {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          parent.replaceWith(mermaidDiv);
+        }
+      });
+      
+      // Tabs
+      const tabGroups = document.querySelectorAll('[data-tab-group]');
+      tabGroups.forEach(group => {
+        const buttons = group.querySelectorAll('[data-tab]');
+        const contents = group.querySelectorAll('[data-tab-content]');
+        
+        buttons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const target = btn.getAttribute('data-tab');
+            
+            buttons.forEach(b => b.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+            
+            btn.classList.add('active');
+            const targetContent = group.querySelector(`[data-tab-content="${target}"]`);
+            if (targetContent) targetContent.classList.add('active');
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enterprise Agentic Pipeline: Setup Guide — Lydia Pedersen</title>
+  <link rel="stylesheet" href="../css/styles.css?v=1.2">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .blog-post {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: var(--space-4xl) var(--space-md);
+        background: var(--bg-card);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 8px 32px rgba(183, 110, 121, 0.05);
+        border: 1px solid var(--border-subtle);
+    }
+    .blog-post h1, .blog-post h2, .blog-post h3 {
+        color: var(--text-primary);
+        font-family: var(--font-display);
+        margin-top: var(--space-2xl);
+        margin-bottom: var(--space-md);
+    }
+    .blog-post h1 { font-size: var(--fs-3xl); margin-top: 0; line-height: 1.1; }
+    .blog-post h2, .blog-post h3 { border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-sm); }
+    .blog-post h2 { font-size: var(--fs-2xl); }
+    .blog-post h3 { font-size: var(--fs-xl); }
+    .blog-post p, .blog-post li {
+        color: var(--text-secondary);
+        line-height: var(--lh-relaxed);
+        margin-bottom: var(--space-md);
+        font-size: var(--fs-md);
+    }
+    .blog-post img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-md);
+        margin: var(--space-lg) 0;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .blog-post a:not(.pagination-link) {
+        color: var(--text-accent);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s ease;
+    }
+    .blog-post a:not(.pagination-link):hover {
+        border-bottom-color: var(--text-accent);
+    }
+    .blog-post {
+        background: rgba(255, 255, 255, 0.65);
+        padding: var(--space-2xl);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-subtle);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .blog-post .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; display: flex; gap: 1rem; align-items: center; }
+    .blog-post .meta span { display: inline-flex; align-items: center; gap: 0.25rem; }
+    .blog-post p { line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1.05rem; }
+    .blog-post ul, .blog-post ol { margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem; }
+    .blog-post li { margin-bottom: 0.5rem; }
+    .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+    .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
+    .blog-post table { width: auto; margin: var(--space-2xl) 0; border-collapse: collapse; text-align: left; }
+    .blog-post th, .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post th { font-weight: 600; color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-subtle); }
+    .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 4px 10px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; font-size: 0.95rem; color: var(--rose-gold-dark); margin-right: 6px; }
+
+    /* Responsive: horizontally scroll tables on mobile */
+    @media (max-width: 768px) {
+      .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
+    }
+    
+    /* Post Tabs */
+    .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
+    .post-tabs::-webkit-scrollbar { display: none; }
+    .post-tab-btn { padding: 8px 16px; border: none; background: transparent; color: var(--text-muted); font-family: var(--font-display); font-size: 1rem; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; white-space: nowrap; transition: color 0.2s, border-color 0.2s; }
+    .post-tab-btn:hover { color: var(--text-primary); }
+    .post-tab-btn.active { color: var(--text-accent); border-bottom-color: var(--text-accent); font-weight: 500; }
+    .post-tab-content { display: none; padding-top: var(--space-md); }
+    .post-tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+  <!-- Fixed chip visual (always visible, bottom-left, behind everything) -->
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
+  <!-- Full-screen overlay canvas for the diagonal binary→agent→text animation -->
+  <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="../index.html" class="nav__logo" aria-label="Home">lydia<span>.</span>pedersen</a>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="../index.html#about" class="nav__link">About</a></li>
+        <li><a href="../index.html#samples" class="nav__link">Writing</a></li>
+        <li><a href="../index.html#case-studies" class="nav__link">Engineering</a></li>
+        <li><a href="../index.html#skills" class="nav__link">Skills</a></li>
+        <li><a href="index.html" class="nav__link">Blog</a></li>
+        <li><a href="../ebooks/index.html" class="nav__link">Ebooks</a></li>
+        <li><a href="../index.html#contact" class="nav__link">Contact</a></li>
+      </ul>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="nav__toggle-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-lg));">
+    <div class="container">
+<nav aria-label="breadcrumb" class="breadcrumbs"><ol>
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: AI Tooling</a></li><li aria-current="page">Enterprise Agentic Pipeline: Setup Guide</li></ol></nav>
+        <article class="blog-post series-ai-tooling">
+<h1>Enterprise Agentic Pipeline: Setup Guide</h1>
+<!-- SUMMARY: A step-by-step installation and configuration guide for assembling the Enterprise Agentic Pipeline, covering LangChain and LangGraph setup, LiteLLM gateway deployment, Weaviate vector database provisioning, Unstructured document parsing, Langfuse observability, vLLM model serving, and HF TRL fine-tuning, with integration wiring and end-to-end verification steps. --><p>The Enterprise Agentic Pipeline architecture chapter explains the rationale behind each component selection, the multi-agent orchestration model, and the governance requirements driving the design. This guide provides the concrete installation commands, configuration snippets, and wiring steps needed to bring that architecture to a working state on enterprise infrastructure.</p>
+<h2>Prerequisites</h2>
+<ul>
+<li><strong>Operating system</strong>: Linux with systemd or a container orchestration platform</li>
+<li><strong>Python</strong>: Version 3.10 or later, with <code>pip</code> available</li>
+<li><strong>Node.js</strong>: Version 18 or later, with <code>npx</code> available</li>
+<li><strong>Docker</strong>: Required for Weaviate, Langfuse, and LiteLLM proxy deployments</li>
+<li><strong>GPU hardware</strong>: At least one NVIDIA GPU with 24GB+ VRAM for vLLM serving. Multi-GPU configurations enable serving larger models.</li>
+<li><strong>API keys</strong>: At least one commercial model provider account for LiteLLM routing. Self-hosted-only deployments can omit this requirement.</li>
+<li><strong>Network</strong>: Internal network access between all components. No public internet exposure is required for self-hosted components.</li>
+</ul>
+<h2>Step 1: LangChain and LangGraph</h2>
+<p>LangChain provides the agent framework, and LangGraph provides the orchestration layer. Both install from PyPI.</p>
+<pre><code class="language-bash">pip install langchain langchain-core langchain-community langgraph
+</code></pre>
+<p>LangGraph requires a checkpointer backend for persistent state. The SQLite checkpointer provides a zero-configuration starting point:</p>
+<pre><code class="language-bash">pip install langgraph-checkpoint-sqlite
+</code></pre>
+<p>Production deployments should use the PostgreSQL checkpointer for reliability and multi-process access:</p>
+<pre><code class="language-bash">pip install langgraph-checkpoint-postgres
+</code></pre>
+<p><strong>Verification</strong>:</p>
+<pre><code class="language-python">import langchain_core
+import langgraph
+print(f&quot;LangChain Core: {langchain_core.__version__}&quot;)
+print(f&quot;LangGraph: {langgraph.__version__}&quot;)
+</code></pre>
+<p>A successful installation prints both version numbers without import errors.</p>
+<h2>Step 2: LiteLLM Gateway</h2>
+<p>LiteLLM provides the unified gateway between agents and model providers. The proxy runs as a Docker container or a standalone Python process.</p>
+<h3>Docker deployment</h3>
+<pre><code class="language-bash">docker run -d \
+  --name litellm-proxy \
+  -p 4000:4000 \
+  -v $(pwd)/litellm_config.yaml:/app/config.yaml \
+  ghcr.io/berriai/litellm:main-latest \
+  --config /app/config.yaml
+</code></pre>
+<h3>Configuration</h3>
+<p>Create <code>litellm_config.yaml</code> with model routing rules:</p>
+<pre><code class="language-yaml">model_list:
+  - model_name: gpt-4o
+    litellm_params:
+      model: openai/gpt-4o
+      api_key: os.environ/OPENAI_API_KEY
+
+  - model_name: claude-sonnet
+    litellm_params:
+      model: anthropic/claude-sonnet-4-20250514
+      api_key: os.environ/ANTHROPIC_API_KEY
+
+  - model_name: self-hosted-llama
+    litellm_params:
+      model: openai/meta-llama/Llama-3.1-70B-Instruct
+      api_base: http://vllm-server:8000/v1
+      api_key: token-placeholder
+
+litellm_settings:
+  success_callback: [&quot;langfuse&quot;]
+  max_budget: 1000
+  budget_duration: 30d
+
+general_settings:
+  master_key: sk-litellm-master-key
+</code></pre>
+<p>Set environment variables for API keys and Langfuse integration:</p>
+<pre><code class="language-bash">export OPENAI_API_KEY=&quot;sk-...&quot;
+export ANTHROPIC_API_KEY=&quot;sk-ant-...&quot;
+export LANGFUSE_PUBLIC_KEY=&quot;pk-lf-...&quot;
+export LANGFUSE_SECRET_KEY=&quot;sk-lf-...&quot;
+export LANGFUSE_HOST=&quot;http://langfuse-server:3000&quot;
+</code></pre>
+<p><strong>Verification</strong>:</p>
+<pre><code class="language-bash">curl http://localhost:4000/v1/models \
+  -H &quot;Authorization: Bearer sk-litellm-master-key&quot;
+</code></pre>
+<p>A successful deployment returns a JSON list of configured models.</p>
+<h3>Virtual keys for team isolation</h3>
+<p>Generate virtual API keys for each team:</p>
+<pre><code class="language-bash">curl -X POST http://localhost:4000/key/generate \
+  -H &quot;Authorization: Bearer sk-litellm-master-key&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d &#39;{
+    &quot;team_id&quot;: &quot;research-team&quot;,
+    &quot;max_budget&quot;: 200,
+    &quot;budget_duration&quot;: &quot;30d&quot;
+  }&#39;
+</code></pre>
+<p>Each team uses its virtual key to authenticate with LiteLLM. The gateway tracks per-team usage against the configured budget cap.</p>
+<h2>Step 3: Weaviate</h2>
+<p>Weaviate provides the multi-tenant vector database. A Docker Compose deployment provides the quickest path to a running instance.</p>
+<p>Create <code>docker-compose-weaviate.yaml</code>:</p>
+<pre><code class="language-yaml">services:
+  weaviate:
+    image: cr.weaviate.io/semitechnologies/weaviate:latest
+    ports:
+      - &quot;8080:8080&quot;
+      - &quot;50051:50051&quot;
+    volumes:
+      - weaviate_data:/var/lib/weaviate
+    environment:
+      QUERY_DEFAULTS_LIMIT: 25
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: &quot;true&quot;
+      PERSISTENCE_DATA_PATH: &quot;/var/lib/weaviate&quot;
+      ENABLE_MODULES: &quot;text2vec-openai&quot;
+      DEFAULT_VECTORIZER_MODULE: &quot;text2vec-openai&quot;
+      OPENAI_APIKEY: ${OPENAI_API_KEY}
+      CLUSTER_HOSTNAME: &quot;node1&quot;
+
+volumes:
+  weaviate_data:
+</code></pre>
+<pre><code class="language-bash">docker compose -f docker-compose-weaviate.yaml up -d
+</code></pre>
+<p>Initialize a multi-tenant collection using the Weaviate Python client:</p>
+<pre><code class="language-bash">pip install weaviate-client
+</code></pre>
+<pre><code class="language-python">import weaviate
+from weaviate.classes.config import Configure, Property, DataType
+
+client = weaviate.connect_to_local()
+
+collection = client.collections.create(
+    name=&quot;EnterpriseDocuments&quot;,
+    vectorizer_config=Configure.Vectorizer.text2vec_openai(),
+    multi_tenancy_config=Configure.multi_tenancy(
+        enabled=True,
+        auto_tenant_creation=True
+    ),
+    properties=[
+        Property(name=&quot;content&quot;, data_type=DataType.TEXT),
+        Property(name=&quot;source&quot;, data_type=DataType.TEXT),
+        Property(name=&quot;doc_type&quot;, data_type=DataType.TEXT),
+        Property(name=&quot;chunk_index&quot;, data_type=DataType.INT),
+    ]
+)
+
+print(f&quot;Collection &#39;{collection.name}&#39; created with multi-tenancy enabled.&quot;)
+client.close()
+</code></pre>
+<p><strong>Verification</strong>:</p>
+<pre><code class="language-bash">curl http://localhost:8080/v1/meta
+</code></pre>
+<p>A successful deployment returns Weaviate metadata including version and configured modules.</p>
+<h2>Step 4: Unstructured</h2>
+<p>Unstructured handles enterprise document parsing. The open-source library processes documents locally.</p>
+<pre><code class="language-bash">pip install unstructured[all-docs]
+</code></pre>
+<p>The <code>[all-docs]</code> extra installs dependencies for PDF, DOCX, PPTX, HTML, and image-based OCR processing. The initial installation downloads several hundred megabytes of parsing models.</p>
+<p><strong>Verification</strong>:</p>
+<pre><code class="language-python">from unstructured.partition.auto import partition
+
+elements = partition(filename=&quot;test_document.pdf&quot;)
+print(f&quot;Extracted {len(elements)} elements.&quot;)
+for el in elements[:3]:
+    print(f&quot;  {el.category}: {str(el)[:80]}&quot;)
+</code></pre>
+<p>A successful installation partitions the test document and prints element categories such as <code>Title</code>, <code>NarrativeText</code>, and <code>Table</code>.</p>
+<h2>Step 5: Langfuse</h2>
+<p>Langfuse provides production observability. A Docker Compose deployment runs the full Langfuse stack.</p>
+<p>Create <code>docker-compose-langfuse.yaml</code>:</p>
+<pre><code class="language-yaml">services:
+  langfuse-server:
+    image: langfuse/langfuse:2
+    ports:
+      - &quot;3000:3000&quot;
+    environment:
+      DATABASE_URL: postgresql://langfuse:langfuse@langfuse-db:5432/langfuse
+      NEXTAUTH_SECRET: a-random-secret-string
+      NEXTAUTH_URL: http://localhost:3000
+      SALT: a-random-salt-string
+    depends_on:
+      - langfuse-db
+
+  langfuse-db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: langfuse
+      POSTGRES_PASSWORD: langfuse
+      POSTGRES_DB: langfuse
+    volumes:
+      - langfuse_pgdata:/var/lib/postgresql/data
+
+volumes:
+  langfuse_pgdata:
+</code></pre>
+<pre><code class="language-bash">docker compose -f docker-compose-langfuse.yaml up -d
+</code></pre>
+<p>After startup, access the Langfuse dashboard at <code>http://localhost:3000</code>, create a project, and generate API keys for the <code>LANGFUSE_PUBLIC_KEY</code> and <code>LANGFUSE_SECRET_KEY</code> environment variables referenced in the LiteLLM configuration.</p>
+<p>Install the Langfuse Python SDK for direct LangChain integration:</p>
+<pre><code class="language-bash">pip install langfuse
+</code></pre>
+<p><strong>Verification</strong>:</p>
+<pre><code class="language-bash">curl http://localhost:3000/api/public/health
+</code></pre>
+<p>A successful deployment returns a health status indicating the server and database are operational.</p>
+<h2>Step 6: vLLM</h2>
+<p>vLLM provides high-throughput serving for self-hosted models. Installation requires a Linux system with NVIDIA GPU drivers and CUDA toolkit.</p>
+<pre><code class="language-bash">pip install vllm
+</code></pre>
+<p>Start the vLLM server with a model:</p>
+<pre><code class="language-bash">vllm serve meta-llama/Llama-3.1-70B-Instruct \
+  --host 0.0.0.0 \
+  --port 8000 \
+  --tensor-parallel-size 4 \
+  --max-model-len 8192 \
+  --enable-prefix-caching
+</code></pre>
+<p>The <code>--tensor-parallel-size 4</code> flag distributes inference across 4 GPUs. Adjust based on available hardware. The <code>--enable-prefix-caching</code> flag activates KV cache reuse for shared system prompts, which is common in enterprise agent deployments.</p>
+<p><strong>Verification</strong>:</p>
+<pre><code class="language-bash">curl http://localhost:8000/v1/models
+</code></pre>
+<p>A successful deployment returns a JSON list containing the loaded model. Test inference:</p>
+<pre><code class="language-bash">curl http://localhost:8000/v1/chat/completions \
+  -H &quot;Content-Type: application/json&quot; \
+  -d &#39;{
+    &quot;model&quot;: &quot;meta-llama/Llama-3.1-70B-Instruct&quot;,
+    &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Hello&quot;}],
+    &quot;max_tokens&quot;: 50
+  }&#39;
+</code></pre>
+<p>A successful test returns a chat completion response.</p>
+<h2>Step 7: HF TRL</h2>
+<p>HF TRL and PEFT provide the fine-tuning pipeline. Installation uses pip.</p>
+<pre><code class="language-bash">pip install trl peft transformers datasets accelerate bitsandbytes
+</code></pre>
+<p>A minimal supervised fine-tuning script demonstrates the pipeline. Save as <code>scripts/finetune.py</code>:</p>
+<pre><code class="language-python">from datasets import load_dataset
+from transformers import AutoModelForCausalLM, AutoTokenizer
+from peft import LoraConfig
+from trl import SFTTrainer, SFTConfig
+
+MODEL_NAME = &quot;meta-llama/Llama-3.1-8B-Instruct&quot;
+OUTPUT_DIR = &quot;./fine-tuned-model&quot;
+
+tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+model = AutoModelForCausalLM.from_pretrained(
+    MODEL_NAME,
+    load_in_4bit=True,
+    device_map=&quot;auto&quot;
+)
+
+lora_config = LoraConfig(
+    r=16,
+    lora_alpha=32,
+    target_modules=[&quot;q_proj&quot;, &quot;v_proj&quot;],
+    lora_dropout=0.05,
+    bias=&quot;none&quot;,
+    task_type=&quot;CAUSAL_LM&quot;
+)
+
+dataset = load_dataset(&quot;json&quot;, data_files=&quot;training_data.jsonl&quot;, split=&quot;train&quot;)
+
+training_config = SFTConfig(
+    output_dir=OUTPUT_DIR,
+    num_train_epochs=3,
+    per_device_train_batch_size=4,
+    gradient_accumulation_steps=4,
+    learning_rate=2e-4,
+    logging_steps=10,
+    save_steps=100,
+)
+
+trainer = SFTTrainer(
+    model=model,
+    train_dataset=dataset,
+    peft_config=lora_config,
+    args=training_config,
+    tokenizer=tokenizer,
+)
+
+trainer.train()
+trainer.save_model(OUTPUT_DIR)
+print(f&quot;Fine-tuned model saved to {OUTPUT_DIR}&quot;)
+</code></pre>
+<p>The training data file <code>training_data.jsonl</code> should contain one JSON object per line with instruction-response pairs exported from Langfuse production traces:</p>
+<pre><code class="language-json">{&quot;text&quot;: &quot;&lt;|begin_of_text|&gt;&lt;|start_header_id|&gt;user&lt;|end_header_id|&gt;\n\nSummarize the Q3 revenue report.&lt;|eot_id|&gt;&lt;|start_header_id|&gt;assistant&lt;|end_header_id|&gt;\n\nQ3 revenue increased 12% year-over-year...&lt;|eot_id|&gt;&quot;}
+</code></pre>
+<p><strong>Verification</strong>:</p>
+<pre><code class="language-python">import trl
+import peft
+print(f&quot;TRL: {trl.__version__}&quot;)
+print(f&quot;PEFT: {peft.__version__}&quot;)
+</code></pre>
+<p>A successful installation prints both version numbers. Full fine-tuning verification requires running the training script with a sample dataset and confirming that the output directory contains adapter weights.</p>
+<h2>Wiring the Components</h2>
+<p>With all components installed individually, the final step connects them into the integrated pipeline described in the architecture chapter.</p>
+<h3>LangChain Agent with LiteLLM and Langfuse</h3>
+<p>Save the following script as <code>scripts/enterprise_agent.py</code>. It configures a LangChain agent to route model calls through LiteLLM and export traces to Langfuse:</p>
+<pre><code class="language-python">from langchain_openai import ChatOpenAI
+from langchain_core.messages import HumanMessage, SystemMessage
+from langfuse.callback import CallbackHandler as LangfuseHandler
+
+litellm_model = ChatOpenAI(
+    model=&quot;gpt-4o&quot;,
+    base_url=&quot;http://localhost:4000/v1&quot;,
+    api_key=&quot;sk-litellm-team-key&quot;,
+    temperature=0
+)
+
+langfuse_handler = LangfuseHandler(
+    public_key=&quot;pk-lf-...&quot;,
+    secret_key=&quot;sk-lf-...&quot;,
+    host=&quot;http://localhost:3000&quot;
+)
+
+messages = [
+    SystemMessage(content=&quot;Provide concise, factual responses.&quot;),
+    HumanMessage(content=&quot;Summarize the key benefits of multi-agent orchestration.&quot;)
+]
+
+response = litellm_model.invoke(
+    messages,
+    config={&quot;callbacks&quot;: [langfuse_handler]}
+)
+
+print(response.content)
+print(&quot;Trace exported to Langfuse.&quot;)
+</code></pre>
+<h3>LangGraph Multi-Agent Workflow</h3>
+<p>Save the following script as <code>scripts/multi_agent_workflow.py</code>. It defines a minimal LangGraph workflow with two specialized agents:</p>
+<pre><code class="language-python">from langgraph.graph import StateGraph, START, END
+from langgraph.checkpoint.sqlite import SqliteSaver
+from langchain_openai import ChatOpenAI
+from langchain_core.messages import HumanMessage, SystemMessage
+from langfuse.callback import CallbackHandler as LangfuseHandler
+from typing import TypedDict
+
+class WorkflowState(TypedDict):
+    task: str
+    research_result: str
+    final_output: str
+
+llm = ChatOpenAI(
+    model=&quot;gpt-4o&quot;,
+    base_url=&quot;http://localhost:4000/v1&quot;,
+    api_key=&quot;sk-litellm-team-key&quot;
+)
+
+langfuse_handler = LangfuseHandler(
+    public_key=&quot;pk-lf-...&quot;,
+    secret_key=&quot;sk-lf-...&quot;,
+    host=&quot;http://localhost:3000&quot;
+)
+
+def research_agent(state: WorkflowState) -&gt; WorkflowState:
+    messages = [
+        SystemMessage(content=&quot;Gather key facts about the given topic.&quot;),
+        HumanMessage(content=state[&quot;task&quot;])
+    ]
+    response = llm.invoke(messages, config={&quot;callbacks&quot;: [langfuse_handler]})
+    return {&quot;research_result&quot;: response.content}
+
+def writing_agent(state: WorkflowState) -&gt; WorkflowState:
+    messages = [
+        SystemMessage(content=&quot;Write a concise summary from the research.&quot;),
+        HumanMessage(content=state[&quot;research_result&quot;])
+    ]
+    response = llm.invoke(messages, config={&quot;callbacks&quot;: [langfuse_handler]})
+    return {&quot;final_output&quot;: response.content}
+
+graph = StateGraph(WorkflowState)
+graph.add_node(&quot;research&quot;, research_agent)
+graph.add_node(&quot;writing&quot;, writing_agent)
+graph.add_edge(START, &quot;research&quot;)
+graph.add_edge(&quot;research&quot;, &quot;writing&quot;)
+graph.add_edge(&quot;writing&quot;, END)
+
+checkpointer = SqliteSaver.from_conn_string(&quot;enterprise_workflow.db&quot;)
+app = graph.compile(checkpointer=checkpointer)
+
+result = app.invoke(
+    {&quot;task&quot;: &quot;Analyze the tradeoffs of self-hosted vs commercial LLM serving&quot;},
+    config={&quot;configurable&quot;: {&quot;thread_id&quot;: &quot;demo-001&quot;}}
+)
+
+print(&quot;Final output:&quot;)
+print(result[&quot;final_output&quot;])
+</code></pre>
+<h3>Unstructured-to-Weaviate Ingestion Pipeline</h3>
+<p>Save the following script as <code>scripts/ingest_enterprise_docs.py</code>:</p>
+<pre><code class="language-python">import os
+import weaviate
+from weaviate.classes.tenants import Tenant
+from unstructured.partition.auto import partition
+from unstructured.chunking.title import chunk_by_title
+
+DOCS_DIR = &quot;./enterprise_docs&quot;
+TENANT_NAME = &quot;engineering-team&quot;
+
+client = weaviate.connect_to_local()
+collection = client.collections.get(&quot;EnterpriseDocuments&quot;)
+
+collection.tenants.create([Tenant(name=TENANT_NAME)])
+tenant_collection = collection.with_tenant(TENANT_NAME)
+
+doc_files = []
+for root, dirs, files in os.walk(DOCS_DIR):
+    for f in files:
+        if f.endswith((&quot;.pdf&quot;, &quot;.docx&quot;, &quot;.pptx&quot;, &quot;.html&quot;, &quot;.md&quot;)):
+            doc_files.append(os.path.join(root, f))
+
+print(f&quot;Found {len(doc_files)} documents to process.&quot;)
+
+for filepath in doc_files:
+    print(f&quot;Processing: {filepath}&quot;)
+    elements = partition(filename=filepath)
+    chunks = chunk_by_title(elements, max_characters=500)
+
+    for i, chunk in enumerate(chunks):
+        tenant_collection.data.insert({
+            &quot;content&quot;: str(chunk),
+            &quot;source&quot;: filepath,
+            &quot;doc_type&quot;: os.path.splitext(filepath)[1],
+            &quot;chunk_index&quot;: i
+        })
+
+    print(f&quot;  Stored {len(chunks)} chunks for tenant &#39;{TENANT_NAME}&#39;.&quot;)
+
+total = tenant_collection.aggregate.over_all(total_count=True)
+print(f&quot;\nTotal documents in tenant &#39;{TENANT_NAME}&#39;: {total.total_count}&quot;)
+client.close()
+</code></pre>
+<h2>Verification</h2>
+<p>The following end-to-end checks confirm that all components are installed, wired, and operational.</p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Command</th>
+<th>Expected Result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>LangChain/LangGraph</td>
+<td><code>python -c &quot;import langchain_core, langgraph; print(&#39;OK&#39;)&quot;</code></td>
+<td>Prints &quot;OK&quot;</td>
+</tr>
+<tr>
+<td>LiteLLM proxy</td>
+<td><code>curl http://localhost:4000/v1/models -H &quot;Authorization: Bearer sk-litellm-master-key&quot;</code></td>
+<td>Returns JSON model list</td>
+</tr>
+<tr>
+<td>Weaviate</td>
+<td><code>curl http://localhost:8080/v1/meta</code></td>
+<td>Returns Weaviate metadata</td>
+</tr>
+<tr>
+<td>Unstructured</td>
+<td><code>python -c &quot;from unstructured.partition.auto import partition; print(&#39;OK&#39;)&quot;</code></td>
+<td>Prints &quot;OK&quot;</td>
+</tr>
+<tr>
+<td>Langfuse</td>
+<td><code>curl http://localhost:3000/api/public/health</code></td>
+<td>Returns health status</td>
+</tr>
+<tr>
+<td>vLLM</td>
+<td><code>curl http://localhost:8000/v1/models</code></td>
+<td>Returns loaded model list</td>
+</tr>
+<tr>
+<td>HF TRL</td>
+<td><code>python -c &quot;import trl, peft; print(&#39;OK&#39;)&quot;</code></td>
+<td>Prints &quot;OK&quot;</td>
+</tr>
+<tr>
+<td>Agent through LiteLLM</td>
+<td><code>python scripts/enterprise_agent.py</code></td>
+<td>Prints response and Langfuse trace confirmation</td>
+</tr>
+<tr>
+<td>Multi-agent workflow</td>
+<td><code>python scripts/multi_agent_workflow.py</code></td>
+<td>Prints final output from two-agent pipeline</td>
+</tr>
+<tr>
+<td>Document ingestion</td>
+<td>Place test documents in <code>enterprise_docs/</code>, run <code>python scripts/ingest_enterprise_docs.py</code></td>
+<td>Reports chunks stored per document</td>
+</tr>
+</tbody></table>
+<p>The Enterprise Agentic Pipeline is operational once all ten checks pass. The architecture chapter provides the rationale behind each component selection and the governance, observability, and fine-tuning design decisions governing how the layers interact.</p>
+<h2>References</h2>
+<ol>
+<li>LangChain Installation Guide, LangChain Inc.</li>
+<li>LangGraph Getting Started Guide, LangChain Inc.</li>
+<li>LiteLLM Proxy Documentation, BerriAI.</li>
+<li>Weaviate Docker Installation Guide, Weaviate B.V.</li>
+<li>Unstructured Installation Guide, Unstructured Technologies.</li>
+<li>Langfuse Self-Hosting Documentation, Langfuse GmbH.</li>
+<li>vLLM Installation Guide, vLLM Project.</li>
+<li>Hugging Face TRL Documentation, Hugging Face.</li>
+<li>Hugging Face PEFT Documentation, Hugging Face.</li>
+<li>Weaviate Python Client Documentation, Weaviate B.V.</li>
+</ol>
+
+<div class="blog-pagination">
+      <a href="ai-tooling-guide_07.html" class="pagination-link prev">
+        <span class="pagination-label">Previous</span>
+        <span class="pagination-title">Solo Developer Stack: Setup Guide</span>
+      </a>
+      <a href="ai-tooling-guide_09.html" class="pagination-link next">
+        <span class="pagination-label">Next</span>
+        <span class="pagination-title">Private and Airgapped Deployment: Setup Guide</span>
+      </a></div>
+        </article>
+    </div>
+  </main>
+  <script src="../js/main.js"></script>
+
+  <!-- KaTeX for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" 
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], fleqn: true});">
+  </script>
+
+  <!-- Mermaid for Diagram Rendering -->
+  <style>
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: var(--space-2xl) 0;
+    }
+    .mermaid svg {
+      filter: drop-shadow(0 4px 16px rgba(183, 110, 121, 0.12));
+    }
+  </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ 
+      startOnLoad: true, 
+      securityLevel: 'loose',
+      theme: 'base',
+      themeVariables: {
+        fontFamily: "'Outfit', -apple-system, BlinkMacSystemFont, sans-serif",
+        primaryColor: '#ffffff',
+        primaryBorderColor: '#b76e79',
+        primaryTextColor: '#8b4f5a',
+        lineColor: '#b76e79',
+        nodeBorder: '#b76e79',
+        clusterBkg: 'rgba(232, 180, 184, 0.15)',
+        clusterBorder: '#d4a0a0'
+      }
+    });
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      // Mermaid
+      const blocks = document.querySelectorAll('.language-mermaid');
+      blocks.forEach((block) => {
+        const parent = block.parentElement;
+        if (parent.tagName === 'PRE') {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          parent.replaceWith(mermaidDiv);
+        }
+      });
+      
+      // Tabs
+      const tabGroups = document.querySelectorAll('[data-tab-group]');
+      tabGroups.forEach(group => {
+        const buttons = group.querySelectorAll('[data-tab]');
+        const contents = group.querySelectorAll('[data-tab-content]');
+        
+        buttons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const target = btn.getAttribute('data-tab');
+            
+            buttons.forEach(b => b.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+            
+            btn.classList.add('active');
+            const targetContent = group.querySelector(`[data-tab-content="${target}"]`);
+            if (targetContent) targetContent.classList.add('active');
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

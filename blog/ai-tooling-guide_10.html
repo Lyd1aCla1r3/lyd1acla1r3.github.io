@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RAG-First Knowledge System: Setup Guide — Lydia Pedersen</title>
+  <link rel="stylesheet" href="../css/styles.css?v=1.2">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .blog-post {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: var(--space-4xl) var(--space-md);
+        background: var(--bg-card);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 8px 32px rgba(183, 110, 121, 0.05);
+        border: 1px solid var(--border-subtle);
+    }
+    .blog-post h1, .blog-post h2, .blog-post h3 {
+        color: var(--text-primary);
+        font-family: var(--font-display);
+        margin-top: var(--space-2xl);
+        margin-bottom: var(--space-md);
+    }
+    .blog-post h1 { font-size: var(--fs-3xl); margin-top: 0; line-height: 1.1; }
+    .blog-post h2, .blog-post h3 { border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-sm); }
+    .blog-post h2 { font-size: var(--fs-2xl); }
+    .blog-post h3 { font-size: var(--fs-xl); }
+    .blog-post p, .blog-post li {
+        color: var(--text-secondary);
+        line-height: var(--lh-relaxed);
+        margin-bottom: var(--space-md);
+        font-size: var(--fs-md);
+    }
+    .blog-post img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-md);
+        margin: var(--space-lg) 0;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .blog-post a:not(.pagination-link) {
+        color: var(--text-accent);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s ease;
+    }
+    .blog-post a:not(.pagination-link):hover {
+        border-bottom-color: var(--text-accent);
+    }
+    .blog-post {
+        background: rgba(255, 255, 255, 0.65);
+        padding: var(--space-2xl);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-subtle);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .blog-post .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; display: flex; gap: 1rem; align-items: center; }
+    .blog-post .meta span { display: inline-flex; align-items: center; gap: 0.25rem; }
+    .blog-post p { line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1.05rem; }
+    .blog-post ul, .blog-post ol { margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem; }
+    .blog-post li { margin-bottom: 0.5rem; }
+    .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+    .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
+    .blog-post table { width: auto; margin: var(--space-2xl) 0; border-collapse: collapse; text-align: left; }
+    .blog-post th, .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post th { font-weight: 600; color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-subtle); }
+    .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 4px 10px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; font-size: 0.95rem; color: var(--rose-gold-dark); margin-right: 6px; }
+
+    /* Responsive: horizontally scroll tables on mobile */
+    @media (max-width: 768px) {
+      .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
+    }
+    
+    /* Post Tabs */
+    .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
+    .post-tabs::-webkit-scrollbar { display: none; }
+    .post-tab-btn { padding: 8px 16px; border: none; background: transparent; color: var(--text-muted); font-family: var(--font-display); font-size: 1rem; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; white-space: nowrap; transition: color 0.2s, border-color 0.2s; }
+    .post-tab-btn:hover { color: var(--text-primary); }
+    .post-tab-btn.active { color: var(--text-accent); border-bottom-color: var(--text-accent); font-weight: 500; }
+    .post-tab-content { display: none; padding-top: var(--space-md); }
+    .post-tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+  <!-- Fixed chip visual (always visible, bottom-left, behind everything) -->
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
+  <!-- Full-screen overlay canvas for the diagonal binary→agent→text animation -->
+  <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="../index.html" class="nav__logo" aria-label="Home">lydia<span>.</span>pedersen</a>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="../index.html#about" class="nav__link">About</a></li>
+        <li><a href="../index.html#samples" class="nav__link">Writing</a></li>
+        <li><a href="../index.html#case-studies" class="nav__link">Engineering</a></li>
+        <li><a href="../index.html#skills" class="nav__link">Skills</a></li>
+        <li><a href="index.html" class="nav__link">Blog</a></li>
+        <li><a href="../ebooks/index.html" class="nav__link">Ebooks</a></li>
+        <li><a href="../index.html#contact" class="nav__link">Contact</a></li>
+      </ul>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="nav__toggle-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-lg));">
+    <div class="container">
+<nav aria-label="breadcrumb" class="breadcrumbs"><ol>
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: AI Tooling</a></li><li aria-current="page">RAG-First Knowledge System: Setup Guide</li></ol></nav>
+        <article class="blog-post series-ai-tooling">
+<h1>RAG-First Knowledge System: Setup Guide</h1>
+<!-- SUMMARY: A step-by-step installation and configuration guide for assembling the RAG-First Knowledge System, covering LlamaIndex setup with Pinecone integration, LiteLLM gateway configuration for embedding and generation routing, Pinecone index provisioning, LlamaParse document parsing, Firecrawl web crawling, and Braintrust evaluation scoring, with integration wiring scripts and end-to-end verification steps. --><p>The RAG-First Knowledge System architecture chapter explains the rationale behind each component selection, the dual-pipeline design, and the principle that retrieval quality dominates answer quality in knowledge-heavy applications. This guide provides the concrete installation commands, configuration snippets, and wiring steps needed to bring that architecture to a working state.</p>
+<h2>Prerequisites</h2>
+<ul>
+<li><strong>Operating system</strong>: macOS, Linux, or Windows with Python support</li>
+<li><strong>Python</strong>: Version 3.10 or later, with <code>pip</code> available</li>
+<li><strong>Node.js</strong>: Version 18 or later, with <code>npx</code> available for MCP server execution</li>
+<li><strong>API keys</strong>: The following service accounts are required before proceeding:<ul>
+<li><strong>Pinecone</strong>: API key from the Pinecone console</li>
+<li><strong>LlamaParse</strong>: API key from LlamaCloud</li>
+<li><strong>Firecrawl</strong>: API key from the Firecrawl dashboard</li>
+<li><strong>Braintrust</strong>: API key from the Braintrust console</li>
+<li><strong>LLM provider</strong>: At least one commercial model provider API key for generation and embedding</li>
+</ul>
+</li>
+<li><strong>Network</strong>: Outbound internet access for API calls to Pinecone, LlamaParse, Firecrawl, and model providers</li>
+</ul>
+<h2>Step 1: LlamaIndex</h2>
+<p>LlamaIndex provides the retrieval framework with native index abstractions and query engines. Install the core package and integrations:</p>
+<pre><code class="language-bash">pip install llama-index llama-index-core \
+  llama-index-vector-stores-pinecone \
+  llama-index-llms-openai \
+  llama-index-embeddings-openai \
+  llama-index-readers-web
+</code></pre>
+<p>For alternative embedding providers routed through LiteLLM, add the OpenAI-like adapter:</p>
+<pre><code class="language-bash">pip install llama-index-llms-openai-like
+</code></pre>
+<p><strong>Verification</strong>:</p>
+<pre><code class="language-python">import llama_index.core
+print(f&quot;LlamaIndex Core: {llama_index.core.__version__}&quot;)
+</code></pre>
+<p>A successful installation prints the version number without import errors.</p>
+<h2>Step 2: Pinecone</h2>
+<p>Pinecone provides the managed vector database. Install the Python client:</p>
+<pre><code class="language-bash">pip install pinecone
+</code></pre>
+<p>Create an index in the Pinecone console or programmatically:</p>
+<pre><code class="language-python">from pinecone import Pinecone, ServerlessSpec
+
+pc = Pinecone(api_key=&quot;PINECONE_API_KEY&quot;)
+
+pc.create_index(
+    name=&quot;knowledge-base&quot;,
+    dimension=1536,
+    metric=&quot;cosine&quot;,
+    spec=ServerlessSpec(
+        cloud=&quot;aws&quot;,
+        region=&quot;us-east-1&quot;
+    )
+)
+
+index = pc.Index(&quot;knowledge-base&quot;)
+stats = index.describe_index_stats()
+print(f&quot;Index &#39;knowledge-base&#39; created: {stats.total_vector_count} vectors.&quot;)
+</code></pre>
+<p>The <code>dimension=1536</code> parameter matches the output dimension of OpenAI&#39;s <code>text-embedding-3-small</code> model. Adjust if using a different embedding model. The metric should match the embedding model&#39;s recommended similarity function.</p>
+<p><strong>Verification</strong>:</p>
+<pre><code class="language-bash">python -c &quot;from pinecone import Pinecone; pc = Pinecone(api_key=&#39;PINECONE_API_KEY&#39;); print(pc.list_indexes())&quot;
+</code></pre>
+<p>A successful deployment prints the list of available indexes including <code>knowledge-base</code>.</p>
+<h2>Step 3: LiteLLM Gateway</h2>
+<p>LiteLLM provides unified routing for both generation and embedding model calls. Install the proxy:</p>
+<pre><code class="language-bash">pip install litellm uvicorn
+</code></pre>
+<p>Create <code>litellm_config.yaml</code> with generation and embedding model entries:</p>
+<pre><code class="language-yaml">model_list:
+  - model_name: gpt-4o
+    litellm_params:
+      model: openai/gpt-4o
+      api_key: os.environ/OPENAI_API_KEY
+
+  - model_name: claude-sonnet
+    litellm_params:
+      model: anthropic/claude-sonnet-4-20250514
+      api_key: os.environ/ANTHROPIC_API_KEY
+
+  - model_name: text-embedding-3-small
+    litellm_params:
+      model: openai/text-embedding-3-small
+      api_key: os.environ/OPENAI_API_KEY
+
+litellm_settings:
+  success_callback: [&quot;braintrust&quot;]
+  max_budget: 500
+  budget_duration: 30d
+
+general_settings:
+  master_key: sk-rag-master-key
+</code></pre>
+<p>Set environment variables:</p>
+<pre><code class="language-bash">export OPENAI_API_KEY=&quot;sk-...&quot;
+export ANTHROPIC_API_KEY=&quot;sk-ant-...&quot;
+export BRAINTRUST_API_KEY=&quot;br-...&quot;
+</code></pre>
+<p>Start the LiteLLM proxy:</p>
+<pre><code class="language-bash">litellm --config litellm_config.yaml --host 0.0.0.0 --port 4000
+</code></pre>
+<p><strong>Verification</strong>:</p>
+<pre><code class="language-bash">curl http://localhost:4000/v1/models \
+  -H &quot;Authorization: Bearer sk-rag-master-key&quot;
+</code></pre>
+<p>A successful deployment returns a JSON list of the configured models.</p>
+<h2>Step 4: LlamaParse</h2>
+<p>LlamaParse provides cloud-based document parsing for PDFs and structured documents. Install the client:</p>
+<pre><code class="language-bash">pip install llama-parse
+</code></pre>
+<p>Set the LlamaCloud API key:</p>
+<pre><code class="language-bash">export LLAMA_CLOUD_API_KEY=&quot;llx-...&quot;
+</code></pre>
+<p>Test parsing with a sample document:</p>
+<pre><code class="language-python">from llama_parse import LlamaParse
+
+parser = LlamaParse(
+    result_type=&quot;markdown&quot;,
+    num_workers=4,
+    verbose=True,
+)
+
+documents = parser.load_data(&quot;sample_document.pdf&quot;)
+print(f&quot;Parsed {len(documents)} document sections.&quot;)
+print(f&quot;First section preview: {documents[0].text[:200]}&quot;)
+</code></pre>
+<p>LlamaParse returns parsed content as LlamaIndex <code>Document</code> objects, making them directly compatible with the LlamaIndex indexing pipeline without format conversion.</p>
+<p><strong>Verification</strong>:</p>
+<pre><code class="language-python">from llama_parse import LlamaParse
+print(&quot;LlamaParse imported successfully.&quot;)
+</code></pre>
+<p>A successful installation prints the confirmation message. Full verification requires parsing a test PDF and confirming structured Markdown output.</p>
+<h2>Step 5: Firecrawl</h2>
+<p>Firecrawl provides web crawling with JavaScript rendering. Install the Python SDK:</p>
+<pre><code class="language-bash">pip install firecrawl-py
+</code></pre>
+<p>Set the Firecrawl API key:</p>
+<pre><code class="language-bash">export FIRECRAWL_API_KEY=&quot;fc-...&quot;
+</code></pre>
+<p>Test crawling with a documentation site:</p>
+<pre><code class="language-python">from firecrawl import FirecrawlApp
+
+app = FirecrawlApp(api_key=&quot;fc-...&quot;)
+
+result = app.scrape_url(
+    url=&quot;https://docs.example.com/getting-started&quot;,
+    params={&quot;formats&quot;: [&quot;markdown&quot;]}
+)
+
+print(f&quot;Title: {result.get(&#39;metadata&#39;, {}).get(&#39;title&#39;, &#39;N/A&#39;)}&quot;)
+print(f&quot;Content length: {len(result.get(&#39;markdown&#39;, &#39;&#39;))} characters&quot;)
+</code></pre>
+<p>For crawling an entire documentation site:</p>
+<pre><code class="language-python">crawl_result = app.crawl_url(
+    url=&quot;https://docs.example.com&quot;,
+    params={
+        &quot;limit&quot;: 100,
+        &quot;scrapeOptions&quot;: {&quot;formats&quot;: [&quot;markdown&quot;]}
+    },
+    poll_interval=5
+)
+
+print(f&quot;Crawled {crawl_result.get(&#39;total&#39;, 0)} pages.&quot;)
+</code></pre>
+<p><strong>Verification</strong>:</p>
+<pre><code class="language-python">from firecrawl import FirecrawlApp
+print(&quot;Firecrawl imported successfully.&quot;)
+</code></pre>
+<p>A successful installation prints the confirmation message. Full verification requires scraping a test URL and confirming Markdown output.</p>
+<h2>Step 6: Braintrust</h2>
+<p>Braintrust provides evaluation scoring and experiment management. Install the SDK:</p>
+<pre><code class="language-bash">pip install braintrust
+</code></pre>
+<p>Set the API key:</p>
+<pre><code class="language-bash">export BRAINTRUST_API_KEY=&quot;br-...&quot;
+</code></pre>
+<p>Create a project and an initial evaluation dataset:</p>
+<pre><code class="language-python">import braintrust
+
+client = braintrust.init(project=&quot;rag-knowledge-system&quot;)
+
+dataset = client.create_dataset(
+    name=&quot;rag-eval-v1&quot;,
+    description=&quot;Evaluation dataset for RAG pipeline quality measurement&quot;
+)
+
+dataset.insert(
+    input=&quot;What are the system requirements for deploying vLLM?&quot;,
+    expected=&quot;vLLM requires Linux with NVIDIA GPU drivers and CUDA toolkit. &quot;
+             &quot;At least one GPU with 24GB+ VRAM is needed.&quot;,
+    metadata={&quot;category&quot;: &quot;infrastructure&quot;, &quot;source&quot;: &quot;chapter_06.md&quot;}
+)
+
+dataset.insert(
+    input=&quot;How does LiteLLM handle cost governance?&quot;,
+    expected=&quot;LiteLLM generates virtual API keys for each team with &quot;
+             &quot;per-team budget caps, spend tracking, and usage analytics.&quot;,
+    metadata={&quot;category&quot;: &quot;routing&quot;, &quot;source&quot;: &quot;chapter_04.md&quot;}
+)
+
+print(f&quot;Dataset &#39;{dataset.name}&#39; created with {dataset.num_records} records.&quot;)
+</code></pre>
+<p><strong>Verification</strong>:</p>
+<pre><code class="language-python">import braintrust
+print(&quot;Braintrust imported successfully.&quot;)
+</code></pre>
+<p>A successful installation prints the confirmation message. Full verification requires creating a project and inserting evaluation records through the SDK.</p>
+<h2>Wiring the Components</h2>
+<p>With all components installed individually, the final step connects them into the integrated pipeline described in the architecture chapter.</p>
+<h3>LlamaParse-to-Pinecone Ingestion Pipeline</h3>
+<p>Save the following script as <code>scripts/ingest_documents.py</code>. It parses documents with LlamaParse, chunks the output, generates embeddings, and loads vectors into Pinecone:</p>
+<pre><code class="language-python">import os
+from llama_parse import LlamaParse
+from llama_index.core.node_parser import SentenceSplitter
+from llama_index.embeddings.openai import OpenAIEmbedding
+from pinecone import Pinecone
+
+DOCS_DIR = &quot;./knowledge_docs&quot;
+INDEX_NAME = &quot;knowledge-base&quot;
+NAMESPACE = &quot;product-docs&quot;
+
+parser = LlamaParse(result_type=&quot;markdown&quot;, num_workers=4)
+embed_model = OpenAIEmbedding(model_name=&quot;text-embedding-3-small&quot;)
+splitter = SentenceSplitter(chunk_size=512, chunk_overlap=50)
+
+pc = Pinecone(api_key=os.environ[&quot;PINECONE_API_KEY&quot;])
+index = pc.Index(INDEX_NAME)
+
+doc_files = []
+for root, dirs, files in os.walk(DOCS_DIR):
+    for f in files:
+        if f.endswith((&quot;.pdf&quot;, &quot;.docx&quot;, &quot;.md&quot;, &quot;.txt&quot;)):
+            doc_files.append(os.path.join(root, f))
+
+print(f&quot;Found {len(doc_files)} documents to process.&quot;)
+
+for filepath in doc_files:
+    print(f&quot;Processing: {filepath}&quot;)
+    documents = parser.load_data(filepath)
+
+    nodes = splitter.get_nodes_from_documents(documents)
+    print(f&quot;  Split into {len(nodes)} chunks.&quot;)
+
+    vectors = []
+    for i, node in enumerate(nodes):
+        embedding = embed_model.get_text_embedding(node.text)
+        vectors.append({
+            &quot;id&quot;: f&quot;{os.path.basename(filepath)}-{i}&quot;,
+            &quot;values&quot;: embedding,
+            &quot;metadata&quot;: {
+                &quot;content&quot;: node.text[:1000],
+                &quot;source&quot;: filepath,
+                &quot;doc_type&quot;: os.path.splitext(filepath)[1],
+                &quot;chunk_index&quot;: i,
+            }
+        })
+
+    for batch_start in range(0, len(vectors), 100):
+        batch = vectors[batch_start:batch_start + 100]
+        index.upsert(vectors=batch, namespace=NAMESPACE)
+
+    print(f&quot;  Stored {len(vectors)} vectors in namespace &#39;{NAMESPACE}&#39;.&quot;)
+
+stats = index.describe_index_stats()
+print(f&quot;\nTotal vectors in index: {stats.total_vector_count}&quot;)
+</code></pre>
+<h3>Firecrawl-to-Pinecone Web Ingestion Pipeline</h3>
+<p>Save the following script as <code>scripts/ingest_web_content.py</code>. It crawls a documentation site with Firecrawl and indexes the content into Pinecone:</p>
+<pre><code class="language-python">import os
+from firecrawl import FirecrawlApp
+from llama_index.core.node_parser import SentenceSplitter
+from llama_index.embeddings.openai import OpenAIEmbedding
+from pinecone import Pinecone
+
+CRAWL_URL = &quot;https://docs.example.com&quot;
+CRAWL_LIMIT = 100
+INDEX_NAME = &quot;knowledge-base&quot;
+NAMESPACE = &quot;web-docs&quot;
+
+firecrawl = FirecrawlApp(api_key=os.environ[&quot;FIRECRAWL_API_KEY&quot;])
+embed_model = OpenAIEmbedding(model_name=&quot;text-embedding-3-small&quot;)
+splitter = SentenceSplitter(chunk_size=512, chunk_overlap=50)
+
+pc = Pinecone(api_key=os.environ[&quot;PINECONE_API_KEY&quot;])
+index = pc.Index(INDEX_NAME)
+
+print(f&quot;Crawling {CRAWL_URL} with limit {CRAWL_LIMIT}...&quot;)
+crawl_result = firecrawl.crawl_url(
+    url=CRAWL_URL,
+    params={
+        &quot;limit&quot;: CRAWL_LIMIT,
+        &quot;scrapeOptions&quot;: {&quot;formats&quot;: [&quot;markdown&quot;]}
+    },
+    poll_interval=5
+)
+
+pages = crawl_result.get(&quot;data&quot;, [])
+print(f&quot;Crawled {len(pages)} pages.&quot;)
+
+from llama_index.core import Document
+
+for page_idx, page in enumerate(pages):
+    markdown = page.get(&quot;markdown&quot;, &quot;&quot;)
+    source_url = page.get(&quot;metadata&quot;, {}).get(&quot;sourceURL&quot;, f&quot;page-{page_idx}&quot;)
+
+    if not markdown.strip():
+        continue
+
+    doc = Document(text=markdown)
+    nodes = splitter.get_nodes_from_documents([doc])
+
+    vectors = []
+    for i, node in enumerate(nodes):
+        embedding = embed_model.get_text_embedding(node.text)
+        vectors.append({
+            &quot;id&quot;: f&quot;web-{page_idx}-{i}&quot;,
+            &quot;values&quot;: embedding,
+            &quot;metadata&quot;: {
+                &quot;content&quot;: node.text[:1000],
+                &quot;source&quot;: source_url,
+                &quot;doc_type&quot;: &quot;web&quot;,
+                &quot;chunk_index&quot;: i,
+            }
+        })
+
+    for batch_start in range(0, len(vectors), 100):
+        batch = vectors[batch_start:batch_start + 100]
+        index.upsert(vectors=batch, namespace=NAMESPACE)
+
+    print(f&quot;  [{page_idx + 1}/{len(pages)}] {source_url}: {len(vectors)} vectors.&quot;)
+
+stats = index.describe_index_stats()
+print(f&quot;\nTotal vectors in index: {stats.total_vector_count}&quot;)
+</code></pre>
+<h3>RAG Query Pipeline</h3>
+<p>Save the following script as <code>scripts/rag_query.py</code>. It configures a LlamaIndex query engine to retrieve from Pinecone and generate answers through LiteLLM:</p>
+<pre><code class="language-python">from llama_index.core import VectorStoreIndex, Settings
+from llama_index.vector_stores.pinecone import PineconeVectorStore
+from llama_index.llms.openai import OpenAI
+from llama_index.embeddings.openai import OpenAIEmbedding
+from pinecone import Pinecone
+import os
+
+llm = OpenAI(
+    model=&quot;gpt-4o&quot;,
+    api_base=&quot;http://localhost:4000/v1&quot;,
+    api_key=&quot;sk-rag-master-key&quot;,
+    temperature=0,
+)
+
+embed_model = OpenAIEmbedding(
+    model_name=&quot;text-embedding-3-small&quot;,
+    api_base=&quot;http://localhost:4000/v1&quot;,
+    api_key=&quot;sk-rag-master-key&quot;,
+)
+
+Settings.llm = llm
+Settings.embed_model = embed_model
+
+pc = Pinecone(api_key=os.environ[&quot;PINECONE_API_KEY&quot;])
+pinecone_index = pc.Index(&quot;knowledge-base&quot;)
+
+vector_store = PineconeVectorStore(
+    pinecone_index=pinecone_index,
+    namespace=&quot;product-docs&quot;,
+)
+
+index = VectorStoreIndex.from_vector_store(vector_store=vector_store)
+query_engine = index.as_query_engine(
+    similarity_top_k=5,
+    response_mode=&quot;tree_summarize&quot;,
+)
+
+response = query_engine.query(
+    &quot;What are the tradeoffs between self-hosted and managed vector databases?&quot;
+)
+
+print(&quot;Answer:&quot;)
+print(response)
+print(f&quot;\nSources: {len(response.source_nodes)} chunks retrieved.&quot;)
+for i, node in enumerate(response.source_nodes):
+    print(f&quot;  [{i + 1}] {node.metadata.get(&#39;source&#39;, &#39;unknown&#39;)} &quot;
+          f&quot;(score: {node.score:.4f})&quot;)
+</code></pre>
+<h3>Braintrust RAG Evaluation Pipeline</h3>
+<p>Save the following script as <code>scripts/evaluate_rag.py</code>. It runs the RAG query pipeline against a Braintrust evaluation dataset and scores retrieval quality:</p>
+<pre><code class="language-python">import braintrust
+from llama_index.core import VectorStoreIndex, Settings
+from llama_index.vector_stores.pinecone import PineconeVectorStore
+from llama_index.llms.openai import OpenAI
+from llama_index.embeddings.openai import OpenAIEmbedding
+from pinecone import Pinecone
+import os
+
+llm = OpenAI(
+    model=&quot;gpt-4o&quot;,
+    api_base=&quot;http://localhost:4000/v1&quot;,
+    api_key=&quot;sk-rag-master-key&quot;,
+    temperature=0,
+)
+
+embed_model = OpenAIEmbedding(
+    model_name=&quot;text-embedding-3-small&quot;,
+    api_base=&quot;http://localhost:4000/v1&quot;,
+    api_key=&quot;sk-rag-master-key&quot;,
+)
+
+Settings.llm = llm
+Settings.embed_model = embed_model
+
+pc = Pinecone(api_key=os.environ[&quot;PINECONE_API_KEY&quot;])
+pinecone_index = pc.Index(&quot;knowledge-base&quot;)
+vector_store = PineconeVectorStore(
+    pinecone_index=pinecone_index,
+    namespace=&quot;product-docs&quot;,
+)
+index = VectorStoreIndex.from_vector_store(vector_store=vector_store)
+query_engine = index.as_query_engine(similarity_top_k=5)
+
+
+def rag_task(input_text):
+    response = query_engine.query(input_text)
+    return {
+        &quot;answer&quot;: str(response),
+        &quot;sources&quot;: [n.metadata.get(&quot;source&quot;, &quot;&quot;) for n in response.source_nodes],
+        &quot;scores&quot;: [n.score for n in response.source_nodes],
+    }
+
+
+def faithfulness_scorer(output, expected):
+    expected_lower = expected.lower()
+    answer_lower = output[&quot;answer&quot;].lower()
+    key_phrases = [p.strip() for p in expected_lower.split(&quot;.&quot;) if p.strip()]
+    matches = sum(1 for p in key_phrases if p in answer_lower)
+    return matches / max(len(key_phrases), 1)
+
+
+eval_result = braintrust.Eval(
+    &quot;rag-knowledge-system&quot;,
+    data=lambda: [
+        {
+            &quot;input&quot;: &quot;What are the system requirements for deploying vLLM?&quot;,
+            &quot;expected&quot;: &quot;vLLM requires Linux with NVIDIA GPU drivers and CUDA toolkit. &quot;
+                        &quot;At least one GPU with 24GB+ VRAM is needed.&quot;,
+        },
+        {
+            &quot;input&quot;: &quot;How does LiteLLM handle cost governance?&quot;,
+            &quot;expected&quot;: &quot;LiteLLM generates virtual API keys for each team with &quot;
+                        &quot;per-team budget caps, spend tracking, and usage analytics.&quot;,
+        },
+    ],
+    task=lambda input: rag_task(input),
+    scores=[faithfulness_scorer],
+)
+
+print(&quot;Evaluation complete. View results in the Braintrust dashboard.&quot;)
+</code></pre>
+<h2>Verification</h2>
+<p>The following end-to-end checks confirm that all components are installed, wired, and operational.</p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Command</th>
+<th>Expected Result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>LlamaIndex</td>
+<td><code>python -c &quot;import llama_index.core; print(&#39;OK&#39;)&quot;</code></td>
+<td>Prints &quot;OK&quot;</td>
+</tr>
+<tr>
+<td>Pinecone</td>
+<td><code>python -c &quot;from pinecone import Pinecone; print(&#39;OK&#39;)&quot;</code></td>
+<td>Prints &quot;OK&quot;</td>
+</tr>
+<tr>
+<td>LiteLLM proxy</td>
+<td><code>curl http://localhost:4000/v1/models -H &quot;Authorization: Bearer sk-rag-master-key&quot;</code></td>
+<td>Returns JSON model list</td>
+</tr>
+<tr>
+<td>LlamaParse</td>
+<td><code>python -c &quot;from llama_parse import LlamaParse; print(&#39;OK&#39;)&quot;</code></td>
+<td>Prints &quot;OK&quot;</td>
+</tr>
+<tr>
+<td>Firecrawl</td>
+<td><code>python -c &quot;from firecrawl import FirecrawlApp; print(&#39;OK&#39;)&quot;</code></td>
+<td>Prints &quot;OK&quot;</td>
+</tr>
+<tr>
+<td>Braintrust</td>
+<td><code>python -c &quot;import braintrust; print(&#39;OK&#39;)&quot;</code></td>
+<td>Prints &quot;OK&quot;</td>
+</tr>
+<tr>
+<td>Document ingestion</td>
+<td>Place test PDFs in <code>knowledge_docs/</code>, run <code>python scripts/ingest_documents.py</code></td>
+<td>Reports vectors stored per document</td>
+</tr>
+<tr>
+<td>Web ingestion</td>
+<td>Set <code>CRAWL_URL</code> in <code>scripts/ingest_web_content.py</code>, run <code>python scripts/ingest_web_content.py</code></td>
+<td>Reports vectors stored per crawled page</td>
+</tr>
+<tr>
+<td>RAG query</td>
+<td><code>python scripts/rag_query.py</code></td>
+<td>Prints answer with retrieved source citations</td>
+</tr>
+<tr>
+<td>Evaluation</td>
+<td><code>python scripts/evaluate_rag.py</code></td>
+<td>Prints evaluation scores and directs to Braintrust dashboard</td>
+</tr>
+</tbody></table>
+<p>The RAG-First Knowledge System is operational once all ten checks pass. The architecture chapter provides the rationale behind each component selection, the dual-pipeline design, and the retrieval quality optimization principles governing how the layers interact.</p>
+<h2>References</h2>
+<ol>
+<li>LlamaIndex Installation Guide, LlamaIndex Inc.</li>
+<li>Pinecone Getting Started Guide, Pinecone Systems Inc.</li>
+<li>LiteLLM Proxy Documentation, BerriAI.</li>
+<li>LlamaParse Documentation, LlamaIndex Inc.</li>
+<li>Firecrawl Documentation, Mendable Inc.</li>
+<li>Braintrust Documentation, Braintrust Data Inc.</li>
+<li>OpenAI Embeddings Guide, OpenAI.</li>
+</ol>
+
+<div class="blog-pagination">
+      <a href="ai-tooling-guide_09.html" class="pagination-link prev">
+        <span class="pagination-label">Previous</span>
+        <span class="pagination-title">Private and Airgapped Deployment: Setup Guide</span>
+      </a>
+      <a href="ai-tooling-guide_11.html" class="pagination-link next">
+        <span class="pagination-label">Next</span>
+        <span class="pagination-title">Evaluation-Driven Development Loop: Setup Guide</span>
+      </a></div>
+        </article>
+    </div>
+  </main>
+  <script src="../js/main.js"></script>
+
+  <!-- KaTeX for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" 
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], fleqn: true});">
+  </script>
+
+  <!-- Mermaid for Diagram Rendering -->
+  <style>
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: var(--space-2xl) 0;
+    }
+    .mermaid svg {
+      filter: drop-shadow(0 4px 16px rgba(183, 110, 121, 0.12));
+    }
+  </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ 
+      startOnLoad: true, 
+      securityLevel: 'loose',
+      theme: 'base',
+      themeVariables: {
+        fontFamily: "'Outfit', -apple-system, BlinkMacSystemFont, sans-serif",
+        primaryColor: '#ffffff',
+        primaryBorderColor: '#b76e79',
+        primaryTextColor: '#8b4f5a',
+        lineColor: '#b76e79',
+        nodeBorder: '#b76e79',
+        clusterBkg: 'rgba(232, 180, 184, 0.15)',
+        clusterBorder: '#d4a0a0'
+      }
+    });
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      // Mermaid
+      const blocks = document.querySelectorAll('.language-mermaid');
+      blocks.forEach((block) => {
+        const parent = block.parentElement;
+        if (parent.tagName === 'PRE') {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          parent.replaceWith(mermaidDiv);
+        }
+      });
+      
+      // Tabs
+      const tabGroups = document.querySelectorAll('[data-tab-group]');
+      tabGroups.forEach(group => {
+        const buttons = group.querySelectorAll('[data-tab]');
+        const contents = group.querySelectorAll('[data-tab-content]');
+        
+        buttons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const target = btn.getAttribute('data-tab');
+            
+            buttons.forEach(b => b.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+            
+            btn.classList.add('active');
+            const targetContent = group.querySelector(`[data-tab-content="${target}"]`);
+            if (targetContent) targetContent.classList.add('active');
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>
