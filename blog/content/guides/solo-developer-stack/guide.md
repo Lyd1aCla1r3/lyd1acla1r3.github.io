@@ -1,8 +1,8 @@
-# Solo Developer Stack: Setup Guide
+# [Solo Developer Stack](guide-solo-developer-stack.html): Setup Guide
 
-<!-- SUMMARY: A step-by-step installation and configuration guide for assembling the Solo Developer Stack, covering Claude Code setup, MCP server configuration, Ollama local inference, ChromaDB vector storage, and Docling document parsing, with end-to-end verification commands confirming the full system operates correctly. -->
+<!-- SUMMARY: A step-by-step installation and configuration guide for assembling the [Solo Developer Stack](guide-solo-developer-stack.html), covering Claude Code setup, MCP server configuration, Ollama local inference, ChromaDB vector storage, and Docling document parsing, with end-to-end verification commands confirming the full system operates correctly. -->
 
-The Solo Developer Stack architecture chapter explains the rationale behind each component selection and how the pieces interconnect. This guide provides the concrete installation commands, configuration snippets, and wiring steps needed to bring that architecture to a working state on a single development machine.
+The [Solo Developer Stack](guide-solo-developer-stack.html) architecture chapter explains the rationale behind each component selection and how the pieces interconnect. This guide provides the concrete installation commands, configuration snippets, and wiring steps needed to bring that architecture to a working state on a single development machine.
 
 ## Prerequisites
 
@@ -312,7 +312,7 @@ The following end-to-end checks confirm that all components are installed, wired
 | Docling | `python -c "from docling.document_converter import DocumentConverter; print('OK')"` | Prints "OK" |
 | Full pipeline | Place a test PDF in `docs/`, run `python scripts/ingest_docs.py`, then `python scripts/query_docs.py "test query"` | Returns relevant chunks from the ingested document |
 
-The Solo Developer Stack is operational once all six checks pass. The architecture chapter provides the rationale behind each component selection and the design decisions governing how the layers interact.
+The [Solo Developer Stack](guide-solo-developer-stack.html) is operational once all six checks pass. The architecture chapter provides the rationale behind each component selection and the design decisions governing how the layers interact.
 
 ## References
 

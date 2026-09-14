@@ -6,7 +6,7 @@
 
 The preceding chapter demonstrated that additive sinusoidal positional encoding breaks permutation invariance in the dot-product similarity matrix $S_{pos} = X_{pos} X_{pos}^\top$. The three structural limitations identified (single-layer injection, absolute position labels, length extrapolation degradation) share a common root: the positional signal is added to the embedding once as a preprocessing step and then left to survive the subsequent computation.
 
-This chapter introduces the specific component of the Transformer architecture where positional information has its greatest impact: the query-key dot product that determines which positions attend to which. The full attention mechanism (scoring, normalization, value aggregation) is the subject of the Transformers series. This chapter introduces only the two projections and the dot product that Rotary Position Embeddings operate on.
+This chapter introduces the specific component of the Transformer architecture where positional information has its greatest impact: the query-key dot product that determines which positions attend to which. The full attention mechanism (scoring, normalization, value aggregation) is the subject of the [Transformers series](series-transformers.html). This chapter introduces only the two projections and the dot product that Rotary Position Embeddings operate on.
 
 ## Query and Key Projections
 

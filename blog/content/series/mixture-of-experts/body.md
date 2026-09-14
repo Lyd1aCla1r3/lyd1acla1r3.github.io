@@ -2,17 +2,17 @@
 # Preface: From Dense to Sparse
 <!-- SUMMARY: The dense Feed-Forward Network within a Transformer activates every parameter for every token, creating an unsustainable computation bottleneck at frontier scale. The Mixture of Experts architecture solves this inefficiency by decoupling the total parameter capacity from the per-token floating-point operations. This architectural evolution bridges the gap between the original Transformer design and modern sparse models. -->
 
-The 24-part Transformer series concluded by tracing the full forward and backward pass through a dense two-layer decoder architecture. Within that dense structure, the Feed-Forward Network activates every single parameter for every token passing through the residual stream. At small scales, this brute-force approach works fine. At frontier scale, where Feed-Forward Network parameters constitute approximately two-thirds of total model capacity, it creates a severe computational bottleneck.
+The 24-part [Transformer series](series-transformers.html) concluded by tracing the full forward and backward pass through a dense two-layer decoder architecture. Within that dense structure, the Feed-Forward Network activates every single parameter for every token passing through the residual stream. At small scales, this brute-force approach works fine. At frontier scale, where Feed-Forward Network parameters constitute approximately two-thirds of total model capacity, it creates a severe computational bottleneck.
 
 The Mixture of Experts architecture solves this problem by separating knowledge capacity from compute cost. A dense model locks these two quantities together: doubling the parameters doubles the cost of processing every token. A sparse Mixture of Experts model breaks this link, storing a vast number of parameters while activating only a small, relevant fraction for each token. This separation is the reason every modern frontier language model relies on sparse expert architectures. GPT-4, Gemini, DeepSeek-V3, Mixtral, and Grok all use this strategy to achieve massive capacity without proportionally massive compute.
 
 ## Prerequisites and Context
 
-This series serves as the direct architectural successor to the Transformer series. The text assumes familiarity with the material covered in Parts 10 through 14 of that prior series. A practitioner entering without having read the Transformer series must understand the Feed-Forward Network as a two-layer affine projection with a nonlinear activation function.
+This series serves as the direct architectural successor to the [Transformer series](series-transformers.html). The text assumes familiarity with the material covered in Parts 10 through 14 of that prior series. A practitioner entering without having read the [Transformer series](series-transformers.html) must understand the Feed-Forward Network as a two-layer affine projection with a nonlinear activation function.
 
 An affine projection is a geometric operation consisting of a linear transformation followed by a translation. Within the Feed-Forward Network, a token vector is multiplied by a learned weight matrix to rotate and scale the geometric space, and a bias vector is subsequently added to shift the origin. The standard dense Feed-Forward Network operates as a key-value memory bank through two such projections. 
 
-The first affine projection expands the vector dimensionality. A nonlinear activation function then enforces sparsity. A second affine projection subsequently contracts the vector back to the original model dimension. The Mixture of Experts architecture replaces this single monolithic memory bank with multiple smaller, independent Feed-Forward Networks and a learned gating mechanism to route tokens between them. The token representations used throughout this series are identical to those computed in the Transformer series, maintaining strict numerical and geometric continuity.
+The first affine projection expands the vector dimensionality. A nonlinear activation function then enforces sparsity. A second affine projection subsequently contracts the vector back to the original model dimension. The Mixture of Experts architecture replaces this single monolithic memory bank with multiple smaller, independent Feed-Forward Networks and a learned gating mechanism to route tokens between them. The token representations used throughout this series are identical to those computed in the [Transformer series](series-transformers.html), maintaining strict numerical and geometric continuity.
 
 ## Chapter Roadmap
 
@@ -51,7 +51,7 @@ $$
 
 The mathematical dimensions directly dictate the computational cost. A standard toy-scale dense model configures the representation space with a model dimension of $d_{model} = 6$ and an intermediate hidden dimension of $d_{ff} = 8$. The expansion matrix $W_1 \in \mathbb{R}^{6 \times 8}$ contains 48 parameters. The contraction matrix $W_2 \in \mathbb{R}^{8 \times 6}$ contains an identical 48 parameters. The total parameter count for the monolithic layer equals 96 parameters.
 
-The four token representations entering the layer carry the exact geometric coordinates established in the prior Transformer series:
+The four token representations entering the layer carry the exact geometric coordinates established in the prior [Transformer series](series-transformers.html):
 <div style="page-break-after: avoid;"></div>
 
 $$
@@ -202,7 +202,7 @@ The gating network narrows the full pool of experts down to two for each token, 
 
 ## Independent Expert Computation
 
-The dense feed-forward block explored in the Transformer series relied on a single monolithic expansion and contraction matrix pair. The sparse formulation fractures this structure into $E = 4$ separate sub-networks. Every individual expert $i$ maintains an independent set of weights $W_1^{(i)} \in \mathbb{R}^{6 \times 4}$ and $W_2^{(i)} \in \mathbb{R}^{4 \times 6}$. These matrices are not derived from prior structures; they are uniquely instantiated learned parameters that update via backpropagation, exactly like their dense counterparts. The internal dimensionality $d_{ff} = 4$ creates a deliberate parameter bottleneck relative to the dense baseline, enforcing specialization within each expert pathway.
+The dense feed-forward block explored in the [Transformer series](series-transformers.html) relied on a single monolithic expansion and contraction matrix pair. The sparse formulation fractures this structure into $E = 4$ separate sub-networks. Every individual expert $i$ maintains an independent set of weights $W_1^{(i)} \in \mathbb{R}^{6 \times 4}$ and $W_2^{(i)} \in \mathbb{R}^{4 \times 6}$. These matrices are not derived from prior structures; they are uniquely instantiated learned parameters that update via backpropagation, exactly like their dense counterparts. The internal dimensionality $d_{ff} = 4$ creates a deliberate parameter bottleneck relative to the dense baseline, enforcing specialization within each expert pathway.
 
 The forward pass for any given expert perfectly mirrors the standard sequence of affine transformations and nonlinearities:
 <div style="page-break-after: avoid;"></div>
@@ -500,7 +500,7 @@ $$
 \text{Routing Distribution (Step 0)} = \begin{bmatrix} 0.3072 & 0.2256 & 0.2332 & 0.2340 \end{bmatrix}
 $$
 
-The top-k masking operation applied to these same logits in Chapter 2 forced all four tokens to the first expert, distributed two tokens each to the second and third experts, and assigned zero tokens to the fourth expert. The subsequent training steps are executed algorithmically via a numerical simulation script. The simulation calculates gradient updates identically to the dense baseline architecture detailed in the Transformer series, updating the active experts proportionally to the tokens they process. The fourth expert, having processed zero tokens, receives zero updates and remains completely frozen at its initialized state.
+The top-k masking operation applied to these same logits in Chapter 2 forced all four tokens to the first expert, distributed two tokens each to the second and third experts, and assigned zero tokens to the fourth expert. The subsequent training steps are executed algorithmically via a numerical simulation script. The simulation calculates gradient updates identically to the dense baseline architecture detailed in the [Transformer series](series-transformers.html), updating the active experts proportionally to the tokens they process. The fourth expert, having processed zero tokens, receives zero updates and remains completely frozen at its initialized state.
 
 As the simulation progresses, the probability mass shifts violently toward the heavily utilized first expert.
 
@@ -754,7 +754,7 @@ The ratio between maximum and minimum penalty is $E/k$. For this toy configurati
 
 ## The Gradient Signal: Which Direction Each Expert Moves
 
-The auxiliary loss produces gradient updates through standard backpropagation, functioning identically to the gradient mechanics established in the Transformer series. The hard fraction $f_i$ carries zero gradient, as demonstrated by the step-function derivative analysis above. Backpropagation therefore treats $f_i$ as a fixed constant and applies the chain rule exclusively through the differentiable soft probabilities. 
+The auxiliary loss produces gradient updates through standard backpropagation, functioning identically to the gradient mechanics established in the [Transformer series](series-transformers.html). The hard fraction $f_i$ carries zero gradient, as demonstrated by the step-function derivative analysis above. Backpropagation therefore treats $f_i$ as a fixed constant and applies the chain rule exclusively through the differentiable soft probabilities. 
 
 To determine exactly how the optimization algorithm adjusts a specific router logit $h(x)_j$ for a given token $x$, the partial derivative must flow backward through the auxiliary loss summation and into the softmax function. Starting from the definition of the auxiliary loss, expanding the mean probability $P_i$ into its summation over all tokens reveals how the derivative isolates the specific token $x$:
 <div style="page-break-after: avoid;"></div>
@@ -999,7 +999,7 @@ In production architectures, fine-grained segmentation is achieved by reducing t
 **Goal:** Determine which specialized experts process each token and assign a proportional scaling weight to the chosen paths.<br>
 **Equation:** $g(x) = \text{Softmax}(\text{TopK}(xW_g))$
 
-The sequence begins with the standard $4 \times 6$ input matrix $x$ containing the 4 embedded tokens established in the Transformer series. All matrices are formatted to 4 decimal places for precision:
+The sequence begins with the standard $4 \times 6$ input matrix $x$ containing the 4 embedded tokens established in the [Transformer series](series-transformers.html). All matrices are formatted to 4 decimal places for precision:
 <div style="page-break-after: avoid;"></div>
 
 $$
@@ -1335,7 +1335,7 @@ To demonstrate the numerical mechanics, a new four-expert routing configuration 
 **Goal:** Compute the independent affinity between each token and every expert centroid, bounded to a stable numerical range.<br>
 **Equation:** $s = \text{Sigmoid}(x W_g)$
 
-The sequence begins with the standard $4 \times 6$ input matrix $x$ containing the 4 embedded tokens established in the Transformer series:
+The sequence begins with the standard $4 \times 6$ input matrix $x$ containing the 4 embedded tokens established in the [Transformer series](series-transformers.html):
 <div style="page-break-after: avoid;"></div>
 
 $$
@@ -1601,7 +1601,7 @@ The final Top-4 selection executes on this masked matrix, returning Expert 6, Ex
 
 ## The Sparse Standard
 
-The arc from the dense monolithic Feed-Forward Network to the dynamic, hardware-aware expert federation is complete. The Transformer series established how the original multi-layer perceptron served as a universal memory bank, activating every stored concept for every passing token. The Mixture of Experts paradigm recognized that as parameter counts grow into the hundreds of billions, this brute-force dense execution becomes both mathematically wasteful and economically unsustainable.
+The arc from the dense monolithic Feed-Forward Network to the dynamic, hardware-aware expert federation is complete. The [Transformer series](series-transformers.html) established how the original multi-layer perceptron served as a universal memory bank, activating every stored concept for every passing token. The Mixture of Experts paradigm recognized that as parameter counts grow into the hundreds of billions, this brute-force dense execution becomes both mathematically wasteful and economically unsustainable.
 
 By introducing a differentiable gating network, conditional top-k routing, auxiliary-loss-free balancing, and hierarchical communication constraints, modern frontier architectures transform the static memory bank into a specialized, dynamic routing fabric. This sparse execution model defines the structure of virtually every major AI system deployed today, establishing Mixture of Experts as the definitive paradigm for intelligence at scale.
 

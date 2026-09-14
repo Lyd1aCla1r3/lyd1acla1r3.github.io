@@ -1,8 +1,8 @@
-# Private and Airgapped Deployment: Setup Guide
+# [Private and Airgapped Deployment](guide-private-and-airgapped-deployment.html): Setup Guide
 
-<!-- SUMMARY: A step-by-step installation and configuration guide for assembling the Private and Airgapped Deployment stack, covering air-gap transfer procedures, LlamaIndex and LangGraph setup, LiteLLM gateway configuration for internal-only routing, vLLM and SGLang model serving, Qdrant vector database provisioning, Docling document parsing, Arize Phoenix observability, and Unsloth fine-tuning, with integration wiring and end-to-end verification steps. -->
+<!-- SUMMARY: A step-by-step installation and configuration guide for assembling the [Private and Airgapped Deployment](guide-private-and-airgapped-deployment.html) stack, covering air-gap transfer procedures, LlamaIndex and LangGraph setup, LiteLLM gateway configuration for internal-only routing, vLLM and SGLang model serving, Qdrant vector database provisioning, Docling document parsing, Arize Phoenix observability, and Unsloth fine-tuning, with integration wiring and end-to-end verification steps. -->
 
-The Private and Airgapped Deployment architecture chapter explains the rationale behind each component selection, the network boundary constraint, and the substitutions required to eliminate all external dependencies. This guide provides the concrete installation commands, configuration snippets, and wiring steps needed to bring that architecture to a working state on isolated infrastructure. All installation steps assume that dependencies have been pre-staged through the air-gap transfer process described in the prerequisites.
+The [Private and Airgapped Deployment](guide-private-and-airgapped-deployment.html) architecture chapter explains the rationale behind each component selection, the network boundary constraint, and the substitutions required to eliminate all external dependencies. This guide provides the concrete installation commands, configuration snippets, and wiring steps needed to bring that architecture to a working state on isolated infrastructure. All installation steps assume that dependencies have been pre-staged through the air-gap transfer process described in the prerequisites.
 
 ## Prerequisites
 
@@ -656,7 +656,7 @@ The following end-to-end checks confirm that all components are installed, wired
 | Orchestrated workflow | `python scripts/airgapped_workflow.py` | Prints analysis result from two-agent pipeline |
 | Document ingestion | Place test documents in `classified_docs/`, run `python scripts/ingest_airgapped_docs.py` | Reports chunks stored per document |
 
-The Private and Airgapped Deployment stack is operational once all eleven checks pass. The architecture chapter provides the rationale behind each component selection, the network boundary constraint, and the design decisions governing how the layers interact within a sealed perimeter.
+The [Private and Airgapped Deployment](guide-private-and-airgapped-deployment.html) stack is operational once all eleven checks pass. The architecture chapter provides the rationale behind each component selection, the network boundary constraint, and the design decisions governing how the layers interact within a sealed perimeter.
 
 ## References
 

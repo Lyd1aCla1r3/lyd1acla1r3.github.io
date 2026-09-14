@@ -18,7 +18,7 @@
   }
 </style>
 
-<!-- SUMMARY: The preceding Tokenization series terminates with a sequence of discrete integer IDs. The subsequent Transformer series begins with a dense, continuous embedding tensor. This series bridges that gap by deriving the complete mathematical mechanism (from one-hot encoding through gradient descent) by which a static embedding matrix transforms random vectors into a semantically structured geometric space. -->
+<!-- SUMMARY: The preceding [Tokenization series](series-tokenization.html) terminates with a sequence of discrete integer IDs. The subsequent [Transformer series](series-transformers.html) begins with a dense, continuous embedding tensor. This series bridges that gap by deriving the complete mathematical mechanism (from one-hot encoding through gradient descent) by which a static embedding matrix transforms random vectors into a semantically structured geometric space. -->
 
 <p><em>Prefer to read this offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p>
 

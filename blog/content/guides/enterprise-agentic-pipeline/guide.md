@@ -1,8 +1,8 @@
-# Enterprise Agentic Pipeline: Setup Guide
+# [Enterprise Agentic Pipeline](guide-enterprise-agentic-pipeline.html): Setup Guide
 
-<!-- SUMMARY: A step-by-step installation and configuration guide for assembling the Enterprise Agentic Pipeline, covering LangChain and LangGraph setup, LiteLLM gateway deployment, Weaviate vector database provisioning, Unstructured document parsing, Langfuse observability, vLLM model serving, and HF TRL fine-tuning, with integration wiring and end-to-end verification steps. -->
+<!-- SUMMARY: A step-by-step installation and configuration guide for assembling the [Enterprise Agentic Pipeline](guide-enterprise-agentic-pipeline.html), covering LangChain and LangGraph setup, LiteLLM gateway deployment, Weaviate vector database provisioning, Unstructured document parsing, Langfuse observability, vLLM model serving, and HF TRL fine-tuning, with integration wiring and end-to-end verification steps. -->
 
-The Enterprise Agentic Pipeline architecture chapter explains the rationale behind each component selection, the multi-agent orchestration model, and the governance requirements driving the design. This guide provides the concrete installation commands, configuration snippets, and wiring steps needed to bring that architecture to a working state on enterprise infrastructure.
+The [Enterprise Agentic Pipeline](guide-enterprise-agentic-pipeline.html) architecture chapter explains the rationale behind each component selection, the multi-agent orchestration model, and the governance requirements driving the design. This guide provides the concrete installation commands, configuration snippets, and wiring steps needed to bring that architecture to a working state on enterprise infrastructure.
 
 ## Prerequisites
 
@@ -561,7 +561,7 @@ The following end-to-end checks confirm that all components are installed, wired
 | Multi-agent workflow | `python scripts/multi_agent_workflow.py` | Prints final output from two-agent pipeline |
 | Document ingestion | Place test documents in `enterprise_docs/`, run `python scripts/ingest_enterprise_docs.py` | Reports chunks stored per document |
 
-The Enterprise Agentic Pipeline is operational once all ten checks pass. The architecture chapter provides the rationale behind each component selection and the governance, observability, and fine-tuning design decisions governing how the layers interact.
+The [Enterprise Agentic Pipeline](guide-enterprise-agentic-pipeline.html) is operational once all ten checks pass. The architecture chapter provides the rationale behind each component selection and the governance, observability, and fine-tuning design decisions governing how the layers interact.
 
 ## References
 

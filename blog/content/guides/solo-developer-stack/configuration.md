@@ -1,8 +1,8 @@
-# Solo Developer Stack
+# [Solo Developer Stack](guide-solo-developer-stack.html)
 
 <!-- SUMMARY: A complete configuration walkthrough assembling Claude Code, MCP servers, Ollama, ChromaDB, and Docling into a local-first AI development environment for a single developer. The architecture eliminates cloud infrastructure dependencies for supplementary tooling while providing agentic coding assistance, local model inference, and a lightweight retrieval-augmented generation pipeline. -->
 
-The AI Tooling series maps how each supporting ecosystem component connects to coding agents, frameworks, and orchestrators. That architectural map serves as a menu of options; the remaining challenge is selecting and wiring specific components into a coherent, working system. This configuration assembles the first such selection: a local-first AI development stack for a single developer.
+The [AI Tooling series](series-ai-tooling.html) maps how each supporting ecosystem component connects to coding agents, frameworks, and orchestrators. That architectural map serves as a menu of options; the remaining challenge is selecting and wiring specific components into a coherent, working system. This configuration assembles the first such selection: a local-first AI development stack for a single developer.
 
 ## The Problem
 

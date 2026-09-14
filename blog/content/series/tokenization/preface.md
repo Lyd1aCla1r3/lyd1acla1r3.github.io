@@ -30,7 +30,7 @@ The Transformer architecture relies entirely on continuous vector spaces and lin
 
 ## The Numerical Constraint
 
-Deep learning models require structured mathematical inputs. The attention mechanisms and feed-forward layers detailed throughout the Transformer series execute pure linear algebra. These mathematical operations mandate numerical tensors, which are defined as multi-dimensional arrays of numbers. Tokenization satisfies this requirement by segmenting raw strings into discrete units called tokens. 
+Deep learning models require structured mathematical inputs. The attention mechanisms and feed-forward layers detailed throughout the [Transformer series](series-transformers.html) execute pure linear algebra. These mathematical operations mandate numerical tensors, which are defined as multi-dimensional arrays of numbers. Tokenization satisfies this requirement by segmenting raw strings into discrete units called tokens. 
 
 Once isolated, each token is assigned a random integer ID. This ID functions solely as a lookup mechanism and possesses no mathematical meaning itself. The true semantic content of a token exists entirely within its corresponding vector in the embedding matrix $W_E$. When a token ID is passed into the architecture, it retrieves a dense vector spanning $n$ dimensions. Every dimension within this vector represents an identifying feature of the character string. The numerical values populating these dimensions are rigorously refined and updated throughout the training process to capture semantic relationships.
 

@@ -61,7 +61,7 @@ To demonstrate the numerical mechanics, a new four-expert routing configuration 
 **Goal:** Compute the independent affinity between each token and every expert centroid, bounded to a stable numerical range.<br>
 **Equation:** $s = \text{Sigmoid}(x W_g)$
 
-The sequence begins with the standard $4 \times 6$ input matrix $x$ containing the 4 embedded tokens established in the Transformer series:
+The sequence begins with the standard $4 \times 6$ input matrix $x$ containing the 4 embedded tokens established in the [Transformer series](series-transformers.html):
 
 $$
 x = \begin{bmatrix}

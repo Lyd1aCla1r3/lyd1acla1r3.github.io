@@ -20,7 +20,7 @@ $$
 (X_{pos})_{tc} = X_{tc} + PE_{tc}
 $$
 
-for position $t \in \{0, 1, 2, 3\}$ and dimension $c \in \{0, 1, 2\}.$ The operation requires no learned parameters: it is a fixed arithmetic combination of the embedding lookup (from the Embeddings series) and the sinusoidal formula (from Chapter 2).
+for position $t \in \{0, 1, 2, 3\}$ and dimension $c \in \{0, 1, 2\}.$ The operation requires no learned parameters: it is a fixed arithmetic combination of the embedding lookup (from the [Embeddings series](series-embeddings.html)) and the sinusoidal formula (from Chapter 2).
 
 ## Computing the Enriched Tensor
 

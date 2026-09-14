@@ -63,7 +63,7 @@ In production architectures, fine-grained segmentation is achieved by reducing t
 **Goal:** Determine which specialized experts process each token and assign a proportional scaling weight to the chosen paths.<br>
 **Equation:** $g(x) = \text{Softmax}(\text{TopK}(xW_g))$
 
-The sequence begins with the standard $4 \times 6$ input matrix $x$ containing the 4 embedded tokens established in the Transformer series. All matrices are formatted to 4 decimal places for precision:
+The sequence begins with the standard $4 \times 6$ input matrix $x$ containing the 4 embedded tokens established in the [Transformer series](series-transformers.html). All matrices are formatted to 4 decimal places for precision:
 
 $$
 x = \begin{bmatrix}

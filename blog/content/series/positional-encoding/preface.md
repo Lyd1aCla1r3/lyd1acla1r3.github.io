@@ -1,6 +1,6 @@
 # Preface: The Gap Between Static Geometry and Sequential Structure
 
-<!-- SUMMARY: The preceding Embeddings series delivers an embedding tensor that encodes distributional meaning but discards word order entirely. This series bridges that gap by deriving two positional encoding mechanisms from first principles: the historical sinusoidal formula (Vaswani et al., 2017) and Rotary Position Embeddings (RoPE, Su et al., 2021), the mechanism deployed in every frontier language model. -->
+<!-- SUMMARY: The preceding [Embeddings series](series-embeddings.html) delivers an embedding tensor that encodes distributional meaning but discards word order entirely. This series bridges that gap by deriving two positional encoding mechanisms from first principles: the historical sinusoidal formula (Vaswani et al., 2017) and Rotary Position Embeddings (RoPE, Su et al., 2021), the mechanism deployed in every frontier language model. -->
 
 <p><em>Prefer to read this offline? <a href="../assets/docs/positional-encoding-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Positional Encoding Ebook here.</a></em></p>
 
@@ -24,7 +24,7 @@ The second paradigm is **Rotary Position Embeddings** (RoPE), introduced by Su e
 
 The sinusoidal derivation is not wasted effort. It establishes the trigonometric vocabulary, the rotation interpretation, and the relative-distance intuition that RoPE generalizes. The two paradigms share a frequency base, and the mathematical progression from additive encoding to rotational encoding is itself the central narrative of the series.
 
-The Transformers series (which follows this one in the pipeline) includes a brief treatment of sinusoidal positional encoding using a different toy model ($V = 12$, $d_{model} = 6$). Readers who complete both series will recognize the identical mathematical structure applied at different scales.
+The [Transformers series](series-transformers.html) (which follows this one in the pipeline) includes a brief treatment of sinusoidal positional encoding using a different toy model ($V = 12$, $d_{model} = 6$). Readers who complete both series will recognize the identical mathematical structure applied at different scales.
 
 ## The Architecture
 

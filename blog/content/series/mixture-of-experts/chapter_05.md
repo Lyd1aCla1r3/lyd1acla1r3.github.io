@@ -201,7 +201,7 @@ The ratio between maximum and minimum penalty is $E/k$. For this toy configurati
 
 ## The Gradient Signal: Which Direction Each Expert Moves
 
-The auxiliary loss produces gradient updates through standard backpropagation, functioning identically to the gradient mechanics established in the Transformer series. The hard fraction $f_i$ carries zero gradient, as demonstrated by the step-function derivative analysis above. Backpropagation therefore treats $f_i$ as a fixed constant and applies the chain rule exclusively through the differentiable soft probabilities. 
+The auxiliary loss produces gradient updates through standard backpropagation, functioning identically to the gradient mechanics established in the [Transformer series](series-transformers.html). The hard fraction $f_i$ carries zero gradient, as demonstrated by the step-function derivative analysis above. Backpropagation therefore treats $f_i$ as a fixed constant and applies the chain rule exclusively through the differentiable soft probabilities. 
 
 To determine exactly how the optimization algorithm adjusts a specific router logit $h(x)_j$ for a given token $x$, the partial derivative must flow backward through the auxiliary loss summation and into the softmax function. Starting from the definition of the auxiliary loss, expanding the mean probability $P_i$ into its summation over all tokens reveals how the derivative isolates the specific token $x$:
 

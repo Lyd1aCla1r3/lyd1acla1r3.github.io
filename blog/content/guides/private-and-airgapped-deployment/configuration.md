@@ -1,4 +1,4 @@
-# Private and Airgapped Deployment
+# [Private and Airgapped Deployment](guide-private-and-airgapped-deployment.html)
 
 <!-- SUMMARY: A complete configuration walkthrough assembling LlamaIndex, LangGraph, MCP servers, LiteLLM, vLLM, SGLang, Qdrant, Docling, Arize Phoenix, and Unsloth into a self-contained AI system that operates entirely within a network perimeter with zero external connectivity. The architecture replaces every commercial API dependency from the enterprise pipeline with self-hosted alternatives, addresses offline model acquisition, and closes the fine-tuning loop entirely on-premises. -->
 

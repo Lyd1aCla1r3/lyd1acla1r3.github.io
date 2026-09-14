@@ -4,7 +4,7 @@
 
 <p><em>Prefer to read this offline? <a href="../assets/docs/positional-encoding-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Positional Encoding Ebook here.</a></em></p>
 
-The preceding Embeddings series terminates with an embedding tensor $X \in \mathbb{R}^{T \times d_{model}}$ whose rows are the distributional signatures of individual tokens. For the toy sequence `The` `quick` `brown` `fox`, the embedding tensor (established in Embeddings Chapter 7) is:
+The preceding [Embeddings series](series-embeddings.html) terminates with an embedding tensor $X \in \mathbb{R}^{T \times d_{model}}$ whose rows are the distributional signatures of individual tokens. For the toy sequence `The` `quick` `brown` `fox`, the embedding tensor (established in Embeddings Chapter 7) is:
 
 $$
 X = \begin{bmatrix} \phantom{-}0.1 & -0.4 & \phantom{-}0.2 \\ \phantom{-}0.5 & \phantom{-}0.1 & -0.8 \\ -0.3 & \phantom{-}0.9 & \phantom{-}0.4 \\ \phantom{-}0.2 & -0.2 & \phantom{-}0.1 \end{bmatrix}_{4 \times 3}

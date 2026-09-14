@@ -1,4 +1,4 @@
-# Enterprise Agentic Pipeline
+# [Enterprise Agentic Pipeline](guide-enterprise-agentic-pipeline.html)
 
 <!-- SUMMARY: A complete configuration walkthrough assembling LangChain, LangGraph, MCP servers, LiteLLM, Weaviate, Unstructured, Langfuse, vLLM, and HF TRL into a governed multi-agent system for enterprise engineering organizations. The architecture introduces orchestrated agent coordination, gateway-enforced cost and compliance controls, production observability, and a closed-loop fine-tuning pipeline that the solo developer configuration intentionally omitted. -->
 

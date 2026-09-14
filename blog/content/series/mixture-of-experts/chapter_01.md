@@ -15,7 +15,7 @@ $$
 
 The mathematical dimensions directly dictate the computational cost. A standard toy-scale dense model configures the representation space with a model dimension of $d_{model} = 6$ and an intermediate hidden dimension of $d_{ff} = 8$. The expansion matrix $W_1 \in \mathbb{R}^{6 \times 8}$ contains 48 parameters. The contraction matrix $W_2 \in \mathbb{R}^{8 \times 6}$ contains an identical 48 parameters. The total parameter count for the monolithic layer equals 96 parameters.
 
-The four token representations entering the layer carry the exact geometric coordinates established in the prior Transformer series:
+The four token representations entering the layer carry the exact geometric coordinates established in the prior [Transformer series](series-transformers.html):
 
 $$
 X_{4 \times 6} = \begin{bmatrix}
