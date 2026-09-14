@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Part 6: Capacity, Token Dropping, and the Switch Transformer — Lydia Pedersen</title>
+  <link rel="stylesheet" href="../css/styles.css?v=1.2">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .blog-post {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: var(--space-4xl) var(--space-md);
+        background: var(--bg-card);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 8px 32px rgba(183, 110, 121, 0.05);
+        border: 1px solid var(--border-subtle);
+    }
+    .blog-post h1, .blog-post h2, .blog-post h3 {
+        color: var(--text-primary);
+        font-family: var(--font-display);
+        margin-top: var(--space-2xl);
+        margin-bottom: var(--space-md);
+    }
+    .blog-post h1 { font-size: var(--fs-3xl); margin-top: 0; line-height: 1.1; }
+    .blog-post h2, .blog-post h3 { border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-sm); }
+    .blog-post h2 { font-size: var(--fs-2xl); }
+    .blog-post h3 { font-size: var(--fs-xl); }
+    .blog-post p, .blog-post li {
+        color: var(--text-secondary);
+        line-height: var(--lh-relaxed);
+        margin-bottom: var(--space-md);
+        font-size: var(--fs-md);
+    }
+    .blog-post img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-md);
+        margin: var(--space-lg) 0;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .blog-post a:not(.pagination-link) {
+        color: var(--text-accent);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s ease;
+    }
+    .blog-post a:not(.pagination-link):hover {
+        border-bottom-color: var(--text-accent);
+    }
+    .blog-post {
+        background: rgba(255, 255, 255, 0.65);
+        padding: var(--space-2xl);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-subtle);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .blog-post .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; display: flex; gap: 1rem; align-items: center; }
+    .blog-post .meta span { display: inline-flex; align-items: center; gap: 0.25rem; }
+    .blog-post p { line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1.05rem; }
+    .blog-post ul, .blog-post ol { margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem; }
+    .blog-post li { margin-bottom: 0.5rem; }
+    .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+    .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
+    .blog-post table { width: auto; margin: var(--space-2xl) 0; border-collapse: collapse; text-align: left; }
+    .blog-post th, .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post th { font-weight: 600; color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-subtle); }
+    .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 4px 10px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; font-size: 0.95rem; color: var(--rose-gold-dark); margin-right: 6px; }
+
+    /* Responsive: horizontally scroll tables on mobile */
+    @media (max-width: 768px) {
+      .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
+    }
+    
+    /* Post Tabs */
+    .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
+    .post-tabs::-webkit-scrollbar { display: none; }
+    .post-tab-btn { padding: 8px 16px; border: none; background: transparent; color: var(--text-muted); font-family: var(--font-display); font-size: 1rem; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; white-space: nowrap; transition: color 0.2s, border-color 0.2s; }
+    .post-tab-btn:hover { color: var(--text-primary); }
+    .post-tab-btn.active { color: var(--text-accent); border-bottom-color: var(--text-accent); font-weight: 500; }
+    .post-tab-content { display: none; padding-top: var(--space-md); }
+    .post-tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+  <!-- Fixed chip visual (always visible, bottom-left, behind everything) -->
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
+  <!-- Full-screen overlay canvas for the diagonal binary→agent→text animation -->
+  <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="../index.html" class="nav__logo" aria-label="Home">lydia<span>.</span>pedersen</a>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="../index.html#about" class="nav__link">About</a></li>
+        <li><a href="../index.html#samples" class="nav__link">Writing</a></li>
+        <li><a href="../index.html#case-studies" class="nav__link">Engineering</a></li>
+        <li><a href="../index.html#skills" class="nav__link">Skills</a></li>
+        <li><a href="index.html" class="nav__link">Blog</a></li>
+        <li><a href="../ebooks/index.html" class="nav__link">Ebooks</a></li>
+        <li><a href="../index.html#contact" class="nav__link">Contact</a></li>
+      </ul>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="nav__toggle-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-lg));">
+    <div class="container">
+<nav aria-label="breadcrumb" class="breadcrumbs"><ol>
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="index.html">Blog</a></li><li><a href="series-mixture-of-experts.html">Series: Mixture Of Experts</a></li><li aria-current="page">Part 6: Capacity, Token Dropping, and the Switch Transformer</li></ol></nav>
+        <article class="blog-post series-mixture-of-experts">
+<h1>Part 6: Capacity, Token Dropping, and the Switch Transformer</h1>
+<!-- SUMMARY: While the auxiliary loss stabilizes the mathematical probability of routing, physical hardware demands static tensor dimensions that cannot dynamically resize to accommodate unbalanced loads. Imposing a hard capacity limit on each expert resolves this physical constraint but introduces token dropping, where excess routing assignments are discarded and tokens pass through the residual stream unmodified, motivating architectural shifts toward Top-1 routing and block-sparse computation. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p><p>The auxiliary loss and router z-loss provide the mathematical guardrails to prevent expert collapse, generating gradients that push routing probability toward a balanced state. A balanced probability distribution over a large training corpus, however, does not guarantee uniform routing within any single batch. A localized sequence of text may legitimately require heavy use of a single expert. This creates a collision between the theoretical flexibility of the router and the rigid requirements of physical accelerator hardware.</p>
+<h2>The Hardware Constraint and Expert Capacity</h2>
+<p>Graphics Processing Units and Tensor Processing Units achieve massive computational throughput by executing operations on fixed-size memory blocks. To compile a neural network into efficient hardware instructions, the shapes of all matrices must be declared in advance. The router acts as a dynamic traffic controller, defying these static requirements. If a batch contains $T = 4$ tokens, the router frequently sends all four tokens to Expert 0 on step one, and perfectly divides them among all four experts on step two.</p>
+<p>If the hardware dynamically resized the input matrix for Expert 0 from $4 \times d_{model}$ to $1 \times d_{model}$ between steps, the computational graph would require continuous recompilation, destroying training throughput. The architecture must instead provision a fixed-size physical buffer for each expert before any routing decisions are made. This static allocation is defined as the expert capacity $C$, representing the maximum number of tokens an expert can accept in a single forward pass.</p>
+<p>The baseline capacity assumes perfectly balanced routing. The total number of token assignments generated by the router equals the number of tokens $T$ multiplied by the number of selected experts $k$. Distributing these assignments equally among all $E$ experts yields the baseline capacity of $\frac{T \times k}{E}$. To provide a safety margin for natural fluctuations in the routing distribution, this baseline is multiplied by a hyperparameter called the Capacity Factor $CF$, and the final result is rounded to the nearest whole integer because hardware buffers can only hold discrete amounts of tokens:</p>
+<p>$$
+C = \text{round}\left( \frac{T \times k}{E} \times CF \right)
+$$</p>
+<p>The Capacity Factor explicitly trades memory and compute efficiency for routing fidelity. A larger $CF$ wastes hardware cycles on empty padding vectors but ensures more tokens successfully reach their assigned experts.</p>
+<h2>The Token Assignment Matrix</h2>
+<p>Applying this capacity formula to the established toy batch, where $T=4$, $k=2$, and $E=4$, with a strict Capacity Factor of $CF = 1.0$ yields a maximum capacity of exactly $2$ tokens per expert.</p>
+<p>The Top-2 masking from Chapter 2 dictates the requested assignments. Token 1 and Token 2 request Experts 0 and 2. Token 3 and Token 4 request Experts 0 and 1.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Expert 0 Queue</strong></td>
+<td>Token 1, Token 2</td>
+<td>Token 3 and Token 4 dropped</td>
+</tr>
+<tr>
+<td><strong>Expert 1 Queue</strong></td>
+<td>Token 3, Token 4</td>
+<td>None dropped</td>
+</tr>
+<tr>
+<td><strong>Expert 2 Queue</strong></td>
+<td>Token 1, Token 2</td>
+<td>None dropped</td>
+</tr>
+<tr>
+<td><strong>Expert 3 Queue</strong></td>
+<td>Empty</td>
+<td>None dropped</td>
+</tr>
+</tbody></table>
+<p>The capacity limit of $C=2$ dictates that Expert 0 fills its buffer entirely with the first two tokens in the sequence. When Token 3 and Token 4 attempt to enter Expert 0, they are physically blocked and dropped from the queue. Expert 1 and Expert 2 receive exactly two tokens, perfectly filling their capacity. Expert 3 remains completely empty, forcing the hardware to execute its matrix multiplications on padding vectors containing pure zeros.</p>
+<p>Increasing the Capacity Factor to $CF = 1.5$ raises the capacity limit to $C=3$. Under this expanded allocation, Expert 0 successfully accepts Token 1, Token 2, and Token 3, dropping only Token 4. Raising the hyperparameter to $CF = 2.0$ increases the capacity to $C=4$, allowing all tokens to process through their requested experts with zero drops, but forcing every expert to allocate a buffer large enough to process the entire batch.</p>
+<h2>The Mechanics of Token Dropping</h2>
+<p>When a token assignment is dropped due to capacity limits, the mathematical representation of the token is not destroyed. The Top-2 router attempts to process each token through two distinct experts, adding their weighted outputs together.</p>
+<p>Token 3 successfully passed through Expert 1 but was dropped from Expert 0. The output computation simply substitutes a zero vector for the dropped expert&#39;s contribution:</p>
+<p>$$
+y_{Token 3} = g_0 \cdot \mathbf{0} + g_1 \cdot \text{FFN}_1(x_3)
+$$</p>
+<p>If a token is dropped from all of its requested experts, the MoE layer outputs a pure zero vector. The residual connection, established in the core Transformer architecture, guarantees that the token&#39;s original hidden state is preserved. The output mathematically collapses to the unmodified input vector:</p>
+<p>$$
+\text{output} = x + 0 = x
+$$</p>
+<p>The token survives the layer, losing only the opportunity to extract knowledge or refine its representation. High drop rates severely degrade the predictive power of the model, forcing practitioners to meticulously tune the Capacity Factor and the auxiliary loss weight $\alpha$ to keep the fraction of dropped tokens below $0.1\%$.</p>
+<h2>The Switch Transformer and Top-1 Routing</h2>
+<p>The static capacity constraint motivated a radical simplification. If buffering and balancing assignments across multiple experts costs so much in both computation and complexity, restricting the router to select only the single best expert, where $k=1$, maximizes efficiency. This Top-1 routing paradigm is the defining innovation of the Switch Transformer, introduced by Fedus and colleagues in 2022.</p>
+<p>By discarding the second expert choice, the Switch Transformer dramatically reduces the computational overhead per token. The capacity formula simplifies to $C = \text{round}\left( \frac{T}{E} \times CF \right)$, cutting the required buffer sizes in half compared to Top-2 routing. The auxiliary loss formulation remains identical, utilizing the same dot product between the hard fraction $f_i$ and the differentiable probability mean $P_i$. This architectural streamlining allowed the researchers to train models up to 1.6 trillion parameters, achieving a 4x to 7x training speedup over dense baseline models operating at equivalent computational budgets.</p>
+<p>Top-1 routing introduces a severe mathematical vulnerability known as discontinuity. In Top-2 routing, the gating weights create a continuous blending surface. As the router preference shifts from Expert A to Expert B over successive training steps, the probability assigned to Expert A smoothly decreases while Expert B smoothly increases, allowing gradient descent to navigate a gradual slope. In Top-1 routing, the output is a hard, discrete jump. If an infinitesimal change in the router weights causes Expert B&#39;s logit to exceed Expert A&#39;s logit by even a fraction of a decimal, the entire token representation switches tracks instantaneously:</p>
+<p>$$
+y_{before} = 1.0 \cdot \text{FFN}_A(x)
+$$
+$$
+y_{after} = 1.0 \cdot \text{FFN}_B(x)
+$$</p>
+<p>This instantaneous swap creates a turbulent loss landscape. The network cannot smoothly interpolate between the two expert representations, making the optimization process inherently less stable than Top-2 routing.</p>
+<h2>Dropless MoE and Block-Sparse GEMM</h2>
+<p>The tension between static hardware shapes and dynamic routing defined the early generations of sparse architecture. A high Capacity Factor eliminated dropped tokens but wasted resources on zero-padding. A low Capacity Factor optimized hardware use but degraded model quality through dropped tokens.</p>
+<p>The modern solution abandons static capacity limits entirely. Rather than forcing the router to fit fixed hardware buffers, the MegaBlocks architecture, developed by Gale and colleagues in 2023, rewrote the core matrix multiplication kernels to handle variable-sized tensors natively. Using block-sparse Generalized Matrix Multiplication operations, the hardware processes variable-length token queues without padding or static bounds.</p>
+<p>In a dropless framework, Expert 0 can process three thousand tokens in the same forward pass that Expert 1 processes thirty. The router dictates the assignments, and the block-sparse kernels map them directly onto physical compute units. This innovation eliminated the Capacity Factor, prevented tokens from ever being dropped, and achieved near-perfect hardware utilization. The removal of this final structural bottleneck opened the path to the hyper-granular expert designs driving current frontier models.</p>
+<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p>
+
+<div class="blog-pagination">
+      <a href="mixture-of-experts-chapter_05.html" class="pagination-link prev">
+        <span class="pagination-label">Previous</span>
+        <span class="pagination-title">Part 5: Load Balancing: The Auxiliary Loss</span>
+      </a>
+      <a href="mixture-of-experts-chapter_07.html" class="pagination-link next">
+        <span class="pagination-label">Next</span>
+        <span class="pagination-title">Part 7: Fine-Grained Experts and Shared Expert Isolation</span>
+      </a></div>
+        </article>
+    </div>
+  </main>
+  <script src="../js/main.js"></script>
+
+  <!-- KaTeX for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" 
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], fleqn: true});">
+  </script>
+
+  <!-- Mermaid for Diagram Rendering -->
+  <style>
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: var(--space-2xl) 0;
+    }
+    .mermaid svg {
+      filter: drop-shadow(0 4px 16px rgba(183, 110, 121, 0.12));
+    }
+  </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ 
+      startOnLoad: true, 
+      securityLevel: 'loose',
+      theme: 'base',
+      themeVariables: {
+        fontFamily: "'Outfit', -apple-system, BlinkMacSystemFont, sans-serif",
+        primaryColor: '#ffffff',
+        primaryBorderColor: '#b76e79',
+        primaryTextColor: '#8b4f5a',
+        lineColor: '#b76e79',
+        nodeBorder: '#b76e79',
+        clusterBkg: 'rgba(232, 180, 184, 0.15)',
+        clusterBorder: '#d4a0a0'
+      }
+    });
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      // Mermaid
+      const blocks = document.querySelectorAll('.language-mermaid');
+      blocks.forEach((block) => {
+        const parent = block.parentElement;
+        if (parent.tagName === 'PRE') {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          parent.replaceWith(mermaidDiv);
+        }
+      });
+      
+      // Tabs
+      const tabGroups = document.querySelectorAll('[data-tab-group]');
+      tabGroups.forEach(group => {
+        const buttons = group.querySelectorAll('[data-tab]');
+        const contents = group.querySelectorAll('[data-tab-content]');
+        
+        buttons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const target = btn.getAttribute('data-tab');
+            
+            buttons.forEach(b => b.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+            
+            btn.classList.add('active');
+            const targetContent = group.querySelector(`[data-tab-content="${target}"]`);
+            if (targetContent) targetContent.classList.add('active');
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

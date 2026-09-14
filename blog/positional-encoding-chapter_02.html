@@ -115,7 +115,7 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Positional Encoding</a></li><li aria-current="page">Part 2: Design Constraints and the Sinusoidal Formula</li></ol></nav>
+    <li><a href="index.html">Blog</a></li><li><a href="series-positional-encoding.html">Series: Positional Encoding</a></li><li aria-current="page">Part 2: Design Constraints and the Sinusoidal Formula</li></ol></nav>
         <article class="blog-post series-positional-encoding">
 <h1>Part 2: Design Constraints and the Sinusoidal Formula</h1>
 <!-- SUMMARY: Five mathematical constraints define the requirements for a positional encoding: uniqueness, boundedness, determinism, smoothness, and relative representability. The sinusoidal formula from Vaswani et al. (2017) satisfies all five. This chapter derives the formula, computes every entry of the positional encoding matrix for the toy model, and verifies each constraint against the computed values. --><p><em>Prefer to read this offline? <a href="../assets/docs/positional-encoding-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Positional Encoding Ebook here.</a></em></p><p>The preceding chapter demonstrated that the embedding tensor $X$ is invariant under row permutations: reordering the sequence rearranges the similarity matrix without altering any similarity score. A mechanism is needed that assigns a distinct, position-dependent vector to each location in the sequence, such that incorporating these vectors into the embedding breaks the permutation symmetry.</p>

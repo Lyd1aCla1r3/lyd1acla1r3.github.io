@@ -115,7 +115,7 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Part 3: The Motivation for Q, K, and V (Asymmetric Similarity)</li></ol></nav>
+    <li><a href="index.html">Blog</a></li><li><a href="series-transformers.html">Series: Transformers</a></li><li aria-current="page">Part 3: The Motivation for Q, K, and V (Asymmetric Similarity)</li></ol></nav>
         <article class="blog-post series-transformers">
 <h1>Part 3: The Motivation for Q, K, and V (Asymmetric Similarity)</h1>
 <!-- SUMMARY: Symmetric similarity is structurally inadequate for capturing grammatically asymmetric linguistic relationships. Projecting context-aware embeddings into distinct query and key subspaces implements a bilinear form that enables tokens to independently query their surroundings and present complementary information. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p><p>The permutation invariance problem is solved by adding absolute positional encodings to the token embeddings. The sequence <code>&lt;BOS&gt;</code> <code>i</code> <code>woke</code> <code>up</code> is now represented by the $4 \times 6$ matrix $X_{pos}$, which contains both semantic meaning and positional context. </p>

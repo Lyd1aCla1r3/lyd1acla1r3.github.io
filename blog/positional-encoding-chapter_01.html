@@ -115,7 +115,7 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Positional Encoding</a></li><li aria-current="page">Part 1: The Permutation Invariance Problem</li></ol></nav>
+    <li><a href="index.html">Blog</a></li><li><a href="series-positional-encoding.html">Series: Positional Encoding</a></li><li aria-current="page">Part 1: The Permutation Invariance Problem</li></ol></nav>
         <article class="blog-post series-positional-encoding">
 <h1>Part 1: The Permutation Invariance Problem</h1>
 <!-- SUMMARY: The embedding tensor from the preceding series encodes distributional meaning but is invariant under row permutations: reordering the input sequence rearranges the pairwise similarity matrix without changing any similarity score. This chapter formalizes the problem with permutation matrices and the full dot-product similarity computation, establishing the need for a mechanism that injects positional information. --><p><em>Prefer to read this offline? <a href="../assets/docs/positional-encoding-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Positional Encoding Ebook here.</a></em></p><p>The preceding Embeddings series terminates with an embedding tensor $X \in \mathbb{R}^{T \times d_{model}}$ whose rows are the distributional signatures of individual tokens. For the toy sequence <code>The</code> <code>quick</code> <code>brown</code> <code>fox</code>, the embedding tensor (established in Embeddings Chapter 7) is:</p>

@@ -106,7 +106,7 @@ for (const fileObj of mdFiles) {
           if (word.toLowerCase() === 'ai') return 'AI';
           return word.charAt(0).toUpperCase() + word.slice(1);
       }).join(' ');
-      breadcrumbHtml += `<li><a href="index.html#${tabId}">Series: ${seriesDisplay}</a></li>`;
+      breadcrumbHtml += `<li><a href="series-${seriesName}.html">Series: ${seriesDisplay}</a></li>`;
   } else if (topLevelDir === 'guides' && guideName) {
       let guideDisplay = guideName.split('-').map(word => {
           if (word.toLowerCase() === 'rag') return 'RAG';
@@ -144,7 +144,7 @@ postsData.sort((a, b) => {
     if (a.seriesName !== b.seriesName) {
         if (!a.seriesName) return 1;
         if (!b.seriesName) return -1;
-        const seriesOrder = { tokenization: 0, embeddings: 1, 'positional-encoding': 2, transformers: 3, 'ai-tooling': 4 };
+        const seriesOrder = { tokenization: 0, embeddings: 1, 'positional-encoding': 2, transformers: 3, 'ai-tooling': 4, 'mixture-of-experts': 5 };
         const aOrder = seriesOrder[a.seriesName] ?? 99;
         const bOrder = seriesOrder[b.seriesName] ?? 99;
         return aOrder - bOrder;
@@ -274,6 +274,8 @@ if (posts.length > 0) {
               seriesDesc = "A first-principles derivation of positional encoding mechanisms for sequence-aware neural architectures. This series traces the mathematical journey from the order-agnostic embedding tensor through the historical sinusoidal formula, element-wise injection, the query-key dot-product framework, and the full derivation of Rotary Position Embeddings (RoPE), the mechanism used in every frontier language model.";
           } else if (sName === 'ai-tooling') {
               seriesDesc = "A structural mapping of the agentic AI ecosystem. This series categorizes infrastructure components from model routers and vector databases through orchestration frameworks and evaluation platforms, tracing how each layer connects to the coding agents that drive AI-augmented development workflows.";
+          } else if (sName === 'mixture-of-experts') {
+              seriesDesc = "A first-principles deconstruction of sparse Mixture of Experts architectures. This series bridges from the dense feed-forward network to dynamic top-k routing, exploring expert collapse, load balancing, capacity limits, and the parameter-compute decoupling that defines frontier models like Mixtral and DeepSeek-V3.";
           }
           
           seriesHtml += `

@@ -115,7 +115,7 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Embeddings</a></li><li aria-current="page">Part 5: Backpropagation Through the Weight Matrices</li></ol></nav>
+    <li><a href="index.html">Blog</a></li><li><a href="series-embeddings.html">Series: Embeddings</a></li><li aria-current="page">Part 5: Backpropagation Through the Weight Matrices</li></ol></nav>
         <article class="blog-post series-embeddings">
 <h1>Part 5: Backpropagation Through the Weight Matrices</h1>
 <!-- SUMMARY: The backward pass continues through the un-embedding and embedding matrices. By deriving the element-wise gradients for both $W_U$ and $W_E$, and demonstrating how the one-hot sparsity of the input ensures only a single embedding row receives an update, the full end-to-end gradient is computed and the weight update rule is applied. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p><p>The previous chapter established the gradient at the logits: $\frac{\partial L}{\partial \mathbf{z}} = \hat{\mathbf{y}} - \mathbf{y}$. The backward pass now continues through the weight matrices to compute the gradient at the embedding layer itself.</p>

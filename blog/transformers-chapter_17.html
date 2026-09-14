@@ -115,7 +115,7 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Transformers</a></li><li aria-current="page">Part 17: Mapping Back to Words</li></ol></nav>
+    <li><a href="index.html">Blog</a></li><li><a href="series-transformers.html">Series: Transformers</a></li><li aria-current="page">Part 17: Mapping Back to Words</li></ol></nav>
         <article class="blog-post series-transformers">
 <h1>Part 17: Mapping Back to Words</h1>
 <!-- SUMMARY: The contextualized mathematical representations emerging from the second layer are translated back into the vocabulary space using the unembedding matrix. This critical linear projection produces raw logits that quantify the geometric preference for predicting the next sequence token. --><p>The network has completed its deep processing phase. The geometric coordinates within the residual stream emerging from Layer 2 now contain dense, highly abstracted representations of grammar and semantics. The vectors contain rich information about what each token means in relation to the others. However, these vectors are still floating in an abstract six-dimensional model space. To generate actual text, the architecture must translate these continuous vectors back into the discrete twelve-dimensional vocabulary space. This operation bridges the gap between the hidden dimensionality of the model and the tangible tokens that comprise language.</p>

@@ -115,7 +115,7 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Embeddings</a></li><li aria-current="page">Part 3: The Forward Pass, Softmax, and Cross-Entropy Loss</li></ol></nav>
+    <li><a href="index.html">Blog</a></li><li><a href="series-embeddings.html">Series: Embeddings</a></li><li aria-current="page">Part 3: The Forward Pass, Softmax, and Cross-Entropy Loss</li></ol></nav>
         <article class="blog-post series-embeddings">
 <h1>Part 3: The Forward Pass, Softmax, and Cross-Entropy Loss</h1>
 <!-- SUMMARY: Understanding how vector embeddings are learned requires examining the shallow neural network designed to train them. A step-by-step concrete mathematical example demonstrates how a two-layer architecture extracts a dense vector, projects it into raw logits, and uses Softmax and Cross-Entropy Loss to quantify the network's error against the ground truth. The fundamental limitations of static embeddings are also explored, setting the stage for Transformers. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p><p>To transform a randomly initialized embedding matrix ($W_E$) into a mathematically rigorous semantic space, a mechanism must be built to evaluate its current state. This is achieved by constructing a simple neural network <em>around</em> $W_E$. Its sole objective is <strong>Next-Token Prediction</strong>: observing a sequence of tokens and predicting the most probable subsequent token in the corpus.</p>

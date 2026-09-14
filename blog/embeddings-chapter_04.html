@@ -115,7 +115,7 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-series">Series: Embeddings</a></li><li aria-current="page">Part 4: Backpropagation Through Loss and Softmax</li></ol></nav>
+    <li><a href="index.html">Blog</a></li><li><a href="series-embeddings.html">Series: Embeddings</a></li><li aria-current="page">Part 4: Backpropagation Through Loss and Softmax</li></ol></nav>
         <article class="blog-post series-embeddings">
 <h1>Part 4: Backpropagation Through Loss and Softmax</h1>
 <!-- SUMMARY: With the loss computed, the gradient signal is traced backwards through the loss and Softmax layer. Each partial derivative is derived from first principles, revealing how the coupled Softmax-Cross-Entropy pipeline collapses into the unified "predicted minus truth" gradient expression. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p><p>The previous chapter ended with a single scalar: $L = 0.79$. This number is the network&#39;s total error—a mathematical verdict on the quality of the forward pass. To learn, the network must translate this single number into specific, targeted corrections to thousands of individual weights distributed across two matrices ($W_U$ and $W_E$).</p>
