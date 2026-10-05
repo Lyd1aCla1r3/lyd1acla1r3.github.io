@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog — Lydia Pedersen</title>
+  <link rel="stylesheet" href="../css/styles.css?v=1.2">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .blog-list { max-width: 800px; margin: 0 auto; padding: var(--space-4xl) var(--space-md); }
+    .blog-item {
+        background: rgba(255, 255, 255, 0.65);
+        padding: var(--space-xl);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-subtle);
+        margin-bottom: var(--space-lg);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        display: block;
+    }
+    .blog-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 24px var(--rose-gold-subtle);
+    }
+    .blog-item h2 { font-family: var(--font-display); color: var(--text-primary); margin-top: 0; }
+    .blog-item a { text-decoration: none; color: inherit; }
+    .blog-item p { color: var(--text-secondary); line-height: var(--lh-relaxed); margin-bottom: 0; }
+    
+    /* Blog Tabs */
+    .blog-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-sm);
+        margin-bottom: var(--space-xl);
+        justify-content: center;
+    }
+    .blog-tabs input[type="radio"] {
+        display: none;
+    }
+    .tab-label {
+        padding: var(--space-sm) var(--space-lg);
+        background: rgba(255, 255, 255, 0.35);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-full);
+        cursor: pointer;
+        font-family: var(--font-mono);
+        font-size: var(--fs-sm);
+        color: var(--text-secondary);
+        transition: all var(--transition-fast);
+    }
+    .tab-label:hover {
+        border-color: var(--rose-gold);
+        color: var(--rose-gold);
+    }
+    .blog-tabs input[type="radio"]:checked + .tab-label {
+        background: linear-gradient(135deg, var(--rose-gold), var(--rose-gold-dark));
+        color: #fff;
+        border-color: transparent;
+        box-shadow: 0 4px 16px rgba(183, 110, 121, 0.3);
+    }
+
+    .tab-content {
+        display: none;
+        width: 100%;
+        margin-top: var(--space-xl);
+        animation: fadeIn 0.4s ease-out forwards;
+    }
+
+    #tab-perspectives:checked ~ #content-perspectives,
+    #tab-series:checked ~ #content-series,
+    #tab-methodology:checked ~ #content-methodology,
+    #tab-guides:checked ~ #content-guides {
+        display: block;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .tab-desc {
+        font-family: var(--font-body);
+        font-size: var(--fs-md);
+        color: var(--text-secondary);
+        text-align: center;
+        font-style: italic;
+        line-height: var(--lh-relaxed);
+        margin-bottom: var(--space-2xl);
+        padding: 0 var(--space-lg);
+    }
+
+    .series-group {
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--border-medium);
+        border-radius: var(--radius-xl);
+        padding: var(--space-xl);
+        margin-bottom: var(--space-xl);
+        box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5), var(--shadow-sm);
+    }
+
+    .series-title {
+        font-family: var(--font-display);
+        font-size: var(--fs-xl);
+        color: var(--rose-gold-dark);
+        margin-top: 0;
+        margin-bottom: var(--space-md);
+        border-bottom: 1px solid var(--border-subtle);
+        padding-bottom: var(--space-sm);
+    }
+    
+    .series-items {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-md);
+    }
+    
+    .series-items a { text-decoration: none; display: block; }
+    
+    .series-item {
+        margin-bottom: 0; /* Reset margin inside series-items flex container */
+    }
+  </style>
+</head>
+<body>
+  <!-- Fixed chip visual (always visible, bottom-left, behind everything) -->
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
+  <!-- Full-screen overlay canvas for the diagonal binary→agent→text animation -->
+  <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="../index.html" class="nav__logo" aria-label="Home">lydia<span>.</span>pedersen</a>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="../index.html#about" class="nav__link">About</a></li>
+        <li><a href="../index.html#samples" class="nav__link">Writing</a></li>
+        <li><a href="../index.html#case-studies" class="nav__link">Engineering</a></li>
+        <li><a href="../index.html#skills" class="nav__link">Skills</a></li>
+        <li><a href="index.html" class="nav__link">Blog</a></li>
+        <li><a href="../ebooks/index.html" class="nav__link">Ebooks</a></li>
+        <li><a href="../index.html#contact" class="nav__link">Contact</a></li>
+      </ul>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="nav__toggle-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-2xl));">
+    <div class="container blog-list">
+        <nav aria-label="breadcrumb" class="breadcrumbs"><ol><li><a href="../index.html">Home</a></li><li><a href="index.html#tab-series">Blog</a></li><li><a href="series-signal-integrity.html">Signal Integrity Series</a></li><li aria-current="page">Part 4: Equalization and RX Architecture</li></ol></nav>
+        <h1 class="hero__name" style="text-align: center; margin-bottom: 0;">Blog</h1>
+          <h2 class="metallic-text" style="text-align: center; font-size: clamp(2rem, 4vw, 2.5rem); margin-top: 10px; margin-bottom: var(--space-2xl); font-family: var(--font-display);">Part 4: Equalization and RX Architecture</h2>
+        <!-- BLOG_LIST_START -->
+
+                  <div class="series-group" style="margin-top: var(--space-2xl);">
+                      <div class="series-items">
+                          
+                          <a href="signal-integrity-13_Transmitter_FFE.html">
+                              <article class="blog-item series-item">
+                                  <h2>Transmitter Feed-Forward Equalization</h2>
+                                  <p>Feed-forward equalization (FFE) pre-distorts the transmitted signal before it enters the channel, boosting high-frequency transition energy and suppressing low-frequency static energy so that the channel's frequency-dependent loss and the transmitter's pre-emphasis cancel each other at the receiver. This guide derives the FIR filter tap structure, coefficient selection, and the spectral shaping mechanism that restores the eye opening at the far end of a lossy channel.</p>
+                              </article>
+                          </a>
+                          <a href="signal-integrity-14_CTLE_and_DFE.html">
+                              <article class="blog-item series-item">
+                                  <h2>Continuous Time Linear Equalization and Decision Feedback Equalization</h2>
+                                  <p>Receiver-side equalization reconstructs the original digital information from a physically degraded waveform using two complementary circuits. The continuous time linear equalizer (CTLE) restores spectral balance through analog high-pass filtering, while the decision feedback equalizer (DFE) subtracts calculated inter-symbol interference using prior bit decisions. This guide derives both architectures and their roles in the modern link budget.</p>
+                              </article>
+                          </a>
+                          <a href="signal-integrity-15_PAM4_Signaling_and_Gray_Coding.html">
+                              <article class="blog-item series-item">
+                                  <h2>PAM4 Signaling and Gray Coding</h2>
+                                  <p>PAM4 encodes two digital bits into each voltage symbol by subdividing the transmitter swing into four amplitude levels, doubling the data rate at a constant symbol rate. This guide covers the signaling mechanism, the 9.5 dB SNR penalty from reduced eye height, three-threshold receiver design, and the Gray coding assignment that minimizes bit errors at adjacent voltage levels.</p>
+                              </article>
+                          </a>
+                      </div>
+                  </div>
+        <!-- BLOG_LIST_END -->
+
+    </div>
+  </main>
+  <script src="../js/main.js"></script>
+
+  <!-- KaTeX for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" 
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});">
+  </script>
+  <script>
+    function activateTabFromHash() {
+      if (window.location.hash) {
+        try {
+          const tab = document.querySelector(window.location.hash);
+          if (tab && tab.type === 'radio') {
+            tab.checked = true;
+            setTimeout(() => window.scrollTo(0, 0), 10);
+          }
+        } catch (e) {}
+      }
+    }
+    activateTabFromHash();
+    window.addEventListener('hashchange', activateTabFromHash);
+  </script>
+</body>
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Physics of the Electromagnetic Wave — Lydia Pedersen</title>
+  <link rel="stylesheet" href="../css/styles.css?v=1.2">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .blog-post {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: var(--space-4xl) var(--space-md);
+        background: var(--bg-card);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 8px 32px rgba(183, 110, 121, 0.05);
+        border: 1px solid var(--border-subtle);
+    }
+    .blog-post h1, .blog-post h2, .blog-post h3 {
+        color: var(--text-primary);
+        font-family: var(--font-display);
+        margin-top: var(--space-2xl);
+        margin-bottom: var(--space-md);
+    }
+    .blog-post h1 { font-size: var(--fs-3xl); margin-top: 0; line-height: 1.1; }
+    .blog-post h2, .blog-post h3 { border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-sm); }
+    .blog-post h2 { font-size: var(--fs-2xl); }
+    .blog-post h3 { font-size: var(--fs-xl); }
+    .blog-post p, .blog-post li {
+        color: var(--text-secondary);
+        line-height: var(--lh-relaxed);
+        margin-bottom: var(--space-md);
+        font-size: var(--fs-md);
+    }
+    .blog-post img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-md);
+        margin: var(--space-lg) 0;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .blog-post a:not(.pagination-link) {
+        color: var(--text-accent);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s ease;
+    }
+    .blog-post a:not(.pagination-link):hover {
+        border-bottom-color: var(--text-accent);
+    }
+    .blog-post {
+        background: rgba(255, 255, 255, 0.65);
+        padding: var(--space-2xl);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-subtle);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .blog-post .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; display: flex; gap: 1rem; align-items: center; }
+    .blog-post .meta span { display: inline-flex; align-items: center; gap: 0.25rem; }
+    .blog-post p { line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1.05rem; }
+    .blog-post ul, .blog-post ol { margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem; }
+    .blog-post li { margin-bottom: 0.5rem; }
+    .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+    .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
+    .blog-post table { width: auto; margin: var(--space-2xl) 0; border-collapse: collapse; text-align: left; }
+    .blog-post th, .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post th { font-weight: 600; color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-subtle); }
+    .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 4px 10px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; font-size: 0.95rem; color: var(--rose-gold-dark); margin-right: 6px; }
+
+    /* Responsive: horizontally scroll tables on mobile */
+    @media (max-width: 768px) {
+      .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
+    }
+    
+    /* Post Tabs */
+    .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
+    .post-tabs::-webkit-scrollbar { display: none; }
+    .post-tab-btn { padding: 8px 16px; border: none; background: transparent; color: var(--text-muted); font-family: var(--font-display); font-size: 1rem; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; white-space: nowrap; transition: color 0.2s, border-color 0.2s; }
+    .post-tab-btn:hover { color: var(--text-primary); }
+    .post-tab-btn.active { color: var(--text-accent); border-bottom-color: var(--text-accent); font-weight: 500; }
+    .post-tab-content { display: none; padding-top: var(--space-md); }
+    .post-tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+  <!-- Fixed chip visual (always visible, bottom-left, behind everything) -->
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
+  <!-- Full-screen overlay canvas for the diagonal binary→agent→text animation -->
+  <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="../index.html" class="nav__logo" aria-label="Home">lydia<span>.</span>pedersen</a>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="../index.html#about" class="nav__link">About</a></li>
+        <li><a href="../index.html#samples" class="nav__link">Writing</a></li>
+        <li><a href="../index.html#case-studies" class="nav__link">Engineering</a></li>
+        <li><a href="../index.html#skills" class="nav__link">Skills</a></li>
+        <li><a href="index.html" class="nav__link">Blog</a></li>
+        <li><a href="../ebooks/index.html" class="nav__link">Ebooks</a></li>
+        <li><a href="../index.html#contact" class="nav__link">Contact</a></li>
+      </ul>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="nav__toggle-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-lg));">
+    <div class="container">
+<nav aria-label="breadcrumb" class="breadcrumbs"><ol>
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="index.html">Blog</a></li><li><a href="series-signal-integrity.html">Series: Signal Integrity</a></li><li><a href="signal-integrity-part-06.html">Part 6: Coherent Optics</a></li><li aria-current="page">The Physics of the Electromagnetic Wave</li></ol></nav>
+        <article class="blog-post series-signal-integrity">
+<h1>The Physics of the Electromagnetic Wave</h1>
+<!-- SUMMARY: Engineers must visualize light not as a stream of solid particles, but as an oscillating physical field moving through space. This chapter explores the geometry of the electric and magnetic fields, defining exactly what constitutes amplitude, phase, and orthogonal polarization. --><p><em>Prefer to read this seamlessly offline? <a href="../../../assets/docs/coherent-optics-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Coherent Optics eBook here.</a></em></p><p>Engineers must visualize light not as a stream of solid particles, but as an oscillating physical field moving through space. Bridging the mechanical world of electrical voltages with the quantum world of electromagnetic waves requires a precise geometric understanding of the physics.</p>
+<h2>Visualizing the Electromagnetic Wave</h2>
+<p>Imagine a straight line pointing directly away from you. This central axis represents the exact direction the light is traveling down the fiber optic cable.</p>
+<p>An electromagnetic wave consists of two linked components: an electric field and a magnetic field. These fields do not travel alongside the light. They are the light. The electric field oscillates entirely perpendicular to the forward direction of travel. The magnetic field oscillates simultaneously, but it remains perfectly perpendicular to both the direction of travel and the electric field.</p>
+<p>Amplitude defines the physical height of this oscillation. It dictates the maximum strength of the electric field at the peak of the wave. Phase represents the timing of the wave. Freezing time reveals the phase as the exact position of the wave within its continuous cycle, whether at an absolute peak, a lowest trough, or an intermediate state.</p>
+<h2>Understanding Polarization</h2>
+<p>Polarization is not an additional wave inserted into the system. Polarization simply defines the physical orientation of the electric field&#39;s oscillation relative to the environment.</p>
+<p>An electric field oscillating strictly up and down along the vertical axis constitutes vertical polarization. Rotating that entire wave ninety degrees forces the electric field to oscillate left and right along the horizontal axis, constituting horizontal polarization.</p>
+<p>These two spatial orientations remain perfectly perpendicular to each other. You can transmit a vertically polarized wave and a horizontally polarized wave down the exact same fiber optic core simultaneously. They travel in the identical forward direction and occupy the exact same physical space. Their electric fields never interact. This physical orthogonality allows optical systems to double their data capacity immediately by modulating independent data streams onto each distinct polarization state.</p>
+<h2>Splitting the Laser into Polarizations</h2>
+<p>The physical separation of the light occurs immediately after the laser source, before any data enters the optical domain.</p>
+<p>The continuous, unmodulated laser beam enters a specialized optical prism called a polarization beam splitter. This component physically divides the raw light into two distinct pathways within the transmitter hardware. The hardware designates one pathway for the vertical data channel and the second pathway for the horizontal data channel.</p>
+<p>Each separate optical pathway routes into its own dedicated array of electro-optic modulators. The electrical data streams sculpt the phase and amplitude of the light in the vertical pathway completely independently from the horizontal pathway.</p>
+<p>Completing the modulation process means both pathways now carry distinct encoded data. The hardware must physically rotate the orientation of the light in the second pathway to create the necessary orthogonal relationship. The light passes through a polarization rotator, physically twisting its electric field exactly ninety degrees relative to the first pathway.</p>
+<p>The transmitter routes the vertical pathway and the newly rotated horizontal pathway into a polarization beam combiner. This final component merges the two separate beams back into a single column of light. This unified beam now contains both orthogonal polarizations carrying independent data, and it exits the transceiver directly into the fiber optic cable.</p>
+<h2>The Alignment of Electric and Magnetic Fields</h2>
+<p>Transmitting two independent polarizations mandates the existence of two distinct electric fields and two distinct magnetic fields occupying the exact same physical space.</p>
+<p>The vertically polarized wave consists of an electric field oscillating on the vertical axis and its paired magnetic field oscillating on the horizontal axis. The horizontally polarized wave consists of an electric field oscillating on the horizontal axis and its paired magnetic field oscillating on the vertical axis.</p>
+<p>This geometric alignment means the vertical electric field occupies the exact same physical plane as the horizontal wave&#39;s magnetic field. The horizontal electric field occupies the exact same physical plane as the vertical wave&#39;s magnetic field.</p>
+<p>Physics dictates that these overlapping fields will never interfere with each other. Electric fields only interact with other electric fields. Magnetic fields only interact with other magnetic fields. The vertical electric field remains completely blind to the magnetic field sharing its vertical axis. The entire dual-polarization system functions flawlessly because the two electric fields remain strictly perpendicular to each other, and the two magnetic fields remain strictly perpendicular to each other.</p>
+
+<div class="blog-pagination">
+      <a href="signal-integrity-18_Line_Coding_FEC_and_Protocol_Framing.html" class="pagination-link prev">
+        <span class="pagination-label">Previous</span>
+        <span class="pagination-title">Line Coding, FEC, and Protocol Framing</span>
+      </a>
+      <a href="signal-integrity-20_Electro_Optic_Modulation.html" class="pagination-link next">
+        <span class="pagination-label">Next</span>
+        <span class="pagination-title">Electro-Optic Modulation and the Refractive Index</span>
+      </a></div>
+        </article>
+    </div>
+  </main>
+  <script src="../js/main.js"></script>
+
+  <!-- KaTeX for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" 
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], fleqn: true});">
+  </script>
+
+  <!-- Mermaid for Diagram Rendering -->
+  <style>
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: var(--space-2xl) 0;
+    }
+    .mermaid svg {
+      filter: drop-shadow(0 4px 16px rgba(183, 110, 121, 0.12));
+    }
+  </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ 
+      startOnLoad: true, 
+      securityLevel: 'loose',
+      theme: 'base',
+      themeVariables: {
+        fontFamily: "'Outfit', -apple-system, BlinkMacSystemFont, sans-serif",
+        primaryColor: '#ffffff',
+        primaryBorderColor: '#b76e79',
+        primaryTextColor: '#8b4f5a',
+        lineColor: '#b76e79',
+        nodeBorder: '#b76e79',
+        clusterBkg: 'rgba(232, 180, 184, 0.15)',
+        clusterBorder: '#d4a0a0'
+      }
+    });
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      // Mermaid
+      const blocks = document.querySelectorAll('.language-mermaid');
+      blocks.forEach((block) => {
+        const parent = block.parentElement;
+        if (parent.tagName === 'PRE') {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          parent.replaceWith(mermaidDiv);
+        }
+      });
+      
+      // Tabs
+      const tabGroups = document.querySelectorAll('[data-tab-group]');
+      tabGroups.forEach(group => {
+        const buttons = group.querySelectorAll('[data-tab]');
+        const contents = group.querySelectorAll('[data-tab-content]');
+        
+        buttons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const target = btn.getAttribute('data-tab');
+            
+            buttons.forEach(b => b.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+            
+            btn.classList.add('active');
+            const targetContent = group.querySelector(`[data-tab-content="${target}"]`);
+            if (targetContent) targetContent.classList.add('active');
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

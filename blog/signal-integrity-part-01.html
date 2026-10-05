@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog — Lydia Pedersen</title>
+  <link rel="stylesheet" href="../css/styles.css?v=1.2">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .blog-list { max-width: 800px; margin: 0 auto; padding: var(--space-4xl) var(--space-md); }
+    .blog-item {
+        background: rgba(255, 255, 255, 0.65);
+        padding: var(--space-xl);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-subtle);
+        margin-bottom: var(--space-lg);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        display: block;
+    }
+    .blog-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 24px var(--rose-gold-subtle);
+    }
+    .blog-item h2 { font-family: var(--font-display); color: var(--text-primary); margin-top: 0; }
+    .blog-item a { text-decoration: none; color: inherit; }
+    .blog-item p { color: var(--text-secondary); line-height: var(--lh-relaxed); margin-bottom: 0; }
+    
+    /* Blog Tabs */
+    .blog-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-sm);
+        margin-bottom: var(--space-xl);
+        justify-content: center;
+    }
+    .blog-tabs input[type="radio"] {
+        display: none;
+    }
+    .tab-label {
+        padding: var(--space-sm) var(--space-lg);
+        background: rgba(255, 255, 255, 0.35);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-full);
+        cursor: pointer;
+        font-family: var(--font-mono);
+        font-size: var(--fs-sm);
+        color: var(--text-secondary);
+        transition: all var(--transition-fast);
+    }
+    .tab-label:hover {
+        border-color: var(--rose-gold);
+        color: var(--rose-gold);
+    }
+    .blog-tabs input[type="radio"]:checked + .tab-label {
+        background: linear-gradient(135deg, var(--rose-gold), var(--rose-gold-dark));
+        color: #fff;
+        border-color: transparent;
+        box-shadow: 0 4px 16px rgba(183, 110, 121, 0.3);
+    }
+
+    .tab-content {
+        display: none;
+        width: 100%;
+        margin-top: var(--space-xl);
+        animation: fadeIn 0.4s ease-out forwards;
+    }
+
+    #tab-perspectives:checked ~ #content-perspectives,
+    #tab-series:checked ~ #content-series,
+    #tab-methodology:checked ~ #content-methodology,
+    #tab-guides:checked ~ #content-guides {
+        display: block;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .tab-desc {
+        font-family: var(--font-body);
+        font-size: var(--fs-md);
+        color: var(--text-secondary);
+        text-align: center;
+        font-style: italic;
+        line-height: var(--lh-relaxed);
+        margin-bottom: var(--space-2xl);
+        padding: 0 var(--space-lg);
+    }
+
+    .series-group {
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--border-medium);
+        border-radius: var(--radius-xl);
+        padding: var(--space-xl);
+        margin-bottom: var(--space-xl);
+        box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5), var(--shadow-sm);
+    }
+
+    .series-title {
+        font-family: var(--font-display);
+        font-size: var(--fs-xl);
+        color: var(--rose-gold-dark);
+        margin-top: 0;
+        margin-bottom: var(--space-md);
+        border-bottom: 1px solid var(--border-subtle);
+        padding-bottom: var(--space-sm);
+    }
+    
+    .series-items {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-md);
+    }
+    
+    .series-items a { text-decoration: none; display: block; }
+    
+    .series-item {
+        margin-bottom: 0; /* Reset margin inside series-items flex container */
+    }
+  </style>
+</head>
+<body>
+  <!-- Fixed chip visual (always visible, bottom-left, behind everything) -->
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
+  <!-- Full-screen overlay canvas for the diagonal binary→agent→text animation -->
+  <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="../index.html" class="nav__logo" aria-label="Home">lydia<span>.</span>pedersen</a>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="../index.html#about" class="nav__link">About</a></li>
+        <li><a href="../index.html#samples" class="nav__link">Writing</a></li>
+        <li><a href="../index.html#case-studies" class="nav__link">Engineering</a></li>
+        <li><a href="../index.html#skills" class="nav__link">Skills</a></li>
+        <li><a href="index.html" class="nav__link">Blog</a></li>
+        <li><a href="../ebooks/index.html" class="nav__link">Ebooks</a></li>
+        <li><a href="../index.html#contact" class="nav__link">Contact</a></li>
+      </ul>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="nav__toggle-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-2xl));">
+    <div class="container blog-list">
+        <nav aria-label="breadcrumb" class="breadcrumbs"><ol><li><a href="../index.html">Home</a></li><li><a href="index.html#tab-series">Blog</a></li><li><a href="series-signal-integrity.html">Signal Integrity Series</a></li><li aria-current="page">Part 1: Electromagnetic Foundations</li></ol></nav>
+        <h1 class="hero__name" style="text-align: center; margin-bottom: 0;">Blog</h1>
+          <h2 class="metallic-text" style="text-align: center; font-size: clamp(2rem, 4vw, 2.5rem); margin-top: 10px; margin-bottom: var(--space-2xl); font-family: var(--font-display);">Part 1: Electromagnetic Foundations</h2>
+        <!-- BLOG_LIST_START -->
+
+                  <div class="series-group" style="margin-top: var(--space-2xl);">
+                      <div class="series-items">
+                          
+                          <a href="signal-integrity-01_Wave_Propagation_and_Transmission_Lines.html">
+                              <article class="blog-item series-item">
+                                  <h2>Wave Propagation and Transmission Lines</h2>
+                                  <p>Information in a high-speed digital system travels as electromagnetic waves propagating through the dielectric material of the PCB, not as electrons drifting through copper. This guide traces the complete physical mechanism from the CMOS switching event through distributed transmission line geometry to the Telegrapher's Equations.</p>
+                              </article>
+                          </a>
+                          <a href="signal-integrity-02_Impedance_Reflections_and_Termination.html">
+                              <article class="blog-item series-item">
+                                  <h2>Impedance, Reflections, and Termination</h2>
+                                  <p>When an electromagnetic wave encounters a boundary where the characteristic impedance changes, a portion of the wave reflects back toward the source. This guide derives the reflection coefficient from first principles, traces the physical mechanism of signal ringing, and explains the termination strategies that eliminate reflections on production PCBs.</p>
+                              </article>
+                          </a>
+                          <a href="signal-integrity-03_Skin_Effect_and_Dielectric_Loss.html">
+                              <article class="blog-item series-item">
+                                  <h2>Skin Effect and Dielectric Loss</h2>
+                                  <p>Every real transmission line dissipates signal energy through two frequency-dependent mechanisms: skin effect resistance in the conductor and molecular polarization loss in the dielectric. This guide derives both loss mechanisms from their electromagnetic origins and shows how they combine to create the insertion loss profile that defines a channel's bandwidth limit.</p>
+                              </article>
+                          </a>
+                          <a href="signal-integrity-04_Inductance_and_Magnetic_Coupling.html">
+                              <article class="blog-item series-item">
+                                  <h2>Inductance and Magnetic Coupling</h2>
+                                  <p>Current flowing through a conductor generates a magnetic field that stores energy and resists changes in current flow. This guide covers self-inductance, mutual inductance, and the crosstalk coupling mechanisms that transfer energy between adjacent signal traces on a PCB through shared magnetic and electric fields.</p>
+                              </article>
+                          </a>
+                          <a href="signal-integrity-05_Return_Path_Dynamics_and_Parasitic_Effects.html">
+                              <article class="blog-item series-item">
+                                  <h2>Return Path Dynamics and Parasitic Effects</h2>
+                                  <p>Every signal current requires a return current, and the path that return current takes determines the electromagnetic behavior of the entire circuit. This guide traces return path dynamics across reference plane transitions, split planes, connector pin fields, and via structures where parasitic inductance and capacitance degrade signal integrity.</p>
+                              </article>
+                          </a>
+                      </div>
+                  </div>
+        <!-- BLOG_LIST_END -->
+
+    </div>
+  </main>
+  <script src="../js/main.js"></script>
+
+  <!-- KaTeX for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" 
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});">
+  </script>
+  <script>
+    function activateTabFromHash() {
+      if (window.location.hash) {
+        try {
+          const tab = document.querySelector(window.location.hash);
+          if (tab && tab.type === 'radio') {
+            tab.checked = true;
+            setTimeout(() => window.scrollTo(0, 0), 10);
+          }
+        } catch (e) {}
+      }
+    }
+    activateTabFromHash();
+    window.addEventListener('hashchange', activateTabFromHash);
+  </script>
+</body>
+</html>

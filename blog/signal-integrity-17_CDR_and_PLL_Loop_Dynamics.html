@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CDR and PLL Loop Dynamics — Lydia Pedersen</title>
+  <link rel="stylesheet" href="../css/styles.css?v=1.2">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .blog-post {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: var(--space-4xl) var(--space-md);
+        background: var(--bg-card);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 8px 32px rgba(183, 110, 121, 0.05);
+        border: 1px solid var(--border-subtle);
+    }
+    .blog-post h1, .blog-post h2, .blog-post h3 {
+        color: var(--text-primary);
+        font-family: var(--font-display);
+        margin-top: var(--space-2xl);
+        margin-bottom: var(--space-md);
+    }
+    .blog-post h1 { font-size: var(--fs-3xl); margin-top: 0; line-height: 1.1; }
+    .blog-post h2, .blog-post h3 { border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-sm); }
+    .blog-post h2 { font-size: var(--fs-2xl); }
+    .blog-post h3 { font-size: var(--fs-xl); }
+    .blog-post p, .blog-post li {
+        color: var(--text-secondary);
+        line-height: var(--lh-relaxed);
+        margin-bottom: var(--space-md);
+        font-size: var(--fs-md);
+    }
+    .blog-post img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-md);
+        margin: var(--space-lg) 0;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .blog-post a:not(.pagination-link) {
+        color: var(--text-accent);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s ease;
+    }
+    .blog-post a:not(.pagination-link):hover {
+        border-bottom-color: var(--text-accent);
+    }
+    .blog-post {
+        background: rgba(255, 255, 255, 0.65);
+        padding: var(--space-2xl);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-subtle);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .blog-post .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; display: flex; gap: 1rem; align-items: center; }
+    .blog-post .meta span { display: inline-flex; align-items: center; gap: 0.25rem; }
+    .blog-post p { line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1.05rem; }
+    .blog-post ul, .blog-post ol { margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem; }
+    .blog-post li { margin-bottom: 0.5rem; }
+    .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+    .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
+    .blog-post table { width: auto; margin: var(--space-2xl) 0; border-collapse: collapse; text-align: left; }
+    .blog-post th, .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post th { font-weight: 600; color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-subtle); }
+    .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 4px 10px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; font-size: 0.95rem; color: var(--rose-gold-dark); margin-right: 6px; }
+
+    /* Responsive: horizontally scroll tables on mobile */
+    @media (max-width: 768px) {
+      .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
+    }
+    
+    /* Post Tabs */
+    .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
+    .post-tabs::-webkit-scrollbar { display: none; }
+    .post-tab-btn { padding: 8px 16px; border: none; background: transparent; color: var(--text-muted); font-family: var(--font-display); font-size: 1rem; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; white-space: nowrap; transition: color 0.2s, border-color 0.2s; }
+    .post-tab-btn:hover { color: var(--text-primary); }
+    .post-tab-btn.active { color: var(--text-accent); border-bottom-color: var(--text-accent); font-weight: 500; }
+    .post-tab-content { display: none; padding-top: var(--space-md); }
+    .post-tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+  <!-- Fixed chip visual (always visible, bottom-left, behind everything) -->
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
+  <!-- Full-screen overlay canvas for the diagonal binary→agent→text animation -->
+  <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="../index.html" class="nav__logo" aria-label="Home">lydia<span>.</span>pedersen</a>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="../index.html#about" class="nav__link">About</a></li>
+        <li><a href="../index.html#samples" class="nav__link">Writing</a></li>
+        <li><a href="../index.html#case-studies" class="nav__link">Engineering</a></li>
+        <li><a href="../index.html#skills" class="nav__link">Skills</a></li>
+        <li><a href="index.html" class="nav__link">Blog</a></li>
+        <li><a href="../ebooks/index.html" class="nav__link">Ebooks</a></li>
+        <li><a href="../index.html#contact" class="nav__link">Contact</a></li>
+      </ul>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="nav__toggle-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-lg));">
+    <div class="container">
+<nav aria-label="breadcrumb" class="breadcrumbs"><ol>
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="index.html">Blog</a></li><li><a href="series-signal-integrity.html">Series: Signal Integrity</a></li><li><a href="signal-integrity-part-05.html">Part 5: SerDes Architecture and Clocking</a></li><li aria-current="page">CDR and PLL Loop Dynamics</li></ol></nav>
+        <article class="blog-post series-signal-integrity">
+<h1>CDR and PLL Loop Dynamics</h1>
+<!-- SUMMARY: High-speed serial links embed the clock directly in the data stream, forcing the receiver to reconstruct a local sampling clock from incoming voltage transitions. This guide derives the PLL-based clock and data recovery (CDR) loop dynamics, covering loop bandwidth, jitter transfer and tolerance, charge pump architecture, and the distinction between analog VCO-based and DSP-based digital CDR receivers. --><p><em>Prefer to read this seamlessly offline? <a href="../../../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity eBook here.</a></em></p><p>High-speed serial links transmit no separate clock signal. PCIe, USB, Ethernet, and every modern protocol embed the clock directly into the data stream, forcing the receiver to reconstruct a local clock from the timing of the incoming voltage transitions. This reconstruction is the job of the Clock and Data Recovery (CDR) circuit, and its core mechanism is a Phase-Locked Loop (PLL): a feedback control system that continuously adjusts a local oscillator to track the incoming data edges.</p>
+<p>The CDR is not simply a clock extractor. It is a filter with carefully chosen dynamics. Low-frequency timing drift (from temperature changes, supply voltage variation, or crystal oscillator tolerance) must be tracked so that the recovered clock moves with the data and the eye stays open. High-frequency timing noise (from random thermal events, crosstalk, or power supply transients) must be rejected so that the recovered clock holds steady and does not chase every stray edge displacement. The boundary between tracking and rejection is the loop bandwidth, and the shape of the frequency response near that boundary determines whether the loop amplifies jitter (peaking) or smoothly attenuates it. These dynamics are governed entirely by the physics of the analog components inside the loop filter: a charge pump, a resistor, a capacitor, and a voltage-controlled oscillator.</p>
+<p>Two fundamentally different receiver architectures implement clock recovery. The traditional analog CDR uses a PLL with a voltage-controlled oscillator that physically speeds up and slows down to track the data. The DSP-based digital CDR, which dominates the 112G/224G era, runs a free-running ADC clock and uses mathematical interpolation to reconstruct the optimal sampling point from digitized samples. Both architectures solve the same problem (aligning a local sampling instant to the center of the incoming data eye), but they solve it through radically different physical mechanisms with distinct tradeoffs in noise performance, power consumption, and silicon area.</p>
+<p>Understanding CDR loop dynamics is essential for two reasons. First, the loop bandwidth and peaking directly determine which jitter components close the eye and which are invisible to the receiver. Second, protocol compliance testing requires test equipment (oscilloscopes and BERTs) to emulate the exact CDR behavior specified by the standard&#39;s &quot;Golden PLL,&quot; so that the measured eye diagram reflects what a real receiver would see.</p>
+<h2>Core Concepts</h2>
+<h3>Why Embedded Clocking Requires CDR</h3>
+<p>Running an external clock at gigahertz frequencies introduces a fundamental synchronization problem. A millimeter of trace length difference or a fraction of a degree of temperature change causes the clock phase and data phase to drift apart. This skew shifts the sampling instant toward the edge of the eye, degrading bit error performance. At multi-gigahertz data rates, maintaining phase alignment between a separate clock trace and a data trace across manufacturing variation, thermal gradients, and cable lengths is physically impractical.</p>
+<p>Embedding the clock into the data eliminates the synchronization problem entirely. The transmitter encodes information as voltage transitions on a single differential pair. The receiver extracts timing information from those same transitions and generates a local clock that is, by construction, aligned to the data it must sample. Skew and thermal wander are eliminated because the clock is derived from the data itself.</p>
+<p>This approach requires guaranteed transitions in the data stream. A long unbroken run of identical bits produces no voltage transitions, leaving the CDR with nothing to track. Line coding schemes (8b/10b, 128b/130b, scrambling) prevent long runs and maintain transition density, as covered in <a href="18_Line_Coding_FEC_and_Protocol_Framing.md">Line Coding, FEC, and Protocol Framing</a>.</p>
+<h3>The Phase-Locked Loop as a Feedback Control System</h3>
+<p>The CDR is built around a phase-locked loop consisting of four functional blocks arranged in a closed feedback path.</p>
+<p><strong>Phase Detector.</strong> The phase detector compares the timing of each incoming data transition against the edge of the locally generated clock. The comparison produces a signal proportional to the time gap between the two edges. A common hardware implementation is the Bang-Bang (Alexander) Phase Detector, which uses D-flip-flops and a transistor switch to control a charge pump. When a data edge arrives, a flip-flop turns on the switch and connects a precision current source to the loop filter. When the local clock edge arrives, a second flip-flop turns the switch off. If the clock is far behind the data, the switch stays closed longer and a large pulse of current flows. If the two edges arrive simultaneously, the switch barely opens and almost zero current flows. The output is a current pulse whose duration encodes the magnitude and polarity of the phase error. A data edge arriving before the clock produces an &quot;UP&quot; pulse; a data edge arriving after the clock produces a &quot;DOWN&quot; pulse.</p>
+<p><strong>Charge Pump and Loop Filter.</strong> The UP or DOWN pulses from the phase detector turn on a current switch (the charge pump), which sends a burst of current into the loop filter. The loop filter converts these current pulses into a smoothly varying control voltage. The components of the loop filter (resistors and capacitors) determine whether the loop is first-order or second-order, and their values set the loop bandwidth, damping factor, and peaking behavior. The physics of the loop filter is the central subject of this guide.</p>
+<p><strong>Voltage-Controlled Oscillator (VCO).</strong> The VCO generates the local clock signal at a frequency determined by its input voltage. Inside the VCO, a specialized diode called a varactor acts as a voltage-variable capacitor. The varactor sits within an LC tank circuit whose resonant frequency is $f = 1 / (2\pi\sqrt{LC})$. Changing the voltage applied to the varactor physically expands or contracts the depletion region inside the silicon, changing its capacitance. That capacitance change shifts the resonant frequency of the LC tank, which changes the VCO output frequency. Every VCO has a hardware specification called VCO gain ($K_{\text{vco}}$), measured in hertz per volt. If a VCO has a gain of 100 MHz/V, applying 1 V to its input increases the output frequency by 100 MHz. The relationship is strictly linear over the operating range.</p>
+<p><strong>Feedback Path.</strong> The VCO&#39;s output clock is routed back to the phase detector, closing the loop. The phase detector compares this clock against the next incoming data transition, and the cycle repeats continuously.</p>
+<h3>Frequency as a Consequence of Phase Alignment</h3>
+<p>A PLL has no concept of frequency. The phase detector only sees phase: the time difference between a data edge and a clock edge at one specific instant. Frequency matching is purely a mathematical consequence of the system finding equilibrium. From calculus, frequency is the derivative of phase with respect to time. If the phase difference between clock and data is constant (not growing, not shrinking), the frequencies must be identical. The loop does not measure frequency, does not compare frequencies, and has no frequency detector. It controls frequency indirectly by controlling phase, and the mathematical relationship between phase and frequency ensures that a stable phase lock implies a stable frequency lock.</p>
+<p>This principle reveals the distinction between two quantities that the loop connects:</p>
+<ul>
+<li><strong>Phase Difference</strong> is a static measurement: the time gap (in picoseconds) between a data edge and a clock edge at one specific instant.</li>
+<li><strong>Rate of Phase Change</strong> is literally a frequency difference. If the phase difference is growing over time, the clock and data are running at two different frequencies. If the phase difference is constant, the frequencies match exactly.</li>
+</ul>
+<p>The phase detector measures only the phase difference. It has no memory and performs no differentiation. Every time an edge arrives, it simply measures the instantaneous phase gap and outputs a voltage proportional to that distance. The loop uses this static phase difference to set the VCO frequency, which in turn dictates the rate of phase change. When the loop reaches equilibrium, the phase difference is constant and the rate of phase change is zero, meaning the frequencies have matched.</p>
+<h3>Loop Bandwidth: The Boundary Between Tracking and Filtering</h3>
+<p>The CDR acts as a low-pass filter for jitter. The loop bandwidth is the cutoff frequency of that filter.</p>
+<p><strong>Below the loop bandwidth.</strong> Timing variations slower than the loop bandwidth are tracked by the recovered clock. If the data slowly wanders back and forth due to thermal drift or supply voltage variation, the recovered clock wanders with it. The relative timing between clock and data remains constant, the sampling instant stays centered in the eye, and these slow jitter components do not degrade the bit error ratio. The CDR &quot;tracks them out.&quot;</p>
+<p><strong>Above the loop bandwidth.</strong> Timing variations faster than the loop bandwidth are too rapid for the feedback loop to follow. The recovered clock holds steady while the incoming data edges vibrate around it. These high-frequency jitter components shift the data transitions relative to the fixed sampling instant and close the eye. They appear directly in the measured jitter.</p>
+<p>The loop bandwidth is not set arbitrarily. Making it too wide causes the clock to chase stray noise spikes (a cosmic ray hit, a crosstalk burst, a random thermal event that displaces a single edge by 100 picoseconds). An excessively wide bandwidth would cause the clock to violently track that noise, destroying the timing reference for subsequent bits. Making the loop bandwidth too narrow prevents the clock from tracking legitimate low-frequency drift, causing the sampling instant to slide away from the eye center. Protocol standards specify the loop bandwidth as a compromise between these two failure modes.</p>
+<h3>Clock Architecture and Phase Interpolators</h3>
+<p>Transmitter and receiver typically share a common reference architecture. A stable, low-frequency crystal oscillator on the motherboard (commonly 100 MHz) provides the frequency reference. The transmitter multiplies this reference up to the line rate using a PLL (for example, 100 MHz multiplied by 160 to produce 16 GHz). The receiver multiplies its own 100 MHz crystal to the same approximate frequency using a separate PLL.</p>
+<p>The CDR&#39;s task is then to take that locally generated clock and fine-tune its phase to align precisely with the incoming data transitions. Many modern implementations accomplish this fine-tuning through a Phase Interpolator rather than directly adjusting the VCO frequency. The Phase Interpolator takes the local clock and mathematically blends between adjacent phase taps to shift the sampling edge in precise fractional-UI increments, achieving the same alignment result through digital phase control rather than analog frequency manipulation.</p>
+<h3>Type-I and Type-II Loop Classification</h3>
+<p>PLL loop dynamics literature describes loops as &quot;first-order&quot; or &quot;second-order&quot; based on the number of energy-storage elements in the loop filter, and as &quot;Type-I&quot; or &quot;Type-II&quot; based on the number of integrators in the open-loop transfer function. In the context of CDR design, a first-order loop with a resistor-only filter is a Type-I system (proportional control only), and a second-order loop with a resistor-capacitor filter is a Type-II system (proportional plus integral control). The Type-I and Type-II naming convention maps directly onto the first-order and second-order architectural distinction that governs the loop&#39;s steady-state behavior, its ability to eliminate phase error, and its susceptibility to overshoot and ringing.</p>
+<h2>Architecture</h2>
+<h3>First-Order Loop: Proportional Control (Type-I)</h3>
+<p>The simplest loop filter is a single resistor. The charge pump outputs a current proportional to the phase error. Ohm&#39;s law converts that current to a voltage across the resistor ($V = I \times R$). This voltage directly controls the VCO frequency. The control voltage is strictly proportional to the instantaneous phase error: $V_{\text{control}} = K \times \text{Phase Error}$. A larger phase error produces a higher voltage; a smaller phase error produces a lower voltage; zero phase error produces zero voltage.</p>
+<p>A first-order loop is unconditionally stable. Its frequency response is a smooth low-pass curve with zero peaking. It tracks low-frequency jitter with unity gain and rolls off monotonically above the loop bandwidth.</p>
+<h4>Static Phase Offset: The Catch-22</h4>
+<p>The fatal limitation of a Type-I loop is the steady-state phase error. The mechanism is a catch-22 rooted in the physics of the resistor.</p>
+<p>Consider a transmitter crystal running at 101 MHz while the receiver&#39;s VCO naturally oscillates at 100 MHz when its control input sits at 0 V. The VCO needs a non-zero control voltage to speed up from its resting frequency to match the data. With a VCO gain of 100 MHz/V, matching the 1 MHz frequency offset requires exactly +10 mV. The resistor generates voltage only when current flows through it, and the charge pump generates current only when the phase detector measures a non-zero time gap between the data edge and the clock edge.</p>
+<p>Here is what happens cycle by cycle:</p>
+<ol>
+<li>The data is arriving at 101 MHz while the VCO clock runs at 100 MHz. The clock is slower, so each successive clock edge falls further behind the corresponding data edge. The phase error is actively growing.</li>
+<li>As the phase error grows, the phase detector outputs wider UP pulses. The voltage across the resistor rises in proportion: at 5 degrees of phase error, the voltage is 1.1 V; at 10 degrees, it is 1.3 V; at 15 degrees, it is 1.5 V.</li>
+<li>The rising voltage pushes the VCO frequency upward: 100.1 MHz, 100.5 MHz, 100.9 MHz.</li>
+<li>At exactly 15 degrees of phase error and 1.5 V of control voltage, the VCO reaches 101 MHz. At this instant, the clock and data are running at the same speed.</li>
+</ol>
+<p>The system now freezes. The clock edges stop falling further behind the data edges, so the phase error stops growing. The phase detector keeps measuring the same 15 degrees of separation edge after edge, and the resistor keeps producing the same 1.5 V. The VCO holds steady at 101 MHz.</p>
+<p>This equilibrium is self-arresting. The loop cannot correct the 15-degree phase error because doing so would destroy the voltage required to maintain the frequency match. If the clock attempted to catch up to the data (reducing the phase error toward zero), the voltage across the resistor would drop. As the voltage dropped, the VCO frequency would fall below 101 MHz, the clock would start falling behind again, and the phase error would grow back to 15 degrees. The system is trapped: the phase error is stuck at a permanent, non-zero offset because that offset is the only mechanism available for generating the control voltage the VCO requires. This permanent offset is called <strong>static phase offset</strong>.</p>
+<p>The hardware cannot escape this trap because the Type-I loop filter has no memory. The voltage exists only as long as the current flows, and the current flows only as long as there is an error. The loop uses phase difference to control frequency, but it cannot drive phase difference to zero while simultaneously maintaining the voltage that keeps the frequency matched.</p>
+<h3>Second-Order Loop: Proportional Plus Integral Control (Type-II)</h3>
+<p>Adding a capacitor in series with the resistor transforms the loop filter into a proportional-integral (PI) controller. The total control voltage delivered to the VCO is the sum of two components:</p>
+<p>$$V_{\text{total}} = V_{\text{resistor}} + V_{\text{capacitor}} = I \times R + \frac{1}{C}\int I \, dt$$</p>
+<p>The resistor provides an instantaneous voltage proportional to the current (proportional control). The capacitor accumulates charge over time, producing a voltage that integrates the history of all past error currents (integral control).</p>
+<p>The series arrangement is critical. In a parallel configuration, the capacitor would absorb and smooth out the fast voltage transients from the resistor, eliminating the proportional response. In series, the VCO receives the instant &quot;kick&quot; from the resistor (to react to sudden phase jumps) plus the slow, steady memory of the capacitor (to correct permanent frequency offsets). The resistor and capacitor values jointly determine the loop bandwidth and damping factor.</p>
+<p><strong>Eliminating steady-state phase error.</strong> When the transmitter runs at 101 MHz and the VCO rests at 100 MHz, the phase detector generates a persistent trickle of error current. This current charges the capacitor, and its voltage slowly rises: 1 mV, 5 mV, 9 mV. The VCO speeds up progressively. As the frequency gap closes, the phase error shrinks and the error current diminishes. At the moment the clock achieves perfect phase alignment, the charge pump stops outputting current. Unlike the resistor, which drops to zero voltage immediately, the capacitor holds its accumulated charge. It stores the +10 mV like a battery, continuously feeding it to the VCO. The loop has reached perfect equilibrium: the phase error is zero, the current is zero, and the VCO is held at exactly 101 MHz by the capacitor&#39;s stored charge. The integrator drives the steady-state phase error to absolute zero regardless of the frequency offset between transmitter and receiver crystals.</p>
+<p>In real silicon, the capacitor slowly leaks charge through parasitic resistance. At gigabit data rates, however, data transitions arrive so frequently that the phase detector sends continuous micro-pulses of correction current to maintain the stored voltage at the correct level. The leakage is negligible in practice.</p>
+<p>Virtually all high-speed standards (PCIe, USB, Ethernet) mandate second-order CDRs because every physical link involves two independent crystal oscillators with parts-per-million (PPM) frequency tolerances that cannot be bridged without integral control.</p>
+<h4>The Overshoot Mechanism: How Type-II Eliminates Phase Error</h4>
+<p>The capacitor does not simply accumulate charge to the correct voltage and stop. The physical mechanism by which the Type-II loop drives phase error to zero requires a temporary frequency overshoot.</p>
+<p>Phase cannot be changed without a difference in frequency. Phase is the integral of frequency over time, so the only way for the clock to catch up to the data is if the clock temporarily runs <em>faster</em> than the data. This is the fundamental constraint that separates the Type-II from the Type-I.</p>
+<p>Scenario: Data is 101 MHz, VCO rests at 100 MHz.</p>
+<ol>
+<li><strong>The Lag.</strong> The VCO is slower than the data, so the data pulls ahead. A large phase error accumulates as the clock edges fall further and further behind.</li>
+<li><strong>The Charge.</strong> The phase detector sees this growing error and pumps current into the capacitor. The voltage rises, and the VCO frequency rises with it.</li>
+<li><strong>The Crossing Point.</strong> The VCO reaches 101.0 MHz. At this instant, the frequencies match. The phase error stops growing. But a massive phase error remains from the entire time the capacitor was charging up and the clock was running slower than the data.</li>
+<li><strong>The Overshoot.</strong> That large residual phase error still drives the phase detector to output UP pulses. The charge pump keeps pushing current into the capacitor. The voltage continues to rise, pushing the VCO frequency past 101.0 MHz to, say, 101.2 MHz.</li>
+<li><strong>Closing the Gap.</strong> The VCO is now running faster than the data (101.2 MHz vs. 101.0 MHz). Because the clock is faster, it begins to catch up to the data. The phase error shrinks.</li>
+<li><strong>The Settling.</strong> As the phase error shrinks toward zero, the phase detector stops pumping excess current. The control voltage settles back down. The loop reaches equilibrium at the exact moment the phase error hits zero and the VCO frequency returns precisely to 101.0 MHz. The capacitor holds the correct voltage indefinitely.</li>
+</ol>
+<p>The Type-I loop physically cannot execute this overshoot. In a Type-I system, the control voltage is tied to the instantaneous phase error. To overshoot the frequency to 101.2 MHz, the phase error would have to grow to the value that generates enough voltage for 101.2 MHz. But the moment the clock speeds up and the phase error starts shrinking, the voltage instantly drops, immediately pulling the frequency back down before the phase can ever reach zero. The Type-I system lacks the component (the capacitor) that would allow it to hold excess voltage while the phase error is being corrected.</p>
+<p>The capacitor is the physical memory device that makes the overshoot possible. It stores the baseline voltage required for 101 MHz while the phase detector temporarily pushes it higher to close the phase gap. Once the gap is closed, the excess charge drains and the voltage settles to the baseline.</p>
+<h4>Ringing: The Time-Domain Cost of Overshoot</h4>
+<p>The overshoot does not stop cleanly on the first pass. The Type-II loop exhibits ringing (decaying oscillation) before it settles, and this is a direct consequence of second-order control theory.</p>
+<p>When the phase error reaches zero, the capacitor still holds the excess voltage that pushed the VCO past 101.0 MHz. The clock is still running faster than the data, so the clock edge physically passes the data edge. The phase error immediately becomes non-zero in the opposite direction (the clock is now early instead of late). The phase detector switches from sending UP pulses to sending DOWN pulses. The DOWN pulses extract electrons from the capacitor, lowering the voltage. The frequency drops.</p>
+<p>If the loop filter were a pure capacitor with no resistor, this overshoot and correction cycle would repeat indefinitely with constant amplitude, exactly like a frictionless pendulum swinging through the center point. The system would never settle.</p>
+<p>The resistor in the loop filter acts as electrical damping. It provides a proportional voltage component that reacts instantaneously to the current error, counteracting the stored energy in the capacitor. Each successive overshoot is smaller than the previous one. The control voltage and phase error oscillate with decreasing amplitude until the system parks at exactly zero phase error and exactly the correct frequency. Hardware designers tune the ratio of the resistor and capacitor values to control the damping factor. A critically damped or slightly overdamped response flattens the oscillation and settles quickly. An underdamped response rings longer but may converge faster on the initial approach. Protocol compliance specifications constrain the maximum peaking (typically 1 dB or 2 dB), which is the frequency-domain manifestation of the time-domain ringing.</p>
+<h3>Digital CDR: Free-Running Clock and Mathematical Phase Recovery</h3>
+<p>Ultra-high-speed DSP-based receivers (112G+ Ethernet, 224G development) replace the analog PLL with a fully digital clock recovery architecture. There is no voltage-controlled oscillator, no charge pump, and no analog feedback loop.</p>
+<p><strong>The free-running clock.</strong> On the receiver board, a local crystal oscillator drives the ADC at a fixed, stable frequency. This clock is not controlled by a feedback loop; it runs freely. The ADC takes snapshots of the incoming waveform strictly at this rate. The transmitter on the opposite end of the link has its own crystal oscillator, running at a frequency that differs by a few parts per million. This slight frequency mismatch causes the ADC sampling point to drift slowly across the data eye over time.</p>
+<p><strong>Mueller-Muller phase detection.</strong> The DSP examines the digitized amplitude of the signal during bit transitions to determine the sampling phase offset. The algorithm compares the voltage of the current sample against the voltage of the previous sample at a data transition. If the ADC is sampling at the dead center of the eye, the voltages on either side of a transition are symmetrical: a 0-to-1 transition produces a sample at $-0.5$ V followed by a sample at $+0.5$ V, with equal magnitudes. If the ADC clock is drifting late, the sample during the 0 is taken as the voltage is already rising toward the transition and might measure $-0.2$ V, while the sample during the 1 is taken further up the flat top of the pulse and might measure $+0.6$ V. The asymmetry between these two amplitudes tells the DSP exactly which direction the clock is drifting, and the magnitude of the imbalance is mathematically proportional to the time offset.</p>
+<p><strong>Phase interpolation.</strong> The DSP maintains a digital phase offset register tracking exactly how far off-center the ADC is currently sampling. A digital FIR interpolation filter uses this offset to compute the voltage that the waveform would have had at the exact center of the eye, even though the ADC never physically sampled that instant. The interpolator examines the sample taken slightly before the ideal point and the sample taken slightly after, then calculates the intermediate value using the known signal shape. The DSP continuously updates the phase register and applies this mathematical correction to every incoming sample.</p>
+<p>The Mueller-Muller phase detector has a critical advantage over the Bang-Bang (Alexander) phase detector used in analog CDRs. The Bang-Bang detector is an edge-based detector: it examines only the polarity of the data transition and produces a binary early/late decision. The Mueller-Muller detector is a baud-rate detector: it operates on the amplitude of the signal at the sampling point itself, extracting phase information without requiring a separate sample at the data edge. This allows the ADC to operate at exactly the symbol rate (one sample per UI) rather than at twice the symbol rate, halving the ADC&#39;s required sampling speed and power consumption.</p>
+<h3>Cycle Slipping</h3>
+<p>The free-running ADC clock and the transmitter clock are not phase-locked. Their slight frequency mismatch causes the phase offset to accumulate continuously. If the transmitter is slightly faster than the receiver&#39;s ADC clock, each successive sample drifts a little later relative to the data eye. Eventually, the accumulated phase offset reaches 360 degrees (one full bit period), and the DSP resets the phase counter to zero. This event is called a <strong>cycle slip</strong>.</p>
+<p><strong>Dropped bits (data faster than the ADC clock).</strong> The data bits arrive slightly faster than the ADC can sample them. Each sample drifts progressively later in the data eye. After thousands or millions of bits, a data bit slides entirely past the ADC between two consecutive samples. The receiver physically misses that bit. The phase offset register reaches 360 degrees and resets.</p>
+<p><strong>Duplicated bits (ADC clock faster than the data).</strong> The ADC samples arrive slightly faster than the data transitions. Each sample drifts progressively earlier in the data eye. Eventually, the ADC samples twice while the same data bit is present on the wire. The receiver records two copies of a single bit. The phase offset register reaches $-360$ degrees and resets.</p>
+<p>A cycle slip is not a catastrophic failure. The digital CDR immediately resumes normal tracking after the phase counter reset. The system does not lose synchronization or require retraining. The single dropped or duplicated bit is a localized error that Forward Error Correction (FEC) is designed to absorb. DSP-based SerDes architectures depend on robust FEC (Reed-Solomon codes at the physical layer) specifically because cycle slips are an expected, periodic consequence of running without a phase-locked oscillator. The FEC algorithm identifies the missing or duplicated bit in the received sequence and mathematically reconstructs the correct data, allowing the system to run indefinitely without a physical PLL.</p>
+<h3>Peaking: The Cost of the Integrator</h3>
+<p>The capacitor that eliminates steady-state phase error introduces a time delay into the feedback path. A capacitor cannot change its voltage instantaneously; it requires time to accumulate charge. In AC circuit analysis, this charging time manifests as a phase shift (up to 90 degrees) between the current entering the capacitor and the voltage appearing across it.</p>
+<p>This delayed correction interacts destructively with jitter at frequencies near the loop bandwidth.</p>
+<p><strong>Low-frequency jitter.</strong> The capacitor&#39;s charging delay is negligible relative to the slow jitter period. The VCO tracks the data accurately.</p>
+<p><strong>High-frequency jitter.</strong> The jitter oscillates so rapidly that the capacitor averages out to a flat DC voltage. The tracking stops, and the low-pass filter does its job.</p>
+<p><strong>Jitter near the loop bandwidth.</strong> At this crossover frequency, the jitter oscillates at the exact rate where the capacitor&#39;s delay is maximally destructive. By the time the capacitor charges up and delivers a correction voltage telling the VCO to slow down, the incoming jitter has already reversed direction and the VCO should be speeding up. The delayed correction adds to the existing error rather than subtracting from it. This constructive interference causes the VCO to swing further out of alignment than the original jitter. The feedback loop is chasing its tail: each correction arrives at the wrong moment and amplifies the oscillation rather than damping it.</p>
+<p>On a Bode plot of the Jitter Transfer Function (JTF), this amplification appears as a bulge above 0 dB just before the rolloff frequency. A first-order filter shows a flat 0 dB line (unity gain, perfect 1:1 tracking) that smoothly curves downward at the cutoff. A second-order filter with peaking shows the same flat 0 dB line, but the curve bulges upward (for example, to +1.5 dB or +2 dB) just before the cutoff, then drops steeply. That physical bulge is the peaking.</p>
+<p>The practical consequence is direct: if incoming data carries a jitter component at exactly the peaking frequency with an amplitude of 10 picoseconds, and the JTF gain at that frequency is +2 dB (a voltage ratio of approximately 1.26), the recovered clock oscillates by approximately 12.6 picoseconds. The clock is shaking more violently than the data. The relative timing displacement between clock and data at this frequency is worse than if the CDR were absent, closing the eye and spiking the bit error ratio.</p>
+<h3>VCO Phase Adjustment Through Temporary Frequency Change</h3>
+<p>The VCO has only one control input, and that input controls frequency. It has no separate phase control. Yet the CDR must correct both frequency offsets and phase errors.</p>
+<p>A change in frequency inherently produces a change in phase. Consider two identical square waves running at 10 GHz with their rising edges perfectly aligned. To shift the second wave&#39;s phase so that its edges arrive 5 picoseconds earlier, the VCO control voltage is temporarily increased, speeding the oscillator to 11 GHz for a brief interval. The faster oscillation causes the edges to accumulate a phase lead. Once the edges have walked exactly 5 picoseconds forward, the control voltage drops back, returning the VCO to 10 GHz. The two waves now run at the same frequency, but the second is permanently shifted 5 picoseconds ahead. By transiently manipulating frequency, the VCO achieves a permanent phase correction.</p>
+<h3>The Jitter Transfer Function</h3>
+<p>The Jitter Transfer Function (JTF) quantifies the CDR&#39;s filtering behavior. It is not a voltage measurement. It is a ratio of time quantities:</p>
+<p>$$\text{JTF}(f) = 20 \log_{10}\left(\frac{\text{Jitter Amplitude Out}}{\text{Jitter Amplitude In}}\right)$$</p>
+<p>At 0 dB (a ratio of 1), the recovered clock vibrates by exactly the same amount as the incoming data. The clock and data move together, and the eye stays open. At -20 dB (a ratio of 0.1), the recovered clock vibrates by only one-tenth of the input jitter amplitude. The clock is stable while the data moves, and that relative motion closes the eye. At +2 dB (a ratio of approximately 1.26), the recovered clock vibrates more than the data, and the amplified relative motion closes the eye even further.</p>
+<p>The critical distinction between clock frequency and jitter frequency causes persistent confusion. The clock frequency (for example, 16 GHz) describes how fast the bits arrive on the wire. The jitter frequency (for example, 5 MHz) describes how fast the phase error oscillates back and forth. Peaking occurs at the jitter frequency where the loop&#39;s reaction delay causes constructive interference, typically in the single-digit to tens-of-megahertz range. It has no direct relationship to the multi-gigahertz bit rate.</p>
+<h2>Worked Examples</h2>
+<h3>Steady-State Phase Error in a Type-I Loop</h3>
+<p>A receiver&#39;s VCO has a natural resting frequency of 100 MHz at 0 V input and a VCO gain of 10 MHz/V. The incoming data arrives at 101 MHz. The phase detector gain produces a control voltage strictly proportional to the phase error.</p>
+<p><strong>Step 1: Initial state.</strong> The VCO is running at 100 MHz. The data is arriving at 101 MHz. The clock is slower, so the phase error begins to grow.</p>
+<p><strong>Step 2: Voltage rises with phase error.</strong> At 5 degrees of phase error, the phase detector produces 1.1 V, pushing the VCO to approximately 100.1 MHz. At 10 degrees, it produces 1.3 V. At 15 degrees, it produces 1.5 V. At exactly 1.5 V, the VCO reaches 101 MHz.</p>
+<p><strong>Step 3: The freeze.</strong> The clock and data are now running at the same speed. The clock edges stop falling further behind. The phase detector measures 15 degrees on the next edge, and the next, and the next. It outputs 1.5 V every time. The voltage &quot;stops rising&quot; simply because the phase detector keeps measuring the same 15-degree distance.</p>
+<p><strong>Step 4: Equilibrium.</strong> The system is locked with the clock edge permanently 15 degrees behind the data edge. This offset generates the exact 1.5 V the VCO needs to hold 101 MHz. The frequencies match, but the clock samples off-center in the eye.</p>
+<p><strong>Step 5: Attempting higher gain.</strong> Increasing the phase detector gain would reduce the steady-state error (the same 1.5 V could be produced by a smaller phase offset). Excessively high gain makes the feedback loop violently unstable: any microscopic phase perturbation produces an enormous voltage spike that drives the VCO frequency wildly out of control. Hardware designers accept a moderate steady-state error as the stability cost of a first-order loop, or they add a capacitor to eliminate the error entirely.</p>
+<h3>Peaking Amplification at the Loop Bandwidth</h3>
+<p>A second-order CDR has a loop bandwidth of 10 MHz and 2 dB of peaking. The incoming data carries a periodic jitter component at 10 MHz with an amplitude of 10 ps peak-to-peak.</p>
+<p><strong>Step 1: JTF gain at 10 MHz.</strong> The peaking specification indicates +2 dB gain at the loop bandwidth frequency. Converting to a linear ratio: $10^{2/20} \approx 1.26$.</p>
+<p><strong>Step 2: Recovered clock jitter.</strong> The clock oscillates by $10\text{ ps} \times 1.26 = 12.6\text{ ps}$ peak-to-peak. The clock is moving 2.6 ps more than the data at this frequency.</p>
+<p><strong>Step 3: Eye closure.</strong> The relative jitter between clock and data at 10 MHz is 2.6 ps peak-to-peak. This additional timing displacement reduces the eye opening and increases the probability of a slicer error. The effect is concentrated at the peaking frequency; jitter at lower or higher frequencies experiences unity gain or attenuation, respectively.</p>
+<h2>Edge Cases</h2>
+<h3>CDRs in Test Equipment and the Golden PLL</h3>
+<p>The error detector (ED) inside a BERT faces the same clock recovery challenge as a silicon receiver: it receives a serial stream with no separate clock and must recover timing to sample the incoming bits for error comparison. The BERT therefore contains a high-performance CDR with precisely configurable loop bandwidth and peaking.</p>
+<p>The configurability exists because test equipment must not be &quot;too good.&quot; If a BERT&#39;s CDR tracks jitter perfectly and recovers data that a standard silicon receiver would fail on, the compliance test is invalid. Protocol standards (PCI-SIG for PCIe, IEEE 802.3 for Ethernet) define a mathematical reference receiver model called the Golden PLL, which specifies the exact loop bandwidth and maximum peaking. The BERT&#39;s CDR must be configured to match this specification so that its error detection reflects the performance a real receiver would achieve.</p>
+<p>The same principle applies to oscilloscopes. When a real-time oscilloscope draws an eye diagram, its software CDR recovers the clock and folds the waveform. If the software CDR bandwidth is set too low, the scope will not track low-frequency jitter that a real receiver would track, and the eye will appear artificially closed. If the bandwidth is set too wide, the scope will track jitter that a real receiver cannot follow, and the eye will appear artificially open. The CDR bandwidth must match the Golden PLL specification defined by the protocol standard.</p>
+<h3>Infinite Bandwidth and the Noise Rejection Tradeoff</h3>
+<p>Setting the CDR loop bandwidth to infinity would cause the clock to track every timing displacement, including single-event transients (crosstalk bursts, power supply glitches, cosmic ray hits). A stray noise spike that displaces one data edge by 100 ps would cause the recovered clock to jump 100 ps, destroying the timing reference for the next several bits. The finite loop bandwidth gives the flywheel inertia: the clock tracks the slow, real drift of the system but ignores fast, random noise. The loop bandwidth is the engineering compromise between drift tracking and noise rejection, and the protocol specification mandates its exact value.</p>
+<h3>Capacitor Leakage in the Loop Filter</h3>
+<p>The integrator capacitor in a second-order loop filter theoretically holds its charge indefinitely, maintaining the control voltage that keeps the VCO at the correct frequency even when the phase error is zero. In real silicon, parasitic resistance across the capacitor causes slow charge leakage. At the data rates of modern serial links (multi-gigahertz), data transitions arrive so frequently that the phase detector delivers continuous micro-pulses of correction current faster than the leakage drains charge. The net effect of parasitic leakage is negligible in practical CDR implementations.</p>
+<h2>References</h2>
+<p><strong>Source Extractions:</strong></p>
+<ul>
+<li><a href="../../source_extractions/extraction_784dbc1a_dsp_pll_cdr_deep_dive.md">extraction_784dbc1a_dsp_pll_cdr_deep_dive.md</a>: Blocks 1 (CDR portion), 3, 4, 5, 6, 7, 8, 9, 10</li>
+<li><a href="../../source_extractions/extraction_77862985_cdr_pll.md">extraction_77862985_cdr_pll.md</a>: Blocks 3-10</li>
+<li><a href="../../source_extractions/extraction_647ef085_serdes_eye_diagrams.md">extraction_647ef085_serdes_eye_diagrams.md</a>: Block 8</li>
+</ul>
+<p><strong>Related Guides:</strong></p>
+<ul>
+<li><a href="../04_Equalization_and_Receiver_Architecture/14_CTLE_and_DFE.md">CTLE and DFE</a>: Receiver-side equalization architecture, analog vs. DSP DFE</li>
+<li><a href="16_SerDes_Architecture_and_Eye_Diagrams.md">SerDes Architecture and Eye Diagrams</a>: System-level signal path, hardware vs. software CDR</li>
+<li><a href="18_Line_Coding_FEC_and_Protocol_Framing.md">Line Coding, FEC, and Protocol Framing</a>: Transition density, FEC for cycle slip tolerance</li>
+</ul>
+
+<div class="blog-pagination">
+      <a href="signal-integrity-16_SerDes_Architecture_and_Eye_Diagrams.html" class="pagination-link prev">
+        <span class="pagination-label">Previous</span>
+        <span class="pagination-title">SerDes Architecture and Eye Diagrams</span>
+      </a>
+      <a href="signal-integrity-18_Line_Coding_FEC_and_Protocol_Framing.html" class="pagination-link next">
+        <span class="pagination-label">Next</span>
+        <span class="pagination-title">Line Coding, FEC, and Protocol Framing</span>
+      </a></div>
+        </article>
+    </div>
+  </main>
+  <script src="../js/main.js"></script>
+
+  <!-- KaTeX for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" 
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], fleqn: true});">
+  </script>
+
+  <!-- Mermaid for Diagram Rendering -->
+  <style>
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: var(--space-2xl) 0;
+    }
+    .mermaid svg {
+      filter: drop-shadow(0 4px 16px rgba(183, 110, 121, 0.12));
+    }
+  </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ 
+      startOnLoad: true, 
+      securityLevel: 'loose',
+      theme: 'base',
+      themeVariables: {
+        fontFamily: "'Outfit', -apple-system, BlinkMacSystemFont, sans-serif",
+        primaryColor: '#ffffff',
+        primaryBorderColor: '#b76e79',
+        primaryTextColor: '#8b4f5a',
+        lineColor: '#b76e79',
+        nodeBorder: '#b76e79',
+        clusterBkg: 'rgba(232, 180, 184, 0.15)',
+        clusterBorder: '#d4a0a0'
+      }
+    });
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      // Mermaid
+      const blocks = document.querySelectorAll('.language-mermaid');
+      blocks.forEach((block) => {
+        const parent = block.parentElement;
+        if (parent.tagName === 'PRE') {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          parent.replaceWith(mermaidDiv);
+        }
+      });
+      
+      // Tabs
+      const tabGroups = document.querySelectorAll('[data-tab-group]');
+      tabGroups.forEach(group => {
+        const buttons = group.querySelectorAll('[data-tab]');
+        const contents = group.querySelectorAll('[data-tab-content]');
+        
+        buttons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const target = btn.getAttribute('data-tab');
+            
+            buttons.forEach(b => b.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+            
+            btn.classList.add('active');
+            const targetContent = group.querySelector(`[data-tab-content="${target}"]`);
+            if (targetContent) targetContent.classList.add('active');
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

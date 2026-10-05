@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SerDes Architecture and Eye Diagrams — Lydia Pedersen</title>
+  <link rel="stylesheet" href="../css/styles.css?v=1.2">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .blog-post {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: var(--space-4xl) var(--space-md);
+        background: var(--bg-card);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 8px 32px rgba(183, 110, 121, 0.05);
+        border: 1px solid var(--border-subtle);
+    }
+    .blog-post h1, .blog-post h2, .blog-post h3 {
+        color: var(--text-primary);
+        font-family: var(--font-display);
+        margin-top: var(--space-2xl);
+        margin-bottom: var(--space-md);
+    }
+    .blog-post h1 { font-size: var(--fs-3xl); margin-top: 0; line-height: 1.1; }
+    .blog-post h2, .blog-post h3 { border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-sm); }
+    .blog-post h2 { font-size: var(--fs-2xl); }
+    .blog-post h3 { font-size: var(--fs-xl); }
+    .blog-post p, .blog-post li {
+        color: var(--text-secondary);
+        line-height: var(--lh-relaxed);
+        margin-bottom: var(--space-md);
+        font-size: var(--fs-md);
+    }
+    .blog-post img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-md);
+        margin: var(--space-lg) 0;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .blog-post a:not(.pagination-link) {
+        color: var(--text-accent);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s ease;
+    }
+    .blog-post a:not(.pagination-link):hover {
+        border-bottom-color: var(--text-accent);
+    }
+    .blog-post {
+        background: rgba(255, 255, 255, 0.65);
+        padding: var(--space-2xl);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-subtle);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .blog-post .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; display: flex; gap: 1rem; align-items: center; }
+    .blog-post .meta span { display: inline-flex; align-items: center; gap: 0.25rem; }
+    .blog-post p { line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1.05rem; }
+    .blog-post ul, .blog-post ol { margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem; }
+    .blog-post li { margin-bottom: 0.5rem; }
+    .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+    .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
+    .blog-post table { width: auto; margin: var(--space-2xl) 0; border-collapse: collapse; text-align: left; }
+    .blog-post th, .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post th { font-weight: 600; color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-subtle); }
+    .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 4px 10px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; font-size: 0.95rem; color: var(--rose-gold-dark); margin-right: 6px; }
+
+    /* Responsive: horizontally scroll tables on mobile */
+    @media (max-width: 768px) {
+      .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
+    }
+    
+    /* Post Tabs */
+    .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
+    .post-tabs::-webkit-scrollbar { display: none; }
+    .post-tab-btn { padding: 8px 16px; border: none; background: transparent; color: var(--text-muted); font-family: var(--font-display); font-size: 1rem; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; white-space: nowrap; transition: color 0.2s, border-color 0.2s; }
+    .post-tab-btn:hover { color: var(--text-primary); }
+    .post-tab-btn.active { color: var(--text-accent); border-bottom-color: var(--text-accent); font-weight: 500; }
+    .post-tab-content { display: none; padding-top: var(--space-md); }
+    .post-tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+  <!-- Fixed chip visual (always visible, bottom-left, behind everything) -->
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
+  <!-- Full-screen overlay canvas for the diagonal binary→agent→text animation -->
+  <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="../index.html" class="nav__logo" aria-label="Home">lydia<span>.</span>pedersen</a>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="../index.html#about" class="nav__link">About</a></li>
+        <li><a href="../index.html#samples" class="nav__link">Writing</a></li>
+        <li><a href="../index.html#case-studies" class="nav__link">Engineering</a></li>
+        <li><a href="../index.html#skills" class="nav__link">Skills</a></li>
+        <li><a href="index.html" class="nav__link">Blog</a></li>
+        <li><a href="../ebooks/index.html" class="nav__link">Ebooks</a></li>
+        <li><a href="../index.html#contact" class="nav__link">Contact</a></li>
+      </ul>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="nav__toggle-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-lg));">
+    <div class="container">
+<nav aria-label="breadcrumb" class="breadcrumbs"><ol>
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="index.html">Blog</a></li><li><a href="series-signal-integrity.html">Series: Signal Integrity</a></li><li><a href="signal-integrity-part-05.html">Part 5: SerDes Architecture and Clocking</a></li><li aria-current="page">SerDes Architecture and Eye Diagrams</li></ol></nav>
+        <article class="blog-post series-signal-integrity">
+<h1>SerDes Architecture and Eye Diagrams</h1>
+<!-- SUMMARY: The serializer/deserializer (SerDes) is the fundamental architecture underlying every modern high-speed interface, resolving the speed mismatch between the physical channel and digital logic. This guide traces the complete signal path from parallel-to-serial conversion through the analog front end, and explains how real-time oscilloscopes, sampling oscilloscopes, and BERTs each construct eye diagrams through physically distinct measurement mechanisms. --><p><em>Prefer to read this seamlessly offline? <a href="../../../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity eBook here.</a></em></p><p>A serializer/deserializer (SerDes) link is the fundamental architecture underlying every modern high-speed interface: PCIe, Ethernet, USB, HDMI, and DisplayPort all transmit data as a continuous stream of serial bits across a single differential pair, then reconstruct the parallel data words inside the receiving chip. The entire system exists because of a speed mismatch between the physical channel and the digital logic. A copper trace or optical fiber can carry analog transitions at 112 Gbps, but no digital logic gate can switch at 112 GHz. The SerDes architecture resolves this contradiction by confining extreme-speed analog processing to a tiny, specialized front-end circuit and then gearing the data down to a clock rate that standard digital silicon can handle.</p>
+<p>The eye diagram is the primary visual tool for evaluating whether the analog portion of that system is working. It represents the accumulated voltage and timing margin available to the receiver at the moment it commits to a bit decision. Three fundamentally different instruments produce eye diagrams through three different physical mechanisms: real-time oscilloscopes capture continuous waveforms and fold them mathematically, sampling oscilloscopes build dot-by-dot reconstructions using a hardware trigger, and bit error ratio testers (BERTs) sweep a decision threshold across a time-voltage grid and map the statistical boundary where errors begin. Understanding how each instrument constructs its eye, and what that eye physically represents, is essential for interpreting signal integrity measurements at any data rate.</p>
+<h2>Core Concepts</h2>
+<h3>The SerDes Signal Path</h3>
+<p>The transmitter and receiver halves of a SerDes link divide naturally into analog and digital domains, with the boundary between them defining the critical interface where signal integrity measurements take place.</p>
+<p><strong>Transmitter (TX).</strong> The digital core generates parallel data words at a relatively low clock rate. A multiplexer (MUX) serializes those parallel words into a single high-speed bitstream. For NRZ signaling, the output stage is a current-mode differential driver that steers a constant current between two complementary outputs. To send a logic 1, the driver routes current so that D+ swings positive and D- swings negative, producing a positive differential voltage (for example, +300 mV). To send a logic 0, the driver reverses the current steering, producing a negative differential voltage (-300 mV). The current flows continuously; information is encoded in the direction of steering, not in the presence or absence of a signal. The differential receiver threshold sits at 0 V, the natural midpoint of this symmetric swing. Modern PAM4 transmitters replace the simple current-steering driver with a digital-to-analog converter (DAC) that produces four distinct voltage levels from a 2-bit input symbol, as described in <a href="../04_Equalization_and_Receiver_Architecture/15_PAM4_Signaling_and_Gray_Coding.md">PAM4 Signaling and Gray Coding</a>.</p>
+<p><strong>Channel.</strong> The differential pair (copper traces, cables, connectors, vias) carries the analog signal from transmitter to receiver. Channel loss from skin effect and dielectric absorption progressively degrades the signal, closing the eye diagram.</p>
+<p><strong>Receiver (RX).</strong> The receiver faces the inverse problem. A continuous stream of high-speed serial bits arrives with no accompanying clock signal. The receiver must recover the embedded clock, make binary decisions on each bit, and convert the serial stream back into parallel words that the digital core can process. This chain of operations proceeds through four functional stages:</p>
+<ol>
+<li><p><strong>Clock and Data Recovery (CDR).</strong> The first block the incoming signal encounters is the CDR, a phase-locked loop (PLL) circuit that locks onto the data transitions and generates a local clock aligned to the center of each bit period. The mechanics of the PLL, including loop bandwidth, damping, and jitter transfer, are covered in <a href="17_CDR_and_PLL_Loop_Dynamics.md">CDR and PLL Loop Dynamics</a>.</p>
+</li>
+<li><p><strong>Slicer.</strong> At each tick of the recovered clock, an analog voltage comparator (the slicer) examines the instantaneous differential voltage. If the voltage exceeds the threshold (0 V for NRZ), the slicer outputs a digital 1. If the voltage falls below the threshold, it outputs a digital 0. The slicer has no knowledge of the actual voltage magnitude. It reports only whether the signal crossed the boundary. This single-bit binary decision is the moment the analog world ends and the digital world begins.</p>
+</li>
+<li><p><strong>Deserializer (DEMUX).</strong> The recovered bits arrive at the full serial line rate, far too fast for digital logic to process individually. The DEMUX acts as a gearbox: it collects bits from the slicer and distributes them across multiple parallel output lanes, stepping the clock rate down proportionally. A 112 Gbps serial stream split across 128 parallel lanes requires only an 875 MHz clock on each lane, well within the capability of standard CMOS digital logic.</p>
+</li>
+<li><p><strong>Word alignment.</strong> The DEMUX produces a continuous flow of parallel bits with no inherent framing. The digital logic scans for predetermined alignment markers embedded in the data stream (comma symbols in 8b/10b-encoded protocols like early PCIe generations, or sync headers in 64b/66b-encoded protocols like 100G+ Ethernet). Once the alignment marker is found, the logic locks the byte boundaries and hands structured data to the upper protocol layers. The encoding schemes and protocol framing details are covered in <a href="18_Line_Coding_FEC_and_Protocol_Framing.md">Line Coding, FEC, and Protocol Framing</a>.</p>
+</li>
+</ol>
+<h3>The PMA/PCS/MAC Sublayer Hierarchy</h3>
+<p>The silicon implementing this signal path is divided into strict functional domains. When hardware engineers refer to &quot;the receiver,&quot; they almost always mean the analog circuitry at the chip&#39;s edge: the CDR, the slicer, and the DEMUX. This collection of analog circuits constitutes the Physical Medium Attachment (PMA) sublayer. Its responsibility is limited to getting bits off the wire and handing them to the digital core. The PMA has no knowledge of Ethernet frames, PCIe transactions, or any protocol semantics.</p>
+<p>The digital core sits behind the PMA and processes the incoming parallel data through two additional sublayers. The Physical Coding Sublayer (PCS) performs word alignment, descrambling, and forward error correction (FEC). The Media Access Control (MAC) sublayer reconstructs the actual protocol data units (Ethernet frames, PCIe packets) and hands them to the system processor. While these sublayers process the received data, they are functionally and physically distinct from the analog receiver.</p>
+<p>The significance of this boundary is practical: when an oscilloscope or BERT probes the link, it is analyzing the analog signal feeding into the PMA. If the eye diagram shows an unrecoverable closure, the PMA slicer will pass bit errors into the PCS, and the FEC must attempt to correct them mathematically. The eye diagram measures the margin available to the analog receiver, not the end-to-end error rate after FEC correction.</p>
+<h3>Differential Signaling and Common-Mode Rejection</h3>
+<p>High-speed serial links universally use differential signaling. The transmitter drives two complementary traces (D+ and D-) with equal and opposite voltage swings. The receiver measures only the voltage difference between them.</p>
+<p>The reason is noise immunity. An electromagnetic interference source couples equally into both traces of a tightly routed differential pair. If a noise spike adds +100 mV to both D+ and D-, the differential voltage is unchanged:</p>
+<p>$$(D^+ + \text{noise}) - (D^- + \text{noise}) = D^+ - D^-$$</p>
+<p>The noise cancels completely. This property, common-mode rejection, is the only mechanism that makes reliable data transmission at 112 Gbps across a piece of fiberglass physically possible.</p>
+<p>Both oscilloscopes and BERTs exploit this property during measurement. When two SMA cables carry D+ and D- to a scope, the instrument performs the mathematical subtraction (Channel 1 minus Channel 2) and displays the resulting clean differential waveform as the eye diagram. A BERT performs the same subtraction internally before feeding the differential signal to both its CDR (for clock recovery) and its slicer (for bit decisions).</p>
+<h3>The Analog Front-End vs. DSP Receiver Architectures</h3>
+<p>Two fundamentally different receiver architectures exist for processing the incoming analog signal, and the distinction determines both the equalization strategy and the test methodology.</p>
+<p><strong>Architecture A: Analog front-end (AFE).</strong> The degraded differential waveform passes through continuous-time linear equalization (CTLE), enters an analog summing node where the decision feedback equalizer (DFE) subtracts its echo estimate, and the slicer makes a binary decision directly on the analog voltage. No analog-to-digital converter exists in this signal path. This architecture is used in the majority of SerDes implementations through 56 Gbps NRZ and is also the architecture inside a BERT error detector. The equalization mechanics are covered in <a href="../04_Equalization_and_Receiver_Architecture/14_CTLE_and_DFE.md">CTLE and DFE</a>.</p>
+<p><strong>Architecture B: DSP-based receiver.</strong> The analog waveform enters a high-speed ADC that measures the exact instantaneous voltage (for example, +212 mV) and converts it to a multi-bit digital word. A digital signal processor (DSP) then performs equalization, clock recovery, and bit-decision logic entirely in the digital domain. No analog slicer exists in this path. This architecture appears in ultra-high-speed implementations (112 Gbps PAM4 Ethernet and beyond) where the channel loss is so severe that analog equalization alone cannot open the eye sufficiently.</p>
+<p>The critical distinction for test and measurement is that an oscilloscope operates on Architecture B principles (it uses an ADC to digitize the analog voltage and produces a visual representation of the waveform), while a BERT operates on Architecture A principles (it uses a slicer to make binary decisions and produces statistical error data). These are not interchangeable measurements. They answer fundamentally different questions about the link.</p>
+<h2>Architecture</h2>
+<h3>Eye Diagram Construction: Three Instruments, Three Methods</h3>
+<p>The eye diagram is a composite image formed by overlaying many individual bit transitions on a common time axis. Every instrument that produces an eye diagram must solve two problems: capturing the analog voltage at a sufficient number of time-voltage coordinates, and establishing a timing reference that defines where each unit interval (UI) begins and ends. The three primary instruments solve these problems through radically different mechanisms.</p>
+<p><strong>Real-time oscilloscope (RTO).</strong> The RTO contains a massively fast ADC (for example, 256 billion samples per second on a modern Keysight UXR-Series) that digitizes the continuous analog voltage from the transmission line into an unbroken record stored in memory. Because the entire waveform is captured at once, no external clock or trigger is required to construct the eye. Instead, software algorithms implement a mathematical CDR: they analyze the stored waveform, calculate the data transition positions, determine the bit rate, and identify the clock frequency. The software then chops the continuous record into individual one-UI slices and mathematically overlays them on a common time axis. This folding operation produces the eye diagram entirely in post-processing.</p>
+<p>The RTO display depends on how the software renders the stored data. In linear view, the captured record appears as a long trace of voltage over time. In persistence mode with the timebase set to one or two UI, the software overlays all slices and the characteristic eye shape emerges. If the timebase is zoomed out to show the entire PRBS pattern, the repeated overlay of the same pattern with slight noise and jitter variations produces a thick, glowing trace rather than a recognizable eye.</p>
+<p><strong>Sampling oscilloscope (DCA).</strong> A sampling scope builds the eye diagram dot by dot over millions of measurement cycles. Its ADC is far slower than an RTO&#39;s ADC (perhaps 1 million samples per second), but it achieves far greater analog bandwidth through an elegant trick. At the input sits an ultra-high-bandwidth analog track-and-hold circuit consisting of an electronic switch (typically a diode bridge) and a microscopic capacitor. When a hardware trigger fires, the switch closes for a few picoseconds, and the capacitor charges to the instantaneous voltage on the transmission line. The switch then snaps open, freezing the captured voltage. The slow ADC takes its time to measure the held voltage, and the scope plots exactly one dot at one (time, voltage) coordinate on the display.</p>
+<p>The bandwidth of a sampling scope is not limited by the ADC speed. It is limited entirely by the aperture time of the analog switch. If the switch takes 10 picoseconds to open and close, and the signal being measured oscillates at 100 GHz, the voltage swings significantly during the capture window and the capacitor records a blurred average. Measuring a 100 GHz signal requires a sub-picosecond aperture, and building an analog switch with that speed is one of the most difficult challenges in test and measurement hardware.</p>
+<p>A sampling scope cannot build an eye diagram without an external timing reference. High-speed serial links transmit no separate clock signal, so the DCA requires a hardware CDR (either built into the measurement module or provided as a standalone instrument) to extract the clock from the data stream. The data signal is split using pick-off tees (high-bandwidth microwave power splitters) or, in integrated DCA modules, tapped internally. One copy of the signal feeds the measurement channel. The other copy feeds the hardware CDR, which locks onto the data transitions and generates a physical clock signal routed to the DCA&#39;s trigger input. Each tick of that recovered clock fires the track-and-hold circuit once, capturing one dot.</p>
+<p><strong>Bit Error Ratio Tester (BERT).</strong> A BERT does not contain an ADC and does not measure analog voltage. Its &quot;eye diagram&quot; is constructed through a fundamentally statistical process. The BERT contains two subsystems: a pattern generator (PG) that transmits a known test pattern, and an error detector (ED) that receives data and checks it for errors. The ED uses a slicer identical in principle to the slicer inside a SerDes receiver chip: a purely analog comparator that outputs a single bit (1 or 0) based on whether the instantaneous voltage exceeds a programmable threshold.</p>
+<p>To construct a BER contour (also called a statistical eye), the BERT sweeps its slicer across a two-dimensional grid of time delay and voltage threshold. At each grid coordinate, the BERT samples millions of bits and records the bit error ratio. At the center of the eye, where the voltage and timing margins are largest, the BER is zero. As the slicer moves toward the edges (higher voltage thresholds or earlier/later sampling instants), it begins intersecting the signal transitions and the BER increases. The BERT maps the BER at every coordinate and renders the result as a heat map. The dark, open region at the center is where errors are absent. The colored contour lines at the boundary represent specific BER thresholds (for example, $10^{-6}$, $10^{-9}$, $10^{-12}$).</p>
+<p>A scope eye diagram shows what the signal looks like. A BERT BER contour shows how much margin a real silicon receiver has before it starts making errors. The two measurements are complementary, not redundant.</p>
+<h3>How the BERT Error Detector Achieves Pattern Synchronization</h3>
+<p>The ED exploits the deterministic nature of PRBS (pseudo-random binary sequence) test patterns. A PRBS pattern is generated by a linear feedback shift register (LFSR) driven by a mathematical polynomial. The sequence appears random but is entirely predictable once the LFSR state is known.</p>
+<p>The ED contains its own internal PRBS generator implementing the same polynomial. When data begins flowing, the ED examines a short segment of the incoming bitstream and uses it to synchronize its internal generator&#39;s state. Once pattern synchronization is achieved, the ED can predict every subsequent bit indefinitely. From that point, operation reduces to a simple comparison: the physical slicer output (the received bit) is compared against the mathematically predicted bit. A mismatch increments the error counter.</p>
+<p>The ED has no concept of what voltage is arriving. It does not know whether the signal swing is 50 mV or 500 mV. The engineer configures the nominal slicer threshold (0 V for standard differential NRZ), and the slicer reports only whether the voltage is above or below that threshold at the instant the recovered clock triggers. The BER contour sweep deliberately moves this threshold away from the optimal center to map the boundaries of the eye.</p>
+<h3>TX Testing vs. RX Testing</h3>
+<p>The physical asymmetry between the transmitter and receiver pins creates two distinct testing paradigms that require different instruments.</p>
+<p><strong>Transmitter testing</strong> uses an oscilloscope. The chip under test generates a continuous test pattern (such as PRBS-31) from its TX pins. The signal travels through the channel to the measurement point, and the scope captures the eye diagram and measures jitter, rise time, and voltage swing. The scope is a passive listener that characterizes the quality of the transmitted signal.</p>
+<p><strong>Receiver testing</strong> uses a BERT. Data does not &quot;come out&quot; of the RX pins. The RX pins are strictly inputs, and once a signal enters the chip, it proceeds directly into the internal analog front-end and digital core with no external observation point. Testing a receiver therefore requires stressing it to the boundaries of its specification and determining whether it can still recover data correctly.</p>
+<p>The BERT pattern generator acts as a controlled-impairment transmitter. It injects calibrated amounts of jitter, noise, and signal attenuation to degrade the eye diagram to the exact limits specified by the protocol compliance standard. This degraded signal is driven into the chip&#39;s RX pins. Two mechanisms verify whether the receiver survived:</p>
+<p><strong>Loopback mode.</strong> The chip is placed in a special test configuration where the received bits, after passing through the RX analog front-end and digital core, are routed internally to the TX block and retransmitted. The BERT error detector receives the loopback signal and compares it against the original transmitted pattern. Any mismatch indicates that the receiver made a bit error.</p>
+<p><strong>Internal error counters.</strong> The chip&#39;s digital protocol layer is configured to expect a specific PRBS pattern. When the analog receiver passes an incorrect bit into the digital core, the logic detects the discrepancy and increments an error counter accessible through a management interface (such as a JTAG or I2C debug port). The engineer reads the accumulated error count to determine the receiver&#39;s bit error ratio under stress.</p>
+<p>The scope tests the transmitter by listening. The BERT tests the receiver by attacking it.</p>
+<h2>Worked Examples</h2>
+<h3>Constructing an Eye Diagram from a Linear Capture</h3>
+<p>An RTO captures a continuous 10 Gbps NRZ differential signal for 1 microsecond. At 256 GSa/s, the memory contains 256,000 voltage samples covering 10,000 bit periods.</p>
+<p><strong>Step 1: Software CDR.</strong> The instrument software analyzes the stored waveform and identifies the data transitions (rising and falling edges). From the transition positions, the software calculates the average bit period: 100 ps (corresponding to 10 Gbps).</p>
+<p><strong>Step 2: Folding.</strong> The software partitions the 1 microsecond capture into 10,000 individual slices, each exactly one UI (100 ps) wide. Every slice contains approximately 25.6 voltage samples.</p>
+<p><strong>Step 3: Overlay.</strong> All 10,000 slices are superimposed on a common 0-to-100-ps time axis. The rising edges from all slices cluster together, the falling edges cluster together, and the flat regions between transitions overlap. The characteristic diamond-shaped opening of the eye emerges from the composite overlay. Noise and jitter cause slight variations in the transition positions and settled voltage levels, which appear as thickness in the overlaid traces. A wider spread indicates more jitter or noise; a tighter bundle indicates a cleaner signal.</p>
+<h3>BER Contour Sweep at a Single Grid Coordinate</h3>
+<p>A BERT error detector is configured to test a 28 Gbps NRZ link at one specific coordinate: a voltage threshold of +50 mV and a timing offset of +5 ps from the recovered clock edge.</p>
+<p><strong>Step 1: Configuration.</strong> The engineer programs the slicer threshold to +50 mV (above the nominal 0 V center) and adds a +5 ps delay to the sampling clock. The PRBS-31 pattern generator is running continuously.</p>
+<p><strong>Step 2: Acquisition.</strong> The ED samples 10 billion bits at this (time, voltage) coordinate and detects 3 bit errors. The BER at this coordinate is $3 \times 10^{-10}$.</p>
+<p><strong>Step 3: Sweep.</strong> The BERT increments the voltage threshold to +55 mV and repeats. Then +60 mV, +65 mV, and so on, recording the BER at each point. As the threshold approaches the signal&#39;s settled high level, the BER increases rapidly toward 0.5 (random guessing). The BERT then resets the voltage to +50 mV and sweeps the timing offset to +10 ps, +15 ps, and beyond. Over the full two-dimensional sweep, the accumulated BER values form a contour map of the eye.</p>
+<p><strong>Interpreting the contour.</strong> The open center of the eye (where BER is zero or immeasurably small) represents the margin available to the receiver. The contour line at $10^{-12}$ shows the boundary where the receiver would experience one error per trillion bits. Protocol compliance specifications typically require the eye to remain open at specific BER thresholds, and the BER contour directly measures whether that requirement is met.</p>
+<h2>Edge Cases</h2>
+<h3>The Hardware CDR Configuration Trap</h3>
+<p>When an engineer configures a CDR loop bandwidth and peaking on a DCA or BERT, that configuration applies to the test equipment&#39;s CDR, not to the silicon chip&#39;s internal CDR. The test equipment CDR serves only to provide a timing reference for the measurement instrument. Protocol compliance standards (such as PCI-SIG or IEEE 802.3) define a mathematical &quot;Golden PLL&quot; with specific loop bandwidth and peaking parameters. The test equipment CDR must be configured to match the Golden PLL so that the measurement reflects what a compliant receiver would see. Misconfiguring the test equipment CDR (for example, setting the loop bandwidth too wide so that the CDR tracks jitter that a real receiver would not track) produces an artificially optimistic eye measurement that does not represent the true link margin.</p>
+<h3>The DCA Bandwidth Bottleneck</h3>
+<p>A sampling scope&#39;s bandwidth is constrained entirely by the aperture time of its track-and-hold switch, not by the speed of its ADC. A DCA with a 70 GHz bandwidth rating and a 1 MSa/s ADC can measure signals that a 20 GHz real-time scope with a 256 GSa/s ADC cannot resolve. The bandwidth limitation is analog, not digital. As data rates push toward 112 Gbaud PAM4, the required aperture times drop below 1 picosecond, and the physical construction of analog switches fast enough to achieve these apertures represents a fundamental engineering constraint on measurement capability.</p>
+<h3>Signal Splitting and Impedance Considerations</h3>
+<p>Splitting the data signal using pick-off tees introduces a 6 dB power loss at each split point (half the signal energy goes to each output port). On marginal links where the eye is already near closure, this additional loss can alter the measurement. Integrated DCA modules that tap the signal internally minimize this effect by using high-impedance sensing rather than resistive power splitting. When using external pick-off tees, the engineer must account for the insertion loss and verify that the splitter&#39;s bandwidth exceeds the signal bandwidth.</p>
+
+<div class="blog-pagination">
+      <a href="signal-integrity-15_PAM4_Signaling_and_Gray_Coding.html" class="pagination-link prev">
+        <span class="pagination-label">Previous</span>
+        <span class="pagination-title">PAM4 Signaling and Gray Coding</span>
+      </a>
+      <a href="signal-integrity-17_CDR_and_PLL_Loop_Dynamics.html" class="pagination-link next">
+        <span class="pagination-label">Next</span>
+        <span class="pagination-title">CDR and PLL Loop Dynamics</span>
+      </a></div>
+        </article>
+    </div>
+  </main>
+  <script src="../js/main.js"></script>
+
+  <!-- KaTeX for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" 
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], fleqn: true});">
+  </script>
+
+  <!-- Mermaid for Diagram Rendering -->
+  <style>
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: var(--space-2xl) 0;
+    }
+    .mermaid svg {
+      filter: drop-shadow(0 4px 16px rgba(183, 110, 121, 0.12));
+    }
+  </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ 
+      startOnLoad: true, 
+      securityLevel: 'loose',
+      theme: 'base',
+      themeVariables: {
+        fontFamily: "'Outfit', -apple-system, BlinkMacSystemFont, sans-serif",
+        primaryColor: '#ffffff',
+        primaryBorderColor: '#b76e79',
+        primaryTextColor: '#8b4f5a',
+        lineColor: '#b76e79',
+        nodeBorder: '#b76e79',
+        clusterBkg: 'rgba(232, 180, 184, 0.15)',
+        clusterBorder: '#d4a0a0'
+      }
+    });
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      // Mermaid
+      const blocks = document.querySelectorAll('.language-mermaid');
+      blocks.forEach((block) => {
+        const parent = block.parentElement;
+        if (parent.tagName === 'PRE') {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          parent.replaceWith(mermaidDiv);
+        }
+      });
+      
+      // Tabs
+      const tabGroups = document.querySelectorAll('[data-tab-group]');
+      tabGroups.forEach(group => {
+        const buttons = group.querySelectorAll('[data-tab]');
+        const contents = group.querySelectorAll('[data-tab-content]');
+        
+        buttons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const target = btn.getAttribute('data-tab');
+            
+            buttons.forEach(b => b.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+            
+            btn.classList.add('active');
+            const targetContent = group.querySelector(`[data-tab-content="${target}"]`);
+            if (targetContent) targetContent.classList.add('active');
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

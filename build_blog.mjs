@@ -9,6 +9,23 @@ const INDEX_PATH = path.join(process.cwd(), 'blog/index.html');
 
 const templateHtml = fs.readFileSync(TEMPLATE_PATH, 'utf-8');
 
+// Signal Integrity 2-tier Part/Chapter structure
+const siParts = [
+    { id: 1, title: 'Electromagnetic Foundations', prefix: ['01_','02_','03_','04_','05_'], summary: 'The electromagnetic wave is the carrier of all digital information. This part traces the physics of wave propagation on PCB transmission lines, characteristic impedance, reflection coefficients, frequency-dependent conductor and dielectric losses, magnetic coupling mechanisms, and the return path dynamics that govern every high-speed channel.' },
+    { id: 2, title: 'Signal Integrity Measurement', prefix: ['06_','07_','08_','09_'], summary: 'Measurement instruments reveal the physical reality that simulation predicts. This part covers time domain reflectometry, Smith Chart conformal mapping, S-parameter matrix formalism with vector network analysis, and the Fourier transform framework that bridges time-domain and frequency-domain representations of the same channel.' },
+    { id: 3, title: 'Jitter Analysis', prefix: ['10_','11_','12_'], summary: 'Timing uncertainty is the ultimate limiter of serial link performance. This part decomposes total jitter into its random and deterministic components, derives the Dual-Dirac model for BER extrapolation to unmeasurable error rates, and details the test pattern selection and spectral techniques that isolate each jitter source.' },
+    { id: 4, title: 'Equalization and RX Architecture', prefix: ['13_','14_','15_'], summary: 'The channel destroys signal quality; equalization reconstructs it. This part derives transmitter feed-forward equalization, continuous time linear equalization, and decision feedback equalization as three complementary stages of a modern link budget, then extends the framework to PAM4 multi-level signaling and Gray coding.' },
+    { id: 5, title: 'SerDes Architecture and Clocking', prefix: ['16_','17_','18_'], summary: 'The serializer/deserializer is the complete system that converts parallel logic into serial analog transmission and back. This part covers SerDes architecture and eye diagram measurement, CDR and PLL loop dynamics including phase noise analysis, and the line coding, forward error correction, and protocol framing layers that sit between the physical channel and usable data throughput.' },
+    { id: 6, title: 'Coherent Optics', prefix: ['19_','20_','21_','22_'], summary: 'A first-principles translation of coherent optical transmission physics. This part explores how electro-optic modulators manipulate the refractive index of lithium niobate to encode digital data into the phase and amplitude of orthogonal electromagnetic fields, and how wideband signal analyzers isolate the resulting physical layer distortions.' },
+];
+
+function getSiPart(filename) {
+    for (const part of siParts) {
+        if (part.prefix.some(p => filename.includes(p))) return part;
+    }
+    return null;
+}
+
 if (!fs.existsSync(CONTENT_DIR)) {
   fs.mkdirSync(CONTENT_DIR, { recursive: true });
 }
@@ -107,6 +124,13 @@ for (const fileObj of mdFiles) {
           return word.charAt(0).toUpperCase() + word.slice(1);
       }).join(' ');
       breadcrumbHtml += `<li><a href="series-${seriesName}.html">Series: ${seriesDisplay}</a></li>`;
+      // Add Part breadcrumb for Signal Integrity chapters
+      if (seriesName === 'signal-integrity') {
+          const siPart = getSiPart(fileObj.name);
+          if (siPart) {
+              breadcrumbHtml += `<li><a href="signal-integrity-part-${String(siPart.id).padStart(2, '0')}.html">Part ${siPart.id}: ${siPart.title}</a></li>`;
+          }
+      }
   } else if (topLevelDir === 'guides' && guideName) {
       let guideDisplay = guideName.split('-').map(word => {
           if (word.toLowerCase() === 'rag') return 'RAG';
@@ -144,7 +168,7 @@ postsData.sort((a, b) => {
     if (a.seriesName !== b.seriesName) {
         if (!a.seriesName) return 1;
         if (!b.seriesName) return -1;
-        const seriesOrder = { tokenization: 0, embeddings: 1, 'positional-encoding': 2, transformers: 3, 'ai-tooling': 4, 'mixture-of-experts': 5 };
+        const seriesOrder = { tokenization: 0, embeddings: 1, 'positional-encoding': 2, transformers: 3, 'ai-tooling': 4, 'mixture-of-experts': 5, 'signal-integrity': 6 };
         const aOrder = seriesOrder[a.seriesName] ?? 99;
         const bOrder = seriesOrder[b.seriesName] ?? 99;
         return aOrder - bOrder;
@@ -276,13 +300,15 @@ if (posts.length > 0) {
               seriesDesc = "A structural mapping of the agentic AI ecosystem. This series categorizes infrastructure components from model routers and vector databases through orchestration frameworks and evaluation platforms, tracing how each layer connects to the coding agents that drive AI-augmented development workflows.";
           } else if (sName === 'mixture-of-experts') {
               seriesDesc = "A first-principles deconstruction of sparse Mixture of Experts architectures. This series bridges from the dense feed-forward network to dynamic top-k routing, exploring expert collapse, load balancing, capacity limits, and the parameter-compute decoupling that defines frontier models like Mixtral and DeepSeek-V3.";
+          } else if (sName === 'signal-integrity') {
+              seriesDesc = "A first-principles exploration of high-speed digital systems, tracing the physics of electromagnetic wave propagation through frequency-dependent loss mechanisms, jitter decomposition, equalization architectures (CTLE/DFE/FFE), the complete SerDes link budget, and coherent optical transmission physics.";
           }
           
           seriesHtml += `
           <a href="series-${sName}.html">
               <article class="blog-item series-item" style="margin-bottom: var(--space-md);">
                   <h2>${seriesTitle} Series</h2>
-                  <p>${seriesDesc} <strong>(${sPosts.length} chapters)</strong></p>
+                  <p>${seriesDesc} <strong>(${sName === 'signal-integrity' ? '6 parts, ' : ''}${sPosts.length} chapters)</strong></p>
               </article>
           </a>`;
           
@@ -297,18 +323,35 @@ if (posts.length > 0) {
               `<h1 class="hero__name" style="text-align: center; margin-bottom: 0;">Blog</h1>\n          <h2 class="metallic-text" style="text-align: center; font-size: clamp(2rem, 4vw, 2.5rem); margin-top: 10px; margin-bottom: var(--space-2xl); font-family: var(--font-display);">${seriesTitle} Series</h2>`
           );
           
-          const dedicatedSeriesContent = `
-          <div class="series-group" style="margin-top: var(--space-2xl);">
-              <div class="series-items">
-                  ${sPosts.map(post => `
-                  <a href="${post.url}">
-                      <article class="blog-item series-item">
-                          <h2>${post.title}</h2>
-                          <p>${post.summary}</p>
-                      </article>
-                  </a>`).join('')}
-              </div>
-          </div>`;
+          let dedicatedSeriesContent;
+          if (sName === 'signal-integrity') {
+              // 2-tier: show 5 Part cards instead of flat chapter list
+              dedicatedSeriesContent = `
+              <div class="series-group" style="margin-top: var(--space-2xl);">
+                  <div class="series-items">
+                      ${siParts.map(part => `
+                      <a href="signal-integrity-part-${String(part.id).padStart(2, '0')}.html">
+                          <article class="blog-item series-item">
+                              <h2>Part ${part.id}: ${part.title}</h2>
+                              <p>${part.summary} <strong>(${part.prefix.length} chapters)</strong></p>
+                          </article>
+                      </a>`).join('')}
+                  </div>
+              </div>`;
+          } else {
+              dedicatedSeriesContent = `
+              <div class="series-group" style="margin-top: var(--space-2xl);">
+                  <div class="series-items">
+                      ${sPosts.map(post => `
+                      <a href="${post.url}">
+                          <article class="blog-item series-item">
+                              <h2>${post.title}</h2>
+                              <p>${post.summary}</p>
+                          </article>
+                      </a>`).join('')}
+                  </div>
+              </div>`;
+          }
           
           seriesPageHtml = seriesPageHtml.replace(
               /<!-- BLOG_LIST_START -->[\s\S]*?<!-- BLOG_LIST_END -->/,
@@ -316,6 +359,46 @@ if (posts.length > 0) {
           );
           fs.writeFileSync(path.join(BLOG_DIR, `series-${sName}.html`), seriesPageHtml, 'utf-8');
           console.log(`Generated dedicated series page: series-${sName}.html`);
+          
+          // Generate Part landing pages for Signal Integrity
+          if (sName === 'signal-integrity') {
+              for (const part of siParts) {
+                  let partPageHtml = indexHtml;
+                  const partTitle = `Part ${part.id}: ${part.title}`;
+                  
+                  partPageHtml = partPageHtml.replace(
+                      /<nav aria-label="breadcrumb" class="breadcrumbs">[\s\S]*?<\/nav>/,
+                      `<nav aria-label="breadcrumb" class="breadcrumbs"><ol><li><a href="../index.html">Home</a></li><li><a href="index.html#tab-series">Blog</a></li><li><a href="series-signal-integrity.html">Signal Integrity Series</a></li><li aria-current="page">${partTitle}</li></ol></nav>`
+                  );
+                  partPageHtml = partPageHtml.replace(
+                      /<h1 class="hero__name" style="text-align: center; margin-bottom: var\(--space-2xl\);">Blog<\/h1>/,
+                      `<h1 class="hero__name" style="text-align: center; margin-bottom: 0;">Blog</h1>\n          <h2 class="metallic-text" style="text-align: center; font-size: clamp(2rem, 4vw, 2.5rem); margin-top: 10px; margin-bottom: var(--space-2xl); font-family: var(--font-display);">${partTitle}</h2>`
+                  );
+                  
+                  const partChapters = sPosts.filter(p => part.prefix.some(pre => path.basename(p.url).includes(pre)));
+                  const partContent = `
+                  <div class="series-group" style="margin-top: var(--space-2xl);">
+                      <div class="series-items">
+                          ${partChapters.map(post => `
+                          <a href="${post.url}">
+                              <article class="blog-item series-item">
+                                  <h2>${post.title}</h2>
+                                  <p>${post.summary}</p>
+                              </article>
+                          </a>`).join('')}
+                      </div>
+                  </div>`;
+                  
+                  partPageHtml = partPageHtml.replace(
+                      /<!-- BLOG_LIST_START -->[\s\S]*?<!-- BLOG_LIST_END -->/,
+                      `<!-- BLOG_LIST_START -->\n${partContent}\n        <!-- BLOG_LIST_END -->`
+                  );
+                  
+                  const partFilename = `signal-integrity-part-${String(part.id).padStart(2, '0')}.html`;
+                  fs.writeFileSync(path.join(BLOG_DIR, partFilename), partPageHtml, 'utf-8');
+                  console.log(`Generated SI Part page: ${partFilename}`);
+              }
+          }
        }
     }
     

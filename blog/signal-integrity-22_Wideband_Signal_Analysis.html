@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wideband Signal Analysis and EVM — Lydia Pedersen</title>
+  <link rel="stylesheet" href="../css/styles.css?v=1.2">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .blog-post {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: var(--space-4xl) var(--space-md);
+        background: var(--bg-card);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 8px 32px rgba(183, 110, 121, 0.05);
+        border: 1px solid var(--border-subtle);
+    }
+    .blog-post h1, .blog-post h2, .blog-post h3 {
+        color: var(--text-primary);
+        font-family: var(--font-display);
+        margin-top: var(--space-2xl);
+        margin-bottom: var(--space-md);
+    }
+    .blog-post h1 { font-size: var(--fs-3xl); margin-top: 0; line-height: 1.1; }
+    .blog-post h2, .blog-post h3 { border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-sm); }
+    .blog-post h2 { font-size: var(--fs-2xl); }
+    .blog-post h3 { font-size: var(--fs-xl); }
+    .blog-post p, .blog-post li {
+        color: var(--text-secondary);
+        line-height: var(--lh-relaxed);
+        margin-bottom: var(--space-md);
+        font-size: var(--fs-md);
+    }
+    .blog-post img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-md);
+        margin: var(--space-lg) 0;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .blog-post a:not(.pagination-link) {
+        color: var(--text-accent);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s ease;
+    }
+    .blog-post a:not(.pagination-link):hover {
+        border-bottom-color: var(--text-accent);
+    }
+    .blog-post {
+        background: rgba(255, 255, 255, 0.65);
+        padding: var(--space-2xl);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-subtle);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .blog-post .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; display: flex; gap: 1rem; align-items: center; }
+    .blog-post .meta span { display: inline-flex; align-items: center; gap: 0.25rem; }
+    .blog-post p { line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1.05rem; }
+    .blog-post ul, .blog-post ol { margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem; }
+    .blog-post li { margin-bottom: 0.5rem; }
+    .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+    .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
+    .blog-post table { width: auto; margin: var(--space-2xl) 0; border-collapse: collapse; text-align: left; }
+    .blog-post th, .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post th { font-weight: 600; color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-subtle); }
+    .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 4px 10px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; font-size: 0.95rem; color: var(--rose-gold-dark); margin-right: 6px; }
+
+    /* Responsive: horizontally scroll tables on mobile */
+    @media (max-width: 768px) {
+      .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
+    }
+    
+    /* Post Tabs */
+    .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
+    .post-tabs::-webkit-scrollbar { display: none; }
+    .post-tab-btn { padding: 8px 16px; border: none; background: transparent; color: var(--text-muted); font-family: var(--font-display); font-size: 1rem; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; white-space: nowrap; transition: color 0.2s, border-color 0.2s; }
+    .post-tab-btn:hover { color: var(--text-primary); }
+    .post-tab-btn.active { color: var(--text-accent); border-bottom-color: var(--text-accent); font-weight: 500; }
+    .post-tab-content { display: none; padding-top: var(--space-md); }
+    .post-tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+  <!-- Fixed chip visual (always visible, bottom-left, behind everything) -->
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
+  <!-- Full-screen overlay canvas for the diagonal binary→agent→text animation -->
+  <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="../index.html" class="nav__logo" aria-label="Home">lydia<span>.</span>pedersen</a>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="../index.html#about" class="nav__link">About</a></li>
+        <li><a href="../index.html#samples" class="nav__link">Writing</a></li>
+        <li><a href="../index.html#case-studies" class="nav__link">Engineering</a></li>
+        <li><a href="../index.html#skills" class="nav__link">Skills</a></li>
+        <li><a href="index.html" class="nav__link">Blog</a></li>
+        <li><a href="../ebooks/index.html" class="nav__link">Ebooks</a></li>
+        <li><a href="../index.html#contact" class="nav__link">Contact</a></li>
+      </ul>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="nav__toggle-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-lg));">
+    <div class="container">
+<nav aria-label="breadcrumb" class="breadcrumbs"><ol>
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="index.html">Blog</a></li><li><a href="series-signal-integrity.html">Series: Signal Integrity</a></li><li><a href="signal-integrity-part-06.html">Part 6: Coherent Optics</a></li><li aria-current="page">Wideband Signal Analysis and EVM</li></ol></nav>
+        <article class="blog-post series-signal-integrity">
+<h1>Wideband Signal Analysis and EVM</h1>
+<!-- SUMMARY: Optical signals traveling over massive distances suffer severe physical distortion. This chapter details how Optical Modulation Analyzers act as perfect, idealized receivers to quantify chromatic dispersion, polarization drift, and laser phase noise before commercial DSP intervention. --><p><em>Prefer to read this seamlessly offline? <a href="../../../assets/docs/coherent-optics-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Coherent Optics eBook here.</a></em></p><h2>System Challenges and Optical Concerns</h2>
+<p>Sending complex phase-encoded light over hundreds of kilometers of glass introduces severe physical distortions that the wideband analyzer must identify and quantify.</p>
+<p><strong>Chromatic Dispersion:</strong>
+Silica glass possesses a refractive index that varies slightly depending on the exact wavelength of the light. An optical pulse actually contains a narrow band of frequencies. The higher frequency components travel through the glass at a slightly different speed than the lower frequency components. Over long distances, the optical pulse spreads out horizontally until it overlaps with adjacent pulses, destroying the integrity of the data sequence.</p>
+<p><strong>Polarization Mode Dispersion:</strong>
+Optical fiber is never perfectly circular or completely stress-free. Temperature changes, physical vibrations, and manufacturing imperfections cause the fiber core to become slightly elliptical. This physical distortion causes the two orthogonal polarization states to travel at different speeds and rotate unpredictably. The wideband analyzer tracks how violently these polarization states drift relative to each other.</p>
+<p><strong>Laser Phase Noise:</strong>
+Coherent detection relies on the absolute purity of the transmitter and receiver lasers. A real-world laser is never perfectly stable. It drifts continuously in frequency and phase. If the laser linewidth is too broad, the random phase jitter obscures the deliberate phase shifts encoded by the transmitter. The wideband analyzer quantifies this phase noise to ensure the internal digital signal processor can track and correct the laser drift before the link fails.</p>
+<h2>The Analyzer as an Ideal Receiver</h2>
+<p>Engineers need a way to measure the exact health of the optical signal traveling through the fiber before a commercial receiver attempts to process it.</p>
+<p>A Wideband Signal Analyzer designed for coherent optics acts as a perfect, idealized optical receiver. It physically connects to the fiber optic cable and ingests the raw photons directly. It does not look at the final electrical bits exiting a commercial receiver. It captures the raw optical wave to diagnose the physical layer physics.</p>
+<p>The instrument contains its own pristine local oscillator lasers, its own flawless photodetectors, and its own extreme-precision Analog-to-Digital Converters. The analyzer ingests the four optical waveforms, converts them to electrical voltages, and digitizes them using hardware far superior to standard commercial transceivers.</p>
+<h2>Measuring Error Vector Magnitude</h2>
+<p>Measuring the Error Vector Magnitude requires comparing the actual received signal against mathematical perfection.</p>
+<p>The analyzer captures the incoming optical signal and digitizes the four degrees of freedom. The internal software reconstructs the two-dimensional constellation diagram. The software analyzes the exact geometric placement of every single received optical symbol.</p>
+<p>The analyzer calculates the geometric distance between where a received symbol actually landed on the coordinate system and where it was theoretically supposed to land. The analyzer deduces the exact binary data the transmitter intended to send. The software calculates where that specific symbol should have landed on a perfect, mathematical grid. The analyzer draws a geometric vector between the perfect mathematical location and the actual physical location the optical symbol landed. The length of this vector represents the Error Vector Magnitude. A large magnitude indicates severe signal distortion.</p>
+<h2>Isolating Physical Impairments</h2>
+<p>The primary value of the analyzer lies in identifying exactly why the Error Vector Magnitude is degrading.</p>
+<p>The analyzer intercepts the optical signal before commercial digital signal processors attempt to erase the physical damage. The analyzer&#39;s software quantifies the exact amount of chromatic dispersion stretching the optical pulses. It measures the precise severity of the laser phase noise blurring the constellation points. It calculates the exact polarization drift twisting the vertical and horizontal planes. The analysis isolates specific physical impairments by identifying exactly how the symbols are scattered. It also measures the exact shape of the optical spectrum to ensure the signal does not bleed into adjacent wavelength channels within the fiber.</p>
+<p>Engineers rely on this raw physical layer data. Designing advanced commercial receivers requires knowing exactly how much physical distortion the glass introduces. The wideband analyzer provides the absolute ground truth regarding the health of the photons.</p>
+
+<div class="blog-pagination">
+      <a href="signal-integrity-21_Mach_Zehnder_IQ_Modulators.html" class="pagination-link prev">
+        <span class="pagination-label">Previous</span>
+        <span class="pagination-title">The I/Q Modulator Architecture</span>
+      </a><div style="flex: 1;"></div></div>
+        </article>
+    </div>
+  </main>
+  <script src="../js/main.js"></script>
+
+  <!-- KaTeX for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" 
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], fleqn: true});">
+  </script>
+
+  <!-- Mermaid for Diagram Rendering -->
+  <style>
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: var(--space-2xl) 0;
+    }
+    .mermaid svg {
+      filter: drop-shadow(0 4px 16px rgba(183, 110, 121, 0.12));
+    }
+  </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ 
+      startOnLoad: true, 
+      securityLevel: 'loose',
+      theme: 'base',
+      themeVariables: {
+        fontFamily: "'Outfit', -apple-system, BlinkMacSystemFont, sans-serif",
+        primaryColor: '#ffffff',
+        primaryBorderColor: '#b76e79',
+        primaryTextColor: '#8b4f5a',
+        lineColor: '#b76e79',
+        nodeBorder: '#b76e79',
+        clusterBkg: 'rgba(232, 180, 184, 0.15)',
+        clusterBorder: '#d4a0a0'
+      }
+    });
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      // Mermaid
+      const blocks = document.querySelectorAll('.language-mermaid');
+      blocks.forEach((block) => {
+        const parent = block.parentElement;
+        if (parent.tagName === 'PRE') {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          parent.replaceWith(mermaidDiv);
+        }
+      });
+      
+      // Tabs
+      const tabGroups = document.querySelectorAll('[data-tab-group]');
+      tabGroups.forEach(group => {
+        const buttons = group.querySelectorAll('[data-tab]');
+        const contents = group.querySelectorAll('[data-tab-content]');
+        
+        buttons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const target = btn.getAttribute('data-tab');
+            
+            buttons.forEach(b => b.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+            
+            btn.classList.add('active');
+            const targetContent = group.querySelector(`[data-tab-content="${target}"]`);
+            if (targetContent) targetContent.classList.add('active');
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>
