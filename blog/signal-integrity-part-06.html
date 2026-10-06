@@ -161,28 +161,22 @@
                   <div class="series-group" style="margin-top: var(--space-2xl);">
                       <div class="series-items">
                           
-                          <a href="signal-integrity-19_EM_Waves.html">
+                          <a href="signal-integrity-19_Light_and_the_Electro_Optic_Effect.html">
                               <article class="blog-item series-item">
-                                  <h2>The Physics of the Electromagnetic Wave</h2>
-                                  <p>Engineers must visualize light not as a stream of solid particles, but as an oscillating physical field moving through space. This chapter explores the geometry of the electric and magnetic fields, defining exactly what constitutes amplitude, phase, and orthogonal polarization.</p>
+                                  <h2>Light as an Electromagnetic Wave and the Electro-Optic Effect</h2>
+                                  <p>The coherent optical links of Part 6 carry data on the amplitude and phase of a light wave, and that wave obeys the same field equations as the signals of Part 1. This guide derives the wave equation of light from Faraday's law and the Ampere-Maxwell law, which gives the speed c/n, the refractive index n = sqrt(eps_r), the impedance of a medium, and the reflection at an interface with the reflection coefficient of Chapter 3. It then defines amplitude, phase and polarization (including why two orthogonal polarizations carry independent data without any rule that fields of different kinds do not interact), derives the phase accumulated in a medium, and explains how a voltage changes the refractive index of lithium niobate through the Pockels effect. The result is the phase shift per volt, the half-wave voltage, and the bandwidth limit that the velocity mismatch between the electrical wave and the optical wave imposes on the electrode.</p>
                               </article>
                           </a>
-                          <a href="signal-integrity-20_Electro_Optic_Modulation.html">
+                          <a href="signal-integrity-20_Mach_Zehnder_IQ_Modulators.html">
                               <article class="blog-item series-item">
-                                  <h2>Electro-Optic Modulation and the Refractive Index</h2>
-                                  <p>Translating electrical data into optical physics requires manipulating the atomic structure of a crystal. This chapter details how localized electrical voltages alter the refractive index of lithium niobate to delay photons, continuously sculpting the optical phase.</p>
+                                  <h2>Mach-Zehnder and IQ Modulators</h2>
+                                  <p>A phase modulator moves the phase of a light wave and an interferometer turns a phase difference into an amplitude, and a nested arrangement of two interferometers reaches every point of the plane of amplitude and phase. This guide derives the field transfer of a Mach-Zehnder modulator, E_out = E_in cos(delta phi / 2), its bipolar behavior at the null bias point and its finite extinction ratio, and then the identity I cos wt + Q sin wt = A cos(wt - phi), with A = sqrt(I^2 + Q^2) and phi = atan(Q/I), that lets the in-phase and quadrature interferometers synthesize any amplitude and phase. The chapter counts the four degrees of freedom of a dual-polarization transmitter and the bits per symbol of QPSK and 16QAM, works out the arcsine drive that the sinusoidal transfer requires, and derives coherent detection with a 90-degree optical hybrid, a local oscillator and balanced photodiode pairs, where the multiplication of the received wave by a reference occurs in the optics and the photodiodes and not in the digital processor.</p>
                               </article>
                           </a>
-                          <a href="signal-integrity-21_Mach_Zehnder_IQ_Modulators.html">
-                              <article class="blog-item series-item">
-                                  <h2>The I/Q Modulator Architecture</h2>
-                                  <p>A single optical pathway can only manipulate amplitude. This chapter dissects the nested Mach-Zehnder structures that split a single laser into four independent degrees of freedom, allowing total deterministic control over the two-dimensional Quadrature Amplitude Modulation constellation.</p>
-                              </article>
-                          </a>
-                          <a href="signal-integrity-22_Wideband_Signal_Analysis.html">
+                          <a href="signal-integrity-21_Wideband_Signal_Analysis.html">
                               <article class="blog-item series-item">
                                   <h2>Wideband Signal Analysis and EVM</h2>
-                                  <p>Optical signals traveling over massive distances suffer severe physical distortion. This chapter details how Optical Modulation Analyzers act as perfect, idealized receivers to quantify chromatic dispersion, polarization drift, and laser phase noise before commercial DSP intervention.</p>
+                                  <p>A coherent receiver converts the optical wave into four sample streams, and the digital processor that follows removes the impairments of the fiber and the lasers before it decides the symbols. This guide derives the three impairments that matter, chromatic dispersion as an all-pass phase with the group delay spread Delta tau = D L Delta lambda, polarization mode dispersion and the mixing of the two polarizations, and laser phase noise as a random walk with variance 2 pi Delta nu tau, and it defines the error vector magnitude as the rms error divided by the rms reference, EVM = sqrt(mean|e|^2)/sqrt(mean|s_ref|^2). The chapter links EVM to the signal-to-noise ratio, to the bit error ratio through the Q function of Chapter 11 and the PAM4 relation of Chapter 15, and to the optical signal-to-noise ratio, shows that independent contributions add in quadrature, and describes the optical modulation analyzer as a coherent receiver with its own limits, whose compensator settings and constellation shape identify the cause of a poor EVM.</p>
                               </article>
                           </a>
                       </div>

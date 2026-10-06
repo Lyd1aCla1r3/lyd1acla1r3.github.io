@@ -11,12 +11,12 @@ const templateHtml = fs.readFileSync(TEMPLATE_PATH, 'utf-8');
 
 // Signal Integrity 2-tier Part/Chapter structure
 const siParts = [
-    { id: 1, title: 'Electromagnetic Foundations', prefix: ['01_','02_','03_','04_','05_'], summary: 'The electromagnetic wave is the carrier of all digital information. This part traces the physics of wave propagation on PCB transmission lines, characteristic impedance, reflection coefficients, frequency-dependent conductor and dielectric losses, magnetic coupling mechanisms, and the return path dynamics that govern every high-speed channel.' },
-    { id: 2, title: 'Signal Integrity Measurement', prefix: ['06_','07_','08_','09_'], summary: 'Measurement instruments reveal the physical reality that simulation predicts. This part covers time domain reflectometry, Smith Chart conformal mapping, S-parameter matrix formalism with vector network analysis, and the Fourier transform framework that bridges time-domain and frequency-domain representations of the same channel.' },
+    { id: 1, title: 'Electromagnetic and Signal Foundations', prefix: ['01_','02_','03_','04_','05_','06_'], summary: 'The electromagnetic wave is the carrier of all digital information. This part traces the physics of wave propagation on PCB transmission lines, the frequency content of digital signals, characteristic impedance and reflection coefficients, magnetic coupling and crosstalk, frequency-dependent conductor and dielectric losses, and the return path dynamics that govern every high-speed channel.' },
+    { id: 2, title: 'Signal Integrity Measurement', prefix: ['07_','08_','09_'], summary: 'Measurement instruments reveal the physical reality that simulation predicts. This part covers time domain reflectometry, S-parameter matrix formalism with vector network analysis, and the Smith Chart, which maps the same reflection data onto the impedance plane.' },
     { id: 3, title: 'Jitter Analysis', prefix: ['10_','11_','12_'], summary: 'Timing uncertainty is the ultimate limiter of serial link performance. This part decomposes total jitter into its random and deterministic components, derives the Dual-Dirac model for BER extrapolation to unmeasurable error rates, and details the test pattern selection and spectral techniques that isolate each jitter source.' },
     { id: 4, title: 'Equalization and RX Architecture', prefix: ['13_','14_','15_'], summary: 'The channel destroys signal quality; equalization reconstructs it. This part derives transmitter feed-forward equalization, continuous time linear equalization, and decision feedback equalization as three complementary stages of a modern link budget, then extends the framework to PAM4 multi-level signaling and Gray coding.' },
     { id: 5, title: 'SerDes Architecture and Clocking', prefix: ['16_','17_','18_'], summary: 'The serializer/deserializer is the complete system that converts parallel logic into serial analog transmission and back. This part covers SerDes architecture and eye diagram measurement, CDR and PLL loop dynamics including phase noise analysis, and the line coding, forward error correction, and protocol framing layers that sit between the physical channel and usable data throughput.' },
-    { id: 6, title: 'Coherent Optics', prefix: ['19_','20_','21_','22_'], summary: 'A first-principles translation of coherent optical transmission physics. This part explores how electro-optic modulators manipulate the refractive index of lithium niobate to encode digital data into the phase and amplitude of orthogonal electromagnetic fields, and how wideband signal analyzers isolate the resulting physical layer distortions.' },
+    { id: 6, title: 'Coherent Optics', prefix: ['19_','20_','21_'], summary: 'A first-principles translation of coherent optical transmission physics. This part explores how electro-optic modulators manipulate the refractive index of lithium niobate to encode digital data into the phase and amplitude of orthogonal electromagnetic fields, and how wideband signal analyzers isolate the resulting physical layer distortions.' },
 ];
 
 function getSiPart(filename) {
@@ -107,6 +107,10 @@ for (const fileObj of mdFiles) {
   contentHtml = contentHtml.replace(/MATHINLINEREPLACEMENT(\d+)/g, (match, i) => {
       return mathBlocks[i];
   });
+  if (seriesName === 'signal-integrity') {
+      // Inter-chapter links are authored as flat NN_Name.md; point them at the generated pages.
+      contentHtml = contentHtml.replace(/href="(\d{2}_[^"#]*?)\.md(#[^"]*)?"/g, 'href="signal-integrity-$1.html$2"');
+  }
   
   let tierDisplay = topLevelDir.charAt(0).toUpperCase() + topLevelDir.slice(1).replace(/-/g, ' ');
   let breadcrumbHtml = `<nav aria-label="breadcrumb" class="breadcrumbs"><ol>
@@ -285,7 +289,7 @@ if (posts.length > 0) {
        seriesHtml = '<p style="text-align: center; color: var(--text-muted); font-style: italic;">No series available yet.</p>';
     } else {
        for (const [sName, sPosts] of Object.entries(seriesGroups)) {
-          const seriesTitle = sName.split('-').map(word => word.toLowerCase() === 'ai' ? 'AI' : word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+          const seriesTitle = sName.split('-').map(word => word.toLowerCase() === 'ai' ? 'AI' : word.charAt(0).toUpperCase() + word.slice(1)).join(' ') + (sName === 'signal-integrity' ? ' (Advanced Edition)' : '');
           
           let seriesDesc = `A sequential exploration of ${seriesTitle}.`;
           if (sName === 'transformers') {

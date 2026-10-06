@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Translation | Lydia Pedersen × Keysight</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="../css/styles.css?v=1.1">
+  <link rel="stylesheet" href="../css/keysight.css?v=1.3">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .translation-header {
+      text-align: center;
+      padding-top: calc(var(--ks-nav-height) + var(--ks-space-2xl));
+      margin-bottom: 3rem;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .annotation-text {
+      color: var(--ks-text-secondary);
+      font-size: var(--ks-fs-base);
+      line-height: 1.6;
+      margin-top: 1.5rem;
+    }
+
+    .anagram-container {
+      max-width: 800px;
+      margin: 0 auto 40px auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .anagram-btn {
+      display: block;
+      width: 100%;
+      padding: 1.5rem 2rem;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      font-size: 15px;
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 400;
+      text-align: left;
+      cursor: pointer;
+      line-height: 1.6;
+      position: relative;
+      overflow: hidden;
+      transition: all 300ms var(--ks-ease), opacity 400ms ease;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .anagram-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Pillar 1: Rose */
+    .anagram-btn--rose {
+      background: rgba(183, 110, 121, 0.15);
+      border-color: rgba(183, 110, 121, 0.3);
+      color: #81404a;
+    }
+    .anagram-btn--rose:hover, .anagram-btn--rose.is-decoded {
+      background: rgba(183, 110, 121, 0.25);
+      border-color: #81404a;
+    }
+
+    /* Pillar 2: Gold */
+    .anagram-btn--gold {
+      background: rgba(184, 144, 40, 0.15);
+      border-color: rgba(184, 144, 40, 0.3);
+      color: #a07b20;
+    }
+    .anagram-btn--gold:hover, .anagram-btn--gold.is-decoded {
+      background: rgba(184, 144, 40, 0.25);
+      border-color: #a07b20;
+    }
+
+    /* Pillar 3: Peach */
+    .anagram-btn--peach {
+      background: rgba(192, 136, 104, 0.15);
+      border-color: rgba(192, 136, 104, 0.3);
+      color: #85573c;
+    }
+    .anagram-btn--peach:hover, .anagram-btn--peach.is-decoded {
+      background: rgba(192, 136, 104, 0.25);
+      border-color: #85573c;
+    }
+
+    /* Pillar 4: Dark Pink */
+    .anagram-btn--dark-pink {
+      background: rgba(166, 93, 108, 0.15);
+      border-color: rgba(166, 93, 108, 0.3);
+      color: #7d4450;
+    }
+    .anagram-btn--dark-pink:hover, .anagram-btn--dark-pink.is-decoded {
+      background: rgba(166, 93, 108, 0.25);
+      border-color: #7d4450;
+    }
+
+    .anagram-btn span {
+      display: inline-block;
+      white-space: pre;
+      will-change: transform;
+    }
+
+    .anagram-btn.is-decoded {
+      cursor: default;
+    }
+    .anagram-btn.is-decoded:hover {
+      transform: none;
+    }
+
+    .ks-translate-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 2.5rem;
+      background: rgba(253, 248, 244, 0.95);
+      border: 1px solid rgba(183, 110, 121, 0.3);
+      border-radius: 30px;
+      color: var(--ks-text-primary);
+      font-size: var(--ks-fs-small);
+      cursor: pointer;
+      transition: all 300ms var(--ks-ease), opacity 500ms;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .ks-translate-btn:hover {
+      border-color: #81404a;
+      background: #ffffff;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .anagram-btn span {
+        transition: none !important;
+        transform: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="ks-page">
+  <div class="ks-bg-visual" aria-hidden="true"></div>
+  <nav class="ks-nav" aria-label="Main navigation">
+    <div class="ks-nav__inner">
+      <a href="../keysight.html" class="ks-nav__logo metallic-text" aria-label="Back to hub">lydia<span>.</span>pedersen</a>
+      <a href="../keysight.html" class="ks-nav__link metallic-text">&larr; Back to Hub</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="ks-container">
+      <header class="ks-reveal translation-header">
+        <div class="ks-label">Section 04 / Translation</div>
+        <h1 class="ks-page-header__title metallic-text">Communication as a Diagnostic Tool</h1>
+        <p class="annotation-text ks-reveal" style="transition-delay: 100ms;">The acquisition of specific product knowledge follows a predictable timeline. The capability to translate complex technical ambiguity into structured business decisions represents a specialized engineering discipline.</p>
+      </header>
+
+      <section class="ks-reveal" aria-label="Interactive Translation Methodology">
+        <div class="anagram-container">
+          <button class="anagram-btn anagram-btn--rose" aria-label="Pillar 1: Symptoms" data-text="Identify the failure modes and frustrations prompting the SE escalation"></button>
+          <button class="anagram-btn anagram-btn--gold" aria-label="Pillar 2: Assumptions" data-text="Audit the foundational assumptions shaping the test environment"></button>
+          <button class="anagram-btn anagram-btn--peach" aria-label="Pillar 3: Expectations" data-text="Establish the necessary technical and interpersonal deliverables"></button>
+          <button class="anagram-btn anagram-btn--dark-pink" aria-label="Pillar 4: Future Next Steps" data-text="Forecast upcoming opportunities to build a persistent partnership"></button>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 4rem;">
+          <button id="reset-btn" class="ks-translate-btn" style="opacity: 0; pointer-events: none;"><span class="metallic-text">Reset</span></button>
+        </div>
+      </section>
+
+      <nav class="ks-bottom-nav ks-reveal" aria-label="Section navigation">
+        <a href="architecture.html" class="ks-bottom-nav__link metallic-text">&larr; Architecture</a>
+        <a href="value.html" class="ks-bottom-nav__link metallic-text">What I Bring &rarr;</a>
+      </nav>
+    </div>
+  </main>
+
+  <script src="../js/keysight.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const resetBtn = document.getElementById('reset-btn');
+      let decodedCount = 0;
+
+      class AnagramButton {
+        constructor(el) {
+          this.el = el;
+          this.originalText = el.getAttribute('data-text');
+          this.isDecoded = false;
+          
+          this.el.innerHTML = '';
+          this.chars = [];
+          
+          this.el.style.opacity = '0';
+          
+          this.originalText.split('').forEach((char) => {
+            const span = document.createElement('span');
+            if (char === ' ') {
+              span.innerHTML = '&nbsp;';
+            } else {
+              span.textContent = char;
+            }
+            this.el.appendChild(span);
+            if (char !== ' ') {
+              this.chars.push(span);
+            }
+          });
+
+          setTimeout(() => this.scatter(), 50);
+
+          this.el.addEventListener('click', () => this.decode());
+        }
+
+        scatter() {
+          const btnRect = this.el.getBoundingClientRect();
+          
+          this.chars.forEach(c => {
+            const spanRect = c.getBoundingClientRect();
+            const naturalX = spanRect.left - btnRect.left + (spanRect.width / 2);
+            const naturalY = spanRect.top - btnRect.top + (spanRect.height / 2);
+            
+            const targetX = 20 + Math.random() * (btnRect.width - 40);
+            const targetY = 15 + Math.random() * (btnRect.height - 30);
+            
+            const dx = targetX - naturalX;
+            const dy = targetY - naturalY;
+            
+            const rot = (Math.random() - 0.5) * 180;
+            
+            c.style.transform = 'translate(' + dx + 'px, ' + dy + 'px) rotate(' + rot + 'deg)';
+            c.style.transition = 'none';
+          });
+          
+          this.el.offsetHeight; // reflow
+          
+          this.chars.forEach(c => {
+            const delay = Math.random() * 0.2;
+            c.style.transition = 'transform 1.2s cubic-bezier(0.22, 1, 0.36, 1) ' + delay + 's';
+          });
+
+          this.el.style.opacity = '1';
+        }
+
+        decode() {
+          if (this.isDecoded) return;
+          this.isDecoded = true;
+          this.el.classList.add('is-decoded');
+
+          this.chars.forEach(c => {
+            c.style.transform = 'translate(0, 0) rotate(0deg)';
+          });
+          
+          decodedCount++;
+          if (decodedCount > 0) {
+            resetBtn.style.opacity = '1';
+            resetBtn.style.pointerEvents = 'auto';
+          }
+        }
+
+        reset() {
+          if (!this.isDecoded) return;
+          this.isDecoded = false;
+          this.el.classList.remove('is-decoded');
+          
+          decodedCount--;
+          if (decodedCount === 0) {
+            resetBtn.style.opacity = '0';
+            resetBtn.style.pointerEvents = 'none';
+          }
+          
+          const btnRect = this.el.getBoundingClientRect();
+          this.chars.forEach(c => {
+            const spanRect = c.getBoundingClientRect();
+            const naturalX = spanRect.left - btnRect.left + (spanRect.width / 2);
+            const naturalY = spanRect.top - btnRect.top + (spanRect.height / 2);
+            
+            const targetX = 20 + Math.random() * (btnRect.width - 40);
+            const targetY = 15 + Math.random() * (btnRect.height - 30);
+            
+            const dx = targetX - naturalX;
+            const dy = targetY - naturalY;
+            
+            const rot = (Math.random() - 0.5) * 180;
+            
+            c.style.transition = 'transform 0.8s cubic-bezier(0.22, 1, 0.36, 1)';
+            c.style.transform = 'translate(' + dx + 'px, ' + dy + 'px) rotate(' + rot + 'deg)';
+          });
+        }
+      }
+
+      const instances = Array.from(document.querySelectorAll('.anagram-btn')).map(btn => new AnagramButton(btn));
+      
+      resetBtn.addEventListener('click', () => {
+        instances.forEach(inst => inst.reset());
+      });
+    });
+  </script>
+</body>
+</html>

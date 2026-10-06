@@ -18,3 +18,7 @@ Do not apply any further formatting, CSS changes, content updates, or script mod
 If these files are ever accidentally modified, immediately restore them:
 - For **Tokenization** issues, restore to commit `c4b59d0ca819c8f738de44a6d296b0e70426eca4`.
 - For **Transformers** issues, restore to commit `3de4f4c4765f13814c43afa313cdc4c382bb57c2`.
+
+## Signal Integrity Series (NOT frozen)
+
+The Signal Integrity series is under active revision. Pre-revision baseline restore point (SI files only): commit `a336477ad7223f293e875627a90e2c4a27352993`.

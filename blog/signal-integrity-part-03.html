@@ -164,19 +164,19 @@
                           <a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html">
                               <article class="blog-item series-item">
                                   <h2>Jitter Decomposition and Measurement</h2>
-                                  <p>Jitter is the deviation of a signal edge from its ideal position in time, and no single number for total jitter provides enough information to diagnose a failing link. This guide decomposes total jitter into random and deterministic components based on their statistical behavior and physical origins, transforming an opaque timing failure into actionable hardware diagnostics.</p>
+                                  <p>A receiver decides each bit by comparing the waveform with a threshold at a sampling instant, so the timing of the threshold crossings is as important as the voltage levels. This guide defines the unit interval, the eye diagram, and time interval error, separates total jitter into random jitter and the bounded deterministic components (intersymbol interference, duty cycle distortion, periodic and sinusoidal jitter, and bounded uncorrelated jitter), converts each voltage disturbance into time through the slope of the edge, and lays out the measurement flow that links a captured waveform to a root cause.</p>
                               </article>
                           </a>
                           <a href="signal-integrity-11_Dual_Dirac_Model_and_BER_Extrapolation.html">
                               <article class="blog-item series-item">
                                   <h2>Dual-Dirac Model and BER Extrapolation</h2>
-                                  <p>The Dual-Dirac model approximates the total jitter probability density function as two Gaussian distributions separated by the deterministic jitter component, enabling bit error ratio extrapolation to target rates as low as 1e-12 from feasible measurement sample sizes. This guide derives the model, its mathematical assumptions, and the bathtub curve construction that links timing margin to error probability.</p>
+                                  <p>A compliance target such as a bit error ratio of 1e-12 describes edges so rare that they never populate a captured histogram, so the total jitter at that ratio must be projected from the tails that are visible. This guide derives the Gaussian distribution, the complementary error function and the Q-factor, shows how the Dual-Dirac model turns the convolution of deterministic and random jitter into two Gaussians whose tails give TJ = DJ + 2 Q RJ, constructs the bathtub curve, works a PCIe Gen 4 budget, and states the assumptions under which the projection is conservative and the cases in which it is not.</p>
                               </article>
                           </a>
                           <a href="signal-integrity-12_Test_Patterns_and_Jitter_Isolation.html">
                               <article class="blog-item series-item">
                                   <h2>Test Patterns and Jitter Isolation</h2>
-                                  <p>Isolating individual jitter components requires test patterns specifically designed to excite one physical mechanism while suppressing all others. This guide covers PRBS polynomial selection, the relationship between pattern length and spectral content, clock pattern isolation techniques, and the SJ/RJ transfer function methods that separate jitter sources in production testing.</p>
+                                  <p>The histogram of a jitter measurement mixes every component into one distribution, so separating them requires a test pattern that repeats and a record of the edges in time order. This guide derives the structure of the pseudo-random bit sequence (length, run lengths, transition density, line spacing), shows why averaging a repeating pattern suppresses random jitter as 1/sqrt(M) and isolates the data-dependent jitter, separates duty cycle distortion from intersymbol interference by edge polarity, combines independent random jitter in quadrature, and accounts for the power in the FFT of the residual to separate periodic jitter from the random floor. It states what the residual contains when bounded uncorrelated jitter is present, applies steps 4 to 7 of the Chapter 10 measurement flow, and treats pattern length, instrument noise, aliasing, leakage, and the recovered-clock bandwidth as limits of the method.</p>
                               </article>
                           </a>
                       </div>

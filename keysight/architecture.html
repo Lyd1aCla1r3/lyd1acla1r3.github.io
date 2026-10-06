@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Architecture | Lydia Pedersen × Keysight</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="../css/styles.css?v=1.1">
+  <link rel="stylesheet" href="../css/keysight.css?v=1.3">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+        <style>
+    :root {
+      /* Base colors */
+      --color-gold: #a07b20;
+      --color-peach: #85573c;
+      --color-rose: #81404a;
+      
+      /* Main Text Box (CV Box): A couple shades lighter */
+      --grad-cv-box: linear-gradient(135deg, rgba(242,209,214,0.85), rgba(248,236,208,0.85), rgba(244,224,227,0.85), rgba(246,228,216,0.85), rgba(246,221,226,0.85), rgba(245,225,227,0.85)), #fdfaf7;
+      
+      /* Default Tabs: A couple shades lighter */
+      --grad-tabs-default: linear-gradient(135deg, rgba(242,209,214,0.85), rgba(248,236,208,0.85), rgba(244,224,227,0.85), rgba(246,228,216,0.85), rgba(246,221,226,0.85), rgba(245,225,227,0.85)), #fdfaf7;
+    }
+
+    /* ── Layout ── */
+    .arch-intro {
+      max-width: 900px;
+      margin: 0 auto var(--ks-space-xl);
+      text-align: center;
+      font-size: var(--ks-fs-small);
+      color: var(--ks-text-secondary);
+    }
+
+    /* Group Color Themes: Lightened for clarity and elegance */
+    .ks-color--gold { 
+      --theme-rgb: 184, 144, 40;
+      --c-text: #8a6a1c; 
+      --c-border: rgba(184,144,40,0.55); 
+      --c-group-bg: linear-gradient(135deg, rgba(184,144,40,0.15), rgba(184,144,40,0.3)), rgba(255,255,255,0.65);
+    }
+    .ks-color--peach { 
+      --theme-rgb: 192, 136, 104;
+      --c-text: #966141; 
+      --c-border: rgba(192,136,104,0.55); 
+      --c-group-bg: linear-gradient(135deg, rgba(192,136,104,0.15), rgba(192,136,104,0.3)), rgba(255,255,255,0.65);
+    }
+    .ks-color--rose { 
+      --theme-rgb: 183, 110, 121;
+      --c-text: #a85f6a; 
+      --c-border: rgba(183,110,121,0.55); 
+      --c-group-bg: linear-gradient(135deg, rgba(183,110,121,0.15), rgba(183,110,121,0.3)), rgba(255,255,255,0.65);
+    }
+    
+    .arch-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+      margin-bottom: var(--ks-space-xl);
+    }
+
+    .arch-super-group {
+      background: var(--c-group-bg);
+      border: 1px solid var(--c-border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    @media (max-width: 900px) {
+      .arch-super-group { padding: 1.5rem; }
+    }
+
+    .arch-bg-graphic {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      -webkit-mask-image: linear-gradient(135deg, rgba(0,0,0,0.25), rgba(0,0,0,0.95));
+      mask-image: linear-gradient(135deg, rgba(0,0,0,0.25), rgba(0,0,0,0.95));
+    }
+
+    .arch-group-inner {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .arch-group-title {
+      color: var(--c-text);
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin: 0;
+      text-shadow: 0 1px 2px rgba(255,255,255,0.4);
+    }
+
+    .arch-cv-card {
+      background: var(--grad-cv-box);
+      border: 1px solid var(--c-border);
+      border-radius: 12px;
+      padding: 1.5rem 2rem;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    }
+
+    .cv-text-card__body {
+      font-size: var(--ks-fs-small);
+      color: var(--c-text);
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    /* Folder Tabs */
+    .arch-tab-container {
+      position: relative;
+    }
+
+    .arch-tab-row {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 0;
+      position: relative;
+      z-index: 2;
+      background: transparent;
+    }
+
+    .arch-tab {
+      flex: 1;
+      background: var(--grad-tabs-default);
+      background-size: 500% 100%;
+      border: 1px solid var(--c-border);
+      margin-left: -1px;
+      border-radius: 12px 12px 0 0;
+      padding: 12px 16px;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--c-text);
+      
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      
+      transition: font-weight 0.2s, color 0.2s;
+    }
+    
+    .arch-tab:nth-child(1) { background-position: 0% 0; margin-left: 0; }
+    .arch-tab:nth-child(2) { background-position: 25% 0; }
+    .arch-tab:nth-child(3) { background-position: 50% 0; }
+    .arch-tab:nth-child(4) { background-position: 75% 0; }
+    .arch-tab:nth-child(5) { background-position: 100% 0; }
+
+    .arch-tab:not(.is-active):hover {
+      background: linear-gradient(rgba(var(--theme-rgb), 0.08), rgba(var(--theme-rgb), 0.08)), rgba(255, 255, 255, 0.55);
+    }
+
+    .arch-tab.is-active {
+      background: linear-gradient(rgba(var(--theme-rgb), 0.12), rgba(var(--theme-rgb), 0.12)), #ffffff;
+      border-bottom-color: transparent;
+      /* removed margin-bottom to perfectly align with bottom borders of siblings */
+      font-weight: 700;
+      z-index: 3;
+      padding-bottom: 12px;
+      color: var(--c-text);
+    }
+
+    @media (max-width: 900px) {
+      .arch-tab-row { flex-direction: column; }
+      .arch-tab { 
+        margin-left: 0;
+        margin-top: -1px;
+        border-radius: 8px;
+        background-size: 100% 500%;
+      }
+      .arch-tab:nth-child(1) { background-position: 0 0%; margin-top: 0; }
+      .arch-tab:nth-child(2) { background-position: 0 25%; }
+      .arch-tab:nth-child(3) { background-position: 0 50%; }
+      .arch-tab:nth-child(4) { background-position: 0 75%; }
+      .arch-tab:nth-child(5) { background-position: 0 100%; }
+      .arch-tab.is-active {
+        border-bottom: 1px solid var(--c-border);
+        margin-bottom: 0;
+      }
+    }
+
+    .tab-text {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .tab-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 500;
+      opacity: 0.7;
+      flex-shrink: 0;
+    }
+
+    .arch-tab-content {
+      background: linear-gradient(rgba(var(--theme-rgb), 0.12), rgba(var(--theme-rgb), 0.12)), #ffffff;
+      border: 1px solid var(--c-border);
+      border-radius: 0 0 12px 12px;
+      margin-top: -1px;
+      padding: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .arch-tab-content__desc {
+      color: var(--c-text);
+      font-size: 17px;
+      line-height: 1.6;
+      margin: 0;
+    }
+/* --- Reset Button --- */
+    .ks-translate-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 2.5rem;
+      background: rgba(253, 248, 244, 0.95);
+      border: 1px solid rgba(183, 110, 121, 0.3);
+      border-radius: 30px;
+      color: var(--c-text);
+      font-size: var(--ks-fs-small);
+      cursor: pointer;
+      transition: all 300ms var(--ks-ease), opacity 500ms;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      text-decoration: none;
+    }
+    .ks-translate-btn:hover {
+      border-color: #81404a;
+      background: #ffffff;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .arch-trigger, .arch-card-bg.is-available, .cv-text-card {
+        transition: none;
+        animation: none;
+      }
+      .arch-trigger.is-available { opacity: 0.7; }
+    }
+  </style>
+</head>
+<body class="ks-page">
+  <!-- Fixed circuitry background -->
+  <div class="ks-bg-visual" aria-hidden="true"></div>
+  <nav class="ks-nav" aria-label="Main navigation">
+    <div class="ks-nav__inner">
+      <a href="../keysight.html" class="ks-nav__logo metallic-text" aria-label="Back to hub">lydia<span>.</span>pedersen</a>
+      <a href="../keysight.html" class="ks-nav__link metallic-text">&larr; Back to Hub</a>
+    </div>
+  </nav>
+
+          <main>
+    <div class="ks-container">
+
+      <header class="ks-page-header ks-reveal">
+        <div class="ks-label" style="text-align: center;">Section 03 / Architecture</div>
+        <h1 class="ks-page-header__title metallic-text" style="text-align: center; margin-bottom: 1.5rem;">How I See the Role</h1>
+      </header>
+
+      <p class="arch-intro ks-reveal ks-reveal-delay-1">
+        My perspective on this role starts with tracing the full chain: identifying the computational pattern generating a demand, the physical bottleneck it creates, and the measurement approach needed to validate the standard designed to address it. Advances in AI have placed an incredible strain on the physical infrastructure, so I am using the criteria for neural network training as an example of how I approach customer engagement.
+      </p>
+
+      <section class="arch-layout ks-reveal ks-reveal-delay-2">
+        
+        <!-- Group 1: Workloads -->
+        <div class="arch-super-group ks-color--gold">
+          <svg class="arch-bg-graphic" width="100%" height="100%" pointer-events="none">
+  <defs>
+    <pattern id="pat-workloads" width="240" height="240" patternUnits="userSpaceOnUse" x="-30">
+      <g stroke="var(--c-text)" stroke-width="0.75" fill="none">
+        <!-- Main package outline -->
+        <rect x="20" y="20" width="200" height="200" rx="10" />
+        
+        <!-- Central Compute Die -->
+        <rect x="70" y="60" width="100" height="120" rx="4" />
+        <path d="M 70 75 h 100 M 70 90 h 100 M 70 105 h 100 M 70 120 h 100 M 70 135 h 100 M 70 150 h 100 M 70 165 h 100" opacity="0.3"/>
+        <path d="M 85 60 v 120 M 100 60 v 120 M 115 60 v 120 M 130 60 v 120 M 145 60 v 120 M 160 60 v 120" opacity="0.3"/>
+        
+        <!-- HBM Stacks (3 left, 3 right) -->
+        <rect x="40" y="65" width="20" height="30" rx="2" />
+        <rect x="40" y="105" width="20" height="30" rx="2" />
+        <rect x="40" y="145" width="20" height="30" rx="2" />
+        
+        <rect x="180" y="65" width="20" height="30" rx="2" />
+        <rect x="180" y="105" width="20" height="30" rx="2" />
+        <rect x="180" y="145" width="20" height="30" rx="2" />
+        
+        <!-- Traces HBM to Compute -->
+        <path d="M 60 70 h 10 M 60 75 h 10 M 60 80 h 10 M 60 85 h 10 M 60 90 h 10" />
+        <path d="M 60 110 h 10 M 60 115 h 10 M 60 120 h 10 M 60 125 h 10 M 60 130 h 10" />
+        <path d="M 60 150 h 10 M 60 155 h 10 M 60 160 h 10 M 60 165 h 10 M 60 170 h 10" />
+        <path d="M 170 70 h 10 M 170 75 h 10 M 170 80 h 10 M 170 85 h 10 M 170 90 h 10" />
+        <path d="M 170 110 h 10 M 170 115 h 10 M 170 120 h 10 M 170 125 h 10 M 170 130 h 10" />
+        <path d="M 170 150 h 10 M 170 155 h 10 M 170 160 h 10 M 170 165 h 10 M 170 170 h 10" />
+
+        <!-- Edge connectors -->
+        <path d="M 50 220 v -10 M 55 220 v -10 M 60 220 v -10 M 65 220 v -10 M 70 220 v -10 M 75 220 v -10 M 80 220 v -10 M 85 220 v -10 M 90 220 v -10 M 95 220 v -10 M 100 220 v -10 M 105 220 v -10 M 110 220 v -10 M 115 220 v -10 M 120 220 v -10 M 125 220 v -10 M 130 220 v -10 M 135 220 v -10 M 140 220 v -10 M 145 220 v -10 M 150 220 v -10 M 155 220 v -10 M 160 220 v -10 M 165 220 v -10 M 170 220 v -10 M 175 220 v -10 M 180 220 v -10 M 185 220 v -10 M 190 220 v -10" opacity="0.7"/>
+
+        <!-- NVLink bridges top -->
+        <rect x="70" y="10" width="30" height="15" />
+        <rect x="140" y="10" width="30" height="15" />
+        <path d="M 85 25 v 35 M 155 25 v 35" stroke-dasharray="2,2"/>
+      </g>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#pat-workloads)" />
+</svg>
+          
+          <div class="arch-group-inner">
+            <h2 class="arch-group-title">Workloads</h2>
+            <div class="arch-cv-card">
+              <p class="cv-text-card__body">Models have outgrown individual processors, and the parallelization strategies predict where infrastructure pressure will concentrate. By recognizing these patterns early, an SE can guide customers toward the right measurements before performance problems surface in production.</p>
+            </div>
+            
+            <div class="arch-tab-container">
+              <div class="arch-tab-row">
+                <button class="arch-tab" onclick="selectTab(this, 'When computing attention scores, the memory read volume scales quadratically with context length. Models that process millions of tokens pull KV caches at rates that challenge even HBM3E. Whether the memory subsystem can sustain those read rates for a target context window is the question that shapes the entire system design.')">
+                  <span class="tab-text">Attention and Memory</span><span class="tab-num">01</span>
+                </button>
+                <button class="arch-tab" onclick="selectTab(this, 'Distributed training requires every accelerator to compute local parameter gradients, then exchange and sum those gradients before the next step begins, which forces the entire fabric to carry peak traffic simultaneously. Doubling the accelerator count in a training cluster does not just double compute; it also doubles the peak bandwidth the fabric must absorb in a single synchronized instant.')">
+                  <span class="tab-text">Gradient Synchronization</span><span class="tab-num">02</span>
+                </button>
+                <button class="arch-tab" onclick="selectTab(this, 'Large models are partitioned into sequential stages across multiple chips, where each stage forwards activations and receives error gradients during backpropagation. Total throughput is directly dependent on inter-chip transfer latency, which means that the quality of the physical links between accelerators matters as much as the accelerators themselves.')">
+                  <span class="tab-text">Pipeline Distribution</span><span class="tab-num">03</span>
+                </button>
+                <button class="arch-tab" onclick="selectTab(this, 'Mixture-of-experts (MoE) architectures activate only a small subset of model parameters per input token, where a gating network dynamically selects which experts to engage. This shifts memory access from predictable sequential reads to irregular fetches scattered across different regions. This means that traditional memory optimization is replaced with criteria defined by worst-case bursty traffic that changes shape with every input.')">
+                  <span class="tab-text">Expert Routing</span><span class="tab-num">04</span>
+                </button>
+              </div>
+              <div class="arch-tab-content" style="display: none;">
+                <p class="arch-tab-content__desc"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Group 2: Operational Impact -->
+        <div class="arch-super-group ks-color--peach">
+          <svg class="arch-bg-graphic" width="100%" height="100%" pointer-events="none">
+  <defs>
+    <pattern id="pat-ops" width="300" height="200" patternUnits="userSpaceOnUse">
+      <g stroke="var(--c-text)" stroke-width="0.75" fill="none">
+        <!-- Spine Switches -->
+        <rect x="60" y="20" width="50" height="30" rx="3" />
+        <rect x="190" y="20" width="50" height="30" rx="3" />
+        <!-- Internal markings -->
+        <circle cx="75" cy="35" r="4" /><circle cx="95" cy="35" r="4" />
+        <circle cx="205" cy="35" r="4" /><circle cx="225" cy="35" r="4" />
+
+        <!-- Leaf Switches -->
+        <rect x="20" y="100" width="40" height="25" rx="2" />
+        <rect x="90" y="100" width="40" height="25" rx="2" />
+        <rect x="160" y="100" width="40" height="25" rx="2" />
+        <rect x="230" y="100" width="40" height="25" rx="2" />
+
+        <!-- Compute Racks -->
+        <rect x="15" y="150" width="10" height="30" /><rect x="35" y="150" width="10" height="30" />
+        <rect x="85" y="150" width="10" height="30" /><rect x="105" y="150" width="10" height="30" />
+        <rect x="155" y="150" width="10" height="30" /><rect x="175" y="150" width="10" height="30" />
+        <rect x="225" y="150" width="10" height="30" /><rect x="245" y="150" width="10" height="30" />
+
+        <!-- Full mesh Spine-Leaf -->
+        <path d="M 85 50 L 40 100 M 85 50 L 110 100 M 85 50 L 180 100 M 85 50 L 250 100" opacity="0.5"/>
+        <path d="M 215 50 L 40 100 M 215 50 L 110 100 M 215 50 L 180 100 M 215 50 L 250 100" opacity="0.5"/>
+        
+        <!-- Leaf to Racks -->
+        <path d="M 40 125 L 20 150 M 40 125 L 40 150" />
+        <path d="M 110 125 L 90 150 M 110 125 L 110 150" />
+        <path d="M 180 125 L 160 150 M 180 125 L 180 150" />
+        <path d="M 250 125 L 230 150 M 250 125 L 250 150" />
+
+        <!-- Active Data bursts -->
+        <path d="M 85 50 L 110 100" stroke-dasharray="4,4" stroke-width="1.5" opacity="0.9"/>
+        <path d="M 215 50 L 180 100" stroke-dasharray="4,4" stroke-width="1.5" opacity="0.9"/>
+      </g>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#pat-ops)" />
+</svg>
+          
+          <div class="arch-group-inner">
+            <h2 class="arch-group-title">Operational Impact</h2>
+            <div class="arch-cv-card">
+              <p class="cv-text-card__body">Each workload pattern above maps to a specific physical constraint. Tracing a performance concern backward to its computational root cause, and then forward to the right measurement strategy, is what separates a transactional support visit from a strategic technical engagement. This kind of causal reasoning also positions the SE to educate customers on what to watch for next, as workloads evolve and infrastructure ages.</p>
+            </div>
+            
+            <div class="arch-tab-container">
+              <div class="arch-tab-row">
+                <button class="arch-tab" onclick="selectTab(this, 'Modern accelerators execute trillions of operations per second, but real-world throughput depends on how fast data moves from memory to the compute cores. When attention or gradient operations outpace the memory subsystem, the processor stalls and expensive silicon sits idle. In most large-scale AI deployments, memory bandwidth, not arithmetic capacity, is the binding constraint. Identifying this early in a customer conversation redirects the entire validation effort toward the right set of measurements.')">
+                  <span class="tab-text">Memory Bandwidth</span><span class="tab-num">01</span>
+                </button>
+                <button class="arch-tab" onclick="selectTab(this, 'Gradient synchronization forces thousands of accelerators to transmit across the data center fabric at the same instant. If aggregate bandwidth at any point in the topology exceeds switch capacity, packets queue, tail latency spikes, and speed is dictated by the slowest path. Average throughput benchmarks do not capture this behavior, and validation needs to target the worst-case burst profile produced by the specific training topology.')">
+                  <span class="tab-text">Fabric Congestion</span><span class="tab-num">02</span>
+                </button>
+                <button class="arch-tab" onclick="selectTab(this, 'Pipeline-parallel workloads require accelerators within the same server or rack to exchange intermediate activations, and routing this traffic through the host CPU and standard network interface cards introduces unacceptable latency. Dedicated chip-to-chip paths that bypass the host are essential, and the validation question becomes whether those links maintain signal integrity at the line rates the workload requires.')">
+                  <span class="tab-text">Inter-Chip Latency</span><span class="tab-num">03</span>
+                </button>
+              </div>
+              <div class="arch-tab-content" style="display: none;">
+                <p class="arch-tab-content__desc"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Group 3: PHY Standards -->
+        <div class="arch-super-group ks-color--rose">
+          <svg class="arch-bg-graphic" width="100%" height="100%" pointer-events="none">
+  <defs>
+    <pattern id="pat-phy" width="240" height="120" patternUnits="userSpaceOnUse">
+      <g stroke="var(--c-text)" stroke-width="0.75" fill="none">
+        <!-- Horizontal Reference Levels (4 voltage levels) -->
+        <path d="M 0 20 h 240 M 0 46.6 h 240 M 0 73.3 h 240 M 0 100 h 240" opacity="0.3" stroke-dasharray="3,3"/>
+        
+        <!-- Classic PAM4 Eye Diagram Overlay (3 eyes) -->
+        <g opacity="0.4">
+          <path d="M 20 46.6 C 30 20, 50 20, 60 46.6 C 50 73.3, 30 73.3, 20 46.6" />
+          <path d="M 20 73.3 C 30 46.6, 50 46.6, 60 73.3 C 50 100, 30 100, 20 73.3" />
+          <path d="M 20 100 C 30 73.3, 50 73.3, 60 100 C 50 126.6, 30 126.6, 20 100" />
+          
+          <path d="M 10 20 C 25 20, 35 46.6, 50 46.6 C 65 46.6, 75 20, 90 20" />
+          <path d="M 10 73.3 C 25 73.3, 35 46.6, 50 46.6 C 65 46.6, 75 73.3, 90 73.3" />
+          <path d="M 10 100 C 25 100, 35 73.3, 50 73.3 C 65 73.3, 75 100, 90 100" />
+          
+          <path d="M 10 46.6 C 25 46.6, 35 73.3, 50 73.3 C 65 73.3, 75 46.6, 90 46.6" />
+          <path d="M 10 73.3 C 25 73.3, 35 100, 50 100 C 65 100, 75 73.3, 90 73.3" />
+          <path d="M 10 46.6 C 25 46.6, 35 20, 50 20 C 65 20, 75 46.6, 90 46.6" />
+        </g>
+
+        <!-- Solid PAM4 Trace crossing 4 distinct voltage levels -->
+        <path d="M 100 46.6 L 110 46.6 L 115 100 L 130 100 L 135 20 L 150 20 L 155 73.3 L 170 73.3 L 175 46.6 L 190 46.6 L 195 100 L 210 100 L 215 20 L 230 20 L 235 73.3 L 240 73.3" stroke-width="1.5" stroke-linejoin="round" opacity="0.9"/>
+      </g>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#pat-phy)" />
+</svg>
+          
+          <div class="arch-group-inner">
+            <h2 class="arch-group-title">Physical Layer Standards</h2>
+            <div class="arch-cv-card">
+              <p class="cv-text-card__body">Every standard listed below exists because a specific operational bottleneck outgrew the physical layer technology. An SE who can track this evolution becomes more than a vendor resource. That SE becomes part of how the customer decides where to invest, what methodology to adopt, and how to prepare their infrastructure for the workloads coming next.</p>
+            </div>
+            
+            <div class="arch-tab-container">
+              <div class="arch-tab-row">
+                <button class="arch-tab" onclick="selectTab(this, 'Compute Express Link addresses the memory capacity wall by letting any processor in a rack allocate from a disaggregated pool over PCIe. For inference workloads that exhaust local HBM during long-context processing, this creates a path to scale memory independently of the accelerator. Validation moves from evaluating bandwidth on a single chip to characterizing latency and coherence across the fabric-attached memory link.')">
+                  <span class="tab-text">CXL 3.0 / 3.1</span><span class="tab-num">01</span>
+                </button>
+                <button class="arch-tab" onclick="selectTab(this, '800G and 1.6T Ethernet target the fabric congestion created by distributed training at scale. Higher per-port bandwidth reduces the number of parallel links needed to sustain all-reduce traffic, which simplifies spine-leaf topologies and decreases queuing during synchronized gradient exchanges. Validation focus shifts from raw port throughput to burst tolerance and tail latency under the collective communication patterns of the training architecture.')">
+                  <span class="tab-text">800G / 1.6T</span><span class="tab-num">02</span>
+                </button>
+                <button class="arch-tab" onclick="selectTab(this, 'The per-lane bandwidth for local interconnects between host processors, accelerators, storage, and network adapters uses PAM4 to reach 128 GT/s. The move to PAM4 narrows the voltage eye opening at each generation, making signal integrity validation progressively more demanding. Measurement methodology has to evolve alongside the standard, shifting from simple bit error rate testing toward comprehensive eye diagram analysis and equalization characterization.')">
+                  <span class="tab-text">PCIe 6.0 / 7.0</span><span class="tab-num">03</span>
+                </button>
+                <button class="arch-tab" onclick="selectTab(this, 'Ultra Accelerator Link standardizes the direct chip-to-chip path between accelerators inside a server, replacing proprietary interconnects with an open specification. This enables multi-vendor accelerator deployments, and the validation challenge expands accordingly: interoperability testing across different silicon vendors becomes essential to confirm that mixed configurations sustain the low-latency, high-bandwidth characteristics required for pipeline-parallel and tensor-parallel workloads.')">
+                  <span class="tab-text">UALink</span><span class="tab-num">04</span>
+                </button>
+                <button class="arch-tab" onclick="selectTab(this, 'Removing DSP from optical transceiver modules eliminates a full stage of analog-to-digital-to-analog conversion. The power and latency savings are significant for high-density deployments, but the signal equalization burden transfers entirely to the host switch ASIC. Where transceiver-level testing was previously sufficient, the host ASIC equalization now has to be characterized to confirm the link can compensate for impairments the module no longer corrects.')">
+                  <span class="tab-text">LPO</span><span class="tab-num">05</span>
+                </button>
+              </div>
+              <div class="arch-tab-content" style="display: none;">
+                <p class="arch-tab-content__desc"></p>
+              </div>
+            </div>
+            
+            <div style="margin-top: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+              <a href="standards.html" target="_blank" class="ks-translate-btn"><span class="metallic-text">Standards Deep Dive &#8599;</span></a>
+              <a href="instruments.html" target="_blank" class="ks-translate-btn"><span class="metallic-text">Instrument Deep Dive &#8599;</span></a>
+            </div>
+
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- Bottom Navigation -->
+      <nav class="ks-bottom-nav ks-reveal ks-reveal-delay-3" aria-label="Section navigation">
+        <a href="customer.html" class="ks-bottom-nav__link metallic-text">&larr; I Have Been the Customer</a>
+        <a href="translation.html" class="ks-bottom-nav__link metallic-text">Translation &rarr;</a>
+      </nav>
+
+    </div>
+
+  </main>
+
+        <script src="../js/keysight.js"></script>
+  
+  <script>
+    function selectTab(btn, desc) {
+      const container = btn.closest('.arch-tab-container');
+      const allTabs = container.querySelectorAll('.arch-tab');
+      const contentBox = container.querySelector('.arch-tab-content');
+      
+      if (btn.classList.contains('is-active')) {
+        // Toggle off
+        btn.classList.remove('is-active');
+        contentBox.style.display = 'none';
+        return;
+      }
+      
+      // Remove active state from all
+      allTabs.forEach(t => t.classList.remove('is-active'));
+      
+      // Set active
+      btn.classList.add('is-active');
+      
+      // Update content
+      contentBox.querySelector('.arch-tab-content__desc').textContent = desc;
+      
+      contentBox.style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>

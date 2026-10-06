@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
 Two-pass ebook assembly and build pipeline for the Signal Integrity series.
-1. Reads all 18 chapter files and applies transforms.
+1. Reads all 21 chapter files and applies transforms.
 2. Writes frontmatter.md (title, copyright, TOC) and body.md (chapters with Part dividers) separately.
 3. Generates frontmatter.pdf (no page numbers) and body.pdf (page numbers starting at 1).
-4. Merges them into signal-integrity-ebook-v1.0.pdf using pypdf.
+4. Merges them into signal-integrity-ebook-v2.0.pdf using pypdf.
 """
 import os
 import re
@@ -17,29 +17,29 @@ frontmatter_file = os.path.join(directory, 'frontmatter.md')
 body_file = os.path.join(directory, 'body.md')
 frontmatter_pdf = os.path.join(directory, 'frontmatter.pdf')
 body_pdf = os.path.join(directory, 'body.pdf')
-final_pdf = '/Users/lydia/Desktop/personal/career/resumes/portfolio/assets/docs/signal-integrity-ebook-v1.0.pdf'
+final_pdf = '/Users/lydia/Desktop/personal/career/resumes/portfolio/assets/docs/signal-integrity-ebook-v2.0.pdf'
 
 # --- Part/Chapter structure ---
 parts = [
     {
         'id': 1,
-        'title': 'Electromagnetic Foundations',
+        'title': 'Electromagnetic and Signal Foundations',
         'files': [
             '01_Wave_Propagation_and_Transmission_Lines.md',
-            '02_Impedance_Reflections_and_Termination.md',
-            '03_Skin_Effect_and_Dielectric_Loss.md',
-            '04_Inductance_and_Magnetic_Coupling.md',
-            '05_Return_Path_Dynamics_and_Parasitic_Effects.md',
+            '02_Frequency_Content_of_Digital_Signals.md',
+            '03_Impedance_Reflections_and_Termination.md',
+            '04_Inductance_Magnetic_Coupling_and_Crosstalk.md',
+            '05_Skin_Effect_and_Dielectric_Loss.md',
+            '06_Return_Path_Dynamics_and_Parasitic_Effects.md',
         ],
     },
     {
         'id': 2,
         'title': 'Signal Integrity Measurement',
         'files': [
-            '06_Time_Domain_Reflectometry.md',
-            '07_Smith_Charts.md',
+            '07_Time_Domain_Reflectometry.md',
             '08_S_Parameters_and_VNA.md',
-            '09_Fourier_Analysis.md',
+            '09_Smith_Charts.md',
         ],
     },
     {
@@ -73,10 +73,9 @@ parts = [
         'id': 6,
         'title': 'Coherent Optics',
         'files': [
-            '19_EM_Waves.md',
-            '20_Electro_Optic_Modulation.md',
-            '21_Mach_Zehnder_IQ_Modulators.md',
-            '22_Wideband_Signal_Analysis.md',
+            '19_Light_and_the_Electro_Optic_Effect.md',
+            '20_Mach_Zehnder_IQ_Modulators.md',
+            '21_Wideband_Signal_Analysis.md',
         ],
     },
 ]
@@ -112,6 +111,7 @@ title_page = f"""<style>
     <div style="height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: flex-end; padding-right: 12%; text-align: right; box-sizing: border-box;">
         <h1 style="border: none; font-size: 3.8em; margin-bottom: 0; text-align: right; line-height: 1.1;">Signal<br>Integrity</h1>
         <h2 style="border: none; font-size: 1.8em; margin-top: 15px; color: var(--text-color); font-weight: 300; text-align: right; line-height: 1.3;">From Waves to SerDes</h2>
+        <h3 style="border: none; font-size: 1.5em; margin-top: 10px; color: var(--secondary-color); font-weight: 400; text-align: right; font-style: italic;">Advanced Edition</h3>
         <p style="margin-top: 50px; font-size: 1.4em; font-weight: 500;">By Lydia Pedersen</p>
     </div>
 </div>
@@ -185,7 +185,7 @@ for entry in toc_entries:
     <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0.3) 100%); z-index: -1;"></div>
     <div style="height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
         <p style="font-size: 1.2em; color: var(--secondary-color); margin-bottom: 10px; letter-spacing: 3px; text-transform: uppercase;">Part {part['id']}</p>
-        <h1 style="border: none; font-size: 2.8em; margin: 0; line-height: 1.2;">{part['title']}</h1>
+        <h1 style="border: none; font-size: 2.8em; margin: 0 auto; line-height: 1.2; max-width: 50%; text-align: center;">{part['title']}</h1>
     </div>
 </div>
 <div style="page-break-after: always;"></div>
@@ -198,7 +198,7 @@ for entry in toc_entries:
         content = f.read()
 
     # Remove download CTA links
-    content = re.sub(r'<p><em>Prefer to read this seamlessly offline\?.*?</em></p>\n*', '', content, flags=re.IGNORECASE)
+    content = re.sub(r'<p><em>Prefer to read offline\?.*?</em></p>\n*', '', content, flags=re.IGNORECASE)
 
     # Remove SUMMARY comments
     content = re.sub(r'<!--\s*SUMMARY:[\s\S]*?-->\n*', '', content)
@@ -230,6 +230,9 @@ for entry in toc_entries:
     # Colon-context sticking (prevent page breaks between intro text and math/code)
     content = re.sub(r'(:)\n+(\s*```)', r'\1\n<div style="page-break-after: avoid;"></div>\n\n\2', content)
     content = re.sub(r'(:)\n+(\s*\$\$)', r'\1\n<div style="page-break-after: avoid;"></div>\n\n\2', content)
+
+    # Inline math + punctuation sticking (prevent line breaks between $math$ and following punctuation)
+    content = re.sub(r'(\$[^$\n]+?\$)([.,;:)\]])', r'<span style="white-space: nowrap">\1\2</span>', content)
 
     # Diagram orphan prevention
     blocks = content.split('\n\n')
@@ -304,7 +307,7 @@ if result.returncode != 0:
 print("  Done.")
 
 # --- Merge PDFs ---
-print("Merging frontmatter.pdf + body.pdf -> signal-integrity-ebook-v1.0.pdf...")
+print("Merging frontmatter.pdf + body.pdf -> signal-integrity-ebook-v2.0.pdf...")
 from pypdf import PdfWriter
 merger = PdfWriter()
 merger.append(frontmatter_pdf)

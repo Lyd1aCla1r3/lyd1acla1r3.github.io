@@ -158,71 +158,71 @@
           <h2 class="metallic-text" style="text-align: center; font-size: clamp(2rem, 4vw, 2.5rem); margin-top: 10px; margin-bottom: var(--space-2xl); font-family: var(--font-display);">Mixture Of Experts Series</h2>
         <!-- BLOG_LIST_START -->
 
-          <div class="series-group" style="margin-top: var(--space-2xl);">
-              <div class="series-items">
-                  
-                  <a href="mixture-of-experts-preface.html">
-                      <article class="blog-item series-item">
-                          <h2>Preface: From Dense to Sparse</h2>
-                          <p>The dense Feed-Forward Network within a Transformer activates every parameter for every token, creating an unsustainable computation bottleneck at frontier scale. The Mixture of Experts architecture solves this inefficiency by decoupling the total parameter capacity from the per-token floating-point operations. This architectural evolution bridges the gap between the original Transformer design and modern sparse models.</p>
-                      </article>
-                  </a>
-                  <a href="mixture-of-experts-chapter_01.html">
-                      <article class="blog-item series-item">
-                          <h2>Part 1: The Dense FFN Bottleneck</h2>
-                          <p>The standard dense Feed-Forward Network forces every token to activate the entire parameter bank, creating severe computational inefficiencies at scale. Replacing this monolithic structure with a Mixture of Experts architecture introduces conditional computation, allowing models to scale total parameter capacity independently of the floating-point operations executed per token.</p>
-                      </article>
-                  </a>
-                  <a href="mixture-of-experts-chapter_02.html">
-                      <article class="blog-item series-item">
-                          <h2>Part 2: The Router</h2>
-                          <p>The monolithic feed-forward network is replaced by a routing mechanism that dynamically evaluates the affinity of each token for specialized sub-networks. This gating network projects the token representation into a lower-dimensional space to compute a strict probability distribution over available experts, enabling conditional computation.</p>
-                      </article>
-                  </a>
-                  <a href="mixture-of-experts-chapter_03.html">
-                      <article class="blog-item series-item">
-                          <h2>Part 3: The MoE Forward Pass</h2>
-                          <p>The routing mechanism determines which specific computational pathways activate for each token vector in the sequence. Executing the selected expert networks and dynamically blending their outputs produces the final contextual transformation, completing the transition from a dense feed-forward architecture to a sparse conditional formulation.</p>
-                      </article>
-                  </a>
-                  <a href="mixture-of-experts-chapter_04.html">
-                      <article class="blog-item series-item">
-                          <h2>Part 4: Expert Collapse</h2>
-                          <p>The gating network's reliance on backpropagation introduces a severe positive feedback loop that systematically starves under-utilized pathways. Without intervention, this dynamic degenerates the sparse architecture into a heavily imbalanced network, severely wasting parameter capacity.</p>
-                      </article>
-                  </a>
-                  <a href="mixture-of-experts-chapter_05.html">
-                      <article class="blog-item series-item">
-                          <h2>Part 5: Load Balancing: The Auxiliary Loss</h2>
-                          <p>The progressive concentration of routing probability into a single expert necessitates an explicit penalty term in the training objective. The auxiliary loss formulation combines a non-differentiable count of hard routing assignments with a differentiable softmax probability mean, producing a gradient signal that penalizes overloaded experts while promoting utilization of starved pathways.</p>
-                      </article>
-                  </a>
-                  <a href="mixture-of-experts-chapter_06.html">
-                      <article class="blog-item series-item">
-                          <h2>Part 6: Capacity, Token Dropping, and the Switch Transformer</h2>
-                          <p>While the auxiliary loss stabilizes the mathematical probability of routing, physical hardware demands static tensor dimensions that cannot dynamically resize to accommodate unbalanced loads. Imposing a hard capacity limit on each expert resolves this physical constraint but introduces token dropping, where excess routing assignments are discarded and tokens pass through the residual stream unmodified, motivating architectural shifts toward Top-1 routing and block-sparse computation.</p>
-                      </article>
-                  </a>
-                  <a href="mixture-of-experts-chapter_07.html">
-                      <article class="blog-item series-item">
-                          <h2>Part 7: Fine-Grained Experts and Shared Expert Isolation</h2>
-                          <p>The elimination of static hardware capacity constraints enables a radical restructuring of the expert layer into a highly granular federation of specialized networks. Isolating a subset of these networks as universal shared experts guarantees the application of foundational linguistic patterns, allowing the remaining routed experts to achieve unprecedented expressive power through combinatorial activation without increasing the computational budget per token.</p>
-                      </article>
-                  </a>
-                  <a href="mixture-of-experts-chapter_08.html">
-                      <article class="blog-item series-item">
-                          <h2>Part 8: The Frontier</h2>
-                          <p>The traditional auxiliary loss forces a direct trade-off between routing quality and load balance, degrading language modeling performance as expert counts increase. DeepSeek-V3 eliminates this conflict by introducing a dynamic bias mechanism that operates entirely outside of gradient computation, achieving hardware-balanced routing without distorting the mathematical integrity of the learned expert affinities.</p>
-                      </article>
-                  </a>
-                  <a href="mixture-of-experts-chapter_09.html">
-                      <article class="blog-item series-item">
-                          <h2>Part 9: The Economics of Sparsity</h2>
-                          <p>The Mixture of Experts architecture decouples a model's knowledge capacity from its per-token computational cost. This parameter-to-FLOP decoupling explains why every frontier AI system abandons the dense monolithic Feed-Forward Network in favor of a sparse, dynamically routed expert federation, optimizing hardware utilization while massively accelerating training efficiency.</p>
-                      </article>
-                  </a>
+              <div class="series-group" style="margin-top: var(--space-2xl);">
+                  <div class="series-items">
+                      
+                      <a href="mixture-of-experts-preface.html">
+                          <article class="blog-item series-item">
+                              <h2>Preface: From Dense to Sparse</h2>
+                              <p>The dense Feed-Forward Network within a Transformer activates every parameter for every token, creating an unsustainable computation bottleneck at frontier scale. The Mixture of Experts architecture solves this inefficiency by decoupling the total parameter capacity from the per-token floating-point operations. This architectural evolution bridges the gap between the original Transformer design and modern sparse models.</p>
+                          </article>
+                      </a>
+                      <a href="mixture-of-experts-chapter_01.html">
+                          <article class="blog-item series-item">
+                              <h2>Part 1: The Dense FFN Bottleneck</h2>
+                              <p>The standard dense Feed-Forward Network forces every token to activate the entire parameter bank, creating severe computational inefficiencies at scale. Replacing this monolithic structure with a Mixture of Experts architecture introduces conditional computation, allowing models to scale total parameter capacity independently of the floating-point operations executed per token.</p>
+                          </article>
+                      </a>
+                      <a href="mixture-of-experts-chapter_02.html">
+                          <article class="blog-item series-item">
+                              <h2>Part 2: The Router</h2>
+                              <p>The monolithic feed-forward network is replaced by a routing mechanism that dynamically evaluates the affinity of each token for specialized sub-networks. This gating network projects the token representation into a lower-dimensional space to compute a strict probability distribution over available experts, enabling conditional computation.</p>
+                          </article>
+                      </a>
+                      <a href="mixture-of-experts-chapter_03.html">
+                          <article class="blog-item series-item">
+                              <h2>Part 3: The MoE Forward Pass</h2>
+                              <p>The routing mechanism determines which specific computational pathways activate for each token vector in the sequence. Executing the selected expert networks and dynamically blending their outputs produces the final contextual transformation, completing the transition from a dense feed-forward architecture to a sparse conditional formulation.</p>
+                          </article>
+                      </a>
+                      <a href="mixture-of-experts-chapter_04.html">
+                          <article class="blog-item series-item">
+                              <h2>Part 4: Expert Collapse</h2>
+                              <p>The gating network's reliance on backpropagation introduces a severe positive feedback loop that systematically starves under-utilized pathways. Without intervention, this dynamic degenerates the sparse architecture into a heavily imbalanced network, severely wasting parameter capacity.</p>
+                          </article>
+                      </a>
+                      <a href="mixture-of-experts-chapter_05.html">
+                          <article class="blog-item series-item">
+                              <h2>Part 5: Load Balancing: The Auxiliary Loss</h2>
+                              <p>The progressive concentration of routing probability into a single expert necessitates an explicit penalty term in the training objective. The auxiliary loss formulation combines a non-differentiable count of hard routing assignments with a differentiable softmax probability mean, producing a gradient signal that penalizes overloaded experts while promoting utilization of starved pathways.</p>
+                          </article>
+                      </a>
+                      <a href="mixture-of-experts-chapter_06.html">
+                          <article class="blog-item series-item">
+                              <h2>Part 6: Capacity, Token Dropping, and the Switch Transformer</h2>
+                              <p>While the auxiliary loss stabilizes the mathematical probability of routing, physical hardware demands static tensor dimensions that cannot dynamically resize to accommodate unbalanced loads. Imposing a hard capacity limit on each expert resolves this physical constraint but introduces token dropping, where excess routing assignments are discarded and tokens pass through the residual stream unmodified, motivating architectural shifts toward Top-1 routing and block-sparse computation.</p>
+                          </article>
+                      </a>
+                      <a href="mixture-of-experts-chapter_07.html">
+                          <article class="blog-item series-item">
+                              <h2>Part 7: Fine-Grained Experts and Shared Expert Isolation</h2>
+                              <p>The elimination of static hardware capacity constraints enables a radical restructuring of the expert layer into a highly granular federation of specialized networks. Isolating a subset of these networks as universal shared experts guarantees the application of foundational linguistic patterns, allowing the remaining routed experts to achieve unprecedented expressive power through combinatorial activation without increasing the computational budget per token.</p>
+                          </article>
+                      </a>
+                      <a href="mixture-of-experts-chapter_08.html">
+                          <article class="blog-item series-item">
+                              <h2>Part 8: The Frontier</h2>
+                              <p>The traditional auxiliary loss forces a direct trade-off between routing quality and load balance, degrading language modeling performance as expert counts increase. DeepSeek-V3 eliminates this conflict by introducing a dynamic bias mechanism that operates entirely outside of gradient computation, achieving hardware-balanced routing without distorting the mathematical integrity of the learned expert affinities.</p>
+                          </article>
+                      </a>
+                      <a href="mixture-of-experts-chapter_09.html">
+                          <article class="blog-item series-item">
+                              <h2>Part 9: The Economics of Sparsity</h2>
+                              <p>The Mixture of Experts architecture decouples a model's knowledge capacity from its per-token computational cost. This parameter-to-FLOP decoupling explains why every frontier AI system abandons the dense monolithic Feed-Forward Network in favor of a sparse, dynamically routed expert federation, optimizing hardware utilization while massively accelerating training efficiency.</p>
+                          </article>
+                      </a>
+                  </div>
               </div>
-          </div>
         <!-- BLOG_LIST_END -->
 
     </div>

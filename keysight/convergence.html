@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Convergence | Lydia Pedersen × Keysight</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="../css/styles.css?v=1.1">
+  <link rel="stylesheet" href="../css/keysight.css?v=1.3">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    /* --- Page Header --- */
+    .ks-header {
+      padding-top: calc(var(--ks-nav-height) + var(--ks-space-2xl));
+      margin-bottom: 36px;
+      text-align: center;
+    }
+
+    /* --- Puzzle Wrapper --- */
+    .cv-puzzle-wrapper {
+      max-width: 800px;
+      margin: 0 auto 8px;
+    }
+
+    .cv-puzzle {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* --- Column Group States --- */
+    .cv-col {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.6s var(--ks-ease);
+    }
+
+    .cv-col.is-available {
+      pointer-events: auto;
+      cursor: pointer;
+    }
+
+    .cv-col.is-active {
+      opacity: 1;
+      pointer-events: none;
+    }
+
+    /* Breathing pulse for available columns */
+    @keyframes cv-pulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 0.8; }
+    }
+
+    .cv-col.is-available {
+      animation: cv-pulse 2.5s ease-in-out infinite;
+    }
+
+    /* --- Puzzle Piece Base --- */
+    .cv-piece {
+      stroke-width: 1.5;
+      transition: fill 0.5s var(--ks-ease), stroke 0.5s var(--ks-ease), filter 0.5s var(--ks-ease);
+    }
+
+    /* --- Column Color Schemes --- */
+
+    /* Gold — faded */
+    .cv-col[data-col="1"] .cv-piece {
+      fill: rgba(248,236,208,0.35);
+      stroke: rgba(184,144,40,0.3);
+    }
+    /* Gold — hover */
+    .cv-col[data-col="1"].is-available:hover .cv-piece {
+      fill: rgba(248,236,208,0.6);
+      stroke: rgba(184,144,40,0.5);
+    }
+    /* Gold — active */
+    .cv-col[data-col="1"].is-active .cv-piece {
+      fill: #f8ecd0;
+      stroke: #a07b20;
+      filter: drop-shadow(0 1px 6px rgba(184,144,40,0.3));
+    }
+
+    /* Peach — faded */
+    .cv-col[data-col="2"] .cv-piece {
+      fill: rgba(246,228,216,0.35);
+      stroke: rgba(192,136,104,0.3);
+    }
+    /* Peach — hover */
+    .cv-col[data-col="2"].is-available:hover .cv-piece {
+      fill: rgba(246,228,216,0.6);
+      stroke: rgba(192,136,104,0.5);
+    }
+    /* Peach — active */
+    .cv-col[data-col="2"].is-active .cv-piece {
+      fill: #f6e4d8;
+      stroke: #85573c;
+      filter: drop-shadow(0 1px 6px rgba(192,136,104,0.3));
+    }
+
+    /* Rose Gold — faded */
+    .cv-col[data-col="3"] .cv-piece {
+      fill: rgba(244,224,227,0.35);
+      stroke: rgba(183,110,121,0.3);
+    }
+    /* Rose Gold — hover */
+    .cv-col[data-col="3"].is-available:hover .cv-piece {
+      fill: rgba(244,224,227,0.6);
+      stroke: rgba(183,110,121,0.5);
+    }
+    /* Rose Gold — active */
+    .cv-col[data-col="3"].is-active .cv-piece {
+      fill: #f4e0e3;
+      stroke: #81404a;
+      filter: drop-shadow(0 1px 6px rgba(183,110,121,0.3));
+    }
+
+    /* Dark Pink — faded */
+    .cv-col[data-col="4"] .cv-piece {
+      fill: rgba(242,209,214,0.35);
+      stroke: rgba(166,93,108,0.3);
+    }
+    /* Dark Pink — hover */
+    .cv-col[data-col="4"].is-available:hover .cv-piece {
+      fill: rgba(242,209,214,0.6);
+      stroke: rgba(166,93,108,0.5);
+    }
+    /* Dark Pink — active */
+    .cv-col[data-col="4"].is-active .cv-piece {
+      fill: #f2d1d6;
+      stroke: #7d4450;
+      filter: drop-shadow(0 1px 6px rgba(166,93,108,0.3));
+    }
+
+    /* --- SVG Labels --- */
+    .cv-label-text {
+      font-family: 'Outfit', -apple-system, sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      fill: var(--ks-text-muted);
+      pointer-events: none;
+      transition: fill 0.5s var(--ks-ease), font-weight 0.3s;
+    }
+
+    .cv-col[data-col="1"].is-active .cv-label-text { fill: #a07b20; font-weight: 600; }
+    .cv-col[data-col="2"].is-active .cv-label-text { fill: #85573c; font-weight: 600; }
+    .cv-col[data-col="3"].is-active .cv-label-text { fill: #81404a; font-weight: 600; }
+    .cv-col[data-col="4"].is-active .cv-label-text { fill: #7d4450; font-weight: 600; }
+
+    /* --- Hint Text --- */
+    .cv-hint {
+      text-align: center;
+      color: var(--ks-text-muted);
+      font-size: var(--ks-fs-section-label);
+      font-style: italic;
+      margin: 4px 0 20px;
+      transition: opacity 0.5s var(--ks-ease);
+    }
+    .cv-hint.is-hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* --- Text Card Stack --- */
+    .cv-text-stack {
+      max-width: 800px;
+      margin: 0 auto 40px;
+    }
+
+    .cv-text-card {
+      border-radius: 8px;
+      border-left-width: 4px;
+      border-left-style: solid;
+      padding: 20px 24px;
+      margin-bottom: 12px;
+      opacity: 0;
+      transform: translateY(-8px);
+      transition: opacity 0.5s var(--ks-ease), transform 0.5s var(--ks-ease);
+    }
+
+    .cv-text-card:last-child {
+      margin-bottom: 0;
+    }
+
+    .cv-text-card.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .cv-text-card__title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: var(--ks-fs-section-label);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .cv-text-card__body {
+      font-size: var(--ks-fs-small);
+      color: var(--ks-text-secondary);
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    /* Card color variants — matching hub page active states */
+    .cv-text-card--gold {
+      background: rgba(248, 236, 208, 0.55);
+      border-left-color: #a07b20;
+    }
+    .cv-text-card--gold .cv-text-card__title,
+    .cv-text-card--gold .cv-text-card__body { color: #a07b20; }
+
+    .cv-text-card--peach {
+      background: rgba(246, 228, 216, 0.55);
+      border-left-color: #85573c;
+    }
+    .cv-text-card--peach .cv-text-card__title,
+    .cv-text-card--peach .cv-text-card__body { color: #85573c; }
+
+    .cv-text-card--rose {
+      background: rgba(244, 224, 227, 0.55);
+      border-left-color: #81404a;
+    }
+    .cv-text-card--rose .cv-text-card__title,
+    .cv-text-card--rose .cv-text-card__body { color: #81404a; }
+
+    .cv-text-card--dark-pink {
+      background: rgba(242, 209, 214, 0.55);
+      border-left-color: #7d4450;
+    }
+    .cv-text-card--dark-pink .cv-text-card__title,
+    .cv-text-card--dark-pink .cv-text-card__body { color: #7d4450; }
+
+    /* --- Reset Button --- */
+    .ks-translate-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 2.5rem;
+      background: rgba(253, 248, 244, 0.95);
+      border: 1px solid rgba(183, 110, 121, 0.3);
+      border-radius: 30px;
+      color: var(--ks-text-primary);
+      font-size: var(--ks-fs-small);
+      cursor: pointer;
+      transition: all 300ms var(--ks-ease), opacity 500ms;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .ks-translate-btn:hover {
+      border-color: #81404a;
+      background: #ffffff;
+    }
+
+    /* --- Accessibility: Reduced Motion --- */
+    @media (prefers-reduced-motion: reduce) {
+      .cv-col {
+        transition: none;
+      }
+      .cv-col.is-available {
+        animation: none;
+        opacity: 0.6;
+      }
+      .cv-piece {
+        transition: none;
+      }
+      .cv-text-card {
+        transition: none;
+      }
+      .cv-hint {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body class="ks-page">
+  <!-- Fixed circuitry background -->
+  <div class="ks-bg-visual" aria-hidden="true"></div>
+  <nav class="ks-nav" aria-label="Main navigation">
+    <div class="ks-nav__inner">
+      <a href="../keysight.html" class="ks-nav__logo metallic-text" aria-label="Back to hub">lydia<span>.</span>pedersen</a>
+      <a href="../keysight.html" class="ks-nav__link metallic-text">&larr; Back to Hub</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="ks-container">
+      <header class="ks-header ks-reveal">
+        <div class="ks-label" style="text-align: center;">Section 01 / Convergence</div>
+        <h1 class="ks-page-header__title metallic-text">Where All of My Pieces Fit</h1>
+      </header>
+
+      <section class="cv-puzzle-wrapper ks-reveal" aria-label="Interactive Architecture Puzzle">
+        <svg class="cv-puzzle" viewBox="0 0 640 310" xmlns="http://www.w3.org/2000/svg"
+             role="img" aria-label="Interactive puzzle with four columns representing qualification dimensions">
+          <defs>
+            <clipPath id="clip-col1">
+              <path d="M 20,20 L 170,20 C 170,50 200,60 200,100 C 200,120 160,130 160,150 C 160,170 140,180 140,210 C 140,240 170,250 170,260 L 20,260 Z" />
+            </clipPath>
+            <clipPath id="clip-col2">
+              <path d="M 170,20 L 320,20 C 320,50 300,50 300,80 C 300,110 340,120 340,160 C 340,200 310,210 310,240 C 310,250 320,255 320,260 L 170,260 C 170,250 140,240 140,210 C 140,180 160,170 160,150 C 160,130 200,120 200,100 C 200,60 170,50 170,20 Z" />
+            </clipPath>
+            <clipPath id="clip-col3">
+              <path d="M 320,20 L 470,20 C 470,60 500,70 500,110 C 500,140 450,150 450,180 C 450,210 480,220 480,240 C 480,250 470,255 470,260 L 320,260 C 320,255 310,250 310,240 C 310,210 340,200 340,160 C 340,120 300,110 300,80 C 300,50 320,50 320,20 Z" />
+            </clipPath>
+            <clipPath id="clip-col4">
+              <path d="M 470,20 L 620,20 L 620,260 L 470,260 C 470,255 480,250 480,240 C 480,220 450,210 450,180 C 450,150 500,140 500,110 C 500,70 470,60 470,20 Z" />
+            </clipPath>
+          </defs>
+
+          <!-- Column 1: Gold (AI Compute Demand) -->
+          <g class="cv-col" data-col="1" role="button" tabindex="0" aria-label="AI Compute Demand. Click to reveal.">
+            <path class="cv-piece" d="M 20,20 L 170,20 C 170,50 200,60 200,100 C 200,120 160,130 160,150 C 160,170 140,180 140,210 C 140,240 170,250 170,260 L 20,260 Z" />
+            <g clip-path="url(#clip-col1)" stroke="#a07b20" fill="none">
+              <!-- Die Border -->
+              <rect x="55" y="110" width="60" height="60" stroke-width="1.5" />
+              <!-- Cores -->
+              <rect x="59" y="114" width="10" height="10" stroke-width="1" />
+              <rect x="73" y="114" width="10" height="10" stroke-width="1" />
+              <rect x="87" y="114" width="10" height="10" stroke-width="1" />
+              <rect x="101" y="114" width="10" height="10" stroke-width="1" />
+              <rect x="59" y="128" width="10" height="10" stroke-width="1" />
+              <rect x="73" y="128" width="10" height="10" stroke-width="1" />
+              <rect x="87" y="128" width="10" height="10" stroke-width="1" />
+              <rect x="101" y="128" width="10" height="10" stroke-width="1" />
+              <rect x="59" y="142" width="10" height="10" stroke-width="1" />
+              <rect x="73" y="142" width="10" height="10" stroke-width="1" />
+              <rect x="87" y="142" width="10" height="10" stroke-width="1" />
+              <rect x="101" y="142" width="10" height="10" stroke-width="1" />
+              <rect x="59" y="156" width="10" height="10" stroke-width="1" />
+              <rect x="73" y="156" width="10" height="10" stroke-width="1" />
+              <rect x="87" y="156" width="10" height="10" stroke-width="1" />
+              <rect x="101" y="156" width="10" height="10" stroke-width="1" />
+              
+              <!-- Traces Top -->
+              <path d="M 64,110 L 64,85 L 29,50 L -10,50" stroke-width="1" />
+              <path d="M 78,110 L 78,75 L 33,30 L -10,30" stroke-width="1" />
+              <path d="M 92,110 L 92,75 L 137,30 L 220,30" stroke-width="1" />
+              <path d="M 106,110 L 106,85 L 141,50 L 220,50" stroke-width="1" />
+              
+              <!-- Traces Left -->
+              <path d="M 55,133 L 51,133 L 28,110 L -10,110" stroke-width="1" />
+              <path d="M 55,147 L 51,147 L 28,170 L -10,170" stroke-width="1" />
+              
+              <!-- Traces Right -->
+              <path d="M 115,133 L 119,133 L 142,110 L 220,110" stroke-width="1" />
+              <path d="M 115,147 L 119,147 L 142,170 L 220,170" stroke-width="1" />
+              
+              <!-- Traces Bottom -->
+              <path d="M 64,170 L 64,195 L 29,230 L -10,230" stroke-width="1" />
+              <path d="M 78,170 L 78,205 L 33,250 L -10,250" stroke-width="1" />
+              <path d="M 92,170 L 92,205 L 137,250 L 220,250" stroke-width="1" />
+              <path d="M 106,170 L 106,195 L 141,230 L 220,230" stroke-width="1" />
+            </g>
+            <text class="cv-label-text" x="20" y="282">Compute</text>
+            <text class="cv-label-text" x="20" y="296">Demand</text>
+          </g>
+
+          <!-- Column 2: Peach (Bandwidth Bottleneck) -->
+          <g class="cv-col" data-col="2" role="button" tabindex="0" aria-label="Bandwidth Bottleneck. Click to reveal.">
+            <path class="cv-piece" d="M 170,20 L 320,20 C 320,50 300,50 300,80 C 300,110 340,120 340,160 C 340,200 310,210 310,240 C 310,250 320,255 320,260 L 170,260 C 170,250 140,240 140,210 C 140,180 160,170 160,150 C 160,130 200,120 200,100 C 200,60 170,50 170,20 Z" />
+            <g clip-path="url(#clip-col2)" stroke="#85573c" fill="none" stroke-width="1.5">
+              <path d="M 130,30 L 180,30 C 210,30 210,128 245,128 C 280,128 280,30 310,30 L 350,30" stroke-width="1" opacity="0.5" />
+              <path d="M 130,250 L 180,250 C 210,250 210,152 245,152 C 280,152 280,250 310,250 L 350,250" stroke-width="1" opacity="0.5" />
+              <path d="M 130,50 L 180,50 C 220,50 220,131 245,131 C 270,131 270,50 310,50 L 350,50" />
+              <path d="M 130,110 L 180,110 C 230,110 230,137 245,137 C 260,137 260,110 310,110 L 350,110" />
+              <path d="M 130,170 L 180,170 C 230,170 230,143 245,143 C 260,143 260,170 310,170 L 350,170" />
+              <path d="M 130,230 L 180,230 C 220,230 220,149 245,149 C 270,149 270,230 310,230 L 350,230" />
+            </g>
+            <text class="cv-label-text" x="170" y="282">Bandwidth</text>
+            <text class="cv-label-text" x="170" y="296">Bottleneck</text>
+          </g>
+
+          <!-- Column 3: Rose Gold (Physical-Layer Standard) -->
+          <g class="cv-col" data-col="3" role="button" tabindex="0" aria-label="Physical-Layer Standard. Click to reveal.">
+            <path class="cv-piece" d="M 320,20 L 470,20 C 470,60 500,70 500,110 C 500,140 450,150 450,180 C 450,210 480,220 480,240 C 480,250 470,255 470,260 L 320,260 C 320,255 310,250 310,240 C 310,210 340,200 340,160 C 340,120 300,110 300,80 C 300,50 320,50 320,20 Z" />
+            <g clip-path="url(#clip-col3)" stroke="#81404a" fill="none">
+              <g opacity="0.6" stroke-width="1" stroke-dasharray="2 4">
+                <line x1="290" y1="30" x2="490" y2="30" />
+                <line x1="290" y1="50" x2="490" y2="50" />
+                <line x1="290" y1="110" x2="490" y2="110" />
+                <line x1="290" y1="170" x2="490" y2="170" />
+                <line x1="290" y1="230" x2="490" y2="230" />
+                <line x1="290" y1="250" x2="490" y2="250" />
+              </g>
+              <!-- Ghost trace -->
+              <path d="M 290,110 L 340,110 L 350,230 L 370,230 L 380,50 L 400,50 L 410,170 L 430,170 L 440,110 L 490,110" stroke-width="2" opacity="0.3" stroke-linejoin="round" />
+              <!-- Primary trace -->
+              <path d="M 290,170 L 340,170 L 350,50 L 370,50 L 380,230 L 400,230 L 410,110 L 430,110 L 440,170 L 490,170" stroke-width="2.5" stroke-linejoin="round" />
+            </g>
+            <text class="cv-label-text" x="320" y="282">Physical-Layer</text>
+            <text class="cv-label-text" x="320" y="296">Standard</text>
+          </g>
+
+          <!-- Column 4: Dark Pink (Validation & Measurement) -->
+          <g class="cv-col" data-col="4" role="button" tabindex="0" aria-label="Validation and Measurement. Click to reveal.">
+            <path class="cv-piece" d="M 470,20 L 620,20 L 620,260 L 470,260 C 470,255 480,250 480,240 C 480,220 450,210 450,180 C 450,150 500,140 500,110 C 500,70 470,60 470,20 Z" />
+            <g clip-path="url(#clip-col4)" stroke="#7d4450" fill="none" opacity="0.8">
+              <g opacity="0.5" stroke-width="1" stroke-dasharray="2 4">
+                <line x1="440" y1="30" x2="640" y2="30" />
+                <line x1="440" y1="50" x2="640" y2="50" />
+                <line x1="440" y1="110" x2="640" y2="110" />
+                <line x1="440" y1="170" x2="640" y2="170" />
+                <line x1="440" y1="230" x2="640" y2="230" />
+                <line x1="440" y1="250" x2="640" y2="250" />
+              </g>
+              <!-- PAM4 Eye Diagram Transitions -->
+              <g stroke-width="1" opacity="0.4">
+                <path d="M 440,50 L 490,50 C 520,50 520,110 550,110 C 580,110 580,50 610,50 L 640,50" />
+                <path d="M 440,50 L 490,50 C 520,50 520,170 550,170 C 580,170 580,50 610,50 L 640,50" />
+                <path d="M 440,50 L 490,50 C 520,50 520,230 550,230 C 580,230 580,50 610,50 L 640,50" />
+                
+                <path d="M 440,110 L 490,110 C 520,110 520,50 550,50 C 580,50 580,110 610,110 L 640,110" />
+                <path d="M 440,110 L 490,110 C 520,110 520,170 550,170 C 580,170 580,110 610,110 L 640,110" />
+                <path d="M 440,110 L 490,110 C 520,110 520,230 550,230 C 580,230 580,110 610,110 L 640,110" />
+                
+                <path d="M 440,170 L 490,170 C 520,170 520,50 550,50 C 580,50 580,170 610,170 L 640,170" />
+                <path d="M 440,170 L 490,170 C 520,170 520,110 550,110 C 580,110 580,170 610,170 L 640,170" />
+                <path d="M 440,170 L 490,170 C 520,170 520,230 550,230 C 580,230 580,170 610,170 L 640,170" />
+                
+                <path d="M 440,230 L 490,230 C 520,230 520,50 550,50 C 580,50 580,230 610,230 L 640,230" />
+                <path d="M 440,230 L 490,230 C 520,230 520,110 550,110 C 580,110 580,230 610,230 L 640,230" />
+                <path d="M 440,230 L 490,230 C 520,230 520,170 550,170 C 580,170 580,230 610,230 L 640,230" />
+                
+                <path d="M 440,50 L 640,50" />
+                <path d="M 440,110 L 640,110" />
+                <path d="M 440,170 L 640,170" />
+                <path d="M 440,230 L 640,230" />
+              </g>
+            </g>
+            <text class="cv-label-text" x="470" y="282">Validation &amp;</text>
+            <text class="cv-label-text" x="470" y="296">Measurement</text>
+          </g>
+
+        </svg>
+      </section>
+
+      <p class="cv-hint ks-reveal" id="cvHint">Click each column to reveal the sequence</p>
+
+      <div class="cv-text-stack" id="cvTextStack" aria-live="polite"></div>
+
+      <div style="text-align: center; margin-bottom: 4rem;">
+        <button id="reset-btn" class="ks-translate-btn ks-reveal" style="opacity: 0; pointer-events: none;"><span class="metallic-text">Reset</span></button>
+      </div>
+
+      <nav class="ks-bottom-nav" aria-label="Section navigation">
+        <div class="ks-bottom-nav__spacer"></div>
+        <a href="customer.html" class="ks-bottom-nav__link metallic-text">I Have Been the Customer &rarr;</a>
+      </nav>
+    </div>
+  </main>
+
+  <script src="../js/keysight.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const cols = document.querySelectorAll('.cv-col');
+      const textStack = document.getElementById('cvTextStack');
+      const hint = document.getElementById('cvHint');
+      const resetBtn = document.getElementById('reset-btn');
+      let currentStep = 0;
+
+      const steps = [
+        {
+          title: 'Compute Demand',
+          body: 'My experience developing production-grade AI workflows gave me direct insights into how computational patterns create physical-layer pressure. I have built training pipelines, inference services, and retrieval-augmented generation systems, and I understand which workloads create which bandwidth demands.',
+          colorClass: 'cv-text-card--gold'
+        },
+        {
+          title: 'Bandwidth Bottleneck',
+          body: 'My career in hardware validation put me on the physical side of this bottleneck, measuring where data degrades at the boundary between compute and interconnect. That diagnostic instinct translates directly into technical conversations with customers evaluating measurement solutions.',
+          colorClass: 'cv-text-card--peach'
+        },
+        {
+          title: 'Physical-Layer Standard',
+          body: 'I have validated hardware against high-speed digital specifications across multiple organizations, including direct collaboration with standards bodies and measurement methodology committees. I understand these standards at the test-plan level because I have developed and executed hundreds of compliance test runs across their full specification lifecycles.',
+          colorClass: 'cv-text-card--rose'
+        },
+        {
+          title: 'Validation & Measurement',
+          body: 'For fifteen years across four organizations I configured benches, characterized devices, verified SI, and ran compliance tests. I understand the customer for the instruments and software that Keysight sells, because I was the customer. I am well-versed in the technical challenges and expectations of lab engineers, as well as the traits and skills that define the SEs they want to work with.',
+          colorClass: 'cv-text-card--dark-pink'
+        }
+      ];
+
+      function activateCol(index) {
+        if (index !== currentStep) return;
+
+        // Transition column from available to active
+        cols[index].classList.remove('is-available');
+        cols[index].classList.add('is-active');
+        cols[index].setAttribute('aria-label', steps[index].title + '. Revealed.');
+        cols[index].removeAttribute('tabindex');
+        cols[index].setAttribute('role', 'img');
+
+        // Hide hint on first click
+        if (index === 0 && hint) {
+          hint.classList.add('is-hidden');
+        }
+
+        // Create and prepend text card (newest always closest to puzzle)
+        const card = document.createElement('div');
+        card.className = 'cv-text-card ' + steps[index].colorClass;
+        card.innerHTML =
+          '<div class="cv-text-card__title">' + steps[index].title + '</div>' +
+          '<p class="cv-text-card__body">' + steps[index].body + '</p>';
+        textStack.prepend(card);
+
+        // Trigger entrance animation on next frame
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            card.classList.add('is-visible');
+          });
+        });
+
+        // Advance state
+        currentStep++;
+
+        if (currentStep === 1) {
+          resetBtn.style.opacity = '1';
+          resetBtn.style.pointerEvents = 'auto';
+        }
+
+        // Fade in next column after a short delay
+        if (currentStep < cols.length) {
+          setTimeout(() => {
+            cols[currentStep].classList.add('is-available');
+          }, 450);
+        }
+      }
+
+      // Initialize: first column becomes available
+      cols[0].classList.add('is-available');
+
+      // Attach click and keyboard handlers to all columns
+      cols.forEach((col, i) => {
+        col.addEventListener('click', () => activateCol(i));
+        col.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            activateCol(i);
+          }
+        });
+      });
+
+      // Reset logic
+      resetBtn.addEventListener('click', () => {
+        if (currentStep === 0) return;
+        currentStep = 0;
+        textStack.innerHTML = '';
+        cols.forEach((col, i) => {
+          col.classList.remove('is-active', 'is-available');
+          col.setAttribute('aria-label', steps[i].title + '. Click to reveal.');
+          col.setAttribute('tabindex', '0');
+          col.removeAttribute('role');
+          if (i === 0) col.classList.add('is-available');
+        });
+        if (hint) hint.classList.remove('is-hidden');
+        resetBtn.style.opacity = '0';
+        resetBtn.style.pointerEvents = 'none';
+      });
+    });
+  </script>
+</body>
+</html>

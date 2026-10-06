@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What I Bring | Lydia Pedersen × Keysight</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="../css/styles.css?v=1.1">
+  <link rel="stylesheet" href="../css/keysight.css?v=1.3">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .value-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      max-width: 900px;
+      margin: 0 auto 3rem;
+    }
+
+    .value-card {
+      height: 240px;
+      border-radius: var(--ks-radius-lg);
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform 0.4s var(--ks-ease), box-shadow 0.4s var(--ks-ease);
+      padding: 2rem;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      
+      /* Flexbox for perfect vertical centering */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .value-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--ks-shadow-card);
+    }
+
+    .value-card__title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 32px;
+      font-weight: 600;
+      width: 100%;
+      margin: 0;
+      transition: all 0.4s var(--ks-ease);
+    }
+
+    .value-card.is-active .value-card__title {
+      font-size: 22px;
+      margin-bottom: 0.75rem;
+    }
+
+    .value-card__text {
+      font-size: 18px;
+      line-height: 1.5;
+      margin: 0;
+      opacity: 0;
+      max-height: 0;
+      transition: opacity 0.4s var(--ks-ease), max-height 0.4s var(--ks-ease);
+    }
+
+    .value-card.is-active .value-card__text {
+      opacity: 1;
+      max-height: 200px;
+      transition: opacity 0.4s var(--ks-ease) 0.15s, max-height 0.4s var(--ks-ease);
+    }
+
+    /* Colors derived from Keysight tokens - Lighter Gradients with White Base */
+    /* 1. Gold */
+    .value-card--gold {
+      background: linear-gradient(135deg, rgba(184, 144, 40, 0.1), rgba(184, 144, 40, 0.25)), rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(184, 144, 40, 0.3);
+      color: #a07b20;
+    }
+
+    /* 2. Rose */
+    .value-card--rose {
+      background: linear-gradient(135deg, rgba(183, 110, 121, 0.1), rgba(183, 110, 121, 0.25)), rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(183, 110, 121, 0.3);
+      color: #81404a;
+    }
+
+    /* 3. Peach */
+    .value-card--peach {
+      background: linear-gradient(135deg, rgba(192, 136, 104, 0.1), rgba(192, 136, 104, 0.25)), rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(192, 136, 104, 0.3);
+      color: #85573c;
+    }
+
+    /* 4. Dark Pink */
+    .value-card--dpink {
+      background: linear-gradient(135deg, rgba(166, 93, 108, 0.1), rgba(166, 93, 108, 0.25)), rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(166, 93, 108, 0.3);
+      color: #7d4450;
+    }
+
+    @media (max-width: 768px) {
+      .value-grid {
+        grid-template-columns: 1fr;
+      }
+      .value-card {
+        height: auto;
+        min-height: 240px;
+      }
+      .value-card__title {
+        font-size: 28px;
+      }
+      .value-card.is-active .value-card__title {
+        font-size: 20px;
+      }
+      .value-card__text {
+        font-size: 16px;
+      }
+    }
+
+    /* Ebooks section */
+    .ebooks-wrapper {
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .ebooks-header {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 36px;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .ebooks-description {
+      color: var(--ks-text-secondary);
+      font-size: 18px;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    .ebooks-card {
+      background: linear-gradient(135deg, 
+        rgba(184, 144, 40, 0.2), 
+        rgba(192, 136, 104, 0.2), 
+        rgba(183, 110, 121, 0.2), 
+        rgba(166, 93, 108, 0.2), 
+        rgba(192, 120, 136, 0.2), 
+        rgba(184, 122, 128, 0.2)
+      );
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: var(--ks-radius-lg);
+      padding: 3rem 2rem;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .ebooks-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .ebook-btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--ks-radius-xl);
+      font-size: 16px;
+      font-weight: 500;
+      text-decoration: none;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: all 0.3s var(--ks-ease);
+      background: rgba(255, 255, 255, 0.8);
+    }
+    
+    .ebook-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .ebook-btn--gold { border: 1px solid rgba(184, 144, 40, 0.3); color: #a07b20; }
+    .ebook-btn--gold:hover { background: linear-gradient(rgba(184, 144, 40, 0.1), rgba(184, 144, 40, 0.1)), rgba(255, 255, 255, 0.8); border-color: #a07b20; }
+
+    .ebook-btn--rose { border: 1px solid rgba(183, 110, 121, 0.3); color: #81404a; }
+    .ebook-btn--rose:hover { background: linear-gradient(rgba(183, 110, 121, 0.1), rgba(183, 110, 121, 0.1)), rgba(255, 255, 255, 0.8); border-color: #81404a; }
+
+    .ebook-btn--peach { border: 1px solid rgba(192, 136, 104, 0.3); color: #85573c; }
+    .ebook-btn--peach:hover { background: linear-gradient(rgba(192, 136, 104, 0.1), rgba(192, 136, 104, 0.1)), rgba(255, 255, 255, 0.8); border-color: #85573c; }
+
+    .ebook-btn--dpink { border: 1px solid rgba(166, 93, 108, 0.3); color: #7d4450; }
+    .ebook-btn--dpink:hover { background: linear-gradient(rgba(166, 93, 108, 0.1), rgba(166, 93, 108, 0.1)), rgba(255, 255, 255, 0.8); border-color: #7d4450; }
+    
+    .ebook-btn--pink { border: 1px solid rgba(192, 120, 136, 0.3); color: #843d4d; }
+    .ebook-btn--pink:hover { background: linear-gradient(rgba(192, 120, 136, 0.1), rgba(192, 120, 136, 0.1)), rgba(255, 255, 255, 0.8); border-color: #843d4d; }
+    
+    .ebook-btn--blush { border: 1px solid rgba(184, 122, 128, 0.3); color: #7e4349; }
+    .ebook-btn--blush:hover { background: linear-gradient(rgba(184, 122, 128, 0.1), rgba(184, 122, 128, 0.1)), rgba(255, 255, 255, 0.8); border-color: #7e4349; }
+
+  </style>
+</head>
+<body class="ks-page">
+  <!-- Fixed circuitry background -->
+  <div class="ks-bg-visual" aria-hidden="true"></div>
+
+  <!-- Top Navigation -->
+  <nav class="ks-nav" aria-label="Main navigation">
+    <div class="ks-nav__inner">
+      <a href="../keysight.html" class="ks-nav__logo metallic-text" aria-label="Back to hub">lydia<span>.</span>pedersen</a>
+      <a href="../keysight.html" class="ks-nav__link metallic-text">&larr; Back to Hub</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- Page Header -->
+    <header class="ks-page-header ks-container ks-reveal">
+      <div class="ks-label" style="text-align: center;">Section 05 / Value</div>
+      <h1 class="ks-page-header__title metallic-text">What I Bring</h1>
+    </header>
+
+    <!-- Cards Grid -->
+    <section class="ks-container">
+      <div class="value-grid">
+        
+        <!-- Card 1 -->
+        <div class="value-card value-card--gold ks-reveal ks-reveal-delay-1" onclick="this.classList.toggle('is-active')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); this.classList.toggle('is-active'); }">
+          <h2 class="value-card__title">Lab Credibility</h2>
+          <p class="value-card__text">Genuine laboratory experience builds trust with hardware teams. Fifteen years of physical validation positions me to verify measurements as an engineering peer, which naturally accelerates alignment.</p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="value-card value-card--rose ks-reveal ks-reveal-delay-2" onclick="this.classList.toggle('is-active')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); this.classList.toggle('is-active'); }">
+          <h2 class="value-card__title">Architectural Fluency</h2>
+          <p class="value-card__text">Meaningful analysis connects software behavior directly to physical hardware limits. Understanding the contexts for different workloads expands customer discussions beyond basic compliance testing.</p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="value-card value-card--peach ks-reveal ks-reveal-delay-3" onclick="this.classList.toggle('is-active')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); this.classList.toggle('is-active'); }">
+          <h2 class="value-card__title">Strategic Communication</h2>
+          <p class="value-card__text">Complex technical realities must be translated into clear business justifications. Precise communication bridges the gap between laboratory needs and management goals, guiding customers toward confident purchasing decisions.</p>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="value-card value-card--dpink ks-reveal ks-reveal-delay-4" onclick="this.classList.toggle('is-active')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); this.classList.toggle('is-active'); }">
+          <h2 class="value-card__title">Learning Velocity</h2>
+          <p class="value-card__text">Mastering new technologies requires a highly structured approach to learning. My ability to quickly break down complex subjects ensures rapid adaptation to entirely new product portfolios and measurement architectures.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- eBooks Row -->
+    <section class="ks-container ks-reveal ks-reveal-delay-5">
+      <div class="ebooks-wrapper">
+        <h2 class="ebooks-header metallic-text">eBooks</h2>
+        <p class="ebooks-description">
+          Technical versatility originates from a genuine passion for continuous self-education. Meticulously deconstructing these architectures serves as a rigorous personal pursuit to master complex engineering domains.
+        </p>
+        
+        <div class="ebooks-card">
+          <div class="ebooks-container">
+            <a href="../assets/docs/signal-integrity-ebook-v2.0.pdf" target="_blank" class="ebook-btn ebook-btn--gold">Signal Integrity</a>
+            <a href="../assets/docs/tokenization-ebook-v1.0.pdf" target="_blank" class="ebook-btn ebook-btn--rose">Tokenization</a>
+            <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" class="ebook-btn ebook-btn--peach">Embeddings</a>
+            <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" class="ebook-btn ebook-btn--dpink">Transformers</a>
+            <a href="../assets/docs/positional-encoding-ebook-v1.0.pdf" target="_blank" class="ebook-btn ebook-btn--pink">Positional Encoding</a>
+            <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" class="ebook-btn ebook-btn--blush">Mixture of Experts</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom Navigation -->
+    <div class="ks-container">
+      <nav class="ks-bottom-nav ks-reveal ks-reveal-delay-6" aria-label="Section navigation">
+        <a href="translation.html" class="ks-bottom-nav__link metallic-text">&larr; Translation</a>
+        <a href="close.html" class="ks-bottom-nav__link metallic-text">Close &rarr;</a>
+      </nav>
+    </div>
+
+  </main>
+
+  <script src="../js/keysight.js"></script>
+</body>
+</html>

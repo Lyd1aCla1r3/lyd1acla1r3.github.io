@@ -158,47 +158,47 @@
           <h2 class="metallic-text" style="text-align: center; font-size: clamp(2rem, 4vw, 2.5rem); margin-top: 10px; margin-bottom: var(--space-2xl); font-family: var(--font-display);">Tokenization Series</h2>
         <!-- BLOG_LIST_START -->
 
-          <div class="series-group" style="margin-top: var(--space-2xl);">
-              <div class="series-items">
-                  
-                  <a href="tokenization-preface.html">
-                      <article class="blog-item series-item">
-                          <h2>Preface: Why Tokenization Matters</h2>
-                          <p>Neural networks fundamentally operate on numerical tensors, establishing a strict requirement to translate raw text into structured integer sequences. Byte Pair Encoding satisfies this mathematical constraint by statistically discovering subword units, serving as the critical bridge to the initial embedding matrix.</p>
-                      </article>
-                  </a>
-                  <a href="tokenization-chapter_01.html">
-                      <article class="blog-item series-item">
-                          <h2>Part 1: Characters, Words, and the Subword Compromise</h2>
-                          <p>The translation of raw text into a sequence of integer IDs requires defining a finite vocabulary space. Analyzing word-level and character-level boundaries reveals an inherent mathematical tradeoff between infinite vocabulary expansion and the destruction of semantic meaning, mandating a subword compression algorithm.</p>
-                      </article>
-                  </a>
-                  <a href="tokenization-chapter_02.html">
-                      <article class="blog-item series-item">
-                          <h2>Part 2: The BPE Training Algorithm</h2>
-                          <p>Constructing an optimized subword vocabulary requires a deterministic compression algorithm rather than manual linguistic rules. Byte Pair Encoding resolves this by initializing a base character vocabulary and executing a greedy, iterative merge operation that systematically fuses the most frequent adjacent tokens into unified semantic structures.</p>
-                      </article>
-                  </a>
-                  <a href="tokenization-chapter_03.html">
-                      <article class="blog-item series-item">
-                          <h2>Part 3: Training BPE by Hand</h2>
-                          <p>Executing the Byte Pair Encoding algorithm against a concrete corpus reveals how abstract statistical rules collapse character-level data into optimized semantic units. Tracing the frequency counts and merge selections across a fourteen-step compression sequence demonstrates the deterministic derivation of morphological stems and suffixes without linguistic programming.</p>
-                      </article>
-                  </a>
-                  <a href="tokenization-chapter_04.html">
-                      <article class="blog-item series-item">
-                          <h2>Part 4: Encoding and Decoding</h2>
-                          <p>The deployment of a static vocabulary and ordered list of merge rules enables the rigorous tokenization of novel text. This process mathematically guarantees consistency with the training distribution while gracefully decomposing unseen words into familiar subword units.</p>
-                      </article>
-                  </a>
-                  <a href="tokenization-chapter_05.html">
-                      <article class="blog-item series-item">
-                          <h2>Part 5: From Bytes to Billions</h2>
-                          <p>Bridging the theoretical foundation of tokenization to production realities requires replacing arbitrary character sets with a universal byte-level fallback. Tracing the exact algorithm across pure byte integers proves that morphological structure emerges naturally without any requirement for human-readable letters, establishing the strict mathematical dimensions required by the Transformer's embedding matrix.</p>
-                      </article>
-                  </a>
+              <div class="series-group" style="margin-top: var(--space-2xl);">
+                  <div class="series-items">
+                      
+                      <a href="tokenization-preface.html">
+                          <article class="blog-item series-item">
+                              <h2>Preface: Why Tokenization Matters</h2>
+                              <p>Neural networks fundamentally operate on numerical tensors, establishing a strict requirement to translate raw text into structured integer sequences. Byte Pair Encoding satisfies this mathematical constraint by statistically discovering subword units, serving as the critical bridge to the initial embedding matrix.</p>
+                          </article>
+                      </a>
+                      <a href="tokenization-chapter_01.html">
+                          <article class="blog-item series-item">
+                              <h2>Part 1: Characters, Words, and the Subword Compromise</h2>
+                              <p>The translation of raw text into a sequence of integer IDs requires defining a finite vocabulary space. Analyzing word-level and character-level boundaries reveals an inherent mathematical tradeoff between infinite vocabulary expansion and the destruction of semantic meaning, mandating a subword compression algorithm.</p>
+                          </article>
+                      </a>
+                      <a href="tokenization-chapter_02.html">
+                          <article class="blog-item series-item">
+                              <h2>Part 2: The BPE Training Algorithm</h2>
+                              <p>Constructing an optimized subword vocabulary requires a deterministic compression algorithm rather than manual linguistic rules. Byte Pair Encoding resolves this by initializing a base character vocabulary and executing a greedy, iterative merge operation that systematically fuses the most frequent adjacent tokens into unified semantic structures.</p>
+                          </article>
+                      </a>
+                      <a href="tokenization-chapter_03.html">
+                          <article class="blog-item series-item">
+                              <h2>Part 3: Training BPE by Hand</h2>
+                              <p>Executing the Byte Pair Encoding algorithm against a concrete corpus reveals how abstract statistical rules collapse character-level data into optimized semantic units. Tracing the frequency counts and merge selections across a fourteen-step compression sequence demonstrates the deterministic derivation of morphological stems and suffixes without linguistic programming.</p>
+                          </article>
+                      </a>
+                      <a href="tokenization-chapter_04.html">
+                          <article class="blog-item series-item">
+                              <h2>Part 4: Encoding and Decoding</h2>
+                              <p>The deployment of a static vocabulary and ordered list of merge rules enables the rigorous tokenization of novel text. This process mathematically guarantees consistency with the training distribution while gracefully decomposing unseen words into familiar subword units.</p>
+                          </article>
+                      </a>
+                      <a href="tokenization-chapter_05.html">
+                          <article class="blog-item series-item">
+                              <h2>Part 5: From Bytes to Billions</h2>
+                              <p>Bridging the theoretical foundation of tokenization to production realities requires replacing arbitrary character sets with a universal byte-level fallback. Tracing the exact algorithm across pure byte integers proves that morphological structure emerges naturally without any requirement for human-readable letters, establishing the strict mathematical dimensions required by the Transformer's embedding matrix.</p>
+                          </article>
+                      </a>
+                  </div>
               </div>
-          </div>
         <!-- BLOG_LIST_END -->
 
     </div>

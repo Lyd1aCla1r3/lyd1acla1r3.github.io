@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mach-Zehnder and IQ Modulators — Lydia Pedersen</title>
+  <link rel="stylesheet" href="../css/styles.css?v=1.2">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .blog-post {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: var(--space-4xl) var(--space-md);
+        background: var(--bg-card);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 8px 32px rgba(183, 110, 121, 0.05);
+        border: 1px solid var(--border-subtle);
+    }
+    .blog-post h1, .blog-post h2, .blog-post h3 {
+        color: var(--text-primary);
+        font-family: var(--font-display);
+        margin-top: var(--space-2xl);
+        margin-bottom: var(--space-md);
+    }
+    .blog-post h1 { font-size: var(--fs-3xl); margin-top: 0; line-height: 1.1; }
+    .blog-post h2, .blog-post h3 { border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-sm); }
+    .blog-post h2 { font-size: var(--fs-2xl); }
+    .blog-post h3 { font-size: var(--fs-xl); }
+    .blog-post p, .blog-post li {
+        color: var(--text-secondary);
+        line-height: var(--lh-relaxed);
+        margin-bottom: var(--space-md);
+        font-size: var(--fs-md);
+    }
+    .blog-post img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-md);
+        margin: var(--space-lg) 0;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .blog-post a:not(.pagination-link) {
+        color: var(--text-accent);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s ease;
+    }
+    .blog-post a:not(.pagination-link):hover {
+        border-bottom-color: var(--text-accent);
+    }
+    .blog-post {
+        background: rgba(255, 255, 255, 0.65);
+        padding: var(--space-2xl);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-subtle);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .blog-post .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; display: flex; gap: 1rem; align-items: center; }
+    .blog-post .meta span { display: inline-flex; align-items: center; gap: 0.25rem; }
+    .blog-post p { line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1.05rem; }
+    .blog-post ul, .blog-post ol { margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem; }
+    .blog-post li { margin-bottom: 0.5rem; }
+    .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+    .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
+    .blog-post table { width: auto; margin: var(--space-2xl) 0; border-collapse: collapse; text-align: left; }
+    .blog-post th, .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post th { font-weight: 600; color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-subtle); }
+    .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 4px 10px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; font-size: 0.95rem; color: var(--rose-gold-dark); margin-right: 6px; }
+
+    /* Responsive: horizontally scroll tables on mobile */
+    @media (max-width: 768px) {
+      .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
+    }
+    
+    /* Post Tabs */
+    .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
+    .post-tabs::-webkit-scrollbar { display: none; }
+    .post-tab-btn { padding: 8px 16px; border: none; background: transparent; color: var(--text-muted); font-family: var(--font-display); font-size: 1rem; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; white-space: nowrap; transition: color 0.2s, border-color 0.2s; }
+    .post-tab-btn:hover { color: var(--text-primary); }
+    .post-tab-btn.active { color: var(--text-accent); border-bottom-color: var(--text-accent); font-weight: 500; }
+    .post-tab-content { display: none; padding-top: var(--space-md); }
+    .post-tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+  <!-- Fixed chip visual (always visible, bottom-left, behind everything) -->
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
+  <!-- Full-screen overlay canvas for the diagonal binary→agent→text animation -->
+  <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="../index.html" class="nav__logo" aria-label="Home">lydia<span>.</span>pedersen</a>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="../index.html#about" class="nav__link">About</a></li>
+        <li><a href="../index.html#samples" class="nav__link">Writing</a></li>
+        <li><a href="../index.html#case-studies" class="nav__link">Engineering</a></li>
+        <li><a href="../index.html#skills" class="nav__link">Skills</a></li>
+        <li><a href="index.html" class="nav__link">Blog</a></li>
+        <li><a href="../ebooks/index.html" class="nav__link">Ebooks</a></li>
+        <li><a href="../index.html#contact" class="nav__link">Contact</a></li>
+      </ul>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="nav__toggle-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-lg));">
+    <div class="container">
+<nav aria-label="breadcrumb" class="breadcrumbs"><ol>
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="index.html">Blog</a></li><li><a href="series-signal-integrity.html">Series: Signal Integrity</a></li><li><a href="signal-integrity-part-06.html">Part 6: Coherent Optics</a></li><li aria-current="page">Mach-Zehnder and IQ Modulators</li></ol></nav>
+        <article class="blog-post series-signal-integrity">
+<h1>Mach-Zehnder and IQ Modulators</h1>
+<!-- SUMMARY: A phase modulator moves the phase of a light wave and an interferometer turns a phase difference into an amplitude, and a nested arrangement of two interferometers reaches every point of the plane of amplitude and phase. This guide derives the field transfer of a Mach-Zehnder modulator, E_out = E_in cos(delta phi / 2), its bipolar behavior at the null bias point and its finite extinction ratio, and then the identity I cos wt + Q sin wt = A cos(wt - phi), with A = sqrt(I^2 + Q^2) and phi = atan(Q/I), that lets the in-phase and quadrature interferometers synthesize any amplitude and phase. The chapter counts the four degrees of freedom of a dual-polarization transmitter and the bits per symbol of QPSK and 16QAM, works out the arcsine drive that the sinusoidal transfer requires, and derives coherent detection with a 90-degree optical hybrid, a local oscillator and balanced photodiode pairs, where the multiplication of the received wave by a reference occurs in the optics and the photodiodes and not in the digital processor. --><p><em>Prefer to read offline? <a href="../../../assets/docs/signal-integrity-ebook-v2.0.pdf" target="_blank" rel="noopener">Download the complete Signal Integrity (Advanced Edition) ebook.</a></em></p><p><a href="signal-integrity-19_Light_and_the_Electro_Optic_Effect.html">Light as an Electromagnetic Wave and the Electro-Optic Effect</a> ended with a phase modulator, a crystal section that adds the phase $\Delta\phi = \pi V/V_\pi$ to the wave that passes through it. A phase modulator alone moves the phase and leaves the amplitude unchanged, and a transmitter that must place a symbol anywhere on the plane of amplitude and phase needs more. This chapter derives how an interferometer converts a phase difference into an amplitude, how two interferometers in quadrature produce any point of the plane, and how the receiver recovers the two components again. The chapter uses the trigonometry that <a href="signal-integrity-02_Frequency_Content_of_Digital_Signals.html">Frequency Content of Digital Signals</a> used for the Fourier series, and the receiver derivation uses the power relations of <a href="signal-integrity-08_S_Parameters_and_VNA.html">S-Parameters and VNA</a>.</p>
+<h2>Core Concepts</h2>
+<h3>The Mach-Zehnder Modulator</h3>
+<p>A <strong>Mach-Zehnder modulator</strong> (MZM) splits the input wave into two arms, applies a phase modulator to each arm, and recombines the two waves. Assume that the splitter and the combiner divide the power equally, so that each arm receives the field $E_{in}/\sqrt2$ and the combiner passes $1/\sqrt2$ of each arm field to the output. The arms add the phases $\phi_1$ and $\phi_2$, and the output field is</p>
+<p>$$E_{out} = \frac{E_{in}}{2}\left(e^{j\phi_1} + e^{j\phi_2}\right)$$</p>
+<p>Write the two phases as their mean $\bar\phi = (\phi_1 + \phi_2)/2$ and their difference $\Delta\phi = \phi_1 - \phi_2$, so that $\phi_{1,2} = \bar\phi \pm \Delta\phi/2$. Factor out the mean phase:</p>
+<p>$$E_{out} = \frac{E_{in}}{2}\,e^{j\bar\phi}\left(e^{j\Delta\phi/2} + e^{-j\Delta\phi/2}\right) = E_{in}\,e^{j\bar\phi}\cos\frac{\Delta\phi}{2}$$</p>
+<p>The cosine comes from Euler&#39;s formula for the sum of the two exponentials. In <strong>push-pull</strong> operation the two arms receive voltages of opposite sign, $\phi_1 = \pi v/(2V_\pi)$ and $\phi_2 = -\pi v/(2V_\pi)$, which gives $\bar\phi = 0$ and $\Delta\phi = \pi v/V_\pi$, and the output phase stays fixed while the amplitude varies:</p>
+<p>$$E_{out} = E_{in}\cos\!\left(\frac{\pi v}{2V_\pi}\right), \qquad P_{out} = P_{in}\cos^2\!\left(\frac{\pi v}{2V_\pi}\right) = \frac{P_{in}}{2}\left(1 + \cos\frac{\pi v}{V_\pi}\right)$$</p>
+<p>Here $V_\pi$ is the voltage difference between the point of full transmission ($v = 0$, $\Delta\phi = 0$) and the point of zero transmission ($v = V_\pi$, $\Delta\phi = \pi$, the arms in antiphase). A driver that applies the same voltage to one arm only ($\bar\phi \ne 0$) also changes the output phase, which is a <strong>chirp</strong>, and push-pull drive avoids it.</p>
+<p>The power transfer is an even function of the voltage, and a direct-detection receiver that measures only power cannot see the sign of the field, whereas the field carries more information than the power. A bias at the null point, $\Delta\phi = \pi + \pi v/V_\pi$, gives</p>
+<p>$$E_{out} = E_{in}\cos\!\left(\frac{\pi}{2} + \frac{\pi v}{2V_\pi}\right) = -E_{in}\sin\!\left(\frac{\pi v}{2V_\pi}\right)$$</p>
+<p>so that the field is proportional to the drive near the origin, changes its sign when the drive changes its sign, and reaches $\pm E_{in}$ at $v = \pm V_\pi$. A positive and a negative drive produce fields that differ in phase by $\pi$. The MZM at the null bias is therefore a modulator of a <strong>real-valued</strong> field, which carries one dimension of the plane (a binary phase code, with levels $\pm 1$, or a multilevel code on the real axis). A single MZM cannot place a point off the real axis, which is why the older statement that a single modulator can only change the amplitude is incomplete: a phase modulator changes the phase, an MZM changes the real amplitude, and neither covers the plane.</p>
+<p>The null is not perfect in a real device. Assume that the splitter divides the field unequally, so that the arm fields are $\tfrac12(1 + \varepsilon)E_{in}$ and $\tfrac12(1 - \varepsilon)E_{in}$. At $\Delta\phi = \pi$ the arms are in antiphase and the output amplitude is the difference, $\varepsilon E_{in}$, so the <strong>extinction ratio</strong> is $-20\log_{10}\varepsilon$ dB: a 1 percent imbalance gives 40 dB, 3 percent gives 30.5 dB, and 10 percent gives 20 dB. The residual field appears in the constellation as an offset from the intended point.</p>
+<h3>The In-Phase and Quadrature Identity</h3>
+<p>The plane of amplitude and phase needs two real numbers per symbol, and two orthogonal waves of the same frequency supply them. The sum of a cosine and a sine of the same frequency is a single cosine with a shifted phase. Let the weights be $I$ and $Q$ and expand a cosine with amplitude $A$ and phase $\varphi$:</p>
+<p>$$A\cos(\omega t - \varphi) = A\cos\varphi\,\cos\omega t + A\sin\varphi\,\sin\omega t$$</p>
+<p>The right side has the form $I\cos\omega t + Q\sin\omega t$ with $I = A\cos\varphi$ and $Q = A\sin\varphi$. The two relations invert to the amplitude and the phase,</p>
+<p>$$I\cos\omega t + Q\sin\omega t = A\cos(\omega t - \varphi), \qquad A = \sqrt{I^2 + Q^2}, \quad \varphi = \operatorname{atan2}(Q, I)$$</p>
+<p>where atan2 chooses the quadrant of the angle (the plain arctangent $\operatorname{atan}(Q/I)$ cannot distinguish $(I, Q)$ from $(-I, -Q)$). This is the statement that <a href="signal-integrity-17_CDR_and_PLL_Loop_Dynamics.html">CDR and PLL Loop Dynamics</a> uses for a phase interpolator: a sum of a weighted cosine and a weighted sine of one frequency is one sinusoid of that frequency, with amplitude $\sqrt{w_1^2 + w_2^2}$ and phase $\operatorname{atan}(w_2/w_1)$. Two numbers $(I, Q)$ and the two numbers $(A, \varphi)$ are two descriptions of one point, and the point is written as the complex number $s = I + jQ = A e^{j\varphi}$, the complex envelope of the carrier, with $E(t) = \operatorname{Re}\{s\,e^{-j\omega t}\}$. The sign of the exponent is a convention of optics that differs from the $e^{j\omega t}$ of <a href="signal-integrity-03_Impedance_Reflections_and_Termination.html">Impedance, Reflections, and Termination</a>, and the constellation point $(I, Q)$ is the same in both.</p>
+<p>The weights can be recovered from the sum. Average the product of the sum with $\cos\omega t$ over one period, using $\langle\cos^2\rangle = \tfrac12$ and $\langle\sin\cos\rangle = 0$:</p>
+<p>$$\left\langle (I\cos\omega t + Q\sin\omega t)\cos\omega t\right\rangle = \frac{I}{2}, \qquad \left\langle (I\cos\omega t + Q\sin\omega t)\sin\omega t\right\rangle = \frac{Q}{2}$$</p>
+<p>The cosine and the sine are <strong>mathematically orthogonal</strong>: their product averages to zero, so each average isolates one weight and ignores the other. This is a different property from the <strong>physical orthogonality</strong> of two polarizations in <a href="signal-integrity-19_Light_and_the_Electro_Optic_Effect.html">Light as an Electromagnetic Wave and the Electro-Optic Effect</a>. Two polarizations are separate field components that never add into one vector direction, and the receiver separates them with a polarization beam splitter. The in-phase and quadrature waves have the <em>same</em> polarization and add into one wave, and only the multiplication and averaging above separate them.</p>
+<h3>Degrees of Freedom and Bits per Symbol</h3>
+<p>A transmitter that controls $I$ and $Q$ on each of the two polarizations has four independent real numbers per symbol, which are the four degrees of freedom (XI, XQ, YI, and YQ). Assume that each real number takes $m$ equally spaced levels, so that each polarization carries $m^2$ distinct points and $\log_2 m^2$ bits, so a <strong>constellation</strong> of $M$ points carries $\log_2 M$ bits per symbol:</p>
+<table>
+<thead>
+<tr>
+<th>Format</th>
+<th>Levels per axis</th>
+<th>Points $M$</th>
+<th>Bits per polarization</th>
+<th>Bits per symbol, both polarizations</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>QPSK</td>
+<td>2</td>
+<td>4</td>
+<td>2</td>
+<td>4</td>
+</tr>
+<tr>
+<td>16QAM</td>
+<td>4</td>
+<td>16</td>
+<td>4</td>
+<td>8</td>
+</tr>
+</tbody></table>
+<p>The older description of eight bits per optical clock cycle confuses the units. The symbols follow each other at the <strong>symbol rate</strong> (tens of gigabaud), and one optical cycle lasts 5.17 fs, so a symbol spans thousands of optical cycles. The eight bits per symbol of dual-polarization 16QAM follow from the table. With the levels $\pm1$ and $\pm3$ on each axis (the unit of the table is arbitrary) a 16QAM constellation has the mean power $\langle I^2 + Q^2\rangle = 10$ and the peak power 18 at the corners, a peak-to-average ratio of 2.55 dB, whereas every QPSK point has the same power.</p>
+<h2>Architecture</h2>
+<h3>The Nested IQ Modulator</h3>
+<p>An IQ modulator nests two MZMs inside a third interferometer. The outer splitter divides the field into two arms of $E_{in}/\sqrt2$, and each arm contains a child MZM, one for $I$ and one for $Q$. The child field transfers are the real numbers $m_I, m_Q \in [-1, 1]$ of the null-biased expression above, each multiplied by the child&#39;s own field factor, so each child passes $E_{in}\,m/\sqrt2$. A phase section in the $Q$ arm adds a fixed $90^\circ$ at the carrier (a quarter of an optical <em>cycle</em>, 1.29 fs of delay at 1550 nm, set by a bias voltage on a phase modulator and not by a physical path of a quarter wavelength). The outer combiner passes $1/\sqrt2$ of each arm, so</p>
+<p>$$E_{out} = \frac{E_{in}}{2}\left(m_I + j\,m_Q\right)$$</p>
+<p>with $m_I$ and $m_Q$ set by the two data drives. The combination of the two orthogonal waves produces one wave with amplitude $A = \tfrac12\sqrt{m_I^2 + m_Q^2}\,|E_{in}|$ and phase $\operatorname{atan2}(m_Q, m_I)$, as the identity above states, so the complex number $m_I + j m_Q$ sets the constellation point. The factor $1/2$ in this field costs optical power. At a corner of the constellation ($m_I = m_Q = 1$) the output power is $\tfrac14(1 + 1) = \tfrac12$ of the input (3.01 dB loss), and on an axis ($m_I = 1$, $m_Q = 0$) it is $\tfrac14$ (6.02 dB loss), because the output combiner passes the factor $1/\sqrt2$ of each arm field and the remaining power leaves through the unused port or radiates into the substrate.</p>
+<h3>Dual-Polarization Transmitter</h3>
+<p>The dual-polarization transmitter of Chapter 19 places one such IQ modulator in each polarization branch. The laser feeds a power splitter, the two IQ modulators carry independent data, a polarization rotator turns the second branch by $90^\circ$, and the polarization beam combiner merges the branches. The array contains four child MZMs, each with two phase-modulating arms, which makes eight arms in all. The four child MZMs receive four independent electrical streams: XI, XQ, YI, and YQ. The optical power budget follows from the factors above. For a 16QAM constellation driven to $m \in \{\pm\tfrac13, \pm1\}$ the mean of $m^2$ is $\tfrac12(\tfrac19 + 1) = 0.556$, so each IQ modulator has the mean output power $\tfrac14(2)(0.556) = 0.278$ of its input, and the whole transmitter delivers $0.278$ of the laser power (a loss of 5.56 dB) before the excess loss of the waveguides.</p>
+<h3>Drive Levels and the Arcsine Predistortion</h3>
+<p>The field transfer $m = \sin(\pi v/2V_\pi)$ is not linear. A drive that spaces the voltages uniformly does not space the fields uniformly. To place the four amplitude levels at the field values $-1, -\tfrac13, +\tfrac13, +1$ (equal spacing), the drive must be the inverse function</p>
+<p>$$\frac{v}{V_\pi} = \frac{2}{\pi}\arcsin m$$</p>
+<p>which gives $v/V_\pi = \pm0.2163$ for $m = \pm\tfrac13$ and $\pm1$ for $m = \pm1$. The inner levels need a smaller voltage than the linear value of $\pm\tfrac13$, because the sine is steeper near the origin than the straight line to the corners. The transmitter applies this correction in the digital-to-analog converter ahead of the driver, so the <strong>predistortion</strong> table is part of the signal path, and the electrical drive reaches the full swing of $\pm V_\pi$ only at the outer levels.</p>
+<h3>Bias Control</h3>
+<p>The relations above assume that the child MZMs are biased at their nulls and that the $Q$ arm is $90^\circ$ from the $I$ arm. The bias points drift with temperature and with the charge motion mentioned in Chapter 19, so each IQ modulator needs three bias voltages: one for the null of the $I$ child, one for the null of the $Q$ child, and one for the quadrature phase section. A dual-polarization transmitter therefore has six bias loops. A control loop adds a small dither tone to a bias voltage, detects the corresponding tone in a tap of the output power, and moves the bias until the detected tone reaches the value that marks the null or the quadrature point. The detection multiplies the tap by the known tone and averages the product, which is the same use of averaging that <a href="signal-integrity-12_Test_Patterns_and_Jitter_Isolation.html">Test Patterns and Jitter Isolation</a> applies to a repeating pattern.</p>
+<h3>Coherent Reception</h3>
+<p>The receiver reverses the process, and the detection principle needs a derivation because no photodiode follows the optical phase at 193 THz. A photodiode responds to the power of the sum of the fields that fall on it, with the responsivity $R$ (amperes per watt, typically 0.8 to 1.0). Assume a signal field $E_s$ and a <strong>local oscillator</strong> (LO) field $E_{LO}$ of a laser at nearly the same frequency, with the powers $P_s = |E_s|^2$ and $P_{LO} = |E_{LO}|^2$. The current of a photodiode that receives $E_s + E_{LO}$ is</p>
+<p>$$i = R\,|E_s + E_{LO}|^2 = R\left(P_s + P_{LO} + 2\operatorname{Re}\{E_s E_{LO}^*\}\right)$$</p>
+<p>The last term is the <strong>beat</strong> of the two waves. It contains the product of the signal and the LO, which is the multiplication that the older description assigned to the digital processor (at 193 THz no processor and no converter can perform it). The photodiode performs the multiplication, because its response is proportional to the square of the field, and it also averages away the terms at twice the optical frequency.</p>
+<p>A <strong>balanced pair</strong> of photodiodes receives the fields $E_s + E_{LO}$ and $E_s - E_{LO}$ (with the factor $\tfrac12$ of the splitting) and the current is the difference. The squares of the magnitudes differ by $4\operatorname{Re}\{E_s E_{LO}^*\}$ and the terms $P_s$ and $P_{LO}$ cancel, so the pair outputs only the beat. A <strong>90-degree optical hybrid</strong> is a passive coupler that forms four combinations of the two inputs: $E_s \pm E_{LO}$ and $E_s \pm jE_{LO}$ (each with the factor $\tfrac12$). The first pair gives the in-phase current and the second pair gives the quadrature current:</p>
+<p>$$i_I = R\sqrt{P_sP_{LO}}\,\cos\theta, \qquad i_Q = R\sqrt{P_sP_{LO}}\,\sin\theta$$</p>
+<p>where $\theta$ is the phase of the signal relative to the LO. The hybrid supplies the 90-degree reference optically, and the digital processor never multiplies at optical frequency. The currents are the real and imaginary parts of the complex envelope of the symbol. Each polarization needs its own hybrid and four photodiodes, so the dual-polarization receiver splits the signal with a polarization beam splitter, splits the LO in power, and uses <strong>eight photodiodes</strong> in four balanced pairs. A transimpedance amplifier follows each pair and converts the current to a voltage, and an analog-to-digital converter samples the voltage. The analog path does not end at the photodiode. It continues through the transimpedance amplifier, the filters and the converter, and only then do the samples reach the digital processor.</p>
+<p>The beat has two practical consequences for the design of the receiver. The amplitude of the current grows with $\sqrt{P_{LO}}$, so a strong LO amplifies a weak signal: for $P_s = -10$ dBm ($0.1$ mW), $P_{LO} = 10$ dBm ($10$ mW) and $R = 0.9$ A/W, the beat current is $0.9\sqrt{(10^{-4})(10^{-2})} = 0.9$ mA, whereas direct detection of the signal gives $0.09$ mA, a gain of $\sqrt{P_{LO}/P_s} = 10$, or 20 dB in amplitude. The second consequence is that the angle $\theta$ is not constant. The two lasers have a frequency offset $\Delta f$ and a phase drift, so $\theta$ rotates as $2\pi\Delta f\,t$ plus the symbol phase and the laser noise, and the processor must remove the rotation. It tracks the carrier phase with a loop of the type of <a href="signal-integrity-17_CDR_and_PLL_Loop_Dynamics.html">CDR and PLL Loop Dynamics</a>, and <a href="signal-integrity-21_Wideband_Signal_Analysis.html">Wideband Signal Analysis and EVM</a> treats the other impairments that the processor removes.</p>
+<h2>Worked Examples</h2>
+<h3>Mach-Zehnder Transfer Numbers</h3>
+<p>Take $V_\pi = 3$ V and push-pull drive, which gives the transmission $\cos^2 0 = 1$ at $v = 0$. At $v = V_\pi/2 = 1.5$ V the phase difference is $\pi/2$, and the power transmission is $\cos^2(\pi/4) = 0.5$ (3.01 dB). At $v = V_\pi = 3$ V the transmission is zero. With the null bias, a drive of $\pm1.5$ V gives the field $\mp\sin(\pi/4) = \mp0.707$ (power $0.5$), and $\pm3$ V gives $\mp1$. A splitting error of $\varepsilon = 0.03$ leaves the field $0.03\,E_{in}$ at the null, a power of $9\times10^{-4}$ and an extinction ratio of 30.5 dB.</p>
+<h3>Synthesizing a Constellation Point</h3>
+<p>The 16QAM point with $I = 3$ and $Q = 1$ has the amplitude $A = \sqrt{10} = 3.162$ and the phase $\varphi = \operatorname{atan2}(1, 3) = 18.43^\circ$. The wave $3\cos\omega t + 1\sin\omega t$ and the wave $3.162\cos(\omega t - 18.43^\circ)$ agree at every instant: at $\omega t = 0$ both equal 3.000, and at $\omega t = 90^\circ$ both equal 1.000. The receiver averages with the cosine and the sine and finds $I/2 = 1.5$ and $Q/2 = 0.5$, which restores the point after the factor 2 is applied.</p>
+<h3>Arcsine Drive and the Penalty of a Linear Drive</h3>
+<p>The four fields of 16QAM per axis are $-1, -\tfrac13, +\tfrac13, +1$, with equal spacings of $\tfrac23$ and the three eye openings equal. A drive that applied the voltages $\pm\tfrac13 V_\pi$ and $\pm V_\pi$ without correction would produce the fields $\sin(\pi/6) = 0.5$ and $\sin(\pi/2) = 1$, that is, $-1, -0.5, +0.5, +1$, so the spacings become $0.5, 1.0, 0.5$. The two outer eyes shrink to $0.5/0.667 = 0.75$ of the intended opening, which is a loss of $20\log_{10}0.75 = 2.5$ dB of margin in the outer eyes, while the middle eye grows to 1.5 times its intended opening. With the arcsine drive all three equal $\tfrac23$. The comparison is the optical counterpart of the equal PAM4 eyes of <a href="signal-integrity-15_PAM4_Signaling_and_Gray_Coding.html">PAM4 Signaling and Gray Coding</a>, where the transmitter must also place the levels at equal spacing.</p>
+<h3>Symbol Rate and Bandwidth of a 400 Gb/s Channel</h3>
+<p>A 400 Gb/s dual-polarization 16QAM channel carries 8 bits per symbol. Assume that the forward error correction and framing of <a href="signal-integrity-18_Line_Coding_FEC_and_Protocol_Framing.html">Line Coding, FEC, and Protocol Framing</a> add 15 percent (an assumed value for a strong code, larger than the 5.84 percent of the code in that chapter). The line rate is $400 \times 1.15 = 460$ Gb/s and the symbol rate is $460/8 = 57.5$ GBd. A raised-cosine pulse with a Nyquist frequency of $R_s/2$ (<a href="signal-integrity-02_Frequency_Content_of_Digital_Signals.html">Frequency Content of Digital Signals</a>) needs an electrical bandwidth of about 28.75 GHz on each of the four drive paths, and the receiver converters sample at twice the symbol rate or more, so at least 115 GSa/s on each of four channels. A dual-polarization QPSK channel at 100 Gb/s with the same overhead runs at $115/4 = 28.75$ GBd, which is half of the symbol rate of the 400 Gb/s channel and therefore needs half of its electrical bandwidth and sample rate.</p>
+<h3>Optical Power Budget of the Transmitter</h3>
+<p>For the 16QAM drive of the architecture section the transmitter delivers 27.8 percent of the laser power, or $-5.56$ dB, before the excess loss of the waveguides, the facets (Chapter 19: 0.17 dB for each fiber facet) and the combiners. A laser of 16 dBm therefore yields about 10 dBm at the modulator output in the ideal case, and several decibels less in a real device. The same transmitter driven with QPSK (all four points at $m_I, m_Q = \pm1$) delivers half of the laser power, $-3.01$ dB overall, which is 2.55 dB more than the 16QAM drive. The difference equals the peak-to-average ratio of 16QAM, because the peak drive is the same and the mean power is lower. The lower mean power is the price of the higher number of bits per symbol, and the receiver must recover it with a higher signal-to-noise ratio.</p>
+<h2>Edge Cases</h2>
+<h3>Quadrature Error and Carrier Leakage</h3>
+<p>A bias error in the $90^\circ$ section leaves the $I$ and $Q$ waves at $90^\circ + \delta$ instead of $90^\circ$. The two axes are no longer orthogonal, each average of the receiver picks up a fraction $\sin\delta$ of the other component, and the constellation becomes a parallelogram. A bias error at an MZM null leaves a residual field that adds a fixed offset to the point of that axis (the carrier leakage), with the size of the extinction ratio calculation above. Both errors are static in the model and are removed by the bias loops of the architecture section, and the part that remains appears as the constellation distortion that <a href="signal-integrity-21_Wideband_Signal_Analysis.html">Wideband Signal Analysis and EVM</a> measures.</p>
+<h3>Overdrive and the Limit of the Sine</h3>
+<p>The transfer $m = \sin(\pi v/2V_\pi)$ reaches its maximum at $v = V_\pi$ and falls again beyond it. A drive that exceeds $V_\pi$ does not clip. The field decreases, and the outer levels fold back toward the inner levels, which can map a symbol to the wrong decision region. A transmitter limits the peak drive to the range $\pm V_\pi$, and it accepts the loss of efficiency that the compression near the corners costs.</p>
+<h3>Phase Ambiguity of the Carrier Recovery</h3>
+<p>The constellations of QPSK and 16QAM are symmetric under rotation by $90^\circ$, so a carrier phase loop can lock to any of four phases without a change in its error signal. The receiver then decodes every symbol rotated by a multiple of $90^\circ$. Differential encoding of the phase transitions removes the ambiguity, because the data are carried by the change of the phase between symbols and not by its value relative to the carrier. Differential decoding doubles the symbol error probability of isolated errors (one wrong symbol corrupts two transitions), a multiplication of the same kind as the error tripling of the descrambler in Chapter 18. A cycle slip of the carrier loop, the event of Chapter 17, produces the same rotation by $90^\circ$ in the middle of a stream, and pilot symbols with known values let the processor detect it.</p>
+<h3>Polarization Rotation in the Fiber</h3>
+<p>The fiber does not preserve the orientation of the polarization. The two components that leave the transmitter as XI/XQ and YI/YQ arrive as mixtures of each other, with a mixing that changes with temperature and with mechanical disturbance. The receiver therefore cannot assign one polarization beam splitter output to one transmitted polarization. The digital processor undoes the mixing with a $2 \times 2$ adaptive filter, as <a href="signal-integrity-21_Wideband_Signal_Analysis.html">Wideband Signal Analysis and EVM</a> shows, and the transmitter and the receiver need no alignment of their polarization axes.</p>
+
+<div class="blog-pagination">
+      <a href="signal-integrity-19_Light_and_the_Electro_Optic_Effect.html" class="pagination-link prev">
+        <span class="pagination-label">Previous</span>
+        <span class="pagination-title">Light as an Electromagnetic Wave and the Electro-Optic Effect</span>
+      </a>
+      <a href="signal-integrity-21_Wideband_Signal_Analysis.html" class="pagination-link next">
+        <span class="pagination-label">Next</span>
+        <span class="pagination-title">Wideband Signal Analysis and EVM</span>
+      </a></div>
+        </article>
+    </div>
+  </main>
+  <script src="../js/main.js"></script>
+
+  <!-- KaTeX for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" 
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], fleqn: true});">
+  </script>
+
+  <!-- Mermaid for Diagram Rendering -->
+  <style>
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: var(--space-2xl) 0;
+    }
+    .mermaid svg {
+      filter: drop-shadow(0 4px 16px rgba(183, 110, 121, 0.12));
+    }
+    .mermaid .node rect {
+      rx: 12px !important;
+      ry: 12px !important;
+    }
+  </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ 
+      startOnLoad: true, 
+      securityLevel: 'loose',
+      theme: 'base',
+      themeVariables: {
+        fontFamily: "'Outfit', -apple-system, BlinkMacSystemFont, sans-serif",
+        primaryColor: '#ffffff',
+        primaryBorderColor: '#b76e79',
+        primaryTextColor: '#8b4f5a',
+        lineColor: '#b76e79',
+        nodeBorder: '#b76e79',
+        clusterBkg: 'rgba(232, 180, 184, 0.15)',
+        clusterBorder: '#d4a0a0'
+      }
+    });
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      // Mermaid
+      const blocks = document.querySelectorAll('.language-mermaid');
+      blocks.forEach((block) => {
+        const parent = block.parentElement;
+        if (parent.tagName === 'PRE') {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          parent.replaceWith(mermaidDiv);
+        }
+      });
+      
+      // Tabs
+      const tabGroups = document.querySelectorAll('[data-tab-group]');
+      tabGroups.forEach(group => {
+        const buttons = group.querySelectorAll('[data-tab]');
+        const contents = group.querySelectorAll('[data-tab-content]');
+        
+        buttons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const target = btn.getAttribute('data-tab');
+            
+            buttons.forEach(b => b.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+            
+            btn.classList.add('active');
+            const targetContent = group.querySelector(`[data-tab-content="${target}"]`);
+            if (targetContent) targetContent.classList.add('active');
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

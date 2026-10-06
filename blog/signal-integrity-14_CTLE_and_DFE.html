@@ -118,115 +118,299 @@
     <li><a href="index.html">Blog</a></li><li><a href="series-signal-integrity.html">Series: Signal Integrity</a></li><li><a href="signal-integrity-part-04.html">Part 4: Equalization and RX Architecture</a></li><li aria-current="page">Continuous Time Linear Equalization and Decision Feedback Equalization</li></ol></nav>
         <article class="blog-post series-signal-integrity">
 <h1>Continuous Time Linear Equalization and Decision Feedback Equalization</h1>
-<!-- SUMMARY: Receiver-side equalization reconstructs the original digital information from a physically degraded waveform using two complementary circuits. The continuous time linear equalizer (CTLE) restores spectral balance through analog high-pass filtering, while the decision feedback equalizer (DFE) subtracts calculated inter-symbol interference using prior bit decisions. This guide derives both architectures and their roles in the modern link budget. --><p><em>Prefer to read this seamlessly offline? <a href="../../../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity eBook here.</a></em></p><p>The transmitter feed-forward equalizer pre-distorts the signal before it enters the channel, compensating for the predictable downward slope of insertion loss. The signal still arrives at the receiver degraded. The sharp voltage transitions have been rounded by skin effect resistance, the high-frequency energy has been absorbed by the dielectric, and the trailing remnants of previous bits have smeared into the current time slot. Receiver-side equalization must reconstruct the original digital information from this physically damaged waveform.</p>
-<p>Two complementary circuits divide this reconstruction work. The continuous time linear equalizer (CTLE) is an analog filter that amplifies high-frequency signal components relative to low-frequency components, restoring the general spectral balance that the channel destroyed. The decision feedback equalizer (DFE) takes a fundamentally different approach: it makes a firm binary decision on each received bit, then uses that rigid digital certainty to calculate and subtract the exact inter-symbol interference that bit will inject into subsequent time slots.</p>
-<p>The CTLE operates on the signal before any digital decision occurs. It treats the entire incoming waveform as an analog entity and applies a broadband frequency correction. The DFE operates after the initial digital decision, using the discrete mathematical value of past bits to perform precise echo cancellation. The two stages work in series, with the CTLE cleaning the waveform enough for the DFE slicer to make reliable initial decisions, and the DFE removing the residual bit-pattern-dependent interference that the analog filter cannot resolve.</p>
-<p>Neither circuit determines its own operating parameters. A separate adaptation engine monitors the signal quality during a training phase and iteratively calculates the optimal settings for both the CTLE peaking gain and the DFE tap weights using the Least Mean Squares (LMS) algorithm. The physical channel, the manufacturing variation in the silicon, and the thermal environment all change from unit to unit and moment to moment. The adaptation engine tracks these changes continuously, adjusting the equalization in real time to maintain a functional link.</p>
+<!-- SUMMARY: The receiver has two equalizers that act on different parts of the problem. The continuous time linear equalizer (CTLE) is a filter with one zero and two poles that restores the gain that the channel removed at high frequency, and it amplifies the noise in the same band. The decision feedback equalizer (DFE) removes the interference of earlier bits by subtracting a weighted sum of their decisions, so it cancels post-cursors without amplifying noise and has no effect on pre-cursors. This guide derives the CTLE transfer function and its circuit origin, models the DFE and quantifies its noise and error-propagation behavior, derives the least mean squares (LMS) update as a gradient descent and its convergence rate, describes the link training procedure that sets the transmitter and receiver equalizers together, and works the numbers on the 12 inch line of the earlier chapters. --> <p><em>Prefer to read offline? <a href="../../../assets/docs/signal-integrity-ebook-v2.0.pdf" target="_blank" rel="noopener">Download the complete Signal Integrity (Advanced Edition) ebook.</a></em></p><p><a href="signal-integrity-13_Transmitter_FFE.html">Transmitter Feed-Forward Equalization</a> ends with the division of work among the three equalizers: the transmitter filter is open loop and can act on pre-cursors and post-cursors, the decision feedback equalizer cancels post-cursors only, and the linear equalizer at the receiver shapes the smooth part of the loss. This chapter describes the two receiver equalizers and the procedure that sets all three. It works with the same line as the earlier chapters, 12 inches of FR4 whose loss comes from <a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">Skin Effect and Dielectric Loss</a> and whose insertion loss, a quantity defined in <a href="signal-integrity-08_S_Parameters_and_VNA.html">S-Parameters and Vector Network Analysis</a>, sets the amount of equalization required.</p>
+<p>The two equalizers differ in what they observe. The CTLE sees the analog waveform before any decision, and it applies a gain that depends on frequency. The DFE sees the decisions of the slicer, and it subtracts a weighted sum of them from the waveform before the next decision. The first is a linear filter and shares the limits of every linear filter, which is that it cannot change the signal-to-noise ratio at any single frequency. The second is nonlinear because it contains the slicer, and the nonlinearity is the reason that it escapes one of those limits and acquires another: it does not enhance noise, and it can propagate a decision error.</p>
+<p>Neither equalizer chooses its own parameters without help from an adaptation procedure. An adaptation engine estimates the tap weights from the received signal, and a negotiation with the transmitter sets the transmitter filter. The chapter derives the update rule of the adaptation engine, shows how fast it converges, and describes the negotiation. <a href="signal-integrity-15_PAM4_Signaling_and_Gray_Coding.html">PAM4 Signaling and Gray Coding</a> then shows why these equalizers become more demanding when the number of voltage levels increases from two to four.</p>
 <h2>Core Concepts</h2>
-<h3>CTLE: Pole-Zero Frequency Shaping</h3>
-<p>A copper transmission line attenuates high-frequency components far more severely than low-frequency components, producing a frequency response that slopes downward with increasing frequency. The CTLE counteracts this slope by applying selective gain to the high-frequency portion of the spectrum. Two mathematical parameters from filter theory govern the shape of this correction.</p>
-<p>A <em>zero</em> is a frequency at which the circuit&#39;s transfer function begins to increase. The CTLE places a zero at a frequency chosen to match the onset of significant channel loss. Below this frequency, the signal requires little correction. Above it, the CTLE gain rises progressively, amplifying the weakened high-frequency transitions to restore their amplitude relative to the low-frequency static states.</p>
-<p>A <em>pole</em> is a frequency at which the gain curve levels off and begins to decrease. The CTLE places a pole above the signal&#39;s Nyquist frequency to cap the high-frequency boost. Without this ceiling, the amplification would continue rising into frequency ranges dominated by thermal noise and crosstalk. The CTLE would amplify noise as aggressively as signal content, degrading the signal-to-noise ratio rather than improving it.</p>
-<p>The gain applied between the zero and the pole is called the peaking gain. A short, low-loss channel requires minimal peaking because the high-frequency content survives the transit with adequate amplitude. A long backplane channel with severe insertion loss requires aggressive peaking to compensate for the heavy attenuation of edge energy. The peaking gain is a configurable parameter negotiated during link training.</p>
-<p>The fundamental limitation of the CTLE is that it operates as a linear analog filter. It generates a smooth, sweeping gain curve. A physical channel&#39;s insertion loss profile, however, is irregular and jagged: full of resonances from via stubs, reflections from impedance discontinuities, and the complex interactions of multiple connectors. The smooth analog curve counteracts the general downward slope of dielectric loss effectively, but it completely lacks the resolution to map and neutralize the channel&#39;s microscopic structural anomalies. Removing bit-pattern-dependent interference requires the DFE.</p>
-<h3>DFE: Echo Cancellation Through Digital Certainty</h3>
-<p>The voltage tail that a transmitted bit leaves behind in subsequent time slots is the ISI echo. A logic 1 transmitted as a positive voltage pulse arrives at the receiver as a rounded lump with a long trailing decay. That decay does not vanish when the clock advances to the next bit period. If the receiver attempts to read a subsequent bit while the tail of the previous bit still contributes residual voltage to the wire, the receiver&#39;s measured voltage is a composite of the intended signal and the historical echo. The echo shifts the sampled voltage toward the previous bit&#39;s polarity, pushing it dangerously close to the decision threshold.</p>
-<p>The DFE eliminates this echo by computing its exact magnitude and subtracting it from the incoming waveform before the receiver evaluates the next bit.</p>
-<p><strong>The slicer.</strong> The receiver contains a high-speed voltage comparator triggered by the clock recovery circuit at the precise center of each bit period. The slicer compares the analog voltage against a reference threshold (zero volts for a differential NRZ link) and outputs a rigid digital decision: $+1$ for a logic 1 and $-1$ for a logic 0. This decision is absolute and instantaneous, regardless of how noisy or distorted the analog waveform appears.</p>
-<p><strong>The echo calculation.</strong> The DFE maintains a set of calibrated tap weights, each representing the exact voltage that a single transmitted pulse contributes to a specific subsequent time slot on the particular physical channel. Tap 1 quantifies the echo bleeding from the immediately preceding bit. Tap 2 quantifies the echo from two bits ago. A modern PCIe Gen 5 receiver may carry 15 or more taps, capturing the full temporal extent of the channel&#39;s impulse response decay.</p>
-<p>After the slicer locks in a digital decision on bit $N$, the DFE multiplies that decision value ($+1$ or $-1$) by the tap 1 weight to calculate the exact echo that bit $N$ will inject into the time slot of bit $N+1$. The DFE performs the same multiplication for every active tap, computing the individual echo contributions from bits $N-1$ through $N-14$ (for a 15-tap system) simultaneously.</p>
-<p><strong>The summing node.</strong> An analog subtraction circuit sits directly in front of the slicer. The DFE routes the total calculated echo into this summing node with inverted polarity. The circuit physically subtracts the predicted echo from the raw incoming analog waveform. The slicer evaluates the cleaned result rather than the corrupted original.</p>
-<p><strong>Signed arithmetic and logic zeros.</strong> High-speed differential links represent a logic 0 as a negative voltage, not as zero volts. A logic 0 produces a negative trailing echo that drags the subsequent waveform downward. The slicer assigns a mathematical value of $-1$ to a logic 0 decision. Multiplying $-1$ by the tap weight produces a negative echo prediction. The summing node subtracts this negative value, which is mathematically equivalent to adding voltage. The circuit pulls the incoming waveform upward to compensate for the downward drag of the previous logic 0. The signed arithmetic handles both polarities through a single unified multiplication, requiring no separate logic path for ones and zeros.</p>
-<h3>The Power of Discarding Analog Reality</h3>
-<p>The DFE&#39;s superiority over a purely analog equalizer rests on a single architectural decision: it discards the received analog voltage and replaces it with a perfect mathematical integer.</p>
-<p>The analog voltage of a received logic 1 varies wildly depending on the surrounding bit pattern. A logic 1 following five consecutive zeros may cross the threshold at barely $+0.2$ V. A logic 1 following five consecutive ones may ride the accumulated charge to $+1.2$ V. An analog equalizer attempting to calculate the echo from such variable peaks faces an impossible measurement problem.</p>
-<p>The DFE avoids this problem entirely. The slicer examines the messy $+0.2$ V waveform and declares: &quot;This is a logic 1.&quot; At that instant, the DFE stops examining the physical wire. It knows the transmitter launched a consistent, pristine pulse for every logic 1 (the transmitter is a rigid machine). The channel is a linear time-invariant (LTI) system, so the echo from that standardized launched pulse is always the same, regardless of what other voltages are simultaneously present on the wire. The DFE outputs a pure $+1$, multiplies it by the calibrated tap weight, and routes the result to the summing node.</p>
-<p>The entire system replaces the uncertain, noisy analog reality with a clean digital integer and a pre-calibrated physical constant. This is why the DFE achieves precise ISI cancellation that no linear analog filter can match.</p>
-<h3>AC Coupling, DC Blocking, and Baseline Wander</h3>
-<p>High-speed serial links connect transmitters and receivers manufactured by different vendors, often operating at different common-mode DC bias voltages. An Intel CPU might bias its transmitter at 1.2 V while a Broadcom network controller biases its receiver at 0.8 V. A direct copper connection would force massive DC current from the higher-voltage chip into the lower-voltage chip, destroying the receiver&#39;s input transistors or saturating their bias points beyond functionality.</p>
-<p>A series capacitor placed on the trace between the transmitter and receiver solves this problem. The capacitor blocks the static DC voltage difference between the two chips while allowing the high-frequency AC data transitions to pass through. This is AC coupling, and it is mandatory in PCIe, Ethernet, and USB.</p>
-<p><strong>Capacitor physics.</strong> The capacitor consists of two metal plates separated by an insulating dielectric. Electrons never physically cross the gap. When the transmitter applies a positive voltage, it strips electrons from the transmitter-side plate, creating a strong electric field across the dielectric. This field pulls electrons onto the receiver-side plate from the receiver&#39;s wiring. The resulting electron movement in the wires on both sides constitutes displacement current, and to the rest of the circuit, it appears identical to current flowing through a continuous conductor. As the receiver-side plate accumulates electrons, the electrostatic repulsion between them creates increasing back-pressure against the driving field. When the back-pressure exactly equals the driving force, all electron movement stops. Current drops to zero. The capacitor has blocked the DC component.</p>
-<p>AC data transitions reverse the driving field before the plates reach equilibrium. The electrons slosh back and forth in the connecting wires without ever crossing the dielectric gap, maintaining continuous effective current flow.</p>
-<p><strong>Baseline wander.</strong> A long unbroken string of identical bits presents a constant voltage to the capacitor. The capacitor interprets this constant voltage as DC, charges up exponentially, and the effective current through the link decays toward zero. As the capacitor charges, the voltage on the receiver side drifts toward zero volts. The receiver&#39;s sampling threshold is calibrated against a stable baseline; the drifted baseline displaces the entire waveform, shrinking the eye opening. When the opposite bit value finally arrives, it starts from this collapsed baseline rather than the proper reference, and the receiver reads an incorrect value.</p>
-<p>The severity of baseline wander depends on the RC time constant: the product of the capacitor value and the termination resistance. A large coupling capacitor has massive plates that require many electrons to reach equilibrium, tolerating long runs of identical bits before the voltage drifts significantly. A small capacitor fills rapidly and may cause visible wander after only a handful of identical bits. The rate at which the capacitor charges is controlled by the termination resistance through which the current flows.</p>
-<p>High-speed protocols mitigate baseline wander through line coding. Schemes like 8b/10b encoding and PRBS scrambling guarantee an approximately equal density of ones and zeros over time, preventing the capacitor from accumulating a sustained charge in either direction. Line coding is covered in <a href="../05_SerDes_Architecture_and_Clocking/18_Line_Coding_FEC_and_Protocol_Framing.md">Line Coding, FEC, and Protocol Framing</a>.</p>
-<h2>Worked Examples</h2>
-<h3>One-Tap DFE Echo Cancellation</h3>
-<p>Consider a minimal one-tap DFE processing two consecutive bits on a channel where a single logic 1 leaves a trailing echo of $+0.3$ V in the next time slot.</p>
-<p>Bit 1 arrives. The analog voltage is above zero. The slicer locks in the decision: bit 1 is a logic 1 ($+1$).</p>
-<p>Bit 2 arrives. The transmitter sent a logic 0 (physically $-1.0$ V differential). The true signal from the transmitter physically collides with the $+0.3$ V echo still lingering from bit 1. The raw analog voltage at the receiver is $-1.0 + 0.3 = -0.7$ V. This voltage sits dangerously close to the zero-volt decision threshold, where a modest noise spike could cause a bit error.</p>
-<p>The DFE intervenes before the slicer evaluates bit 2. It recalls that bit 1 was a $+1$ and that the calibrated tap 1 weight is $0.3$ V. The predicted echo is $+1 \times 0.3 = +0.3$ V. The summing node subtracts this echo from the raw waveform: $-0.7 - 0.3 = -1.0$ V. The slicer evaluates a clean $-1.0$ V and confidently declares bit 2 is a logic 0.</p>
-<p>If bit 1 had been a logic 0 ($-1$), its negative pulse would have left a $-0.3$ V echo dragging the subsequent waveform downward. The DFE calculates: $-1 \times 0.3 = -0.3$ V. The summing node subtracts $-0.3$ V, which adds $+0.3$ V to the incoming signal, pulling the waveform upward to compensate for the downward drag. The signed arithmetic handles both polarities transparently.</p>
-<h3>15-Tap DFE Processing a Single Bit</h3>
-<p>Freeze time at the picosecond that bit $N$ (the 16th bit in a sequence) arrives at a receiver with a 15-tap DFE whose adaptation engine has already converged on the final tap weights.</p>
-<p><strong>Step 1: Shift register state.</strong> The receiver maintains a memory bank containing the past 15 slicer decisions (bits $N-1$ through $N-15$). The stored values form a signed integer array, such as $[+1, -1, -1, +1, +1, -1, \ldots]$.</p>
-<p><strong>Step 2: Parallel echo calculation.</strong> Fifteen digital-to-analog converters simultaneously multiply each stored decision by its assigned tap weight:</p>
-<ul>
-<li>Tap 1 reads bit $N-1$ ($+1$), weight $= 0.2$ V. Echo contribution: $+1 \times 0.2 = +0.2$ V.</li>
-<li>Tap 2 reads bit $N-2$ ($-1$), weight $= 0.1$ V. Echo contribution: $-1 \times 0.1 = -0.1$ V.</li>
-<li>Tap 15 reads bit $N-15$ ($+1$), weight $= 0.01$ V. Echo contribution: $+1 \times 0.01 = +0.01$ V.</li>
-</ul>
-<p><strong>Step 3: Aggregation.</strong> All 15 individual echo contributions feed into a single analog summing node. The total predicted echo is the algebraic sum: $+0.2 - 0.1 + \ldots + 0.01 = +0.15$ V.</p>
-<p><strong>Step 4: Subtraction.</strong> The raw analog voltage for bit $N$ arrives at $+0.05$ V (dangerously close to the zero-volt threshold due to the accumulated echoes from 15 prior bits). The summing node subtracts the total predicted echo: $+0.05 - 0.15 = -0.10$ V.</p>
-<p><strong>Step 5: Decision.</strong> The slicer evaluates $-0.10$ V. The voltage is below zero. Bit $N$ is declared a logic 0 ($-1$).</p>
-<p><strong>Step 6: Shift.</strong> The new $-1$ decision is pushed into the first slot of the memory bank. Every other entry shifts one position. The oldest decision (bit $N-15$) is discarded. The clock advances, bit $N+1$ arrives, and the six-step loop repeats.</p>
-<h3>Receiver Target Voltage and DC Insertion Loss</h3>
-<p>The DFE error slicer does not compare the received voltage against the transmitter&#39;s launch amplitude. A copper trace is a physical resistor that dissipates energy as heat even at DC. If the transmitter launches $1.0$ V, the trace&#39;s DC resistance may absorb 40% of the voltage, leaving an absolute maximum of $0.6$ V at the receiver. No amount of equalization can recover energy that has been permanently converted to heat.</p>
-<p>The adaptation engine determines this baseline DC loss by monitoring the average peak amplitude of the incoming waveform over thousands of bits. If the measured average peak is $0.6$ V, the engine sets the internal reference target of the error slicer to $\pm 0.6$ V rather than $\pm 1.0$ V. The error signal then reflects only the damage caused by frequency-dependent loss and ISI, not the unrecoverable DC attenuation. This adaptive target voltage is sometimes referred to as the main cursor amplitude or $h_0$ in DSP literature.</p>
+<h3>Pulse Response and Impulse Response</h3>
+<p>Both equalizers act on samples of the pulse response, and the two terms need to be kept apart. <a href="signal-integrity-02_Frequency_Content_of_Digital_Signals.html">Frequency Content of Digital Signals</a> defines the <strong>impulse response</strong> $h(t)$ as the output of the channel for an infinitely short input of unit area, and the <strong>pulse response</strong> as the output for one bit, a pulse of unit amplitude and one unit interval (UI) in length. A pulse is a step followed one UI later by the opposite step, so the pulse response is the difference between the step response and its copy delayed by one UI. The impulse response is a mathematical object that no transmitter can launch. The pulse response is the quantity that a link produces for every bit.</p>
+<p>The receiver samples the pulse response once per UI at its sampling instant. The samples are the <strong>cursors</strong>: the main cursor $A$ (in volts) at the sampling instant, the pre-cursors before it, and the post-cursors after it. Write the cursors in volts as $A h_k$, where $h_k$ are the normalized cursors of <a href="signal-integrity-13_Transmitter_FFE.html">Transmitter Feed-Forward Equalization</a> with $h_0 = 1$, negative $k$ for pre-cursors, and positive $k$ for post-cursors. With the decided symbols $a_n = \pm 1$, the sample taken for bit $n$ is</p>
+<p>$$y_n = A \sum_{k} h_k\, a_{n-k} + \nu_n$$</p>
+<p>where $\nu_n$ is the noise at the sampling instant. The terms with $k \neq 0$ make up the intersymbol interference, and the peak-distortion result of <a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html">Jitter Decomposition and Measurement</a> gives the worst-case eye height $2A(1 - \sum_{k \neq 0}|h_k|)$. The cursors are properties of the pulse response and not of the impulse response. The two are related by the convolution of that earlier chapter, and a statement such as &quot;the DFE taps equal the impulse response&quot; is correct only in the sense that each tap equals one sample of the pulse response at the cursor spacing.</p>
+<p>The main cursor $A$ is smaller than the launch amplitude. The line of <a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">Skin Effect and Dielectric Loss</a> delivers 0.874 of the launch amplitude at the main cursor, because part of the energy of each bit has moved into the tail. The resistance of the copper at DC accounts for a small part of this: the 12 inches have $R_{DC} = 0.125 \times 12 = 1.5\ \Omega$ in the model of that chapter, and the conductor attenuation at low frequency is $R/(2Z_0) = 1.5/100 = 0.015$ Np, which is 0.13 dB or 1.5 percent of the voltage. The dielectric loss is proportional to frequency and has no DC component. The main cursor is therefore a measured quantity of the received pulse, and the receiver estimates it, as the Architecture section describes.</p>
+<h3>The CTLE Transfer Function</h3>
+<p><a href="signal-integrity-03_Impedance_Reflections_and_Termination.html">Impedance, Reflections, and Termination</a> derives the transfer function of a resistor and a capacitor, $H = 1/(1 + j\omega RC)$, whose magnitude is $1/\sqrt{1 + (f/f_{3\text{dB}})^2}$. The phasor rule of that chapter replaces the derivative with a multiplication by $j\omega$, and the transfer function of a circuit is therefore a ratio of polynomials in $s = j\omega$. Write the single-pole response with the pole frequency $\omega_p = 1/RC$:</p>
+<p>$$H_{pole}(s) = \frac{1}{1 + s/\omega_p}$$</p>
+<p>The magnitude is $1/\sqrt{1 + (f/f_p)^2}$, and it equals $0.707$ ($-3.01$ dB, the half-power point of <a href="signal-integrity-08_S_Parameters_and_VNA.html">S-Parameters and Vector Network Analysis</a>) at $f = f_p$. For $f \gg f_p$ the magnitude approaches $f_p/f$, and a tenfold increase of frequency reduces it by a factor of 10, which is $-20$ dB per decade. A pole therefore marks the frequency above which the gain falls, and the gain of a single pole decreases at every frequency, faster above $f_p$ than below.</p>
+<p>A <strong>zero</strong> is the same factor in the numerator, $1 + s/\omega_z$, and its magnitude $\sqrt{1 + (f/f_z)^2}$ is the reciprocal of the pole magnitude. The gain is $+3.01$ dB at $f_z$ and rises at $+20$ dB per decade above it. A zero alone would amplify without limit, and the pole that follows it limits the rise. The CTLE has one zero and two poles:</p>
+<p>$$H(s) = A_{dc}\,\frac{1 + s/\omega_z}{\left(1 + s/\omega_{p1}\right)\left(1 + s/\omega_{p2}\right)}$$</p>
+<p>The magnitude of a product is the product of the magnitudes, and the decibel values of <a href="signal-integrity-08_S_Parameters_and_VNA.html">S-Parameters and Vector Network Analysis</a> add for a product of gains. The gain curve in decibels is therefore the sum of three simple curves: the zero rises from $f_z$, the first pole cancels the rise above $f_{p1}$, and the second pole causes the gain to fall above $f_{p2}$, which stops the amplification of noise at frequencies where there is no signal.</p>
+<p>The <strong>peaking</strong> is the gain at the top of the curve relative to the gain at DC, expressed in decibels as a ratio (the decibel is a ratio and carries no physical unit, as that chapter explains). For $f_z \ll f_{p1}$ and $f_{p2}$ well above $f_{p1}$, the gain in the region $f_{p1} \ll f \ll f_{p2}$ is</p>
+<p>$$|H| \approx A_{dc}\,\frac{f/f_z}{f/f_{p1}} = A_{dc}\,\frac{f_{p1}}{f_z} \qquad\Longrightarrow\qquad \text{peaking} \approx 20\log_{10}\frac{\omega_{p1}}{\omega_z}$$</p>
+<p>The relation gives an upper estimate of the peaking. The poles are close to the zero and to each other in practical designs, so the curve rounds off before it reaches the plateau, and the Worked Examples section computes an exact curve and compares it with the estimate.</p>
+<p>The channel loss of <a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">Skin Effect and Dielectric Loss</a> rises smoothly with frequency, as $\sqrt{f}$ for the conductor and as $f$ for the dielectric, and the CTLE reproduces the rising part of the curve with a zero and a pole. The match between the filter and the channel is approximate. A smooth curve with three parameters cannot follow the irregular structure of a real channel, which contains resonances from via stubs and reflections from discontinuities. The CTLE corrects the overall slope, and the cursors that remain are the work of the DFE.</p>
+<h3>The DFE: Subtracting Decided Bits</h3>
+<p>The decision feedback equalizer subtracts from each sample a weighted sum of the decisions that precede it. A slicer compares the corrected sample with a threshold (zero for a differential NRZ signal) and outputs the decision $\hat{a}_n = \pm 1$. A logic 1 is represented as $+1$ and a logic 0 as $-1$, because high-speed differential links represent a logic 0 as a negative voltage. The slicer input for bit $n$ is</p>
+<p>$$z_n = y_n - \sum_{k=1}^{K} w_k\, \hat{a}_{n-k}$$</p>
+<p>where $w_k$ is the weight, in volts, of tap $k$, and $K$ is the number of taps. Tap $k$ reads the decision of bit $n-k$, so a $K$-tap equalizer uses the bits from $n-1$ down to $n-K$. Substitute the sample $y_n$ into this expression and assume that the decisions are correct, $\hat{a}_{n-k} = a_{n-k}$:</p>
+<p>$$z_n = A\,a_n + A\sum_{k<0} h_k\, a_{n-k} + \sum_{k=1}^{K}\left(A h_k - w_k\right) a_{n-k} + A\sum_{k>K} h_k\, a_{n-k} + \nu_n$$</p>
+<p>The third term vanishes when $w_k = A h_k$ for every tap, and the equalizer then cancels exactly the post-cursors from $k = 1$ to $K$. Three useful properties follow directly from this equation.</p>
+<p><strong>Only post-cursors are cancelled:</strong> The pre-cursor terms $k < 0$ involve the bits $a_{n+1}, a_{n+2}, \dots$, which come after bit $n$ and have not been decided when the slicer evaluates bit $n$. The feedback structure can subtract only what it knows, and the later bits are unknown. A pre-cursor is the work of the transmitter filter or of the CTLE, which act on the waveform and not on decisions. The cursors beyond tap $K$ also remain.</p>
+<p><strong>No noise enhancement:</strong> The noise term $\nu_n$ passes through the equalizer unchanged. The subtracted quantity is a weighted sum of decisions, which are the values $\pm 1$ and carry no noise, so the noise at the slicer input has the variance $\sigma^2$ that it had before the equalizer. A linear equalizer that cancels the same post-cursors by filtering the whole waveform also filters the noise. Consider a channel with a single post-cursor, $y_n = A(a_n + h_1 a_{n-1}) + \nu_n$ with $h_1 = a$. The linear filter that removes the post-cursor is $1/(1 + a z^{-1}) = \sum_k (-a)^k z^{-k}$, and white noise of variance $\sigma^2$ passes through it with the variance $\sigma^2 \sum_k a^{2k} = \sigma^2/(1 - a^2)$, so the rms noise grows by the factor $1/\sqrt{1 - a^2}$:</p>
+<table>
+<thead>
+<tr>
+<th align="center">Post-cursor $a$</th>
+<th align="center">Linear cancellation, noise rms gain</th>
+<th align="center">DFE noise rms gain</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">0.0418 (first cursor of the 12 in line)</td>
+<td align="center">1.0009 (+0.008 dB)</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">0.3</td>
+<td align="center">1.048 (+0.41 dB)</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">0.5</td>
+<td align="center">1.155 (+1.25 dB)</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">0.8</td>
+<td align="center">1.667 (+4.44 dB)</td>
+<td align="center">1</td>
+</tr>
+</tbody></table>
+<p>The values of $a$ other than the first are illustrative and not tied to a particular channel. The advantage of the DFE is small for the mild interference of the 12 inch line and grows without bound as $a$ approaches 1, which is the case of a large post-cursor that a linear filter could cancel only by amplifying noise.</p>
+<p><strong>Signed arithmetic:</strong> The decision of a logic 0 is $-1$, so the prediction for a logic 0 is the tap weight with a negative sign, and the subtraction adds voltage. The same multiplication handles both polarities, and there is no separate path for zeros and ones.</p>
+<p>The nonlinearity gives the DFE its behavior. The equalizer removes interference by discarding the analog value of the previous bit and replacing it with its decision, and the decision has no noise. The price is that a wrong decision is also treated as correct, and the Edge Cases section quantifies the consequence.</p>
 <h2>Architecture</h2>
 <h3>The Data Path and the Control Path</h3>
-<p>The DFE circuit itself is a high-speed execution engine with no intelligence. It consists of delay registers, DAC multipliers, and a summing node, all operating at the full data rate (32 Gbps or higher). It blindly multiplies slicer decisions by whatever tap weights are stored in its configuration registers and subtracts the result from the incoming waveform, billions of times per second.</p>
-<p>The intelligence resides in a completely separate, slower digital logic block: the adaptation engine. This separation defines two distinct signal paths within the receiver.</p>
-<p><strong>The data path</strong> carries the live, high-speed analog waveform through the CTLE, into the summing node, through the slicer, and out as recovered digital data. Every component on this path operates at the full line rate.</p>
-<p><strong>The control path</strong> operates at a much lower clock rate. The adaptation engine monitors the signal quality by comparing the slicer output against a known reference, computes updated tap weights using the LMS algorithm, and writes the converged values into the configuration registers that the high-speed data path reads.</p>
-<h3>How the Adaptation Engine Measures the Echo</h3>
-<p>The DFE tap weights cannot be determined while transmitting random user data, because the receiver cannot distinguish an echo from a noise spike or from the intended signal of the current bit. The measurement requires a controlled environment.</p>
-<p>During the link training phase, the transmitter sends a known pseudo-random binary sequence (PRBS). The receiver knows exactly what bit pattern to expect. Alongside the main slicer (which outputs binary decisions for the data path), the receiver employs a parallel circuit called the error slicer. The error slicer measures the actual raw analog voltage of the incoming waveform and compares it against the adaptive target voltage.</p>
-<p>If the main slicer declares the current bit is a logic 1 (target $+0.6$ V) but the error slicer measures $+0.4$ V, the adaptation engine records an error signal of $+0.4 - 0.6 = -0.2$ V. This error represents the total residual distortion at the current sampling instant, comprising echoes from all preceding bits, thermal noise, and crosstalk.</p>
-<h3>DAC Implementation and Current-Steering Execution</h3>
-<p>The adaptation engine stores each converged tap weight as a digital binary number in a static configuration register. The incoming waveform is physical analog electricity. A digital binary value cannot directly subtract from an analog voltage. The digital-to-analog converter bridges this domain boundary.</p>
-<p>The DAC reads the binary number from the register and generates a proportional steady-state electrical current. The DFE does not perform high-speed binary multiplication on the fly. Instead, the physical execution relies on current steering through transistor switches operating at the full line rate.</p>
-<p>For each tap, a shift register holds the slicer&#39;s past binary decision for the corresponding bit period. That decision controls a pair of differential transistor switches connected to the DAC&#39;s steady current source. If the previous bit was a logic 1, one switch closes and steers the tap current ($+I_{\text{tap}}$) into the correction wire. If the previous bit was a logic 0, the complementary switch closes and steers the opposite polarity current ($-I_{\text{tap}}$) into the wire. The transistor pair acts purely as a polarity selector; the magnitude of the current is fixed by the DAC.</p>
-<p>All tap output wires from all active taps physically connect to a single summing node (a resistive load or transimpedance amplifier). By Kirchhoff&#39;s Current Law, the positive and negative currents from all taps algebraically combine at that node, producing a net correction voltage. This summing happens passively in the analog domain, with no digital logic in the critical timing path. The net correction voltage is injected into the signal path just picoseconds before the slicer evaluates the next incoming bit, subtracting the predicted echo from the raw waveform.</p>
-<p>The distinction between analog and mixed-signal implementations lies in how the tap weight itself is stored. In a purely analog system, the tap weight can be maintained as a charge on a capacitor, producing a DC voltage that controls the current source directly. In modern mixed-signal implementations (the dominant architecture), a slow digital state machine computes the LMS updates, stores the tap weight in a digital register, and uses the static DAC to output a constant current. The digital register provides indefinite storage without the charge leakage problems of a capacitor, and the adaptation engine can update the weight at its own slow clock rate without disturbing the high-speed data path.</p>
-<h3>The LMS Algorithm</h3>
-<p>The Least Mean Squares algorithm iteratively drives each tap weight toward the value that minimizes the mean squared error between the received signal and the ideal signal. The update equation for each tap is:</p>
-<p>$$w_{k}^{new} = w_{k}^{old} + \mu \cdot e[n] \cdot d[n-k]$$</p>
-<p>where $w_k$ is the weight of tap $k$, $\mu$ is the learning rate (a static constant programmed into the hardware), $e[n]$ is the error signal measured on the current bit $n$, and $d[n-k]$ is the slicer decision for the bit $k$ time slots in the past.</p>
-<p><strong>Initialization.</strong> The adaptation engine sets all tap weights to zero.</p>
-<p><strong>Error measurement.</strong> The DFE applies the current (initially zero) tap weights to the incoming bit. The main slicer makes its decision. The error slicer compares the raw analog voltage against the adaptive target and records the error. For the first iteration with zero taps, the error captures the full, uncorrected distortion of the channel.</p>
-<p><strong>Parallel correlation.</strong> The engine simultaneously multiplies the error signal by the slicer decisions for each of the past 15 bits. Tap 1 correlates the error with bit $N-1$. Tap 2 correlates the same error with bit $N-2$. All 15 correlations execute in parallel.</p>
-<p><strong>The learning rate.</strong> If the full error were added directly to a single tap weight, the system would assume that one past bit caused the entire error. The next clock cycle would massively overcorrect, producing a large error of opposite sign, and the system would oscillate and diverge. The learning rate $\mu$ is a small constant (typically on the order of 0.001 to 0.01) that scales each update to a microscopic fraction of the error. The algorithm reacts only to consistent, long-term trends and ignores volatile single-cycle anomalies.</p>
-<p>The effective step size is self-regulating. The update magnitude is the product of $\mu$, the error, and the past bit decision. When the link first boots and the error is large, each update is proportionally large, and the taps converge quickly. As the taps approach their optimal values and the error shrinks, the updates shrink proportionally. The system decelerates smoothly and settles into equilibrium without requiring an explicit stopping criterion.</p>
-<p><strong>Tap separation through statistical correlation.</strong> If all 15 taps process the same error signal with the same learning rate during the same clock cycle, the mechanism that causes each tap to converge on a different value is the statistical independence of the PRBS training sequence.</p>
-<p>Tap 1 correlates the error with bit $N-1$. The physical echo from bit $N-1$ is large (it is the most recent predecessor). Every time bit $N-1$ is a $+1$, the echo pulls the error in a consistent, predictable direction. Every time bit $N-1$ is a $-1$, the echo pulls it in the opposite direction. Over thousands of iterations, tap 1 accumulates consistent, reinforcing updates that drive it toward a large converged value.</p>
-<p>Tap 15 correlates the error with bit $N-15$. On most physical channels, the impulse response has decayed to negligible amplitude by 15 bit periods. Bit $N-15$ has no systematic physical influence on the current error. The PRBS ensures that bit $N-15$ is equally likely to be $+1$ or $-1$, so the correlation products are equally likely to be positive or negative. Over thousands of iterations, these random updates cancel each other, and tap 15 hovers near zero.</p>
-<p>Each tap organically converges to the exact magnitude of the channel&#39;s impulse response at its corresponding time delay. The full set of converged tap weights reconstructs the physical decay profile of the channel through purely statistical accumulation.</p>
-<p><strong>Continuous tracking.</strong> In production hardware, the adaptation engine rarely freezes the tap weights. The error residual drops to near zero as the taps converge, causing the updates to become vanishingly small. The engine continues running in the background at all times, allowing the taps to track slow environmental changes such as silicon heating, power supply drift, and mechanical stress on connectors.</p>
-<h3>Statistical Correlation and Noise Rejection</h3>
-<p>The LMS algorithm&#39;s ability to extract the true echo from a composite error signal that contains thermal noise, crosstalk, and overlapping echoes from dozens of prior bits relies on the pseudo-random nature of the training data.</p>
-<p>Thermal noise is completely random. A noise spike is equally likely to add or subtract voltage. Over millions of iterations, the random noise contributions to the tap updates cancel to zero. Echoes from distant bits (those beyond the channel&#39;s impulse response duration) are also uncorrelated with the current error, and their contributions cancel similarly.</p>
-<p>The only physical phenomenon that consistently, predictably pushes the error signal in the same direction every time a specific past bit has a specific polarity is the actual physical echo of that bit at that specific time delay. The algorithm isolates this echo organically by multiplying the error by the past bit decision and averaging over millions of iterations. The true impulse response rises out of the noise floor as a statistical certainty.</p>
-<h3>Link Training Negotiation</h3>
-<p>The CTLE peaking gain, the DFE tap weights, and the transmitter FFE tap weights are all interdependent. The optimal CTLE setting depends on how much pre-compensation the FFE provides. The optimal DFE taps depend on the residual ISI left after CTLE correction. The optimal FFE taps depend on how aggressively the receiver is equalizing on its end.</p>
-<p>Modern high-speed protocols resolve this interdependence through a backchannel negotiation process. The receiver measures the incoming signal quality after its own CTLE and DFE have settled. If the eye opening remains insufficient, the receiver sends digital commands backward to the transmitter through a dedicated low-speed sideband channel, requesting specific adjustments: increase the FFE pre-cursor weight, decrease the post-cursor, or shift the balance between transmitter pre-compensation and receiver restoration. The transmitter and receiver iterate through this negotiation until the combined system converges on the best achievable eye opening for that specific physical link.</p>
-<p>Link training occurs at every system boot, every wake-from-sleep event, and every hot-plug cable insertion. The physical characteristics of the channel change with temperature, and the silicon characteristics change between manufactured lots. The negotiation must adapt to the immediate physical reality, not rely on static design-phase calculations.</p>
-<p>Training algorithms search a multi-dimensional parameter space and can become trapped in local minima: parameter combinations that appear optimal within a narrow neighborhood but are significantly worse than the global optimum. Engineers must define appropriate initial seed values and algorithmic step sizes during silicon design to give the training state machine the best probability of convergence. If the total equalization capability designed into the silicon is physically insufficient for the channel loss, link training will fail regardless of the search algorithm.</p>
-<h3>Receiver Topologies: Analog Front-End vs. DSP-Based</h3>
-<p>Traditional SerDes receivers (and BERT error detectors) follow the analog front-end architecture described throughout this guide. The degraded waveform passes through the CTLE, enters the analog summing node where the DFE subtracts its echo estimate, and the slicer makes a binary decision directly on the analog voltage. No analog-to-digital converter exists in this path. The slicer is a pure comparator that reports only whether the voltage crossed the threshold, not what the voltage was.</p>
-<p>Ultra-high-speed receivers (112G+ Ethernet, 224G development) employ a fundamentally different DSP-based architecture. The incoming waveform feeds directly into a high-speed ADC that digitizes the raw analog voltage into a stream of multi-bit samples. A digital signal processor performs all equalization mathematically on the digitized data: CTLE filtering, DFE echo cancellation, and the slicer decision all execute as numerical operations in the digital domain. No analog slicer exists. This architecture trades massive power consumption and silicon area for the flexibility and precision of digital processing, and it enables equalization algorithms that would be physically impossible to implement as analog circuits.</p>
-<p>The DFE implementation illustrates the architectural contrast most clearly. In the analog front-end, each tap weight is converted to a steady current by a DAC, and physical transistor switches steer that current into a summing node based on the slicer&#39;s past decisions. The correction happens in the analog domain, subject to thermal noise from the transistors, mismatch in the current sources, and parasitic capacitance that limits the switching speed. Scaling to a high tap count (15+ taps) demands proportionally more analog circuitry, and each additional current source contributes its own noise to the summing node.</p>
-<p>In the DSP-based receiver, the entire DFE computation is numerical. The tap weights are stored as binary numbers in static RAM registers. The ADC has already converted the incoming waveform into a binary sample (for example, the integer $+45$). A shift register holds the previous slicer decisions as digital ones and zeros. A bank of digital multiplier circuits (built from thousands of logic gates) multiplies each stored tap weight by the corresponding past bit decision. A digital adder computes the total correction value. The DSP subtracts this correction from the ADC&#39;s incoming sample, and a numerical threshold comparison replaces the analog slicer: if the corrected value is above zero, the DSP registers a logic 1; below zero, a logic 0. No analog summing node exists. No physical current is steered. The entire process is arithmetic on integers, and once the signal is digitized, no further analog noise enters the computation. A DSP receiver can run a 40-tap DFE without the compounding thermal noise, physical layout constraints, or current-source mismatch of an analog summing node.</p>
+<p>The circuit that performs the subtraction contains delay registers that hold the past decisions, one digital-to-analog converter (DAC) per tap that converts the weight $w_k$ into a current, switches that choose the sign of that current from the stored decision, and a summing node in front of the slicer. All of it operates at the full symbol rate. The tap currents steer into the summing node according to the past decisions: a decision of $+1$ closes one switch of a differential pair and sends $+I_k$ into the node, and a decision of $-1$ sends $-I_k$. By Kirchhoff&#39;s current law the currents add at the node, and the net current across the load resistance becomes the correction voltage. The weights come from a separate and much slower block, the adaptation engine, which writes them into registers that the DACs read. The data path runs at the gigahertz line rate, processing transitions in picoseconds. The control path updates the registers at a small fraction of that rate. The sub-sampled architecture is mathematically sound because the physical channel changes over milliseconds as temperature drifts, which is millions of times slower than the data rate. The high-speed data path continuously uses the static tap weights while the adaptation loop operates on its own slow clock to track the thermal drift.</p>
+<p>The CTLE belongs to the data path as well. The order is CTLE, summing node, slicer, and the decisions return to the summing node through the tap registers. Clock recovery uses the same signal, and the sampling instant that <a href="signal-integrity-17_CDR_and_PLL_Loop_Dynamics.html">CDR and PLL Loop Dynamics</a> describes is the instant at which the main cursor is sampled.</p>
+<h3>Where the CTLE Zero and Poles Come From</h3>
+<p>The CTLE structure follows from a standard circuit, a differential pair with a resistor $R_s$ and a capacitor $C_s$ connected in parallel between the two sources (source degeneration). Treat each half of the pair as an amplifier with transconductance $g_m$ and load resistance $R_L$. The two sources move in opposite directions, so the midpoint of $R_s$ is a virtual ground, and each half sees a degeneration impedance made of $R_s/2$ in parallel with $2C_s$ to ground:</p>
+<p>$$Z_{deg} = \frac{R_s/2}{1 + s R_s C_s}$$</p>
+<p>The gain of a transistor with a source impedance $Z_{deg}$ is $g_m R_L/(1 + g_m Z_{deg})$. Substitute the impedance:</p>
+<p>$$G(s) = \frac{g_m R_L}{1 + \dfrac{g_m R_s/2}{1 + sR_sC_s}} = \frac{g_m R_L\,(1 + sR_sC_s)}{1 + g_m R_s/2 + sR_sC_s}$$</p>
+<p>Divide the numerator and the denominator by $1 + g_mR_s/2$ and define $\omega_z = 1/(R_sC_s)$:</p>
+<p>$$G(s) = \frac{g_m R_L}{1 + g_m R_s/2}\;\frac{1 + s/\omega_z}{1 + s/\omega_{p1}}, \qquad \omega_{p1} = \left(1 + \frac{g_m R_s}{2}\right)\omega_z$$</p>
+<p>The DC gain is reduced by the degeneration, the gain at high frequency is $g_m R_L$ (the capacitor short-circuits the resistor), and the ratio of the two is $1 + g_mR_s/2 = \omega_{p1}/\omega_z$, which is the peaking of the estimate above. The load resistance with its capacitance $C_L$ adds the second pole $\omega_{p2} = 1/(R_LC_L)$. The relation $\omega_{p1}/\omega_z = 1 + g_mR_s/2$ shows how the designer sets the peaking: a larger degeneration resistance gives a lower DC gain and more peaking, and the capacitor sets the frequency $\omega_z$ at which the peaking begins. The noise of the stage is shaped by the same gain, and the Edge Cases section quantifies the result for the filter of the Worked Examples.</p>
+<h3>The Error Signal and the Main-Cursor Target</h3>
+<p>An adaptation engine cannot find the tap weights from the data path alone, because the slicer produces only decisions. The receiver therefore has a second comparator, the <strong>error slicer</strong>, which compares the corrected sample $z_n$ with the expected level $A \hat{a}_n$ and records the difference</p>
+<p>$$e_n = z_n - A\,\hat{a}_n$$</p>
+<p>The expected level uses the main-cursor amplitude $A$, and the engine estimates $A$ from the data. A pseudo-random bit sequence (PRBS) is strictly used for initial link training, as <a href="signal-integrity-12_Test_Patterns_and_Jitter_Isolation.html">Test Patterns and Jitter Isolation</a> details. Live traffic adaptation relies entirely on decision-directed tracking. The receiver treats its own slicer output $\hat{a}_n$ as the perfect mathematical reference, assuming every decision is correct. The receiver correlates this instantaneous error from the error slicer with the bit history to find the gradient that updates the taps. A target equal to the launch amplitude would make the error include the loss of the channel at DC and the spread of the pulse, and the taps would try to correct a quantity that no equalizer can restore. The error is positive when the corrected sample lies above the expected level and negative when it lies below, and it contains the residual interference and the noise at the sampling instant and nothing else. The estimate of $A$ is adapted by the rule that follows in the next section.</p>
+<h3>The LMS Update as Gradient Descent</h3>
+<p>The adaptation engine chooses the weights that minimize the mean squared error $J = E[e_n^2]$. The error depends on the weights through $z_n$, and $\partial e_n/\partial w_k = -\hat{a}_{n-k}$, so the gradient of the cost with respect to a tap is</p>
+<p>$$\frac{\partial J}{\partial w_k} = 2\,E\!\left[e_n\,\frac{\partial e_n}{\partial w_k}\right] = -2\,E\!\left[e_n\,\hat{a}_{n-k}\right]$$</p>
+<p>Steepest descent moves each weight a small step against the gradient, $w_k \leftarrow w_k - (\mu/2)\,\partial J/\partial w_k$, where $\mu$ is the step size (a dimensionless constant, because the error and the weight are both in volts and the decision has no unit):</p>
+<p>$$w_k \leftarrow w_k + \mu\,E\!\left[e_n\,\hat{a}_{n-k}\right]$$</p>
+<p>The expectation requires an average over many bits. The <strong>least mean squares</strong> (LMS) algorithm replaces the expectation by the value for the current bit, which costs one multiplication per tap and gives the update of the hardware:</p>
+<p>$$w_k^{new} = w_k^{old} + \mu\, e_n\, \hat{a}_{n-k}$$</p>
+<p>The sign of the update is correct. A positive error with $\hat{a}_{n-k} = +1$ means that the sample is too high because too little of the contribution of bit $n-k$ was subtracted, and the weight increases. The same gradient argument applies to the main-cursor estimate, because $\partial e_n/\partial A = -\hat{a}_n$, and it gives $A \leftarrow A + \mu\,e_n\hat{a}_n$.</p>
+<p>The behavior of the update follows from the expected value. Assume that the decisions are correct and that the bits are independent with zero mean, so that $E[a_ia_j] = 0$ for $i \neq j$ and $E[a_i^2] = 1$. The error is $e_n = \sum_{k \ge 1}(Ah_k - w_k)\,a_{n-k} + (\text{terms with other bits}) + \nu_n$, and the average of its product with $a_{n-j}$ keeps only the term of the same bit:</p>
+<p>$$E\!\left[e_n\,a_{n-j}\right] = A h_j - w_j$$</p>
+<p>The update therefore moves each weight toward the cursor that it should cancel, and the average step is proportional to the remaining distance:</p>
+<p>$$w_j^{(m+1)} - A h_j = (1 - \mu)\left(w_j^{(m)} - A h_j\right)$$</p>
+<p>The distance falls by the factor $(1 - \mu)$ per update, so it decays exponentially with the time constant $1/\mu$ updates. Each tap converges to its own cursor because the bits are independent: the pre-cursor terms and the terms of other taps average to zero in the product with $a_{n-j}$, and only the cursor of that tap survives. A tap that corresponds to a cursor of zero converges to zero. <a href="signal-integrity-12_Test_Patterns_and_Jitter_Isolation.html">Test Patterns and Jitter Isolation</a> shows that a pseudo-random pattern supplies the independence that this result requires.</p>
+<p>The step size sets a compromise between speed and accuracy. The weight fluctuates around its mean because each update contains the part of the error that is uncorrelated with $a_{n-j}$, which has a variance $\sigma_\varepsilon^2$ (the noise and the residual of the other taps). Define the distance from the target as $u = w_j - Ah_j$. Then $u_{m+1} = (1 - \mu)u_m + \mu\,\varepsilon_m$ with $\varepsilon_m$ of variance $\sigma_\varepsilon^2$, and in the steady state</p>
+<p>$$\mathrm{var}(u) = \frac{\mu^2\sigma_\varepsilon^2}{1 - (1-\mu)^2} = \frac{\mu}{2 - \mu}\,\sigma_\varepsilon^2$$</p>
+<p>A larger $\mu$ converges faster and leaves a larger fluctuation of the weights. The assumption that decisions are correct fails during normal operation, because noise inevitably causes raw slicer errors. The adaptation loop survives these errors solely through the law of large numbers and the tiny step size ($\mu$). The incorrect updates average to zero over millions of samples. The adaptation loop cannot use bits corrected by forward error correction, because the decoding latency of the pipeline detailed in <a href="signal-integrity-18_Line_Coding_FEC_and_Protocol_Framing.html">Line Coding, FEC, and Protocol Framing</a> is far too massive for picosecond feedback. The physical survival of the analog loop relies purely on statistics, while the digital survival of the payload relies on the code. The Worked Examples section gives the numbers. The error shrinks as the taps converge, so the production hardware keeps the loop running, which lets the taps follow the slow changes of temperature and supply voltage.</p>
+<h3>Link Training</h3>
+<p>The transmitter filter, the CTLE setting, and the DFE taps depend on each other. The optimum transmitter taps depend on how hard the receiver equalizes, and the optimum receiver settings depend on the residual that the transmitter leaves. The Worked Examples section shows the dependence with numbers: the best transmitter tap on the 12 inch line is $-0.040$ without a DFE and zero with one. A setting measured in the laboratory serves only as a starting value, since the channel differs from board to board and the silicon differs from lot to lot.</p>
+<p>Modern standards therefore set the transmitter taps through a negotiation at every start-up, wake-up, and cable insertion. The structure is common to the protocols that use training, and the paragraph in <a href="signal-integrity-13_Transmitter_FFE.html">Transmitter Feed-Forward Equalization</a> states its request semantics:</p>
+<ol>
+<li><strong>Starting point:</strong> The transmitter begins with a preset, a predefined combination of taps that is safe for a wide range of channels.</li>
+<li><strong>Receiver adaptation:</strong> The transmitter holds its taps, and the receiver adapts its CTLE and DFE to the received training pattern with the LMS update above and measures a figure of merit of the result, such as the eye height or the error count.</li>
+<li><strong>Request:</strong> The receiver sends a request to the transmitter on a low-speed return path. The request is an instruction to increase, decrease, or hold a transmitter tap, or a request for a specific preset.</li>
+<li><strong>Update:</strong> The transmitter changes the tap within the limits of its normalization (the sum of the magnitudes of the taps is 1) and reports that the change took effect, and the receiver measures the figure of merit again.</li>
+<li><strong>Convergence:</strong> The receiver repeats steps 2 to 4 until the figure of merit stops improving, then declares the link trained and the data transfer begins.</li>
+</ol>
+<p>The loop measures a figure of merit after the receiver has adapted, so each trial requires the receiver adaptation to settle first, and the time per trial is set by the convergence time derived above. The number of trials that fit in the time that a protocol allows for training is therefore finite, which limits the size of the search. The training pattern is pseudo-random for the reason that the previous section uses.</p>
+<h3>Implementation Note: the First Tap and Speculation</h3>
+<p>The decision of bit $n-1$ must reach the summing node before the slicer evaluates bit $n$, so the first tap closes a feedback loop whose delay must be shorter than one UI. At 32 Gbaud the UI is 31.25 ps, and the loop contains the slicer, the register, the switch, and the summing node. A common solution is to speculate: the receiver evaluates $\mathrm{sgn}(y_n - w_1)$ and $\mathrm{sgn}(y_n + w_1)$ in parallel for the two possible values of $\hat{a}_{n-1}$ and selects one with a multiplexer controlled by the previous decision, so that the loop delay is the delay of the multiplexer only. The result is the same as the equation above, and the cost is a second slicer.</p>
+<p>The same equations describe an equalizer whose decisions are computed digitally after an analog-to-digital converter, in which the taps are binary multiplications in logic. <a href="signal-integrity-16_SerDes_Architecture_and_Eye_Diagrams.html">SerDes Architecture and Eye Diagrams</a> compares the analog front end with the converter-based receiver, and only the implementation differs from this chapter.</p>
+<h2>Worked Examples</h2>
+<h3>A CTLE for the 12 Inch Line</h3>
+<p>Over 12 inches, the line of <a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">Skin Effect and Dielectric Loss</a> has the insertion loss $IL(f) = 12\,(0.20\sqrt{f/5} + 0.47\,f/5)$ dB with $f$ in GHz. This gives 8.04 dB at 5 GHz (the 8.1 dB of <a href="signal-integrity-08_S_Parameters_and_VNA.html">S-Parameters and Vector Network Analysis</a> with the rounded constants), which is the Nyquist frequency of a 10 Gb/s link. Choose a CTLE with $f_z = 1.5$ GHz, $f_{p1} = 6$ GHz, $f_{p2} = 15$ GHz, and $A_{dc} = 1$. The circuit of the previous section needs $g_mR_s/2 = f_{p1}/f_z - 1 = 3$ for this ratio. The gain follows from the three factors:</p>
+<p>$$|H(f)| = \frac{\sqrt{1 + (f/1.5)^2}}{\sqrt{1 + (f/6)^2}\,\sqrt{1 + (f/15)^2}}$$</p>
+<p>The asymptotic estimate of the peaking is $20\log_{10}(6/1.5) = 12.04$ dB. The exact curve peaks at 9.23 dB near 9.2 GHz, because the second pole and the proximity of the first pole round off the plateau. The table compares the filter with the channel:</p>
+<table>
+<thead>
+<tr>
+<th align="center">$f$ (GHz)</th>
+<th align="center">Channel loss (dB)</th>
+<th align="center">CTLE gain (dB)</th>
+<th align="center">Net (dB)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">0.5</td>
+<td align="center">1.32</td>
+<td align="center">0.42</td>
+<td align="center">$-0.90$</td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">2.20</td>
+<td align="center">1.46</td>
+<td align="center">$-0.74$</td>
+</tr>
+<tr>
+<td align="center">1.5</td>
+<td align="center">3.01</td>
+<td align="center">2.70</td>
+<td align="center">$-0.30$</td>
+</tr>
+<tr>
+<td align="center">2.5</td>
+<td align="center">4.52</td>
+<td align="center">4.96</td>
+<td align="center">$+0.44$</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">8.04</td>
+<td align="center">8.08</td>
+<td align="center">$+0.04$</td>
+</tr>
+<tr>
+<td align="center">7.5</td>
+<td align="center">11.40</td>
+<td align="center">9.09</td>
+<td align="center">$-2.31$</td>
+</tr>
+<tr>
+<td align="center">10</td>
+<td align="center">14.67</td>
+<td align="center">9.21</td>
+<td align="center">$-5.47$</td>
+</tr>
+</tbody></table>
+<p>The net response is within 0.9 dB of flat from 0.5 GHz to the Nyquist frequency, and the Nyquist tone, which the channel reduces to 0.396 of its amplitude, leaves the filter at 1.005. Above the Nyquist frequency the net response falls to $-5.47$ dB at 10 GHz. The data pattern has no fundamental above 5 GHz, so the shortfall affects only the edge content, and the cursors that result from it are part of what the DFE removes. The zero sits at the frequency at which the channel loss reaches 3 dB (1.5 GHz in the table). The estimate of 12.04 dB exceeds the 8.08 dB that the filter delivers at the Nyquist frequency by 4 dB, which is the reason that the exact calculation is needed.</p>
+<h3>Cancelling the Cursors of the 12 Inch Line</h3>
+<p>Take the pulse response of <a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">Skin Effect and Dielectric Loss</a> at 10 Gb/s and the receiver values of <a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html">Jitter Decomposition and Measurement</a>, a main cursor of $A = 200$ mV. The first seven normalized post-cursors are 0.0418, 0.0186, 0.0111, 0.0076, 0.0056, 0.0044, and 0.0035, so the weights of the DFE in volts are $w_k = A h_k = 8.37$, 3.72, 2.22, 1.52, 1.12, 0.87, and 0.70 mV.</p>
+<p>For a bit $n$ with the previous three decisions $(+1, -1, +1)$ the sample is $200 + 8.37(+1) + 3.72(-1) + 2.22(+1) = 206.87$ mV for $a_n = +1$. The DFE subtracts $8.37(+1) + 3.72(-1) + 2.22(+1) = 6.87$ mV and the slicer sees 200.00 mV. The subtraction follows the history of the bits, so the same cancellation applies to every pattern, and the interference of this history is removed whether it adds to the sample or subtracts from it.</p>
+<p>The cursors of this model decay as $t^{-3/2}$ because they come from the erfc step response of <a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">Skin Effect and Dielectric Loss</a>, and the sum of the post-cursors beyond tap $K$ is $(1 - s((K+1)\,UI))/h_{main}$ with the step response $s$ normalized to its final value 1. The first seven cursors of the earlier chapters sum to 9.26 percent, and the sum of all post-cursors is 14.35 percent, because the tail beyond the seventh cursor holds the other 5.09 percent. The residual after $K$ taps and the resulting eye height $2A(1 - R(K))$ are:</p>
+<table>
+<thead>
+<tr>
+<th align="center">Taps $K$</th>
+<th align="center">Residual $R(K)$</th>
+<th align="center">Eye height (mV)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">0</td>
+<td align="center">14.35%</td>
+<td align="center">342.6</td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">10.17%</td>
+<td align="center">359.3</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">7.20%</td>
+<td align="center">371.2</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center">5.09%</td>
+<td align="center">379.6</td>
+</tr>
+<tr>
+<td align="center">15</td>
+<td align="center">3.60%</td>
+<td align="center">385.6</td>
+</tr>
+<tr>
+<td align="center">31</td>
+<td align="center">2.55%</td>
+<td align="center">389.8</td>
+</tr>
+</tbody></table>
+<p>The eye heights of 363 mV and 364 mV in <a href="signal-integrity-13_Transmitter_FFE.html">Transmitter Feed-Forward Equalization</a> and <a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html">Jitter Decomposition and Measurement</a> count only the first seven cursors, and the 342.6 mV of the first row counts all of them. The residual falls as $1/\sqrt{K}$, so a long tail needs many taps for a small gain: going from 7 to 31 taps halves the residual (5.09 to 2.55 percent) and adds 10 mV of eye height. The ideal conditions of the table are correct decisions, no noise, and no reflections.</p>
+<h3>LMS Convergence</h3>
+<p>Take the update $w_k \leftarrow w_k + \mu e_n \hat{a}_{n-k}$ with the weights starting from zero. The distance to the cursor falls by the factor $(1-\mu)^m$ after $m$ updates, and it reaches 1 percent when $m = \ln(100)/(-\ln(1 - \mu))$. The steady-state fluctuation follows from the variance formula with $\sigma_\varepsilon = 10$ mV:</p>
+<table>
+<thead>
+<tr>
+<th align="center">$\mu$</th>
+<th align="center">Updates to reach 1 percent</th>
+<th align="center">Fluctuation of a weight (rms)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">0.1</td>
+<td align="center">44</td>
+<td align="center">2.29 mV</td>
+</tr>
+<tr>
+<td align="center">0.01</td>
+<td align="center">458</td>
+<td align="center">0.71 mV</td>
+</tr>
+<tr>
+<td align="center">0.001</td>
+<td align="center">4,603</td>
+<td align="center">0.22 mV</td>
+</tr>
+</tbody></table>
+<p>The first tap of the example has the weight 8.37 mV, so a fluctuation of 0.71 mV is 8.5 percent of that tap, and a smaller step size is required for the later taps, whose weights are about 1 mV or below. A practical engine starts with a large step and reduces it as the error falls. Each update uses one product per tap, so the cost scales with the number of taps and not with the length of the channel.</p>
+<h3>The Optimum Transmitter Tap Depends on the Receiver</h3>
+<p>Apply the transmitter filter of <a href="signal-integrity-13_Transmitter_FFE.html">Transmitter Feed-Forward Equalization</a> with a post-cursor tap $c_1$ only ($c_0 = 1 - |c_1|$) to the 12 inch line and compute the eye height for a receiver with no DFE, with a one-tap DFE, and with a seven-tap DFE. The eye is $2A(1 - |c_1|)(1 - R)$, where $R$ is the sum of the magnitudes of the post-cursors of the combined response that the DFE does not cancel. The values use all the cursors of the model and ideal decisions:</p>
+<table>
+<thead>
+<tr>
+<th align="center">$\lvert c_1\rvert$</th>
+<th align="center">No DFE (mV)</th>
+<th align="center">One tap (mV)</th>
+<th align="center">Seven taps (mV)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">0</td>
+<td align="center">342.6</td>
+<td align="center">359.3</td>
+<td align="center">379.6</td>
+</tr>
+<tr>
+<td align="center">0.040</td>
+<td align="center">347.2</td>
+<td align="center">347.2</td>
+<td align="center">365.2</td>
+</tr>
+<tr>
+<td align="center">0.100</td>
+<td align="center">304.2</td>
+<td align="center">329.1</td>
+<td align="center">343.8</td>
+</tr>
+<tr>
+<td align="center">0.200</td>
+<td align="center">232.3</td>
+<td align="center">298.9</td>
+<td align="center">308.1</td>
+</tr>
+<tr>
+<td align="center">0.303</td>
+<td align="center">158.3</td>
+<td align="center">267.8</td>
+<td align="center">271.2</td>
+</tr>
+</tbody></table>
+<p>Without a DFE the best tap is $|c_1| = 0.040$, the tap that zeroes the first post-cursor, and it gives 347.2 mV. With any DFE of one tap or more the best tap is zero, because the DFE cancels the post-cursors without the amplitude cost of the transmitter filter. A link that starts from the 8.1 dB preset at $|c_1| = 0.303$ and requests decreases of the tap improves at every step until $|c_1| = 0.040$ when the receiver has no DFE, and until $|c_1| = 0$ when it has one, so the point at which the training stops depends on what the receiver can do. The channel of the example is mild. A long channel still needs the transmitter filter with a DFE, because the filter reduces the size of the cursors that the DFE has to cancel, and the error propagation result of the next section shows that large cursors raise the probability of a burst.</p>
 <h2>Edge Cases</h2>
 <h3>Error Propagation in the DFE</h3>
-<p>The accuracy of DFE echo cancellation depends entirely on the slicer making correct decisions. If the slicer misidentifies a logic 1 as a logic 0, the DFE computes the wrong echo polarity for that bit and subtracts an incorrect voltage from the subsequent waveform. This incorrect subtraction corrupts the next bit&#39;s voltage, increasing the probability that the slicer makes another wrong decision. The errors can cascade forward through multiple bit periods.</p>
-<p>A single slicer error in a multi-tap DFE corrupts the echo estimate for every tap that references the incorrect decision, potentially damaging up to $k$ subsequent bits for a $k$-tap system. Forward error correction (FEC) exists partly to catch these burst errors. The DFE&#39;s self-correcting property limits the damage: once the erroneous decision shifts out of the tap memory, the echo estimates from subsequent correct decisions steer the system back toward accurate cancellation. Channels with marginal eye openings are most susceptible to error propagation, because the probability of the initial slicer error is highest when the voltage margin is smallest.</p>
+<p>A wrong decision enters the feedback sum as if it were correct. Suppose that the decision of bit $n-1$ is wrong and that the tap weight is $w_1 = A h_1$. The subtraction is then wrong by $2 A h_1$ (the difference between $+1$ and $-1$ times the weight). The sample of the next bit lies at $\pm A$ from the threshold with the error in the direction that depends on its value, so the margin of that bit is $A(1 - 2h_1)$ in one case and $A(1 + 2h_1)$ in the other. Write $z = A/\sigma$ for the margin in standard deviations, which <a href="signal-integrity-11_Dual_Dirac_Model_and_BER_Extrapolation.html">Dual-Dirac Model and BER Extrapolation</a> relates to the error ratio by the Q function. The probability that the next bit is wrong, given the first error, is</p>
+<p>$$P_2 = \tfrac12\left[Q\big((1 - 2h_1)z\big) + Q\big((1 + 2h_1)z\big)\right]$$</p>
+<p>For a link whose margin is $z = 7.034$ (the Q-factor for $10^{-12}$ in the table of that chapter), the first cursor of the 12 inch line, $h_1 = 0.0418$, gives $P_2 = 2.9 \times 10^{-11}$, which is 29 times the nominal error ratio. A channel with a first cursor of $h_1 = 0.3$ gives $(1 - 0.6)z = 2.81$ and $P_2 = 1.2 \times 10^{-3}$, nine orders of magnitude above the nominal value. Errors therefore arrive in short bursts, and the burst length depends on the size of the cursors that the DFE cancels. A large first tap is a weakness in this respect, which is another reason to share the equalization with the transmitter filter and the CTLE, and the forward error correction of <a href="signal-integrity-18_Line_Coding_FEC_and_Protocol_Framing.html">Line Coding, FEC, and Protocol Framing</a> exists in part to correct bursts. A precoding step at the transmitter, which shapes the data so that a burst shortens, is a known remedy that this chapter does not derive.</p>
 <h3>CTLE Noise Amplification</h3>
-<p>The CTLE amplifies all content in its boost frequency range indiscriminately, including thermal noise, crosstalk from adjacent traces, and power supply ripple. Excessive peaking gain on a low-loss channel amplifies noise far beyond the signal content in those frequency bands, degrading the signal-to-noise ratio. The optimal CTLE setting balances signal restoration against noise injection, and the link training algorithm searches for this balance as part of the multi-dimensional parameter optimization.</p>
-<h3>Impulse Response Measurement Without a Single Isolated Pulse</h3>
-<p>The mathematically ideal method for characterizing a channel&#39;s echo profile is to transmit a single isolated pulse followed by a long string of zeros and directly measure the trailing decay. Three physical constraints prevent this approach in production hardware.</p>
-<p>The clock recovery circuit at the receiver requires continuous voltage transitions to maintain synchronization. A single pulse followed by silence causes the CDR to lose timing lock, blinding the receiver. The AC coupling capacitors on the link interpret a long string of identical bits as DC and begin charging, causing the baseline voltage to wander and collapse. A single analog measurement of the tail is also overwhelmed by random thermal noise, producing unreliable tap weight estimates.</p>
-<p>The PRBS training sequence solves all three problems simultaneously. Its dense transitions keep the CDR locked. Its statistically balanced density of ones and zeros keeps the coupling capacitors neutral. Its millions of repeated measurements, processed through the LMS correlation, average out all random noise components and extract the true impulse response as a statistical certainty.</p>
+<p>A linear filter that follows the point where the noise is added has the same signal-to-noise ratio at every frequency as the signal that enters it, because it multiplies the signal and the noise at each frequency by the same factor. The CTLE therefore cannot improve the signal-to-noise ratio of any tone, and what it changes is the weighting between frequencies. The filter of the Worked Examples section restores the Nyquist tone from 0.396 to 1.005, a gain of 8.08 dB (2.54 times), and the noise at that frequency receives the same gain. For noise that is white over a bandwidth $B$, the rms gain is $\sqrt{\frac{1}{B}\int_0^B |H|^2\,df}$, which gives 1.82 (5.20 dB) for $B = 5$ GHz and 2.36 (7.48 dB) for $B = 10$ GHz. A receiver whose front end is wider than the signal needs adds noise at frequencies where the signal has no energy, and the second pole $f_{p2}$ exists to stop this.</p>
+<p>The cost is largest for a channel that is not lossy. The same filter on a short channel boosts the noise by the factor above and restores nothing, so the optimum peaking depends on the loss and the link training searches for it. The comparison with the table of the DFE section explains the division of labor: the CTLE takes the smooth part of the loss, and the DFE takes the long tail, which a linear filter could remove only at the price of amplified noise.</p>
+<h3>Reflections and the Span of the Taps</h3>
+<p>A reflection is a post-cursor located at the round-trip delay of its discontinuity, which <a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html">Jitter Decomposition and Measurement</a> also states. A $K$-tap DFE cancels reflections whose round trip is shorter than $K$ UI and leaves the others, and no CTLE setting removes a reflection, because a smooth filter with three parameters has no response that matches a delayed echo. A reflection at a delay of 1 ns is the tenth cursor for a UI of 100 ps, and it needs a DFE of at least ten taps. The pulse response measured by the receiver contains it, and the LMS update places a tap at that position without any knowledge of the cause.</p>
+<h3>Baseline Wander and the Long Tail</h3>
+<p>The coupling capacitor of the link adds a very small and very long negative tail to the pulse response, with the time constant of its high-pass response. No tap of the DFE reaches this tail. The effect and the disparity bound that limits it belong to <a href="signal-integrity-06_Return_Path_Dynamics_and_Parasitic_Effects.html">Return Path Dynamics and Parasitic Effects</a>, in the section The Series Capacitor and Baseline Wander, and the line codes of <a href="signal-integrity-18_Line_Coding_FEC_and_Protocol_Framing.html">Line Coding, FEC, and Protocol Framing</a> limit it by construction.</p>
+<h3>Training Search and Local Minima</h3>
+<p>The training procedure searches a space with several dimensions: the transmitter taps, the CTLE peaking, and the number of DFE taps in use. The figure of merit that the receiver measures at each point is the result after its own adaptation, so it is noisy and its dependence on the parameters need not be a single smooth hill. A step in the wrong direction can look like an improvement, and the search can stop at a combination that is better than its neighbors and worse than the best. The designer reduces the risk through the starting presets and the step sizes of the state machine. The search fails whatever its algorithm when the equalization that the silicon provides is smaller than the loss of the channel.</p>
 
 <div class="blog-pagination">
       <a href="signal-integrity-13_Transmitter_FFE.html" class="pagination-link prev">
@@ -258,6 +442,10 @@
     }
     .mermaid svg {
       filter: drop-shadow(0 4px 16px rgba(183, 110, 121, 0.12));
+    }
+    .mermaid .node rect {
+      rx: 12px !important;
+      ry: 12px !important;
     }
   </style>
   <script type="module">

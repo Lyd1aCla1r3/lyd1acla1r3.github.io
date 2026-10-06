@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hardware Standards Deep Dive | Lydia Pedersen × Keysight</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="../css/styles.css?v=1.1">
+  <link rel="stylesheet" href="../css/keysight.css?v=1.3">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .ks-standards-header {
+      text-align: center;
+      padding-top: calc(var(--ks-nav-height) + var(--ks-space-2xl));
+      margin-bottom: 40px;
+    }
+
+    .standards-grid-container {
+      position: relative;
+      width: 100%;
+      display: grid;
+      margin-bottom: var(--ks-space-xl);
+    }
+
+    .standards-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-auto-rows: 1fr;
+      gap: var(--ks-space-sm);
+      z-index: 10;
+      position: relative;
+      grid-area: 1 / 1;
+    }
+
+    .standard-row {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: var(--ks-space-md);
+      padding: var(--ks-space-md) var(--ks-space-lg);
+      cursor: pointer;
+      background: var(--ks-bg-card);
+      border: 1px solid var(--ks-border);
+      border-radius: var(--ks-radius-md);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: all var(--ks-transition-fast);
+    }
+
+    .standard-row:hover, .standard-row:focus {
+      border-color: var(--ks-border-hover);
+      box-shadow: var(--ks-shadow-card);
+      transform: translateY(-2px);
+      outline: none;
+    }
+
+    .standard-row__title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--ks-text-primary);
+      margin-bottom: 8px;
+    }
+
+    .standard-row__subtitle {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--ks-accent);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .standard-row > div:first-child {
+      padding-right: var(--ks-space-2xl);
+    }
+
+    .standard-row__desc {
+      font-size: 16px;
+      color: var(--ks-text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Expanded Detail Overlay */
+    .standard-detail-overlay {
+      grid-area: 1 / 1;
+      width: 100%;
+      position: absolute;
+      background: rgba(253, 248, 244, 0.97);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--ks-border);
+      border-radius: var(--ks-radius-lg);
+      padding: var(--ks-space-xl);
+      z-index: 50;
+      opacity: 0;
+      pointer-events: none;
+      visibility: hidden;
+      transform: scale(0.98);
+      max-height: 0;
+      overflow: hidden;
+      transition: opacity 0.4s var(--ks-ease), transform 0.4s var(--ks-ease), visibility 0.4s var(--ks-ease), max-height 0s 0.4s;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 40px rgba(61, 32, 40, 0.08);
+    }
+
+    .standard-detail-overlay.is-expanded {
+      opacity: 1;
+      pointer-events: auto;
+      visibility: visible;
+      transform: scale(1);
+      position: relative;
+      max-height: 20000px;
+      transition: opacity 0.4s var(--ks-ease), transform 0.4s var(--ks-ease), visibility 0.4s var(--ks-ease), max-height 0s 0s;
+    }
+
+    .ks-overlay-close {
+      position: absolute;
+      top: var(--ks-space-md);
+      right: var(--ks-space-md);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem 1.5rem;
+      background: rgba(253, 248, 244, 0.95);
+      border: 1px solid rgba(183, 110, 121, 0.3);
+      border-radius: 30px;
+      color: var(--ks-text-primary);
+      font-size: var(--ks-fs-small);
+      cursor: pointer;
+      transition: all 300ms var(--ks-ease);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 100;
+    }
+
+    .ks-overlay-close:hover {
+      border-color: #81404a !important;
+      background: #ffffff !important;
+    }
+
+    .detail-overlay__title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--ks-text-primary);
+      margin-bottom: 4px;
+      padding-right: 80px; /* Space for close button */
+    }
+
+    /* Bento Grid for Expanded View */
+    .detail-bento {
+      display: flex;
+      flex-wrap: wrap;
+      
+      gap: var(--ks-space-md);
+      margin-top: var(--ks-space-lg);
+      flex-grow: 1;
+      align-items: stretch;
+    }
+
+    .detail-card {
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid var(--ks-border);
+      border-radius: var(--ks-radius-md);
+      padding: var(--ks-space-md);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .detail-card--wide {
+      width: 100%;
+    }
+
+    .detail-card__header {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--ks-accent);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--ks-space-md);
+      border-bottom: 1px solid var(--ks-border);
+      padding-bottom: 8px;
+    }
+
+    .detail-card__content {
+      font-size: 16px;
+      color: var(--ks-text-secondary);
+      line-height: 1.6;
+    }
+
+    .detail-card__content strong {
+      color: var(--ks-text-primary);
+      font-weight: 500;
+    }
+
+    .detail-card__content p strong,
+    .detail-card__content li strong {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 600;
+      color: inherit;
+      font-size: inherit;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .detail-card__content p {
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(var(--theme-rgb), 0.15);
+    }
+    
+    .detail-card__content p:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+    
+    .detail-card__content ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+    
+    .detail-card__content li {
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(var(--theme-rgb), 0.15);
+    }
+    
+    .detail-card__content li:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    /* Table Styling for Overlays */
+    .detail-card table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 14px;
+    }
+    
+    .detail-card th {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--ks-accent);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 12px 8px;
+      border-bottom: 1px solid var(--ks-border);
+    }
+    
+    .detail-card td {
+      padding: 10px 8px;
+      border-bottom: 1px solid rgba(var(--theme-rgb), 0.1);
+    }
+    
+    .detail-card tr:last-child td {
+      border-bottom: none;
+    }
+
+    @media (max-width: 768px) {
+      .standard-row > div:first-child {
+        padding-right: 0;
+        margin-bottom: var(--ks-space-md);
+      }
+      .standard-row {
+        grid-template-columns: 1fr;
+      }
+      .detail-bento {
+        grid-template-columns: 1fr;
+      }
+
+      .detail-bento > .detail-card {
+        width: 100% !important;
+      }
+      .detail-card--wide {
+        width: 100%;
+      }
+    }
+
+    /* Theming Variables */
+    .theme-gold, #overlay-cat1 { --theme-color: #a07b20; --theme-rgb: 184, 144, 40; --ks-border: rgba(184, 144, 40, 0.3); }
+    .theme-rose, #overlay-cat2 { --theme-color: #81404a; --theme-rgb: 183, 110, 121; --ks-border: rgba(183, 110, 121, 0.3); }
+    .theme-peach, #overlay-cat3 { --theme-color: #85573c; --theme-rgb: 192, 136, 104; --ks-border: rgba(192, 136, 104, 0.3); }
+    .theme-dpink, #overlay-cat4 { --theme-color: #7d4450; --theme-rgb: 166, 93, 108; --ks-border: rgba(166, 93, 108, 0.3); }
+    .theme-blush, #overlay-cat5 { --theme-color: #7e4349; --theme-rgb: 184, 122, 128; --ks-border: rgba(184, 122, 128, 0.3); }
+
+    /* Apply Darker Gradients to Main Grid Cards */
+    .standard-row[class*="theme-"] {
+      background: linear-gradient(rgba(var(--theme-rgb), 0.12), rgba(var(--theme-rgb), 0.12)), rgba(255, 255, 255, 0.55) !important;
+      border-color: rgba(var(--theme-rgb), 0.35) !important;
+    }
+    .standard-row[class*="theme-"]:hover, .standard-row[class*="theme-"]:focus {
+      background: linear-gradient(rgba(var(--theme-rgb), 0.25), rgba(var(--theme-rgb), 0.25)), #ffffff !important;
+      border-color: var(--theme-color) !important;
+    }
+
+    /* Apply Lighter Gradients to Detail Cards */
+    .standard-detail-overlay .detail-card {
+      background: linear-gradient(135deg, rgba(var(--theme-rgb), 0.05), rgba(var(--theme-rgb), 0.15)), rgba(255, 255, 255, 0.85) !important;
+      border-color: var(--ks-border) !important;
+    }
+
+    /* Apply Lighter Background to Overlay */
+    .standard-detail-overlay {
+      background: rgba(var(--theme-rgb), 0.12) !important;
+    }
+
+    /* Force all text inside themed areas to be the theme color */
+    .standard-row[class*="theme-"] *,
+    .standard-detail-overlay * {
+      color: var(--theme-color) !important;
+    }
+
+    /* Override removed */
+  </style>
+</head>
+<body class="ks-page">
+  <div class="ks-bg-visual" aria-hidden="true" style="z-index: 1;"></div>
+  
+
+  <main>
+    <div class="ks-container">
+      <header class="ks-standards-header ks-reveal">
+        <div class="ks-label">Section 03 / Standards</div>
+        <h1 class="ks-page-header__title metallic-text">Hardware Standards Deep Dive</h1>
+      </header>
+
+      <div class="standards-grid-container ks-reveal">
+        <section class="standards-grid" style="z-index: 10;">
+          
+          <!-- Category 1 -->
+          <div class="standard-row theme-gold" tabindex="0" data-target="overlay-cat1">
+            <div>
+              <h2 class="standard-row__title">Computer Bus Interfaces</h2>
+              <div class="standard-row__subtitle">PCIe, USB, HDMI, DisplayPort</div>
+            </div>
+            <div class="standard-row__desc">
+              Point-to-point serial links replaced shared multi-drop buses, eliminating signal reflections from unused branches and enabling strict impedance control for aggressive speed scaling. Every standard wraps raw data inside encoded packets to embed timing and maintain DC balance, creating the gap between the raw transfer rate (GT/s) and usable payload (Gbps) in the reference table.
+            </div>
+          </div>
+
+          <!-- Category 2 -->
+          <div class="standard-row theme-rose" tabindex="0" data-target="overlay-cat2">
+            <div>
+              <h2 class="standard-row__title">Datacenter & Optical</h2>
+              <div class="standard-row__subtitle">IEEE 802.3 Ethernet, OIF CEI, LPO, Co&#8209;Packaged Optics</div>
+            </div>
+            <div class="standard-row__desc">
+              Exponential growth in east-west datacenter traffic demands massive throughput scaling without proportional increases in thermal dissipation or latency. The industry is eliminating power-intensive data reconstruction inside transceiver modules in favor of direct-drive optical transmission, shifting equalization onto the host silicon.
+            </div>
+          </div>
+
+          <!-- Category 3 -->
+          <div class="standard-row theme-peach" tabindex="0" data-target="overlay-cat3">
+            <div>
+              <h2 class="standard-row__title">Memory Interfaces</h2>
+              <div class="standard-row__subtitle">DDR5, LPDDR5X, GDDR6, HBM3</div>
+            </div>
+            <div class="standard-row__desc">
+              Multi-core processors starve for data without corresponding memory bandwidth increases. Moving data between the processor and external memory arrays introduces severe latency and thermal constraints, forcing engineers to balance dense storage capacity against the physical limitations of high-speed electrical signaling.
+            </div>
+          </div>
+
+          <!-- Category 4 -->
+          <div class="standard-row theme-dpink" tabindex="0" data-target="overlay-cat4">
+            <div>
+              <h2 class="standard-row__title">Mobile & IoT</h2>
+              <div class="standard-row__subtitle">MIPI D&#8209;PHY, MIPI C&#8209;PHY, MIPI M&#8209;PHY</div>
+            </div>
+            <div class="standard-row__desc">
+              Battery limitations dictate that high-resolution imaging and display data must transmit with minimal power consumption. Mobile devices route high-speed data across densely packed boards under extreme thermal and spatial constraints, risking electromagnetic interference with cellular antennas. MIPI physical layers abandon always-on transmission, cycling aggressively between low-power states and high-speed bursts.
+            </div>
+          </div>
+
+          <!-- Category 5 -->
+          <div class="standard-row theme-blush" tabindex="0" data-target="overlay-cat5">
+            <div>
+              <h2 class="standard-row__title">Automotive Networks</h2>
+              <div class="standard-row__subtitle">100BASE&#8209;T1, 1000BASE&#8209;T1, 10GBASE&#8209;T1, CAN (Legacy)</div>
+            </div>
+            <div class="standard-row__desc">
+              Autonomous navigation mandates massive sensor data aggregation under extreme environmental stress. Automotive Ethernet replaces heavy isolated wiring harnesses with a unified architecture over single twisted-pair cables. A switched star topology links every node to a central switch, with zonal gateways aggregating local data over a high-speed backbone to guarantee deterministic latency.
+            </div>
+          </div>
+          
+        </section>
+
+        <!-- Overlay 1: Computer Bus Interfaces -->
+        <article class="standard-detail-overlay" id="overlay-cat1" style="z-index: 50;">
+          <button class="ks-overlay-close" aria-label="Close detail view"><span class="metallic-text">Back</span></button>
+          <div class="standard-row__subtitle">PCIe, USB, HDMI, DisplayPort</div>
+          <h2 class="detail-overlay__title">Computer Bus Interfaces</h2>
+          
+          <div class="detail-bento">
+            <div class="detail-card" style="width: calc(48% - (var(--ks-space-md) / 2));">
+              <div class="detail-card__header">Physical Layer Mechanics</div>
+              <div class="detail-card__content">
+                <p><strong>Lane Architecture:</strong> Implementations scale from single-lane to x16 differential pair configurations for accelerator interconnects.</p>
+                <p><strong>NRZ to PAM4 Transition:</strong> Early generations relied on NRZ signaling at one bit per symbol. PCIe Gen 6 and USB4 v2 transitioned to PAM4, transmitting two bits per symbol to halve the Nyquist frequency and limit insertion loss.</p>
+                <p><strong>Differential Signaling:</strong> All standards utilize differential pairs to reject common-mode noise at operating frequencies approaching 16 GHz and higher.</p>
+              </div>
+            </div>
+            
+            <div class="detail-card" style="width: calc(52% - (var(--ks-space-md) / 2));">
+              <div class="detail-card__header">Signal Integrity & Validation</div>
+              <div class="detail-card__content">
+                <p><strong>PAM4 Eye Margins:</strong> Multi-level signaling reduces eye diagram openings, increasing susceptibility to crosstalk from adjacent lanes and inter-symbol interference from channel insertion loss.</p>
+                <p><strong>Power Supply Coupling:</strong> Supply noise couples into data lanes as deterministic jitter, closing voltage margins at the receiver.</p>
+                <p><strong>Link Training:</strong> Endpoints negotiate equalization across two simultaneous domains: the protocol state machine dictating packet sequences and the analog layer governing voltage levels. Protocol analyzers time-synchronized with oscilloscopes correlate both domains to isolate failure origins.</p>
+              </div>
+            </div>
+            
+            <div class="detail-card" style="width: calc(62% - (var(--ks-space-md) / 2));">
+              <div class="detail-card__header">Standards & Protocols</div>
+              <div class="detail-card__content">
+                <ul>
+                  <li><strong>PCIe:</strong> Primary internal expansion backbone linking the processor root complex to high-bandwidth hardware. Scales from 8 GT/s per lane (Gen 3) to 64 GT/s per lane (Gen 6) utilizing PAM4.</li>
+                  <li><strong>USB:</strong> External interface dynamically multiplexing DisplayPort and PCIe data across a single connector. Usable bandwidth reaches 80 Gbps on the USB4 v2 specification.</li>
+                  <li><strong>HDMI:</strong> Consumer electronics standard. Migrated to Fixed Rate Link architectures to eliminate dedicated clock line skew, embedding timing directly into the data signal.</li>
+                  <li><strong>DisplayPort:</strong> Royalty-free standard utilizing micro-packetized data transmission supporting multi-stream transport for daisy-chained monitors. Ultra-high bit rate tiers deliver 80 Gbps total bandwidth.</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="detail-card" style="width: calc(38% - (var(--ks-space-md) / 2));">
+              <div class="detail-card__header">Keysight Ecosystem</div>
+              <div class="detail-card__content">
+                <p><strong>Equipment:</strong> High-bandwidth real-time oscilloscopes (Infiniium UXR-Series), bit error ratio testers (M8000 Series), and arbitrary waveform generators.</p>
+                <p><strong>Measurements:</strong> Oscilloscopes measure eye diagram openings, rise times, and voltage swings. Bit error ratio testers inject calibrated stress to quantify receiver data recovery from degraded signals.</p>
+              </div>
+            </div>
+            
+            <div class="detail-card detail-card--wide ks-table-wrapper">
+              <div class="detail-card__header">Encoding & Bandwidth Reference</div>
+              <div class="detail-card__content">
+                <div style="overflow-x: auto;">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Standard &amp; Generation</th>
+                        <th>Transfer Rate Per Lane</th>
+                        <th>Active Data Lanes</th>
+                        <th>Total Transfer Rate</th>
+                        <th>Total Usable Payload</th>
+                        <th>Physical Encoding Scheme</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>PCIe Gen 3 (x16)</strong></td>
+                        <td>8.0 GT/s</td>
+                        <td>16</td>
+                        <td>128.0 GT/s</td>
+                        <td>126.0 Gbps</td>
+                        <td>128b/130b</td>
+                      </tr>
+                      <tr>
+                        <td><strong>PCIe Gen 4 (x16)</strong></td>
+                        <td>16.0 GT/s</td>
+                        <td>16</td>
+                        <td>256.0 GT/s</td>
+                        <td>252.0 Gbps</td>
+                        <td>128b/130b</td>
+                      </tr>
+                      <tr>
+                        <td><strong>PCIe Gen 5 (x16)</strong></td>
+                        <td>32.0 GT/s</td>
+                        <td>16</td>
+                        <td>512.0 GT/s</td>
+                        <td>504.1 Gbps</td>
+                        <td>128b/130b</td>
+                      </tr>
+                      <tr>
+                        <td><strong>PCIe Gen 6 (x16)</strong></td>
+                        <td>64.0 GT/s</td>
+                        <td>16</td>
+                        <td>1024.0 GT/s</td>
+                        <td>969.0 Gbps</td>
+                        <td>PAM4 + 242B/256B FLIT</td>
+                      </tr>
+                      <tr>
+                        <td><strong>USB 3.2 Gen 1x1</strong></td>
+                        <td>5.0 GT/s</td>
+                        <td>1</td>
+                        <td>5.0 GT/s</td>
+                        <td>4.0 Gbps</td>
+                        <td>8b/10b</td>
+                      </tr>
+                      <tr>
+                        <td><strong>USB 3.2 Gen 2x1</strong></td>
+                        <td>10.0 GT/s</td>
+                        <td>1</td>
+                        <td>10.0 GT/s</td>
+                        <td>9.7 Gbps</td>
+                        <td>128b/132b</td>
+                      </tr>
+                      <tr>
+                        <td><strong>USB 3.2 Gen 2x2</strong></td>
+                        <td>10.0 GT/s</td>
+                        <td>2</td>
+                        <td>20.0 GT/s</td>
+                        <td>19.4 Gbps</td>
+                        <td>128b/132b</td>
+                      </tr>
+                      <tr>
+                        <td><strong>USB4 v1 (Gen 3x2)</strong></td>
+                        <td>20.6 GT/s</td>
+                        <td>2</td>
+                        <td>41.2 GT/s</td>
+                        <td>40.0 Gbps</td>
+                        <td>64b/66b</td>
+                      </tr>
+                      <tr>
+                        <td><strong>USB4 v2 (Gen 4x2)</strong></td>
+                        <td>41.2 GT/s</td>
+                        <td>2</td>
+                        <td>82.5 GT/s</td>
+                        <td>80.0 Gbps</td>
+                        <td>PAM3 (11-bit to 7-trit)</td>
+                      </tr>
+                      <tr>
+                        <td><strong>DP 1.2 (HBR2)</strong></td>
+                        <td>5.4 GT/s</td>
+                        <td>4</td>
+                        <td>21.6 GT/s</td>
+                        <td>17.2 Gbps</td>
+                        <td>8b/10b</td>
+                      </tr>
+                      <tr>
+                        <td><strong>DP 1.4 (HBR3)</strong></td>
+                        <td>8.1 GT/s</td>
+                        <td>4</td>
+                        <td>32.4 GT/s</td>
+                        <td>25.9 Gbps</td>
+                        <td>8b/10b</td>
+                      </tr>
+                      <tr>
+                        <td><strong>DP 2.1 (UHBR10)</strong></td>
+                        <td>10.0 GT/s</td>
+                        <td>4</td>
+                        <td>40.0 GT/s</td>
+                        <td>38.6 Gbps</td>
+                        <td>128b/132b</td>
+                      </tr>
+                      <tr>
+                        <td><strong>DP 2.1 (UHBR20)</strong></td>
+                        <td>20.0 GT/s</td>
+                        <td>4</td>
+                        <td>80.0 GT/s</td>
+                        <td>77.3 Gbps</td>
+                        <td>128b/132b</td>
+                      </tr>
+                      <tr>
+                        <td><strong>HDMI 2.0 (TMDS)</strong></td>
+                        <td>6.0 GT/s</td>
+                        <td>3</td>
+                        <td>18.0 GT/s</td>
+                        <td>14.4 Gbps</td>
+                        <td>8b/10b</td>
+                      </tr>
+                      <tr>
+                        <td><strong>HDMI 2.1 (FRL)</strong></td>
+                        <td>12.0 GT/s</td>
+                        <td>4</td>
+                        <td>48.0 GT/s</td>
+                        <td>42.6 Gbps</td>
+                        <td>16b/18b</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Overlay 2: Datacenter & Optical -->
+        <article class="standard-detail-overlay" id="overlay-cat2" style="z-index: 50;">
+          <button class="ks-overlay-close" aria-label="Close detail view"><span class="metallic-text">Back</span></button>
+          <div class="standard-row__subtitle">IEEE 802.3 Ethernet, OIF CEI, LPO, Co&#8209;Packaged Optics</div>
+          <h2 class="detail-overlay__title">Datacenter &amp; Optical</h2>
+          
+          <div class="detail-bento">
+            <div class="detail-card" style="width: calc(49% - (var(--ks-space-md) / 2));">
+              <div class="detail-card__header">Physical Layer Mechanics</div>
+              <div class="detail-card__content">
+                <p><strong>Retimed Transceivers:</strong> Traditional architectures place a digital signal processor inside the pluggable module to reconstruct degraded waveforms, apply error correction, and generate clean signals for the laser. This retiming consumes significant power and introduces latency.</p>
+                <p><strong>Linear Pluggable Optics:</strong> LPO removes the digital signal processor entirely, converting the transceiver into a purely analog component. The host ASIC must pre-distort and equalize the signal to drive the laser directly.</p>
+                <p><strong>Co-Packaged Optics:</strong> The optical engine mounts directly onto the host processor substrate, eliminating long trace lengths and virtually removing high-frequency insertion loss.</p>
+              </div>
+            </div>
+            
+            <div class="detail-card" style="width: calc(51% - (var(--ks-space-md) / 2));">
+              <div class="detail-card__header">Signal Integrity & Validation</div>
+              <div class="detail-card__content">
+                <p><strong>Optical Modulation Amplitude:</strong> Quantifies the power difference between logic-high and logic-low optical states, confirming the photodiode can distinguish digital levels amidst thermal noise.</p>
+                <p><strong>Transmitter and Dispersion Penalty:</strong> Evaluates signal degradation from hardware imperfections and physical dispersion of light through the fiber core.</p>
+                <p><strong>Channel Operating Margin:</strong> Calculates the ratio of usable signal amplitude against all crosstalk and thermal noise to predict link viability under worst-case conditions.</p>
+                <p><strong>LPO Thermal Sensitivity:</strong> Removing the internal signal processor creates an unbuffered analog link where thermal fluctuations directly alter impedance characteristics across the channel.</p>
+              </div>
+            </div>
+            
+            <div class="detail-card" style="width: calc(60% - (var(--ks-space-md) / 2));">
+              <div class="detail-card__header">Standards & Protocols</div>
+              <div class="detail-card__content">
+                <ul>
+                  <li><strong>IEEE 802.3 Ethernet:</strong> Scales aggregate bandwidth from 400G to 1.6T by aggregating eight parallel lanes with PAM4 signaling and mandatory forward error correction.</li>
+                  <li><strong>OIF CEI:</strong> Defines chip-to-module and chip-to-chip electrical interface specifications, scaling to 224 GT/s per lane using PAM4 or PAM6 signaling.</li>
+                  <li><strong>Linear Pluggable Optics:</strong> Targets short-reach intra-rack connections where power consumption is the absolute limiting factor.</li>
+                  <li><strong>Co-Packaged Optics:</strong> Integrates the optical engine alongside the host processor substrate for maximum power efficiency and minimal signal path length.</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="detail-card" style="width: calc(40% - (var(--ks-space-md) / 2));">
+              <div class="detail-card__header">Keysight Ecosystem</div>
+              <div class="detail-card__content">
+                <p><strong>Equipment:</strong> Optical modulation analyzers, electrical-to-optical converters, high-speed sampling oscilloscopes, and arbitrary waveform generators.</p>
+                <p><strong>Measurements:</strong> Equipment generates precise electrical stimuli and captures corresponding optical waveforms. Engineers correlate both domains to validate equalization algorithms running on the host ASIC.</p>
+              </div>
+            </div>
+            
+            <div class="detail-card detail-card--wide ks-table-wrapper">
+              <div class="detail-card__header">Encoding & Bandwidth Reference</div>
+              <div class="detail-card__content">
+                <div style="overflow-x: auto;">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Standard &amp; Generation</th>
+                        <th>Transfer Rate Per Lane</th>
+                        <th>Active Data Lanes</th>
+                        <th>Total Transfer Rate</th>
+                        <th>Total Usable Payload</th>
+                        <th>Physical Encoding Scheme</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>IEEE 802.3bs (400G Ethernet)</strong></td>
+                        <td>53.125 GT/s</td>
+                        <td>8</td>
+                        <td>425.0 GT/s</td>
+                        <td>400.0 Gbps</td>
+                        <td>PAM4 + FEC (256b/257b)</td>
+                      </tr>
+                      <tr>
+                        <td><strong>IEEE 802.3df (800G Ethernet)</strong></td>
+                        <td>106.25 GT/s</td>
+                        <td>8</td>
+                        <td>850.0 GT/s</td>
+                        <td>800.0 Gbps</td>
+                        <td>PAM4 + FEC (256b/257b)</td>
+                      </tr>
+                      <tr>
+                        <td><strong>IEEE P802.3dj (1.6T Ethernet)</strong></td>
+                        <td>212.5 GT/s</td>
+                        <td>8</td>
+                        <td>1700.0 GT/s</td>
+                        <td>1600.0 Gbps</td>
+                        <td>PAM4 + FEC (256b/257b)</td>
+                      </tr>
+                      <tr>
+                        <td><strong>OIF CEI-112G</strong></td>
+                        <td>112.0 GT/s</td>
+                        <td>1</td>
+                        <td>112.0 GT/s</td>
+                        <td>100.0 Gbps</td>
+                        <td>PAM4</td>
+                      </tr>
+                      <tr>
+                        <td><strong>OIF CEI-224G</strong></td>
+                        <td>224.0 GT/s</td>
+                        <td>1</td>
+                        <td>224.0 GT/s</td>
+                        <td>200.0 Gbps</td>
+                        <td>PAM4 / PAM6</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Linear Pluggable Optics (800G LPO)</strong></td>
+                        <td>106.25 GT/s</td>
+                        <td>8</td>
+                        <td>850.0 GT/s</td>
+                        <td>800.0 Gbps</td>
+                        <td>PAM4 (Host ASIC Equalized)</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Overlay 3: Memory Interfaces -->
+        <article class="standard-detail-overlay" id="overlay-cat3" style="z-index: 50;">
+          <button class="ks-overlay-close" aria-label="Close detail view"><span class="metallic-text">Back</span></button>
+          <div class="standard-row__subtitle">DDR5, LPDDR5X, GDDR6, HBM3</div>
+          <h2 class="detail-overlay__title">Memory Interfaces</h2>
+          
+          <div class="detail-bento">
+            <div class="detail-card" style="width: calc(54% - (var(--ks-space-md) / 2));">
+              <div class="detail-card__header">Physical Layer Mechanics</div>
+              <div class="detail-card__content">
+                <p><strong>Synchronized Parallel Bus:</strong> The interface operates as a wide parallel bus, often 64 bits per channel, requiring meticulous timing alignment across dozens of traces.</p>
+                <p><strong>Differential Clock, Single-Ended Data:</strong> Differential pairs serve exclusively as clock signals for synchronization precision. Data lines use single-ended signaling to minimize pin count, sacrificing noise rejection and exposing data to supply fluctuations and crosstalk.</p>
+                <p><strong>Fly-By Routing:</strong> Clock arrives at consecutive memory chips sequentially. The controller executes read and write leveling to dynamically delay data, guaranteeing alignment with the clock edge at every package location.</p>
+                <p><strong>Decision Feedback Equalization:</strong> Transfer rates beyond 4800 MT/s force the DDR5 architecture to relocate equalization onto the receiver die. The equalizer continuously adapts to varying signal amplitudes caused by stub reflections and simultaneous switching noise.</p>
+              </div>
+            </div>
+            
+            <div class="detail-card" style="width: calc(46% - (var(--ks-space-md) / 2));">
+              <div class="detail-card__header">Signal Integrity & Validation</div>
+              <div class="detail-card__content">
+                <p><strong>Multi-Drop Reflections:</strong> Data traces split to feed multiple memory slots. Physical splits and empty sockets create impedance mismatches that reflect energy backward, colliding with forward-traveling data.</p>
+                <p><strong>Simultaneous Switching Noise:</strong> Multiple data lines toggling concurrently generate large transient current demands that disturb the power supply and corrupt adjacent signals.</p>
+                <p><strong>Leveling Verification:</strong> Memory controllers execute complex calibration procedures to align data bursts with the clock. Validation requires tracking thousands of consecutive transactions across the full operating temperature range to prove correct delay calibration.</p>
+              </div>
+            </div>
+            
+            <div class="detail-card" style="width: calc(60% - (var(--ks-space-md) / 2));">
+              <div class="detail-card__header">Standards & Protocols</div>
+              <div class="detail-card__content">
+                <ul>
+                  <li><strong>DDR5:</strong> Splits the traditional 64-bit data bus into two independent 32-bit sub-channels per module, increasing concurrency for smaller cache line transfers.</li>
+                  <li><strong>LPDDR5X:</strong> Targets battery-constrained mobile environments with reduced voltage swings and lower pin counts.</li>
+                  <li><strong>GDDR6:</strong> Delivers massive parallel throughput for graphics processing units, operating with narrower 32-bit channels at significantly higher per-pin data rates.</li>
+                  <li><strong>HBM3:</strong> Utilizes silicon interposers to stack memory dies vertically adjacent to the processor, trading extreme routing complexity for massive 1024-bit bus widths and drastically reduced trace lengths.</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="detail-card" style="width: calc(40% - (var(--ks-space-md) / 2));">
+              <div class="detail-card__header">Keysight Ecosystem</div>
+              <div class="detail-card__content">
+                <p><strong>Equipment:</strong> High-bandwidth oscilloscopes with specialized ball grid array interposers, logic analyzers, and protocol exercisers.</p>
+                <p><strong>Measurements:</strong> High-impedance interposers solder directly between memory chips and the motherboard to capture single-ended signals without altering trace capacitance. Logic analyzers verify parallel command and address bus timing against the differential clock.</p>
+              </div>
+            </div>
+            
+            <div class="detail-card detail-card--wide ks-table-wrapper">
+              <div class="detail-card__header">Encoding & Bandwidth Reference</div>
+              <div class="detail-card__content">
+                <div style="overflow-x: auto;">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Standard &amp; Generation</th>
+                        <th>Transfer Rate Per Lane</th>
+                        <th>Active Data Lanes</th>
+                        <th>Total Transfer Rate</th>
+                        <th>Total Usable Payload</th>
+                        <th>Physical Encoding Scheme</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>DDR4</strong></td>
+                        <td>3.2 GT/s</td>
+                        <td>64</td>
+                        <td>204.8 GT/s</td>
+                        <td>204.8 Gbps</td>
+                        <td>NRZ (No Encoding Tax)</td>
+                      </tr>
+                      <tr>
+                        <td><strong>DDR5</strong></td>
+                        <td>8.4 GT/s</td>
+                        <td>64</td>
+                        <td>537.6 GT/s</td>
+                        <td>537.6 Gbps</td>
+                        <td>NRZ (No Encoding Tax)</td>
+                      </tr>
+                      <tr>
+                        <td><strong>LPDDR5X</strong></td>
+                        <td>8.5 GT/s</td>
+                        <td>32</td>
+                        <td>272.0 GT/s</td>
+                        <td>272.0 Gbps</td>
+                        <td>NRZ (No Encoding Tax)</td>
+                      </tr>
+                      <tr>
+                        <td><strong>GDDR6</strong></td>
+                        <td>20.0 GT/s</td>
+                        <td>32</td>
+                        <td>640.0 GT/s</td>
+                        <td>640.0 Gbps</td>
+                        <td>NRZ (No Encoding Tax)</td>
+                      </tr>
+                      <tr>
+                        <td><strong>HBM3</strong></td>
+                        <td>6.4 GT/s</td>
+                        <td>1024</td>
+                        <td>6553.6 GT/s</td>
+                        <td>6553.6 Gbps</td>
+                        <td>NRZ (No Encoding Tax)</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Overlay 4: Mobile & IoT -->
+        <article class="standard-detail-overlay" id="overlay-cat4" style="z-index: 50;">
+          <button class="ks-overlay-close" aria-label="Close detail view"><span class="metallic-text">Back</span></button>
+          <div class="standard-row__subtitle">MIPI D&#8209;PHY, MIPI C&#8209;PHY, MIPI M&#8209;PHY</div>
+          <h2 class="detail-overlay__title">Mobile &amp; IoT</h2>
+          
+          <div class="detail-bento">
+            <div class="detail-card" style="width: calc(51% - (var(--ks-space-md) / 2));">
+              <div class="detail-card__header">Physical Layer Mechanics</div>
+              <div class="detail-card__content">
+                <p><strong>D-PHY (Clock-Forwarded):</strong> A dedicated differential clock lane pairs with multiple data lanes. The forwarded clock sets the timing reference at up to 4.5 GT/s per lane for camera and display connections.</p>
+                <p><strong>C-PHY (Three-Wire Tri-Trio):</strong> Eliminates the clock lane entirely. Three wires carry high, mid, and low voltage levels. The receiver recovers data and embedded clock by interpreting simultaneous transitions across all three wires, encoding approximately 2.28 bits per symbol.</p>
+                <p><strong>M-PHY (Embedded Clock Differential):</strong> Provides the physical layer for higher-bandwidth peripherals like Universal Flash Storage. Uses differential signaling with embedded clocking and 8b/10b encoding, scaling power through discrete pulse-width modulation gears.</p>
+              </div>
+            </div>
+            
+            <div class="detail-card" style="width: calc(49% - (var(--ks-space-md) / 2));">
+              <div class="detail-card__header">Signal Integrity & Validation</div>
+              <div class="detail-card__content">
+                <p><strong>C-PHY Transition Skew:</strong> Any trace mismatch or capacitance imbalance delaying a transition on one wire forces the receiver to interpret the staggered arrival as two symbols, breaking clock recovery.</p>
+                <p><strong>Low-Power State Sequencing:</strong> The transmitter must correctly sequence through intermediate voltage states (LP-11 to LP-01 to LP-00) before initiating high-speed transmission. Any deviation introduces spurious data packets into the receiver logic.</p>
+                <p><strong>Power State Cycling:</strong> Interfaces aggressively cycle between ultra-low power sleep and high-speed bursts. The physical layer must achieve phase lock within microseconds during each wake-up without transmitting corrupted data.</p>
+              </div>
+            </div>
+            
+            <div class="detail-card" style="width: calc(58% - (var(--ks-space-md) / 2));">
+              <div class="detail-card__header">Standards & Protocols</div>
+              <div class="detail-card__content">
+                <ul>
+                  <li><strong>MIPI D-PHY v2.5:</strong> Connects camera sensors and displays via clock-forwarded differential signaling at up to 4.5 GT/s per lane across four data lanes.</li>
+                  <li><strong>MIPI C-PHY v2.0:</strong> Higher throughput over fewer pins for space-constrained camera modules. Achieves 3.5 gigasymbols per second per trio, yielding 23.94 Gbps across three trios.</li>
+                  <li><strong>MIPI M-PHY v4.1:</strong> Supports high-bandwidth storage and peripheral connections via differential signaling at up to 11.6 GT/s per lane with 8b/10b encoding.</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="detail-card" style="width: calc(42% - (var(--ks-space-md) / 2));">
+              <div class="detail-card__header">Keysight Ecosystem</div>
+              <div class="detail-card__content">
+                <p><strong>Equipment:</strong> Mixed-signal oscilloscopes, active differential probes, and specialized protocol trigger modules.</p>
+                <p><strong>Measurements:</strong> Differential probes isolate small voltage swings from common-mode noise generated by the device battery. Oscilloscopes verify strict timing requirements for transitions between low-power states and high-speed data bursts.</p>
+              </div>
+            </div>
+            
+            <div class="detail-card detail-card--wide ks-table-wrapper">
+              <div class="detail-card__header">Encoding & Bandwidth Reference</div>
+              <div class="detail-card__content">
+                <div style="overflow-x: auto;">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Standard &amp; Generation</th>
+                        <th>Transfer Rate Per Lane / Trio</th>
+                        <th>Active Data Lanes / Trios</th>
+                        <th>Total Transfer Rate</th>
+                        <th>Total Usable Payload</th>
+                        <th>Physical Encoding Scheme</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>MIPI D-PHY v2.5</strong></td>
+                        <td>4.5 GT/s</td>
+                        <td>4 Lanes</td>
+                        <td>18.0 GT/s</td>
+                        <td>18.0 Gbps</td>
+                        <td>NRZ (Clock-Forwarded)</td>
+                      </tr>
+                      <tr>
+                        <td><strong>MIPI C-PHY v2.0</strong></td>
+                        <td>3.5 Gsps</td>
+                        <td>3 Trios</td>
+                        <td>10.5 Gsps</td>
+                        <td>23.94 Gbps</td>
+                        <td>3-Phase Symbol (2.28 bits/symbol)</td>
+                      </tr>
+                      <tr>
+                        <td><strong>MIPI M-PHY v4.1</strong></td>
+                        <td>11.6 GT/s</td>
+                        <td>2 Lanes</td>
+                        <td>23.2 GT/s</td>
+                        <td>18.56 Gbps</td>
+                        <td>8b/10b</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Overlay 5: Automotive Networks -->
+        <article class="standard-detail-overlay" id="overlay-cat5" style="z-index: 50;">
+          <button class="ks-overlay-close" aria-label="Close detail view"><span class="metallic-text">Back</span></button>
+          <div class="standard-row__subtitle">100BASE&#8209;T1, 1000BASE&#8209;T1, 10GBASE&#8209;T1, CAN (Legacy)</div>
+          <h2 class="detail-overlay__title">Automotive Networks</h2>
+          
+          <div class="detail-bento">
+            <div class="detail-card" style="width: calc(53% - (var(--ks-space-md) / 2));">
+              <div class="detail-card__header">Physical Layer Mechanics</div>
+              <div class="detail-card__content">
+                <p><strong>Single-Pair Full-Duplex:</strong> Each connection operates over one twisted pair, forcing simultaneous bidirectional transmission on the same wire. The receiver applies adaptive echo cancellation to subtract its own modeled transmission from the composite signal, isolating the attenuated incoming data.</p>
+                <p><strong>Dense Modulation:</strong> Standards use multi-level pulse amplitude modulation (PAM3 and PAM4) to maximize data rates over single-pair cables. Higher voltage level counts increase bit density per symbol but demand more precise receiver equalization.</p>
+                <p><strong>Unshielded Architecture:</strong> Engineers omit shielding to reduce cable mass, relying on twist geometry for electrical balance and differential noise rejection. Shielding introduces parasitic capacitance that attenuates high-frequency components and risks ground loop interference across the chassis.</p>
+              </div>
+            </div>
+            
+            <div class="detail-card" style="width: calc(47% - (var(--ks-space-md) / 2));">
+              <div class="detail-card__header">Signal Integrity & Validation</div>
+              <div class="detail-card__content">
+                <p><strong>Common-Mode Conversion:</strong> Any physical asymmetry in the twisted pair converts common-mode environmental noise into differential noise that directly corrupts multi-level data payloads.</p>
+                <p><strong>Echo Cancellation Margins:</strong> Validating echo cancellation under worst-case cable assemblies requires injecting known stress patterns to confirm the receiver correctly isolates incoming data from its own transmission reflections.</p>
+                <p><strong>Deterministic Latency:</strong> Safety-critical systems demand guaranteed delivery times. Engineers capture millions of network frames to prove high-priority sensor data preempts lower-priority infotainment traffic under maximum load without dropping packets.</p>
+              </div>
+            </div>
+            
+            <div class="detail-card" style="width: calc(58% - (var(--ks-space-md) / 2));">
+              <div class="detail-card__header">Standards & Protocols</div>
+              <div class="detail-card__content">
+                <ul>
+                  <li><strong>100BASE-T1:</strong> 100 Mbps over single twisted pair using PAM3 encoding for basic sensor telemetry and control unit communication.</li>
+                  <li><strong>1000BASE-T1:</strong> 1 Gbps over single twisted pair using PAM3 at 750 MT/s with 80B/81B block encoding and Reed-Solomon forward error correction.</li>
+                  <li><strong>10GBASE-T1:</strong> 10 Gbps over single twisted pair using PAM4 encoding for uncompressed autonomous sensor data and camera feeds.</li>
+                  <li><strong>CAN (Legacy):</strong> Low-speed shared bus handling engine telemetry. Gradually supplemented by Automotive Ethernet for bandwidth-intensive applications.</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="detail-card" style="width: calc(42% - (var(--ks-space-md) / 2));">
+              <div class="detail-card__header">Keysight Ecosystem</div>
+              <div class="detail-card__content">
+                <p><strong>Equipment:</strong> Vector network analyzers, mixed-signal oscilloscopes, and automotive ethernet compliance testing software.</p>
+                <p><strong>Measurements:</strong> Vector network analyzers measure return loss and insertion loss across the full frequency spectrum of wire harness assemblies. Oscilloscopes measure power spectral density to ensure transmitted signals comply with strict automotive electromagnetic emission limits.</p>
+              </div>
+            </div>
+            
+            <div class="detail-card detail-card--wide ks-table-wrapper">
+              <div class="detail-card__header">Encoding & Bandwidth Reference</div>
+              <div class="detail-card__content">
+                <div style="overflow-x: auto;">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Standard &amp; Generation</th>
+                        <th>Transfer Rate Per Lane</th>
+                        <th>Active Data Lanes</th>
+                        <th>Total Transfer Rate</th>
+                        <th>Total Usable Payload</th>
+                        <th>Physical Encoding Scheme</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>100BASE-T1</strong></td>
+                        <td>66.6 MT/s</td>
+                        <td>1</td>
+                        <td>66.6 MT/s</td>
+                        <td>0.1 Gbps</td>
+                        <td>PAM3 (3B2T)</td>
+                      </tr>
+                      <tr>
+                        <td><strong>1000BASE-T1</strong></td>
+                        <td>750.0 MT/s</td>
+                        <td>1</td>
+                        <td>750.0 MT/s</td>
+                        <td>1.0 Gbps</td>
+                        <td>PAM3 (80B/81B + RS)</td>
+                      </tr>
+                      <tr>
+                        <td><strong>10GBASE-T1</strong></td>
+                        <td>5.625 GT/s</td>
+                        <td>1</td>
+                        <td>5.625 GT/s</td>
+                        <td>10.0 Gbps</td>
+                        <td>PAM4 (64B/65B + RS)</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+
+
+    </div>
+  </main>
+  
+  <script src="../js/keysight.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var rows = document.querySelectorAll('.standard-row');
+      rows.forEach(function(row) {
+        row.addEventListener('click', function(e) {
+          var targetId = row.getAttribute('data-target');
+          var overlay = document.getElementById(targetId);
+          if (overlay) {
+            document.querySelectorAll('.standard-detail-overlay').forEach(function(o) {
+              o.classList.remove('is-expanded');
+            });
+            overlay.classList.add('is-expanded');
+          }
+        });
+        row.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            row.click();
+          }
+        });
+      });
+
+      var closeBtns = document.querySelectorAll('.ks-overlay-close');
+      closeBtns.forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          var overlay = btn.closest('.standard-detail-overlay');
+          if (overlay) {
+            overlay.classList.remove('is-expanded');
+            var targetId = overlay.id;
+            var openingRow = document.querySelector('.standard-row[data-target="' + targetId + '"]');
+            if (openingRow) openingRow.focus();
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

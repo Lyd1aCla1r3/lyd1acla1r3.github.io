@@ -1,0 +1,280 @@
+# Frequency Content of Digital Signals
+
+<!-- SUMMARY: A digital edge is both a voltage transition in time and a spectrum of sine waves in frequency. This guide defines the Fourier transform as correlation, derives the Fourier series of a square wave and the Fourier integral of a step, derives the 0.35/t_r relationship between rise time and bandwidth from a single-pole filter, relates harmonic count to channel bandwidth, defines the Nyquist frequency, introduces the channel as a linear filter described by its impulse, step, and pulse responses, and closes with the Gibbs phenomenon, aliasing, and spectral leakage. -->
+
+<p><em>Prefer to read offline? <a href="../../../assets/docs/signal-integrity-ebook-v2.0.pdf" target="_blank" rel="noopener">Download the complete Signal Integrity (Advanced Edition) ebook.</a></em></p>
+
+[Chapter 1](01_Wave_Propagation_and_Transmission_Lines.md) showed that a digital signal is a wavefront launched when a transistor switches a trace between two DC levels, and that the information lies in the timing of those edges. This chapter answers the question on which every later chapter depends: which frequencies does such an edge contain, and how much bandwidth must a channel or an instrument provide to preserve it?
+
+Every digital signal on a high-speed transmission line is simultaneously a time-domain waveform and a frequency-domain spectrum. Fourier analysis provides the mathematical framework that connects these two representations, showing that a voltage waveform can be decomposed into a unique set of sine waves with specific frequencies, amplitudes, and phases. The Fast Fourier Transform (FFT) and its inverse (IFFT) are the computational engines that perform this decomposition and reconstruction on sampled data.
+
+The discipline of signal integrity measurement rests on the ability to move between these two views. Loss mechanisms, parasitic structures, and equalizers are described most naturally as functions of frequency, while the receiver judges each bit in time. Every loss mechanism, every parasitic interaction, and every equalization strategy becomes clearer when viewed through the appropriate domain, and [Chapter 8](08_S_Parameters_and_VNA.md) applies the same mathematics to convert a TDR measurement into S-parameters.
+
+This guide traces the Fourier framework from correlation through the square-wave series and the step integral, derives the relationship between rise time and bandwidth, separates the data-rate frequency from the edge bandwidth, defines the channel as a linear filter, and concludes with the practical limits of the method: the Gibbs phenomenon, sampling and spectral leakage, and nonlinear systems.
+
+## Core Concepts
+
+### Fourier Analysis as Correlation
+
+Fourier analysis detects each frequency through mathematical correlation. The procedure multiplies the time-domain signal by a test sine wave of a specific frequency, then integrates the product over time. A signal containing energy at that frequency produces a product whose positive lobes outweigh its negative lobes, and the integral evaluates to a large value. A signal with no energy at that frequency produces a product whose positive and negative lobes cancel, and the integral evaluates to zero. Sweeping the test frequency across the spectrum and computing the correlation at each one builds the complete frequency-domain representation.
+
+A single test sine cannot measure timing, because a component shifted by a quarter period correlates to zero with a sine and fully with a cosine. The Fourier transform therefore correlates against both at once, using the complex exponential $e^{-j2\pi ft} = \cos(2\pi ft) - j\sin(2\pi ft)$:
+
+$$X(f) = \int_{-\infty}^{\infty} x(t)\, e^{-j 2\pi f t}\, dt$$
+
+Here $x(t)$ is the voltage waveform, $f$ is the test frequency, and $j$ is the imaginary unit. The cosine correlation becomes the real part of $X(f)$ and the sine correlation becomes the imaginary part. The magnitude $|X(f)|$ measures how much of the signal lies at frequency $f$, and the angle of $X(f)$ measures the timing offset (phase) of that component relative to $t = 0$. Together, these form the complete spectral portrait of the signal.
+
+The inverse transform performs the reverse operation, summing every component at its measured amplitude and phase to rebuild the waveform. This reconstruction is called Fourier synthesis:
+
+$$x(t) = \int_{-\infty}^{\infty} X(f)\, e^{j 2\pi f t}\, df$$
+
+Instruments work with sampled data rather than continuous waveforms. A record of $N$ samples $x[n]$, taken at a fixed interval, is transformed by the discrete Fourier transform (DFT), which replaces the integral with a sum over the samples:
+
+$$X[k] = \sum_{n=0}^{N-1} x[n]\, e^{-j 2\pi k n / N}$$
+
+Each index $k$ corresponds to one frequency bin. Computing every bin directly requires about $N^2$ multiplications. The FFT is an algorithm that computes exactly the same DFT result in about $N \log_2 N$ operations by reusing shared intermediate products, which is the reason an oscilloscope can transform a million-point record in a fraction of a second. The FFT and IFFT are exact inverses: applying one and then the other recovers the original samples.
+
+### Discrete Spectra vs. Continuous Spectra
+
+A repeating signal and a non-repeating signal produce fundamentally different frequency-domain representations.
+
+A repeating clock signal or square wave contains only discrete, widely spaced frequency components. A 1 GHz square wave contains energy at 1 GHz, 3 GHz, 5 GHz, 7 GHz, and so on, with nothing in between. These individual spectral lines appear as distinct vertical spikes on an FFT plot, separated by empty gaps.
+
+A single, non-repeating voltage step possesses a completely continuous frequency spectrum. The signal contains energy at 1 GHz, at 1.000001 GHz, at 1.000002 GHz, and at every other fractional frequency. This continuous spectrum begins at 0 Hz (the DC term, which sets the level halfway between the two voltages) and extends without interruption toward infinity.
+
+The distinction matters for measurement: a spectrum analyzer sweeping across a repeating clock signal detects energy only at the harmonic frequencies and measures silence between them, while the spectrum of a step has energy at every frequency in an unbroken continuum. The word *harmonic* applies only to the discrete case. A harmonic is an integer multiple of a fundamental frequency, and a non-repeating step has no fundamental, so its content is described as a continuous spectrum rather than as harmonics. The next two sections derive each spectrum.
+
+### The Fourier Series of a Square Wave
+
+A repeating waveform with period $T$ contains only the frequencies that fit a whole number of cycles into that period: the fundamental $f_0 = 1/T$ and its integer multiples $n f_0$, the harmonics. Its Fourier series is the sum of these components on top of the average (DC) level. A square wave positioned so that it switches upward at $t = 0$ needs only sine terms:
+
+$$x(t) = a_0 + \sum_{n=1}^{\infty} b_n \sin(2\pi n f_0 t)$$
+
+The DC term $a_0$ is the average value. Each coefficient $b_n$ is the correlation of the waveform with the $n$th test sine, computed over one period:
+
+$$b_n = \frac{2}{T} \int_0^T x(t)\, \sin(2\pi n f_0 t)\, dt$$
+
+Consider a square wave that sits at 1V for the first half of each period and at 0V for the second half, so that its average is $a_0 = 0.5$V. The 0V half contributes nothing to the integral, so only the first half remains (with $f_0 = 1/T$ written out):
+
+$$b_n = \frac{2}{T} \int_0^{T/2} \sin\!\left(\frac{2\pi n t}{T}\right) dt$$
+
+The integral of a sine is a negative cosine, divided by the factor that multiplies $t$:
+
+$$b_n = \frac{2}{T} \cdot \frac{T}{2\pi n} \left[ -\cos\!\left(\frac{2\pi n t}{T}\right) \right]_0^{T/2}$$
+
+Evaluating at the two limits, where the cosine equals $\cos(\pi n)$ at $t = T/2$ and 1 at $t = 0$:
+
+$$b_n = \frac{1}{\pi n} \left[ 1 - \cos(\pi n) \right]$$
+
+The cosine of $\pi n$ alternates between $-1$ for odd $n$ and $+1$ for even $n$, so the bracket equals 2 for odd $n$ and 0 for even $n$:
+
+$$b_n = \begin{cases} \dfrac{2}{\pi n} & n \text{ odd} \\[6pt] 0 & n \text{ even} \end{cases}$$
+
+The 0-to-1V square wave swings ±0.5V about its average. A square wave swinging ±$a$ about its average scales every coefficient by $2a$, which gives the standard form:
+
+$$b_n = \frac{4a}{\pi n} \qquad (n \text{ odd})$$
+
+Two features of this result govern everything that follows. The amplitudes fall as $1/n$: the 3rd harmonic has one third the amplitude of the fundamental, and the 5th has one fifth. The even harmonics vanish exactly, and the symmetry of the waveform explains why. Measured from its average, the second half of each period is the inverted copy of the first half, a property called half-wave symmetry. An odd harmonic completes an odd number of half-cycles in each half period, so it also inverts from the first half to the second; its correlation with the inverted second half therefore has the same sign as its correlation with the first half, and the two halves add. An even harmonic completes a whole number of full cycles in each half period and repeats unchanged in the second half; its correlation with the inverted second half is equal and opposite to its correlation with the first half, and the two halves cancel.
+
+For the 0-to-1V square wave, the fundamental has an amplitude of $2/\pi \approx 0.637$V. Riding on the 0.5V average, it peaks at $0.5 + 0.637 = 1.137$V, overshooting the 1V level that the square wave actually reaches. The higher harmonics correct that overshoot: at the center of the high half-period, the fundamental contributes +0.637V, the 3rd harmonic (amplitude 0.212V) contributes $-0.212$V, the 5th contributes +0.127V, and the 7th contributes $-0.091$V, with each term correcting the error left by the previous terms by a smaller margin. The alternating series $1 - \tfrac{1}{3} + \tfrac{1}{5} - \tfrac{1}{7} + \cdots$ converges to $\pi/4$, so the full sum at that instant is $0.5 + (2/\pi)(\pi/4) = 1.0$V exactly. The same continuous correction at every other instant cancels all of the natural curvature of the sine waves, and the infinite sum is flat at 1V across the high half-period and flat at 0V across the low half.
+
+The harmonics realign at every transition because each one is an integer multiple of the fundamental. In one half period of the fundamental, the $n$th harmonic completes exactly $n$ half-cycles, so at every multiple of $T/2$ every component crosses zero simultaneously and all of them change direction together. This lockstep is what allows a periodic waveform to repeat its sharp edge forever, and it is the property that a non-repeating step lacks.
+
+### The Fourier Integral of a Step
+
+A single step from 0V to 1V at $t = 0$ never repeats, so it has no fundamental period and no harmonics. Its spectrum is continuous, and the Fourier series is replaced by an integral over every frequency:
+
+$$u(t) = \frac{1}{2} + \frac{1}{\pi} \int_0^{\infty} \frac{\sin(\omega t)}{\omega}\, d\omega$$
+
+where $\omega = 2\pi f$ is the angular frequency, the first term is the DC component, and the integral is a continuum of sine waves, each crossing zero with a positive slope at $t = 0$ and each weighted by $1/\omega$.
+
+Two facts establish that this expression is the step. The first fact is a standard result called the Dirichlet integral:
+
+$$\int_0^{\infty} \frac{\sin x}{x}\, dx = \frac{\pi}{2}$$
+
+The value of this integral follows in three steps. The factor $1/x$ can be written as the integral of a decaying exponential, $1/x = \int_0^\infty e^{-sx}\, ds$. Swapping the order of integration leaves $\int_0^\infty e^{-sx} \sin x\, dx$ inside, which integration by parts (applied twice) evaluates to $1/(1+s^2)$. The remaining integral $\int_0^\infty ds/(1+s^2)$ is the arctangent evaluated from 0 to infinity, which equals $\pi/2$.
+
+The second fact comes from a substitution that applies for any $t > 0$: setting $x = \omega t$ gives $d\omega/\omega = dx/x$, and the integral in $u(t)$ becomes the Dirichlet integral regardless of the value of $t$:
+
+$$\int_0^{\infty} \frac{\sin(\omega t)}{\omega}\, d\omega = \int_0^{\infty} \frac{\sin x}{x}\, dx = \frac{\pi}{2} \qquad (t > 0)$$
+
+For $t < 0$, every sine changes sign because $\sin(-\theta) = -\sin\theta$, so the integral equals $-\pi/2$. At $t = 0$, every sine is zero and $u(0) = 1/2$. Substituting the two nonzero values into $u(t)$:
+
+$$u(t) = \frac{1}{2} - \frac{1}{2} = 0 \quad (t < 0), \qquad u(t) = \frac{1}{2} + \frac{1}{2} = 1 \quad (t > 0)$$
+
+The sine continuum therefore sums to exactly $-0.5$V at every instant before the transition and to exactly +0.5V at every instant after it. The DC component lifts both levels by 0.5V, producing 0V before and 1V after. Without the DC term, the same sine continuum would produce a step from $-0.5$V to +0.5V. The DC term is indispensable because every sine wave averages to zero over time, so no sum of sine waves without an offset can sit at a permanent nonzero level; the 0 Hz component supplies that average.
+
+The weighting $1/\omega$ defines how amplitude depends on frequency. Rewriting the integral in terms of ordinary frequency $f$ (where $d\omega/\omega = df/f$) shows that the narrow band of frequencies between $f$ and $f + df$ contributes a sine of amplitude $(1/\pi)(df/f)$. The amplitude density of a 1V step is therefore $1/(\pi f)$ volts per hertz: content at 1 GHz is one tenth as strong as content at 100 MHz, and content at 10 GHz is one hundredth as strong.
+
+The frequencies in the continuum share no common period, so after crossing zero together at $t = 0$ they never again cross zero together. The flat levels on either side of the step are therefore held by continuous cancellation among components whose phases spread further apart as time moves away from $t = 0$, rather than by the periodic realignment that shapes a square wave.
+
+The $1/f$ proportion is exact for an ideal step. Any physical channel that attenuates high frequencies more strongly than low frequencies breaks the proportion, the cancellation near $t = 0$ becomes incomplete, and the edge arrives rounded and slowed. [Chapter 5](05_Skin_Effect_and_Dielectric_Loss.md) identifies the copper and dielectric mechanisms that impose this attenuation.
+
+### Rise Time and Bandwidth
+
+A real edge has a finite rise time $t_r$, conventionally measured between 10% and 90% of the final voltage. The faster the transition, the further its spectrum extends. A signal that takes 1 nanosecond to rise from 0V to 1V contains significant content to approximately 350 MHz, and a signal that completes the same transition in 10 picoseconds contains significant content past 35 GHz. The factor 0.35 that connects these numbers comes from the simplest physical low-pass filter, a single resistor and capacitor.
+
+Apply a 1V step to an RC low-pass filter with time constant $\tau = RC$. The capacitor voltage rises exponentially toward 1V:
+
+$$v(t) = 1 - e^{-t/\tau}$$
+
+The 10% point is reached when $e^{-t/\tau} = 0.9$, and the 90% point is reached when $e^{-t/\tau} = 0.1$. Taking the natural logarithm of each condition and solving for $t$:
+
+$$t_{10} = \tau \ln\frac{1}{0.9}, \qquad t_{90} = \tau \ln\frac{1}{0.1}$$
+
+The rise time is their difference, and subtracting the two logarithms combines them into the logarithm of a ratio:
+
+$$t_r = t_{90} - t_{10} = \tau \ln\frac{0.9}{0.1} = \tau \ln 9 \approx 2.197\,\tau$$
+
+The same filter, driven by sine waves, passes low frequencies and attenuates high ones. Its bandwidth is the frequency at which the output power falls to half of the input power (an output amplitude of $1/\sqrt{2} \approx 0.707$ of the input), a point written as $-3$ dB in the decibel notation that [Chapter 8](08_S_Parameters_and_VNA.md) develops. For an RC filter, this half-power point is the frequency at which the capacitor's opposition to current equals the resistance ([Chapter 3](03_Impedance_Reflections_and_Termination.md) derives the capacitor's frequency-dependent impedance):
+
+$$f_{3\text{dB}} = \frac{1}{2\pi\tau}$$
+
+Solving this expression for $\tau$ and substituting it into the rise time:
+
+$$t_r = \frac{\ln 9}{2\pi f_{3\text{dB}}} \approx \frac{0.35}{f_{3\text{dB}}}$$
+
+Rearranged as $f_{3\text{dB}} \approx 0.35/t_r$, the result gives the bandwidth of a single-pole system that produces a given rise time. A 20 ps edge corresponds to about 17.5 GHz, and an instrument with a single-pole-like response needs at least that bandwidth to display a 20 ps edge without slowing it significantly. Systems with sharper roll-offs have a larger constant (oscilloscopes with a steep, flat response are commonly specified with values between 0.4 and 0.45), so 0.35 is the single-pole result and other response shapes shift it modestly.
+
+The $-3$ dB point marks a gradual transition rather than a wall: content just above it is attenuated moderately, and content far above it progressively more, at a rate set by the shape of the filter. The spectrum of the edge itself follows a two-slope envelope. An ideal step falls as $1/f$, a slope of $-20$ dB per decade (each tenfold increase in frequency reduces the amplitude tenfold). An edge that ramps linearly over a time $t_r$ follows the same $1/f$ slope up to a corner near $f = 1/(\pi t_r)$ and falls as $1/f^2$, or $-40$ dB per decade, beyond it. For a 20 ps edge, the corner lies near 16 GHz. A related rule of thumb, the knee frequency $f_{knee} \approx 0.5/t_r$, marks the frequency below which most of the energy of the edge resides. The three numbers $0.32/t_r$, $0.35/t_r$, and $0.5/t_r$ answer different questions (the envelope corner, the bandwidth of a single-pole system with the same rise time, and a design guideline for how far the spectrum matters), and they should not be used interchangeably.
+
+### Data Rate, Nyquist Frequency, and Edge Bandwidth
+
+The high-frequency content carried by a digital signal does not come from different voltage levels output by the rail. It comes from the speed of the transition between the two DC states, and two distinct frequency scales coexist on the same transmission line:
+
+- **The data-rate frequency** describes how often the driver changes state. The fastest possible pattern for non-return-to-zero (NRZ) signaling, in which each bit holds one of two levels for one unit interval, is the alternating 10101010 pattern. Each full cycle of that pattern spans two bits, so its fundamental is half the bit rate: 5 GHz for a 10 Gb/s link. A long run of identical bits drops to 0 Hz (DC) for its duration.
+- **The edge bandwidth** describes the spectral content required to construct the shape of each rising or falling transition. It is set by the transistor's switching speed through the rise-time relationship above, independent of the bit pattern. A 20 ps edge carries significant content beyond 15 GHz whether it occurs once per microsecond or once per 100 ps.
+
+The fundamental of the 1010 pattern, half the symbol rate, is called the **Nyquist frequency** of the link. The name comes from sampling theory (see Edge Cases): a sequence of values delivered at a rate of $R$ per second can represent frequencies only up to $R/2$, and an NRZ data stream is exactly such a sequence, with one value per unit interval. Specifications quote channel loss at the Nyquist frequency because it is the highest fundamental that any data pattern can produce. The correct term is Nyquist frequency, never Nyquist rate, for this quantity; the Nyquist rate is the minimum sampling rate for a signal, twice the highest frequency it contains.
+
+The two scales combine in a specific way: the repeating pattern sets *where* spectral lines fall (at the fundamental and its odd harmonics for 1010, or densely spaced for random data), and the edge rate sets the *envelope* that scales their amplitudes, the two-slope curve from the previous section. Any mechanism that treats high frequencies differently from low frequencies (such as the skin effect, dielectric loss, or dispersion) acts on both scales and distorts the composite waveform as it propagates.
+
+### All Frequencies Travel Simultaneously
+
+The Fourier decomposition of a digital signal reveals a counter-intuitive physical fact: all frequency components occupy the same physical space at the same time. A digital bitstream is the superposition of continuous sine waves running simultaneously through the transmission line, rather than a signal that changes its frequency moment by moment as the bit pattern shifts.
+
+A long run of identical bits (such as `1111100000`) is dominated by low-frequency components that hold the flat voltage levels. A rapid alternating pattern (`10101010`) is dominated by high-frequency components. The sharp vertical edge of every transition, regardless of the surrounding bit pattern, requires high-frequency components to construct its steep slope.
+
+The trace physically carries low-frequency waves (sustaining the flat voltage plateaus) and high-frequency waves (building the steep transitions) at every point along its length. Frequency-dependent physical mechanisms such as the skin effect and dielectric absorption do not selectively target one "part" of the signal. They attenuate the high-frequency components everywhere, simultaneously, across the entire trace. The composite waveform distorts because its constituent sine waves are no longer arriving at the receiver with their original amplitude relationships intact.
+
+## Architecture
+
+### Physical Reality vs. Mathematical Decomposition
+
+A conceptual trap surrounds the Fourier description of signal generation. Describing a step function as "composed of" an infinite spectrum of sine waves can create the impression that the generating instrument (a TDR, an oscilloscope calibrator, or a SerDes transmitter) physically synthesizes and sums thousands of individual sine wave oscillators.
+
+The physical mechanism is far simpler and involves no sine wave generators. A DC power supply holds a steady voltage, and a high-speed transistor acts as a gate. At $t = 0$, the transistor closes, connecting the voltage supply directly to the trace. The flat plateau at $t > 0$ exists because the transistor remains closed, permanently connecting the trace to the supply.
+
+Fourier analysis acts as a mathematical lens applied after the fact: the physical voltage step exists first, and the Fourier transform shows that the shape of that step intrinsically contains a continuous spectrum of frequency components. The analogy to optical spectroscopy is precise: a beam of white light exists as a single physical entity. Passing it through a glass prism reveals its constituent wavelengths, but no one constructed the white light by aligning millions of individual colored lasers. The decomposition reveals structure that was always present in the original signal.
+
+This distinction is essential when reasoning about loss mechanisms. The skin effect does not wait for a Fourier analyzer to decompose the signal before attenuating high frequencies. The physical copper and dielectric interact with the electromagnetic wavefront as it passes, and the skin effect attenuates the rapid field variations that constitute the steep slope of the transition, softening the edge. Fourier analysis provides the quantitative framework to predict how much softening will occur at each frequency, but the physical interaction operates on the waveform directly, not on its mathematical decomposition.
+
+### The Channel as a Linear, Time-Invariant Filter
+
+Fourier analysis becomes a design tool once the channel itself is described in the frequency domain. A channel is *linear* when scaling the input scales the output by the same factor and when the response to a sum of inputs equals the sum of the individual responses (superposition). It is *time-invariant* when delaying the input simply delays the output by the same amount. Passive transmission lines, connectors, and vias at normal signal levels satisfy both conditions closely, and the combination is abbreviated LTI.
+
+An LTI channel treats sine waves in a special way: a sine wave entering the channel emerges as a sine wave of the same frequency, changed only in amplitude and shifted in phase. The channel can therefore be described completely by one complex number per frequency, its transfer function $H(f)$, whose magnitude gives the amplitude scaling and whose angle gives the phase shift. Superposition then gives the output spectrum directly, because every component of the input spectrum $X(f)$ passes through independently and is scaled by $H(f)$ at its own frequency:
+
+$$Y(f) = H(f)\, X(f)$$
+
+The same channel has an equivalent time-domain description. Its **impulse response** $h(t)$ is the output produced by an infinitely short input pulse of unit area. The impulse contains every frequency at equal strength (see the transform pairs below), so its output spectrum is $H(f)$ itself, and $h(t)$ and $H(f)$ form a Fourier transform pair. Any input waveform can be treated as a dense train of scaled, delayed impulses; each produces a scaled, delayed copy of $h(t)$, and linearity sums them. That sum is the **convolution** of the input with the impulse response:
+
+$$y(t) = \int_{-\infty}^{\infty} x(t')\, h(t - t')\, dt'$$
+
+Here $t'$ labels the instant at which each slice of the input arrives, and $h(t - t')$ is the channel's response to that slice, observed at time $t$. Convolution in time and multiplication in frequency are two descriptions of the same physical process.
+
+Two further responses built from $h(t)$ appear throughout this series. The **step response** is the output for a step input. A step is the running accumulation of an impulse, so the step response equals the running integral of the impulse response, and a TDR displays this response for the reflections from a line ([Chapter 7](07_Time_Domain_Reflectometry.md)). The **pulse response** is the output for a single bit: a pulse of unit amplitude lasting one unit interval (UI). A one-UI pulse equals a step at $t = 0$ minus a step delayed by one UI, so the pulse response equals the step response minus a copy of itself delayed by one UI. Sampling the pulse response at one-UI intervals yields the main cursor and the pre-cursors and post-cursors whose cancellation is the subject of [Chapter 13](13_Transmitter_FFE.md) and [Chapter 14](14_CTLE_and_DFE.md). A channel that attenuates high frequencies has a pulse response that spreads beyond its own UI into neighboring bits, and that spreading is the origin of intersymbol interference (ISI), whose physical causes [Chapter 5](05_Skin_Effect_and_Dielectric_Loss.md) traces.
+
+### Bandwidth and Time-Domain Resolution
+
+A time-domain measurement can resolve features only as small as the spatial extent of its edge, and that extent is set by the high-frequency content of the edge. An edge that has crossed a lossy line arrives with its highest frequencies attenuated and its rise time lengthened, so features farther down the line are probed by a slower edge and appear broader and shallower than identical features near the launch point. [Chapter 7](07_Time_Domain_Reflectometry.md) quantifies this resolution limit and its consequences for TDR measurements.
+
+## Worked Examples
+
+### Fourier Transform Pairs Used in Signal Integrity
+
+The FFT and IFFT produce characteristic signatures for several fundamental waveforms that appear repeatedly in signal integrity work:
+
+**Pure sine wave:** A single-frequency sine wave in the time domain produces a single, sharp vertical spike at that exact frequency on the FFT, and no other frequency components are present.
+
+**Square wave:** A time-domain square wave produces a spike at the fundamental frequency, plus a series of progressively smaller spikes at every odd harmonic (3f, 5f, 7f, ...), with each harmonic's amplitude decaying as $1/n$ and the even harmonic positions empty, as derived above.
+
+**Dirac delta (ideal impulse):** An infinitely narrow, infinitely tall time-domain impulse of unit area produces a flat, horizontal line on the FFT. Equal energy exists at every frequency from zero to infinity. This transform pair is the mathematical reason that impulse response testing can characterize a channel across its entire frequency range.
+
+**Brick-wall low-pass filter:** A frequency response that is flat up to a cutoff frequency $f_c$ and zero above it has an impulse response shaped as a sinc function, $h(t) = \sin(2\pi f_c t)/(\pi t)$. The sinc shape features a main pulse flanked by rippling lobes before and after it that decay gradually with distance from the peak. The lobes before the main pulse show that such a filter would respond before its input arrives, so no physical channel is an exact brick wall. A brick-wall band-pass response produces a sinc envelope multiplied by a sine at the center frequency of the band.
+
+**Gaussian pulse:** A Gaussian pulse in time transforms into a Gaussian in frequency, and the narrower one is, the wider the other becomes. The Gaussian is a shape that is its own Fourier transform (a property it shares with a few other functions), and it has no overshoot in either domain, which makes it the reference shape for well-behaved filters and instrument responses.
+
+### Building a Step with a Finite Bandwidth
+
+Cutting the step integral off at a maximum frequency $f_{max}$ shows how bandwidth shapes the edge, and it is exactly the operation a brick-wall low-pass filter performs. Truncating the integral at $\omega_{max} = 2\pi f_{max}$ gives:
+
+$$u_{f_{max}}(t) = \frac{1}{2} + \frac{1}{\pi} \int_0^{2\pi f_{max}} \frac{\sin(\omega t)}{\omega}\, d\omega = \frac{1}{2} + \frac{1}{\pi}\, \mathrm{Si}(2\pi f_{max} t)$$
+
+where $\mathrm{Si}(x) = \int_0^x (\sin s / s)\, ds$ is the tabulated sine integral, and the substitution $s = \omega t$ converts one form into the other. Raising $f_{max}$ step by step shows the interference at work.
+
+The DC term alone is a flat line at 0.5V, half the step amplitude, and every sine wave added rides on it. With a low cutoff, only low frequencies are present, and their sum crosses 0.5V at $t = 0$ with a gentle slope, producing a slow S-shaped transition from 0V to 1V. Raising $f_{max}$ adds faster components, each crossing 0.5V with a positive slope at exactly $t = 0$. This phase alignment is required by the shape of the target step, and it makes the components interfere constructively at the transition, steepening it. Setting the sine integral equal to $\pm 0.4\pi$ (the 10% and 90% levels) gives $2\pi f_{max} t \approx \pm 1.40$, so the 10-90% rise time is about $0.45/f_{max}$, the sharp-cutoff counterpart of the single-pole factor 0.35. Away from $t = 0$, the added components fall out of step with one another, and their destructive interference suppresses the ripple on both plateaus. The ripple that remains oscillates with a period of about $1/f_{max}$ and decays with distance from the edge.
+
+The ripple nearest the edge never shrinks below a fixed height. The sine integral reaches its maximum at $x = \pi$, where $\mathrm{Si}(\pi) \approx 1.852$, compared with its final value $\pi/2 \approx 1.571$. The first peak after the edge therefore reaches:
+
+$$u = \frac{1}{2} + \frac{1.852}{\pi} \approx 1.089 \text{ V}$$
+
+an overshoot of about 9% of the step height, occurring at $t = 1/(2 f_{max})$. Assume $f_{max} = 20$ GHz: the rise time is about 22 ps, the overshoot peak arrives 25 ps after the midpoint crossing, and the ripple period is about 50 ps. Raising $f_{max}$ moves the peak closer to the edge and compresses the ripple, but the 9% height stays the same, which is the Gibbs phenomenon described in the Edge Cases.
+
+In the limit of infinite bandwidth, the components continue oscillating indefinitely, yet the decaying amplitudes and synchronized phases make every residual ripple cancel, leaving the 0V and 1V levels exactly flat, as the Dirichlet integral guarantees.
+
+### Superposition and Phase: Why the Result Is Not Zero
+
+Summing an infinite number of sine waves does not automatically produce zero. The outcome depends entirely on the phase relationships among the components.
+
+Components with completely random, uncorrelated phases superpose into white noise with an average value of zero. Random phases cause random constructive and destructive interference at every point, producing a signal with no coherent structure.
+
+A step corresponds to the opposite condition. Its spectrum places every component crossing zero with a positive slope at $t = 0$, and both the constructive interference at that instant and the cancellation that follows are consequences of that alignment, as the finite-bandwidth example above shows.
+
+The critical distinction is between random superposition (which produces noise) and deterministic superposition (which produces coherent waveforms). Fourier analysis can reconstruct a waveform because the decomposition preserves the phase of every component as well as its amplitude.
+
+### How Many Harmonics Survive a Channel
+
+The square-wave series gives a direct rule linking harmonic count to bandwidth. The $n$th harmonic of a pattern with fundamental $f_0$ sits at:
+
+$$f_n = n\, f_0$$
+
+For an NRZ 1010 pattern, $f_0$ is the Nyquist frequency, half the bit rate. The bandwidth needed to pass the $n$th harmonic is $n f_0$. Conversely, the highest harmonic within a bandwidth $BW$ is found by dividing and rounding down to the nearest odd integer, since only odd harmonics exist:
+
+$$n_{max} = \left\lfloor \frac{BW}{f_0} \right\rfloor_{\text{odd}}$$
+
+Assume a 10 Gb/s NRZ link ($f_0 = 5$ GHz) through a channel modeled as a single-pole low-pass filter with an 18 GHz bandwidth. Dividing gives $18/5 = 3.6$, so the 3rd harmonic (15 GHz) lies inside the bandwidth and the 5th harmonic (25 GHz) lies outside it, although lying outside the bandwidth means attenuation rather than removal. A single-pole filter passes the fraction $1/\sqrt{1 + (f/f_{3\text{dB}})^2}$ of each amplitude (the RC response, which follows from the capacitor impedance derived in [Chapter 3](03_Impedance_Reflections_and_Termination.md)). The 3rd harmonic keeps about 77% of its amplitude, the 5th about 58%, and the 7th (35 GHz) about 46%. The harmonics are attenuated progressively, and the bandwidth figure locates the point at which that attenuation reaches half power.
+
+Passing harmonics up to the $n$th implies an edge no faster than the rise time of a system with bandwidth $n f_0$:
+
+$$t_r \approx \frac{0.35}{n\, f_0}$$
+
+Passing up to the 3rd harmonic of a 5 GHz fundamental (15 GHz) implies an edge of about 23 ps, and passing up to the 5th (25 GHz) implies about 14 ps, compared with a unit interval of 100 ps at 10 Gb/s. A channel that passes the 3rd harmonic delivers a rounded, trapezoid-like waveform, and one that passes the 5th delivers a well-defined square shape. Designs commonly target the 3rd to 5th harmonic, because higher harmonics add little to the receiver's ability to decide each bit while raising the cost of the channel.
+
+## Edge Cases
+
+### The Gibbs Phenomenon
+
+Performing Fourier synthesis with a finite number of frequency components reveals an artifact at every sharp discontinuity. Stopping the summation at a finite bandwidth limit prevents the vertical transition from becoming fully sharp and produces an overshoot and a localized oscillatory ringing adjacent to the discontinuity before the waveform settles to its steady-state value, as the finite-bandwidth step above shows.
+
+This ringing is called the Gibbs phenomenon, and it confirms that the summation was terminated before reaching infinite bandwidth. The overshoot amplitude converges to approximately 9% of the step height regardless of how many terms are included; adding more frequency components narrows the ringing but does not reduce the overshoot. The same 9% appears at each edge of a square wave synthesized from a finite number of harmonics.
+
+The Gibbs phenomenon has a physical counterpart only in systems whose frequency response cuts off sharply. An oscilloscope or channel with a steep, brick-wall-like roll-off shows overshoot and ringing on a fast step for the same reason as truncated synthesis. An instrument with a gradual, Gaussian-like roll-off shows little or no overshoot, because its response tapers the high frequencies instead of removing them abruptly. Signal integrity engineers must distinguish this bandwidth-induced ringing from physical ringing caused by impedance mismatches on the transmission line ([Chapter 3](03_Impedance_Reflections_and_Termination.md)); the two produce similar waveform signatures but arise from different mechanisms.
+
+### Sampling, Aliasing, and Spectral Leakage
+
+Digital oscilloscopes and FFT-based analysis operate on samples, and two effects arise from that sampling. The first effect, aliasing, follows from the finite sampling rate. A sampler running at rate $f_s$ takes $f_s$ values per second, and a sequence of values at that rate can represent frequencies only up to $f_s/2$, the Nyquist frequency of the sampler. The Nyquist-Shannon sampling theorem states that a signal containing no content above $f_s/2$ is fully determined by its samples. Content above $f_s/2$ appears in the sampled record as a false lower frequency, $|f - k f_s|$ for the nearest integer $k$, and corrupts the measurement. Real-time oscilloscopes therefore sample at more than twice their analog bandwidth and rely on that bandwidth to suppress content above the Nyquist frequency of the sampler. The same limit, applied to a data stream that delivers $R$ values per second, defines the Nyquist frequency $R/2$ of an NRZ link.
+
+The second effect, spectral leakage, follows from the finite length of the record. The DFT treats its finite record as one period of a waveform that repeats forever. A record that contains a whole number of cycles of a sine wave joins smoothly to its own repetition, and the sine appears in a single frequency bin. A record that ends partway through a cycle creates an artificial jump where the end meets the start; that jump behaves like a small step, with the continuous spectrum of a step, and it spreads energy from the true frequency into neighboring bins. Analysis software reduces leakage by multiplying the record by a window function that tapers smoothly to zero at both ends, trading a slightly wider spectral peak for much lower leakage into distant bins. [Chapter 12](12_Test_Patterns_and_Jitter_Isolation.md) accounts for both effects when it uses the FFT to separate periodic jitter from random jitter.
+
+### The DC Component and Amplitude Independence
+
+The DC component of a step sets the level halfway between the initial and final voltages, and the sine continuum supplies the remaining plus or minus half of the step, as derived above. Neither part produces the step alone: the sine continuum alone gives a step centered on 0V, and the DC term alone gives a flat line at the midpoint.
+
+The Fourier recipe for the shape of the transition is independent of the physical voltage level. The same relative amplitudes and phases construct a step from 0V to 0.5V, from 0V to 1V, or from 0V to 3.3V; only the DC term and an overall scale factor change. Linearity guarantees this: scaling the input of an LTI channel by any factor scales its output by the same factor, so the edge shape a channel produces does not depend on the launched amplitude, and whatever circuit sets that amplitude can be analyzed separately from the spectral content that sets the edge shape.
+
+### When Fourier Analysis Breaks Down
+
+The frequency-domain methods in this chapter assume an LTI channel. Physical transmission lines at moderate signal levels satisfy that assumption well. The skin effect, dielectric loss, and impedance mismatches are all linear phenomena whose effects can be analyzed independently for each frequency component and then superposed. Nonlinear elements such as semiconductor junctions, saturating ferrite cores, or ESD protection diodes violate the superposition principle. The Fourier decomposition of the input signal remains valid, but predicting the output by independently processing each frequency component and summing the results does not produce the correct answer. Nonlinear analysis requires time-domain simulation methods that process the composite waveform directly.
+
+The next chapter applies these tools to the first structure every wavefront meets, a change in impedance, and derives how much of the incident wave reflects and how capacitors and inductors respond to each frequency in the spectrum derived here.

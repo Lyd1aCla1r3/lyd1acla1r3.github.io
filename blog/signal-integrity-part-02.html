@@ -161,28 +161,22 @@
                   <div class="series-group" style="margin-top: var(--space-2xl);">
                       <div class="series-items">
                           
-                          <a href="signal-integrity-06_Time_Domain_Reflectometry.html">
+                          <a href="signal-integrity-07_Time_Domain_Reflectometry.html">
                               <article class="blog-item series-item">
                                   <h2>Time Domain Reflectometry</h2>
-                                  <p>Time domain reflectometry (TDR) launches a fast electrical step into a transmission line and measures the reflected waveform to map impedance variations along the physical path. This guide covers the measurement physics, instrument architecture, and interpretation of TDR impedance profiles for PCB and connector characterization.</p>
-                              </article>
-                          </a>
-                          <a href="signal-integrity-07_Smith_Charts.html">
-                              <article class="blog-item series-item">
-                                  <h2>Smith Charts</h2>
-                                  <p>The Smith Chart is a conformal mapping that transforms complex impedance values onto a bounded circular plane, making impedance matching and transmission line analysis graphically tractable. This guide derives the mapping from the reflection coefficient, explains navigation through the constant-resistance and constant-reactance circles, and connects the graphical framework to VNA measurements.</p>
+                                  <p>Time domain reflectometry (TDR) launches a fast step into a transmission line and records the voltage at the connector while reflections return from every impedance change along the path. This guide covers the instrument architecture, the conversion of measured voltage to impedance, the display signatures of capacitive and inductive parasitics, the spatial resolution limit set by the rise time, the extraction of capacitance and inductance from the area of a reflection, the masking and spreading that limit measurements of distant features, and the peeling algorithm that compensates for them.</p>
                               </article>
                           </a>
                           <a href="signal-integrity-08_S_Parameters_and_VNA.html">
                               <article class="blog-item series-item">
                                   <h2>S-Parameters and Vector Network Analysis</h2>
-                                  <p>S-parameters describe the complete frequency-dependent behavior of a multi-port network as ratios of incident and reflected voltage waves. This guide covers the mathematical framework of the scattering matrix, the physical architecture of the vector network analyzer (VNA) that measures it, and the interpretation of insertion loss, return loss, and crosstalk in high-speed channel characterization.</p>
+                                  <p>S-parameters describe a linear network as ratios of normalized voltage waves measured at its ports, one complex number per frequency. This guide defines incident and scattered waves and the scattering matrix, derives the decibel and the dBm arithmetic, the phase rule θ = -360° f τ and group delay, and the relationship between return loss, insertion loss, passivity, and reciprocity. It then describes the architecture of the vector network analyzer (VNA), the IF bandwidth that sets its dynamic range, calibration and de-embedding, the conversion of a TDR step reflection into S11 (differentiate, then Fourier transform), mixed-mode parameters for differential pairs, and the measurement of NEXT, FEXT, and power-sum crosstalk.</p>
                               </article>
                           </a>
-                          <a href="signal-integrity-09_Fourier_Analysis.html">
+                          <a href="signal-integrity-09_Smith_Charts.html">
                               <article class="blog-item series-item">
-                                  <h2>Fourier Analysis</h2>
-                                  <p>The Fourier transform is the mathematical bridge between time-domain waveforms and frequency-domain spectra. This guide derives the continuous and discrete Fourier transforms, explains the Nyquist sampling theorem and spectral leakage, and shows how frequency-domain analysis connects oscilloscope captures to VNA measurements through a unified mathematical framework.</p>
+                                  <h2>Smith Charts</h2>
+                                  <p>The Smith chart is the conformal map Γ = (z - 1)/(z + 1) that places every passive impedance inside a unit circle on the plane of the complex reflection coefficient, which is the plane in which a VNA reports S11. This guide derives the real and imaginary parts of Γ, shows that passive impedances lie inside the unit circle, derives the constant-resistance circles and constant-reactance arcs by completing the square, and explains the landmarks, the rotation of Γ with line length and frequency, and the admittance chart. It ends by showing how the chart separates inductance from capacitance by hemisphere, why the magnitude of S11 alone cannot, and how the impedance and admittance plots recover the values of the elements.</p>
                               </article>
                           </a>
                       </div>

@@ -153,9 +153,9 @@
 
   <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-2xl));">
     <div class="container blog-list">
-        <nav aria-label="breadcrumb" class="breadcrumbs"><ol><li><a href="../index.html">Home</a></li><li><a href="index.html#tab-series">Blog</a></li><li><a href="series-signal-integrity.html">Signal Integrity Series</a></li><li aria-current="page">Part 1: Electromagnetic Foundations</li></ol></nav>
+        <nav aria-label="breadcrumb" class="breadcrumbs"><ol><li><a href="../index.html">Home</a></li><li><a href="index.html#tab-series">Blog</a></li><li><a href="series-signal-integrity.html">Signal Integrity Series</a></li><li aria-current="page">Part 1: Electromagnetic and Signal Foundations</li></ol></nav>
         <h1 class="hero__name" style="text-align: center; margin-bottom: 0;">Blog</h1>
-          <h2 class="metallic-text" style="text-align: center; font-size: clamp(2rem, 4vw, 2.5rem); margin-top: 10px; margin-bottom: var(--space-2xl); font-family: var(--font-display);">Part 1: Electromagnetic Foundations</h2>
+          <h2 class="metallic-text" style="text-align: center; font-size: clamp(2rem, 4vw, 2.5rem); margin-top: 10px; margin-bottom: var(--space-2xl); font-family: var(--font-display);">Part 1: Electromagnetic and Signal Foundations</h2>
         <!-- BLOG_LIST_START -->
 
                   <div class="series-group" style="margin-top: var(--space-2xl);">
@@ -164,31 +164,37 @@
                           <a href="signal-integrity-01_Wave_Propagation_and_Transmission_Lines.html">
                               <article class="blog-item series-item">
                                   <h2>Wave Propagation and Transmission Lines</h2>
-                                  <p>Information in a high-speed digital system travels as electromagnetic waves propagating through the dielectric material of the PCB, not as electrons drifting through copper. This guide traces the complete physical mechanism from the CMOS switching event through distributed transmission line geometry to the Telegrapher's Equations.</p>
+                                  <p>Information in a high-speed digital system travels as an electromagnetic wave guided through the dielectric material of the PCB, not as electrons drifting through copper. This guide traces the physical mechanism from the CMOS switching event through the distributed geometry of a transmission line, derives the characteristic impedance and the propagation velocity from the Telegrapher's Equations, links the geometric and material forms of the velocity, and explains why a steady current of V/Z0 flows behind every propagating wavefront.</p>
                               </article>
                           </a>
-                          <a href="signal-integrity-02_Impedance_Reflections_and_Termination.html">
+                          <a href="signal-integrity-02_Frequency_Content_of_Digital_Signals.html">
+                              <article class="blog-item series-item">
+                                  <h2>Frequency Content of Digital Signals</h2>
+                                  <p>A digital edge is both a voltage transition in time and a spectrum of sine waves in frequency. This guide defines the Fourier transform as correlation, derives the Fourier series of a square wave and the Fourier integral of a step, derives the 0.35/t_r relationship between rise time and bandwidth from a single-pole filter, relates harmonic count to channel bandwidth, defines the Nyquist frequency, introduces the channel as a linear filter described by its impulse, step, and pulse responses, and closes with the Gibbs phenomenon, aliasing, and spectral leakage.</p>
+                              </article>
+                          </a>
+                          <a href="signal-integrity-03_Impedance_Reflections_and_Termination.html">
                               <article class="blog-item series-item">
                                   <h2>Impedance, Reflections, and Termination</h2>
-                                  <p>When an electromagnetic wave encounters a boundary where the characteristic impedance changes, a portion of the wave reflects back toward the source. This guide derives the reflection coefficient from first principles, traces the physical mechanism of signal ringing, and explains the termination strategies that eliminate reflections on production PCBs.</p>
+                                  <p>A wavefront that meets a change in impedance splits into a reflected wave and a transmitted wave. This guide derives the impedance of capacitors and inductors from their defining equations (including the phasor notation and the half-power point of an RC filter), derives the reflection coefficient, transmission coefficient, and power fractions from Kirchhoff's laws, inverts the reflection coefficient to recover impedance, shows why the total voltage and current at a boundary no longer have the ratio Z0, and follows the reflections between a driver and a load until the line settles to the DC divider voltage. Series and parallel termination, numerical examples of resistive and reactive mismatches, and the compensation of inductance by capacitance complete the chapter.</p>
                               </article>
                           </a>
-                          <a href="signal-integrity-03_Skin_Effect_and_Dielectric_Loss.html">
+                          <a href="signal-integrity-04_Inductance_Magnetic_Coupling_and_Crosstalk.html">
+                              <article class="blog-item series-item">
+                                  <h2>Inductance, Magnetic Coupling, and Crosstalk</h2>
+                                  <p>A changing current in one conductor creates a changing magnetic field, and that field induces voltages in the same conductor and in every conductor nearby. This guide derives the field of a current from Ampere's law (outside and inside a wire), states Faraday's and Lenz's laws as three distinct statements, introduces the Generation Rule and the Reaction Rule for applying the right-hand rule, works through the four cases of induction, derives self, mutual, and loop inductance with the reciprocity theorem, and then derives the near-end and far-end crosstalk between adjacent traces, including why backward coupling is the sum of capacitive and inductive coupling while forward coupling is their difference.</p>
+                              </article>
+                          </a>
+                          <a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">
                               <article class="blog-item series-item">
                                   <h2>Skin Effect and Dielectric Loss</h2>
-                                  <p>Every real transmission line dissipates signal energy through two frequency-dependent mechanisms: skin effect resistance in the conductor and molecular polarization loss in the dielectric. This guide derives both loss mechanisms from their electromagnetic origins and shows how they combine to create the insertion loss profile that defines a channel's bandwidth limit.</p>
+                                  <p>Every real transmission line dissipates signal energy through two frequency-dependent mechanisms, and together they form the low-pass channel that Chapter 2 defined. This guide uses the Generation Rule and the Reaction Rule to trace the eddy currents that push current toward the surface of a conductor, derives the skin depth and the surface resistance from Faraday's and Ampere's laws, shows how surface roughness modifies the result, derives the dielectric conductance G = ωC tanδ from the lag of polarization behind the field, and converts both mechanisms into attenuation in decibels per inch. It then explains why a linear, causal, frequency-dependent loss produces a long trailing tail in the pulse response, which is the physical origin of inter-symbol interference, and works the loss budget of a 12 inch FR4 channel with numbers.</p>
                               </article>
                           </a>
-                          <a href="signal-integrity-04_Inductance_and_Magnetic_Coupling.html">
-                              <article class="blog-item series-item">
-                                  <h2>Inductance and Magnetic Coupling</h2>
-                                  <p>Current flowing through a conductor generates a magnetic field that stores energy and resists changes in current flow. This guide covers self-inductance, mutual inductance, and the crosstalk coupling mechanisms that transfer energy between adjacent signal traces on a PCB through shared magnetic and electric fields.</p>
-                              </article>
-                          </a>
-                          <a href="signal-integrity-05_Return_Path_Dynamics_and_Parasitic_Effects.html">
+                          <a href="signal-integrity-06_Return_Path_Dynamics_and_Parasitic_Effects.html">
                               <article class="blog-item series-item">
                                   <h2>Return Path Dynamics and Parasitic Effects</h2>
-                                  <p>Every signal current requires a return current, and the path that return current takes determines the electromagnetic behavior of the entire circuit. This guide traces return path dynamics across reference plane transitions, split planes, connector pin fields, and via structures where parasitic inductance and capacitance degrade signal integrity.</p>
+                                  <p>Every signal current requires a return current, and the path that the return current takes sets the loop inductance, and with it the impedance, of the entire circuit. This guide derives the distribution of return current under a trace from the field of a line current above a conducting plane, explains why the distribution changes from resistance-controlled spreading at low frequency to inductance-controlled crowding at high frequency, and shows how a slot or plane split inflates the loop. It then treats the via as a geometric capacitance and inductance, derives how a shunt capacitance or a series inductance reflects an edge and divides its current, shows how the two parasitics can be made to cancel by the condition of Chapter 3, and derives the baseline wander of a series coupling capacitor and the disparity bound that prevents it.</p>
                               </article>
                           </a>
                       </div>

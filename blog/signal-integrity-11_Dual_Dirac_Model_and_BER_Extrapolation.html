@@ -118,139 +118,347 @@
     <li><a href="index.html">Blog</a></li><li><a href="series-signal-integrity.html">Series: Signal Integrity</a></li><li><a href="signal-integrity-part-03.html">Part 3: Jitter Analysis</a></li><li aria-current="page">Dual-Dirac Model and BER Extrapolation</li></ol></nav>
         <article class="blog-post series-signal-integrity">
 <h1>Dual-Dirac Model and BER Extrapolation</h1>
-<!-- SUMMARY: The Dual-Dirac model approximates the total jitter probability density function as two Gaussian distributions separated by the deterministic jitter component, enabling bit error ratio extrapolation to target rates as low as 1e-12 from feasible measurement sample sizes. This guide derives the model, its mathematical assumptions, and the bathtub curve construction that links timing margin to error probability. --><p><em>Prefer to read this seamlessly offline? <a href="../../../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity eBook here.</a></em></p><p>High-speed serial standards specify compliance at Bit Error Rates that are impossible to observe directly. PCIe Gen 4 requires $10^{-12}$, meaning only one bit in a trillion may arrive outside the timing window. At 16 GT/s, accumulating a trillion bits takes over 60 seconds of continuous transmission, and observing even a single error at that rate requires statistical patience that exceeds practical measurement timescales by orders of magnitude. The fundamental problem is not measurement speed; it is that the BER target describes an event so rare that the Gaussian tail governing its probability has never been directly populated in the captured histogram.</p>
-<p>The Dual-Dirac model resolves this by exploiting a structural property of the Gaussian distribution: the shape of the unmeasured tail is mathematically determined by the measurable center. The model decomposes the total jitter histogram into two Gaussian populations anchored at the Deterministic Jitter boundaries, fits the visible tail slopes to extract a single Random Jitter standard deviation, and then uses the complementary error function to project that standard deviation outward to the target BER. The result is a Total Jitter number at $10^{-12}$ (or any other target) derived from a measurement of a few hundred thousand edges, not a trillion.</p>
-<p>This guide covers the physical and mathematical machinery of the Dual-Dirac model: why the Gaussian tail shape is locked by the center mass, how the complementary error function maps between tail area and boundary position, how the Q-factor normalizes this mapping into a hardware-independent constant, how the constrained fitting algorithm enforces physical consistency, and how the complete framework produces a PCIe Gen 4 jitter budget from oscilloscope measurements.</p>
+<!-- SUMMARY: A compliance target such as a bit error ratio of 1e-12 describes edges so rare that they never populate a captured histogram, so the total jitter at that ratio must be projected from the tails that are visible. This guide derives the Gaussian distribution, the complementary error function and the Q-factor, shows how the Dual-Dirac model turns the convolution of deterministic and random jitter into two Gaussians whose tails give TJ = DJ + 2 Q RJ, constructs the bathtub curve, works a PCIe Gen 4 budget, and states the assumptions under which the projection is conservative and the cases in which it is not. --><p><em>Prefer to read offline? <a href="../../../assets/docs/signal-integrity-ebook-v2.0.pdf" target="_blank" rel="noopener">Download the complete Signal Integrity (Advanced Edition) ebook.</a></em></p><p><a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html">Chapter 10</a> decomposed the timing error of a received signal into random and deterministic components and ended with a histogram of time interval error values that is the convolution of the two. A specification does not ask for that histogram. It asks how wide a window of time around the ideal edge contains all but one edge in a trillion, and the answer lies in a part of the distribution that a measurement of a few hundred thousand edges never reaches.</p>
+<p>The high-speed serial standards state compliance at bit error ratios such as $10^{-12}$. A direct measurement at that ratio is feasible only for a short time at a modest rate, and it becomes impractical at lower ratios, as the first worked example computes. An oscilloscope that captures a few hundred thousand edges therefore projects the timing behavior at the target ratio from the tails that its histogram does show. The projection rests on the shape of the Gaussian distribution and on a deliberately simple model of the deterministic part.</p>
+<p>This chapter derives the mathematics in the order in which it is needed: the Gaussian distribution and its standard deviation, the tail area as a bit error ratio, the complementary error function and the Q-factor, the Dual-Dirac model and the formula for total jitter, the Q-scale fit that extracts the model parameters, and the bathtub curve that links a sampling position to an error ratio. The Edge Cases state the conditions under which the projection is conservative and the conditions under which it is not.</p>
 <h2>Core Concepts</h2>
-<h3>Why the Gaussian Tail Is Predictable from the Center</h3>
-<p>Inside the silicon and copper interconnect, thermal energy causes electrons to vibrate chaotically. Each vibration generates a microscopic voltage pulse. At any given picosecond during transmission, the total noise voltage on the wire is the sum of billions of these individual pulses.</p>
-<p>Most of the time, roughly half the electrons experience a positive thermal perturbation and half experience a negative perturbation. Their voltage contributions cancel. This high physical likelihood of cancellation creates the massive peak at the center of the bell curve, representing near-zero net noise voltage. For a large voltage spike to occur, a massive majority of those billions of electrons must coincidentally vibrate in the same direction at the same instant. The laws of entropy dictate that this level of spontaneous coordination is extraordinarily improbable.</p>
-<p>This physical reality produces the Gaussian shape. The center peak exists because cancellation is highly probable. The tails decay exponentially because large-scale coordination of billions of independent electrons is highly improbable. The critical insight is that the physics generating the dense center and the physics generating the sparse tails are identical. There is no change in mechanism at any point along the curve. A single continuous mathematical equation ($e^{-x^2/2\sigma^2}$) describes the entire spectrum from center to infinity.</p>
-<p>Once the oscilloscope measures the visible central mass of the histogram and calculates the standard deviation ($\sigma$), all variables in that equation are locked. The shape of the unmeasured tail at $7\sigma$ or $10\sigma$ is not an extrapolation in the sense of projecting a trend; it is a consequence of the same thermodynamic process that produced the measured data. The tail&#39;s trajectory is mathematically bound to the center mass because both regions arise from the same physical source.</p>
-<h3>Standard Deviation as a Geometric Coordinate</h3>
-<p>The standard deviation ($\sigma$) is not an abstract statistical summary. It is a physical distance on the horizontal axis of the TIE histogram, measured in picoseconds.</p>
-<p>The Gaussian bell curve starts flat at its peak, accelerates steeply downward, and then begins to level out as it approaches the tail. The exact coordinate where the curve stops accelerating downward and begins to level out is the inflection point, the transition from concave-down to concave-up curvature. The horizontal distance from the center peak to this inflection point is exactly one standard deviation.</p>
-<p>The mathematics of the Gaussian function lock the area between $-1\sigma$ and $+1\sigma$ at precisely 68.2689% of the total distribution. This is not an engineering approximation. It is a fundamental mathematical constant derived by integrating $e^{-x^2/2}$ between those inflection boundaries, in the same way that $\pi$ is derived from the geometry of a circle. The 68.2% proportion holds regardless of whether $\sigma$ is 0.5 picoseconds or 50 picoseconds. It is a property of the Gaussian function itself, not of any particular hardware.</p>
-<p>This geometric rigidity is what makes the Q-factor framework possible. Measuring $\sigma$ at the inflection point fixes the entire curve. The area under the tail at $7\sigma$, at $10\sigma$, or at any other multiple is a calculable consequence of that single measured parameter.</p>
-<h3>Bit Error Rate as Tail Area</h3>
-<p>A bit error does not occur at a single specific jitter coordinate. A bit error occurs when an edge shifts anywhere past the receiver&#39;s sampling threshold.</p>
-<p>If the receiver samples data exactly 31.25 picoseconds after the ideal edge crossing (half the Unit Interval for PCIe Gen 4), then an edge delayed by 32 picoseconds causes a bit error. An edge delayed by 50 picoseconds also causes a bit error. The probability of a bit error is therefore the total probability that the edge arrives anywhere from 31.25 ps outward to infinity.</p>
-<p>Reading the probability density at the 31.25 ps coordinate alone would report only the likelihood of landing in that specific infinitesimal time bin. The actual BER requires summing the probability across all bins from 31.25 ps to infinity. In calculus, summing a continuous curve over a range is an integral. The Bit Error Rate is mathematically identical to the area under the Gaussian tail beyond the sampling threshold.</p>
-<h3>The Complementary Error Function (erfc) and Its Inverse</h3>
-<p>The Gaussian probability density is defined by the exponential function $e^{-x^2}$. Integrating this function from a boundary point $x$ out to infinity cannot be solved using elementary algebra. Mathematicians created the complementary error function (erfc) to represent this specific integral.</p>
-<p>The erfc computes the area under the tail of a Gaussian distribution beyond a specified boundary. It answers the question: if a random variable is drawn from a Gaussian distribution, what is the probability that it falls beyond $x$ standard deviations from the mean?</p>
-<p>In jitter analysis, the problem runs in the opposite direction. The standard (PCIe, IEEE, Fibre Channel) dictates the required BER. The area is known. What is unknown is how far the physical timing jitter must spread before the probability drops to that BER level. The problem is solving for the x-axis boundary, not the y-axis probability.</p>
-<p>This requires the inverse erfc. An inverse function is not a reciprocal ($1/\text{function}$); it is a mathematical reversal of inputs and outputs. The forward erfc takes a boundary coordinate as input and outputs the tail area. The inverse erfc takes a tail area as input and outputs the boundary coordinate. The relationship mirrors basic geometry: the forward function $A = \pi r^2$ computes area from radius; the inverse function $r = \sqrt{A/\pi}$ computes radius from area.</p>
-<p>The inverse erfc receives the target BER (such as $10^{-12}$) and returns the exact number of standard deviations from the mean where the tail area equals that probability. This number of standard deviations is the Q-factor.</p>
-<h3>The Q-Factor</h3>
-<p>Every physical system has a different amount of thermal noise. One oscillator&#39;s Gaussian distribution might be very narrow (low noise), while another&#39;s is very wide (high noise). The erfc cannot output a result in picoseconds because it operates in dimensionless mathematical space, normalized to standard deviations.</p>
-<p>The Q-factor is the output of the inverse erfc: the boundary coordinate measured in units of $\sigma$. For a target BER of $10^{-12}$, the inverse erfc returns $Q = 7.03$. This means that for any Gaussian distribution in the universe, regardless of its physical scale, the tail area beyond $7.03\sigma$ from the mean contains exactly $10^{-12}$ of the total probability.</p>
-<p>Common Q-factor values across standard BER targets:</p>
+<h3>The Gaussian Distribution</h3>
+<p>The <strong>Gaussian</strong> (normal) probability density of a variable $x$ with mean $\mu$ and parameter $\sigma$ is</p>
+<p>$$g(x) = \frac{1}{\sigma\sqrt{2\pi}}\,e^{-(x-\mu)^2/2\sigma^2}$$</p>
+<p>Three properties are needed, and each follows from a short calculation. The first is that the density has a total area of one, which is what makes the factor $1/(\sigma\sqrt{2\pi})$ correct. The calculation takes $\mu = 0$ and defines $I = \int_{-\infty}^{\infty} e^{-x^2/2\sigma^2}dx$ as the unnormalized area. The square of $I$ is a double integral over the plane, and converting to polar coordinates ($x^2 + y^2 = r^2$, area element $r\,dr\,d\theta$) gives:</p>
+<p>$$I^2 = \int\!\!\int e^{-(x^2+y^2)/2\sigma^2}\,dx\,dy = \int_0^{2\pi}\!\!\int_0^{\infty} e^{-r^2/2\sigma^2}\,r\,dr\,d\theta = 2\pi\,\sigma^2$$</p>
+<p>The radial integral equals $\sigma^2$ because $r\,e^{-r^2/2\sigma^2}$ is the derivative of $-\sigma^2 e^{-r^2/2\sigma^2}$. Therefore $I = \sigma\sqrt{2\pi}$, and $g(x)$ integrates to one.</p>
+<p>The second property is that the parameter $\sigma$ is the standard deviation, the square root of the mean square distance from the mean. Integration by parts with $u = x$ and $dv = x\,e^{-x^2/2\sigma^2}dx$ (so $v = -\sigma^2 e^{-x^2/2\sigma^2}$) gives</p>
+<p>$$\int_{-\infty}^{\infty} x^2 e^{-x^2/2\sigma^2}dx = \Bigl[-\sigma^2 x\,e^{-x^2/2\sigma^2}\Bigr]_{-\infty}^{\infty} + \sigma^2\int_{-\infty}^{\infty} e^{-x^2/2\sigma^2}dx = \sigma^2\cdot\sigma\sqrt{2\pi}$$</p>
+<p>The boundary term vanishes at both limits because the exponential decays faster than any power of $x$ grows. Dividing by the normalization $\sigma\sqrt{2\pi}$ gives a variance of $\sigma^2$.</p>
+<p>The third property gives $\sigma$ a geometric meaning on the horizontal axis. The first derivative is $g'(x) = -\frac{x-\mu}{\sigma^2}g(x)$, and the second derivative follows from the product rule:</p>
+<p>$$g''(x) = g(x)\,\frac{(x-\mu)^2 - \sigma^2}{\sigma^4}$$</p>
+<p>The second derivative is zero at $x = \mu \pm \sigma$. The curve changes from concave down to concave up at these two <strong>inflection points</strong>, so $\sigma$ is the horizontal distance from the center of the peak to the inflection point, a distance measured in picoseconds when the variable is a timing error. The area within $\pm k\sigma$ of the mean is $\operatorname{erf}(k/\sqrt{2})$, and the area beyond $k\sigma$ on one side is the quantity $Q(k)$ defined below:</p>
+<table>
+<thead>
+<tr>
+<th align="center">Distance from the mean</th>
+<th align="center">Area within $\pm k\sigma$</th>
+<th align="center">Area beyond $+k\sigma$ (one side)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">$1\sigma$</td>
+<td align="center">68.27%</td>
+<td align="center">$1.59 \times 10^{-1}$</td>
+</tr>
+<tr>
+<td align="center">$2\sigma$</td>
+<td align="center">95.45%</td>
+<td align="center">$2.28 \times 10^{-2}$</td>
+</tr>
+<tr>
+<td align="center">$3\sigma$</td>
+<td align="center">99.73%</td>
+<td align="center">$1.35 \times 10^{-3}$</td>
+</tr>
+<tr>
+<td align="center">$4\sigma$</td>
+<td align="center">99.9937%</td>
+<td align="center">$3.17 \times 10^{-5}$</td>
+</tr>
+<tr>
+<td align="center">$5\sigma$</td>
+<td align="center">99.99994%</td>
+<td align="center">$2.87 \times 10^{-7}$</td>
+</tr>
+</tbody></table>
+<p>The 68.27 percent proportion is a property of the Gaussian function and holds for any $\sigma$, whether it is 0.5 ps or 50 ps. <a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html">Chapter 10</a> showed that the random jitter of a link is Gaussian with $\sigma = RJ_{\text{rms}}$, and the rest of this chapter uses that result.</p>
+<h3>What a Measured Sigma Determines</h3>
+<p>A pure Gaussian distribution is fixed by two numbers, its mean and its $\sigma$. Assume that the histogram contains random jitter alone. The width of the central mass then gives $\sigma$, and the whole curve, including the tail at $7\sigma$ that no measurement reaches, follows from the same formula. That statement holds only for pure random jitter, and only if the random jitter is Gaussian all the way out. The second condition is an assumption about the physics, and the Edge Cases return to it.</p>
+<p>A real histogram contains deterministic jitter, and the center of the distribution is then the convolution of the Gaussian with the deterministic clusters of <a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html">Chapter 10</a>. Its width reflects the clusters as well as $\sigma$, so the central mass cannot be used to measure $\sigma$. The tails are the part of the histogram that deterministic jitter does not reach. No edge lies farther from the ideal time than the outermost deterministic extreme plus whatever the unbounded random component adds, so the outer tails are approximately Gaussian tails centered on the outermost deterministic positions. The standard deviation is taken from the tails alone, which resolves the apparent conflict between measuring $\sigma$ in the center and measuring it in the tails: the center is used only when no deterministic jitter is present.</p>
+<h3>Bit Error Ratio as Tail Area</h3>
+<p>A bit error does not occur at one specific jitter value. It occurs when an edge arrives anywhere beyond the sampling instant of the receiver. Assume a receiver that samples at a time $s$ after the ideal edge and an edge whose arrival time $t$ has probability density $g(t)$. The probability that the edge arrives after $s$, and the bit is read incorrectly, is the sum of the density over every value from $s$ to infinity:</p>
+<p>$$P(t > s) = \int_{s}^{\infty} g(t)\,dt$$</p>
+<p>The density at the single coordinate $s$ would give only the probability of landing in one narrow bin, and the error ratio requires the integral. The bit error ratio of a jitter-limited link is therefore the area under the tail beyond the sampling boundary, up to a transition-density factor that the Edge Cases treat.</p>
+<h3>The Complementary Error Function and the Q-Factor</h3>
+<p>The integral of a Gaussian cannot be written with elementary functions, so two named functions represent it. The <strong>Q-function</strong> is the tail area of the standard Gaussian (mean 0, $\sigma = 1$) beyond $z$:</p>
+<p>$$Q(z) = \frac{1}{\sqrt{2\pi}}\int_z^{\infty} e^{-s^2/2}\,ds = P(Z > z)$$</p>
+<p>where $Z$ denotes a standard Gaussian variable. The <strong>complementary error function</strong> is defined by</p>
+<p>$$\operatorname{erfc}(x) = \frac{2}{\sqrt{\pi}}\int_x^{\infty} e^{-u^2}\,du$$</p>
+<p>The two are related by the substitution $s = \sqrt{2}\,u$, which gives $ds = \sqrt{2}\,du$ and a lower limit $u = z/\sqrt{2}$:</p>
+<p>$$Q(z) = \frac{1}{\sqrt{2\pi}}\cdot\sqrt{2}\int_{z/\sqrt{2}}^{\infty} e^{-u^2}du = \frac{1}{\sqrt{\pi}}\int_{z/\sqrt{2}}^{\infty} e^{-u^2}du = \frac{1}{2}\operatorname{erfc}\!\left(\frac{z}{\sqrt{2}}\right)$$</p>
+<p>Rearranged, $\operatorname{erfc}(x) = 2\,Q(x\sqrt{2}) = 2\,P(Z > x\sqrt{2})$, which is the correct statement of the definition: erfc counts the tail beyond $x\sqrt{2}$ standard deviations, doubled, and not the tail beyond $x$ standard deviations. The bit error ratio for a Gaussian edge distribution whose mean is $Q$ standard deviations from the sampling instant is</p>
+<p>$$\text{BER} = Q(Q_{\text{factor}}) = \frac{1}{2}\operatorname{erfc}\!\left(\frac{Q_{\text{factor}}}{\sqrt{2}}\right)$$</p>
+<p>A specification fixes the ratio, and the quantity to find is the distance. The jitter analysis therefore needs the inverse of the tail function. The forward function takes a boundary coordinate and returns the tail area. The inverse takes a tail area and returns the boundary coordinate, in units of the standard deviation, and an inverse function is a reversal of inputs and outputs and not a reciprocal. The coordinate returned for the target ratio is the <strong>Q-factor</strong>:</p>
+<p>$$Q_{\text{factor}} = Q^{-1}(\text{BER})$$</p>
+<p>The standard Gaussian has no physical scale, so the Q-factor is a pure number that applies to any distribution once the distance is multiplied by the measured $\sigma$. The values for the common ratios are:</p>
 <table>
 <thead>
 <tr>
 <th align="center">Target BER</th>
-<th align="center">Q-Factor</th>
-<th align="center">Peak-to-Peak Multiplier ($2Q$)</th>
+<th align="center">Q-factor</th>
+<th align="center">Multiplier $2Q$</th>
 </tr>
 </thead>
 <tbody><tr>
+<td align="center">$10^{-6}$</td>
+<td align="center">4.753</td>
+<td align="center">9.51</td>
+</tr>
+<tr>
 <td align="center">$10^{-9}$</td>
-<td align="center">6.00</td>
+<td align="center">5.998</td>
 <td align="center">12.00</td>
 </tr>
 <tr>
 <td align="center">$10^{-12}$</td>
-<td align="center">7.03</td>
-<td align="center">14.06</td>
+<td align="center">7.034</td>
+<td align="center">14.07</td>
 </tr>
 <tr>
 <td align="center">$10^{-15}$</td>
-<td align="center">7.94</td>
+<td align="center">7.941</td>
 <td align="center">15.88</td>
 </tr>
+<tr>
+<td align="center">$10^{-18}$</td>
+<td align="center">8.757</td>
+<td align="center">17.51</td>
+</tr>
 </tbody></table>
-<p>To convert the universal Q-factor into a physical time boundary for a specific piece of hardware, the Q-factor is multiplied by the measured $RJ_{\text{rms}}$ of that hardware:</p>
-<p>$$\text{Physical Boundary (ps)} = Q \cdot RJ_{\text{rms}}$$</p>
-<p>This multiplication scales the dimensionless mathematical model to the physical reality of the silicon. The result is the distance from the center of the RJ distribution to the point where the tail probability equals the target BER.</p>
-<p>The factor of 2 in the Total Jitter formula arises because an edge can shift either too early (the left tail) or too late (the right tail). $Q \cdot RJ_{\text{rms}}$ measures the distance from center to one boundary. The total span of possible arrival times destroyed by random jitter is twice that distance:</p>
-<p>$$RJ_{\text{p-p}} = 2 \cdot Q \cdot RJ_{\text{rms}}$$</p>
-<h3>The Dual-Dirac Model Structure</h3>
-<p>The measured TIE histogram is the convolution of the Deterministic Jitter distribution with the Random Jitter Gaussian. The actual DJ distribution is complex: it contains discrete spectral lines for PJ and DCD, and bounded multi-modal shapes for ISI. Deconvolving the pure RJ Gaussian from this entangled composite is computationally intensive and highly susceptible to noise.</p>
-<p>The Dual-Dirac model replaces the complex DJ distribution with two Dirac delta impulses separated by a distance $DJ_{\delta\delta}$. The total jitter histogram is then modeled as the convolution of these two deltas with a single Gaussian, producing a bimodal distribution: two overlapping bell curves, one anchored at the left DJ boundary ($\mu_L$) and one anchored at the right DJ boundary ($\mu_R$).</p>
-<p>This is a worst-case simplifying assumption adopted by industry standards. Concentrating all DJ energy at two extreme points produces the widest possible convolution with the RJ Gaussian, yielding a conservative (overestimating) total jitter number. The mathematical convenience lies in reducing the DJ description from an arbitrary complex shape to two scalar parameters: the separation distance ($DJ_{\delta\delta}$) and the population split between the two impulses.</p>
-<h3>Asymmetric Delta Placement and Population Weighting</h3>
-<p>The two Dirac deltas do not need to be equidistant from the ideal zero-crossing, and they do not need to carry equal populations of hits.</p>
-<p>Random Jitter is guaranteed to follow a perfectly symmetric Gaussian. The thermodynamic processes that generate it possess no directional bias. An electron is exactly as likely to experience a positive perturbation as a negative one.</p>
-<p>Deterministic Jitter, by contrast, can be profoundly asymmetric. DCD from a stronger pull-up transistor concentrates rising-edge crossings early and falling-edge crossings late. ISI from a specific via reflection may interfere aggressively with one bit pattern while leaving the complementary pattern unaffected. These hardware-specific directional biases create lopsided timing distributions.</p>
-<p>The Dual-Dirac model accommodates this asymmetry by allowing the left and right impulses to sit at unequal distances from center and to carry unequal fractions of the total population. If DCD causes 80% of edges to cross early and 20% to cross late, the left Gaussian population contains 800,000 hits out of a million, and the right Gaussian contains 200,000. The left curve appears four times taller, but both curves share the same horizontal width ($\sigma$). The height difference reflects the population weighting multiplier (0.8 vs. 0.2), not a difference in noise magnitude.</p>
-<p>The 68.2% rule applies locally to each sub-population. Of the 800,000 edges in the left group, exactly 68.2% fall within $\pm 1\sigma$ of the left mean. Of the 200,000 edges in the right group, exactly 68.2% fall within $\pm 1\sigma$ of the right mean.</p>
-<h3>The Single-Sigma Constraint</h3>
-<p>Random Jitter originates from thermal noise in the silicon. The silicon possesses a single temperature and a single fundamental noise floor. The thermodynamic variance of the noise is identical for all edges, regardless of whether DCD or ISI has shifted the mean crossing time of a particular sub-population.</p>
-<p>The Dual-Dirac model enforces this physical reality by requiring both Gaussian curves to share the same standard deviation. The model does not use two different Gaussians with independent widths. It uses the same Gaussian, duplicated and anchored at two different mean positions. The vertical amplitudes (population weights) may differ substantially, but the horizontal shapes ($\sigma$) are mathematically identical.</p>
-<p>In practice, independently fitting the left tail and the right tail will yield slightly different $\sigma$ values due to finite sample sizes, instrument noise, or differing slew rates between rising and falling edges (which slightly alter the amplitude-to-phase conversion ratio). Oscilloscope algorithms such as Keysight EZJIT resolve this discrepancy through a constrained least-squares fit. The software applies a mathematical constraint that $\sigma_{\text{left}}$ must equal $\sigma_{\text{right}}$ and processes both tails simultaneously to find the single unified $RJ_{\text{rms}}$ that minimizes the total fitting error across the entire histogram.</p>
-<p>This single unified $RJ_{\text{rms}}$ represents the true thermal baseline of the hardware. It is this number that the Q-factor scales to produce the Total Jitter budget.</p>
-<h2>Worked Examples</h2>
-<h3>PCIe Gen 4 Jitter Budget</h3>
-<p>Consider a PCIe Gen 4 link operating at 16 GT/s, measured with a Keysight Infiniium oscilloscope and EZJIT+ analysis software.</p>
-<p><strong>Step 1: Establish the time budget.</strong></p>
-<p>At 16 GT/s, the Unit Interval (UI) is the physical time duration of a single bit:</p>
-<p>$$UI = \frac{1}{16 \times 10^9} = 62.5 \text{ ps}$$</p>
-<p><strong>Step 2: Capture and extract the Dual-Dirac parameters.</strong></p>
-<p>The oscilloscope captures several hundred thousand edge crossings and generates a TIE histogram. The EZJIT+ algorithm isolates the extreme tails, fits Gaussian curves using the single-sigma constraint, and extracts:</p>
-<ul>
-<li>$DJ_{\delta\delta} = 12.0$ ps (the separation between the two Gaussian means)</li>
-<li>$RJ_{\text{rms}} = 1.5$ ps (the unified standard deviation from the constrained fit)</li>
-</ul>
-<p><strong>Step 3: Define the compliance target.</strong></p>
-<p>The PCI Express specification mandates compliance at $BER = 10^{-12}$. The corresponding Q-factor is 7.03.</p>
-<p><strong>Step 4: Calculate peak-to-peak Random Jitter.</strong></p>
-<p>$$RJ_{\text{p-p}} = 2 \cdot Q \cdot RJ_{\text{rms}} = 2 \times 7.03 \times 1.5 \text{ ps} = 21.09 \text{ ps}$$</p>
-<p><strong>Step 5: Calculate Total Jitter at $10^{-12}$ BER.</strong></p>
-<p>$$TJ = DJ_{\delta\delta} + RJ_{\text{p-p}} = 12.0 \text{ ps} + 21.09 \text{ ps} = 33.09 \text{ ps}$$</p>
-<p><strong>Step 6: Evaluate the timing margin.</strong></p>
-<p>The total jitter consumes 33.09 ps out of the 62.5 ps Unit Interval, approximately 53% of the available bit period. The remaining 29.41 ps (47% of the UI) is the horizontal eye opening, the time window within which the receiver must successfully sample the data.</p>
-<h3>Gaussian Tail Fitting: The 3σ-to-5σ Region</h3>
-<p>The Dual-Dirac algorithm does not fit a Gaussian to the entire histogram. It fits exclusively to the far tails, typically in the region between $3\sigma$ and $5\sigma$ from each Gaussian mean.</p>
-<p>The rationale is physical. DJ is bounded, so it has absolute maximum limits. Every edge that lands beyond the DJ boundary arrived there solely because unbounded Random Jitter pushed it there. The tails beyond $3\sigma$ are well outside the DJ contamination zone and reflect pure RJ behavior.</p>
-<p>The practical challenge is that events in this region are rare. A $4\sigma$ event occurs roughly 6 times per 100,000 bits transmitted. To populate the fitting region with enough data points for a stable regression, the oscilloscope must capture a large total sample. Modern Dual-Dirac implementations typically require 100,000 to 1,000,000 edge crossings. The algorithm sacrifices the overwhelming majority of data points (those in the center, where DJ and RJ are entangled) and builds the entire extrapolation from the sparse but physically clean tail region.</p>
-<p>Once the curve is fit to the visible tail edges between $3\sigma$ and $5\sigma$, the Gaussian equation extends the curve to $7\sigma$, $10\sigma$, or any other multiple with mathematical certainty, because the curve shape beyond $5\sigma$ is fully determined by the $\sigma$ measured within the visible portion.</p>
+<p>The Q-factor grows slowly with the number of decades of error ratio, and a short argument shows why. In the tail, $s \ge z$, so $1 \le s/z$ and</p>
+<p>$$Q(z) = \int_z^{\infty}\varphi(s)\,ds < \int_z^{\infty}\frac{s}{z}\,\varphi(s)\,ds = \frac{\varphi(z)}{z}, \qquad \varphi(s) = \frac{e^{-s^2/2}}{\sqrt{2\pi}}$$</p>
+<p>where the last step uses the fact that $s\,\varphi(s)$ is the derivative of $-\varphi(s)$. At $z = 7.034$ the bound is $1.02 \times 10^{-12}$ against the exact $1.00 \times 10^{-12}$, so it is accurate to 2 percent there. The logarithm of the bound has the slope $-z$ with respect to $z$, so each factor of ten in the ratio requires an increase of about $\ln 10/z = 2.303/7 = 0.33$ in the Q-factor, in agreement with the table (from $10^{-9}$ to $10^{-12}$ the increase is 1.04 over three decades, or 0.35 per decade). The extrapolation to a much lower ratio therefore adds little distance.</p>
+<p><a href="signal-integrity-15_PAM4_Signaling_and_Gray_Coding.html">Chapter 15</a> uses the same mapping between a ratio and a Q-factor for amplitude noise.</p>
+<h3>The Dual-Dirac Model</h3>
+<p>The histogram of <a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html">Chapter 10</a> is the convolution of the deterministic density $p_{DJ}$ with the Gaussian $g$ of the random jitter. The deterministic density has a complicated shape: two clusters for duty cycle distortion, a set of clusters for intersymbol interference, an arcsine shape for each periodic tone, and a continuous bounded shape for crosstalk. Deconvolving the Gaussian from a general shape is sensitive to noise.</p>
+<p>The <strong>Dual-Dirac model</strong> replaces the deterministic density with two Dirac impulses, each carrying half of the edges, at positions $\mu_L$ and $\mu_R$:</p>
+<p>$$p_{DJ}(\tau) = \tfrac{1}{2}\,\delta(\tau - \mu_L) + \tfrac{1}{2}\,\delta(\tau - \mu_R)$$</p>
+<p>The convolution with a Dirac impulse simply shifts the Gaussian to the position of the impulse, because $\int \delta(\tau - \mu)\,g(t-\tau)\,d\tau = g(t-\mu)$. The total density of the model is therefore the sum of two Gaussians with the same $\sigma$:</p>
+<p>$$p_{TJ}(t) = \tfrac{1}{2}\,g(t - \mu_L) + \tfrac{1}{2}\,g(t - \mu_R), \qquad DJ_{\delta\delta} = \mu_R - \mu_L$$</p>
+<p>The standard model uses equal weights of one half. The only deterministic parameter that enters the total jitter is the separation $DJ_{\delta\delta}$, called the <strong>dual-Dirac deterministic jitter</strong>, and it is a parameter of the fit, which is generally not equal to the peak-to-peak deterministic jitter that the instrument could measure directly. The positions $\mu_L$ and $\mu_R$ need not be symmetric about the ideal edge time; an offset of the pair shifts the center of the eye but does not change the separation.</p>
+<h3>The Total Jitter Formula</h3>
+<p>The probability that an edge arrives later than a position $x$ in the model is</p>
+<p>$$P_R(x) = \tfrac{1}{2}\,Q\!\left(\frac{x - \mu_L}{\sigma}\right) + \tfrac{1}{2}\,Q\!\left(\frac{x - \mu_R}{\sigma}\right)$$</p>
+<p>For $x$ at or beyond $\mu_R$, the first term is negligible, because the left Gaussian is centered $DJ_{\delta\delta}$ away and its tail at that distance is far smaller, so only the right Gaussian contributes. The compliance convention takes the boundary $x_R$ at which the tail of the right impulse, counted at full weight, equals the target ratio:</p>
+<p>$$Q\!\left(\frac{x_R - \mu_R}{\sigma}\right) = \text{BER} \quad\Rightarrow\quad x_R = \mu_R + Q_{\text{factor}}\,\sigma$$</p>
+<p>By symmetry the left boundary is $x_L = \mu_L - Q_{\text{factor}}\,\sigma$. Total jitter at the target ratio is the width of the interval between the boundaries:</p>
+<p>$$TJ(\text{BER}) = x_R - x_L = DJ_{\delta\delta} + 2\,Q_{\text{factor}}\,RJ_{\text{rms}}$$</p>
+<p>The factor of two arises because an edge can be early or late, and each tail contributes a distance of $Q_{\text{factor}}\,\sigma$. The formula is additive because the width is the separation of the two deterministic positions plus the Gaussian reach on each outer side. The peak-to-peak random jitter at a ratio is the second term, $RJ_{\text{p-p}} = 2\,Q_{\text{factor}}\,RJ_{\text{rms}}$, a calculation and not a measurement, as <a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html">Chapter 10</a> stated. The convention counts each impulse at full weight and does not include the transition density of the data. The Edge Cases quantify what this omission costs.</p>
+<h3>The Q-Scale Fit and the Single-Sigma Constraint</h3>
+<p>The model parameters are extracted from the histogram tails by a linear fit. Take the tail probability of a single Gaussian tail with mean $\mu$ and deviation $\sigma$, $P(x) = Q((x - \mu)/\sigma)$, and apply the inverse tail function to both sides:</p>
+<p>$$Q^{-1}\bigl(P(x)\bigr) = \frac{x - \mu}{\sigma}$$</p>
+<p>Plotted against $x$, the quantity $Q^{-1}(P)$ is a straight line with slope $1/\sigma$ that crosses zero at $x = \mu$. This is the <strong>Q-scale</strong>: a Gaussian tail becomes a line, and the standard deviation and the mean are the slope and the intercept of a linear regression. In the Dual-Dirac model the measured tail probability includes the weight of one half, so the quantity to transform is $2P(x)$, the tail probability conditioned on the impulse that produces it.</p>
+<p>The tails of the histogram are fitted in a region that excludes the center and excludes the region too far out to contain data. A common choice is the region where $Q^{-1}$ lies between 3 and 5, which is the span of $3\sigma$ to $5\sigma$ from each mean. The lower limit is set by the deterministic contamination of the center, and the upper limit is set by the sparse population of the tail. The line is then extended to $Q^{-1} = Q_{\text{factor}}$, which gives $x_R$ without any assumption beyond the Gaussian shape of the tail.</p>
+<p>The two tails have the same physical origin in the noise of one circuit, so the model requires them to share one standard deviation: $\sigma_L = \sigma_R$, which in the Q-scale means that the left line and the right line have slopes of equal magnitude. Fitting each tail alone gives slightly different values because of finite sample sizes and because rising and falling edges can have slightly different slopes at the threshold ($\sigma_t = \sigma_v/S$, <a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html">Chapter 10</a>). Oscilloscope jitter software, for example Keysight EZJIT, applies a constrained least-squares fit that forces equal slopes and returns one unified $RJ_{\text{rms}}$ together with the two means.</p>
+<p>The probability density and the jitter spectrum are different descriptions, and the fit uses only the first. The deterministic density of a periodic tone is an arcsine shape and its spectrum is a single line, and the two impulses of the model describe where the deterministic mass sits in the histogram. They do not describe discrete spectral lines.</p>
 <h2>Architecture</h2>
-<h3>The TJ Extrapolation Formula</h3>
-<p>The complete Total Jitter extrapolation formula encapsulates the entire Dual-Dirac framework:</p>
-<p>$$TJ(BER) = DJ_{\delta\delta} + 2 \cdot Q(BER) \cdot RJ_{\text{rms}}$$</p>
-<p>Each term has a direct physical interpretation:</p>
-<ul>
-<li>$DJ_{\delta\delta}$ is the deterministic floor: the irreducible timing spread caused by bounded hardware mechanisms (ISI, DCD, PJ), modeled as the separation between two Dirac delta impulses.</li>
-<li>$RJ_{\text{rms}}$ is the thermal baseline: the standard deviation of the Gaussian noise contribution, measured as a single unified value across both tails via constrained least-squares fitting.</li>
-<li>$Q(BER)$ is the statistical amplifier: the number of standard deviations required to reach the target error probability, computed as the inverse of the complementary error function.</li>
-<li>The factor of 2 accounts for both the early and late tails of the distribution.</li>
-</ul>
-<p>The formula is additive because it combines a bounded deterministic component with the peak-to-peak extent of the unbounded Gaussian at the target confidence level. It produces a single number in picoseconds that can be compared directly against the Unit Interval to determine pass/fail compliance.</p>
-<h3>From Histogram to Compliance: The Algorithmic Pipeline</h3>
-<p>The EZJIT+ software executes the following sequence to produce a TJ number at the target BER:</p>
-<ol>
-<li><strong>Acquire TIE values</strong> for several hundred thousand edges (input from the measurement infrastructure described in <a href="10_Jitter_Decomposition_and_Measurement.md">Jitter Decomposition and Measurement</a>).</li>
-<li><strong>Construct the histogram</strong> and normalize to a probability density function.</li>
-<li><strong>Identify the tail regions</strong> beyond the DJ bounds on both the left and right extremes.</li>
-<li><strong>Fit Gaussian curves</strong> to both tails simultaneously under the single-sigma constraint ($\sigma_L = \sigma_R$), solving for the unified $RJ_{\text{rms}}$ and the two mean positions ($\mu_L$, $\mu_R$).</li>
-<li><strong>Compute $DJ_{\delta\delta}$</strong> as $\mu_R - \mu_L$.</li>
-<li><strong>Look up or compute the Q-factor</strong> for the target BER using the inverse erfc.</li>
-<li><strong>Apply the TJ formula</strong> to produce the final compliance number.</li>
+<h3>The Bathtub Curve</h3>
+<p>The <strong>bathtub curve</strong> shows the bit error ratio as a function of the position at which the receiver samples the bit. It follows from the model by counting the two ways a bit can be misread. Let $s$ be the sampling position measured from the left bit boundary. The bit is misread if the left boundary edge arrives after $s$, so that the previous bit is still present, or if the right boundary edge, at $UI$ plus its own timing error, arrives before $s$. Random data has a transition at a given boundary with probability $\eta_T = 1/2$, which scales both events, so for the Dual-Dirac model with impulse positions $d \in \{\mu_L, \mu_R\}$:</p>
+<p>$$\text{BER}(s) = \eta_T \sum_{d}\tfrac{1}{2}\left[\,Q\!\left(\frac{s - d}{\sigma}\right) + Q\!\left(\frac{UI + d - s}{\sigma}\right)\right]$$</p>
+<p>On a plot of $\log\text{BER}$ against $s$, the first term produces the left wall and the second term the right wall. Each wall is the Gaussian tail of the corresponding edge, so on the logarithmic scale it falls with a curvature that increases with distance from the boundary. Between the walls the curve falls to a floor that is far below any measurable ratio. The horizontal width of the curve at a chosen ratio is the width of the eye at that ratio, and the convention of the previous section gives</p>
+<p>$$W_{eye}(\text{BER}) = UI - TJ(\text{BER})$$</p>
+<p>A bathtub built from measured tails and the Q-scale fit is the standard picture for reading margin: a wider floor at a given ratio is a wider horizontal eye. The curve describes timing only, and the vertical noise of the receiver is a separate limit, and a floor of $10^{-64}$ at the center of the example below is a statement about timing jitter, which other mechanisms would exceed long before.</p>
+<h3>From Histogram to Compliance: the Pipeline</h3>
+<p>The jitter analysis software executes the following sequence, building on the first three steps (acquisition, histogram construction, and tail isolation) of the measurement flow in <a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html">Jitter Decomposition and Measurement</a>:</p>
+<ol start="4">
+<li><strong>Fit the tails</strong> in the Q-scale under the single-sigma constraint, solving for $RJ_{\text{rms}}$, $\mu_L$, and $\mu_R$.</li>
+<li><strong>Compute the dual-Dirac deterministic jitter</strong> as $DJ_{\delta\delta} = \mu_R - \mu_L$.</li>
+<li><strong>Compute the Q-factor</strong> for the target ratio from the inverse tail function.</li>
+<li><strong>Apply the total jitter formula</strong> and compare $TJ$ with the unit interval.</li>
 </ol>
-<p>The entire pipeline transforms a physical histogram into a single picosecond value that determines whether the link meets its specification.</p>
+<p>The pipeline converts a physical histogram into one picosecond value that is compared with the unit interval to give pass or fail. The terms of the formula have direct interpretations: $DJ_{\delta\delta}$ is the deterministic spread that the model assigns to hardware mechanisms, $RJ_{\text{rms}}$ is the Gaussian width of the unbounded noise, $Q_{\text{factor}}$ is the number of standard deviations required for the target ratio, and the factor of two covers both tails.</p>
+<h2>Worked Examples</h2>
+<h3>How Long a Direct Measurement Takes</h3>
+<p>Assume a link running at 16 GT/s. One trillion bits take $10^{12}/(16 \times 10^9) = 62.5$ s to transmit, but observing no error in that many bits does not prove that the ratio is $10^{-12}$ or better. The true ratio is $p$, and the probability of seeing no error in $N$ independent bits is $(1-p)^N \approx e^{-Np}$. A measurement with no errors therefore supports the claim that the ratio is below $p_0$ with a confidence</p>
+<p>$$C = 1 - e^{-N p_0} \quad\Rightarrow\quad N = \frac{-\ln(1 - C)}{p_0}$$</p>
+<p>For a 95 percent confidence, $-\ln 0.05 = 2.996$, so $N \approx 3.0/p_0$ bits. The times at 16 GT/s are:</p>
+<table>
+<thead>
+<tr>
+<th align="center">Target BER</th>
+<th align="center">Bits required</th>
+<th align="center">Time at 16 GT/s</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">$10^{-12}$</td>
+<td align="center">$3.0 \times 10^{12}$</td>
+<td align="center">187 s (3.1 minutes)</td>
+</tr>
+<tr>
+<td align="center">$10^{-15}$</td>
+<td align="center">$3.0 \times 10^{15}$</td>
+<td align="center">52 hours (2.2 days)</td>
+</tr>
+<tr>
+<td align="center">$10^{-18}$</td>
+<td align="center">$3.0 \times 10^{18}$</td>
+<td align="center">5.9 years</td>
+</tr>
+</tbody></table>
+<p>A ratio of $10^{-12}$ can therefore be verified directly with a bit error ratio tester in a few minutes at this rate. A ratio of $10^{-15}$ or lower, a capture of a limited record by an oscilloscope, and any measurement that must also identify the cause of the errors need the projection from the tails.</p>
+<h3>PCIe Gen 4 Jitter Budget</h3>
+<p>Consider a link at 16 GT/s, so that $UI = 1/(16 \times 10^9) = 62.5$ ps. Assume that the tail fit returns $DJ_{\delta\delta} = 12.0$ ps and $RJ_{\text{rms}} = 1.5$ ps. For a target ratio of $10^{-12}$ the Q-factor is 7.034, and the calculation proceeds in four steps:</p>
+<p>$$RJ_{\text{p-p}} = 2 \times 7.034 \times 1.5\ \text{ps} = 21.10\ \text{ps}$$</p>
+<p>$$TJ = DJ_{\delta\delta} + RJ_{\text{p-p}} = 12.0 + 21.10 = 33.10\ \text{ps}$$</p>
+<p>$$W_{eye} = UI - TJ = 62.5 - 33.10 = 29.40\ \text{ps}$$</p>
+<p>The total jitter consumes 53 percent of the unit interval, and the horizontal opening is 47 percent. The same fit at other targets gives:</p>
+<table>
+<thead>
+<tr>
+<th align="center">Target BER</th>
+<th align="center">Q-factor</th>
+<th align="center">$RJ_{\text{p-p}}$ (ps)</th>
+<th align="center">$TJ$ (ps)</th>
+<th align="center">Eye width (ps)</th>
+<th align="center">Eye width (% of UI)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">$10^{-9}$</td>
+<td align="center">5.998</td>
+<td align="center">17.99</td>
+<td align="center">29.99</td>
+<td align="center">32.51</td>
+<td align="center">52.0</td>
+</tr>
+<tr>
+<td align="center">$10^{-12}$</td>
+<td align="center">7.034</td>
+<td align="center">21.10</td>
+<td align="center">33.10</td>
+<td align="center">29.40</td>
+<td align="center">47.0</td>
+</tr>
+<tr>
+<td align="center">$10^{-15}$</td>
+<td align="center">7.941</td>
+<td align="center">23.82</td>
+<td align="center">35.82</td>
+<td align="center">26.68</td>
+<td align="center">42.7</td>
+</tr>
+</tbody></table>
+<p>Each added three decades of ratio cost 2.7 to 3.1 ps of eye width, which is the slow growth of the Q-factor stated above.</p>
+<h3>Extracting the Parameters in the Q-Scale</h3>
+<p>Use the model of the previous example, with the right impulse at $\mu_R = +6.0$ ps, the left at $-6.0$ ps, and $\sigma = 1.5$ ps. The tail probability beyond three positions on the right side, multiplied by two to condition on the right impulse, and transformed by the inverse tail function, is:</p>
+<table>
+<thead>
+<tr>
+<th align="center">$x$ (ps)</th>
+<th align="center">$2\,P(t > x)$</th>
+<th align="center">$Q^{-1}(2P)$</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">10.5</td>
+<td align="center">$1.350 \times 10^{-3}$</td>
+<td align="center">3.0</td>
+</tr>
+<tr>
+<td align="center">12.0</td>
+<td align="center">$3.167 \times 10^{-5}$</td>
+<td align="center">4.0</td>
+</tr>
+<tr>
+<td align="center">13.5</td>
+<td align="center">$2.867 \times 10^{-7}$</td>
+<td align="center">5.0</td>
+</tr>
+</tbody></table>
+<p>The points lie on a straight line with slope $1/\sigma = 1/1.5 = 0.667$ per ps, which crosses zero at 6.0 ps. The regression therefore returns $\mu_R = 6.0$ ps and $\sigma = 1.5$ ps, and the mirrored left tail returns $\mu_L = -6.0$ ps, so $DJ_{\delta\delta} = 12.0$ ps. Extending the line to $Q^{-1} = 7.034$ gives $x_R = 6.0 + 7.034 \times 1.5 = 16.55$ ps and $TJ = 2 \times 16.55 = 33.10$ ps, the same total as before.</p>
+<h3>The Bathtub of the Example</h3>
+<p>Evaluate the bathtub formula with $UI = 62.5$ ps, $\mu = \pm 6$ ps, $\sigma = 1.5$ ps, and $\eta_T = 1/2$:</p>
+<table>
+<thead>
+<tr>
+<th align="center">Sampling position $s$ (ps)</th>
+<th align="center">Position as fraction of UI</th>
+<th align="center">BER</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">5.0</td>
+<td align="center">0.08</td>
+<td align="center">$1.9 \times 10^{-1}$</td>
+</tr>
+<tr>
+<td align="center">10.0</td>
+<td align="center">0.16</td>
+<td align="center">$9.6 \times 10^{-4}$</td>
+</tr>
+<tr>
+<td align="center">15.0</td>
+<td align="center">0.24</td>
+<td align="center">$2.5 \times 10^{-10}$</td>
+</tr>
+<tr>
+<td align="center">20.0</td>
+<td align="center">0.32</td>
+<td align="center">$1.3 \times 10^{-21}$</td>
+</tr>
+<tr>
+<td align="center">25.0</td>
+<td align="center">0.40</td>
+<td align="center">$1.1 \times 10^{-37}$</td>
+</tr>
+<tr>
+<td align="center">31.25</td>
+<td align="center">0.50</td>
+<td align="center">$3.5 \times 10^{-64}$</td>
+</tr>
+</tbody></table>
+<p>The left wall falls by more than six decades between 10 ps and 15 ps. The curve reaches $10^{-12}$ at $s = 16.26$ ps and, by symmetry, at $62.5 - 16.26 = 46.24$ ps, so the horizontal opening at $10^{-12}$ is 29.98 ps. The compliance convention gave 29.40 ps for the same ratio, and the difference is explained in the Edge Cases.</p>
+<h3>Fitting a Distribution That Is Not Two Points</h3>
+<p>The Dual-Dirac fit applies to a deterministic jitter that is not two points, but the fitted $DJ_{\delta\delta}$ is then a parameter and not a measured width. Take three cases with the same random jitter ($\sigma = 1.5$ ps) and a deterministic jitter of 12 ps peak to peak. The Q-scale fit is made in the region between $Q^{-1} = 3$ and $Q^{-1} = 5$, and the result is compared with the total jitter computed directly from the density at $10^{-12}$ under the same convention:</p>
+<table>
+<thead>
+<tr>
+<th>Deterministic jitter</th>
+<th align="center">Fitted $DJ_{\delta\delta}$ (ps)</th>
+<th align="center">Fitted $\sigma$ (ps)</th>
+<th align="center">$TJ$ from fit (ps)</th>
+<th align="center">True $TJ$ (ps)</th>
+<th align="center">Difference (ps)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Two impulses at $\pm 6$ ps</td>
+<td align="center">12.00</td>
+<td align="center">1.500</td>
+<td align="center">33.10</td>
+<td align="center">33.10</td>
+<td align="center">0.00</td>
+</tr>
+<tr>
+<td>Uniform over $\pm 6$ ps</td>
+<td align="center">8.51</td>
+<td align="center">1.672</td>
+<td align="center">32.03</td>
+<td align="center">31.67</td>
+<td align="center">+0.36</td>
+</tr>
+<tr>
+<td>Arcsine (sinusoid, $A = 6$ ps)</td>
+<td align="center">9.98</td>
+<td align="center">1.602</td>
+<td align="center">32.51</td>
+<td align="center">32.30</td>
+<td align="center">+0.22</td>
+</tr>
+</tbody></table>
+<p>In both extended cases the fitted $DJ_{\delta\delta}$ is smaller than the 12 ps peak-to-peak value, and the fitted $\sigma$ is larger than the true 1.5 ps, because part of the width of the deterministic distribution is absorbed into the apparent noise. The projected total jitter is slightly above the true value. Using the peak-to-peak value in the formula, $12 + 21.10 = 33.10$ ps, overestimates the true values of 31.67 ps and 32.30 ps by 1.4 ps and 0.8 ps.</p>
 <h2>Edge Cases</h2>
-<h3>The Overestimation Tendency of Dual-Dirac</h3>
-<p>The Dual-Dirac model concentrates all DJ energy at exactly two points, creating the widest possible convolution footprint with the RJ Gaussian. In physical hardware, the DJ distribution is typically spread across many intermediate values (ISI creates a range of delays for different bit patterns, not just two extremes). The actual DJ distribution, when convolved with RJ, produces a total jitter that is narrower than the Dual-Dirac prediction.</p>
-<p>This makes the Dual-Dirac model inherently conservative. It will report a TJ number that equals or exceeds the true total jitter, providing a safety margin. Standards bodies adopted this model precisely because its overestimation tendency means that hardware passing the Dual-Dirac compliance test is guaranteed to meet the BER target under real operating conditions.</p>
-<p>The conservatism becomes problematic only when the overestimation is so large that functional hardware fails the specification. In practice, this is rare: the separation between the Dual-Dirac TJ and the true TJ is typically a few picoseconds, well within the design margin of links that are close to the performance boundary.</p>
-<h3>The Single-Temperature Assumption</h3>
-<p>The single-sigma constraint assumes that the silicon operates at a uniform temperature, producing a single noise floor for all edges. In practice, power dissipation creates thermal gradients across the die. Regions near high-activity logic may run hotter than quiet regions, producing locally elevated noise. If the transmitter&#39;s output stage experiences significant temperature variation during a measurement window (as might occur during thermal transients at power-up), the left and right tails of the histogram could genuinely have slightly different intrinsic $\sigma$ values.</p>
-<p>The constrained fit averages this variation into a single number, which remains a good approximation as long as the thermal gradient is small relative to the overall noise floor. For links where thermal transient effects are suspected, capturing data after thermal equilibrium is established eliminates this concern.</p>
+<h3>The Projection Is Usually Conservative but Not Guaranteed</h3>
+<p>The comparison above shows the typical outcome: the fitted total jitter is equal to or slightly above the true total jitter, so hardware that passes the projected limit usually meets the target. The model carries no guarantee, and the result depends on the shape of the deterministic distribution, on the region chosen for the fit, and on the assumption that the random jitter is Gaussian beyond the region that the data reaches.</p>
+<p>A concrete failure of the last assumption shows the size of the possible error. Assume that one edge in $10^5$ carries random jitter with a standard deviation of 3 ps instead of 1.5 ps, for example because of an occasional supply glitch, and that the rest follow the model above. The tail fit in the $3\sigma$ to $5\sigma$ region sees almost only the narrow population and returns $DJ_{\delta\delta} = 11.86$ ps and $\sigma = 1.52$ ps, which projects $TJ = 33.25$ ps at $10^{-12}$. The wide population dominates the density far out, and the true value at $10^{-12}$ is 43.20 ps. The projection under-predicts by 9.95 ps, which is 16 percent of the unit interval at 16 GT/s. The model is conservative when its assumptions hold and it can under-predict when they do not, and a measurement that must be trusted at a very low ratio needs a check of the tail shape or a direct measurement.</p>
+<h3>Weights, Transition Density, and the Conservative Convention</h3>
+<p>The total jitter convention equates the tail probability of one impulse, counted at full weight, with the bit error ratio. The exact bathtub includes two factors that the convention omits: each impulse carries a weight of one half, and random data has a transition density of one half. At the boundary of the convention, $x_R = 16.55$ ps, the exact ratio is $\eta_T \times \tfrac{1}{2} \times 10^{-12} = 2.5 \times 10^{-13}$, a factor of four below the target. The exact $10^{-12}$ boundary is found where $\tfrac{1}{4}Q(a) = 10^{-12}$, so $Q(a) = 4 \times 10^{-12}$ and $a = 6.84$ in place of 7.03. The exact total jitter is $12 + 2 \times 6.84 \times 1.5 = 32.52$ ps against the convention&#39;s 33.10 ps, and the convention therefore overstates the width by 0.59 ps in the example.</p>
+<p>The weights are one half in the standard model. A general model may use unequal weights $w_L$ and $w_R$ with $w_L + w_R = 1$, which scales each tail by its weight and shifts the exact boundary by a fraction of a standard deviation, but it does not alter the form of the Q-scale line. Asymmetric deterministic jitter, such as duty cycle distortion, appears in the standard model as a shift of the pair or as unequal positions relative to the ideal edge, and the separation $DJ_{\delta\delta}$ is unchanged by either.</p>
+<h3>The Single-Sigma Assumption</h3>
+<p>The constraint $\sigma_L = \sigma_R$ assumes that the noise level is the same for all edges. Slightly different slopes of rising and falling edges give slightly different values of $\sigma_t = \sigma_v/S$, and temperature gradients across the transmitter output stage change $\sigma_v$ during a thermal transient. The constrained fit averages these differences into one value, which remains a good description when they are small. A measurement made after thermal equilibrium removes the transient contribution.</p>
 <h3>Sample Size and Tail Population</h3>
-<p>The accuracy of the Dual-Dirac extraction depends entirely on populating the $3\sigma$-to-$5\sigma$ tail region with enough data points to constrain the Gaussian fit. With too few points, the regression is underdetermined and the extracted $\sigma$ is noisy.</p>
-<p>In a system with only Random Jitter, a few thousand edges would suffice to determine $\sigma$ accurately, because the central mass directly reveals the standard deviation. In a real system contaminated with DJ, the algorithm cannot use the central mass (it is corrupted by the DJ distribution) and must rely exclusively on the sparse tail population. This is why the sample size requirement jumps from thousands to hundreds of thousands: the vast majority of captured edges are discarded by the algorithm, and only the rare tail events contribute to the fit.</p>
-<p>Insufficient sample size manifests as measurement-to-measurement variation in the reported $RJ_{\text{rms}}$ and $TJ$ values. If repeated acquisitions produce inconsistent results, the first diagnostic step is to increase the capture depth.</p>
+<p>The fit needs data in the tail region, and the data are sparse. Assume 300,000 edges, so that each impulse holds 150,000 of them. The expected number of edges beyond $3\sigma$ above one impulse mean is $150{,}000 \times 1.35 \times 10^{-3} = 202$, beyond $4\sigma$ it is $150{,}000 \times 3.17 \times 10^{-5} = 4.75$, and beyond $5\sigma$ it is $150{,}000 \times 2.87 \times 10^{-7} = 0.043$. The practical upper edge of the fit region for this record is near $4\sigma$, and reaching five expected edges at $5\sigma$ needs about $3.5 \times 10^7$ edges. A record in which only noise-free random jitter is present could determine $\sigma$ from a few thousand edges, because the central mass reveals it. With deterministic jitter present the algorithm cannot use the center, and the sample requirement rises to hundreds of thousands or more because most edges contribute nothing to the fit. Measurement-to-measurement variation of the reported $RJ_{\text{rms}}$ and $TJ$ is the sign of an insufficient record, and increasing the capture depth is the first remedy.</p>
+<h3>The Gaussian Assumption in the Far Tail</h3>
+<p>The central limit theorem explains why a sum of many small independent noise contributions is close to Gaussian near its center, and it gives the weakest guarantee in the far tails. A single large disturbance, a nonlinear conversion from voltage to time near the rails (<a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html">Chapter 10</a>), or a rare mechanism with a different noise level changes the tail without changing the center. The Q-scale line exposes such a change as a bend: a measured tail that departs from a straight line in the fit region indicates that the extrapolation should not be trusted beyond that region.</p>
+<p>The projection tells the designer how much timing margin remains at the target ratio, and it needs the random and deterministic components to be known separately and accurately. <a href="signal-integrity-12_Test_Patterns_and_Jitter_Isolation.html">Test Patterns and Jitter Isolation</a> shows how pattern averaging and spectral analysis separate the data-dependent, periodic, and random contributions that this chapter treated as two parameters.</p>
 
 <div class="blog-pagination">
       <a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html" class="pagination-link prev">
@@ -282,6 +490,10 @@
     }
     .mermaid svg {
       filter: drop-shadow(0 4px 16px rgba(183, 110, 121, 0.12));
+    }
+    .mermaid .node rect {
+      rx: 12px !important;
+      ry: 12px !important;
     }
   </style>
   <script type="module">

@@ -118,130 +118,235 @@
     <li><a href="index.html">Blog</a></li><li><a href="series-signal-integrity.html">Series: Signal Integrity</a></li><li><a href="signal-integrity-part-03.html">Part 3: Jitter Analysis</a></li><li aria-current="page">Jitter Decomposition and Measurement</li></ol></nav>
         <article class="blog-post series-signal-integrity">
 <h1>Jitter Decomposition and Measurement</h1>
-<!-- SUMMARY: Jitter is the deviation of a signal edge from its ideal position in time, and no single number for total jitter provides enough information to diagnose a failing link. This guide decomposes total jitter into random and deterministic components based on their statistical behavior and physical origins, transforming an opaque timing failure into actionable hardware diagnostics. --><p><em>Prefer to read this seamlessly offline? <a href="../../../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity eBook here.</a></em></p><p>Jitter is the deviation of a signal edge from its ideal position in time. At modern serial data rates, no single number for &quot;total jitter&quot; provides enough information to diagnose a failing link. A signal that misses its timing budget could be failing because of thermal noise in the silicon, because of impedance discontinuities on the PCB, because of switching power supply coupling, or because of asymmetric transistor drive strength in the transmitter. Each of these root causes produces a physically distinct timing perturbation, and each requires a different corrective action.</p>
-<p>The jitter decomposition framework separates total jitter into categories based on the statistical behavior and physical origin of each component. Random Jitter arises from thermodynamic processes that are fundamentally unbounded and Gaussian. Deterministic Jitter arises from structural and environmental sources that are bounded and repeatable. Within Deterministic Jitter, further sub-classification isolates pattern-dependent effects (Intersymbol Interference, Duty Cycle Distortion) from pattern-independent periodic disturbances (power supply coupling, EMI, clock crosstalk). This taxonomy transforms an opaque timing failure into a set of actionable hardware diagnostics.</p>
-<p>This guide covers the physical origins of each jitter component, the measurement infrastructure that captures them, and the statistical properties that make decomposition possible.</p>
+<!-- SUMMARY: A receiver decides each bit by comparing the waveform with a threshold at a sampling instant, so the timing of the threshold crossings is as important as the voltage levels. This guide defines the unit interval, the eye diagram, and time interval error, separates total jitter into random jitter and the bounded deterministic components (intersymbol interference, duty cycle distortion, periodic and sinusoidal jitter, and bounded uncorrelated jitter), converts each voltage disturbance into time through the slope of the edge, and lays out the measurement flow that links a captured waveform to a root cause. --> <p><em>Prefer to read offline? <a href="../../../assets/docs/signal-integrity-ebook-v2.0.pdf" target="_blank" rel="noopener">Download the complete Signal Integrity (Advanced Edition) ebook.</a></em></p><p>The first nine chapters characterize the channel as a frequency-dependent filter that delays, attenuates, and reflects a signal. The receiver at the end of the channel does not see the filter. It sees a waveform and decides, once per bit, whether the level is high or low, and that decision is correct only if the waveform crosses the decision threshold at a suitable time relative to the instant at which the receiver samples. This chapter begins Part 3 by defining the unit interval and the eye diagram that frame the question, defining jitter as the deviation of each threshold crossing from its ideal time, and separating that deviation into components by statistical behavior and physical origin.</p>
+<p>A single number for total jitter is not enough to diagnose a failing link. A signal can miss its timing budget because of thermal noise in the silicon, because of reflections and loss in the channel, because of ripple on the power supply, because of crosstalk from a neighboring lane, or because of asymmetric drive strength in the transmitter. Each cause produces a timing disturbance with a distinct shape and a distinct corrective action, and the decomposition in this chapter is what turns a failed timing measurement into a specific hardware change.</p>
+<p>The chapter first defines the measurement frame (unit interval, eye, time interval error) and the taxonomy of jitter, then shows how a voltage disturbance becomes a timing disturbance through the edge slope, and then treats each component in turn with a physical origin and a size. The measurement flow and the budget examples follow. <a href="signal-integrity-11_Dual_Dirac_Model_and_BER_Extrapolation.html">Dual-Dirac Model and BER Extrapolation</a> develops the statistics that convert the measured distributions into a total jitter at a target bit error ratio, and <a href="signal-integrity-12_Test_Patterns_and_Jitter_Isolation.html">Test Patterns and Jitter Isolation</a> develops the pattern and spectral techniques that isolate the components.</p>
 <h2>Core Concepts</h2>
-<h3>The Decomposition Taxonomy</h3>
-<p>All jitter falls into two primary categories, distinguished by their probability distributions:</p>
-<p><strong>Random Jitter (RJ)</strong> is caused by fundamental thermodynamic processes: thermal noise (Johnson-Nyquist noise from resistive elements), shot noise (discrete charge carriers crossing semiconductor junctions), and flicker noise (1/f noise in active devices). These microscopic processes involve the aggregate behavior of billions of independent electrons. The Central Limit Theorem guarantees that the sum of billions of independent random events produces a macroscopic distribution that follows a Gaussian probability curve with mathematical precision.</p>
-<p>The critical property of RJ is that it is unbounded. The Gaussian distribution has tails that extend to infinity in both directions. Measuring for a longer duration does not change the underlying distribution; it simply reveals increasingly rare events further out in the tails. A peak-to-peak measurement of RJ is therefore meaningless because the observed peak-to-peak value grows without limit as the sample size increases. RJ is quantified exclusively by its standard deviation, $RJ_{\text{rms}}$, which is a fixed physical constant determined by the temperature and material properties of the silicon.</p>
-<p><strong>Deterministic Jitter (DJ)</strong> is caused by predictable, systemic characteristics of the hardware, channel, and electromagnetic environment. DJ is bounded: it has strict physical minimum and maximum limits that do not grow with observation time. DJ is quantified as a peak-to-peak value, $DJ_{\text{p-p}}$.</p>
-<p>DJ decomposes further into sub-categories that isolate specific hardware mechanisms:</p>
+<h3>The Unit Interval and the Ideal Edge Times</h3>
+<p>A non-return-to-zero (NRZ) link sends one bit in each <strong>unit interval</strong> (UI), and the unit interval is the reciprocal of the bit rate:</p>
+<p>$$UI = \frac{1}{\text{bit rate}}$$</p>
+<p>A 10 Gb/s link has a UI of 100 ps, and a link described as 16 GT/s (gigatransfers per second, which for an NRZ link equals 16 Gb/s on the wire) has a UI of 62.5 ps. A PAM4 link carries two bits in each symbol, so its UI is the reciprocal of the symbol rate and is twice the bit period; <a href="signal-integrity-15_PAM4_Signaling_and_Gray_Coding.html">Chapter 15</a> develops that case.</p>
+<p>The receiver clock defines an ideal time grid. The ideal time of the $k$-th bit boundary is $t_0 + k\,UI$, where $t_0$ is an arbitrary phase offset, and the receiver ideally samples each bit at the middle of the interval, $UI/2$ after the boundary. The frequency $1/(2\,UI)$ is the Nyquist frequency of the link defined in <a href="signal-integrity-02_Frequency_Content_of_Digital_Signals.html">Chapter 2</a>, the fundamental of the alternating 1010 pattern. Jitter is expressed either in picoseconds or as a fraction of the UI: 5 ps of jitter on a 100 ps UI is 0.05 UI.</p>
+<h3>The Eye Diagram</h3>
+<p>The <strong>eye diagram</strong> is a display of the received waveform folded onto a window of fixed length so that every bit interval is drawn on the same axes. The construction is a modulo operation on time. Choose a window of two unit intervals, assign to each instant $t$ of the record the folded coordinate $u = (t - t_0) \bmod 2\,UI$, and draw the voltage at $u$ for every instant. A long record contains every combination of neighboring bits, so the overlay contains the transitions from low to high, from high to low, and the flat segments of repeated bits, all superposed.</p>
+<p>The resulting picture has a standard vocabulary:</p>
 <ul>
-<li><strong>Data Dependent Jitter (DDJ)</strong> is correlated to the transmitted bit sequence. It encompasses Intersymbol Interference (ISI) and Duty Cycle Distortion (DCD).</li>
-<li><strong>Periodic Jitter (PJ)</strong> is uncorrelated to the data but repeats at a fixed frequency driven by an external oscillating source.</li>
+<li>The <strong>crossing points</strong> are the places at $u = 0$, $UI$, and $2\,UI$ where rising and falling transitions cross each other near the decision threshold.</li>
+<li>The <strong>eye opening</strong> is the open region between the traces, bounded above by the lowest trace of a high bit and below by the highest trace of a low bit.</li>
+<li>The <strong>eye height</strong> is the vertical size of the opening at the sampling instant $u = UI/2$.</li>
+<li>The <strong>eye width</strong> is the horizontal size of the opening measured at the threshold level, from the latest crossing on the left to the earliest crossing on the right.</li>
 </ul>
-<h3>Random Jitter: Physics and Statistical Invariance</h3>
-<p>Thermal noise originates from the random thermal agitation of electrons colliding with atoms in the silicon lattice and copper interconnect. This is a voltage (amplitude) perturbation, not a timing perturbation. The physical mechanism that converts amplitude noise into timing jitter is the finite slew rate of the signal edge.</p>
-<p>A high-speed signal edge is not a perfect vertical transition; it traverses from the low voltage rail to the high voltage rail over a finite time interval, producing a slope (dV/dt). When random voltage noise superimposes on the data signal during this transition, the combined voltage ($V_{\text{received}} = V_{\text{data}} + V_{\text{noise}}$) shifts the point at which the edge crosses the receiver&#39;s decision threshold. A negative noise spike during a rising edge pulls the combined voltage downward, forcing the signal to travel further along its slope before reaching the threshold. The crossing point shifts to the right in time. A positive noise spike accelerates the crossing to the left. This geometric relationship between voltage perturbation and timing shift is called amplitude-to-phase conversion.</p>
-<p>The Gaussian distribution of the underlying voltage noise maps directly through this conversion into a Gaussian distribution of timing jitter. The shape of the distribution is preserved because the conversion is linear over the small perturbation range near the threshold crossing.</p>
-<p>RJ is fundamentally uncorrelated and memoryless. The thermal agitation that shifts the current edge has no physical mechanism to influence the position of the next edge. Each edge crossing is an independent statistical trial drawn from the same Gaussian distribution. This is the defining contrast with ISI, where the timing of the current edge is strictly dictated by the history of preceding bits.</p>
-<h3>$RJ_{\text{rms}}$ as a Physical Time Coordinate</h3>
-<p>$RJ_{\text{rms}}$ is not a count of edge crossings. It is a physical time distance on the horizontal axis of the TIE histogram, measured in picoseconds.</p>
-<p>$RJ_{\text{rms}}$ equals exactly one standard deviation ($1\sigma$) of the Gaussian distribution. Geometrically, it defines the distance from the center peak of the Gaussian to the inflection point where the curve transitions from concave-down to concave-up. The mathematics of the Gaussian function dictate that 34.1% of all edge crossings will fall within one $\sigma$ on either side of the mean, totaling 68.2% within the $\pm 1\sigma$ window.</p>
-<p>The stability of $RJ_{\text{rms}}$ as a measurement derives from a fundamental property of the Gaussian distribution: its variance converges. Variance is the expected value of the squared distance from the mean, weighted by the probability of landing at each distance. While the squared distance grows quadratically ($x^2$) as you move further from the center, the probability of landing at that distance decays exponentially ($e^{-x^2}$). Exponential decay dominates quadratic growth at every scale. By the time an outlier event occurs far out in the tail, its probability is so vanishingly small that multiplying it by the large squared distance contributes effectively zero to the total variance sum. The mathematical series converges, and the standard deviation reaches a fixed value determined by the physics of the noise source, not by how long the oscilloscope runs.</p>
-<p>This convergence is what allows $RJ_{\text{rms}}$ to serve as the input to BER extrapolation. The static $RJ_{\text{rms}}$ constant is multiplied by a Q-factor (derived from the complementary error function for a target BER) to predict the peak-to-peak Random Jitter spread at any desired confidence level. For a BER of $10^{-12}$, the Q-factor is 7.03, and the total multiplier is $2Q \approx 14$, accounting for both the early and late tails of the distribution.</p>
-<h3>Intersymbol Interference (ISI)</h3>
-<p>ISI is the dominant source of jitter in modern high-speed serial links. It arises because the physical channel (PCB traces, vias, cables, connectors) acts as a low-pass filter that attenuates high-frequency signal components more aggressively than low-frequency components.</p>
-<p>Three physical mechanisms produce this frequency-dependent attenuation:</p>
-<ol>
-<li><p><strong>Skin effect:</strong> At high frequencies, eddy currents force the signal current to the extreme outer perimeter of the copper conductor. The usable cross-sectional area shrinks, and the effective resistance increases proportionally. The skin depth is inversely proportional to the square root of frequency, so a 10 GHz signal component encounters dramatically higher resistance than a 1 GHz component traveling the same trace.</p>
-</li>
-<li><p><strong>Dielectric loss:</strong> The FR4 or advanced laminate material absorbs electromagnetic energy and dissipates it as heat. The absorption increases with frequency, further attenuating high-frequency components.</p>
-</li>
-<li><p><strong>Parasitic capacitance:</strong> The copper trace above the ground plane forms a distributed capacitor that resists instantaneous voltage changes. Charging a capacitor instantaneously requires infinite current; the finite drive strength of the transmitter limits the achievable slew rate, governed by the local RC time constant.</p>
-</li>
-</ol>
-<p>The interaction between these mechanisms and the data pattern is what creates ISI:</p>
-<p>A long run of identical bits (such as <code>00000</code>) acts as a near-DC signal. The channel&#39;s distributed capacitance has ample time to fully charge or discharge to the absolute voltage rail. The signal reaches maximum amplitude.</p>
-<p>An alternating <code>10101</code> pattern represents the highest-frequency content the link carries (the Nyquist rate). The transmitter pulls the voltage upward, but before the parasitic capacitance can charge to full amplitude, the transmitter reverses direction and pulls the voltage back down. The peak-to-peak voltage swing of the alternating pattern is substantially attenuated compared to the low-frequency run.</p>
-<p>When the data transitions from a long run of zeros to a one (<code>000001</code>), the voltage must climb from a deeply discharged state. It has a longer voltage distance to travel to reach the receiver&#39;s decision threshold compared to a transition following an alternating pattern, which started from a shallower voltage. The transmitter&#39;s slew rate is fixed by the silicon, so traversing a longer voltage distance requires more time. The edge crosses the threshold later than it would in the alternating-pattern case. This pattern-dependent timing shift is ISI jitter.</p>
-<h3>Duty Cycle Distortion (DCD)</h3>
-<p>DCD occurs when the duration of a logic &quot;1&quot; does not equal the duration of a logic &quot;0.&quot; Two distinct physical mechanisms produce DCD:</p>
-<p><strong>Transmitter slew rate asymmetry:</strong> If the P-channel pull-up transistor in the CMOS output driver has different drive strength than the N-channel pull-down transistor, rising edges will slew at a different rate than falling edges. The faster edge crosses the threshold earlier; the slower edge crosses later. The resulting jitter histogram shows a systematic offset between rising-edge and falling-edge crossing times.</p>
-<p><strong>Receiver threshold offset:</strong> Even if the transmitter generates a perfectly symmetrical waveform, a DC offset in the receiver&#39;s decision threshold voltage will create apparent DCD. If the threshold is shifted upward from the true center of the waveform, the receiver intersects the rising edge later (higher on its slope) and the falling edge earlier (higher on its slope). The receiver interprets the logic &quot;1&quot; as shorter in duration and the logic &quot;0&quot; as longer. The hardware is flawless; the measurement reference point is wrong.</p>
-<h3>Periodic Jitter (PJ)</h3>
-<p>Periodic Jitter is uncorrelated to the data pattern but repeats at a fixed, identifiable frequency. It is caused by external oscillating sources coupling into the signal path:</p>
+<p>The eye width is the quantity that connects the diagram to jitter. Assume that the threshold crossings are spread over a total width $W_x$ (peak to peak) around their ideal positions. The opening that remains between the left and right crossings is</p>
+<p>$$W_{eye} = UI - W_x$$</p>
+<p>The spread of crossings is the jitter histogram of this chapter, and the width of the eye at a specified bit error ratio is $UI - TJ(\text{BER})$, a relation that <a href="signal-integrity-11_Dual_Dirac_Model_and_BER_Extrapolation.html">Chapter 11</a> completes. The eye height is controlled by noise and by intersymbol interference and is treated in the Edge Cases.</p>
+<p>The fold requires a timing reference, and a fixed-frequency trigger smears the traces whenever the data clock drifts, so an instrument folds on a clock recovered from the data itself, which <a href="signal-integrity-17_CDR_and_PLL_Loop_Dynamics.html">Chapter 17</a> describes. <a href="signal-integrity-16_SerDes_Architecture_and_Eye_Diagrams.html">Chapter 16</a> describes the three methods by which an instrument builds the eye from samples, and <a href="signal-integrity-13_Transmitter_FFE.html">Chapter 13</a> and <a href="signal-integrity-14_CTLE_and_DFE.html">Chapter 14</a> show how equalization reopens an eye that the channel has closed.</p>
+<h3>Time Interval Error</h3>
+<p>The <strong>time interval error</strong> (TIE) of an edge is the difference between the actual threshold-crossing time and the ideal time. Let $t_k$ be the measured crossing time of the $k$-th edge. The TIE is then given by:</p>
+<p>$$TIE_k = t_k - (t_0 + k\,UI)$$</p>
+<p>A positive TIE means the edge arrived late, and a negative TIE means it arrived early. The zero of the TIE axis is not a fixed point in time, and the reference clock sets it, which in an oscilloscope measurement is a clock recovered by a software phase-locked loop running on the captured data. The choice of reference changes what counts as jitter: a reference that follows slow drift removes the slow components from the TIE, and a fixed-frequency reference leaves them in. <a href="signal-integrity-17_CDR_and_PLL_Loop_Dynamics.html">Chapter 17</a> explains why a receiver that tracks slow drift is not harmed by it.</p>
+<p>Two related quantities follow from the TIE sequence. The period between two consecutive edges is $T_k = t_{k+1} - t_k = UI + TIE_{k+1} - TIE_k$, so the <strong>period jitter</strong> is the first difference of the TIE:</p>
+<p>$$J_k = T_k - UI = TIE_{k+1} - TIE_k$$</p>
+<p>The <strong>cycle-to-cycle jitter</strong> is the difference between two consecutive periods, $T_{k+1} - T_k$. The difference operation acts as a high-pass filter on the TIE. A sinusoidal TIE component of amplitude $a_j$ and frequency $f_j$, written $TIE_k = a_j \sin(\omega_j k\,UI)$ with $\omega_j = 2\pi f_j$, produces the period jitter</p>
+<p>$$J_k = a_j\left[\sin\bigl(\omega_j (k+1) UI\bigr) - \sin\bigl(\omega_j k\,UI\bigr)\right] = 2 a_j \sin\!\left(\frac{\omega_j UI}{2}\right)\cos\!\left(\omega_j \left(k+\tfrac{1}{2}\right) UI\right)$$</p>
+<p>where the second form uses the identity $\sin A - \sin B = 2\sin\frac{A-B}{2}\cos\frac{A+B}{2}$. The amplitude of the period jitter is therefore $2 a_j \sin(\pi f_j UI)$. For a 100 ps UI, a 10 MHz component appears in the period jitter at 0.63 percent of its TIE amplitude, a 1 GHz component at 62 percent, and a component at the Nyquist frequency of 5 GHz at 200 percent. Period jitter hides slow wander, which is why the TIE and not the period jitter is the quantity used for data-recovery margin.</p>
+<h3>The Taxonomy of Jitter</h3>
+<p><strong>Total jitter</strong> (TJ) is the full distribution of TIE values. The taxonomy separates it into two primary categories by probability distribution and then divides the bounded category by physical origin.</p>
+<p><strong>Random jitter</strong> (RJ) is unbounded and Gaussian. It comes from thermal noise (the motion of charge carriers in resistive material), shot noise (the discrete arrival of carriers at a junction), and flicker noise, which has a spectrum that rises toward low frequency. RJ is quantified by its standard deviation, $RJ_{\text{rms}}$, because a peak-to-peak value of an unbounded distribution grows with the length of the observation.</p>
+<p><strong>Deterministic jitter</strong> (DJ) is bounded: it has a minimum and a maximum that do not grow with observation time, and it is quantified by a peak-to-peak value, $DJ_{\text{p-p}}$. DJ divides into four components:</p>
 <ul>
-<li>Switching power supply noise at the regulator&#39;s switching frequency</li>
-<li>Electromagnetic interference from nearby circuits or external sources</li>
-<li>Crosstalk from an adjacent clock signal routed on the PCB</li>
-<li>A PLL that has not achieved stable phase lock, causing the recovered clock to oscillate around its target frequency</li>
+<li><strong>Intersymbol interference</strong> (ISI) is the dependence of a crossing time on the preceding bits, caused by the memory of the channel.</li>
+<li><strong>Duty cycle distortion</strong> (DCD) is a difference between the timing of rising and falling edges, caused by asymmetric drive or by a threshold offset.</li>
+<li><strong>Periodic jitter</strong> (PJ) is uncorrelated with the data and repeats at one or more fixed frequencies. <strong>Sinusoidal jitter</strong> (SJ) is the special case of a single sinusoid, which is also the signal that a jitter-tolerance test applies on purpose.</li>
+<li><strong>Bounded uncorrelated jitter</strong> (BUJ) is bounded, uncorrelated with the data of the signal under test, and not periodic. Its principal source is crosstalk from aggressors that carry their own data, as <a href="signal-integrity-04_Inductance_Magnetic_Coupling_and_Crosstalk.html">Chapter 4</a> anticipated.</li>
 </ul>
-<p>PJ appears in the frequency domain as sharp spectral spikes at the interfering source&#39;s frequency, rising distinctly above the broadband noise floor of RJ.</p>
-<h3>RJ Symmetry vs. DJ Asymmetry</h3>
-<p>The decomposition taxonomy rests on a fundamental physical asymmetry between the two primary categories.</p>
-<p>Random Jitter is guaranteed to follow a perfectly symmetric Gaussian curve. The microscopic thermodynamic processes that generate it possess no directional bias. An electron is exactly as likely to experience a positive thermal perturbation as a negative one. The resulting timing distribution is centered on the ideal crossing time with identical tails on both sides.</p>
-<p>Deterministic Jitter can be profoundly asymmetric. DCD from a stronger pull-up transistor will concentrate rising-edge crossings early and falling-edge crossings late, producing a lopsided histogram. ISI from a specific via reflection may interfere strongly with one bit transition pattern (<code>001</code>) while leaving the complementary pattern (<code>110</code>) unaffected, creating a heavy concentration of delayed edges on one side of the distribution.</p>
-<p>This physical asymmetry is precisely why measurement algorithms cannot assume a simple symmetric distribution for total jitter. The Dual-Dirac model, covered in detail in <a href="11_Dual_Dirac_Model_and_BER_Extrapolation.md">Dual-Dirac Model and BER Extrapolation</a>, addresses this by placing two independent impulses that need not be equidistant from the ideal crossing, nor carry equal populations of hits.</p>
-<h2>Worked Examples</h2>
-<h3>Time Interval Error (TIE) Measurement</h3>
-<p>The measurement infrastructure for jitter decomposition begins with Time Interval Error.</p>
-<p>The oscilloscope digitizes the incoming voltage waveform at high sample rates and mathematically interpolates the precise moment each edge crosses the differential zero-volt threshold (or the single-ended decision threshold). Simultaneously, the instrument runs a software Phase-Locked Loop on the captured data to generate a perfect, ideal recovered clock.</p>
-<p>For each edge, the instrument subtracts the ideal clock time from the actual edge crossing time. The resulting difference is the TIE for that specific transition. A positive TIE means the edge arrived late (lagging the ideal clock). A negative TIE means the edge arrived early (leading the ideal clock). The zero point on the TIE axis is not absolute zero time; it is the relative reference defined by the ideal recovered clock.</p>
-<p>The oscilloscope accumulates millions of TIE values and bins them into a histogram. The horizontal axis is time (divided into femtosecond or picosecond bins), and the vertical axis is the count of edge crossings that landed in each bin.</p>
-<h3>Normalizing to a Probability Density Function</h3>
-<p>To perform mathematical operations on the histogram, the oscilloscope normalizes the raw hit counts into a Probability Density Function (PDF).</p>
-<p>Each bin&#39;s hit count is divided by the total number of edges captured in the entire measurement run. The vertical axis transforms from integer counts to probability density. The total area under the normalized curve equals exactly 1.0, representing the certainty that every edge must land somewhere on the time axis.</p>
-<p>The resulting PDF is the convolution of the DJ distribution with the RJ Gaussian distribution. The full measured histogram reflects the combined effect of all jitter sources acting simultaneously on every edge crossing.</p>
-<h3>Extracting $RJ_{\text{rms}}$ from the Histogram Tails</h3>
-<p>The extraction of Random Jitter exploits the bounded nature of Deterministic Jitter.</p>
-<p>DJ has absolute physical limits. No matter how many edges are captured, no DJ mechanism can push an edge beyond its maximum displacement. Therefore, the extreme left and right tails of the TIE histogram are entirely free of DJ influence. Every edge crossing that lands far enough from center arrived there solely because of unbounded Random Jitter.</p>
-<p>The oscilloscope algorithm isolates these far tails and fits a standard Gaussian function to each one using least-squares regression. The fit solves for the standard deviation $\sigma$, which is $RJ_{\text{rms}}$, and the mean of each fitted Gaussian, whose separation defines $DJ_{\delta\delta}$ in the Dual-Dirac framework. The algorithm deliberately ignores the complex, multi-modal center of the histogram where DJ and RJ contributions are entangled.</p>
-<h3>TJ Extrapolation</h3>
-<p>With $RJ_{\text{rms}}$ and $DJ_{\delta\delta}$ extracted, the oscilloscope calculates Total Jitter at any target BER without requiring hours of measurement to observe trillions of bits directly:</p>
-<p>$$TJ(BER) = DJ_{\delta\delta} + 2 \cdot Q \cdot RJ_{\text{rms}}$$</p>
-<p>For a BER of $10^{-12}$, $Q \approx 7.03$, giving $2Q \approx 14$. The total jitter at $10^{-12}$ BER is $DJ_{\delta\delta} + 14 \cdot RJ_{\text{rms}}$.</p>
-<p>This formula reflects the physical reality that a bit error occurs when an edge shifts past the receiver&#39;s sampling threshold. The probability of that event is the area under the Gaussian tail beyond the threshold coordinate. The Q-factor, derived from the complementary error function (erfc), is the number of standard deviations required to leave exactly the target BER&#39;s worth of area in the tail. The detailed derivation of the Q-factor and erfc is covered in <a href="11_Dual_Dirac_Model_and_BER_Extrapolation.md">Dual-Dirac Model and BER Extrapolation</a>.</p>
+<p>The last category matters because earlier descriptions place crosstalk inside periodic jitter, which is correct only when the aggressor is a clock at a fixed frequency. An aggressor with random data produces a bounded timing disturbance that is neither tied to the victim pattern nor concentrated at one frequency, so the pattern-averaging and spectral methods of <a href="signal-integrity-12_Test_Patterns_and_Jitter_Isolation.html">Chapter 12</a> do not isolate it directly.</p>
+<p>The distribution of each component is different, and two descriptions must be kept apart. The <strong>histogram</strong> (or probability density) counts how many edges fall at each TIE value regardless of when they occurred. The <strong>spectrum</strong> describes how the TIE varies with time. A periodic disturbance has a line in the spectrum and an arcsine shape in the histogram, which is derived below.</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Histogram shape</th>
+<th align="center">Bounded</th>
+<th align="center">Correlated with data</th>
+<th>Spectrum</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>RJ</td>
+<td>Gaussian</td>
+<td align="center">No</td>
+<td align="center">No</td>
+<td>Broadband</td>
+</tr>
+<tr>
+<td>DCD</td>
+<td>Two values (rising, falling)</td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td>Related to the data pattern</td>
+</tr>
+<tr>
+<td>ISI</td>
+<td>Discrete set of values</td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td>Related to the data pattern</td>
+</tr>
+<tr>
+<td>PJ and SJ</td>
+<td>Arcsine (single sinusoid)</td>
+<td align="center">Yes</td>
+<td align="center">No</td>
+<td>Lines</td>
+</tr>
+<tr>
+<td>BUJ</td>
+<td>Bounded, continuous</td>
+<td align="center">Yes</td>
+<td align="center">No</td>
+<td>Broadband, bounded</td>
+</tr>
+</tbody></table>
+<h3>How Voltage Becomes Time: Amplitude-to-Phase Conversion</h3>
+<p>Most of the components above begin as a voltage disturbance. Near the decision threshold, the edge is approximated by a straight line with slope $S$ (in mV per ps), so the unperturbed waveform is $v(t) = V_{th} + S\,(t - t_c)$ and it crosses the threshold $V_{th}$ at $t_c$. A disturbance $\delta v$ that adds to the waveform at the crossing changes the condition for the crossing to $V_{th} + S\,(t - t_c) + \delta v = V_{th}$, and the new crossing time is</p>
+<p>$$t_c' = t_c - \frac{\delta v}{S}, \qquad \Delta t = -\frac{\delta v}{S}$$</p>
+<p>The slope is signed: it is positive on a rising edge and negative on a falling edge, so a positive disturbance moves a rising crossing earlier and a falling crossing later. The conversion gain is $1/S$ in picoseconds per millivolt, and it is the same for noise, for ISI, for crosstalk, and for a threshold offset. A steeper edge converts the same voltage disturbance into less jitter.</p>
+<p>Every example in this chapter uses one reference receiver. Assume an eye of 400 mV peak to peak (a main-cursor amplitude of $A = 200$ mV on each side of the threshold), a 10 to 90 percent rise time of 64 ps, and therefore a slope at the crossing of $0.8 \times 400\ \text{mV}/64\ \text{ps} = 5$ mV/ps. These values are assumptions that give round numbers. The slope at a real receiver depends on how much the channel has slowed the edge, which <a href="signal-integrity-07_Time_Domain_Reflectometry.html">Chapter 7</a> quantifies, so every jitter value below scales as $1/S$ and should be recomputed for a specific link.</p>
+<h3>Random Jitter</h3>
+<p>Thermal and shot noise voltages are the sum of a very large number of independent microscopic contributions, and the central limit theorem says that such a sum has a distribution close to Gaussian. The noise on the receiver input has a flat (white) spectrum over the bandwidth of the link, so the noise sampled at one edge is independent of the noise sampled at the next. The amplitude-to-phase relation converts the voltage noise to timing noise, and because the conversion is linear, a Gaussian voltage distribution with standard deviation $\sigma_v$ becomes a Gaussian timing distribution with</p>
+<p>$$RJ_{\text{rms}} = \sigma_t = \frac{\sigma_v}{S}$$</p>
+<p>Assume a noise of 7.5 mV rms at the threshold crossing of the reference receiver. Then $\sigma_t = 7.5/5 = 1.5$ ps, the value used in the examples of <a href="signal-integrity-11_Dual_Dirac_Model_and_BER_Extrapolation.html">Chapter 11</a>. Each edge is an independent draw from this distribution, which is the defining contrast with ISI, where the timing of an edge is dictated by the history of the preceding bits.</p>
+<p>The value of $RJ_{\text{rms}}$ is a property of the whole signal path, and it is not a fixed constant of the silicon. It scales as $1/S$, so a slower edge at the receiver has more random jitter for the same noise voltage. It depends on temperature through the noise voltage. It also depends on the bandwidth over which the jitter is measured, because flicker noise concentrates its energy at low frequency, and a clock-recovery loop tracks those slow components and removes them from the jitter that the sampler sees. Two instruments with different reference clocks can therefore report different $RJ_{\text{rms}}$ for the same signal.</p>
+<p>The Gaussian shape is an excellent description of the central region of the distribution. In the far tails, where only rare coincidences of many noise events contribute, the central limit theorem gives the weakest guarantee, and the Gaussian form is a modeling assumption. <a href="signal-integrity-11_Dual_Dirac_Model_and_BER_Extrapolation.html">Chapter 11</a> defines the Gaussian distribution, the complementary error function, and the Q-factor, and it states the consequences of this assumption for the extrapolation to low error ratios.</p>
+<p>The relation $\sigma_t = \sigma_v/S$ shows that random jitter can be reduced by lowering the noise voltage and also by increasing the slope at the receiver. Equalization that restores a rounded edge (<a href="signal-integrity-13_Transmitter_FFE.html">Chapter 13</a>, <a href="signal-integrity-14_CTLE_and_DFE.html">Chapter 14</a>) steepens the slope, but the same equalizer can amplify the noise voltage, and the net effect on $\sigma_t$ must be checked in each design.</p>
+<h3>Intersymbol Interference</h3>
+<p>The physical origin of ISI is the causal, dispersive low-pass response of the channel, which <a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">Chapter 5</a> derives. A pulse sent through such a channel emerges with a main cursor and a long tail of post-cursors, and the voltage at the sampling instant of a bit therefore contains the tails of the earlier bits. The tail is the response of a linear, symmetric, causal system, and it contains no pattern-dependent mechanism beyond the superposition of those pulses.</p>
+<p>The timing effect follows directly from the amplitude-to-phase relation. Let $b_k = \pm 1$ be the bits, and let $h_j$ be the pulse-response cursors of <a href="signal-integrity-02_Frequency_Content_of_Digital_Signals.html">Chapter 2</a> normalized so that the main cursor is $h_0 = 1$ and $A$ is the main-cursor amplitude. The received voltage at the sampling instant of bit $n$ is</p>
+<p>$$v_n = A\left(b_n + \sum_{j \neq 0} h_j\, b_{n-j}\right)$$</p>
+<p>The sum is the interference that the other bits add to bit $n$. The same sum is present as a voltage offset during the transition into bit $n$, and the crossing time shifts by the amount given above:</p>
+<p>$$\Delta t_n = -\frac{A}{S}\sum_{j \neq 0} h_j\, b_{n-j}$$</p>
+<p>The shift takes its largest magnitude when every earlier bit has the sign that adds to the sum, so $|\Delta t|_{max} = (A/S) \sum_{j \neq 0}|h_j|$ and the peak-to-peak ISI jitter is at most twice this value. The shift is pattern dependent and discrete: with $m$ significant cursors there are at most $2^m$ distinct values, so the ISI histogram is a set of clusters, and the Gaussian shape of random jitter is absent from it.</p>
+<p><a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">Chapter 5</a> computes the cursors of a 12 inch FR4 line with conductor loss alone and finds that the first seven post-cursors sum to 9 percent of the main cursor. With the reference receiver, the worst-case voltage offset is $0.09 \times 200\ \text{mV} = 18$ mV, which converts to $18/5 = 3.6$ ps on either side, so the seven-cursor peak-to-peak ISI jitter is 7.2 ps. The first four normalized post-cursors of that example (0.0418, 0.0186, 0.0111, 0.0076) alone produce at most $2^4 = 16$ distinct timing values.</p>
+<p>A reflection from a discontinuity (<a href="signal-integrity-03_Impedance_Reflections_and_Termination.html">Chapter 3</a>, <a href="signal-integrity-06_Return_Path_Dynamics_and_Parasitic_Effects.html">Chapter 6</a>) adds a post-cursor at the round-trip delay of the discontinuity, so it contributes to ISI in the same way. A specific bit pattern can excite that post-cursor strongly and another pattern can leave it unexcited, which makes the ISI distribution asymmetric.</p>
+<h3>Duty Cycle Distortion</h3>
+<p><strong>Duty cycle distortion</strong> exists when the duration of a high bit differs from the duration of a low bit, which means that the rising and falling crossings are shifted in opposite directions. Two mechanisms produce it, and the first is <strong>transmitter slew asymmetry</strong>. In a CMOS output stage the pull-up transistor and the pull-down transistor have different drive strengths, so rising and falling edges have different slopes and cross a fixed threshold at different times relative to the nominal edge.</p>
+<p>The second mechanism is <strong>receiver threshold offset</strong>. Assume that the transmitter produces symmetric edges and that the decision threshold of the receiver is raised by $\delta$ above the middle of the swing. A rising edge reaches the raised threshold later by $\delta/S_r$, and a falling edge reaches it earlier by $\delta/S_f$, where $S_r$ and $S_f$ are the magnitudes of the slopes. The high bit appears shorter than the low bit by the sum:</p>
+<p>$$DCD = \delta\left(\frac{1}{S_r} + \frac{1}{S_f}\right)$$</p>
+<p>With $\delta = 10$ mV and $S_r = S_f = 5$ mV/ps, the rising crossings move 2 ps later, the falling crossings move 2 ps earlier, and the two clusters of crossing times are separated by 4 ps. The transmitter and the channel are unchanged, and the measurement reference point is the part that is wrong. In either mechanism the histogram of DCD consists of two clusters, one from rising edges and one from falling edges, which is the shape that the Dual-Dirac model of <a href="signal-integrity-11_Dual_Dirac_Model_and_BER_Extrapolation.html">Chapter 11</a> places at the center of its description.</p>
+<h3>Periodic and Sinusoidal Jitter</h3>
+<p>Periodic jitter is uncorrelated with the data and repeats at a fixed frequency. The sources are external oscillating disturbances that couple into the signal path: the switching frequency of a power regulator, electromagnetic interference, crosstalk from a clock routed next to the signal, and spurs from a phase-locked loop whose reference or loop stability is marginal (<a href="signal-integrity-17_CDR_and_PLL_Loop_Dynamics.html">Chapter 17</a>).</p>
+<p>The simplest case is sinusoidal jitter, $TIE(t) = A_j \sin(2\pi f_j t + \varphi)$. Edges occur at times that are unrelated to the phase of the sinusoid when $f_j$ is not a simple ratio of the data rate, so the phase $\theta$ of the sinusoid at the edge is uniformly distributed over a full cycle, and the TIE value is $x = A_j \sin\theta$. The cumulative distribution of $x$ follows from the uniform distribution of $\theta$ over $[-\pi/2, \pi/2]$ (the half cycle over which $\sin\theta$ rises monotonically from $-1$ to $1$):</p>
+<p>$$P(X \le x) = \frac{\theta(x) + \pi/2}{\pi} = \frac{1}{2} + \frac{1}{\pi}\arcsin\!\left(\frac{x}{A_j}\right)$$</p>
+<p>and its derivative with respect to $x$ is the probability density:</p>
+<p>$$p(x) = \frac{1}{\pi\sqrt{A_j^2 - x^2}}, \qquad |x| < A_j$$</p>
+<p>This <strong>arcsine distribution</strong> is bounded between $-A_j$ and $+A_j$, so its peak-to-peak value is $2A_j$. The density is smallest at the center and diverges at the two ends, because a sinusoid spends most of its time near its extremes. Of all the edges, 33.3 percent fall within $\pm 0.5A_j$ of the center, and 28.7 percent fall beyond $\pm 0.9A_j$. The mean square value is $A_j^2\langle\sin^2\theta\rangle = A_j^2/2$, so the rms value is $A_j/\sqrt{2}$. The histogram of a sinusoid therefore looks like two peaks at the extremes, and it is not Gaussian in any respect.</p>
+<p>The amplitude of a periodic disturbance follows from its source through the sensitivity of the circuit. Assume a supply ripple of 30 mV at the regulator frequency and a delay sensitivity of 0.1 ps per mV of supply change in the driver. The sinusoidal jitter has $A_j = 3$ ps, a peak-to-peak value of 6 ps, and an rms value of 2.12 ps. The spectrum of the TIE shows this component as a single line at the regulator frequency, which is the signature that <a href="signal-integrity-12_Test_Patterns_and_Jitter_Isolation.html">Chapter 12</a> uses to find it.</p>
+<h3>Bounded Uncorrelated Jitter</h3>
+<p>Crosstalk adds a voltage $v_{xt}(t)$ to the victim waveform, and the amplitude-to-phase relation converts it to timing: $\Delta t = -v_{xt}(t_c)/S$. The size of $v_{xt}$ at the crossing depends on whether the aggressor is rising, falling, or idle and on how its edge aligns with the victim edge, so it takes a continuum of values between $-V_{xt,max}$ and $+V_{xt,max}$. The peak-to-peak BUJ is bounded by the following expression:</p>
+<p>$$BUJ_{\text{p-p}} \le \frac{2\,V_{xt,max}}{S}$$</p>
+<p><a href="signal-integrity-04_Inductance_Magnetic_Coupling_and_Crosstalk.html">Chapter 4</a> computes a far-end crosstalk of $-35$ mV for a 1 V aggressor with a 100 ps edge on a coupled microstrip pair. Assume that the victim is the same pair with a 1 V swing and a 100 ps rise time, so that its slope at the crossing is $0.8\ \text{V}/100\ \text{ps} = 8$ mV/ps. The largest timing shift is $35/8 = 4.4$ ps, and the peak-to-peak BUJ is 8.75 ps. The value is bounded because the coupling coefficients and the aggressor swing are bounded, and it is uncorrelated with the victim data because the aggressor carries its own data.</p>
+<p>Several aggressors with uncorrelated data add their rms contributions in power, the rule that <a href="signal-integrity-08_S_Parameters_and_VNA.html">Chapter 8</a> derives for uncorrelated signals, while the bounds of the individual aggressors add linearly. A stripline pair with $C_m/C = L_m/L$ has no far-end term (<a href="signal-integrity-04_Inductance_Magnetic_Coupling_and_Crosstalk.html">Chapter 4</a>), so the far-end BUJ computed above does not arise in that geometry.</p>
+<h3>Combining the Components</h3>
+<p>The components act on every edge at the same time, and the physical mechanisms of random and deterministic jitter are independent. Write the TIE of an edge as $t = d + r$, where $d$ is the sum of the deterministic components and $r$ is the random component. The probability that $d$ lies in a small interval around $\tau$ and $r$ lies in a small interval around $t - \tau$ is the product $p_{DJ}(\tau)\,p_{RJ}(t-\tau)\,d\tau$ by independence. Summing over every value of $\tau$ that gives the same $t$ produces the density of the total:</p>
+<p>$$p_{TJ}(t) = \int_{-\infty}^{\infty} p_{DJ}(\tau)\,p_{RJ}(t - \tau)\,d\tau$$</p>
+<p>which is the convolution of the DJ density with the RJ density. The histogram that an oscilloscope accumulates is this convolution, and the task of the analysis in <a href="signal-integrity-11_Dual_Dirac_Model_and_BER_Extrapolation.html">Chapter 11</a> is to undo it.</p>
+<p>A sum of bounded components has a bounded range. The support of the sum of independent components is the sum of their supports, so the total deterministic jitter satisfies $DJ_{\text{p-p}} \le \sum_i DJ_{\text{p-p},i}$, with equality when all components reach their extremes together. This linear sum is an upper bound used in budgets, and the statistical combination of components that rarely peak together is smaller.</p>
 <h2>Architecture</h2>
 <h3>The Jitter Tree</h3>
-<p>The full decomposition hierarchy forms a tree that maps every timing perturbation to a measurable root cause:</p>
-<pre><code>Total Jitter (TJ)
-├── Random Jitter (RJ)
-│   └── Gaussian, unbounded, quantified by RJ_rms
-│       Sources: thermal noise, shot noise, flicker noise
-│
-└── Deterministic Jitter (DJ)
-    ├── Data Dependent Jitter (DDJ)
-    │   ├── Intersymbol Interference (ISI)
-    │   │   └── Channel low-pass filtering, reflections
-    │   └── Duty Cycle Distortion (DCD)
-    │       └── Slew rate asymmetry, threshold offset
-    │
-    └── Periodic Jitter (PJ)
-        └── Power supply, EMI, clock crosstalk, PLL instability
+<p>The decomposition forms a tree that maps every timing disturbance to a measurable root cause:</p>
+<pre><code class="language-mermaid">graph LR
+    TJ[&quot;Total Jitter (TJ)&quot;] --&gt; RJ[&quot;Random Jitter (RJ)&quot;]
+    TJ --&gt; DJ[&quot;Deterministic Jitter (DJ)&quot;]
+    RJ --&gt; RJ_DESC[&quot;Gaussian, unbounded, quantified by RJ_rms&lt;br/&gt;Sources: thermal noise, shot noise, flicker noise&quot;]
+    DJ --&gt; DDJ[&quot;Data Dependent Jitter (DDJ)&quot;]
+    DJ --&gt; PJ[&quot;Periodic Jitter (PJ)&quot;]
+    DJ --&gt; BUJ[&quot;Bounded Uncorrelated Jitter (BUJ)&quot;]
+    DDJ --&gt; ISI[&quot;Intersymbol Interference (ISI)&lt;br/&gt;Channel low-pass memory, reflections&quot;]
+    DDJ --&gt; DCD[&quot;Duty Cycle Distortion (DCD)&lt;br/&gt;Slew rate asymmetry, threshold offset&quot;]
+    PJ --&gt; PJ_DESC[&quot;Sinusoidal Jitter (SJ) is the single-tone case&lt;br/&gt;Sources: power supply, EMI, clock crosstalk, PLL spurs&quot;]
+    BUJ --&gt; BUJ_DESC[&quot;Crosstalk from aggressors with their own data&quot;]
 </code></pre>
-<p>Each leaf of the tree corresponds to a distinct physical mechanism and a distinct corrective action. ISI is addressed through channel design improvements or equalization. DCD is addressed through transmitter calibration or receiver threshold adjustment. PJ is addressed by identifying and decoupling the interfering oscillating source. RJ is addressed only by reducing the operating temperature or changing the semiconductor process, neither of which is typically practical, so RJ is treated as a fixed noise floor in the jitter budget.</p>
-<h3>Measurement Flow: From TIE to Root Cause</h3>
-<p>The oscilloscope decomposes total jitter through a layered measurement process:</p>
+<p>Each leaf corresponds to a distinct mechanism and a distinct action. ISI is addressed through channel design or equalization. DCD is addressed through transmitter calibration or receiver threshold adjustment. PJ is addressed by identifying the interfering source from the frequency of its spectral line and decoupling it. BUJ is addressed through spacing, layer choice, and shielding, following the crosstalk physics of <a href="signal-integrity-04_Inductance_Magnetic_Coupling_and_Crosstalk.html">Chapter 4</a>. RJ is addressed by lowering the noise voltage or by raising the edge slope at the receiver, since $RJ_{\text{rms}} = \sigma_v/S$.</p>
+<h3>Capturing the TIE</h3>
+<p>The oscilloscope digitizes the received voltage at a high sample rate and interpolates between samples to locate the instant at which each edge crosses the decision threshold (the zero-volt crossing for a differential signal). A software phase-locked loop run on the captured data produces the recovered reference clock, and the TIE of each edge is the difference between its crossing time and the reference time, as defined above.</p>
+<p>The instrument keeps the TIE values in two forms. The <strong>TIE track</strong> is the chronological sequence of values against time, which preserves the order of the edges and is needed to see periodic behavior and to average against a repeating pattern. The <strong>histogram</strong> discards the order and counts the number of edges in each time bin; its horizontal axis is time and its vertical axis is a count.</p>
+<h3>From Histogram to Probability Density</h3>
+<p>The histogram becomes a probability density when each bin count is divided by the total number of edges and by the bin width. The area under the normalized curve is then 1.0, the statement that every edge lands somewhere. This density is the convolution $p_{TJ}$ of the previous section, and all further operations (tail fitting, extrapolation, bathtub construction) act on it.</p>
+<h3>Separating RJ from DJ in the Tails</h3>
+<p>Deterministic jitter has hard limits, so no edge lies farther from the ideal time than the extreme of the DJ distribution, plus whatever the unbounded random component adds. The outermost parts of the histogram are therefore shaped by random jitter alone, centered on the nearest DJ extreme. The algorithm fits a Gaussian to each outer tail and ignores the center of the histogram, where the DJ clusters and the Gaussian overlap. The standard deviation of the fitted Gaussians is $RJ_{\text{rms}}$, and the separation of their means is the Dual-Dirac deterministic jitter $DJ_{\delta\delta}$. <a href="signal-integrity-11_Dual_Dirac_Model_and_BER_Extrapolation.html">Chapter 11</a> derives the fit, the Q-scale construction that makes it linear, and the extrapolation $TJ(\text{BER}) = DJ_{\delta\delta} + 2\,Q\,RJ_{\text{rms}}$.</p>
+<h3>The Measurement Flow</h3>
+<p>The following numbered list is the single canonical sequence for decomposing jitter; <a href="signal-integrity-12_Test_Patterns_and_Jitter_Isolation.html">Chapter 12</a> refers to the steps by number.</p>
 <ol>
-<li><strong>Capture TIE values</strong> for every edge crossing in the measurement window.</li>
-<li><strong>Construct the TIE histogram</strong> and normalize to a probability density function.</li>
-<li><strong>Fit Gaussians to the extreme tails</strong> to extract $RJ_{\text{rms}}$ and $DJ_{\delta\delta}$.</li>
-<li><strong>Record the TIE Track</strong> (chronological TIE values vs. time) to preserve temporal ordering.</li>
-<li><strong>Apply synchronous pattern averaging</strong> on the TIE Track over many repetitions of a known test pattern (such as PRBS-7) to isolate DDJ. Uncorrelated components (RJ and PJ) average to zero; only the pattern-correlated ISI and DCD survive.</li>
-<li><strong>Subtract DDJ from the TIE Track</strong> to produce the uncorrelated jitter residual.</li>
-<li><strong>Apply FFT to the residual</strong> to separate PJ (sharp spectral spikes at specific frequencies) from RJ (flat broadband noise floor).</li>
+<li><strong>Capture the TIE values</strong> of every edge in the measurement window.</li>
+<li><strong>Construct the TIE histogram</strong> and normalize it to a probability density.</li>
+<li><strong>Fit Gaussians to the outer tails</strong> to extract $RJ_{\text{rms}}$ and $DJ_{\delta\delta}$.</li>
+<li><strong>Record the TIE track</strong>, the chronological TIE values against time, to preserve the order of the edges.</li>
+<li><strong>Average the TIE track synchronously</strong> over many repetitions of a known test pattern such as PRBS-7. Components that are uncorrelated with the pattern average toward zero, and the pattern-correlated ISI and DCD remain.</li>
+<li><strong>Subtract the averaged DDJ</strong> from the TIE track to obtain the uncorrelated residual.</li>
+<li><strong>Apply an FFT to the residual</strong> to separate the spectral lines of PJ from the broadband floor of RJ.</li>
 </ol>
-<p>The full detail of steps 4 through 7, including test pattern selection (PRBS-7/15/31), pattern averaging mathematics, and FFT spectral analysis, is covered in <a href="12_Test_Patterns_and_Jitter_Isolation.md">Test Patterns and Jitter Isolation</a>.</p>
-<h3>Differential Noise Cancellation</h3>
-<p>Differential signaling provides a natural defense against common-mode interference. If electromagnetic noise couples equally onto both the D+ and D- traces of a differential pair, it appears as common-mode noise. The differential receiver measures only the difference between the two traces ($V_{D+} - V_{D-}$). Equal noise on both lines cancels exactly, leaving the data signal undisturbed.</p>
-<p>An analogous mechanism operates in source-synchronous architectures such as DDR memory. If low-frequency jitter affects both the data line and the forwarded clock identically, the receiver&#39;s sampling clock shifts in perfect lockstep with the data drift. The phase relationship between data and clock remains constant, and the jitter is effectively neutralized. This cancellation fails when the jitter source affects data and clock differently, as occurs when high-frequency jitter exceeds the bandwidth of the forwarded clock path.</p>
+<p>Steps 4 through 7, with the pattern selection, the averaging mathematics, and the spectral analysis, are the subject of <a href="signal-integrity-12_Test_Patterns_and_Jitter_Isolation.html">Chapter 12</a>.</p>
+<h2>Worked Examples</h2>
+<h3>TIE, Period Jitter, and Cycle-to-Cycle Jitter from Four Edges</h3>
+<p>Assume a 10 Gb/s link with $UI = 100$ ps and four consecutive edge crossings measured at 0.2, 100.5, 199.1, and 300.3 ps. The ideal times are 0, 100, 200, and 300 ps, so the TIE values are $+0.2$, $+0.5$, $-0.9$, and $+0.3$ ps. The three periods are 100.3, 98.6, and 101.2 ps, and the period jitter (each period minus the UI) is $+0.3$, $-1.4$, and $+1.2$ ps, which equals the differences of consecutive TIE values. The two cycle-to-cycle values are $98.6 - 100.3 = -1.7$ ps and $101.2 - 98.6 = +2.6$ ps. The cycle-to-cycle values are larger than the TIE values because each is a second difference of the TIE, which emphasizes fast variation.</p>
+<h3>ISI Jitter from the Cursors of a 12 Inch FR4 Line</h3>
+<p>Use the reference receiver ($A = 200$ mV, $S = 5$ mV/ps) and the conductor-loss cursors of <a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">Chapter 5</a>, whose first seven post-cursors sum to 9 percent of the main cursor. The largest voltage offset is $0.09 \times 200 = 18$ mV on either side. Dividing by the slope gives $\pm 3.6$ ps, so the seven-cursor peak-to-peak ISI jitter is 7.2 ps, or 0.072 UI at 10 Gb/s. The offset also reduces the eye height, as the Edge Cases show. Adding the dielectric loss of the same line increases the tail and the jitter, and the equalizers of <a href="signal-integrity-13_Transmitter_FFE.html">Chapter 13</a> and <a href="signal-integrity-14_CTLE_and_DFE.html">Chapter 14</a> act on exactly these cursors.</p>
+<h3>DCD from a Threshold Offset</h3>
+<p>A receiver comparator has an input offset of 10 mV, and the reference receiver has equal rising and falling slopes of 5 mV/ps. The rising crossings move $+2$ ps and the falling crossings $-2$ ps, so the two clusters are 4 ps apart, which is $4\%$ of the 100 ps UI. A calibration that removes the offset removes the DCD, and no change to the transmitter or the channel is needed.</p>
+<h3>Sinusoidal Jitter from Supply Ripple</h3>
+<p>A 30 mV ripple on the driver supply with a sensitivity of 0.1 ps/mV gives sinusoidal jitter of amplitude $A_j = 3$ ps. The peak-to-peak value is 6 ps, the rms value is $3/\sqrt{2} = 2.12$ ps, and the histogram is an arcsine distribution with its peaks at $\pm 3$ ps. The spectral line identifies the regulator frequency, and the corrective action is better decoupling or a lower-ripple regulator.</p>
+<h3>BUJ from Crosstalk</h3>
+<p>The 35 mV far-end crosstalk of <a href="signal-integrity-04_Inductance_Magnetic_Coupling_and_Crosstalk.html">Chapter 4</a> acting on a 1 V, 100 ps victim edge (slope 8 mV/ps) produces at most $\pm 4.4$ ps of timing shift and $BUJ_{\text{p-p}} = 8.75$ ps. Changing the pair from microstrip to stripline with equal coupling cancels the far-end term, so the same spacing in stripline removes most of this component.</p>
+<h3>A Jitter Budget at 10 Gb/s</h3>
+<p>Collect the components of the previous examples for a 10 Gb/s link with $UI = 100$ ps and $RJ_{\text{rms}} = 1.5$ ps. The deterministic components add linearly as an upper bound:</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th align="center">Peak-to-peak (ps)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ISI (seven cursors)</td>
+<td align="center">7.2</td>
+</tr>
+<tr>
+<td>DCD</td>
+<td align="center">4.0</td>
+</tr>
+<tr>
+<td>SJ</td>
+<td align="center">6.0</td>
+</tr>
+<tr>
+<td>BUJ</td>
+<td align="center">8.75</td>
+</tr>
+<tr>
+<td><strong>DJ total (upper bound)</strong></td>
+<td align="center"><strong>25.95</strong></td>
+</tr>
+</tbody></table>
+<p>For a bit error ratio of $10^{-12}$ the Q-factor is 7.034 (<a href="signal-integrity-11_Dual_Dirac_Model_and_BER_Extrapolation.html">Chapter 11</a>), so the random component spans $2 \times 7.034 \times 1.5 = 21.10$ ps. The total jitter at $10^{-12}$ is $25.95 + 21.10 = 47.05$ ps, which is 47 percent of the UI. The remaining eye width is $100 - 47.05 = 52.95$ ps. The linear sum of the deterministic components is an upper bound, so the measured eye is expected to be at least this wide. The largest single contributors are the random component and the crosstalk, and the budget shows which change (a lower noise, a steeper edge, or a different layer assignment) would recover the most margin.</p>
 <h2>Edge Cases</h2>
 <h3>ISI and the Closed Eye</h3>
-<p>In a functioning link, ISI shifts the threshold crossing by a fraction of the Unit Interval. The signal still reaches the decision threshold within the allotted bit period, but it arrives late (or early), contributing deterministic jitter to the timing budget.</p>
-<p>If channel attenuation is severe enough, the signal may fail to reach the threshold entirely. The voltage begins climbing from a deeply discharged state after a long run of opposite bits, the bit period expires, and the transmitter reverses direction before the voltage crosses the threshold. The receiver samples a value on the wrong side of the decision boundary and records a bit error. On an oscilloscope, the eye diagram is physically closed: the voltage trajectories overlap and no open region remains for the receiver to sample cleanly.</p>
-<p>This failure mode is the direct motivation for transmitter pre-emphasis (Feed-Forward Equalization) and receiver equalization (CTLE and DFE). Equalizers artificially boost high-frequency transition energy to guarantee threshold crossing regardless of the preceding bit history. Equalization is covered in <a href="../04_Equalization_and_Receiver_Architecture/13_Transmitter_FFE.md">Transmitter FFE</a> and <a href="../04_Equalization_and_Receiver_Architecture/14_CTLE_and_DFE.md">CTLE and DFE</a>.</p>
-<h3>Peak-to-Peak RJ: A Defined Quantity, Not a Measured One</h3>
-<p>A common source of confusion is the notion that Random Jitter should have a measurable peak-to-peak value. The Gaussian distribution extends to infinity; there is no maximum displacement. Any peak-to-peak RJ number reported by an instrument is not a direct measurement but a statistical calculation: $RJ_{\text{p-p}} = 2Q \cdot RJ_{\text{rms}}$, where $Q$ is chosen for a specific target BER. Changing the target BER changes the reported peak-to-peak value, even though the underlying physical noise source has not changed. The $RJ_{\text{rms}}$ constant is the only measurement that reflects the true physics; the peak-to-peak value is a derived statistical projection.</p>
-<h3>The Dual-Dirac Approximation and Its Limits</h3>
-<p>The Dual-Dirac model simplifies the entire complex DJ distribution into two Dirac delta impulses separated by $DJ_{\delta\delta}$. This is a worst-case simplification: it concentrates all DJ energy at two extreme points, producing the widest possible convolution with the RJ Gaussian. The model is mathematically convenient and adopted by industry standards (PCIe, Fibre Channel), but it can overestimate total jitter when the actual DJ distribution is spread across many smaller values rather than concentrated at two extremes. The full treatment of Dual-Dirac model mechanics, including asymmetric delta placement, constrained fitting, and Q-factor normalization, is in <a href="11_Dual_Dirac_Model_and_BER_Extrapolation.md">Dual-Dirac Model and BER Extrapolation</a>.</p>
+<p>The cursors that shift the crossings also reduce the eye height. The worst-case sampled voltage of a high bit is $A\left(1 - \sum_{j \ne 0}|h_j|\right)$, because every interfering cursor can take the sign that subtracts. The eye height is the difference between the worst high and the worst low:</p>
+<p>$$V_{eye} = 2A\left(1 - \sum_{j \ne 0}|h_j|\right)$$</p>
+<p>For the 9 percent seven-cursor sum and the 200 mV amplitude of the example, $V_{eye} = 400 \times 0.91 = 364$ mV, from the 400 mV that an interference-free eye would have. The eye closes when the sum of the magnitudes of the other cursors reaches the main cursor, $\sum_{j \ne 0}|h_j| \ge 1$. The sampled value of a bit can then lie on the wrong side of the threshold, and the receiver records a bit error even with no noise. This failure is the direct motivation for transmitter equalization (<a href="signal-integrity-13_Transmitter_FFE.html">Chapter 13</a>) and receiver equalization (<a href="signal-integrity-14_CTLE_and_DFE.html">Chapter 14</a>), which reduce the cursor sum.</p>
+<h3>Nonlinear Amplitude-to-Phase Conversion</h3>
+<p>The relation $\Delta t = -\delta v/S$ assumes that the edge is a straight line over the range of the disturbance. Near the rails the edge flattens and the slope falls, so the same voltage disturbance produces a larger timing shift there. A Gaussian noise voltage passed through a slope that varies across the noise range produces a timing distribution with heavier tails on the side where the edge is flatter. The threshold is therefore placed at the middle of the swing, where the slope is largest and the conversion is most nearly linear, and the Gaussian description of random jitter is most reliable for a measurement made at that level.</p>
+<h3>Peak-to-Peak RJ Is a Defined Quantity</h3>
+<p>Any peak-to-peak random jitter reported by an instrument is a calculation, $RJ_{\text{p-p}} = 2\,Q\,RJ_{\text{rms}}$ with a $Q$ chosen for a target bit error ratio, and it is not a direct observation. Changing the target changes the reported value although the noise source is unchanged. The standard deviation is the measured quantity, and <a href="signal-integrity-11_Dual_Dirac_Model_and_BER_Extrapolation.html">Chapter 11</a> shows how $Q$ is obtained.</p>
+<h3>The Reference Clock Decides What Counts as Jitter</h3>
+<p>The TIE depends on the reference clock. A reference recovered by a high-bandwidth loop follows the slow components of the data timing and reports less low-frequency jitter than a fixed-frequency reference. A receiver with the same tracking behavior is not affected by those slow components either, so the TIE that matters for margin is the one measured against a reference that models the receiver clock. <a href="signal-integrity-17_CDR_and_PLL_Loop_Dynamics.html">Chapter 17</a> quantifies this behavior with the jitter transfer function.</p>
+<h3>The Dual-Dirac Approximation</h3>
+<p>The Dual-Dirac model replaces the full DJ distribution by two impulses and reports the separation of the fitted tails as $DJ_{\delta\delta}$. That separation is a model parameter and is generally smaller than the measured $DJ_{\text{p-p}}$; its relation to the true total jitter, including cases in which the model overestimates and cases in which it underestimates, is treated in <a href="signal-integrity-11_Dual_Dirac_Model_and_BER_Extrapolation.html">Chapter 11</a>.</p>
+<p>The decomposition in this chapter describes what each component is and how large it is, and the open question is how to turn the measured distribution into a statement about the rare edges that cause a bit error once in a trillion bits. The next chapter, <a href="signal-integrity-11_Dual_Dirac_Model_and_BER_Extrapolation.html">Dual-Dirac Model and BER Extrapolation</a>, answers that question.</p>
 
 <div class="blog-pagination">
-      <a href="signal-integrity-09_Fourier_Analysis.html" class="pagination-link prev">
+      <a href="signal-integrity-09_Smith_Charts.html" class="pagination-link prev">
         <span class="pagination-label">Previous</span>
-        <span class="pagination-title">Fourier Analysis</span>
+        <span class="pagination-title">Smith Charts</span>
       </a>
       <a href="signal-integrity-11_Dual_Dirac_Model_and_BER_Extrapolation.html" class="pagination-link next">
         <span class="pagination-label">Next</span>
@@ -268,6 +373,10 @@
     }
     .mermaid svg {
       filter: drop-shadow(0 4px 16px rgba(183, 110, 121, 0.12));
+    }
+    .mermaid .node rect {
+      rx: 12px !important;
+      ry: 12px !important;
     }
   </style>
   <script type="module">

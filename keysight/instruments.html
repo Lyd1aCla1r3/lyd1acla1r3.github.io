@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Instruments Deep Dive | Lydia Pedersen × Keysight</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="../css/styles.css?v=1.1">
+  <link rel="stylesheet" href="../css/keysight.css?v=1.3">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .ks-standards-header {
+      text-align: center;
+      padding-top: calc(var(--ks-nav-height) + var(--ks-space-2xl));
+      margin-bottom: 40px;
+    }
+
+    .standards-grid-container {
+      position: relative;
+      width: 100%;
+      display: grid;
+      margin-bottom: var(--ks-space-xl);
+    }
+
+    .standards-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-auto-rows: 1fr;
+      gap: var(--ks-space-sm);
+      z-index: 10;
+      position: relative;
+      grid-area: 1 / 1;
+    }
+
+    .standard-row {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: var(--ks-space-md);
+      padding: var(--ks-space-md) var(--ks-space-lg);
+      cursor: pointer;
+      background: var(--ks-bg-card);
+      border: 1px solid var(--ks-border);
+      border-radius: var(--ks-radius-md);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: all var(--ks-transition-fast);
+    }
+
+    .standard-row:hover, .standard-row:focus {
+      border-color: var(--ks-border-hover);
+      box-shadow: var(--ks-shadow-card);
+      transform: translateY(-2px);
+      outline: none;
+    }
+
+    .standard-row__title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--ks-text-primary);
+      margin-bottom: 8px;
+    }
+
+    .standard-row__subtitle {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--ks-accent);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .standard-row > div:first-child {
+      padding-right: var(--ks-space-2xl);
+    }
+
+    .standard-row__desc {
+      font-size: 16px;
+      color: var(--ks-text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Expanded Detail Overlay */
+    .standard-detail-overlay {
+      grid-area: 1 / 1;
+      width: 100%;
+      position: absolute;
+      background: rgba(253, 248, 244, 0.97);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--ks-border);
+      border-radius: var(--ks-radius-lg);
+      padding: var(--ks-space-xl);
+      z-index: 50;
+      opacity: 0;
+      pointer-events: none;
+      visibility: hidden;
+      transform: scale(0.98);
+      max-height: 0;
+      overflow: hidden;
+      transition: opacity 0.4s var(--ks-ease), transform 0.4s var(--ks-ease), visibility 0.4s var(--ks-ease), max-height 0s 0.4s;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 40px rgba(61, 32, 40, 0.08);
+    }
+
+    .standard-detail-overlay.is-expanded {
+      opacity: 1;
+      pointer-events: auto;
+      visibility: visible;
+      transform: scale(1);
+      position: relative;
+      max-height: 20000px;
+      transition: opacity 0.4s var(--ks-ease), transform 0.4s var(--ks-ease), visibility 0.4s var(--ks-ease), max-height 0s 0s;
+    }
+
+    .ks-overlay-close {
+      position: absolute;
+      top: var(--ks-space-md);
+      right: var(--ks-space-md);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem 1.5rem;
+      background: rgba(253, 248, 244, 0.95);
+      border: 1px solid rgba(183, 110, 121, 0.3);
+      border-radius: 30px;
+      color: var(--ks-text-primary);
+      font-size: var(--ks-fs-small);
+      cursor: pointer;
+      transition: all 300ms var(--ks-ease);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 100;
+    }
+
+    .ks-overlay-close:hover {
+      border-color: #81404a !important;
+      background: #ffffff !important;
+    }
+
+    .detail-overlay__title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--ks-text-primary);
+      margin-bottom: 4px;
+      padding-right: 80px; /* Space for close button */
+    }
+
+    /* Bento Grid for Expanded View */
+    .detail-bento {
+      display: grid;
+      grid-template-columns: var(--bento-cols, 1fr 1fr);
+      gap: var(--ks-space-md);
+      margin-top: var(--ks-space-lg);
+      flex-grow: 1;
+      align-items: stretch;
+    }
+
+    .detail-card {
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid var(--ks-border);
+      border-radius: var(--ks-radius-md);
+      padding: var(--ks-space-md);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .detail-card--wide {
+      grid-column: span 2;
+    }
+
+    .detail-card__header {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--ks-accent);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--ks-space-md);
+      border-bottom: 1px solid var(--ks-border);
+      padding-bottom: 8px;
+    }
+
+    .detail-card__content {
+      font-size: 16px;
+      color: var(--ks-text-secondary);
+      line-height: 1.6;
+    }
+
+    .detail-card__content strong {
+      color: var(--ks-text-primary);
+      font-weight: 500;
+    }
+
+    .detail-card__content p strong,
+    .detail-card__content li strong {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 600;
+      color: inherit;
+      font-size: inherit;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .detail-card__content p {
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(var(--theme-rgb), 0.15);
+    }
+    
+    .detail-card__content p:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+    
+    .detail-card__content ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+    
+    .detail-card__content li {
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(var(--theme-rgb), 0.15);
+    }
+    
+    .detail-card__content li:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    /* Table Styling for Overlays */
+    .detail-card table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 14px;
+    }
+    
+    .detail-card th {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--ks-accent);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 12px 8px;
+      border-bottom: 1px solid var(--ks-border);
+    }
+    
+    .detail-card td {
+      padding: 10px 8px;
+      border-bottom: 1px solid rgba(var(--theme-rgb), 0.1);
+    }
+    
+    .detail-card tr:last-child td {
+      border-bottom: none;
+    }
+
+    @media (max-width: 768px) {
+      .standard-row > div:first-child {
+        padding-right: 0;
+        margin-bottom: var(--ks-space-md);
+      }
+      .standard-row {
+        grid-template-columns: 1fr;
+      }
+      .detail-bento {
+        grid-template-columns: 1fr;
+      }
+      .detail-card--wide {
+        grid-column: span 1;
+      }
+    }
+
+    /* Theming Variables — 6 instrument classes */
+    .theme-gold, #overlay-inst1 { --theme-color: #a07b20; --theme-rgb: 184, 144, 40; --ks-border: rgba(184, 144, 40, 0.3); }
+    .theme-rose, #overlay-inst2 { --theme-color: #81404a; --theme-rgb: 183, 110, 121; --ks-border: rgba(183, 110, 121, 0.3); }
+    .theme-peach, #overlay-inst3 { --theme-color: #85573c; --theme-rgb: 192, 136, 104; --ks-border: rgba(192, 136, 104, 0.3); }
+    .theme-dpink, #overlay-inst4 { --theme-color: #7d4450; --theme-rgb: 166, 93, 108; --ks-border: rgba(166, 93, 108, 0.3); }
+    .theme-blush, #overlay-inst5 { --theme-color: #7e4349; --theme-rgb: 184, 122, 128; --ks-border: rgba(184, 122, 128, 0.3); }
+    .theme-pink, #overlay-inst6 { --theme-color: #843d4d; --theme-rgb: 192, 120, 136; --ks-border: rgba(192, 120, 136, 0.3); }
+
+    /* Apply Darker Gradients to Main Grid Cards */
+    .standard-row[class*="theme-"] {
+      background: linear-gradient(rgba(var(--theme-rgb), 0.12), rgba(var(--theme-rgb), 0.12)), rgba(255, 255, 255, 0.55) !important;
+      border-color: rgba(var(--theme-rgb), 0.35) !important;
+    }
+    .standard-row[class*="theme-"]:hover, .standard-row[class*="theme-"]:focus {
+      background: linear-gradient(rgba(var(--theme-rgb), 0.25), rgba(var(--theme-rgb), 0.25)), #ffffff !important;
+      border-color: var(--theme-color) !important;
+    }
+
+    /* Apply Lighter Gradients to Detail Cards */
+    .standard-detail-overlay .detail-card {
+      background: linear-gradient(135deg, rgba(var(--theme-rgb), 0.05), rgba(var(--theme-rgb), 0.15)), rgba(255, 255, 255, 0.85) !important;
+      border-color: var(--ks-border) !important;
+    }
+
+    /* Apply Lighter Background to Overlay */
+    .standard-detail-overlay {
+      background: rgba(var(--theme-rgb), 0.12) !important;
+    }
+
+    /* Force all text inside themed areas to be the theme color */
+    .standard-row[class*="theme-"] *,
+    .standard-detail-overlay * {
+      color: var(--theme-color) !important;
+    }
+
+    /* Override removed */
+  </style>
+</head>
+<body class="ks-page">
+  <div class="ks-bg-visual" aria-hidden="true" style="z-index: 1;"></div>
+  
+
+  <main>
+    <div class="ks-container">
+      <header class="ks-standards-header ks-reveal">
+        <div class="ks-label">Section 03 / Instruments</div>
+        <h1 class="ks-page-header__title metallic-text">Instruments Deep Dive</h1>
+      </header>
+
+      <div class="standards-grid-container ks-reveal">
+        <section class="standards-grid" style="z-index: 10;">
+          
+          <!-- Instrument 1: Real-Time Oscilloscopes -->
+          <div class="standard-row theme-gold" tabindex="0" data-target="overlay-inst1">
+            <div>
+              <h2 class="standard-row__title">Real-Time Oscilloscopes</h2>
+              <div class="standard-row__subtitle">Infiniium UXR&#8209;Series, MXR&#8209;Series, EXR&#8209;Series</div>
+            </div>
+            <div class="standard-row__desc">
+              Protocol negotiations, transient glitches, and startup sequences happen once and cannot be reconstructed from averaged samples. RTOs digitize the complete waveform in a single continuous pass, storing every voltage transition in deep acquisition memory. The architecture sacrifices noise floor for the ability to capture non-repeating events.
+            </div>
+          </div>
+
+          <!-- Instrument 2: Sampling Oscilloscopes -->
+          <div class="standard-row theme-rose" tabindex="0" data-target="overlay-inst2">
+            <div>
+              <h2 class="standard-row__title">Sampling Oscilloscopes</h2>
+              <div class="standard-row__subtitle">DCA&#8209;X (N1000A), Optical &amp; Electrical Plug&#8209;In Modules</div>
+            </div>
+            <div class="standard-row__desc">
+              Repetitive high-frequency signals lose measurement fidelity to broadband noise when digitized continuously. Sequential sampling reconstructs a waveform one sample per trigger across millions of cycles, achieving an ultra-low noise floor and extreme bandwidth. The N1000A mainframe's four hot-swappable module slots accept any combination of optical, electrical, and TDR modules simultaneously, without external converters or calibration compromises. The DCA-X's strength is optical compliance, repetitive electrical eye analysis, and cross-domain characterization.
+            </div>
+          </div>
+
+          <!-- Instrument 3: Bit Error Ratio Testers -->
+          <div class="standard-row theme-peach" tabindex="0" data-target="overlay-inst3">
+            <div>
+              <h2 class="standard-row__title">Bit Error Ratio Testers</h2>
+              <div class="standard-row__subtitle">M8000 Series (M8040A, M8050A)</div>
+            </div>
+            <div class="standard-row__desc">
+              Oscilloscope eye diagrams confirm that a transmitter produces a compliant waveform, but they cannot prove that a receiver's internal circuitry actually decodes data correctly under stress. Bit error ratio testers inject precise, calibrated signal degradation and count decoding failures at statistically significant depths, closing the gap between what the signal looks like and whether the silicon recovers it.
+            </div>
+          </div>
+
+          <!-- Instrument 4: Vector Network Analyzers -->
+          <div class="standard-row theme-dpink" tabindex="0" data-target="overlay-inst4">
+            <div>
+              <h2 class="standard-row__title">Vector Network Analyzers</h2>
+              <div class="standard-row__subtitle">PNA&#8209;X, ENA (E5080B)</div>
+            </div>
+            <div class="standard-row__desc">
+              Time-domain instruments reveal impedance mismatches at specific physical locations, but they cannot achieve the dynamic range needed to fully characterize subtle frequency-dependent behavior across complex interconnects. VNAs sweep a calibrated stimulus across the entire frequency spectrum and measure the reflected and transmitted energy at each point, producing the complete scattering parameter model of the channel.
+            </div>
+          </div>
+
+          <!-- Instrument 5: Optical Modulation Analyzers -->
+          <div class="standard-row theme-blush" tabindex="0" data-target="overlay-inst5">
+            <div>
+              <h2 class="standard-row__title">Optical Modulation Analyzers</h2>
+              <div class="standard-row__subtitle">N4391C</div>
+            </div>
+            <div class="standard-row__desc">
+              Coherent optical links encode data simultaneously across phase, amplitude, and two orthogonal polarization states. Direct-detect instruments collapse these dimensions into a single intensity measurement and lose the information needed to evaluate modulation quality. Optical modulation analyzers pair a calibrated coherent receiver with vector signal analysis to decompose the full optical field.
+            </div>
+          </div>
+
+          <!-- Instrument 6: Protocol Analyzers -->
+          <div class="standard-row theme-pink" tabindex="0" data-target="overlay-inst6">
+            <div>
+              <h2 class="standard-row__title">Protocol Analyzers</h2>
+              <div class="standard-row__subtitle">P5500 Series, U4301B</div>
+            </div>
+            <div class="standard-row__desc">
+              Physical-layer instruments capture analog voltage transitions, but they cannot decode the higher-layer state machines that govern link training, power management, and error recovery. Protocol analyzers passively tap the bus and record millions of decoded transactions over extended time periods, tracking the exact sequence of protocol states that an endpoint traverses during negotiation.
+            </div>
+          </div>
+          
+        </section>
+
+        <!-- Overlay 1: Real-Time Oscilloscopes -->
+        <article class="standard-detail-overlay" id="overlay-inst1" style="z-index: 50;">
+          <button class="ks-overlay-close" aria-label="Close detail view"><span class="metallic-text">Back</span></button>
+          <div class="standard-row__subtitle">Infiniium UXR&#8209;Series, MXR&#8209;Series, EXR&#8209;Series</div>
+          <h2 class="detail-overlay__title">Real-Time Oscilloscopes</h2>
+          
+          <div class="detail-bento" style="--bento-cols: 47fr 53fr;">
+            <div class="detail-card">
+              <div class="detail-card__header">When to Use</div>
+              <div class="detail-card__content">
+                <ul>
+                  <li><strong>Single-shot capture and non-stationary signal analysis:</strong> Protocol errors, transient glitches, power-on reset sequences, and link training negotiations are single-occurrence events that a sampling oscilloscope's one-sample-per-trigger architecture physically cannot observe. The continuous record also captures non-stationary jitter sources (power supply transients, crosstalk bursts, thermal drift) that averaging-based sampling architectures eliminate during waveform reconstruction. Correlating a jitter excursion with a specific protocol state captured in the same record requires this temporal continuity.</li>
+                  <li><strong>Protocol-triggered debug:</strong> The real-time acquisition pipeline enables hardware-level protocol triggering. Protocol decode engines operate on the continuously digitized data stream to identify specific packet types, state transitions, or error conditions, then trigger the scope to capture the surrounding analog waveform. Sampling oscilloscopes require millions of identical repetitions of the same waveform and have no protocol decode engine, making them architecturally incapable of correlating analog behavior with protocol events.</li>
+                  <li><strong>Electrical transmitter compliance (NRZ and PAM4):</strong> Modern TX compliance measurements require a scope to apply a reference receiver equalizer model (CTLE + DFE) to the captured waveform in post-processing. The DFE model adapts its tap weights based on bit-by-bit decision history across a continuous record, requiring the temporal correlation between consecutive symbols that real-time capture preserves. A sampling oscilloscope reconstructs the waveform from fragments across millions of separate trigger events and cannot compute DFE tap adaptation on a single continuous bit sequence.</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="detail-card">
+              <div class="detail-card__header">When Not to Use</div>
+              <div class="detail-card__content">
+                <ul>
+                  <li><strong>Optical transmitter compliance measurements:</strong> Optical transmitter compliance (TDECQ, extinction ratio, OMA) mandates measurements via sampling scopes. The DCA-X features integrated calibrated optical photoreceivers that directly couple to the optical signal path. Measuring optical signals on an RTO requires an external O/E converter, which introduces noise and insertion loss. The DCA-X also offers an intrinsic jitter floor that RTOs cannot match. For electrical repetitive signal characterization, the Infiniium UXR's 10-bit ADC architecture achieves electrical noise floor parity with DCA-X sampling heads, but at greater capital cost.</li>
+                  <li><strong>Calibrated channel S-parameter models:</strong> RTOs can compute FFTs and approximate frequency-domain behavior, but they lack the calibrated reference planes, systematic error correction, and dynamic range needed for accurate S-parameter extraction. A VNA achieves dynamic range exceeding 130 dB through its narrowband superheterodyne receiver architecture while a scope-derived FFT typically reaches 40-50 dB. PLTS on a VNA produces calibrated, de-embedded channel models and can convert S-parameters back to time-domain impedance profiles via IFFT with the VNA's full dynamic range preserved. Scope-derived transforms cannot match this measurement fidelity.</li>
+                  <li><strong>Receiver margin quantification under stress:</strong> For high-speed standards, the stressed eye at the receiver input is often completely closed. The receiver's CTLE and DFE opens the eye, and the internal CDR recovers the bit stream. Compliance testing uses both instruments together: the scope first verifies that the BERT's stressed eye matches the specification template at the probe point, then the DUT re-transmits recovered data in loopback mode and the BERT ED compares the bitstream against the expected pattern to count decoding failures. No scope measurement can access or predict what happens inside the receiver's equalization chain.</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="detail-card detail-card--wide ks-table-wrapper">
+              <div class="detail-card__header">Measurement Reference</div>
+              <div class="detail-card__content">
+                <div style="overflow-x: auto;">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Measurement</th>
+                        <th>Standard</th>
+                        <th>Type</th>
+                        <th>Software</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>Tx eye diagram (NRZ/PAM4)</strong></td>
+                        <td>PCIe Gen 3 through Gen 6</td>
+                        <td>Compliance</td>
+                        <td>D9050PCIC</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Tx output waveform</strong></td>
+                        <td>USB 3.2, USB4</td>
+                        <td>Compliance</td>
+                        <td>N7015A</td>
+                      </tr>
+                      <tr>
+                        <td><strong>DDR5 read/write burst timing</strong></td>
+                        <td>DDR5</td>
+                        <td>Compliance</td>
+                        <td>N6462A</td>
+                      </tr>
+                      <tr>
+                        <td><strong>C-PHY trio transition analysis</strong></td>
+                        <td>MIPI C-PHY</td>
+                        <td>Compliance</td>
+                        <td>D9010CPHC</td>
+                      </tr>
+                      <tr>
+                        <td><strong>D-PHY lane timing</strong></td>
+                        <td>MIPI D-PHY</td>
+                        <td>Compliance</td>
+                        <td>D9010DPHC</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Jitter decomposition (Rj, Dj)</strong></td>
+                        <td>Multiple</td>
+                        <td>Manual</td>
+                        <td>Built-in jitter analysis</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Power integrity (ripple, noise)</strong></td>
+                        <td>Multiple</td>
+                        <td>Manual</td>
+                        <td>InfiniiScan</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Ethernet Tx compliance</strong></td>
+                        <td>IEEE 802.3</td>
+                        <td>Compliance</td>
+                        <td>N5411B</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Overlay 2: Sampling Oscilloscopes -->
+        <article class="standard-detail-overlay" id="overlay-inst2" style="z-index: 50;">
+          <button class="ks-overlay-close" aria-label="Close detail view"><span class="metallic-text">Back</span></button>
+          <div class="standard-row__subtitle">DCA&#8209;X (N1000A), Optical &amp; Electrical Plug&#8209;In Modules</div>
+          <h2 class="detail-overlay__title">Sampling Oscilloscopes</h2>
+          
+          <div class="detail-bento" style="--bento-cols: 58fr 42fr;">
+            <div class="detail-card">
+              <div class="detail-card__header">When to Use</div>
+              <div class="detail-card__content">
+                <ul>
+                  <li><strong>Optical transmitter compliance (TDECQ, OMA, extinction ratio):</strong> IEEE 802.3 mandates sampling scope measurements for optical TX compliance because the optical plug-in modules contain factory-calibrated photoreceivers with calibration traceability to national standards. Measuring optical signals on an RTO requires an external O/E converter, which introduces noise, insertion loss, and a calibration chain break that compliance specs do not permit.</li>
+                  <li><strong>TDR impedance profiling with sub-millimeter spatial resolution:</strong> TDR plug-in modules on the DCA-X launch a fast step directly from the sampling head and measure reflected energy through the same head, eliminating fixture artifacts between the step source and measurement point. The fastest modules achieve single-digit picosecond rise times, resolving impedance discontinuities smaller than one millimeter in standard PCB dielectric (individual via transitions, connector pin-to-pad interfaces, and stub lengths). An RTO performing TDR requires an external step generator connected through cables, introducing impedance mismatches and signal degradation between the source and measurement point.</li>
+                  <li><strong>Repetitive eye analysis with minimized instrument contribution:</strong> For repetitive signals, the DCA-X's pattern-lock mode triggers on a specific repeating data sequence and averages the waveform across thousands of acquisitions, reducing effective noise well below single-acquisition specifications. The Precision Timebase module achieves an intrinsic jitter floor in the tens of femtoseconds, ensuring that measured jitter reflects the transmitter's actual impairments rather than the instrument's own contribution. For repetitive testing workflows that do not require single-shot capture or protocol triggering, the DCA-X achieves equivalent or superior electrical measurement performance at a fraction of the capital cost of a comparable RTO.</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="detail-card">
+              <div class="detail-card__header">When Not to Use</div>
+              <div class="detail-card__content">
+                <ul>
+                  <li><strong>Non-repeating or aperiodic events:</strong> Sequential sampling captures exactly one sample per trigger event and requires the identical waveform to repeat millions of times to reconstruct a complete eye diagram. A sampling scope is incapable of observing single-occurrence events. An RTO with deep acquisition memory and protocol-aware triggering is required for any measurement involving non-repeating behavior or correlation with specific protocol states.</li>
+                  <li><strong>Receiver BER quantification (despite having jitter decomposition software):</strong> FlexDCA software on the DCA-X performs jitter decomposition in the analog voltage domain, pattern-locking to the data sequence and statistically separating RJ from deterministic sub-components (ISI, DCD, PJ). This analysis reveals what kind of jitter is present and how large each component is. The BERT's error detector operates in the digital bit error domain: it sweeps its sampling clock phase across the UI while counting actual bit errors over billions of bits, fitting the dual-Dirac model directly to the measured bathtub curve tails. A receiver with an aggressive DFE may tolerate jitter that looks severe on the DCA, or fail on jitter that looks clean, depending on how its equalizer adapts to the specific channel. The DCA's jitter model cannot predict or observe the receiver's adaptive response.</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="detail-card detail-card--wide ks-table-wrapper">
+              <div class="detail-card__header">Measurement Reference</div>
+              <div class="detail-card__content">
+                <div style="overflow-x: auto;">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Measurement</th>
+                        <th>Standard</th>
+                        <th>Type</th>
+                        <th>Software</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>TDECQ (Transmitter Dispersion Eye Closure)</strong></td>
+                        <td>IEEE 802.3bs/df (400G/800G)</td>
+                        <td>Compliance</td>
+                        <td>FlexDCA (N1010A)</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Optical Modulation Amplitude</strong></td>
+                        <td>IEEE 802.3</td>
+                        <td>Compliance</td>
+                        <td>FlexOTO</td>
+                      </tr>
+                      <tr>
+                        <td><strong>TDR impedance profile</strong></td>
+                        <td>PCIe, USB, Ethernet</td>
+                        <td>Manual</td>
+                        <td>TDR plug-in module</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Extinction ratio</strong></td>
+                        <td>Fibre Channel, Ethernet</td>
+                        <td>Compliance</td>
+                        <td>FlexDCA (N1010A)</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Optical eye mask (PAM4)</strong></td>
+                        <td>IEEE 802.3df (800G)</td>
+                        <td>Compliance</td>
+                        <td>FlexDCA (N1010A)</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Jitter (PLL transfer function)</strong></td>
+                        <td>Multiple</td>
+                        <td>Manual</td>
+                        <td>FlexPLL</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Overlay 3: Bit Error Ratio Testers -->
+        <article class="standard-detail-overlay" id="overlay-inst3" style="z-index: 50;">
+          <button class="ks-overlay-close" aria-label="Close detail view"><span class="metallic-text">Back</span></button>
+          <div class="standard-row__subtitle">M8000 Series (M8040A, M8050A)</div>
+          <h2 class="detail-overlay__title">Bit Error Ratio Testers</h2>
+          
+          <div class="detail-bento" style="--bento-cols: 50fr 50fr;">
+            <div class="detail-card">
+              <div class="detail-card__header">When to Use</div>
+              <div class="detail-card__content">
+                <ul>
+                  <li><strong>Receiver tolerance testing under calibrated stress:</strong> The BERT is the only instrument that proves the RX decodes data correctly. Its pattern generator and error detector share the same internal reference oscillator, eliminating frequency offset uncertainty between stimulus and measurement. The ED makes a binary decision for every bit at a programmable voltage threshold and clock phase, counting actual decoding failures over trillions of bits. Compliance testing uses a scope to verify that the BERT's stressed eye matches the spec template at the probe point, then puts the DUT in loopback for error rate measurement.</li>
+                  <li><strong>BER contour mapping (quantitative margin analysis):</strong> The error detector's programmable sampling point sweeps both voltage threshold and clock phase in fine increments, counting bit errors at each coordinate. The resulting 2D contour map draws isometric BER boundaries as a function of voltage and timing offset, revealing exactly how much receiver headroom remains before failure. A scope shows voltage distributions at the probe point; the BER contour map shows the receiver's actual error boundary at the decision circuit.</li>
+                  <li><strong>Closed-loop link training validation (hardware protocol emulation):</strong> The M8000 series implements protocol link training state machines in dedicated FPGA hardware, responding to the DUT's equalization coefficient requests at wire speed. Software emulation running on a host PC cannot meet the timing requirements of modern high-speed standards due to control bus latency. The FPGA-based state machine replicates the behavior of real silicon during equalization negotiation: the DUT requests coefficient changes, the BERT's hardware responds with updated TX settings, and the DUT's RX adapts its internal equalizer based on the observed channel response. This closed-loop dynamic is what distinguishes receiver compliance testing from static pattern injection.</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="detail-card">
+              <div class="detail-card__header">When Not to Use</div>
+              <div class="detail-card__content">
+                <ul>
+                  <li><strong>Root cause diagnosis of signal integrity failures:</strong> The BERT counts decoding failures but cannot explain why they occur. A high BER could result from RJ, deterministic crosstalk, ISI, or power supply coupling; the error count is identical regardless of cause. Identifying the impairment mechanism requires oscilloscope jitter decomposition and eye diagram analysis to visualize the analog waveform and separate jitter components. The standard workflow uses both instruments: the oscilloscope diagnoses the root cause and the BERT confirms whether the fix restored receiver margin.</li>
+                  <li><strong>Transmitter compliance waveform measurements:</strong> BERTs generate and detect bit patterns but do not digitize the analog voltage waveform. TX compliance testing requires an oscilloscope to measure the physical shape of each voltage transition: eye height, eye width, rise time, output voltage swing, pre-emphasis and de-emphasis ratios. The BERT's role in transmitter compliance is as a calibrated stimulus source (pattern generator with controlled jitter injection and equalization), not as the measurement instrument. Compliance testing connects the BERT's pattern generator output to the oscilloscope for stimulus calibration, then puts the DUT RX in loopback for error rate measurement.</li>
+                  <li><strong>Passive channel characterization (isolating channel behavior from instrument behavior):</strong> A BERT transmits data through the channel and detects errors at the far end, but the measured BER combines the channel's transfer function with the BERT's own TX impairments and RX sensitivity. Isolating the channel's intrinsic behavior requires a VNA with calibrated reference planes and mathematical de-embedding to remove instrument and fixture contributions. The VNA produces the channel's standalone S-parameter model (insertion loss, return loss, crosstalk) with measurement fidelity that through-channel BER testing cannot achieve.</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="detail-card detail-card--wide ks-table-wrapper">
+              <div class="detail-card__header">Measurement Reference</div>
+              <div class="detail-card__content">
+                <div style="overflow-x: auto;">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Measurement</th>
+                        <th>Standard</th>
+                        <th>Type</th>
+                        <th>Software</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>Rx tolerance (stressed receiver)</strong></td>
+                        <td>PCIe Gen 3 through Gen 6</td>
+                        <td>Compliance</td>
+                        <td>N5991A</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Rx tolerance (stressed receiver)</strong></td>
+                        <td>USB 3.2, USB4</td>
+                        <td>Compliance</td>
+                        <td>N5991A</td>
+                      </tr>
+                      <tr>
+                        <td><strong>BER vs. jitter contour</strong></td>
+                        <td>Multiple</td>
+                        <td>Manual</td>
+                        <td>M8070B</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Stressed eye calibration</strong></td>
+                        <td>PCIe, USB, Ethernet</td>
+                        <td>Compliance</td>
+                        <td>M8070B</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Link equalization negotiation</strong></td>
+                        <td>PCIe Gen 4 through Gen 6</td>
+                        <td>Compliance</td>
+                        <td>N5991A</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Pattern generation (PRBS7 through PRBS31)</strong></td>
+                        <td>Multiple</td>
+                        <td>Manual</td>
+                        <td>M8070B</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Overlay 4: Vector Network Analyzers -->
+        <article class="standard-detail-overlay" id="overlay-inst4" style="z-index: 50;">
+          <button class="ks-overlay-close" aria-label="Close detail view"><span class="metallic-text">Back</span></button>
+          <div class="standard-row__subtitle">PNA&#8209;X, ENA (E5080B)</div>
+          <h2 class="detail-overlay__title">Vector Network Analyzers</h2>
+          
+          <div class="detail-bento" style="--bento-cols: 50fr 50fr;">
+            <div class="detail-card">
+              <div class="detail-card__header">When to Use</div>
+              <div class="detail-card__content">
+                <ul>
+                  <li><strong>S-parameter extraction with calibrated error correction:</strong> The VNA's narrowband superheterodyne receiver sweeps a single-frequency stimulus across the frequency range and measures the reflected and transmitted energy at each point through an IF filter that rejects all noise outside the measurement bandwidth. This narrowband detection achieves dynamic range exceeding 130 dB, compared to the 40-50 dB typical of scope-derived FFTs that digitize the entire bandwidth simultaneously. Before measurement, the VNA characterizes its own systematic errors by measuring calibration standards and mathematically removes these errors from subsequent DUT measurements, establishing calibrated reference planes at the exact points where the standards were connected.</li>
+                  <li><strong>Channel compliance and de-embedding:</strong> PCIe, USB, HDMI, and Ethernet specifications define channel pass/fail criteria as frequency-domain masks for insertion loss, return loss, and crosstalk. The VNA's phase-coherent measurement (capturing both magnitude and phase at every frequency point) enables mathematical de-embedding: measuring a test fixture and mathematically removing its contribution from subsequent DUT measurements to isolate the true electrical behavior of the DUT. This two-stage error removal pipeline (calibration removes instrument errors, de-embedding removes fixture effects) produces measurement fidelity that no other instrument architecture can replicate.</li>
+                  <li><strong>Mixed-mode S-parameter analysis (mode conversion):</strong> A 4-port VNA measures the complete single-ended S-parameter matrix and mathematically transforms it into the mixed-mode matrix, separating differential-mode behavior, common-mode behavior, and mode conversion between the two. Automotive Ethernet over unshielded twisted pair requires strict limits on differential-to-common-mode conversion (Scd21), which directly correlates with radiated emission risk from cable asymmetry. Measuring mode conversion requires phase-coherent excitation and measurement across all four ports simultaneously, a capability unique to the VNA architecture.</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="detail-card">
+              <div class="detail-card__header">When Not to Use</div>
+              <div class="detail-card__content">
+                <ul>
+                  <li><strong>Active receiver behavior under large-signal data patterns:</strong> VNAs inject a small continuous-wave stimulus and measure the linear frequency response. Active receivers with adaptive equalization (DFE, CTLE) behave nonlinearly under large-signal data patterns; their equalizer tap weights converge differently depending on the bit sequence, data rate, and channel characteristics. A BERT driving PRBS data through the RX measures the true large-signal behavior, including equalizer convergence dynamics, that the VNA's small-signal linear model cannot predict. The VNA characterizes the passive channel the signal travels through; the BERT characterizes how the active silicon responds to real data traversing that channel.</li>
+                  <li><strong>Physical fault location where measurement speed matters:</strong> VNAs with PLTS convert S-parameters to the time domain via IFFT, producing impedance profiles with the VNA's full dynamic range (130+ dB), often achieving higher measurement fidelity than direct TDR results. The VNA requires a complete frequency sweep and mathematical transformation. A sampling oscilloscope's TDR plug-in (e.g., N1055A with 7-8 ps rise time) produces an impedance profile in a single trigger event, delivering results in seconds, which is the practical choice for manufacturing rework or board-level debug. The reverse conversion (TDR data to frequency domain via FFT) achieves roughly 40-50 dB of dynamic range at lower frequencies, degrading further at higher frequencies due to the step function's inherent -20 dB/decade spectral roll-off. The TDR's broadband measurement cannot match the VNA's narrowband detection sensitivity.</li>
+                  <li><strong>Optical domain measurements:</strong> VNA architectures operate exclusively in the electrical domain and have no optical input path. Standards requiring both electrical and optical characterization (IEEE 802.3 for 400G/800G Ethernet) use separate instruments for each domain: VNAs for host-side channel compliance (insertion loss, return loss) and sampling scopes with optical plug-in modules for TX optical output (TDECQ, extinction ratio).</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="detail-card detail-card--wide ks-table-wrapper">
+              <div class="detail-card__header">Measurement Reference</div>
+              <div class="detail-card__content">
+                <div style="overflow-x: auto;">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Measurement</th>
+                        <th>Standard</th>
+                        <th>Type</th>
+                        <th>Software</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>Insertion loss (S21, Sdd21)</strong></td>
+                        <td>PCIe, USB, HDMI, DP</td>
+                        <td>Compliance</td>
+                        <td>PLTS</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Return loss (S11, Sdd11)</strong></td>
+                        <td>PCIe, USB, Ethernet</td>
+                        <td>Compliance</td>
+                        <td>PLTS</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Mode conversion (Scd21)</strong></td>
+                        <td>Automotive Ethernet</td>
+                        <td>Compliance</td>
+                        <td>PLTS</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Crosstalk (NEXT, FEXT)</strong></td>
+                        <td>PCIe, DDR5</td>
+                        <td>Manual</td>
+                        <td>PLTS</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Cable / connector qualification</strong></td>
+                        <td>USB, HDMI, Automotive</td>
+                        <td>Compliance</td>
+                        <td>PLTS</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Impedance profile (freq. domain)</strong></td>
+                        <td>Multiple</td>
+                        <td>Manual</td>
+                        <td>PLTS</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Overlay 5: Optical Modulation Analyzers -->
+        <article class="standard-detail-overlay" id="overlay-inst5" style="z-index: 50;">
+          <button class="ks-overlay-close" aria-label="Close detail view"><span class="metallic-text">Back</span></button>
+          <div class="standard-row__subtitle">N4391C</div>
+          <h2 class="detail-overlay__title">Optical Modulation Analyzers</h2>
+          
+          <div class="detail-bento" style="--bento-cols: 51fr 49fr;">
+            <div class="detail-card">
+              <div class="detail-card__header">When to Use</div>
+              <div class="detail-card__content">
+                <ul>
+                  <li><strong>Coherent transceiver characterization:</strong> Coherent optical links (400ZR, 800G ZR+, long-haul DWDM) modulate data simultaneously across phase, amplitude, and two orthogonal polarization states using formats like DP-QPSK (Dual-Polarization Quadrature Phase Shift Keying) and DP-16QAM (Dual-Polarization 16-Quadrature Amplitude Modulation). The OMA's intradyne coherent receiver mixes the incoming signal with a tunable local oscillator, producing four electrical outputs (in-phase and quadrature for each polarization) that preserve the full complex optical field. Direct-detect instruments like the DCA-X measure only optical intensity, collapsing phase and polarization into a single power value, and physically cannot reconstruct the transmitted constellation diagram.</li>
+                  <li><strong>EVM and constellation quality analysis:</strong> EVM quantifies modulation quality by measuring the distance between each received symbol and its ideal constellation position. The OMA's access to the full complex field reveals impairments that intensity-based eye diagrams structurally cannot detect: I/Q imbalance from unequal modulator arm gain, phase noise from transmitter laser linewidth, quadrature error from non-ideal modulator phase relationships, and polarization crosstalk from imperfect extinction ratio in the polarization multiplexer. Each of these impairments degrades the constellation in distinct, measurable ways that collapse into indistinguishable amplitude noise on a direct-detect eye diagram.</li>
+                  <li><strong>OSNR tolerance testing:</strong> Sweeping the optical SNR by adding calibrated ASE (Amplified Spontaneous Emission) noise while monitoring BER reveals the receiver's sensitivity floor under realistic amplifier chain conditions. The coherent receiver provides three noise rejection mechanisms that direct detection lacks: the polarization beam splitter rejects half the unpolarized ASE noise, the local oscillator mixing acts as a narrow optical bandpass filter rejecting out-of-band noise, and balanced detection rejects common-mode intensity noise. These mechanisms enable accurate BER measurement at low OSNR values where a direct-detect receiver would be overwhelmed.</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="detail-card">
+              <div class="detail-card__header">When Not to Use</div>
+              <div class="detail-card__content">
+                <ul>
+                  <li><strong>Direct-detect PAM4 optical links (100G/400G SR, DR, FR):</strong> Short-reach datacom links use intensity modulation and direct detection (IM/DD), encoding data in optical power levels rather than phase or polarization. The OMA's coherent receiver front-end is designed to decompose multi-dimensional modulation (phase, amplitude, two orthogonal polarization states) and introduces receiver complexity that provides no benefit for single-dimension intensity signals. A sampling scope with a direct-detect optical plug-in module measures IM/DD waveforms with integrated calibrated photoreceivers at lower cost.</li>
+                  <li><strong>Electrical domain measurements alongside optical:</strong> The OMA front-end is a calibrated coherent optical receiver with no electrical signal input path. Standards requiring both optical and electrical characterization (such as IEEE 802.3 for host-side electrical transmitter output and module-side optical transmitter output) use separate instruments for each domain. Feeding electrical signals into the OMA through an electrical-to-optical converter adds converter noise, limits analog bandwidth, and invalidates the OMA's factory optical calibration. The DCA-X platform is the correct multi-domain solution: its modular four-slot mainframe accepts both optical and electrical plug-in modules simultaneously, performing both measurement classes with a single instrument without external converters or calibration compromise.</li>
+                  <li><strong>Impedance profiling or channel characterization:</strong> The OMA analyzes forward-propagating modulated optical signals and has no mechanism to launch a stimulus pulse and measure reflected energy. Optical return loss at connector interfaces is measured with optical return loss meters or optical continuous-wave reflectometers (OCWRs), not OMAs. Electrical interconnect impedance profiling uses TDR plug-in modules on sampling oscilloscopes, while electrical channel S-parameter models require a VNA. The OMA occupies a narrow but critical niche: coherent modulation quality analysis (EVM, constellation fidelity, OSNR).</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="detail-card detail-card--wide ks-table-wrapper">
+              <div class="detail-card__header">Measurement Reference</div>
+              <div class="detail-card__content">
+                <div style="overflow-x: auto;">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Measurement</th>
+                        <th>Standard</th>
+                        <th>Type</th>
+                        <th>Software</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>Error vector magnitude (EVM)</strong></td>
+                        <td>OIF CEI, 400ZR</td>
+                        <td>Compliance</td>
+                        <td>89600 VSA</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Constellation analysis (QPSK, 16QAM)</strong></td>
+                        <td>400ZR, 800G ZR+</td>
+                        <td>Compliance</td>
+                        <td>89600 VSA</td>
+                      </tr>
+                      <tr>
+                        <td><strong>OSNR tolerance</strong></td>
+                        <td>Coherent DCI</td>
+                        <td>Manual</td>
+                        <td>89600 VSA</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Polarization tracking</strong></td>
+                        <td>Coherent transport</td>
+                        <td>Manual</td>
+                        <td>89600 VSA</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Transmitter linewidth / phase noise</strong></td>
+                        <td>Coherent transport</td>
+                        <td>Manual</td>
+                        <td>89600 VSA</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Overlay 6: Protocol Analyzers -->
+        <article class="standard-detail-overlay" id="overlay-inst6" style="z-index: 50;">
+          <button class="ks-overlay-close" aria-label="Close detail view"><span class="metallic-text">Back</span></button>
+          <div class="standard-row__subtitle">P5500 Series, U4301B</div>
+          <h2 class="detail-overlay__title">Protocol Analyzers</h2>
+          
+          <div class="detail-bento" style="--bento-cols: 49fr 51fr;">
+            <div class="detail-card">
+              <div class="detail-card__header">When to Use</div>
+              <div class="detail-card__content">
+                <ul>
+                  <li><strong>Link training state machine tracking:</strong> Protocol analyzers contain FPGA-based hardware decode engines that process the raw bit stream at full link rate, performing symbol decoding, identifying ordered sets (TS1, TS2, SKP, EIEOS), extracting equalization coefficients, and decoding transaction and data link layer packets with hardware timestamps. Mid-bus probes or interposer cards passively tap the signal path without breaking it, and neither endpoint detects the analyzer's presence. The decoded transaction log captures every LTSSM (Link Training and Status State Machine) state transition across millions of events, revealing where equalization negotiation stalls, where link training loops, and which endpoint's behavior diverges from the specification.</li>
+                  <li><strong>Interoperability debug across protocol layers:</strong> The protocol analyzer decodes all protocol layers simultaneously (physical, data link, and transaction) and correlates them: which transaction was being transmitted when a data link layer error occurred, and what link training state the endpoints occupied at that moment. Built-in specification-aware compliance checking automatically flags protocol violations including illegal state transitions, timeout violations, malformed ordered sets, and flow control credit errors. No other instrument class can provide this multi-layer correlation because oscilloscopes capture only the physical-layer waveform and BERTs detect only bit errors without protocol context.</li>
+                  <li><strong>Long-duration behavioral analysis:</strong> Protocol analyzers store decoded transactions in structured databases rather than raw waveform samples. The decoded transaction log for a given time period is orders of magnitude more compact than the equivalent raw oscilloscope capture, enabling minutes of saturated traffic, hours of typical workload, or days of filtered event logging on a single instrument. Problems that manifest only under sustained load (gradual performance degradation, intermittent error recovery loops, endpoint firmware anomalies) require this macro-level capture depth that no analog instrument can match.</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="detail-card">
+              <div class="detail-card__header">When Not to Use</div>
+              <div class="detail-card__content">
+                <ul>
+                  <li><strong>Analog root cause diagnosis (identifying why a protocol failure occurred):</strong> Protocol analyzers decode that a PCIe LTSSM stalled in Polling.Configuration or that a USB link training handshake diverged at a specific step, but they cannot explain the cause at the analog level: whether the failure resulted from excessive jitter closing the receiver's voltage margin, crosstalk from an adjacent lane, or a defective via transition. Diagnosing the physical cause requires time-synchronized capture from both a protocol analyzer (to identify when the failure occurred in the protocol sequence) and an oscilloscope (to capture the analog waveform at that instant). Keysight offers cross-trigger synchronization between protocol analyzers and Infiniium oscilloscopes for this compound diagnosis workflow.</li>
+                  <li><strong>Receiver margin quantification:</strong> Protocol analyzers operate in a binary domain: the link trained or it did not, the transaction completed or it errored. They cannot quantify how much margin remains before the link would fail. BER contour mapping on a BERT systematically sweeps voltage and timing stress to map the continuous boundary between passing and failing conditions, revealing whether the receiver has substantial headroom or is operating near its limit. A link that trains successfully on the protocol analyzer may have only marginal receiver tolerance remaining, detectable only through BERT stress sweep.</li>
+                  <li><strong>Channel or connector characterization:</strong> Protocol analyzers passively tap the data bus and decode digital transactions above the physical layer. They have no mechanism to inject calibrated stimuli or measure analog signal properties. Passive channel characterization (insertion loss, return loss, impedance profile, crosstalk) requires a VNA with calibrated reference planes. Quantifying how the channel affects receiver performance under stress requires a BERT. The protocol analyzer's value is in the digital transaction domain: tracking millions of state transitions, identifying interoperability failures between endpoints from different vendors, and logging long-duration behavior patterns that no analog instrument can capture at equivalent depth.</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="detail-card detail-card--wide ks-table-wrapper">
+              <div class="detail-card__header">Measurement Reference</div>
+              <div class="detail-card__content">
+                <div style="overflow-x: auto;">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Measurement</th>
+                        <th>Standard</th>
+                        <th>Type</th>
+                        <th>Software</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>LTSSM state capture</strong></td>
+                        <td>PCIe Gen 3 through Gen 6</td>
+                        <td>Manual</td>
+                        <td>Protocol Analyzer Suite</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Link training decode</strong></td>
+                        <td>USB 3.2, USB4</td>
+                        <td>Manual</td>
+                        <td>Protocol Analyzer Suite</td>
+                      </tr>
+                      <tr>
+                        <td><strong>CXL.mem / CXL.cache transactions</strong></td>
+                        <td>CXL 3.0</td>
+                        <td>Manual</td>
+                        <td>CXL Protocol Suite</td>
+                      </tr>
+                      <tr>
+                        <td><strong>NVMe command trace</strong></td>
+                        <td>NVMe</td>
+                        <td>Manual</td>
+                        <td>NVMe Protocol Suite</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Error injection response tracking</strong></td>
+                        <td>PCIe, CXL</td>
+                        <td>Manual</td>
+                        <td>Protocol Analyzer Suite</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+
+
+    </div>
+  </main>
+  
+  <script src="../js/keysight.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var rows = document.querySelectorAll('.standard-row');
+      rows.forEach(function(row) {
+        row.addEventListener('click', function(e) {
+          var targetId = row.getAttribute('data-target');
+          var overlay = document.getElementById(targetId);
+          if (overlay) {
+            document.querySelectorAll('.standard-detail-overlay').forEach(function(o) {
+              o.classList.remove('is-expanded');
+            });
+            overlay.classList.add('is-expanded');
+          }
+        });
+        row.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            row.click();
+          }
+        });
+      });
+
+      var closeBtns = document.querySelectorAll('.ks-overlay-close');
+      closeBtns.forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          var overlay = btn.closest('.standard-detail-overlay');
+          if (overlay) {
+            overlay.classList.remove('is-expanded');
+            var targetId = overlay.id;
+            var openingRow = document.querySelector('.standard-row[data-target="' + targetId + '"]');
+            if (openingRow) openingRow.focus();
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

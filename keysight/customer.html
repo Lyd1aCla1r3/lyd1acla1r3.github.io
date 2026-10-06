@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer | Lydia Pedersen × Keysight</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="../css/styles.css?v=1.1">
+  <link rel="stylesheet" href="../css/keysight.css?v=1.3">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .ks-customer-header {
+      text-align: center;
+      padding-top: calc(var(--ks-nav-height) + var(--ks-space-2xl));
+      margin-bottom: 40px;
+    }
+    
+    /* --- Dossier Book Layout --- */
+    .ks-dossier-wrapper {
+      width: 100%;
+      max-width: 880px;
+      margin: 0 auto 60px;
+      position: relative;
+      height: 560px;
+      perspective: 2500px;
+    }
+
+    .ks-book {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+    }
+
+    .ks-book-page {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 50%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transform-origin: left center;
+      transition: transform 0.7s cubic-bezier(0.645, 0.045, 0.355, 1);
+      z-index: 1;
+    }
+
+    .ks-book-page.is-flipped {
+      transform: rotateY(-180deg);
+    }
+
+    .ks-book-face {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border: 1px solid var(--ks-border);
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      transition: opacity 0.3s ease;
+    }
+    
+    /* Front faces (Right pages) - Hinge is on left */
+    .ks-book-front {
+      border-left: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 1px 3px 3px 1px;
+      transform: rotateY(0deg);
+      background: linear-gradient(to right, rgba(0,0,0,0.02) 0%, rgba(255,255,255,0.7) 3%, rgba(255,255,255,0.85) 96%, rgba(0,0,0,0.03) 100%), rgba(255, 255, 255, 0.55);
+      box-shadow: 
+        inset 8px 0 16px -8px rgba(0,0,0,0.08),
+        2px 1px 0px rgba(255,255,255,0.7),
+        3px 2px 1px rgba(0,0,0,0.04),
+        4px 3px 0px rgba(255,255,255,0.5),
+        5px 4px 2px rgba(0,0,0,0.04),
+        8px 8px 30px rgba(61, 32, 40, 0.08);
+    }
+
+    /* Back faces (Left pages) - Hinge is on right */
+    .ks-book-back {
+      border-right: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 3px 1px 1px 3px;
+      transform: rotateY(180deg);
+      background: linear-gradient(to left, rgba(0,0,0,0.02) 0%, rgba(255,255,255,0.7) 3%, rgba(255,255,255,0.85) 96%, rgba(0,0,0,0.03) 100%), rgba(255, 255, 255, 0.55);
+      box-shadow: 
+        inset -8px 0 16px -8px rgba(0,0,0,0.08),
+        -2px 1px 0px rgba(255,255,255,0.7),
+        -3px 2px 1px rgba(0,0,0,0.04),
+        -4px 3px 0px rgba(255,255,255,0.5),
+        -5px 4px 2px rgba(0,0,0,0.04),
+        -8px 8px 30px rgba(61, 32, 40, 0.08);
+    }
+
+    /* Inside Cover (Stationary Left Page) */
+    .ks-inside-cover {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50%;
+      height: 100%;
+      z-index: 0;
+      border-radius: 3px 1px 1px 3px;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(242,209,214,0.6), rgba(248,236,208,0.6), rgba(244,224,227,0.6), rgba(246,228,216,0.6), rgba(246,221,226,0.6), rgba(245,225,227,0.6));
+      border: 1px solid var(--ks-border);
+      border-right: 1px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 
+        inset -8px 0 16px -8px rgba(0,0,0,0.1),
+        -2px 1px 0px rgba(255,255,255,0.7),
+        -3px 2px 1px rgba(0,0,0,0.04),
+        -4px 3px 0px rgba(255,255,255,0.5),
+        -5px 4px 2px rgba(0,0,0,0.04),
+        -8px 8px 30px rgba(61, 32, 40, 0.08);
+    }
+    .ks-inside-cover-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('../assets/images/lab_bench_etched.jpg');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.25;
+      mix-blend-mode: multiply;
+      pointer-events: none;
+    }
+    
+    /* Spine glow effect */
+    .ks-dossier-wrapper::after {
+      content: '';
+      position: absolute;
+      top: 10px;
+      bottom: 10px;
+      left: calc(50% - 1px);
+      width: 2px;
+      background: rgba(255,255,255,0.1);
+      box-shadow: 0 0 20px 2px var(--ks-accent-glow);
+      z-index: 0;
+      border-radius: 2px;
+    }
+
+    /* Nav positioning */
+    .ks-page-nav-top, .ks-page-nav-bottom {
+      display: flex;
+      align-items: center;
+      min-height: 24px;
+    }
+    .ks-page-nav-top { justify-content: flex-start; }
+    .ks-page-nav-bottom { justify-content: flex-end; }
+    .ks-book-back .ks-page-nav-bottom { justify-content: flex-start; }
+
+    .ks-nav-btn {
+      background: none;
+      border: none;
+      color: var(--ks-text-muted);
+      font-family: 'Outfit', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 8px 0;
+      transition: color var(--ks-transition-fast), transform var(--ks-transition-fast);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .ks-nav-btn:hover {
+      color: var(--ks-text-primary);
+    }
+    .ks-nav-return:hover { transform: translateX(-4px); }
+    .ks-nav-next:hover { transform: translateX(4px); }
+    .ks-nav-prev:hover { transform: translateX(-4px); }
+
+    /* Page Content Centering */
+    .ks-page-content-centered {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .ks-page-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 26px;
+      font-weight: 600;
+      color: var(--ks-text-primary);
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(183, 110, 121, 0.15);
+    }
+    
+    .ks-toc-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    
+    .ks-toc-btn {
+      width: 100%;
+      text-align: left;
+      padding: 18px 24px;
+      border-radius: 12px;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 20px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s var(--ks-ease);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .ks-toc-btn span {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      font-weight: 500;
+      transition: font-weight 0.2s;
+    }
+
+    /* Hub Card Color Matching */
+    .ks-toc-btn--rose {
+      background: linear-gradient(rgba(183,110,121,0.06), rgba(183,110,121,0.06)), rgba(255,255,255,0.55);
+      border: 1px solid rgba(183,110,121,0.35);
+      color: #81404a;
+    }
+    .ks-toc-btn--rose span { color: #81404a; }
+    .ks-toc-btn--rose:hover {
+      background: #f4e0e3;
+      border-color: #81404a;
+      font-weight: 700;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(183,110,121,0.15);
+    }
+    .ks-toc-btn--rose:hover span { font-weight: 700; }
+
+    .ks-toc-btn--gold {
+      background: linear-gradient(rgba(184,144,40,0.06), rgba(184,144,40,0.06)), rgba(255,255,255,0.55);
+      border: 1px solid rgba(184,144,40,0.35);
+      color: #a07b20;
+    }
+    .ks-toc-btn--gold span { color: #a07b20; }
+    .ks-toc-btn--gold:hover {
+      background: #f8ecd0;
+      border-color: #a07b20;
+      font-weight: 700;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(184,144,40,0.15);
+    }
+    .ks-toc-btn--gold:hover span { font-weight: 700; }
+
+    .ks-toc-btn--peach {
+      background: linear-gradient(rgba(192,136,104,0.06), rgba(192,136,104,0.06)), rgba(255,255,255,0.55);
+      border: 1px solid rgba(192,136,104,0.35);
+      color: #85573c;
+    }
+    .ks-toc-btn--peach span { color: #85573c; }
+    .ks-toc-btn--peach:hover {
+      background: #f6e4d8;
+      border-color: #85573c;
+      font-weight: 700;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(192,136,104,0.15);
+    }
+    .ks-toc-btn--peach:hover span { font-weight: 700; }
+
+    .ks-toc-btn--dpink {
+      background: linear-gradient(rgba(166,93,108,0.06), rgba(166,93,108,0.06)), rgba(255,255,255,0.55);
+      border: 1px solid rgba(166,93,108,0.35);
+      color: #7d4450;
+    }
+    .ks-toc-btn--dpink span { color: #7d4450; }
+    .ks-toc-btn--dpink:hover {
+      background: #f3dfe3;
+      border-color: #7d4450;
+      font-weight: 700;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(166,93,108,0.15);
+    }
+    .ks-toc-btn--dpink:hover span { font-weight: 700; }
+
+    /* Page Text Pairings */
+    .ks-color-rose { color: #81404a !important; border-bottom-color: rgba(183,110,121,0.2) !important; }
+    .ks-color-gold { color: #a07b20 !important; border-bottom-color: rgba(184,144,40,0.2) !important; }
+    .ks-color-dpink { color: #7d4450 !important; border-bottom-color: rgba(166,93,108,0.2) !important; }
+    .ks-color-peach { color: #85573c !important; border-bottom-color: rgba(192,136,104,0.2) !important; }
+    
+    .ks-dl {
+      margin: 0;
+      padding: 0;
+    }
+    
+    .ks-dt {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 24px;
+      margin-bottom: 8px;
+    }
+    .ks-dt:first-child { margin-top: 0; }
+    
+    .ks-dd {
+      margin: 0;
+      color: var(--ks-text-secondary);
+      font-size: 17px;
+      line-height: 1.6;
+    }
+
+    /* Mobile Stack Fallback */
+    @media (max-width: 899px) {
+      .ks-dossier-wrapper {
+        perspective: none;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+      .ks-dossier-wrapper::after { display: none; }
+      
+      .ks-book {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .ks-book-page {
+        position: relative;
+        width: 100%;
+        height: auto;
+        transform: none !important;
+        transition: none;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+      
+      .ks-book-face {
+        position: relative;
+        transform: none !important;
+        border-radius: 16px !important;
+        border: 1px solid var(--ks-border) !important;
+        padding: 32px;
+        height: auto;
+      }
+      
+      .ks-page-nav-top, .ks-page-nav-bottom { display: none; }
+      
+      .ks-book-page[data-page="0"] .ks-book-front { display: none; }
+      .ks-book-page[data-page="4"] .ks-book-back { display: none; } 
+    }
+
+    .ks-closing-annotation {
+      text-align: center;
+      color: var(--ks-text-muted);
+      font-size: var(--ks-fs-small);
+      max-width: 800px;
+      margin: 20px auto 100px;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body class="ks-page">
+  <div class="ks-bg-visual" aria-hidden="true"></div>
+  <nav class="ks-nav" aria-label="Main navigation">
+    <div class="ks-nav__inner">
+      <a href="../keysight.html" class="ks-nav__logo metallic-text" aria-label="Back to hub">lydia<span>.</span>pedersen</a>
+      <a href="../keysight.html" class="ks-nav__link metallic-text">&larr; Back to Hub</a>
+    </div>
+  </nav>
+  
+  <main>
+    <div class="ks-container">
+      <header class="ks-customer-header ks-reveal">
+        <div class="ks-label">Section 02 / Customer</div>
+        <h1 class="ks-page-header__title metallic-text">A History of SE Engagement</h1>
+      </header>
+
+      <section class="ks-dossier-wrapper ks-reveal" aria-label="Interactive Tales from the Bench Booklet">
+        <div class="ks-book" id="ksBook">
+          <!-- Inside Cover (Left Default) -->
+          <div class="ks-inside-cover">
+            <div class="ks-inside-cover-bg"></div>
+          </div>
+
+          <div class="ks-book-page" data-page="0">
+            <div class="ks-book-face ks-book-front">
+              <div class="ks-page-nav-top"></div>
+              <div class="ks-page-content-centered">
+                <h2 class="ks-page-title metallic-text" style="font-style: italic; margin: 0 0 24px 0;">Tales from the Bench</h2>
+                <ul class="ks-toc-list">
+                  <li><button class="ks-toc-btn ks-toc-btn--rose" data-target="1">HDMI ARC/eARC <span>01</span></button></li>
+                  <li><button class="ks-toc-btn ks-toc-btn--gold" data-target="2">USB Type-C/BC1.2 <span>02</span></button></li>
+                  <li><button class="ks-toc-btn ks-toc-btn--peach" data-target="3">Instrument Correlation <span>03</span></button></li>
+                  <li><button class="ks-toc-btn ks-toc-btn--dpink" data-target="4">Remote Access <span>04</span></button></li>
+                </ul>
+              </div>
+              <div class="ks-page-nav-bottom"></div>
+            </div>
+            <div class="ks-book-face ks-book-back">
+              <div class="ks-page-nav-top">
+                <button class="ks-nav-btn ks-nav-return">&larr; Return to Index</button>
+              </div>
+              <div class="ks-page-content-centered">
+                <h3 class="ks-page-title ks-color-rose" style="margin: 0 0 24px 0;">01 / HDMI ARC/eARC</h3>
+                <dl class="ks-dl">
+                  <dt class="ks-dt ks-color-rose">Standard</dt>
+                  <dd class="ks-dd">HDMI ARC and eARC compliance</dd>
+                  <dt class="ks-dt ks-color-rose">Problem</dt>
+                  <dd class="ks-dd">Immature software, hardware and software incompatibilities, and incomplete documentation blocked characterization of a new device on the ARC and eARC test stations.</dd>
+                </dl>
+              </div>
+              <div class="ks-page-nav-bottom">
+                <button class="ks-nav-btn ks-nav-prev" data-target="0">&larr; Previous Page</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Page 1 -->
+          <div class="ks-book-page" data-page="1">
+            <div class="ks-book-face ks-book-front">
+              <div class="ks-page-nav-top"></div>
+              <div class="ks-page-content-centered">
+                <dl class="ks-dl">
+                  <dt class="ks-dt ks-color-rose">Action</dt>
+                  <dd class="ks-dd">Brought up the stations ahead of IP availability, then supplied debug data to a joint effort with Keysight and BitifEye.</dd>
+                  <dt class="ks-dt ks-color-rose">Impact</dt>
+                  <dd class="ks-dd">The collaboration produced clearer vendor configuration documents and a formal support path for third-party equipment integration.</dd>
+                </dl>
+              </div>
+              <div class="ks-page-nav-bottom">
+                <button class="ks-nav-btn ks-nav-next" data-target="2">Next: USB Type-C/BC1.2 &rarr;</button>
+              </div>
+            </div>
+            <div class="ks-book-face ks-book-back">
+              <div class="ks-page-nav-top">
+                <button class="ks-nav-btn ks-nav-return">&larr; Return to Index</button>
+              </div>
+              <div class="ks-page-content-centered">
+                <h3 class="ks-page-title ks-color-gold" style="margin: 0 0 24px 0;">02 / USB Type-C/BC1.2</h3>
+                <dl class="ks-dl">
+                  <dt class="ks-dt ks-color-gold">Standard</dt>
+                  <dd class="ks-dd">USB Type-C and BC1.2 compliance</dd>
+                  <dt class="ks-dt ks-color-gold">Problem</dt>
+                  <dd class="ks-dd">BC1.2 test sequences reported failures on a wearable that did not match observed device behavior.</dd>
+                </dl>
+              </div>
+              <div class="ks-page-nav-bottom">
+                <button class="ks-nav-btn ks-nav-prev" data-target="1">&larr; Previous Page</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Page 2 -->
+          <div class="ks-book-page" data-page="2">
+            <div class="ks-book-face ks-book-front">
+              <div class="ks-page-nav-top"></div>
+              <div class="ks-page-content-centered">
+                <dl class="ks-dl">
+                  <dt class="ks-dt ks-color-gold">Action</dt>
+                  <dd class="ks-dd">Cross-checked results on alternate equipment and worked with vendor FAEs. Consulted the USB-IF Compliance Administrator and the BC1.2 Working Group Chair on the specification and its Engineering Change Notice.</dd>
+                  <dt class="ks-dt ks-color-gold">Impact</dt>
+                  <dd class="ks-dd">Confirmed that the failures originated in the test sequences, cleared the product, and aligned the compliance scope with its market positioning.</dd>
+                </dl>
+              </div>
+              <div class="ks-page-nav-bottom">
+                <button class="ks-nav-btn ks-nav-next" data-target="3">Next: Instrument Correlation &rarr;</button>
+              </div>
+            </div>
+            <div class="ks-book-face ks-book-back">
+              <div class="ks-page-nav-top">
+                <button class="ks-nav-btn ks-nav-return">&larr; Return to Index</button>
+              </div>
+              <div class="ks-page-content-centered">
+                <h3 class="ks-page-title ks-color-peach" style="margin: 0 0 24px 0;">03 / Instrument Correlation</h3>
+                <dl class="ks-dl">
+                  <dt class="ks-dt ks-color-peach">Standard</dt>
+                  <dd class="ks-dd">VNA and TDR measurement correlation</dd>
+                  <dt class="ks-dt ks-color-peach">Problem</dt>
+                  <dd class="ks-dd">The lab required broader measurement capability within a fixed budget, along with consistent data across instrument vendors.</dd>
+                </dl>
+              </div>
+              <div class="ks-page-nav-bottom">
+                <button class="ks-nav-btn ks-nav-prev" data-target="2">&larr; Previous Page</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Page 3 -->
+          <div class="ks-book-page" data-page="3">
+            <div class="ks-book-face ks-book-front">
+              <div class="ks-page-nav-top"></div>
+              <div class="ks-page-content-centered">
+                <dl class="ks-dl">
+                  <dt class="ks-dt ks-color-peach">Action</dt>
+                  <dd class="ks-dd">Iterated instrument and accessory configurations with a Keysight FAE, then coordinated onsite bring-up and verification.</dd>
+                  <dt class="ks-dt ks-color-peach">Impact</dt>
+                  <dd class="ks-dd">Correlated TDR and VNA results wherever their measurements overlapped, which allowed data to move cleanly between instruments.</dd>
+                </dl>
+              </div>
+              <div class="ks-page-nav-bottom">
+                <button class="ks-nav-btn ks-nav-next" data-target="4">Next: Remote Access &rarr;</button>
+              </div>
+            </div>
+            <div class="ks-book-face ks-book-back">
+              <div class="ks-page-nav-top">
+                <button class="ks-nav-btn ks-nav-return">&larr; Return to Index</button>
+              </div>
+              <div class="ks-page-content-centered">
+                <h3 class="ks-page-title ks-color-dpink" style="margin: 0 0 24px 0;">04 / Remote Access</h3>
+                <dl class="ks-dl">
+                  <dt class="ks-dt ks-color-dpink">Standard</dt>
+                  <dd class="ks-dd">Remote access and lab software management</dd>
+                  <dt class="ks-dt ks-color-dpink">Problem</dt>
+                  <dd class="ks-dd">Test continuity depended on onsite presence, and software versions and licenses were not tracked in one place.</dd>
+                </dl>
+              </div>
+              <div class="ks-page-nav-bottom">
+                <button class="ks-nav-btn ks-nav-prev" data-target="3">&larr; Previous Page</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Page 4 -->
+          <div class="ks-book-page" data-page="4">
+            <div class="ks-book-face ks-book-front">
+              <div class="ks-page-nav-top"></div>
+              <div class="ks-page-content-centered">
+                <dl class="ks-dl">
+                  <dt class="ks-dt ks-color-dpink">Action</dt>
+                  <dd class="ks-dd">Consulted vendor FAEs on remote access options and coordinated with IT teams on security requirements. Built a centralized inventory of station software, versions, and licenses.</dd>
+                  <dt class="ks-dt ks-color-dpink">Impact</dt>
+                  <dd class="ks-dd">Secure remote access to instruments was approved, FAEs gained the ability to troubleshoot remotely, and license gaps informed budget planning.</dd>
+                </dl>
+              </div>
+              <div class="ks-page-nav-bottom"></div>
+            </div>
+            <div class="ks-book-face ks-book-back" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: center; align-items: center;">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="64" height="64" style="opacity: 0.1;"><text y=".9em" font-size="90">⚡</text></svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <p class="ks-closing-annotation ks-reveal">Interactions with validation engineers are grounded in mutual laboratory experience rather than traditional vendor dynamics. This peer-to-peer approach fosters immediate technical trust.</p>
+
+      <nav class="ks-bottom-nav ks-reveal" aria-label="Section navigation">
+        <a href="convergence.html" class="ks-bottom-nav__link metallic-text">&larr; The Convergence</a>
+        <a href="architecture.html" class="ks-bottom-nav__link metallic-text">Architecture &rarr;</a>
+      </nav>
+    </div>
+  </main>
+  
+  <script src="../js/keysight.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const pages = document.querySelectorAll('.ks-book-page');
+      
+      const updateVisibility = () => {
+        if (window.innerWidth < 900) {
+          pages.forEach(page => {
+            page.style.opacity = '1';
+            page.style.pointerEvents = 'auto';
+          });
+          return;
+        }
+        
+        let topRightFound = false;
+        let topLeftFound = false;
+        
+        // Find visible page for right stack
+        for (let i = 0; i < pages.length; i++) {
+          if (!pages[i].classList.contains('is-flipped')) {
+            if (!topRightFound) {
+              pages[i].style.opacity = '1';
+              pages[i].style.pointerEvents = 'auto';
+              topRightFound = true;
+            } else {
+              pages[i].style.opacity = '0';
+              pages[i].style.pointerEvents = 'none';
+            }
+          }
+        }
+        
+        // Find visible page for left stack
+        for (let i = pages.length - 1; i >= 0; i--) {
+          if (pages[i].classList.contains('is-flipped')) {
+            if (!topLeftFound) {
+              pages[i].style.opacity = '1';
+              pages[i].style.pointerEvents = 'auto';
+              topLeftFound = true;
+            } else {
+              pages[i].style.opacity = '0';
+              pages[i].style.pointerEvents = 'none';
+            }
+          }
+        }
+      };
+
+      const updateZIndexes = () => {
+        pages.forEach((page, index) => {
+          if (!page.classList.contains('is-flipped')) {
+            page.style.zIndex = 20 - index;
+          }
+        });
+        updateVisibility();
+      };
+      
+      updateZIndexes();
+      
+      window.addEventListener('resize', updateVisibility);
+      
+      const flipTo = (targetPageIndex) => {
+        if (window.innerWidth < 900) return;
+        
+        let delay = 0;
+        
+        for (let i = 0; i < pages.length; i++) {
+          if (i < targetPageIndex && !pages[i].classList.contains('is-flipped')) {
+            setTimeout(() => {
+              pages[i].style.zIndex = i + 10;
+              pages[i].classList.add('is-flipped');
+              updateVisibility();
+            }, delay);
+            delay += 120;
+          }
+        }
+        
+        for (let i = pages.length - 1; i >= 0; i--) {
+          if (i >= targetPageIndex && pages[i].classList.contains('is-flipped')) {
+            setTimeout(() => {
+              pages[i].style.zIndex = 20 - i;
+              pages[i].classList.remove('is-flipped');
+              updateVisibility();
+            }, delay);
+            delay += 120;
+          }
+        }
+      };
+
+      document.querySelectorAll('.ks-toc-btn, .ks-nav-next, .ks-nav-prev').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const target = parseInt(e.currentTarget.getAttribute('data-target'), 10);
+          flipTo(target);
+        });
+      });
+      
+      document.querySelectorAll('.ks-nav-return').forEach(btn => {
+        btn.addEventListener('click', () => {
+          flipTo(0);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
