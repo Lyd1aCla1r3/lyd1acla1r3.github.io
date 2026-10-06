@@ -23,12 +23,19 @@
     }
 
     /* ── Layout ── */
-    .arch-intro {
-      max-width: 900px;
+    .arch-intro-container {
+      display: flex;
+      gap: 3rem;
+      max-width: 1000px;
       margin: 0 auto var(--ks-space-xl);
-      text-align: center;
+      align-items: flex-start;
+    }
+    .arch-intro {
+      flex: 1;
+      text-align: left;
       font-size: var(--ks-fs-small);
       color: var(--ks-text-secondary);
+      margin: 0;
     }
 
     /* Group Color Themes: Lightened for clarity and elegance */
@@ -279,12 +286,14 @@
         <h1 class="ks-page-header__title metallic-text" style="text-align: center; margin-bottom: 1.5rem;">The Approach</h1>
       </header>
 
-      <p class="arch-intro ks-reveal ks-reveal-delay-1">
-        My approach to engagement starts with tracing the full chain: identifying the computational pattern generating a demand, the physical bottleneck it creates, and the measurement strategy to validate the standard designed to address it. 
-      </p>
-      <p class="arch-intro ks-reveal ks-reveal-delay-1" style="margin-top: 1rem;">
-        Advances in AI have placed an incredible strain on the physical infrastructure, so I am using the criteria for neural network training as an example narrative.
-      </p>
+      <div class="arch-intro-container ks-reveal ks-reveal-delay-1">
+        <p class="arch-intro">
+          My approach to engagement starts with tracing the full chain: identifying the computational pattern generating a demand, the physical bottleneck it creates, and the measurement strategy to validate the standard designed to address it. 
+        </p>
+        <p class="arch-intro">
+          Advances in AI have placed an incredible strain on the physical infrastructure, so I am using the criteria for neural network training as an example narrative.
+        </p>
+      </div>
 
       <section class="arch-layout ks-reveal ks-reveal-delay-2">
         
