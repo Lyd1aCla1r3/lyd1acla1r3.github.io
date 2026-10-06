@@ -1,6 +1,6 @@
 # Frequency Content of Digital Signals
 
-<!-- SUMMARY: A digital edge is both a voltage transition in time and a spectrum of sine waves in frequency. This guide defines the Fourier transform as correlation, derives the Fourier series of a square wave and the Fourier integral of a step, derives the 0.35/t_r relationship between rise time and bandwidth from a single-pole filter, relates harmonic count to channel bandwidth, defines the Nyquist frequency, introduces the channel as a linear filter described by its impulse, step, and pulse responses, and closes with the Gibbs phenomenon, aliasing, and spectral leakage. -->
+<!-- SUMMARY: A digital edge is both a voltage transition in time and a spectrum of sine waves in frequency. This guide defines the Fourier transform as correlation, derives the Fourier series of a square wave and the Fourier integral of a step, derives the $0.35/t_r$ relationship between rise time and bandwidth from a single-pole filter, relates harmonic count to channel bandwidth, defines the Nyquist frequency, introduces the channel as a linear filter described by its impulse, step, and pulse responses, and closes with the Gibbs phenomenon, aliasing, and spectral leakage. -->
 
 <p><em>Prefer to read offline? <a href="../../../assets/docs/signal-integrity-ebook-v2.0.pdf" target="_blank" rel="noopener">Download the complete Signal Integrity (Advanced Edition) ebook.</a></em></p>
 

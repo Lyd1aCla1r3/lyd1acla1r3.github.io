@@ -1,6 +1,6 @@
 # Dual-Dirac Model and BER Extrapolation
 
-<!-- SUMMARY: A compliance target such as a bit error ratio of 1e-12 describes edges so rare that they never populate a captured histogram, so the total jitter at that ratio must be projected from the tails that are visible. This guide derives the Gaussian distribution, the complementary error function and the Q-factor, shows how the Dual-Dirac model turns the convolution of deterministic and random jitter into two Gaussians whose tails give TJ = DJ + 2 Q RJ, constructs the bathtub curve, works a PCIe Gen 4 budget, and states the assumptions under which the projection is conservative and the cases in which it is not. -->
+<!-- SUMMARY: A compliance target such as a bit error ratio of $10^{-12}$ describes edges so rare that they never populate a captured histogram, so the total jitter at that ratio must be projected from the tails that are visible. This guide derives the Gaussian distribution, the complementary error function and the Q-factor, shows how the Dual-Dirac model turns the convolution of deterministic and random jitter into two Gaussians whose tails give $\text{TJ} = \text{DJ} + 2Q \cdot \text{RJ}$, constructs the bathtub curve, works a PCIe Gen 4 budget, and states the assumptions under which the projection is conservative and the cases in which it is not. -->
 
 <p><em>Prefer to read offline? <a href="../../../assets/docs/signal-integrity-ebook-v2.0.pdf" target="_blank" rel="noopener">Download the complete Signal Integrity (Advanced Edition) ebook.</a></em></p>
 
