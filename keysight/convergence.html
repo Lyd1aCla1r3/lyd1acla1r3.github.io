@@ -310,8 +310,8 @@
             </clipPath>
           </defs>
 
-          <!-- Column 1: Gold (AI Compute Demand) -->
-          <g class="cv-col" data-col="1" role="button" tabindex="0" aria-label="AI Compute Demand. Click to reveal.">
+          <!-- Column 1: Gold (Pipeline Architecture) -->
+          <g class="cv-col" data-col="1" role="button" tabindex="0" aria-label="Pipeline Architecture. Click to reveal.">
             <path class="cv-piece" d="M 20,20 L 170,20 C 170,50 200,60 200,100 C 200,120 160,130 160,150 C 160,170 140,180 140,210 C 140,240 170,250 170,260 L 20,260 Z" />
             <g clip-path="url(#clip-col1)" stroke="#a07b20" fill="none">
               <!-- Die Border -->
@@ -354,12 +354,12 @@
               <path d="M 92,170 L 92,205 L 137,250 L 220,250" stroke-width="1" />
               <path d="M 106,170 L 106,195 L 141,230 L 220,230" stroke-width="1" />
             </g>
-            <text class="cv-label-text" x="20" y="282">Compute</text>
-            <text class="cv-label-text" x="20" y="296">Demand</text>
+            <text class="cv-label-text" x="20" y="282">Pipeline</text>
+            <text class="cv-label-text" x="20" y="296">Architecture</text>
           </g>
 
-          <!-- Column 2: Peach (Bandwidth Bottleneck) -->
-          <g class="cv-col" data-col="2" role="button" tabindex="0" aria-label="Bandwidth Bottleneck. Click to reveal.">
+          <!-- Column 2: Peach (Objectives and Limitations) -->
+          <g class="cv-col" data-col="2" role="button" tabindex="0" aria-label="Objectives and Limitations. Click to reveal.">
             <path class="cv-piece" d="M 170,20 L 320,20 C 320,50 300,50 300,80 C 300,110 340,120 340,160 C 340,200 310,210 310,240 C 310,250 320,255 320,260 L 170,260 C 170,250 140,240 140,210 C 140,180 160,170 160,150 C 160,130 200,120 200,100 C 200,60 170,50 170,20 Z" />
             <g clip-path="url(#clip-col2)" stroke="#85573c" fill="none" stroke-width="1.5">
               <path d="M 130,30 L 180,30 C 210,30 210,128 245,128 C 280,128 280,30 310,30 L 350,30" stroke-width="1" opacity="0.5" />
@@ -369,12 +369,12 @@
               <path d="M 130,170 L 180,170 C 230,170 230,143 245,143 C 260,143 260,170 310,170 L 350,170" />
               <path d="M 130,230 L 180,230 C 220,230 220,149 245,149 C 270,149 270,230 310,230 L 350,230" />
             </g>
-            <text class="cv-label-text" x="170" y="282">Bandwidth</text>
-            <text class="cv-label-text" x="170" y="296">Bottleneck</text>
+            <text class="cv-label-text" x="170" y="282">Objectives and</text>
+            <text class="cv-label-text" x="170" y="296">Limitations</text>
           </g>
 
-          <!-- Column 3: Rose Gold (Physical-Layer Standard) -->
-          <g class="cv-col" data-col="3" role="button" tabindex="0" aria-label="Physical-Layer Standard. Click to reveal.">
+          <!-- Column 3: Rose Gold (Standards and Compliance) -->
+          <g class="cv-col" data-col="3" role="button" tabindex="0" aria-label="Standards and Compliance. Click to reveal.">
             <path class="cv-piece" d="M 320,20 L 470,20 C 470,60 500,70 500,110 C 500,140 450,150 450,180 C 450,210 480,220 480,240 C 480,250 470,255 470,260 L 320,260 C 320,255 310,250 310,240 C 310,210 340,200 340,160 C 340,120 300,110 300,80 C 300,50 320,50 320,20 Z" />
             <g clip-path="url(#clip-col3)" stroke="#81404a" fill="none">
               <g opacity="0.6" stroke-width="1" stroke-dasharray="2 4">
@@ -390,8 +390,8 @@
               <!-- Primary trace -->
               <path d="M 290,170 L 340,170 L 350,50 L 370,50 L 380,230 L 400,230 L 410,110 L 430,110 L 440,170 L 490,170" stroke-width="2.5" stroke-linejoin="round" />
             </g>
-            <text class="cv-label-text" x="320" y="282">Physical-Layer</text>
-            <text class="cv-label-text" x="320" y="296">Standard</text>
+            <text class="cv-label-text" x="320" y="282">Standards and</text>
+            <text class="cv-label-text" x="320" y="296">Compliance</text>
           </g>
 
           <!-- Column 4: Dark Pink (Validation & Measurement) -->
@@ -463,17 +463,17 @@
 
       const steps = [
         {
-          title: 'Compute Demand',
+          title: 'Pipeline Architecture',
           body: 'My experience developing production-grade AI workflows gave me direct insights into how computational patterns create physical-layer pressure. I have built training pipelines, inference services, and retrieval-augmented generation systems, and I understand which workloads create which bandwidth demands.',
           colorClass: 'cv-text-card--gold'
         },
         {
-          title: 'Bandwidth Bottleneck',
+          title: 'Objectives and Limitations',
           body: 'My career in hardware validation put me on the physical side of this bottleneck, measuring where data degrades at the boundary between compute and interconnect. That diagnostic instinct translates directly into technical conversations with customers evaluating measurement solutions.',
           colorClass: 'cv-text-card--peach'
         },
         {
-          title: 'Physical-Layer Standard',
+          title: 'Standards and Compliance',
           body: 'I have validated hardware against high-speed digital specifications across multiple organizations, including direct collaboration with standards bodies and measurement methodology committees. I understand these standards at the test-plan level because I have developed and executed hundreds of compliance test runs across their full specification lifecycles.',
           colorClass: 'cv-text-card--rose'
         },
