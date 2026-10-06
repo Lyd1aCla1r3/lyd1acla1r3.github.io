@@ -1,6 +1,6 @@
 # SerDes Architecture and Eye Diagrams
 
-<!-- SUMMARY: A serializer/deserializer (SerDes) link confines extreme-speed analog processing to a small front end and gears the data down to a clock rate that digital logic can handle. This guide traces the receiver signal path in its correct order (equalizer first, clock recovery in parallel with the slicer), derives differential signaling and common-mode rejection, compares analog front-end and converter-based receivers with the quantization and clock-jitter noise that the converter adds, and explains how real-time oscilloscopes, sampling oscilloscopes, and bit error ratio testers each construct an eye diagram. The guide derives the aperture limit of a sampling oscilloscope, the relation between a scope eye and a BER contour, the measurement time of a contour, and the 6 dB loss of a resistive splitter. -->
+<!-- SUMMARY: A SerDes link confines high-speed analog processing to a compact front end. This guide traces the receiver signal path, derives differential common-mode rejection, compares analog versus converter-based architectures, and explains how real-time oscilloscopes and BERTs construct measurement eye diagrams. -->
 
 <p><em>Prefer to read offline? <a href="../../../assets/docs/signal-integrity-ebook-v2.0.pdf" target="_blank" rel="noopener">Download the complete Signal Integrity (Advanced Edition) ebook.</a></em></p>
 

@@ -1,6 +1,6 @@
 # Inductance, Magnetic Coupling, and Crosstalk
 
-<!-- SUMMARY: A changing current in one conductor creates a changing magnetic field, and that field induces voltages in the same conductor and in every conductor nearby. This guide derives the field of a current from Ampere's law (outside and inside a wire), states Faraday's and Lenz's laws as three distinct statements, introduces the Generation Rule and the Reaction Rule for applying the right-hand rule, works through the four cases of induction, derives self, mutual, and loop inductance with the reciprocity theorem, and then derives the near-end and far-end crosstalk between adjacent traces, including why backward coupling is the sum of capacitive and inductive coupling while forward coupling is their difference. -->
+<!-- SUMMARY: A changing current creates a magnetic field that induces voltage across adjacent conductors. This guide models mutual inductance and capacitance, deriving near-end (NEXT) and far-end (FEXT) crosstalk signatures, and explains why FEXT scales with coupled length while NEXT saturates at the delay boundary. -->
 
 <p><em>Prefer to read offline? <a href="../../../assets/docs/signal-integrity-ebook-v2.0.pdf" target="_blank" rel="noopener">Download the complete Signal Integrity (Advanced Edition) ebook.</a></em></p>
 

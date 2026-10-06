@@ -1,6 +1,6 @@
 # Return Path Dynamics and Parasitic Effects
 
-<!-- SUMMARY: Every signal current requires a return current, and the path that the return current takes sets the loop inductance, and with it the impedance, of the entire circuit. This guide derives the distribution of return current under a trace from the field of a line current above a conducting plane, explains why the distribution changes from resistance-controlled spreading at low frequency to inductance-controlled crowding at high frequency, and shows how a slot or plane split inflates the loop. It then treats the via as a geometric capacitance and inductance, derives how a shunt capacitance or a series inductance reflects an edge and divides its current, shows how the two parasitics can be made to cancel by the condition of Chapter 3, and derives the baseline wander of a series coupling capacitor and the disparity bound that prevents it. -->
+<!-- SUMMARY: Every signal requires a return current, and its path dictates the loop inductance of the circuit. This guide maps current distribution under traces, models vias and split planes as geometric parasitics, and derives the baseline wander imposed by series coupling capacitors. -->
 
 <p><em>Prefer to read offline? <a href="../../../assets/docs/signal-integrity-ebook-v2.0.pdf" target="_blank" rel="noopener">Download the complete Signal Integrity (Advanced Edition) ebook.</a></em></p>
 

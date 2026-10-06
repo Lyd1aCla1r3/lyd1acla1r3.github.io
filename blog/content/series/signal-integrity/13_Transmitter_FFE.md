@@ -1,6 +1,6 @@
 # Transmitter Feed-Forward Equalization
 
-<!-- SUMMARY: A lossy channel spreads the pulse of each bit into its neighbors, and the transmitter can shape its output so that the channel and the shaping cancel at the receiver. This guide defines the finite impulse response filter that does the shaping, derives its transfer function $H(z)$ and evaluates it at DC and at the Nyquist frequency, normalizes the taps so that the peak swing is respected, and shows that the filter equalizes by attenuating the low-frequency content of the signal and not by amplifying the high-frequency content. It solves for the taps that cancel the cursors of the pulse response, ties the tap sizes to the insertion loss at the Nyquist frequency, shows why the post-cursor tap is larger than the pre-cursor tap, and treats over-equalization, the span limit of a short filter, and the division of work between the transmitter filter and the receiver. --> 
+<!-- SUMMARY: A lossy channel spreads a bit's pulse into its neighbors. This guide defines the transmitter's finite impulse response (FIR) filter, deriving its $H(z)$ transfer function to show how pre-cursor and post-cursor taps cancel channel dispersion by selectively attenuating low-frequency content. --> 
 
 <p><em>Prefer to read offline? <a href="../../../assets/docs/signal-integrity-ebook-v2.0.pdf" target="_blank" rel="noopener">Download the complete Signal Integrity (Advanced Edition) ebook.</a></em></p>
 

@@ -1,6 +1,6 @@
 # CDR and PLL Loop Dynamics
 
-<!-- SUMMARY: High-speed serial links embed the clock in the data, and the receiver recovers its sampling clock from the data transitions with a phase-locked loop. This guide derives why the clock is embedded, the early/late (bang-bang) and baud-rate phase detectors, the linear phase model of a Type-I and a Type-II loop, the jitter transfer function with its bandwidth and peaking, and the error transfer function that the sampler sees, which reconciles the low-pass tracking of the clock with the high-pass jitter that remains in the measured timing. It then covers cycle slips and slew limits, the golden PLL that standards and instruments use to define how much jitter a receiver tracks, and the jitter tolerance curve. One numerical loop is carried through every worked example. -->
+<!-- SUMMARY: Serial links embed the sampling clock directly in the data. This guide models the phase-locked loop (PLL) that recovers this clock, deriving the jitter transfer and error functions to reconcile low-pass tracking with high-pass jitter tolerance across early/late and baud-rate phase detectors. -->
 
 <p><em>Prefer to read offline? <a href="../../../assets/docs/signal-integrity-ebook-v2.0.pdf" target="_blank" rel="noopener">Download the complete Signal Integrity (Advanced Edition) ebook.</a></em></p>
 

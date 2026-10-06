@@ -1,6 +1,6 @@
 # Time Domain Reflectometry
 
-<!-- SUMMARY: Time domain reflectometry (TDR) launches a fast step into a transmission line and records the voltage at the connector while reflections return from every impedance change along the path. This guide covers the instrument architecture, the conversion of measured voltage to impedance, the display signatures of capacitive and inductive parasitics, the spatial resolution limit set by the rise time, the extraction of capacitance and inductance from the area of a reflection, the masking and spreading that limit measurements of distant features, and the peeling algorithm that compensates for them. -->
+<!-- SUMMARY: Time domain reflectometry (TDR) launches a fast step into a transmission line to record impedance mismatches. This guide derives the spatial resolution limit of the incident edge, the masking effect of multiple reflections, and the exact extraction of series inductance and shunt capacitance. -->
 
 <p><em>Prefer to read offline? <a href="../../../assets/docs/signal-integrity-ebook-v2.0.pdf" target="_blank" rel="noopener">Download the complete Signal Integrity (Advanced Edition) ebook.</a></em></p>
 

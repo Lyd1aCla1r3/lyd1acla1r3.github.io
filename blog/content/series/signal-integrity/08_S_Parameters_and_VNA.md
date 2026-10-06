@@ -1,6 +1,6 @@
 # S-Parameters and Vector Network Analysis
 
-<!-- SUMMARY: S-parameters describe a linear network as ratios of normalized voltage waves measured at its ports, one complex number per frequency. This guide defines incident and scattered waves and the scattering matrix, derives the decibel and the dBm arithmetic, the phase rule $\theta = -360^\circ f \tau$ and group delay, and the relationship between return loss, insertion loss, passivity, and reciprocity. It then describes the architecture of the vector network analyzer (VNA), the IF bandwidth that sets its dynamic range, calibration and de-embedding, the conversion of a TDR step reflection into $S_{11}$ (differentiate, then Fourier transform), mixed-mode parameters for differential pairs, and the measurement of NEXT, FEXT, and power-sum crosstalk. -->
+<!-- SUMMARY: S-parameters describe linear networks via ratios of normalized voltage waves. This guide defines scattering matrices, decibel arithmetic, and the $\theta = -360^\circ f \tau$ phase rule, and explores vector network analyzer (VNA) architecture, dynamic range, and the extraction of $S_{11}$ from a TDR step. -->
 
 <p><em>Prefer to read offline? <a href="../../../assets/docs/signal-integrity-ebook-v2.0.pdf" target="_blank" rel="noopener">Download the complete Signal Integrity (Advanced Edition) ebook.</a></em></p>
 

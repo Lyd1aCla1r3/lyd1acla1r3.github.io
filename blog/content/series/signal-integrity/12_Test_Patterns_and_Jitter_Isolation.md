@@ -1,6 +1,6 @@
 # Test Patterns and Jitter Isolation
 
-<!-- SUMMARY: The histogram of a jitter measurement mixes every component into one distribution, so separating them requires a test pattern that repeats and a record of the edges in time order. This guide derives the structure of the pseudo-random bit sequence (length, run lengths, transition density, line spacing), shows why averaging a repeating pattern suppresses random jitter as $1/\sqrt{M}$ and isolates the data-dependent jitter, separates duty cycle distortion from intersymbol interference by edge polarity, combines independent random jitter in quadrature, and accounts for the power in the FFT of the residual to separate periodic jitter from the random floor. It states what the residual contains when bounded uncorrelated jitter is present, applies steps 4 to 7 of the Chapter 10 measurement flow, and treats pattern length, instrument noise, aliasing, leakage, and the recovered-clock bandwidth as limits of the method. --> 
+<!-- SUMMARY: Separating jitter components requires a repeating test pattern and ordered edge records. This guide shows how averaging suppresses random jitter by $1/\sqrt{M}$, isolates data-dependent interference, and leverages FFT residuals to separate periodic jitter from the underlying random floor. --> 
 
 <p><em>Prefer to read offline? <a href="../../../assets/docs/signal-integrity-ebook-v2.0.pdf" target="_blank" rel="noopener">Download the complete Signal Integrity (Advanced Edition) ebook.</a></em></p>
 

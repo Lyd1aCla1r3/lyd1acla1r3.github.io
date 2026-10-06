@@ -164,37 +164,37 @@
                           <a href="signal-integrity-01_Wave_Propagation_and_Transmission_Lines.html">
                               <article class="blog-item series-item">
                                   <h2>Wave Propagation and Transmission Lines</h2>
-                                  <p>Information in a high-speed digital system travels as an electromagnetic wave guided through the dielectric material of the PCB, not as electrons drifting through copper. This guide traces the physical mechanism from the CMOS switching event through the distributed geometry of a transmission line, derives the characteristic impedance and the propagation velocity from the Telegrapher's Equations, links the geometric and material forms of the velocity, and explains why a steady current of $V/Z_0$ flows behind every propagating wavefront.</p>
+                                  <p>Information in high-speed digital systems travels as electromagnetic waves, not as drifting electrons. This guide traces the physical mechanism of transmission lines, deriving characteristic impedance and propagation velocity from the Telegrapher's Equations to explain why a steady current flows behind every propagating wavefront.</p>
                               </article>
                           </a>
                           <a href="signal-integrity-02_Frequency_Content_of_Digital_Signals.html">
                               <article class="blog-item series-item">
                                   <h2>Frequency Content of Digital Signals</h2>
-                                  <p>A digital edge is both a voltage transition in time and a spectrum of sine waves in frequency. This guide defines the Fourier transform as correlation, derives the Fourier series of a square wave and the Fourier integral of a step, derives the $0.35/t_r$ relationship between rise time and bandwidth from a single-pole filter, relates harmonic count to channel bandwidth, defines the Nyquist frequency, introduces the channel as a linear filter described by its impulse, step, and pulse responses, and closes with the Gibbs phenomenon, aliasing, and spectral leakage.</p>
+                                  <p>A digital edge is both a time-domain transition and a frequency-domain spectrum. This guide derives Fourier series and integrals, the $0.35/t_r$ bandwidth relationship, and the Nyquist frequency, before introducing linear channel filters, aliasing, and the Gibbs phenomenon.</p>
                               </article>
                           </a>
                           <a href="signal-integrity-03_Impedance_Reflections_and_Termination.html">
                               <article class="blog-item series-item">
                                   <h2>Impedance, Reflections, and Termination</h2>
-                                  <p>A wavefront that meets a change in impedance splits into a reflected wave and a transmitted wave. This guide derives the impedance of capacitors and inductors from their defining equations (including the phasor notation and the half-power point of an RC filter), derives the reflection coefficient, transmission coefficient, and power fractions from Kirchhoff's laws, inverts the reflection coefficient to recover impedance, shows why the total voltage and current at a boundary no longer have the ratio $Z_0$, and follows the reflections between a driver and a load until the line settles to the DC divider voltage. Series and parallel termination, numerical examples of resistive and reactive mismatches, and the compensation of inductance by capacitance complete the chapter.</p>
+                                  <p>A wavefront meeting an impedance change splits into reflected and transmitted waves. This guide derives $Z_0$ reflection coefficients and power fractions from Kirchhoff's laws, and traces edge reflections between a driver and load through series and parallel terminations until reaching the DC divider voltage.</p>
                               </article>
                           </a>
                           <a href="signal-integrity-04_Inductance_Magnetic_Coupling_and_Crosstalk.html">
                               <article class="blog-item series-item">
                                   <h2>Inductance, Magnetic Coupling, and Crosstalk</h2>
-                                  <p>A changing current in one conductor creates a changing magnetic field, and that field induces voltages in the same conductor and in every conductor nearby. This guide derives the field of a current from Ampere's law (outside and inside a wire), states Faraday's and Lenz's laws as three distinct statements, introduces the Generation Rule and the Reaction Rule for applying the right-hand rule, works through the four cases of induction, derives self, mutual, and loop inductance with the reciprocity theorem, and then derives the near-end and far-end crosstalk between adjacent traces, including why backward coupling is the sum of capacitive and inductive coupling while forward coupling is their difference.</p>
+                                  <p>A changing current creates a magnetic field that induces voltage across adjacent conductors. This guide models mutual inductance and capacitance, deriving near-end (NEXT) and far-end (FEXT) crosstalk signatures, and explains why FEXT scales with coupled length while NEXT saturates at the delay boundary.</p>
                               </article>
                           </a>
                           <a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">
                               <article class="blog-item series-item">
                                   <h2>Skin Effect and Dielectric Loss</h2>
-                                  <p>Every real transmission line dissipates signal energy through two frequency-dependent mechanisms, and together they form the low-pass channel that Chapter 2 defined. This guide uses the Generation Rule and the Reaction Rule to trace the eddy currents that push current toward the surface of a conductor, derives the skin depth and the surface resistance from Faraday's and Ampere's laws, shows how surface roughness modifies the result, derives the dielectric conductance G = ωC tanδ from the lag of polarization behind the field, and converts both mechanisms into attenuation in decibels per inch. It then explains why a linear, causal, frequency-dependent loss produces a long trailing tail in the pulse response, which is the physical origin of inter-symbol interference, and works the loss budget of a 12 inch FR4 channel with numbers.</p>
+                                  <p>Real transmission lines dissipate signal energy through frequency-dependent mechanisms. This guide derives the square-root attenuation of the skin effect and the linear attenuation of dielectric loss, demonstrating how these losses disperse edge transitions and collapse the data eye.</p>
                               </article>
                           </a>
                           <a href="signal-integrity-06_Return_Path_Dynamics_and_Parasitic_Effects.html">
                               <article class="blog-item series-item">
                                   <h2>Return Path Dynamics and Parasitic Effects</h2>
-                                  <p>Every signal current requires a return current, and the path that the return current takes sets the loop inductance, and with it the impedance, of the entire circuit. This guide derives the distribution of return current under a trace from the field of a line current above a conducting plane, explains why the distribution changes from resistance-controlled spreading at low frequency to inductance-controlled crowding at high frequency, and shows how a slot or plane split inflates the loop. It then treats the via as a geometric capacitance and inductance, derives how a shunt capacitance or a series inductance reflects an edge and divides its current, shows how the two parasitics can be made to cancel by the condition of Chapter 3, and derives the baseline wander of a series coupling capacitor and the disparity bound that prevents it.</p>
+                                  <p>Every signal requires a return current, and its path dictates the loop inductance of the circuit. This guide maps current distribution under traces, models vias and split planes as geometric parasitics, and derives the baseline wander imposed by series coupling capacitors.</p>
                               </article>
                           </a>
                       </div>

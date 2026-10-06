@@ -1,6 +1,6 @@
 # PAM4 Signaling and Gray Coding
 
-<!-- SUMMARY: PAM4 encodes two bits in each voltage symbol by dividing the transmitter swing into four equally spaced levels, which doubles the data rate at a fixed symbol rate and a fixed Nyquist frequency. This guide derives the price of the extra levels, a change of $20\log_{10}(1/3) = -9.54$ dB in eye amplitude at equal peak swing and equal noise, and links it to the Q table of the jitter chapters to give the noise that each target error ratio allows. It shows that the three eyes are equal, derives the symbol and bit error ratios with and without Gray coding, describes the three-slicer receiver and the one-gate Gray decoder, applies the numbers to a 64 Gb/s link on the 12 inch line of the earlier chapters, and explains why PAM4 timing recovery is harder than NRZ timing recovery. --> 
+<!-- SUMMARY: PAM4 encodes two bits per symbol by dividing the transmitter swing into four levels. This guide derives the $-9.54$ dB penalty in eye amplitude, links it to target error ratios, and explains the symbol error reductions achieved by Gray coding and three-slicer receivers. --> 
 
 <p><em>Prefer to read offline? <a href="../../../assets/docs/signal-integrity-ebook-v2.0.pdf" target="_blank" rel="noopener">Download the complete Signal Integrity (Advanced Edition) ebook.</a></em></p>
 

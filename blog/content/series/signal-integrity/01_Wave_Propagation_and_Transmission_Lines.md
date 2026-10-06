@@ -1,6 +1,6 @@
 # Wave Propagation and Transmission Lines
 
-<!-- SUMMARY: Information in a high-speed digital system travels as an electromagnetic wave guided through the dielectric material of the PCB, not as electrons drifting through copper. This guide traces the physical mechanism from the CMOS switching event through the distributed geometry of a transmission line, derives the characteristic impedance and the propagation velocity from the Telegrapher's Equations, links the geometric and material forms of the velocity, and explains why a steady current of $V/Z_0$ flows behind every propagating wavefront. -->
+<!-- SUMMARY: Information in high-speed digital systems travels as electromagnetic waves, not as drifting electrons. This guide traces the physical mechanism of transmission lines, deriving characteristic impedance and propagation velocity from the Telegrapher's Equations to explain why a steady current flows behind every propagating wavefront. -->
 
 <p><em>Prefer to read offline? <a href="../../../assets/docs/signal-integrity-ebook-v2.0.pdf" target="_blank" rel="noopener">Download the complete Signal Integrity (Advanced Edition) ebook.</a></em></p>
 

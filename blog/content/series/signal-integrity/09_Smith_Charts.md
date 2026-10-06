@@ -1,6 +1,6 @@
 # Smith Charts
 
-<!-- SUMMARY: The Smith chart is the conformal map $\Gamma = (z - 1)/(z + 1)$ that places every passive impedance inside a unit circle on the plane of the complex reflection coefficient, which is the plane in which a VNA reports $S_{11}$. This guide derives the real and imaginary parts of $\Gamma$, shows that passive impedances lie inside the unit circle, derives the constant-resistance circles and constant-reactance arcs by completing the square, and explains the landmarks, the rotation of $\Gamma$ with line length and frequency, and the admittance chart. It ends by showing how the chart separates inductance from capacitance by hemisphere, why the magnitude of $S_{11}$ alone cannot, and how the impedance and admittance plots recover the values of the elements. -->
+<!-- SUMMARY: The Smith chart is the conformal map $\Gamma = (z - 1)/(z + 1)$ that places passive impedances inside a unit circle. This guide derives its constant-resistance circles and constant-reactance arcs, demonstrating how the $S_{11}$ reflection plane visually separates inductive and capacitive components. -->
 
 <p><em>Prefer to read offline? <a href="../../../assets/docs/signal-integrity-ebook-v2.0.pdf" target="_blank" rel="noopener">Download the complete Signal Integrity (Advanced Edition) ebook.</a></em></p>
 

@@ -1,6 +1,6 @@
 # Jitter Decomposition and Measurement
 
-<!-- SUMMARY: A receiver decides each bit by comparing the waveform with a threshold at a sampling instant, so the timing of the threshold crossings is as important as the voltage levels. This guide defines the unit interval, the eye diagram, and time interval error, separates total jitter into random jitter and the bounded deterministic components (intersymbol interference, duty cycle distortion, periodic and sinusoidal jitter, and bounded uncorrelated jitter), converts each voltage disturbance into time through the slope of the edge, and lays out the measurement flow that links a captured waveform to a root cause. --> 
+<!-- SUMMARY: A receiver decides bits by sampling a waveform against a threshold, making crossing timing as critical as voltage. This guide defines the unit interval, separates total jitter into its random and deterministic components, and lays out the measurement flow for root-cause isolation. --> 
 
 <p><em>Prefer to read offline? <a href="../../../assets/docs/signal-integrity-ebook-v2.0.pdf" target="_blank" rel="noopener">Download the complete Signal Integrity (Advanced Edition) ebook.</a></em></p>
 

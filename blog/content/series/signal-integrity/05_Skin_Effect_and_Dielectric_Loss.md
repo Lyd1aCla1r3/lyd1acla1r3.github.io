@@ -1,6 +1,6 @@
 # Skin Effect and Dielectric Loss
 
-<!-- SUMMARY: Every real transmission line dissipates signal energy through two frequency-dependent mechanisms, and together they form the low-pass channel that Chapter 2 defined. This guide uses the Generation Rule and the Reaction Rule to trace the eddy currents that push current toward the surface of a conductor, derives the skin depth and the surface resistance from Faraday's and Ampere's laws, shows how surface roughness modifies the result, derives the dielectric conductance G = ωC tanδ from the lag of polarization behind the field, and converts both mechanisms into attenuation in decibels per inch. It then explains why a linear, causal, frequency-dependent loss produces a long trailing tail in the pulse response, which is the physical origin of inter-symbol interference, and works the loss budget of a 12 inch FR4 channel with numbers. -->
+<!-- SUMMARY: Real transmission lines dissipate signal energy through frequency-dependent mechanisms. This guide derives the square-root attenuation of the skin effect and the linear attenuation of dielectric loss, demonstrating how these losses disperse edge transitions and collapse the data eye. -->
 
 <p><em>Prefer to read offline? <a href="../../../assets/docs/signal-integrity-ebook-v2.0.pdf" target="_blank" rel="noopener">Download the complete Signal Integrity (Advanced Edition) ebook.</a></em></p>
 

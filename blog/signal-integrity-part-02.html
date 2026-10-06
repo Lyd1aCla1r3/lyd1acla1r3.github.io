@@ -164,19 +164,19 @@
                           <a href="signal-integrity-07_Time_Domain_Reflectometry.html">
                               <article class="blog-item series-item">
                                   <h2>Time Domain Reflectometry</h2>
-                                  <p>Time domain reflectometry (TDR) launches a fast step into a transmission line and records the voltage at the connector while reflections return from every impedance change along the path. This guide covers the instrument architecture, the conversion of measured voltage to impedance, the display signatures of capacitive and inductive parasitics, the spatial resolution limit set by the rise time, the extraction of capacitance and inductance from the area of a reflection, the masking and spreading that limit measurements of distant features, and the peeling algorithm that compensates for them.</p>
+                                  <p>Time domain reflectometry (TDR) launches a fast step into a transmission line to record impedance mismatches. This guide derives the spatial resolution limit of the incident edge, the masking effect of multiple reflections, and the exact extraction of series inductance and shunt capacitance.</p>
                               </article>
                           </a>
                           <a href="signal-integrity-08_S_Parameters_and_VNA.html">
                               <article class="blog-item series-item">
                                   <h2>S-Parameters and Vector Network Analysis</h2>
-                                  <p>S-parameters describe a linear network as ratios of normalized voltage waves measured at its ports, one complex number per frequency. This guide defines incident and scattered waves and the scattering matrix, derives the decibel and the dBm arithmetic, the phase rule $\theta = -360^\circ f \tau$ and group delay, and the relationship between return loss, insertion loss, passivity, and reciprocity. It then describes the architecture of the vector network analyzer (VNA), the IF bandwidth that sets its dynamic range, calibration and de-embedding, the conversion of a TDR step reflection into $S_{11}$ (differentiate, then Fourier transform), mixed-mode parameters for differential pairs, and the measurement of NEXT, FEXT, and power-sum crosstalk.</p>
+                                  <p>S-parameters describe linear networks via ratios of normalized voltage waves. This guide defines scattering matrices, decibel arithmetic, and the $\theta = -360^\circ f \tau$ phase rule, and explores vector network analyzer (VNA) architecture, dynamic range, and the extraction of $S_{11}$ from a TDR step.</p>
                               </article>
                           </a>
                           <a href="signal-integrity-09_Smith_Charts.html">
                               <article class="blog-item series-item">
                                   <h2>Smith Charts</h2>
-                                  <p>The Smith chart is the conformal map $\Gamma = (z - 1)/(z + 1)$ that places every passive impedance inside a unit circle on the plane of the complex reflection coefficient, which is the plane in which a VNA reports $S_{11}$. This guide derives the real and imaginary parts of $\Gamma$, shows that passive impedances lie inside the unit circle, derives the constant-resistance circles and constant-reactance arcs by completing the square, and explains the landmarks, the rotation of $\Gamma$ with line length and frequency, and the admittance chart. It ends by showing how the chart separates inductance from capacitance by hemisphere, why the magnitude of $S_{11}$ alone cannot, and how the impedance and admittance plots recover the values of the elements.</p>
+                                  <p>The Smith chart is the conformal map $\Gamma = (z - 1)/(z + 1)$ that places passive impedances inside a unit circle. This guide derives its constant-resistance circles and constant-reactance arcs, demonstrating how the $S_{11}$ reflection plane visually separates inductive and capacitive components.</p>
                               </article>
                           </a>
                       </div>

@@ -1,6 +1,6 @@
 # Continuous Time Linear Equalization and Decision Feedback Equalization
 
-<!-- SUMMARY: The receiver has two equalizers that act on different parts of the problem. The continuous time linear equalizer (CTLE) is a filter with one zero and two poles that restores the gain that the channel removed at high frequency, and it amplifies the noise in the same band. The decision feedback equalizer (DFE) removes the interference of earlier bits by subtracting a weighted sum of their decisions, so it cancels post-cursors without amplifying noise and has no effect on pre-cursors. This guide derives the CTLE transfer function and its circuit origin, models the DFE and quantifies its noise and error-propagation behavior, derives the least mean squares (LMS) update as a gradient descent and its convergence rate, describes the link training procedure that sets the transmitter and receiver equalizers together, and works the numbers on the 12 inch line of the earlier chapters. --> 
+<!-- SUMMARY: A receiver employs two distinct equalizers. This guide derives the continuous time linear equalizer (CTLE) that restores high-frequency channel loss, and models the decision feedback equalizer (DFE) that subtracts post-cursor interference without amplifying noise, concluding with LMS gradient descent training. --> 
 
 <p><em>Prefer to read offline? <a href="../../../assets/docs/signal-integrity-ebook-v2.0.pdf" target="_blank" rel="noopener">Download the complete Signal Integrity (Advanced Edition) ebook.</a></em></p>
 
