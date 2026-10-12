@@ -1,6 +1,6 @@
 """
-Definitive 196-Point Data Integrity Audit
-==========================================
+Data Integrity Audit: silent failure checks across all saved raw responses
+=====================================================================
 Validates all raw JSON responses against extracted results.
 Implements the corrected 5-phase architecture from the adversarial audit.
 """
