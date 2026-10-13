@@ -32,7 +32,7 @@ pip install llama-index llama-index-core \
 For alternative embedding providers routed through LiteLLM, add the OpenAI-like adapter:
 
 ```bash
-pip install llama-index-llms-openai-like
+pip install llama-index-embeddings-openai-like
 ```
 
 **Verification**:
@@ -52,12 +52,19 @@ Pinecone provides the managed vector database. Install the Python client:
 pip install pinecone
 ```
 
+Set the Pinecone API key, which the index creation code and the wiring scripts read from the environment:
+
+```bash
+export PINECONE_API_KEY="pcsk_..."
+```
+
 Create an index in the Pinecone console or programmatically:
 
 ```python
+import os
 from pinecone import Pinecone, ServerlessSpec
 
-pc = Pinecone(api_key="PINECONE_API_KEY")
+pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
 
 pc.create_index(
     name="knowledge-base",
@@ -79,7 +86,7 @@ The `dimension=1536` parameter matches the output dimension of OpenAI's `text-em
 **Verification**:
 
 ```bash
-python -c "from pinecone import Pinecone; pc = Pinecone(api_key='PINECONE_API_KEY'); print(pc.list_indexes())"
+python -c "import os; from pinecone import Pinecone; pc = Pinecone(api_key=os.environ['PINECONE_API_KEY']); print(pc.list_indexes())"
 ```
 
 A successful deployment prints the list of available indexes including `knowledge-base`.
@@ -89,7 +96,7 @@ A successful deployment prints the list of available indexes including `knowledg
 LiteLLM provides unified routing for both generation and embedding model calls. Install the proxy:
 
 ```bash
-pip install litellm uvicorn
+pip install 'litellm[proxy]'
 ```
 
 Create `litellm_config.yaml` with generation and embedding model entries:
@@ -103,7 +110,7 @@ model_list:
 
   - model_name: claude-sonnet
     litellm_params:
-      model: anthropic/claude-sonnet-4-20250514
+      model: anthropic/claude-sonnet-5-5
       api_key: os.environ/ANTHROPIC_API_KEY
 
   - model_name: text-embedding-3-small
@@ -112,7 +119,7 @@ model_list:
       api_key: os.environ/OPENAI_API_KEY
 
 litellm_settings:
-  success_callback: ["braintrust"]
+  callbacks: ["braintrust"]
   max_budget: 500
   budget_duration: 30d
 
@@ -120,12 +127,14 @@ general_settings:
   master_key: sk-rag-master-key
 ```
 
+LiteLLM enforces `max_budget` against spend recorded in its Postgres database, so the budget cap takes effect only after `DATABASE_URL` points the proxy at a Postgres instance. A proxy started without a database skips the global budget check and keeps serving requests past the limit.
+
 Set environment variables:
 
 ```bash
 export OPENAI_API_KEY="sk-..."
 export ANTHROPIC_API_KEY="sk-ant-..."
-export BRAINTRUST_API_KEY="br-..."
+export BRAINTRUST_API_KEY="sk-..."
 ```
 
 Start the LiteLLM proxy:
@@ -145,10 +154,10 @@ A successful deployment returns a JSON list of the configured models.
 
 ## Step 4: LlamaParse
 
-LlamaParse provides cloud-based document parsing for PDFs and structured documents. Install the client:
+LlamaParse provides cloud-based document parsing for PDFs and structured documents. The standalone `llama-parse` package is deprecated, and LlamaIndex directs Python users to the `llama-cloud` SDK, which exposes LlamaParse through its parsing API. Install the client:
 
 ```bash
-pip install llama-parse
+pip install "llama-cloud>=1.0"
 ```
 
 Set the LlamaCloud API key:
@@ -160,26 +169,29 @@ export LLAMA_CLOUD_API_KEY="llx-..."
 Test parsing with a sample document:
 
 ```python
-from llama_parse import LlamaParse
+from llama_cloud import LlamaCloud
 
-parser = LlamaParse(
-    result_type="markdown",
-    num_workers=4,
-    verbose=True,
+client = LlamaCloud()  # reads LLAMA_CLOUD_API_KEY from the environment
+
+result = client.parsing.parse(
+    upload_file="sample_document.pdf",
+    tier="agentic",
+    version="latest",
+    expand=["markdown"],
 )
 
-documents = parser.load_data("sample_document.pdf")
-print(f"Parsed {len(documents)} document sections.")
-print(f"First section preview: {documents[0].text[:200]}")
+pages = [page.markdown for page in result.markdown.pages if page.success]
+print(f"Parsed {len(pages)} pages.")
+print(f"First page preview: {pages[0][:200]}")
 ```
 
-LlamaParse returns parsed content as LlamaIndex `Document` objects, making them directly compatible with the LlamaIndex indexing pipeline without format conversion.
+LlamaParse returns parsed content as per-page Markdown, which the ingestion script below wraps in LlamaIndex `Document` objects so that it flows directly into the LlamaIndex indexing pipeline.
 
 **Verification**:
 
 ```python
-from llama_parse import LlamaParse
-print("LlamaParse imported successfully.")
+from llama_cloud import LlamaCloud
+print("LlamaCloud SDK imported successfully.")
 ```
 
 A successful installation prints the confirmation message. Full verification requires parsing a test PDF and confirming structured Markdown output.
@@ -201,38 +213,38 @@ export FIRECRAWL_API_KEY="fc-..."
 Test crawling with a documentation site:
 
 ```python
-from firecrawl import FirecrawlApp
+from firecrawl import Firecrawl
 
-app = FirecrawlApp(api_key="fc-...")
+app = Firecrawl(api_key="fc-...")
 
-result = app.scrape_url(
-    url="https://docs.example.com/getting-started",
-    params={"formats": ["markdown"]}
+result = app.scrape(
+    "https://docs.example.com/getting-started",
+    formats=["markdown"],
 )
 
-print(f"Title: {result.get('metadata', {}).get('title', 'N/A')}")
-print(f"Content length: {len(result.get('markdown', ''))} characters")
+print(f"Title: {result.metadata.title if result.metadata else 'N/A'}")
+print(f"Content length: {len(result.markdown or '')} characters")
 ```
 
 For crawling an entire documentation site:
 
 ```python
-crawl_result = app.crawl_url(
-    url="https://docs.example.com",
-    params={
-        "limit": 100,
-        "scrapeOptions": {"formats": ["markdown"]}
-    },
-    poll_interval=5
+from firecrawl.types import ScrapeOptions
+
+crawl_result = app.crawl(
+    "https://docs.example.com",
+    limit=100,
+    scrape_options=ScrapeOptions(formats=["markdown"]),
+    poll_interval=5,
 )
 
-print(f"Crawled {crawl_result.get('total', 0)} pages.")
+print(f"Crawled {crawl_result.total} pages.")
 ```
 
 **Verification**:
 
 ```python
-from firecrawl import FirecrawlApp
+from firecrawl import Firecrawl
 print("Firecrawl imported successfully.")
 ```
 
@@ -249,7 +261,7 @@ pip install braintrust
 Set the API key:
 
 ```bash
-export BRAINTRUST_API_KEY="br-..."
+export BRAINTRUST_API_KEY="sk-..."
 ```
 
 Create a project and an initial evaluation dataset:
@@ -257,9 +269,8 @@ Create a project and an initial evaluation dataset:
 ```python
 import braintrust
 
-client = braintrust.init(project="rag-knowledge-system")
-
-dataset = client.create_dataset(
+dataset = braintrust.init_dataset(
+    project="rag-knowledge-system",
     name="rag-eval-v1",
     description="Evaluation dataset for RAG pipeline quality measurement"
 )
@@ -278,7 +289,8 @@ dataset.insert(
     metadata={"category": "routing", "source": "chapter_04.md"}
 )
 
-print(f"Dataset '{dataset.name}' created with {dataset.num_records} records.")
+dataset.flush()
+print(f"Dataset '{dataset.name}' created with 2 records.")
 ```
 
 **Verification**:
@@ -300,7 +312,8 @@ Save the following script as `scripts/ingest_documents.py`. It parses documents 
 
 ```python
 import os
-from llama_parse import LlamaParse
+from llama_cloud import LlamaCloud
+from llama_index.core import Document
 from llama_index.core.node_parser import SentenceSplitter
 from llama_index.embeddings.openai import OpenAIEmbedding
 from pinecone import Pinecone
@@ -309,8 +322,12 @@ DOCS_DIR = "./knowledge_docs"
 INDEX_NAME = "knowledge-base"
 NAMESPACE = "product-docs"
 
-parser = LlamaParse(result_type="markdown", num_workers=4)
-embed_model = OpenAIEmbedding(model_name="text-embedding-3-small")
+parser = LlamaCloud(api_key=os.environ["LLAMA_CLOUD_API_KEY"])
+embed_model = OpenAIEmbedding(
+    model_name="text-embedding-3-small",
+    api_base="http://localhost:4000/v1",
+    api_key="sk-rag-master-key",
+)
 splitter = SentenceSplitter(chunk_size=512, chunk_overlap=50)
 
 pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
@@ -326,7 +343,17 @@ print(f"Found {len(doc_files)} documents to process.")
 
 for filepath in doc_files:
     print(f"Processing: {filepath}")
-    documents = parser.load_data(filepath)
+    result = parser.parsing.parse(
+        upload_file=filepath,
+        tier="agentic",
+        version="latest",
+        expand=["markdown"],
+    )
+    documents = [
+        Document(text=page.markdown)
+        for page in result.markdown.pages
+        if page.success
+    ]
 
     nodes = splitter.get_nodes_from_documents(documents)
     print(f"  Split into {len(nodes)} chunks.")
@@ -338,7 +365,7 @@ for filepath in doc_files:
             "id": f"{os.path.basename(filepath)}-{i}",
             "values": embedding,
             "metadata": {
-                "content": node.text[:1000],
+                "content": node.text,
                 "source": filepath,
                 "doc_type": os.path.splitext(filepath)[1],
                 "chunk_index": i,
@@ -361,7 +388,8 @@ Save the following script as `scripts/ingest_web_content.py`. It crawls a docume
 
 ```python
 import os
-from firecrawl import FirecrawlApp
+from firecrawl import Firecrawl
+from firecrawl.types import ScrapeOptions
 from llama_index.core.node_parser import SentenceSplitter
 from llama_index.embeddings.openai import OpenAIEmbedding
 from pinecone import Pinecone
@@ -371,31 +399,33 @@ CRAWL_LIMIT = 100
 INDEX_NAME = "knowledge-base"
 NAMESPACE = "web-docs"
 
-firecrawl = FirecrawlApp(api_key=os.environ["FIRECRAWL_API_KEY"])
-embed_model = OpenAIEmbedding(model_name="text-embedding-3-small")
+firecrawl = Firecrawl(api_key=os.environ["FIRECRAWL_API_KEY"])
+embed_model = OpenAIEmbedding(
+    model_name="text-embedding-3-small",
+    api_base="http://localhost:4000/v1",
+    api_key="sk-rag-master-key",
+)
 splitter = SentenceSplitter(chunk_size=512, chunk_overlap=50)
 
 pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
 index = pc.Index(INDEX_NAME)
 
 print(f"Crawling {CRAWL_URL} with limit {CRAWL_LIMIT}...")
-crawl_result = firecrawl.crawl_url(
-    url=CRAWL_URL,
-    params={
-        "limit": CRAWL_LIMIT,
-        "scrapeOptions": {"formats": ["markdown"]}
-    },
-    poll_interval=5
+crawl_result = firecrawl.crawl(
+    CRAWL_URL,
+    limit=CRAWL_LIMIT,
+    scrape_options=ScrapeOptions(formats=["markdown"]),
+    poll_interval=5,
 )
 
-pages = crawl_result.get("data", [])
+pages = crawl_result.data or []
 print(f"Crawled {len(pages)} pages.")
 
 from llama_index.core import Document
 
 for page_idx, page in enumerate(pages):
-    markdown = page.get("markdown", "")
-    source_url = page.get("metadata", {}).get("sourceURL", f"page-{page_idx}")
+    markdown = page.markdown or ""
+    source_url = (page.metadata and page.metadata.source_url) or f"page-{page_idx}"
 
     if not markdown.strip():
         continue
@@ -410,7 +440,7 @@ for page_idx, page in enumerate(pages):
             "id": f"web-{page_idx}-{i}",
             "values": embedding,
             "metadata": {
-                "content": node.text[:1000],
+                "content": node.text,
                 "source": source_url,
                 "doc_type": "web",
                 "chunk_index": i,
@@ -461,6 +491,7 @@ pinecone_index = pc.Index("knowledge-base")
 vector_store = PineconeVectorStore(
     pinecone_index=pinecone_index,
     namespace="product-docs",
+    text_key="content",
 )
 
 index = VectorStoreIndex.from_vector_store(vector_store=vector_store)
@@ -515,6 +546,7 @@ pinecone_index = pc.Index("knowledge-base")
 vector_store = PineconeVectorStore(
     pinecone_index=pinecone_index,
     namespace="product-docs",
+    text_key="content",
 )
 index = VectorStoreIndex.from_vector_store(vector_store=vector_store)
 query_engine = index.as_query_engine(similarity_top_k=5)
@@ -567,8 +599,8 @@ The following end-to-end checks confirm that all components are installed, wired
 | LlamaIndex | `python -c "import llama_index.core; print('OK')"` | Prints "OK" |
 | Pinecone | `python -c "from pinecone import Pinecone; print('OK')"` | Prints "OK" |
 | LiteLLM proxy | `curl http://localhost:4000/v1/models -H "Authorization: Bearer sk-rag-master-key"` | Returns JSON model list |
-| LlamaParse | `python -c "from llama_parse import LlamaParse; print('OK')"` | Prints "OK" |
-| Firecrawl | `python -c "from firecrawl import FirecrawlApp; print('OK')"` | Prints "OK" |
+| LlamaParse | `python -c "from llama_cloud import LlamaCloud; print('OK')"` | Prints "OK" |
+| Firecrawl | `python -c "from firecrawl import Firecrawl; print('OK')"` | Prints "OK" |
 | Braintrust | `python -c "import braintrust; print('OK')"` | Prints "OK" |
 | Document ingestion | Place test PDFs in `knowledge_docs/`, run `python scripts/ingest_documents.py` | Reports vectors stored per document |
 | Web ingestion | Set `CRAWL_URL` in `scripts/ingest_web_content.py`, run `python scripts/ingest_web_content.py` | Reports vectors stored per crawled page |

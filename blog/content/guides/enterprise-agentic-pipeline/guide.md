@@ -1,13 +1,13 @@
-# [Enterprise Agentic Pipeline](guide-enterprise-agentic-pipeline.html): Setup Guide
+# Enterprise Agentic Pipeline: Setup Guide
 
-<!-- SUMMARY: A step-by-step installation and configuration guide for assembling the [Enterprise Agentic Pipeline](guide-enterprise-agentic-pipeline.html), covering LangChain and LangGraph setup, LiteLLM gateway deployment, Weaviate vector database provisioning, Unstructured document parsing, Langfuse observability, vLLM model serving, and HF TRL fine-tuning, with integration wiring and end-to-end verification steps. -->
+<!-- SUMMARY: A step-by-step installation and configuration guide for assembling the Enterprise Agentic Pipeline, covering LangChain and LangGraph setup, LiteLLM gateway deployment, Weaviate vector database provisioning, Unstructured document parsing, Langfuse observability, vLLM model serving, and HF TRL fine-tuning, with integration wiring and end-to-end verification steps. -->
 
 The [Enterprise Agentic Pipeline](guide-enterprise-agentic-pipeline.html) architecture chapter explains the rationale behind each component selection, the multi-agent orchestration model, and the governance requirements driving the design. This guide provides the concrete installation commands, configuration snippets, and wiring steps needed to bring that architecture to a working state on enterprise infrastructure.
 
 ## Prerequisites
 
 - **Operating system**: Linux with systemd or a container orchestration platform
-- **Python**: Version 3.10 or later, with `pip` available
+- **Python**: Version 3.11, 3.12, or 3.13, with `pip` available
 - **Node.js**: Version 18 or later, with `npx` available
 - **Docker**: Required for Weaviate, Langfuse, and LiteLLM proxy deployments
 - **GPU hardware**: At least one NVIDIA GPU with 24GB+ VRAM for vLLM serving. Multi-GPU configurations enable serving larger models.
@@ -19,7 +19,7 @@ The [Enterprise Agentic Pipeline](guide-enterprise-agentic-pipeline.html) archit
 LangChain provides the agent framework, and LangGraph provides the orchestration layer. Both install from PyPI.
 
 ```bash
-pip install langchain langchain-core langchain-community langgraph
+pip install langchain langchain-core langchain-community langchain-openai langgraph
 ```
 
 LangGraph requires a checkpointer backend for persistent state. The SQLite checkpointer provides a zero-configuration starting point:
@@ -37,10 +37,10 @@ pip install langgraph-checkpoint-postgres
 **Verification**:
 
 ```python
+from importlib.metadata import version
 import langchain_core
-import langgraph
 print(f"LangChain Core: {langchain_core.__version__}")
-print(f"LangGraph: {langgraph.__version__}")
+print(f"LangGraph: {version('langgraph')}")
 ```
 
 A successful installation prints both version numbers without import errors.
@@ -51,11 +51,17 @@ LiteLLM provides the unified gateway between agents and model providers. The pro
 
 ### Docker deployment
 
+The container reads provider keys, Langfuse credentials, and the database connection string from the environment variables listed under Configuration below, so export those variables before running this command. Virtual keys and budget tracking require a PostgreSQL database, which `DATABASE_URL` points to.
+
 ```bash
 docker run -d \
   --name litellm-proxy \
   -p 4000:4000 \
+  --add-host=host.docker.internal:host-gateway \
   -v $(pwd)/litellm_config.yaml:/app/config.yaml \
+  -e OPENAI_API_KEY -e ANTHROPIC_API_KEY \
+  -e LANGFUSE_PUBLIC_KEY -e LANGFUSE_SECRET_KEY -e LANGFUSE_HOST \
+  -e DATABASE_URL \
   ghcr.io/berriai/litellm:main-latest \
   --config /app/config.yaml
 ```
@@ -73,13 +79,13 @@ model_list:
 
   - model_name: claude-sonnet
     litellm_params:
-      model: anthropic/claude-sonnet-4-20250514
+      model: anthropic/claude-sonnet-5-5
       api_key: os.environ/ANTHROPIC_API_KEY
 
   - model_name: self-hosted-llama
     litellm_params:
       model: openai/meta-llama/Llama-3.1-70B-Instruct
-      api_base: http://vllm-server:8000/v1
+      api_base: http://host.docker.internal:8000/v1
       api_key: token-placeholder
 
 litellm_settings:
@@ -91,14 +97,15 @@ general_settings:
   master_key: sk-litellm-master-key
 ```
 
-Set environment variables for API keys and Langfuse integration:
+Set environment variables for API keys, the LiteLLM database, and Langfuse integration. The `host.docker.internal` hostname reaches services on the Docker host; replace it with the internal hostname of each service in multi-host deployments.
 
 ```bash
 export OPENAI_API_KEY="sk-..."
 export ANTHROPIC_API_KEY="sk-ant-..."
+export DATABASE_URL="postgresql://<user>:<password>@<host>:5432/litellm"
 export LANGFUSE_PUBLIC_KEY="pk-lf-..."
 export LANGFUSE_SECRET_KEY="sk-lf-..."
-export LANGFUSE_HOST="http://langfuse-server:3000"
+export LANGFUSE_HOST="http://host.docker.internal:3000"
 ```
 
 **Verification**:
@@ -173,7 +180,7 @@ client = weaviate.connect_to_local()
 
 collection = client.collections.create(
     name="EnterpriseDocuments",
-    vectorizer_config=Configure.Vectorizer.text2vec_openai(),
+    vector_config=Configure.Vectors.text2vec_openai(),
     multi_tenancy_config=Configure.multi_tenancy(
         enabled=True,
         auto_tenant_creation=True
@@ -203,10 +210,10 @@ A successful deployment returns Weaviate metadata including version and configur
 Unstructured handles enterprise document parsing. The open-source library processes documents locally.
 
 ```bash
-pip install unstructured[all-docs]
+pip install "unstructured[all-docs]"
 ```
 
-The `[all-docs]` extra installs dependencies for PDF, DOCX, PPTX, HTML, and image-based OCR processing. The initial installation downloads several hundred megabytes of parsing models.
+The `[all-docs]` extra installs Python dependencies for PDF, DOCX, PPTX, HTML, and image-based OCR processing. PDF and image parsing also require the `poppler-utils` and `tesseract-ocr` system packages, and file type detection requires `libmagic`.
 
 **Verification**:
 
@@ -223,42 +230,15 @@ A successful installation partitions the test document and prints element catego
 
 ## Step 5: Langfuse
 
-Langfuse provides production observability. A Docker Compose deployment runs the full Langfuse stack.
-
-Create `docker-compose-langfuse.yaml`:
-
-```yaml
-services:
-  langfuse-server:
-    image: langfuse/langfuse:2
-    ports:
-      - "3000:3000"
-    environment:
-      DATABASE_URL: postgresql://langfuse:langfuse@langfuse-db:5432/langfuse
-      NEXTAUTH_SECRET: a-random-secret-string
-      NEXTAUTH_URL: http://localhost:3000
-      SALT: a-random-salt-string
-    depends_on:
-      - langfuse-db
-
-  langfuse-db:
-    image: postgres:16
-    environment:
-      POSTGRES_USER: langfuse
-      POSTGRES_PASSWORD: langfuse
-      POSTGRES_DB: langfuse
-    volumes:
-      - langfuse_pgdata:/var/lib/postgresql/data
-
-volumes:
-  langfuse_pgdata:
-```
+Langfuse provides production observability. The official Docker Compose file runs the full Langfuse stack: the web and worker containers plus PostgreSQL, ClickHouse, Redis, and MinIO. The older single-container `langfuse/langfuse:2` image is end of life, and current Langfuse SDKs and the LiteLLM Langfuse callback require Langfuse server 3.63.0 or later.
 
 ```bash
-docker compose -f docker-compose-langfuse.yaml up -d
+git clone https://github.com/langfuse/langfuse.git
+cd langfuse
+docker compose up -d
 ```
 
-After startup, access the Langfuse dashboard at `http://localhost:3000`, create a project, and generate API keys for the `LANGFUSE_PUBLIC_KEY` and `LANGFUSE_SECRET_KEY` environment variables referenced in the LiteLLM configuration.
+Replace every value marked `# CHANGEME` in `docker-compose.yml` before starting the stack. The web container takes two to three minutes to log `Ready`. Open the Langfuse dashboard at `http://localhost:3000`, sign up to create the first user, create a project, and generate API keys for the `LANGFUSE_PUBLIC_KEY` and `LANGFUSE_SECRET_KEY` environment variables referenced in the LiteLLM configuration.
 
 Install the Langfuse Python SDK for direct LangChain integration:
 
@@ -272,7 +252,7 @@ pip install langfuse
 curl http://localhost:3000/api/public/health
 ```
 
-A successful deployment returns a health status indicating the server and database are operational.
+A successful deployment returns a JSON health status for the Langfuse web service. Appending `?failIfDatabaseUnavailable=true` to the URL also checks the database connection.
 
 ## Step 6: vLLM
 
@@ -281,6 +261,8 @@ vLLM provides high-throughput serving for self-hosted models. Installation requi
 ```bash
 pip install vllm
 ```
+
+Llama 3.1 models are gated on Hugging Face. Accept the license on the model page, then authenticate with `hf auth login` or set the `HF_TOKEN` environment variable before the first download.
 
 Start the vLLM server with a model:
 
@@ -293,7 +275,7 @@ vllm serve meta-llama/Llama-3.1-70B-Instruct \
   --enable-prefix-caching
 ```
 
-The `--tensor-parallel-size 4` flag distributes inference across 4 GPUs. Adjust based on available hardware. The `--enable-prefix-caching` flag activates KV cache reuse for shared system prompts, which is common in enterprise agent deployments.
+The `--tensor-parallel-size 4` flag distributes inference across 4 GPUs. Adjust based on available hardware. The 70B model holds roughly 140GB of weights in BF16 (70 billion parameters at 2 bytes each), so four GPUs need at least 48GB each; a single 24GB GPU can serve `meta-llama/Llama-3.1-8B-Instruct` instead. The `--enable-prefix-caching` flag activates KV cache reuse for shared system prompts, which is common in enterprise agent deployments.
 
 **Verification**:
 
@@ -327,7 +309,7 @@ A minimal supervised fine-tuning script demonstrates the pipeline. Save as `scri
 
 ```python
 from datasets import load_dataset
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 from peft import LoraConfig
 from trl import SFTTrainer, SFTConfig
 
@@ -337,7 +319,7 @@ OUTPUT_DIR = "./fine-tuned-model"
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_NAME,
-    load_in_4bit=True,
+    quantization_config=BitsAndBytesConfig(load_in_4bit=True),
     device_map="auto"
 )
 
@@ -367,7 +349,7 @@ trainer = SFTTrainer(
     train_dataset=dataset,
     peft_config=lora_config,
     args=training_config,
-    tokenizer=tokenizer,
+    processing_class=tokenizer,
 )
 
 trainer.train()
@@ -403,7 +385,8 @@ Save the following script as `scripts/enterprise_agent.py`. It configures a Lang
 ```python
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage, SystemMessage
-from langfuse.callback import CallbackHandler as LangfuseHandler
+from langfuse import Langfuse
+from langfuse.langchain import CallbackHandler as LangfuseHandler
 
 litellm_model = ChatOpenAI(
     model="gpt-4o",
@@ -412,11 +395,12 @@ litellm_model = ChatOpenAI(
     temperature=0
 )
 
-langfuse_handler = LangfuseHandler(
+Langfuse(
     public_key="pk-lf-...",
     secret_key="sk-lf-...",
-    host="http://localhost:3000"
+    base_url="http://localhost:3000"
 )
+langfuse_handler = LangfuseHandler()
 
 messages = [
     SystemMessage(content="Provide concise, factual responses."),
@@ -441,7 +425,8 @@ from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.sqlite import SqliteSaver
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage, SystemMessage
-from langfuse.callback import CallbackHandler as LangfuseHandler
+from langfuse import Langfuse
+from langfuse.langchain import CallbackHandler as LangfuseHandler
 from typing import TypedDict
 
 class WorkflowState(TypedDict):
@@ -455,11 +440,12 @@ llm = ChatOpenAI(
     api_key="sk-litellm-team-key"
 )
 
-langfuse_handler = LangfuseHandler(
+Langfuse(
     public_key="pk-lf-...",
     secret_key="sk-lf-...",
-    host="http://localhost:3000"
+    base_url="http://localhost:3000"
 )
+langfuse_handler = LangfuseHandler()
 
 def research_agent(state: WorkflowState) -> WorkflowState:
     messages = [
@@ -484,13 +470,13 @@ graph.add_edge(START, "research")
 graph.add_edge("research", "writing")
 graph.add_edge("writing", END)
 
-checkpointer = SqliteSaver.from_conn_string("enterprise_workflow.db")
-app = graph.compile(checkpointer=checkpointer)
+with SqliteSaver.from_conn_string("enterprise_workflow.db") as checkpointer:
+    app = graph.compile(checkpointer=checkpointer)
 
-result = app.invoke(
-    {"task": "Analyze the tradeoffs of self-hosted vs commercial LLM serving"},
-    config={"configurable": {"thread_id": "demo-001"}}
-)
+    result = app.invoke(
+        {"task": "Analyze the tradeoffs of self-hosted vs commercial LLM serving"},
+        config={"configurable": {"thread_id": "demo-001"}}
+    )
 
 print("Final output:")
 print(result["final_output"])

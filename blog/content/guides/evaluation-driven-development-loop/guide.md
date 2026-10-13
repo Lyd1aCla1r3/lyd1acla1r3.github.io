@@ -13,51 +13,32 @@ The Evaluation-Driven Development Loop architecture chapter explains the rationa
 - **API keys**: The following service accounts are required before proceeding:
   - **Braintrust**: API key from the Braintrust console
   - **LLM provider**: At least one commercial model provider API key for baseline inference
+  - **Hugging Face**: Access token (exported as `HF_TOKEN`) for an account with approved access to the gated `meta-llama/Llama-3.1-8B-Instruct` repository, which vLLM and Unsloth download in later steps
 - **Existing application**: A running AI application built with LangChain or LlamaIndex that produces outputs to evaluate. Any configuration from prior chapters in this series can serve as the application under evaluation.
 
 ## Step 1: Langfuse
 
-Langfuse provides production trace capture. A Docker Compose deployment runs the full Langfuse stack with a PostgreSQL backend.
+Langfuse provides production trace capture. The official Docker Compose deployment runs the full Langfuse v4 stack: the web and worker containers together with PostgreSQL, ClickHouse, Redis, and MinIO. Current releases of the Langfuse Python SDK and of the LiteLLM Langfuse callback require a Langfuse v3 or later server, and the curation script later in this guide uses the observations API introduced in Langfuse v4, so the legacy single-container v2 image does not work here.
 
-Create `docker-compose-langfuse.yaml`:
-
-```yaml
-services:
-  langfuse-server:
-    image: langfuse/langfuse:2
-    ports:
-      - "3000:3000"
-    environment:
-      DATABASE_URL: postgresql://langfuse:langfuse@langfuse-db:5432/langfuse
-      NEXTAUTH_SECRET: a-random-secret-string
-      NEXTAUTH_URL: http://localhost:3000
-      SALT: a-random-salt-string
-    depends_on:
-      - langfuse-db
-
-  langfuse-db:
-    image: postgres:16
-    environment:
-      POSTGRES_USER: langfuse
-      POSTGRES_PASSWORD: langfuse
-      POSTGRES_DB: langfuse
-    volumes:
-      - langfuse_pgdata:/var/lib/postgresql/data
-
-volumes:
-  langfuse_pgdata:
-```
+Clone the Langfuse repository:
 
 ```bash
-docker compose -f docker-compose-langfuse.yaml up -d
+git clone https://github.com/langfuse/langfuse.git
+cd langfuse
 ```
 
-After startup, access the Langfuse dashboard at `http://localhost:3000`, create a project, and generate API keys.
-
-Install the Langfuse Python SDK:
+Replace the default secrets on every line marked `# CHANGEME` in `docker-compose.yml`, then start the stack:
 
 ```bash
-pip install langfuse
+docker compose up -d
+```
+
+The Langfuse dashboard becomes available at `http://localhost:3000` after startup. Create a project there and generate API keys.
+
+Install the Langfuse Python SDK together with the LangChain packages that the Langfuse LangChain integration and the wiring scripts import:
+
+```bash
+pip install langfuse langchain langchain-openai
 ```
 
 Set environment variables:
@@ -65,7 +46,7 @@ Set environment variables:
 ```bash
 export LANGFUSE_PUBLIC_KEY="pk-lf-..."
 export LANGFUSE_SECRET_KEY="sk-lf-..."
-export LANGFUSE_HOST="http://localhost:3000"
+export LANGFUSE_BASE_URL="http://localhost:3000"
 ```
 
 **Verification**:
@@ -87,7 +68,7 @@ pip install braintrust
 Set the API key:
 
 ```bash
-export BRAINTRUST_API_KEY="br-..."
+export BRAINTRUST_API_KEY="sk-..."
 ```
 
 Create an evaluation project and an initial dataset:
@@ -95,11 +76,10 @@ Create an evaluation project and an initial dataset:
 ```python
 import braintrust
 
-client = braintrust.init(project="eval-loop-demo")
-
-dataset = client.create_dataset(
+dataset = braintrust.init_dataset(
+    project="eval-loop-demo",
     name="baseline-eval-v1",
-    description="Baseline evaluation dataset for quality measurement"
+    description="Baseline evaluation dataset for quality measurement",
 )
 
 dataset.insert(
@@ -119,7 +99,8 @@ dataset.insert(
     metadata={"category": "ml-ops", "difficulty": "standard"}
 )
 
-print(f"Dataset '{dataset.name}' created with {dataset.num_records} records.")
+summary = dataset.summarize()
+print(f"Dataset '{dataset.name}' created with {summary.data_summary.total_records} records.")
 ```
 
 **Verification**:
@@ -137,12 +118,6 @@ Unsloth provides memory-efficient fine-tuning with custom CUDA kernels. Installa
 
 ```bash
 pip install unsloth
-```
-
-For systems without CUDA support, install the CPU-compatible subset for data preparation and export workflows:
-
-```bash
-pip install unsloth-zoo
 ```
 
 Install additional training dependencies:
@@ -168,9 +143,11 @@ vLLM provides high-throughput model serving with LoRA adapter support. Installat
 pip install vllm
 ```
 
-Start vLLM with LoRA adapter support enabled:
+Start vLLM with LoRA adapter support enabled. The `VLLM_ALLOW_RUNTIME_LORA_UPDATING` environment variable enables the runtime adapter loading endpoint used later in this guide:
 
 ```bash
+export VLLM_ALLOW_RUNTIME_LORA_UPDATING=True
+
 vllm serve meta-llama/Llama-3.1-8B-Instruct \
   --host 0.0.0.0 \
   --port 8000 \
@@ -179,7 +156,7 @@ vllm serve meta-llama/Llama-3.1-8B-Instruct \
   --max-model-len 8192
 ```
 
-The `--enable-lora` flag activates LoRA adapter hot-loading. The `--max-lora-rank` parameter sets the maximum rank for loaded adapters, which must match or exceed the rank used during Unsloth training.
+The `--enable-lora` flag activates LoRA adapter support, and the environment variable above permits hot-loading adapters into the running server. The `--max-lora-rank` parameter sets the maximum rank for loaded adapters, which must match or exceed the rank used during Unsloth training.
 
 To load a fine-tuned LoRA adapter after training:
 
@@ -198,14 +175,14 @@ curl -X POST http://localhost:8000/v1/load_lora_adapter \
 curl http://localhost:8000/v1/models
 ```
 
-A successful deployment returns a JSON list containing the base model. After loading a LoRA adapter, the list includes both the base model and the adapter variant.
+A successful deployment returns a JSON list containing the base model. The list includes both the base model and the adapter variant once a LoRA adapter is loaded.
 
 ## Step 5: LiteLLM Gateway with Weighted Routing
 
 LiteLLM provides unified routing with weighted traffic distribution for A/B comparison between model variants.
 
 ```bash
-pip install litellm uvicorn
+pip install 'litellm[proxy]'
 ```
 
 Create `litellm_config.yaml` with weighted routing between base and fine-tuned models:
@@ -217,18 +194,18 @@ model_list:
       model: openai/meta-llama/Llama-3.1-8B-Instruct
       api_base: http://localhost:8000/v1
       api_key: token-placeholder
+      weight: 90
     model_info:
       id: base-model
-    weight: 90
 
   - model_name: app-model
     litellm_params:
       model: openai/finetuned-v1
       api_base: http://localhost:8000/v1
       api_key: token-placeholder
+      weight: 10
     model_info:
       id: finetuned-v1
-    weight: 10
 
   - model_name: gpt-4o-judge
     litellm_params:
@@ -242,7 +219,7 @@ general_settings:
   master_key: sk-eval-master-key
 ```
 
-The two entries with `model_name: app-model` create a weighted routing group. LiteLLM routes 90% of requests to the base model and 10% to the fine-tuned variant. The `model_info.id` field propagates through to Langfuse traces as metadata, enabling Braintrust evaluations to separate results by model variant.
+The two entries with `model_name: app-model` create a weighted routing group. LiteLLM reads `weight` from `litellm_params` and routes 90% of requests to the base model and 10% to the fine-tuned variant. LiteLLM records the `model_info.id` value as `model_id` inside the `hidden_params` metadata of each Langfuse generation, enabling Braintrust evaluations to separate results by model variant. The `finetuned-v1` deployment returns errors until the fine-tuning step loads that adapter into vLLM, so set its `weight` to `0` until then.
 
 Set environment variables:
 
@@ -250,7 +227,7 @@ Set environment variables:
 export OPENAI_API_KEY="sk-..."
 export LANGFUSE_PUBLIC_KEY="pk-lf-..."
 export LANGFUSE_SECRET_KEY="sk-lf-..."
-export LANGFUSE_HOST="http://localhost:3000"
+export LANGFUSE_BASE_URL="http://localhost:3000"
 ```
 
 Start the LiteLLM proxy:
@@ -274,17 +251,19 @@ With all components installed individually, the final step connects them into th
 
 ### Langfuse Trace Capture Integration
 
-Save the following script as `scripts/traced_application.py`. It demonstrates Langfuse trace capture for both LangChain and LlamaIndex applications:
+Save the following script as `scripts/traced_application.py`. It demonstrates Langfuse trace capture for a LangChain application:
 
 ```python
 import os
-from langfuse.callback import CallbackHandler as LangfuseHandler
+from langfuse import Langfuse
+from langfuse.langchain import CallbackHandler
 
-langfuse_handler = LangfuseHandler(
+langfuse = Langfuse(
     public_key=os.environ["LANGFUSE_PUBLIC_KEY"],
     secret_key=os.environ["LANGFUSE_SECRET_KEY"],
-    host=os.environ.get("LANGFUSE_HOST", "http://localhost:3000"),
+    base_url=os.environ.get("LANGFUSE_BASE_URL", "http://localhost:3000"),
 )
+langfuse_handler = CallbackHandler()
 
 # --- LangChain application example ---
 from langchain_openai import ChatOpenAI
@@ -303,6 +282,7 @@ messages = [
 ]
 
 response = llm.invoke(messages, config={"callbacks": [langfuse_handler]})
+langfuse.flush()
 
 print("Response:", response.content)
 print("Trace exported to Langfuse.")
@@ -310,9 +290,10 @@ print("Trace exported to Langfuse.")
 
 ### Langfuse-to-Braintrust Dataset Curation
 
-Save the following script as `scripts/curate_dataset.py`. It queries Langfuse for production traces and creates a Braintrust evaluation dataset:
+Save the following script as `scripts/curate_dataset.py`. It queries Langfuse for production traces (the root observation of each trace) and creates a Braintrust evaluation dataset:
 
 ```python
+import json
 import os
 from langfuse import Langfuse
 import braintrust
@@ -320,42 +301,57 @@ import braintrust
 langfuse = Langfuse(
     public_key=os.environ["LANGFUSE_PUBLIC_KEY"],
     secret_key=os.environ["LANGFUSE_SECRET_KEY"],
-    host=os.environ.get("LANGFUSE_HOST", "http://localhost:3000"),
+    base_url=os.environ.get("LANGFUSE_BASE_URL", "http://localhost:3000"),
 )
 
-traces = langfuse.fetch_traces(limit=100).data
+traces = langfuse.api.observations.get_many(
+    is_root_observation=True,
+    fields="core,io,metadata",
+    expand_metadata="hidden_params",
+    limit=100,
+).data
 print(f"Fetched {len(traces)} traces from Langfuse.")
 
-client = braintrust.init(project="eval-loop-demo")
-dataset = client.create_dataset(
+dataset = braintrust.init_dataset(
+    project="eval-loop-demo",
     name="production-traces-v1",
-    description="Evaluation dataset curated from production traces"
+    description="Evaluation dataset curated from production traces",
 )
+
+
+def as_text(value):
+    if isinstance(value, str):
+        try:
+            value = json.loads(value)
+        except json.JSONDecodeError:
+            return value
+    if isinstance(value, dict):
+        return str(value.get("content", value))
+    return str(value)
+
+
+def lookup_model_id(metadata):
+    hidden = metadata.get("hidden_params") if isinstance(metadata, dict) else None
+    if isinstance(hidden, str):
+        try:
+            hidden = json.loads(hidden)
+        except json.JSONDecodeError:
+            hidden = None
+    return hidden.get("model_id", "unknown") if isinstance(hidden, dict) else "unknown"
+
 
 curated_count = 0
 for trace in traces:
     if not trace.input or not trace.output:
         continue
 
-    input_text = trace.input
-    if isinstance(input_text, dict):
-        input_text = input_text.get("content", str(input_text))
-    if isinstance(input_text, list):
-        input_text = str(input_text)
-
-    output_text = trace.output
-    if isinstance(output_text, dict):
-        output_text = output_text.get("content", str(output_text))
-
-    model_id = trace.metadata.get("model_id", "unknown") if trace.metadata else "unknown"
-
     dataset.insert(
-        input=str(input_text),
-        expected=str(output_text),
+        input=as_text(trace.input),
+        expected=as_text(trace.output),
         metadata={
-            "trace_id": trace.id,
-            "model_id": model_id,
-            "timestamp": str(trace.timestamp),
+            "trace_id": trace.trace_id,
+            "model_id": lookup_model_id(trace.metadata),
+            "timestamp": str(trace.start_time),
         }
     )
     curated_count += 1
@@ -503,6 +499,7 @@ model.save_pretrained(OUTPUT_DIR)
 tokenizer.save_pretrained(OUTPUT_DIR)
 print(f"LoRA adapter saved to {OUTPUT_DIR}")
 print(f"Load into vLLM with: curl -X POST http://localhost:8000/v1/load_lora_adapter \\")
+print(f"  -H 'Content-Type: application/json' \\")
 print(f"  -d '{{\"lora_name\": \"finetuned-v1\", \"lora_path\": \"{OUTPUT_DIR}\"}}'")
 ```
 
@@ -514,7 +511,7 @@ The `training_data.jsonl` file should contain one JSON object per line with inst
 
 ### A/B Routing Weight Adjustment
 
-After evaluation results confirm the fine-tuned model's quality, adjust LiteLLM's routing weights by updating `litellm_config.yaml`:
+Adjust LiteLLM's routing weights in `litellm_config.yaml` once evaluation results confirm the fine-tuned model's quality. Only the two `weight` values change, and the judge model, callback, and master key settings remain as configured in Step 5:
 
 ```yaml
 model_list:
@@ -523,18 +520,18 @@ model_list:
       model: openai/meta-llama/Llama-3.1-8B-Instruct
       api_base: http://localhost:8000/v1
       api_key: token-placeholder
+      weight: 50
     model_info:
       id: base-model
-    weight: 50
 
   - model_name: app-model
     litellm_params:
       model: openai/finetuned-v1
       api_base: http://localhost:8000/v1
       api_key: token-placeholder
+      weight: 50
     model_info:
       id: finetuned-v1
-    weight: 50
 ```
 
 Restart the LiteLLM proxy to apply the new weights. The traffic split shifts from 90/10 to 50/50, increasing the fine-tuned model's production exposure for further evaluation.

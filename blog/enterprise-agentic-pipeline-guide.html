@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>[Enterprise Agentic Pipeline](guide-enterprise-agentic-pipeline.html): Setup Guide — Lydia Pedersen</title>
+  <title>Enterprise Agentic Pipeline: Setup Guide — Lydia Pedersen</title>
   <link rel="stylesheet" href="../css/styles.css?v=1.2">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
   <style>
@@ -115,14 +115,14 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="guide-enterprise-agentic-pipeline.html">Guides: Enterprise Agentic Pipeline</a></li><li aria-current="page">[Enterprise Agentic Pipeline](guide-enterprise-agentic-pipeline.html): Setup Guide</li></ol></nav>
+    <li><a href="index.html">Blog</a></li><li><a href="guide-enterprise-agentic-pipeline.html">Guides: Enterprise Agentic Pipeline</a></li><li aria-current="page">Enterprise Agentic Pipeline: Setup Guide</li></ol></nav>
         <article class="blog-post ">
-<h1><a href="guide-enterprise-agentic-pipeline.html">Enterprise Agentic Pipeline</a>: Setup Guide</h1>
-<!-- SUMMARY: A step-by-step installation and configuration guide for assembling the [Enterprise Agentic Pipeline](guide-enterprise-agentic-pipeline.html), covering LangChain and LangGraph setup, LiteLLM gateway deployment, Weaviate vector database provisioning, Unstructured document parsing, Langfuse observability, vLLM model serving, and HF TRL fine-tuning, with integration wiring and end-to-end verification steps. --><p>The <a href="guide-enterprise-agentic-pipeline.html">Enterprise Agentic Pipeline</a> architecture chapter explains the rationale behind each component selection, the multi-agent orchestration model, and the governance requirements driving the design. This guide provides the concrete installation commands, configuration snippets, and wiring steps needed to bring that architecture to a working state on enterprise infrastructure.</p>
+<h1>Enterprise Agentic Pipeline: Setup Guide</h1>
+<!-- SUMMARY: A step-by-step installation and configuration guide for assembling the Enterprise Agentic Pipeline, covering LangChain and LangGraph setup, LiteLLM gateway deployment, Weaviate vector database provisioning, Unstructured document parsing, Langfuse observability, vLLM model serving, and HF TRL fine-tuning, with integration wiring and end-to-end verification steps. --><p>The <a href="guide-enterprise-agentic-pipeline.html">Enterprise Agentic Pipeline</a> architecture chapter explains the rationale behind each component selection, the multi-agent orchestration model, and the governance requirements driving the design. This guide provides the concrete installation commands, configuration snippets, and wiring steps needed to bring that architecture to a working state on enterprise infrastructure.</p>
 <h2>Prerequisites</h2>
 <ul>
 <li><strong>Operating system</strong>: Linux with systemd or a container orchestration platform</li>
-<li><strong>Python</strong>: Version 3.10 or later, with <code>pip</code> available</li>
+<li><strong>Python</strong>: Version 3.11, 3.12, or 3.13, with <code>pip</code> available</li>
 <li><strong>Node.js</strong>: Version 18 or later, with <code>npx</code> available</li>
 <li><strong>Docker</strong>: Required for Weaviate, Langfuse, and LiteLLM proxy deployments</li>
 <li><strong>GPU hardware</strong>: At least one NVIDIA GPU with 24GB+ VRAM for vLLM serving. Multi-GPU configurations enable serving larger models.</li>
@@ -131,7 +131,7 @@
 </ul>
 <h2>Step 1: LangChain and LangGraph</h2>
 <p>LangChain provides the agent framework, and LangGraph provides the orchestration layer. Both install from PyPI.</p>
-<pre><code class="language-bash">pip install langchain langchain-core langchain-community langgraph
+<pre><code class="language-bash">pip install langchain langchain-core langchain-community langchain-openai langgraph
 </code></pre>
 <p>LangGraph requires a checkpointer backend for persistent state. The SQLite checkpointer provides a zero-configuration starting point:</p>
 <pre><code class="language-bash">pip install langgraph-checkpoint-sqlite
@@ -140,19 +140,24 @@
 <pre><code class="language-bash">pip install langgraph-checkpoint-postgres
 </code></pre>
 <p><strong>Verification</strong>:</p>
-<pre><code class="language-python">import langchain_core
-import langgraph
+<pre><code class="language-python">from importlib.metadata import version
+import langchain_core
 print(f&quot;LangChain Core: {langchain_core.__version__}&quot;)
-print(f&quot;LangGraph: {langgraph.__version__}&quot;)
+print(f&quot;LangGraph: {version(&#39;langgraph&#39;)}&quot;)
 </code></pre>
 <p>A successful installation prints both version numbers without import errors.</p>
 <h2>Step 2: LiteLLM Gateway</h2>
 <p>LiteLLM provides the unified gateway between agents and model providers. The proxy runs as a Docker container or a standalone Python process.</p>
 <h3>Docker deployment</h3>
+<p>The container reads provider keys, Langfuse credentials, and the database connection string from the environment variables listed under Configuration below, so export those variables before running this command. Virtual keys and budget tracking require a PostgreSQL database, which <code>DATABASE_URL</code> points to.</p>
 <pre><code class="language-bash">docker run -d \
   --name litellm-proxy \
   -p 4000:4000 \
+  --add-host=host.docker.internal:host-gateway \
   -v $(pwd)/litellm_config.yaml:/app/config.yaml \
+  -e OPENAI_API_KEY -e ANTHROPIC_API_KEY \
+  -e LANGFUSE_PUBLIC_KEY -e LANGFUSE_SECRET_KEY -e LANGFUSE_HOST \
+  -e DATABASE_URL \
   ghcr.io/berriai/litellm:main-latest \
   --config /app/config.yaml
 </code></pre>
@@ -166,13 +171,13 @@ print(f&quot;LangGraph: {langgraph.__version__}&quot;)
 
   - model_name: claude-sonnet
     litellm_params:
-      model: anthropic/claude-sonnet-4-20250514
+      model: anthropic/claude-sonnet-5-5
       api_key: os.environ/ANTHROPIC_API_KEY
 
   - model_name: self-hosted-llama
     litellm_params:
       model: openai/meta-llama/Llama-3.1-70B-Instruct
-      api_base: http://vllm-server:8000/v1
+      api_base: http://host.docker.internal:8000/v1
       api_key: token-placeholder
 
 litellm_settings:
@@ -183,12 +188,13 @@ litellm_settings:
 general_settings:
   master_key: sk-litellm-master-key
 </code></pre>
-<p>Set environment variables for API keys and Langfuse integration:</p>
+<p>Set environment variables for API keys, the LiteLLM database, and Langfuse integration. The <code>host.docker.internal</code> hostname reaches services on the Docker host; replace it with the internal hostname of each service in multi-host deployments.</p>
 <pre><code class="language-bash">export OPENAI_API_KEY=&quot;sk-...&quot;
 export ANTHROPIC_API_KEY=&quot;sk-ant-...&quot;
+export DATABASE_URL=&quot;postgresql://&lt;user&gt;:&lt;password&gt;@&lt;host&gt;:5432/litellm&quot;
 export LANGFUSE_PUBLIC_KEY=&quot;pk-lf-...&quot;
 export LANGFUSE_SECRET_KEY=&quot;sk-lf-...&quot;
-export LANGFUSE_HOST=&quot;http://langfuse-server:3000&quot;
+export LANGFUSE_HOST=&quot;http://host.docker.internal:3000&quot;
 </code></pre>
 <p><strong>Verification</strong>:</p>
 <pre><code class="language-bash">curl http://localhost:4000/v1/models \
@@ -242,7 +248,7 @@ client = weaviate.connect_to_local()
 
 collection = client.collections.create(
     name=&quot;EnterpriseDocuments&quot;,
-    vectorizer_config=Configure.Vectorizer.text2vec_openai(),
+    vector_config=Configure.Vectors.text2vec_openai(),
     multi_tenancy_config=Configure.multi_tenancy(
         enabled=True,
         auto_tenant_creation=True
@@ -264,9 +270,9 @@ client.close()
 <p>A successful deployment returns Weaviate metadata including version and configured modules.</p>
 <h2>Step 4: Unstructured</h2>
 <p>Unstructured handles enterprise document parsing. The open-source library processes documents locally.</p>
-<pre><code class="language-bash">pip install unstructured[all-docs]
+<pre><code class="language-bash">pip install &quot;unstructured[all-docs]&quot;
 </code></pre>
-<p>The <code>[all-docs]</code> extra installs dependencies for PDF, DOCX, PPTX, HTML, and image-based OCR processing. The initial installation downloads several hundred megabytes of parsing models.</p>
+<p>The <code>[all-docs]</code> extra installs Python dependencies for PDF, DOCX, PPTX, HTML, and image-based OCR processing. PDF and image parsing also require the <code>poppler-utils</code> and <code>tesseract-ocr</code> system packages, and file type detection requires <code>libmagic</code>.</p>
 <p><strong>Verification</strong>:</p>
 <pre><code class="language-python">from unstructured.partition.auto import partition
 
@@ -277,47 +283,24 @@ for el in elements[:3]:
 </code></pre>
 <p>A successful installation partitions the test document and prints element categories such as <code>Title</code>, <code>NarrativeText</code>, and <code>Table</code>.</p>
 <h2>Step 5: Langfuse</h2>
-<p>Langfuse provides production observability. A Docker Compose deployment runs the full Langfuse stack.</p>
-<p>Create <code>docker-compose-langfuse.yaml</code>:</p>
-<pre><code class="language-yaml">services:
-  langfuse-server:
-    image: langfuse/langfuse:2
-    ports:
-      - &quot;3000:3000&quot;
-    environment:
-      DATABASE_URL: postgresql://langfuse:langfuse@langfuse-db:5432/langfuse
-      NEXTAUTH_SECRET: a-random-secret-string
-      NEXTAUTH_URL: http://localhost:3000
-      SALT: a-random-salt-string
-    depends_on:
-      - langfuse-db
-
-  langfuse-db:
-    image: postgres:16
-    environment:
-      POSTGRES_USER: langfuse
-      POSTGRES_PASSWORD: langfuse
-      POSTGRES_DB: langfuse
-    volumes:
-      - langfuse_pgdata:/var/lib/postgresql/data
-
-volumes:
-  langfuse_pgdata:
+<p>Langfuse provides production observability. The official Docker Compose file runs the full Langfuse stack: the web and worker containers plus PostgreSQL, ClickHouse, Redis, and MinIO. The older single-container <code>langfuse/langfuse:2</code> image is end of life, and current Langfuse SDKs and the LiteLLM Langfuse callback require Langfuse server 3.63.0 or later.</p>
+<pre><code class="language-bash">git clone https://github.com/langfuse/langfuse.git
+cd langfuse
+docker compose up -d
 </code></pre>
-<pre><code class="language-bash">docker compose -f docker-compose-langfuse.yaml up -d
-</code></pre>
-<p>After startup, access the Langfuse dashboard at <code>http://localhost:3000</code>, create a project, and generate API keys for the <code>LANGFUSE_PUBLIC_KEY</code> and <code>LANGFUSE_SECRET_KEY</code> environment variables referenced in the LiteLLM configuration.</p>
+<p>Replace every value marked <code># CHANGEME</code> in <code>docker-compose.yml</code> before starting the stack. The web container takes two to three minutes to log <code>Ready</code>. Open the Langfuse dashboard at <code>http://localhost:3000</code>, sign up to create the first user, create a project, and generate API keys for the <code>LANGFUSE_PUBLIC_KEY</code> and <code>LANGFUSE_SECRET_KEY</code> environment variables referenced in the LiteLLM configuration.</p>
 <p>Install the Langfuse Python SDK for direct LangChain integration:</p>
 <pre><code class="language-bash">pip install langfuse
 </code></pre>
 <p><strong>Verification</strong>:</p>
 <pre><code class="language-bash">curl http://localhost:3000/api/public/health
 </code></pre>
-<p>A successful deployment returns a health status indicating the server and database are operational.</p>
+<p>A successful deployment returns a JSON health status for the Langfuse web service. Appending <code>?failIfDatabaseUnavailable=true</code> to the URL also checks the database connection.</p>
 <h2>Step 6: vLLM</h2>
 <p>vLLM provides high-throughput serving for self-hosted models. Installation requires a Linux system with NVIDIA GPU drivers and CUDA toolkit.</p>
 <pre><code class="language-bash">pip install vllm
 </code></pre>
+<p>Llama 3.1 models are gated on Hugging Face. Accept the license on the model page, then authenticate with <code>hf auth login</code> or set the <code>HF_TOKEN</code> environment variable before the first download.</p>
 <p>Start the vLLM server with a model:</p>
 <pre><code class="language-bash">vllm serve meta-llama/Llama-3.1-70B-Instruct \
   --host 0.0.0.0 \
@@ -326,7 +309,7 @@ volumes:
   --max-model-len 8192 \
   --enable-prefix-caching
 </code></pre>
-<p>The <code>--tensor-parallel-size 4</code> flag distributes inference across 4 GPUs. Adjust based on available hardware. The <code>--enable-prefix-caching</code> flag activates KV cache reuse for shared system prompts, which is common in enterprise agent deployments.</p>
+<p>The <code>--tensor-parallel-size 4</code> flag distributes inference across 4 GPUs. Adjust based on available hardware. The 70B model holds roughly 140GB of weights in BF16 (70 billion parameters at 2 bytes each), so four GPUs need at least 48GB each; a single 24GB GPU can serve <code>meta-llama/Llama-3.1-8B-Instruct</code> instead. The <code>--enable-prefix-caching</code> flag activates KV cache reuse for shared system prompts, which is common in enterprise agent deployments.</p>
 <p><strong>Verification</strong>:</p>
 <pre><code class="language-bash">curl http://localhost:8000/v1/models
 </code></pre>
@@ -346,7 +329,7 @@ volumes:
 </code></pre>
 <p>A minimal supervised fine-tuning script demonstrates the pipeline. Save as <code>scripts/finetune.py</code>:</p>
 <pre><code class="language-python">from datasets import load_dataset
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 from peft import LoraConfig
 from trl import SFTTrainer, SFTConfig
 
@@ -356,7 +339,7 @@ OUTPUT_DIR = &quot;./fine-tuned-model&quot;
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_NAME,
-    load_in_4bit=True,
+    quantization_config=BitsAndBytesConfig(load_in_4bit=True),
     device_map=&quot;auto&quot;
 )
 
@@ -386,7 +369,7 @@ trainer = SFTTrainer(
     train_dataset=dataset,
     peft_config=lora_config,
     args=training_config,
-    tokenizer=tokenizer,
+    processing_class=tokenizer,
 )
 
 trainer.train()
@@ -409,7 +392,8 @@ print(f&quot;PEFT: {peft.__version__}&quot;)
 <p>Save the following script as <code>scripts/enterprise_agent.py</code>. It configures a LangChain agent to route model calls through LiteLLM and export traces to Langfuse:</p>
 <pre><code class="language-python">from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage, SystemMessage
-from langfuse.callback import CallbackHandler as LangfuseHandler
+from langfuse import Langfuse
+from langfuse.langchain import CallbackHandler as LangfuseHandler
 
 litellm_model = ChatOpenAI(
     model=&quot;gpt-4o&quot;,
@@ -418,11 +402,12 @@ litellm_model = ChatOpenAI(
     temperature=0
 )
 
-langfuse_handler = LangfuseHandler(
+Langfuse(
     public_key=&quot;pk-lf-...&quot;,
     secret_key=&quot;sk-lf-...&quot;,
-    host=&quot;http://localhost:3000&quot;
+    base_url=&quot;http://localhost:3000&quot;
 )
+langfuse_handler = LangfuseHandler()
 
 messages = [
     SystemMessage(content=&quot;Provide concise, factual responses.&quot;),
@@ -443,7 +428,8 @@ print(&quot;Trace exported to Langfuse.&quot;)
 from langgraph.checkpoint.sqlite import SqliteSaver
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage, SystemMessage
-from langfuse.callback import CallbackHandler as LangfuseHandler
+from langfuse import Langfuse
+from langfuse.langchain import CallbackHandler as LangfuseHandler
 from typing import TypedDict
 
 class WorkflowState(TypedDict):
@@ -457,11 +443,12 @@ llm = ChatOpenAI(
     api_key=&quot;sk-litellm-team-key&quot;
 )
 
-langfuse_handler = LangfuseHandler(
+Langfuse(
     public_key=&quot;pk-lf-...&quot;,
     secret_key=&quot;sk-lf-...&quot;,
-    host=&quot;http://localhost:3000&quot;
+    base_url=&quot;http://localhost:3000&quot;
 )
+langfuse_handler = LangfuseHandler()
 
 def research_agent(state: WorkflowState) -&gt; WorkflowState:
     messages = [
@@ -486,13 +473,13 @@ graph.add_edge(START, &quot;research&quot;)
 graph.add_edge(&quot;research&quot;, &quot;writing&quot;)
 graph.add_edge(&quot;writing&quot;, END)
 
-checkpointer = SqliteSaver.from_conn_string(&quot;enterprise_workflow.db&quot;)
-app = graph.compile(checkpointer=checkpointer)
+with SqliteSaver.from_conn_string(&quot;enterprise_workflow.db&quot;) as checkpointer:
+    app = graph.compile(checkpointer=checkpointer)
 
-result = app.invoke(
-    {&quot;task&quot;: &quot;Analyze the tradeoffs of self-hosted vs commercial LLM serving&quot;},
-    config={&quot;configurable&quot;: {&quot;thread_id&quot;: &quot;demo-001&quot;}}
-)
+    result = app.invoke(
+        {&quot;task&quot;: &quot;Analyze the tradeoffs of self-hosted vs commercial LLM serving&quot;},
+        config={&quot;configurable&quot;: {&quot;thread_id&quot;: &quot;demo-001&quot;}}
+    )
 
 print(&quot;Final output:&quot;)
 print(result[&quot;final_output&quot;])
@@ -620,7 +607,7 @@ client.close()
 <div class="blog-pagination">
       <a href="enterprise-agentic-pipeline-configuration.html" class="pagination-link prev">
         <span class="pagination-label">Previous</span>
-        <span class="pagination-title">[Enterprise Agentic Pipeline](guide-enterprise-agentic-pipeline.html)</span>
+        <span class="pagination-title">Enterprise Agentic Pipeline</span>
       </a><div style="flex: 1;"></div></div>
         </article>
     </div>

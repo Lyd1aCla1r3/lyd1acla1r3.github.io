@@ -1,4 +1,4 @@
-# [Enterprise Agentic Pipeline](guide-enterprise-agentic-pipeline.html)
+# Enterprise Agentic Pipeline
 
 <!-- SUMMARY: A complete configuration walkthrough assembling LangChain, LangGraph, MCP servers, LiteLLM, Weaviate, Unstructured, Langfuse, vLLM, and HF TRL into a governed multi-agent system for enterprise engineering organizations. The architecture introduces orchestrated agent coordination, gateway-enforced cost and compliance controls, production observability, and a closed-loop fine-tuning pipeline that the solo developer configuration intentionally omitted. -->
 
@@ -10,7 +10,7 @@ An engineering organization needs a governed, multi-agent system that routes req
 
 The requirements span nine ecosystem layers. The system must coordinate multiple specialized agents through an orchestrator that tracks workflow state and supports human approval gates. A unified gateway must abstract away provider-specific APIs, enforce team-level budget caps, and route traffic between commercial endpoints and self-hosted models based on cost, latency, and data-sensitivity policies. The knowledge pipeline must handle enterprise document formats, including scanned PDFs, PowerPoint decks, and HTML archives, at volumes measured in hundreds of thousands of documents. The vector database must support multi-tenant isolation so that different teams' proprietary data remains separated. Observability must trace every model call, tool invocation, token cost, and latency measurement across the full execution path, with export to enterprise monitoring systems. A fine-tuning pipeline must convert production traces into training datasets, produce specialized models, and deploy them alongside the base models for A/B comparison.
 
-The solo developer configuration intentionally omitted six of these nine layers. This configuration fills every gap.
+The solo developer configuration intentionally omitted five of these nine layers. This configuration fills every gap.
 
 ## Architecture Overview
 
@@ -48,15 +48,15 @@ Langfuse traces span all four zones. Dotted lines in the diagram represent obser
 
 ### Framework Layer: LangChain
 
-LangChain, profiled in the Agent Frameworks Compared post, provides the broadest integration surface in the framework category. Its chain and agent abstractions standardize how applications construct prompts, invoke tools, and process model responses across providers. The mature ecosystem includes pre-built integrations with every tool in this configuration: Weaviate retrievers, LiteLLM model wrappers, MCP tool adapters via `@langchain/mcp-adapters`, and Langfuse callback handlers.
+LangChain, profiled in the Agent Frameworks Compared post, provides the broadest integration surface in the framework category. Its chain and agent abstractions standardize how applications construct prompts, invoke tools, and process model responses across providers. The mature ecosystem includes pre-built integrations with every tool in this configuration: Weaviate retrievers, LiteLLM model wrappers, MCP tool adapters via `langchain-mcp-adapters`, and Langfuse callback handlers.
 
-For an enterprise configuration, LangChain's integration breadth matters more than raw framework performance. An organization standardizing on LangChain gains a common programming model across teams, a shared library of tool integrations, and the ability to swap underlying components without rewriting application logic. If the organization later migrates from Weaviate to Pinecone, or from LiteLLM to Portkey, the change is confined to a configuration swap rather than an application rewrite.
+For an enterprise configuration, LangChain's integration breadth matters more than raw framework performance. An organization standardizing on LangChain gains a common programming model across teams, a shared library of tool integrations, and the ability to swap underlying components without rewriting application logic. A later migration from Weaviate to Pinecone, or from LiteLLM to Portkey, stays confined to a configuration swap rather than an application rewrite.
 
 ### Orchestrator Layer: LangGraph
 
 LangGraph, profiled in the Agent Orchestrators Compared post, extends LangChain with persistent state management and graph-based workflow orchestration. Where LangChain provides the building blocks for individual agents, LangGraph provides the control plane that coordinates multiple agents across multi-step workflows.
 
-Three LangGraph capabilities address enterprise-specific requirements. First, persistent state: LangGraph checkpoints the full workflow state after every node execution, enabling recovery from failures without re-running completed steps. If an agent in step 7 of a 15-step workflow encounters a transient API error, the orchestrator resumes from step 7 after the error resolves rather than restarting from step 1. Second, human-in-the-loop gates: LangGraph supports interrupt nodes that pause workflow execution and wait for human approval before proceeding. A financial analysis workflow can generate a report draft and then pause for a compliance officer's sign-off before the final agent distributes the report. Third, parallel branching: LangGraph executes independent subtasks concurrently, reducing end-to-end latency for workflows where multiple agents can operate simultaneously.
+Three LangGraph capabilities address enterprise-specific requirements. First, persistent state: LangGraph checkpoints the full workflow state after every node execution, enabling recovery from failures without re-running completed steps. The orchestrator resumes a 15-step workflow from step 7 after a transient API error in that step resolves, rather than restarting from step 1. Second, human-in-the-loop gates: LangGraph supports interrupt nodes that pause workflow execution and wait for human approval before proceeding. A financial analysis workflow can generate a report draft and then pause for a compliance officer's sign-off before the final agent distributes the report. Third, parallel branching: LangGraph executes independent subtasks concurrently, reducing end-to-end latency for workflows where multiple agents can operate simultaneously.
 
 ### Connectivity Layer: MCP Servers
 
@@ -70,7 +70,7 @@ LiteLLM, profiled in the Connectivity and Routing post, provides the unified gat
 
 **Multi-provider abstraction**: LiteLLM translates a single OpenAI-compatible API call into provider-specific requests for OpenAI, Anthropic, AWS Bedrock, Google Vertex AI, Azure OpenAI, and self-hosted vLLM endpoints. Agents and framework code never import a provider-specific SDK; every model call passes through LiteLLM's unified interface.
 
-**Cost governance**: LiteLLM generates virtual API keys for each team, enabling per-team budget caps, spend tracking, and usage analytics. A platform team distributes virtual keys to the research, engineering, and product teams, each with monthly spend limits. When a team approaches its budget cap, LiteLLM throttles or rejects requests rather than allowing unbounded spend against the organization's provider accounts.
+**Cost governance**: LiteLLM generates virtual API keys for each team, enabling per-team budget caps, spend tracking, and usage analytics. A platform team distributes virtual keys to the research, engineering, and product teams, each with monthly spend limits. LiteLLM rejects further requests from a team that exceeds its budget cap rather than allowing unbounded spend against the organization's provider accounts.
 
 **Routing policy**: LiteLLM routes requests based on configurable rules. Requests involving sensitive data route to the self-hosted vLLM deployment, which keeps data within the network perimeter. General-purpose requests route to commercial APIs for higher throughput. Fallback rules redirect traffic when a provider experiences an outage.
 
@@ -80,7 +80,7 @@ LiteLLM, profiled in the Connectivity and Routing post, provides the unified gat
 
 Weaviate, profiled in the Data Infrastructure post, provides the vector database layer for enterprise retrieval-augmented generation. Two Weaviate capabilities differentiate it from the solo developer configuration's ChromaDB deployment.
 
-**Multi-tenancy**: Weaviate isolates tenant data at the storage level, ensuring that the legal team's contract embeddings and the engineering team's codebase embeddings occupy separate partitions. Queries execute within a single tenant's partition by default, preventing cross-contamination of retrieval results. ChromaDB's embedded mode does not provide this isolation.
+**Multi-tenancy**: Weaviate isolates tenant data at the storage level, ensuring that the legal team's contract embeddings and the engineering team's codebase embeddings occupy separate partitions. Queries execute within a single tenant's partition by default, preventing cross-contamination of retrieval results. ChromaDB's embedded mode offers logical tenant and database namespaces inside a single local store rather than this per-tenant storage partitioning.
 
 **Hybrid search**: Weaviate combines dense vector search with BM25 keyword search in a single query. Dense vectors excel at semantic similarity, finding documents that discuss the same concept in different words. BM25 excels at exact keyword matching, finding documents that contain a specific product name, error code, or identifier. Enterprise knowledge bases contain both types of queries. A support agent searching for "authentication timeout errors in the billing module" benefits from semantic similarity for "authentication timeout" and exact keyword matching for "billing module."
 
@@ -98,13 +98,13 @@ The Unstructured-to-Weaviate pipeline mirrors the Docling-to-ChromaDB pipeline f
 
 Langfuse, profiled in the Runtime Infrastructure post, provides the observability backbone for the entire enterprise pipeline. In this configuration, Langfuse serves three functions beyond basic tracing.
 
-**Governance audit trails**: Every model interaction across the organization, including the full prompt, the complete response, the token count, the cost, and the latency, is captured in Langfuse's trace store. Compliance teams can query these traces to verify that agents operated within policy boundaries during any specific time window. The traces are immutable once recorded, providing a tamper-evident audit log.
+**Governance audit trails**: Every model interaction across the organization, including the full prompt, the complete response, the token count, the cost, and the latency, is captured in Langfuse's trace store. Compliance teams can query these traces to verify that agents operated within policy boundaries during any specific time window. Traces remain in the store until a user deletes them through the Langfuse UI or API, so the trace store serves as an audit log only when deletion rights stay restricted to a small administrator group.
 
 **Cost attribution**: Langfuse receives cost data from LiteLLM's callback integration and maps it to specific users, teams, and applications using session and trace metadata. Monthly cost reports break down spending by team, model, and use case, enabling the platform team to identify cost hotspots and optimize routing policies.
 
 **Dataset curation for fine-tuning**: Langfuse's production traces provide the raw material for fine-tuning datasets. The platform team identifies high-quality agent interactions from production traces, annotates them as training examples, and exports them as structured datasets. This trace-to-training pipeline is the first step in the fine-tuning feedback loop described in the model lifecycle section below.
 
-Langfuse runs self-hosted and exports OpenTelemetry data to the organization's existing monitoring infrastructure, whether Datadog, Splunk, Grafana, or another backend. LangChain, LangGraph, and LiteLLM all provide native Langfuse integrations through callback handlers.
+Langfuse runs self-hosted and ingests OpenTelemetry traces. An OpenTelemetry Collector can send the same spans to both Langfuse and the organization's existing monitoring backend, whether Datadog, Splunk, Grafana, or another system, and Langfuse's scheduled blob storage export delivers trace data to data warehouse pipelines. LangChain, LangGraph, and LiteLLM all provide native Langfuse integrations through callback handlers.
 
 ### Serving Layer: vLLM
 
@@ -124,7 +124,7 @@ HF TRL, profiled in the Runtime Infrastructure post, provides the training pipel
 
 **Stage 3: Training**: TRL runs supervised fine-tuning on the curated instruction dataset, optionally followed by Direct Preference Optimization (DPO) on the preference pairs. PEFT's LoRA adapters keep GPU memory requirements manageable, enabling fine-tuning on a small cluster of GPUs rather than requiring datacenter-scale hardware.
 
-**Stage 4: Deployment**: The fine-tuned model checkpoint loads into vLLM as an additional endpoint. LiteLLM's routing policy allocates a percentage of traffic to the fine-tuned model while the remaining traffic continues to use the base model. Langfuse traces from both models feed back into the evaluation pipeline, enabling data-driven comparison of base versus fine-tuned performance. If the fine-tuned model outperforms the base model on the evaluation metrics, the routing policy shifts more traffic to the fine-tuned variant.
+**Stage 4: Deployment**: The fine-tuned model checkpoint loads into vLLM as an additional endpoint. LiteLLM's routing policy allocates a percentage of traffic to the fine-tuned model while the remaining traffic continues to use the base model. Langfuse traces from both models feed back into the evaluation pipeline, enabling data-driven comparison of base versus fine-tuned performance. The routing policy shifts more traffic to the fine-tuned variant when it outperforms the base model on the evaluation metrics.
 
 ## Integration Walkthrough
 
@@ -134,11 +134,11 @@ The components wire together through five integration paths.
 
 **LangChain agents to LiteLLM**: Each LangChain agent is configured with a LiteLLM model wrapper that points to the LiteLLM proxy endpoint rather than a provider-specific API. The agent code contains no provider-specific imports or API keys. LiteLLM receives the request, applies routing rules to select the target provider or self-hosted endpoint, attaches the real API credentials, and forwards the translated request. The response follows the reverse path through LiteLLM back to the agent.
 
-**LangChain agents to MCP servers**: LangChain's MCP adapter package discovers and binds MCP server tools at runtime. When an agent needs to query an internal database, create a Jira ticket, or access a document management system, it invokes the corresponding MCP tool. The MCP server handles the actual service interaction and returns structured results to the agent.
+**LangChain agents to MCP servers**: LangChain's MCP adapter package discovers and binds MCP server tools at runtime. An agent that needs to query an internal database, create a Jira ticket, or access a document management system invokes the corresponding MCP tool. The MCP server handles the actual service interaction and returns structured results to the agent.
 
 **Unstructured to Weaviate**: The knowledge pipeline runs as a scheduled batch process. Unstructured reads documents from the source repository, applies format-specific parsers and OCR as needed, chunks the parsed output with structure-aware boundaries, and writes the chunks to an intermediate staging store. An embedding step converts chunks to vectors using the organization's embedding model, routed through LiteLLM. The vectors load into Weaviate with tenant-specific metadata, making them available for retrieval by LangChain agents operating within that tenant's scope.
 
-**Langfuse across all layers**: Langfuse callback handlers attach to LangChain agents, LangGraph's orchestrator, and LiteLLM's proxy. Every model call, tool invocation, and orchestration decision emits a trace span to Langfuse. The callback configuration happens once at application initialization; individual agent code does not need explicit trace instrumentation. Langfuse's OpenTelemetry exporter forwards aggregated metrics and trace data to the organization's central monitoring system.
+**Langfuse across all layers**: Langfuse callback handlers attach to LangChain agents, LangGraph's orchestrator, and LiteLLM's proxy. Every model call, tool invocation, and orchestration decision emits a trace span to Langfuse. The callback configuration happens once at application initialization; individual agent code does not need explicit trace instrumentation. An OpenTelemetry Collector placed in front of Langfuse can forward the same trace data to the organization's central monitoring system.
 
 ## Tradeoffs and Alternatives
 
@@ -146,7 +146,7 @@ This configuration optimizes for governance, observability, and multi-team coord
 
 The primary cost is operational complexity. Running LangGraph, LiteLLM, Weaviate, vLLM, Langfuse, and the Unstructured pipeline each require dedicated infrastructure, monitoring, and maintenance. A platform engineering team is necessary to operate this stack; no single developer can reasonably manage all nine components. The infrastructure footprint includes GPU servers for vLLM, a database backend for LangGraph's state persistence, storage for Weaviate's vector indices, and a server for Langfuse's trace store.
 
-The second cost is latency. Every request traverses multiple network hops: from the application to LangGraph, from LangGraph to a LangChain agent, from the agent through LiteLLM to the model provider, and back through the same chain. Observability callbacks add processing overhead at each hop. For latency-sensitive applications, the overhead of full-stack tracing and gateway routing is measurable, typically adding 10-50ms of end-to-end latency per request.
+The second cost is latency. Every request traverses multiple network hops: from the application to LangGraph, from LangGraph to a LangChain agent, from the agent through LiteLLM to the model provider, and back through the same chain. Observability callbacks add processing overhead at each hop. For latency-sensitive applications, the overhead of full-stack tracing and gateway routing is measurable and adds to the end-to-end latency of every request.
 
 **Alternative substitutions at each layer**:
 

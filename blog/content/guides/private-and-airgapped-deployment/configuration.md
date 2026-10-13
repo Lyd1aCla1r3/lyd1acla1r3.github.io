@@ -1,4 +1,4 @@
-# [Private and Airgapped Deployment](guide-private-and-airgapped-deployment.html)
+# Private and Airgapped Deployment
 
 <!-- SUMMARY: A complete configuration walkthrough assembling LlamaIndex, LangGraph, MCP servers, LiteLLM, vLLM, SGLang, Qdrant, Docling, Arize Phoenix, and Unsloth into a self-contained AI system that operates entirely within a network perimeter with zero external connectivity. The architecture replaces every commercial API dependency from the enterprise pipeline with self-hosted alternatives, addresses offline model acquisition, and closes the fine-tuning loop entirely on-premises. -->
 
@@ -99,7 +99,7 @@ The enterprise pipeline used Weaviate for its multi-tenancy and hybrid search ca
 
 Docling, profiled in the Data Infrastructure post, handles document parsing with the same local-only execution model used in the solo developer configuration. In the airgapped context, Docling's value extends beyond convenience: it is a hard requirement. Cloud-based parsers like LlamaParse and Unstructured's managed API are categorically unavailable in an airgapped environment. The enterprise pipeline's use of Unstructured relied on the open-source library rather than the managed service, making it a viable alternative here. Docling is selected for this configuration because its compact vision models download once during pre-deployment staging and run without any network access, and its parsing quality for PDF and DOCX formats matches the requirements of a typical internal document collection.
 
-The Docling-to-Qdrant pipeline follows the same pattern as the Docling-to-ChromaDB pipeline from the solo developer configuration: Docling parses raw documents into clean Markdown, a chunking step splits the output into retrieval-sized segments, an embedding model converts chunks to vectors using a locally served model through LiteLLM, and the vectors load into Qdrant with metadata tags for document provenance, classification level, and ingestion timestamp.
+The Docling-to-Qdrant pipeline follows the same pattern as the Docling-to-ChromaDB pipeline from the solo developer configuration: Docling parses raw documents into clean Markdown, a chunking step splits the output into retrieval-sized segments, an embedding model loaded from locally stored weights converts chunks to vectors, and the vectors load into Qdrant with metadata tags for document provenance, classification level, and ingestion timestamp.
 
 ### Observability Layer: Arize Phoenix
 
@@ -111,7 +111,7 @@ For audit compliance, Phoenix captures trace data for every model call, tool inv
 
 ### Fine-Tuning Layer: Unsloth
 
-Unsloth, profiled in the Runtime Infrastructure post, provides memory-efficient fine-tuning for open-weight models. Unsloth's custom CUDA kernels reduce GPU memory consumption during training, enabling fine-tuning of models with tens of billions of parameters on hardware that would otherwise require model parallelism or cloud GPU rental.
+Unsloth, profiled in the Runtime Infrastructure post, provides memory-efficient fine-tuning for open-weight models. Unsloth's custom Triton kernels reduce GPU memory consumption during training, enabling fine-tuning of models with tens of billions of parameters on hardware that would otherwise require model parallelism or cloud GPU rental.
 
 In an airgapped deployment, fine-tuning serves a specific purpose: adapting base open-weight models to the organization's domain vocabulary, document formats, and task patterns using training data that cannot leave the premises. Unsloth's LoRA and QLoRA support produces lightweight adapter weights rather than full model copies, reducing storage requirements and enabling rapid iteration on specialized model variants.
 
@@ -125,9 +125,9 @@ The components wire together through five integration paths, each operating enti
 
 **LlamaIndex agents to LiteLLM**: Each LlamaIndex agent is configured with a LiteLLM-backed LLM client pointing to the local LiteLLM proxy endpoint. The agent code contains no model-specific imports; all inference requests pass through LiteLLM's OpenAI-compatible API. LiteLLM selects the target serving engine based on the model name: general-purpose models route to vLLM, and structured-output models route to SGLang. The response returns through LiteLLM to the agent.
 
-**LlamaIndex agents to Qdrant**: LlamaIndex's `QdrantVectorStore` integration connects retrieval pipelines directly to the local Qdrant instance. When an agent receives a query, the query engine generates an embedding through the locally served embedding model, searches the appropriate Qdrant collection, retrieves the top-ranked document chunks, and passes them to the LLM as context for answer generation. The entire retrieval path runs on local infrastructure.
+**LlamaIndex agents to Qdrant**: LlamaIndex's `QdrantVectorStore` integration connects retrieval pipelines directly to the local Qdrant instance. For each incoming query, the agent's query engine generates an embedding through the locally served embedding model, searches the appropriate Qdrant collection, retrieves the top-ranked document chunks, and passes them to the LLM as context for answer generation. The entire retrieval path runs on local infrastructure.
 
-**Docling to Qdrant**: The knowledge pipeline runs as a batch process triggered during document ingestion windows. Docling parses raw documents from the approved document repository, a chunking module splits parsed output into segments sized for retrieval, an embedding model running through LiteLLM converts chunks to vectors, and the vectors load into Qdrant with provenance metadata. New document batches arrive through the air-gap transfer process, typically via approved physical media, and the ingestion pipeline processes them on the internal network.
+**Docling to Qdrant**: The knowledge pipeline runs as a batch process triggered during document ingestion windows. Docling parses raw documents from the approved document repository, a chunking module splits parsed output into segments sized for retrieval, an embedding model loaded from locally stored weights converts chunks to vectors, and the vectors load into Qdrant with provenance metadata. New document batches arrive through the air-gap transfer process, typically via approved physical media, and the ingestion pipeline processes them on the internal network.
 
 **Arize Phoenix across all layers**: Phoenix's tracing integration collects spans from LlamaIndex agents, LangGraph orchestration decisions, and LiteLLM gateway operations. The configuration requires setting Phoenix environment variables at application startup, after which all instrumented components emit traces automatically. Phoenix stores traces in its local backend, provides a web dashboard accessible within the internal network, and supports export to external monitoring systems through standard formats.
 

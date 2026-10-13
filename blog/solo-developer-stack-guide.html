@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>[Solo Developer Stack](guide-solo-developer-stack.html): Setup Guide — Lydia Pedersen</title>
+  <title>Solo Developer Stack: Setup Guide — Lydia Pedersen</title>
   <link rel="stylesheet" href="../css/styles.css?v=1.2">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
   <style>
@@ -115,15 +115,16 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="guide-solo-developer-stack.html">Guides: Solo Developer Stack</a></li><li aria-current="page">[Solo Developer Stack](guide-solo-developer-stack.html): Setup Guide</li></ol></nav>
+    <li><a href="index.html">Blog</a></li><li><a href="guide-solo-developer-stack.html">Guides: Solo Developer Stack</a></li><li aria-current="page">Solo Developer Stack: Setup Guide</li></ol></nav>
         <article class="blog-post ">
-<h1><a href="guide-solo-developer-stack.html">Solo Developer Stack</a>: Setup Guide</h1>
-<!-- SUMMARY: A step-by-step installation and configuration guide for assembling the [Solo Developer Stack](guide-solo-developer-stack.html), covering Claude Code setup, MCP server configuration, Ollama local inference, ChromaDB vector storage, and Docling document parsing, with end-to-end verification commands confirming the full system operates correctly. --><p>The <a href="guide-solo-developer-stack.html">Solo Developer Stack</a> architecture chapter explains the rationale behind each component selection and how the pieces interconnect. This guide provides the concrete installation commands, configuration snippets, and wiring steps needed to bring that architecture to a working state on a single development machine.</p>
+<h1>Solo Developer Stack: Setup Guide</h1>
+<!-- SUMMARY: A step-by-step installation and configuration guide for assembling the Solo Developer Stack, covering Claude Code setup, MCP server configuration, Ollama local inference, ChromaDB vector storage, and Docling document parsing, with end-to-end verification commands confirming the full system operates correctly. --><p>The <a href="guide-solo-developer-stack.html">Solo Developer Stack</a> architecture chapter explains the rationale behind each component selection and how the pieces interconnect. This guide provides the concrete installation commands, configuration snippets, and wiring steps needed to bring that architecture to a working state on a single development machine.</p>
 <h2>Prerequisites</h2>
 <ul>
 <li><strong>Operating system</strong>: macOS, Linux, or Windows with WSL2</li>
 <li><strong>Python</strong>: Version 3.10 or later, with <code>pip</code> available</li>
-<li><strong>Node.js</strong>: Version 18 or later, with <code>npx</code> available</li>
+<li><strong>Node.js</strong>: Version 22 or later, with <code>npx</code> available</li>
+<li><strong>uv</strong>: The Python package manager, which provides the <code>uvx</code> runner used to launch the Git MCP server (<code>brew install uv</code> or <code>pip install uv</code>)</li>
 <li><strong>Hardware</strong>: At least 16GB of RAM for running local models alongside development tools. A GPU is beneficial for Ollama inference speed but not strictly required; Apple Silicon and CPU-only configurations are supported.</li>
 <li><strong>Anthropic account</strong>: An active Claude subscription or API key for Claude Code access</li>
 </ul>
@@ -131,11 +132,11 @@
 <p>Claude Code is Anthropic&#39;s terminal-native agentic coding assistant. Installation uses npm.</p>
 <pre><code class="language-bash">npm install -g @anthropic-ai/claude-code
 </code></pre>
-<p>After installation, launch Claude Code from any project directory:</p>
+<p>Launch Claude Code from any project directory after installation:</p>
 <pre><code class="language-bash">cd /path/to/project
 claude
 </code></pre>
-<p>The first launch prompts for Anthropic API authentication. Once authenticated, Claude Code operates directly in the terminal, reading and writing files, running shell commands, and reasoning about the project structure.</p>
+<p>The first launch prompts for authentication with a Claude subscription or an Anthropic API key. Claude Code then operates directly in the terminal, reading and writing files, running shell commands, and reasoning about the project structure.</p>
 <p><strong>Verification</strong>:</p>
 <pre><code class="language-bash">claude --version
 </code></pre>
@@ -154,10 +155,9 @@ claude
       ]
     },
     &quot;git&quot;: {
-      &quot;command&quot;: &quot;npx&quot;,
+      &quot;command&quot;: &quot;uvx&quot;,
       &quot;args&quot;: [
-        &quot;-y&quot;,
-        &quot;@modelcontextprotocol/server-git&quot;,
+        &quot;mcp-server-git&quot;,
         &quot;--repository&quot;,
         &quot;/path/to/project&quot;
       ]
@@ -166,7 +166,7 @@ claude
       &quot;command&quot;: &quot;npx&quot;,
       &quot;args&quot;: [
         &quot;-y&quot;,
-        &quot;@modelcontextprotocol/server-web-search&quot;
+        &quot;@brave/brave-search-mcp-server&quot;
       ],
       &quot;env&quot;: {
         &quot;BRAVE_API_KEY&quot;: &quot;your-brave-api-key-here&quot;
@@ -175,7 +175,7 @@ claude
   }
 }
 </code></pre>
-<p>Replace <code>/path/to/project</code> with the actual project directory path. The web search server requires a Brave Search API key, which is available at no cost for limited usage through the Brave Search API portal.</p>
+<p>Replace <code>/path/to/project</code> with the actual project directory path. The Git server is distributed as a Python package, so <code>uvx</code> downloads and launches it on demand without a separate install step. The web search server is Brave&#39;s maintained MCP server, which runs over <code>stdio</code> by default and requires a Brave Search API key from the Brave Search API portal, where a recurring monthly credit covers light personal usage.</p>
 <p><strong>Verification</strong>:</p>
 <p>Launch Claude Code in the project directory and ask it to list the available MCP tools:</p>
 <pre><code class="language-bash">claude
@@ -191,11 +191,11 @@ claude
 <pre><code class="language-bash">curl -fsSL https://ollama.com/install.sh | sh
 </code></pre>
 <p><strong>Windows</strong>: Download the installer from <code>https://ollama.com/download/windows</code>.</p>
-<p>After installation, start the Ollama service and pull a model:</p>
+<p>Start the Ollama service and pull a model once installation completes:</p>
 <pre><code class="language-bash">ollama serve &amp;
 ollama pull llama3.1:8b
 </code></pre>
-<p>The <code>llama3.1:8b</code> model requires approximately 4.7GB of disk space and runs on machines with 8GB or more of RAM. Developers with more capable hardware can pull larger models like <code>llama3.1:70b</code> for higher-quality local inference.</p>
+<p>The <code>llama3.1:8b</code> model requires approximately 4.9GB of disk space and runs on machines with 8GB or more of RAM. Developers with more capable hardware can pull larger models like <code>llama3.1:70b</code> for higher-quality local inference.</p>
 <p><strong>Verification</strong>:</p>
 <pre><code class="language-bash">ollama run llama3.1:8b &quot;Explain what a Dockerfile does in two sentences.&quot;
 </code></pre>
@@ -228,11 +228,11 @@ print(f&quot;Document count: {collection.count()}&quot;)
 <p>Docling parses PDFs, DOCX files, and other document formats into clean structured text. Installation uses pip.</p>
 <pre><code class="language-bash">pip install docling
 </code></pre>
-<p>The first run downloads Docling&#39;s compact vision models, approximately 800MB total. Subsequent runs use the cached models.</p>
+<p>The first conversion downloads Docling&#39;s compact layout and table-structure models. Subsequent runs use the cached models.</p>
 <p><strong>Verification</strong>:</p>
-<pre><code class="language-bash">python -c &quot;from docling.document_converter import DocumentConverter; print(&#39;Docling imported successfully.&#39;)&quot;
+<pre><code class="language-bash">python -c &quot;from docling.document_converter import DocumentConverter; print(&#39;OK&#39;)&quot;
 </code></pre>
-<p>A successful installation prints the confirmation message without errors.</p>
+<p>A successful installation prints <code>OK</code> without errors.</p>
 <h2>Wiring the Components</h2>
 <p>With all components installed individually, the final step connects them into the integrated knowledge pipeline described in the architecture chapter.</p>
 <h3>Docling-to-ChromaDB Ingestion Pipeline</h3>
@@ -274,7 +274,7 @@ def main():
     doc_files = []
     for root, dirs, files in os.walk(DOCS_DIR):
         for f in files:
-            if f.endswith((&quot;.pdf&quot;, &quot;.docx&quot;, &quot;.md&quot;, &quot;.txt&quot;)):
+            if f.endswith((&quot;.pdf&quot;, &quot;.docx&quot;, &quot;.md&quot;)):
                 doc_files.append(os.path.join(root, f))
 
     print(f&quot;Found {len(doc_files)} documents to process.&quot;)
@@ -283,9 +283,13 @@ def main():
         print(f&quot;Processing: {filepath}&quot;)
         result = converter.convert(filepath)
         text = result.document.export_to_markdown()
+        if not text.strip():
+            print(&quot;  Skipped: no extractable text.&quot;)
+            continue
         chunks = chunk_text(text)
 
-        ids = [f&quot;{os.path.basename(filepath)}_chunk_{i}&quot; for i in range(len(chunks))]
+        rel_path = os.path.relpath(filepath, DOCS_DIR)
+        ids = [f&quot;{rel_path}_chunk_{i}&quot; for i in range(len(chunks))]
         metadatas = [{&quot;source&quot;: filepath, &quot;chunk_index&quot;: i} for i in range(len(chunks))]
 
         collection.upsert(
@@ -295,7 +299,7 @@ def main():
         )
         print(f&quot;  Stored {len(chunks)} chunks.&quot;)
 
-    print(f&quot;\nTotal documents in collection: {collection.count()}&quot;)
+    print(f&quot;\nTotal chunks in collection: {collection.count()}&quot;)
 
 if __name__ == &quot;__main__&quot;:
     main()
@@ -389,7 +393,7 @@ if __name__ == &quot;__main__&quot;:
 <div class="blog-pagination">
       <a href="solo-developer-stack-configuration.html" class="pagination-link prev">
         <span class="pagination-label">Previous</span>
-        <span class="pagination-title">[Solo Developer Stack](guide-solo-developer-stack.html)</span>
+        <span class="pagination-title">Solo Developer Stack</span>
       </a><div style="flex: 1;"></div></div>
         </article>
     </div>

@@ -143,7 +143,7 @@
   llama-index-readers-web
 </code></pre>
 <p>For alternative embedding providers routed through LiteLLM, add the OpenAI-like adapter:</p>
-<pre><code class="language-bash">pip install llama-index-llms-openai-like
+<pre><code class="language-bash">pip install llama-index-embeddings-openai-like
 </code></pre>
 <p><strong>Verification</strong>:</p>
 <pre><code class="language-python">import llama_index.core
@@ -154,10 +154,14 @@ print(f&quot;LlamaIndex Core: {llama_index.core.__version__}&quot;)
 <p>Pinecone provides the managed vector database. Install the Python client:</p>
 <pre><code class="language-bash">pip install pinecone
 </code></pre>
+<p>Set the Pinecone API key, which the index creation code and the wiring scripts read from the environment:</p>
+<pre><code class="language-bash">export PINECONE_API_KEY=&quot;pcsk_...&quot;
+</code></pre>
 <p>Create an index in the Pinecone console or programmatically:</p>
-<pre><code class="language-python">from pinecone import Pinecone, ServerlessSpec
+<pre><code class="language-python">import os
+from pinecone import Pinecone, ServerlessSpec
 
-pc = Pinecone(api_key=&quot;PINECONE_API_KEY&quot;)
+pc = Pinecone(api_key=os.environ[&quot;PINECONE_API_KEY&quot;])
 
 pc.create_index(
     name=&quot;knowledge-base&quot;,
@@ -175,12 +179,12 @@ print(f&quot;Index &#39;knowledge-base&#39; created: {stats.total_vector_count} 
 </code></pre>
 <p>The <code>dimension=1536</code> parameter matches the output dimension of OpenAI&#39;s <code>text-embedding-3-small</code> model. Adjust if using a different embedding model. The metric should match the embedding model&#39;s recommended similarity function.</p>
 <p><strong>Verification</strong>:</p>
-<pre><code class="language-bash">python -c &quot;from pinecone import Pinecone; pc = Pinecone(api_key=&#39;PINECONE_API_KEY&#39;); print(pc.list_indexes())&quot;
+<pre><code class="language-bash">python -c &quot;import os; from pinecone import Pinecone; pc = Pinecone(api_key=os.environ[&#39;PINECONE_API_KEY&#39;]); print(pc.list_indexes())&quot;
 </code></pre>
 <p>A successful deployment prints the list of available indexes including <code>knowledge-base</code>.</p>
 <h2>Step 3: LiteLLM Gateway</h2>
 <p>LiteLLM provides unified routing for both generation and embedding model calls. Install the proxy:</p>
-<pre><code class="language-bash">pip install litellm uvicorn
+<pre><code class="language-bash">pip install &#39;litellm[proxy]&#39;
 </code></pre>
 <p>Create <code>litellm_config.yaml</code> with generation and embedding model entries:</p>
 <pre><code class="language-yaml">model_list:
@@ -191,7 +195,7 @@ print(f&quot;Index &#39;knowledge-base&#39; created: {stats.total_vector_count} 
 
   - model_name: claude-sonnet
     litellm_params:
-      model: anthropic/claude-sonnet-4-20250514
+      model: anthropic/claude-sonnet-5-5
       api_key: os.environ/ANTHROPIC_API_KEY
 
   - model_name: text-embedding-3-small
@@ -200,17 +204,18 @@ print(f&quot;Index &#39;knowledge-base&#39; created: {stats.total_vector_count} 
       api_key: os.environ/OPENAI_API_KEY
 
 litellm_settings:
-  success_callback: [&quot;braintrust&quot;]
+  callbacks: [&quot;braintrust&quot;]
   max_budget: 500
   budget_duration: 30d
 
 general_settings:
   master_key: sk-rag-master-key
 </code></pre>
+<p>LiteLLM enforces <code>max_budget</code> against spend recorded in its Postgres database, so the budget cap takes effect only after <code>DATABASE_URL</code> points the proxy at a Postgres instance. A proxy started without a database skips the global budget check and keeps serving requests past the limit.</p>
 <p>Set environment variables:</p>
 <pre><code class="language-bash">export OPENAI_API_KEY=&quot;sk-...&quot;
 export ANTHROPIC_API_KEY=&quot;sk-ant-...&quot;
-export BRAINTRUST_API_KEY=&quot;br-...&quot;
+export BRAINTRUST_API_KEY=&quot;sk-...&quot;
 </code></pre>
 <p>Start the LiteLLM proxy:</p>
 <pre><code class="language-bash">litellm --config litellm_config.yaml --host 0.0.0.0 --port 4000
@@ -221,29 +226,32 @@ export BRAINTRUST_API_KEY=&quot;br-...&quot;
 </code></pre>
 <p>A successful deployment returns a JSON list of the configured models.</p>
 <h2>Step 4: LlamaParse</h2>
-<p>LlamaParse provides cloud-based document parsing for PDFs and structured documents. Install the client:</p>
-<pre><code class="language-bash">pip install llama-parse
+<p>LlamaParse provides cloud-based document parsing for PDFs and structured documents. The standalone <code>llama-parse</code> package is deprecated, and LlamaIndex directs Python users to the <code>llama-cloud</code> SDK, which exposes LlamaParse through its parsing API. Install the client:</p>
+<pre><code class="language-bash">pip install &quot;llama-cloud&gt;=1.0&quot;
 </code></pre>
 <p>Set the LlamaCloud API key:</p>
 <pre><code class="language-bash">export LLAMA_CLOUD_API_KEY=&quot;llx-...&quot;
 </code></pre>
 <p>Test parsing with a sample document:</p>
-<pre><code class="language-python">from llama_parse import LlamaParse
+<pre><code class="language-python">from llama_cloud import LlamaCloud
 
-parser = LlamaParse(
-    result_type=&quot;markdown&quot;,
-    num_workers=4,
-    verbose=True,
+client = LlamaCloud()  # reads LLAMA_CLOUD_API_KEY from the environment
+
+result = client.parsing.parse(
+    upload_file=&quot;sample_document.pdf&quot;,
+    tier=&quot;agentic&quot;,
+    version=&quot;latest&quot;,
+    expand=[&quot;markdown&quot;],
 )
 
-documents = parser.load_data(&quot;sample_document.pdf&quot;)
-print(f&quot;Parsed {len(documents)} document sections.&quot;)
-print(f&quot;First section preview: {documents[0].text[:200]}&quot;)
+pages = [page.markdown for page in result.markdown.pages if page.success]
+print(f&quot;Parsed {len(pages)} pages.&quot;)
+print(f&quot;First page preview: {pages[0][:200]}&quot;)
 </code></pre>
-<p>LlamaParse returns parsed content as LlamaIndex <code>Document</code> objects, making them directly compatible with the LlamaIndex indexing pipeline without format conversion.</p>
+<p>LlamaParse returns parsed content as per-page Markdown, which the ingestion script below wraps in LlamaIndex <code>Document</code> objects so that it flows directly into the LlamaIndex indexing pipeline.</p>
 <p><strong>Verification</strong>:</p>
-<pre><code class="language-python">from llama_parse import LlamaParse
-print(&quot;LlamaParse imported successfully.&quot;)
+<pre><code class="language-python">from llama_cloud import LlamaCloud
+print(&quot;LlamaCloud SDK imported successfully.&quot;)
 </code></pre>
 <p>A successful installation prints the confirmation message. Full verification requires parsing a test PDF and confirming structured Markdown output.</p>
 <h2>Step 5: Firecrawl</h2>
@@ -254,32 +262,32 @@ print(&quot;LlamaParse imported successfully.&quot;)
 <pre><code class="language-bash">export FIRECRAWL_API_KEY=&quot;fc-...&quot;
 </code></pre>
 <p>Test crawling with a documentation site:</p>
-<pre><code class="language-python">from firecrawl import FirecrawlApp
+<pre><code class="language-python">from firecrawl import Firecrawl
 
-app = FirecrawlApp(api_key=&quot;fc-...&quot;)
+app = Firecrawl(api_key=&quot;fc-...&quot;)
 
-result = app.scrape_url(
-    url=&quot;https://docs.example.com/getting-started&quot;,
-    params={&quot;formats&quot;: [&quot;markdown&quot;]}
+result = app.scrape(
+    &quot;https://docs.example.com/getting-started&quot;,
+    formats=[&quot;markdown&quot;],
 )
 
-print(f&quot;Title: {result.get(&#39;metadata&#39;, {}).get(&#39;title&#39;, &#39;N/A&#39;)}&quot;)
-print(f&quot;Content length: {len(result.get(&#39;markdown&#39;, &#39;&#39;))} characters&quot;)
+print(f&quot;Title: {result.metadata.title if result.metadata else &#39;N/A&#39;}&quot;)
+print(f&quot;Content length: {len(result.markdown or &#39;&#39;)} characters&quot;)
 </code></pre>
 <p>For crawling an entire documentation site:</p>
-<pre><code class="language-python">crawl_result = app.crawl_url(
-    url=&quot;https://docs.example.com&quot;,
-    params={
-        &quot;limit&quot;: 100,
-        &quot;scrapeOptions&quot;: {&quot;formats&quot;: [&quot;markdown&quot;]}
-    },
-    poll_interval=5
+<pre><code class="language-python">from firecrawl.types import ScrapeOptions
+
+crawl_result = app.crawl(
+    &quot;https://docs.example.com&quot;,
+    limit=100,
+    scrape_options=ScrapeOptions(formats=[&quot;markdown&quot;]),
+    poll_interval=5,
 )
 
-print(f&quot;Crawled {crawl_result.get(&#39;total&#39;, 0)} pages.&quot;)
+print(f&quot;Crawled {crawl_result.total} pages.&quot;)
 </code></pre>
 <p><strong>Verification</strong>:</p>
-<pre><code class="language-python">from firecrawl import FirecrawlApp
+<pre><code class="language-python">from firecrawl import Firecrawl
 print(&quot;Firecrawl imported successfully.&quot;)
 </code></pre>
 <p>A successful installation prints the confirmation message. Full verification requires scraping a test URL and confirming Markdown output.</p>
@@ -288,14 +296,13 @@ print(&quot;Firecrawl imported successfully.&quot;)
 <pre><code class="language-bash">pip install braintrust
 </code></pre>
 <p>Set the API key:</p>
-<pre><code class="language-bash">export BRAINTRUST_API_KEY=&quot;br-...&quot;
+<pre><code class="language-bash">export BRAINTRUST_API_KEY=&quot;sk-...&quot;
 </code></pre>
 <p>Create a project and an initial evaluation dataset:</p>
 <pre><code class="language-python">import braintrust
 
-client = braintrust.init(project=&quot;rag-knowledge-system&quot;)
-
-dataset = client.create_dataset(
+dataset = braintrust.init_dataset(
+    project=&quot;rag-knowledge-system&quot;,
     name=&quot;rag-eval-v1&quot;,
     description=&quot;Evaluation dataset for RAG pipeline quality measurement&quot;
 )
@@ -314,7 +321,8 @@ dataset.insert(
     metadata={&quot;category&quot;: &quot;routing&quot;, &quot;source&quot;: &quot;chapter_04.md&quot;}
 )
 
-print(f&quot;Dataset &#39;{dataset.name}&#39; created with {dataset.num_records} records.&quot;)
+dataset.flush()
+print(f&quot;Dataset &#39;{dataset.name}&#39; created with 2 records.&quot;)
 </code></pre>
 <p><strong>Verification</strong>:</p>
 <pre><code class="language-python">import braintrust
@@ -326,7 +334,8 @@ print(&quot;Braintrust imported successfully.&quot;)
 <h3>LlamaParse-to-Pinecone Ingestion Pipeline</h3>
 <p>Save the following script as <code>scripts/ingest_documents.py</code>. It parses documents with LlamaParse, chunks the output, generates embeddings, and loads vectors into Pinecone:</p>
 <pre><code class="language-python">import os
-from llama_parse import LlamaParse
+from llama_cloud import LlamaCloud
+from llama_index.core import Document
 from llama_index.core.node_parser import SentenceSplitter
 from llama_index.embeddings.openai import OpenAIEmbedding
 from pinecone import Pinecone
@@ -335,8 +344,12 @@ DOCS_DIR = &quot;./knowledge_docs&quot;
 INDEX_NAME = &quot;knowledge-base&quot;
 NAMESPACE = &quot;product-docs&quot;
 
-parser = LlamaParse(result_type=&quot;markdown&quot;, num_workers=4)
-embed_model = OpenAIEmbedding(model_name=&quot;text-embedding-3-small&quot;)
+parser = LlamaCloud(api_key=os.environ[&quot;LLAMA_CLOUD_API_KEY&quot;])
+embed_model = OpenAIEmbedding(
+    model_name=&quot;text-embedding-3-small&quot;,
+    api_base=&quot;http://localhost:4000/v1&quot;,
+    api_key=&quot;sk-rag-master-key&quot;,
+)
 splitter = SentenceSplitter(chunk_size=512, chunk_overlap=50)
 
 pc = Pinecone(api_key=os.environ[&quot;PINECONE_API_KEY&quot;])
@@ -352,7 +365,17 @@ print(f&quot;Found {len(doc_files)} documents to process.&quot;)
 
 for filepath in doc_files:
     print(f&quot;Processing: {filepath}&quot;)
-    documents = parser.load_data(filepath)
+    result = parser.parsing.parse(
+        upload_file=filepath,
+        tier=&quot;agentic&quot;,
+        version=&quot;latest&quot;,
+        expand=[&quot;markdown&quot;],
+    )
+    documents = [
+        Document(text=page.markdown)
+        for page in result.markdown.pages
+        if page.success
+    ]
 
     nodes = splitter.get_nodes_from_documents(documents)
     print(f&quot;  Split into {len(nodes)} chunks.&quot;)
@@ -364,7 +387,7 @@ for filepath in doc_files:
             &quot;id&quot;: f&quot;{os.path.basename(filepath)}-{i}&quot;,
             &quot;values&quot;: embedding,
             &quot;metadata&quot;: {
-                &quot;content&quot;: node.text[:1000],
+                &quot;content&quot;: node.text,
                 &quot;source&quot;: filepath,
                 &quot;doc_type&quot;: os.path.splitext(filepath)[1],
                 &quot;chunk_index&quot;: i,
@@ -383,7 +406,8 @@ print(f&quot;\nTotal vectors in index: {stats.total_vector_count}&quot;)
 <h3>Firecrawl-to-Pinecone Web Ingestion Pipeline</h3>
 <p>Save the following script as <code>scripts/ingest_web_content.py</code>. It crawls a documentation site with Firecrawl and indexes the content into Pinecone:</p>
 <pre><code class="language-python">import os
-from firecrawl import FirecrawlApp
+from firecrawl import Firecrawl
+from firecrawl.types import ScrapeOptions
 from llama_index.core.node_parser import SentenceSplitter
 from llama_index.embeddings.openai import OpenAIEmbedding
 from pinecone import Pinecone
@@ -393,31 +417,33 @@ CRAWL_LIMIT = 100
 INDEX_NAME = &quot;knowledge-base&quot;
 NAMESPACE = &quot;web-docs&quot;
 
-firecrawl = FirecrawlApp(api_key=os.environ[&quot;FIRECRAWL_API_KEY&quot;])
-embed_model = OpenAIEmbedding(model_name=&quot;text-embedding-3-small&quot;)
+firecrawl = Firecrawl(api_key=os.environ[&quot;FIRECRAWL_API_KEY&quot;])
+embed_model = OpenAIEmbedding(
+    model_name=&quot;text-embedding-3-small&quot;,
+    api_base=&quot;http://localhost:4000/v1&quot;,
+    api_key=&quot;sk-rag-master-key&quot;,
+)
 splitter = SentenceSplitter(chunk_size=512, chunk_overlap=50)
 
 pc = Pinecone(api_key=os.environ[&quot;PINECONE_API_KEY&quot;])
 index = pc.Index(INDEX_NAME)
 
 print(f&quot;Crawling {CRAWL_URL} with limit {CRAWL_LIMIT}...&quot;)
-crawl_result = firecrawl.crawl_url(
-    url=CRAWL_URL,
-    params={
-        &quot;limit&quot;: CRAWL_LIMIT,
-        &quot;scrapeOptions&quot;: {&quot;formats&quot;: [&quot;markdown&quot;]}
-    },
-    poll_interval=5
+crawl_result = firecrawl.crawl(
+    CRAWL_URL,
+    limit=CRAWL_LIMIT,
+    scrape_options=ScrapeOptions(formats=[&quot;markdown&quot;]),
+    poll_interval=5,
 )
 
-pages = crawl_result.get(&quot;data&quot;, [])
+pages = crawl_result.data or []
 print(f&quot;Crawled {len(pages)} pages.&quot;)
 
 from llama_index.core import Document
 
 for page_idx, page in enumerate(pages):
-    markdown = page.get(&quot;markdown&quot;, &quot;&quot;)
-    source_url = page.get(&quot;metadata&quot;, {}).get(&quot;sourceURL&quot;, f&quot;page-{page_idx}&quot;)
+    markdown = page.markdown or &quot;&quot;
+    source_url = (page.metadata and page.metadata.source_url) or f&quot;page-{page_idx}&quot;
 
     if not markdown.strip():
         continue
@@ -432,7 +458,7 @@ for page_idx, page in enumerate(pages):
             &quot;id&quot;: f&quot;web-{page_idx}-{i}&quot;,
             &quot;values&quot;: embedding,
             &quot;metadata&quot;: {
-                &quot;content&quot;: node.text[:1000],
+                &quot;content&quot;: node.text,
                 &quot;source&quot;: source_url,
                 &quot;doc_type&quot;: &quot;web&quot;,
                 &quot;chunk_index&quot;: i,
@@ -479,6 +505,7 @@ pinecone_index = pc.Index(&quot;knowledge-base&quot;)
 vector_store = PineconeVectorStore(
     pinecone_index=pinecone_index,
     namespace=&quot;product-docs&quot;,
+    text_key=&quot;content&quot;,
 )
 
 index = VectorStoreIndex.from_vector_store(vector_store=vector_store)
@@ -529,6 +556,7 @@ pinecone_index = pc.Index(&quot;knowledge-base&quot;)
 vector_store = PineconeVectorStore(
     pinecone_index=pinecone_index,
     namespace=&quot;product-docs&quot;,
+    text_key=&quot;content&quot;,
 )
 index = VectorStoreIndex.from_vector_store(vector_store=vector_store)
 query_engine = index.as_query_engine(similarity_top_k=5)
@@ -598,12 +626,12 @@ print(&quot;Evaluation complete. View results in the Braintrust dashboard.&quot;
 </tr>
 <tr>
 <td>LlamaParse</td>
-<td><code>python -c &quot;from llama_parse import LlamaParse; print(&#39;OK&#39;)&quot;</code></td>
+<td><code>python -c &quot;from llama_cloud import LlamaCloud; print(&#39;OK&#39;)&quot;</code></td>
 <td>Prints &quot;OK&quot;</td>
 </tr>
 <tr>
 <td>Firecrawl</td>
-<td><code>python -c &quot;from firecrawl import FirecrawlApp; print(&#39;OK&#39;)&quot;</code></td>
+<td><code>python -c &quot;from firecrawl import Firecrawl; print(&#39;OK&#39;)&quot;</code></td>
 <td>Prints &quot;OK&quot;</td>
 </tr>
 <tr>

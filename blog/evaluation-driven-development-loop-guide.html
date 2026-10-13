@@ -128,48 +128,28 @@
 <li><strong>API keys</strong>: The following service accounts are required before proceeding:<ul>
 <li><strong>Braintrust</strong>: API key from the Braintrust console</li>
 <li><strong>LLM provider</strong>: At least one commercial model provider API key for baseline inference</li>
+<li><strong>Hugging Face</strong>: Access token (exported as <code>HF_TOKEN</code>) for an account with approved access to the gated <code>meta-llama/Llama-3.1-8B-Instruct</code> repository, which vLLM and Unsloth download in later steps</li>
 </ul>
 </li>
 <li><strong>Existing application</strong>: A running AI application built with LangChain or LlamaIndex that produces outputs to evaluate. Any configuration from prior chapters in this series can serve as the application under evaluation.</li>
 </ul>
 <h2>Step 1: Langfuse</h2>
-<p>Langfuse provides production trace capture. A Docker Compose deployment runs the full Langfuse stack with a PostgreSQL backend.</p>
-<p>Create <code>docker-compose-langfuse.yaml</code>:</p>
-<pre><code class="language-yaml">services:
-  langfuse-server:
-    image: langfuse/langfuse:2
-    ports:
-      - &quot;3000:3000&quot;
-    environment:
-      DATABASE_URL: postgresql://langfuse:langfuse@langfuse-db:5432/langfuse
-      NEXTAUTH_SECRET: a-random-secret-string
-      NEXTAUTH_URL: http://localhost:3000
-      SALT: a-random-salt-string
-    depends_on:
-      - langfuse-db
-
-  langfuse-db:
-    image: postgres:16
-    environment:
-      POSTGRES_USER: langfuse
-      POSTGRES_PASSWORD: langfuse
-      POSTGRES_DB: langfuse
-    volumes:
-      - langfuse_pgdata:/var/lib/postgresql/data
-
-volumes:
-  langfuse_pgdata:
+<p>Langfuse provides production trace capture. The official Docker Compose deployment runs the full Langfuse v4 stack: the web and worker containers together with PostgreSQL, ClickHouse, Redis, and MinIO. Current releases of the Langfuse Python SDK and of the LiteLLM Langfuse callback require a Langfuse v3 or later server, and the curation script later in this guide uses the observations API introduced in Langfuse v4, so the legacy single-container v2 image does not work here.</p>
+<p>Clone the Langfuse repository:</p>
+<pre><code class="language-bash">git clone https://github.com/langfuse/langfuse.git
+cd langfuse
 </code></pre>
-<pre><code class="language-bash">docker compose -f docker-compose-langfuse.yaml up -d
+<p>Replace the default secrets on every line marked <code># CHANGEME</code> in <code>docker-compose.yml</code>, then start the stack:</p>
+<pre><code class="language-bash">docker compose up -d
 </code></pre>
-<p>After startup, access the Langfuse dashboard at <code>http://localhost:3000</code>, create a project, and generate API keys.</p>
-<p>Install the Langfuse Python SDK:</p>
-<pre><code class="language-bash">pip install langfuse
+<p>The Langfuse dashboard becomes available at <code>http://localhost:3000</code> after startup. Create a project there and generate API keys.</p>
+<p>Install the Langfuse Python SDK together with the LangChain packages that the Langfuse LangChain integration and the wiring scripts import:</p>
+<pre><code class="language-bash">pip install langfuse langchain langchain-openai
 </code></pre>
 <p>Set environment variables:</p>
 <pre><code class="language-bash">export LANGFUSE_PUBLIC_KEY=&quot;pk-lf-...&quot;
 export LANGFUSE_SECRET_KEY=&quot;sk-lf-...&quot;
-export LANGFUSE_HOST=&quot;http://localhost:3000&quot;
+export LANGFUSE_BASE_URL=&quot;http://localhost:3000&quot;
 </code></pre>
 <p><strong>Verification</strong>:</p>
 <pre><code class="language-bash">curl http://localhost:3000/api/public/health
@@ -180,16 +160,15 @@ export LANGFUSE_HOST=&quot;http://localhost:3000&quot;
 <pre><code class="language-bash">pip install braintrust
 </code></pre>
 <p>Set the API key:</p>
-<pre><code class="language-bash">export BRAINTRUST_API_KEY=&quot;br-...&quot;
+<pre><code class="language-bash">export BRAINTRUST_API_KEY=&quot;sk-...&quot;
 </code></pre>
 <p>Create an evaluation project and an initial dataset:</p>
 <pre><code class="language-python">import braintrust
 
-client = braintrust.init(project=&quot;eval-loop-demo&quot;)
-
-dataset = client.create_dataset(
+dataset = braintrust.init_dataset(
+    project=&quot;eval-loop-demo&quot;,
     name=&quot;baseline-eval-v1&quot;,
-    description=&quot;Baseline evaluation dataset for quality measurement&quot;
+    description=&quot;Baseline evaluation dataset for quality measurement&quot;,
 )
 
 dataset.insert(
@@ -209,7 +188,8 @@ dataset.insert(
     metadata={&quot;category&quot;: &quot;ml-ops&quot;, &quot;difficulty&quot;: &quot;standard&quot;}
 )
 
-print(f&quot;Dataset &#39;{dataset.name}&#39; created with {dataset.num_records} records.&quot;)
+summary = dataset.summarize()
+print(f&quot;Dataset &#39;{dataset.name}&#39; created with {summary.data_summary.total_records} records.&quot;)
 </code></pre>
 <p><strong>Verification</strong>:</p>
 <pre><code class="language-python">import braintrust
@@ -219,9 +199,6 @@ print(&quot;Braintrust imported successfully.&quot;)
 <h2>Step 3: Unsloth</h2>
 <p>Unsloth provides memory-efficient fine-tuning with custom CUDA kernels. Installation requires a Linux system with NVIDIA GPU drivers and CUDA toolkit.</p>
 <pre><code class="language-bash">pip install unsloth
-</code></pre>
-<p>For systems without CUDA support, install the CPU-compatible subset for data preparation and export workflows:</p>
-<pre><code class="language-bash">pip install unsloth-zoo
 </code></pre>
 <p>Install additional training dependencies:</p>
 <pre><code class="language-bash">pip install datasets transformers accelerate bitsandbytes
@@ -235,15 +212,17 @@ print(&quot;Unsloth imported successfully.&quot;)
 <p>vLLM provides high-throughput model serving with LoRA adapter support. Installation requires a Linux system with NVIDIA GPU drivers and CUDA toolkit.</p>
 <pre><code class="language-bash">pip install vllm
 </code></pre>
-<p>Start vLLM with LoRA adapter support enabled:</p>
-<pre><code class="language-bash">vllm serve meta-llama/Llama-3.1-8B-Instruct \
+<p>Start vLLM with LoRA adapter support enabled. The <code>VLLM_ALLOW_RUNTIME_LORA_UPDATING</code> environment variable enables the runtime adapter loading endpoint used later in this guide:</p>
+<pre><code class="language-bash">export VLLM_ALLOW_RUNTIME_LORA_UPDATING=True
+
+vllm serve meta-llama/Llama-3.1-8B-Instruct \
   --host 0.0.0.0 \
   --port 8000 \
   --enable-lora \
   --max-lora-rank 64 \
   --max-model-len 8192
 </code></pre>
-<p>The <code>--enable-lora</code> flag activates LoRA adapter hot-loading. The <code>--max-lora-rank</code> parameter sets the maximum rank for loaded adapters, which must match or exceed the rank used during Unsloth training.</p>
+<p>The <code>--enable-lora</code> flag activates LoRA adapter support, and the environment variable above permits hot-loading adapters into the running server. The <code>--max-lora-rank</code> parameter sets the maximum rank for loaded adapters, which must match or exceed the rank used during Unsloth training.</p>
 <p>To load a fine-tuned LoRA adapter after training:</p>
 <pre><code class="language-bash">curl -X POST http://localhost:8000/v1/load_lora_adapter \
   -H &quot;Content-Type: application/json&quot; \
@@ -255,10 +234,10 @@ print(&quot;Unsloth imported successfully.&quot;)
 <p><strong>Verification</strong>:</p>
 <pre><code class="language-bash">curl http://localhost:8000/v1/models
 </code></pre>
-<p>A successful deployment returns a JSON list containing the base model. After loading a LoRA adapter, the list includes both the base model and the adapter variant.</p>
+<p>A successful deployment returns a JSON list containing the base model. The list includes both the base model and the adapter variant once a LoRA adapter is loaded.</p>
 <h2>Step 5: LiteLLM Gateway with Weighted Routing</h2>
 <p>LiteLLM provides unified routing with weighted traffic distribution for A/B comparison between model variants.</p>
-<pre><code class="language-bash">pip install litellm uvicorn
+<pre><code class="language-bash">pip install &#39;litellm[proxy]&#39;
 </code></pre>
 <p>Create <code>litellm_config.yaml</code> with weighted routing between base and fine-tuned models:</p>
 <pre><code class="language-yaml">model_list:
@@ -267,18 +246,18 @@ print(&quot;Unsloth imported successfully.&quot;)
       model: openai/meta-llama/Llama-3.1-8B-Instruct
       api_base: http://localhost:8000/v1
       api_key: token-placeholder
+      weight: 90
     model_info:
       id: base-model
-    weight: 90
 
   - model_name: app-model
     litellm_params:
       model: openai/finetuned-v1
       api_base: http://localhost:8000/v1
       api_key: token-placeholder
+      weight: 10
     model_info:
       id: finetuned-v1
-    weight: 10
 
   - model_name: gpt-4o-judge
     litellm_params:
@@ -291,12 +270,12 @@ litellm_settings:
 general_settings:
   master_key: sk-eval-master-key
 </code></pre>
-<p>The two entries with <code>model_name: app-model</code> create a weighted routing group. LiteLLM routes 90% of requests to the base model and 10% to the fine-tuned variant. The <code>model_info.id</code> field propagates through to Langfuse traces as metadata, enabling Braintrust evaluations to separate results by model variant.</p>
+<p>The two entries with <code>model_name: app-model</code> create a weighted routing group. LiteLLM reads <code>weight</code> from <code>litellm_params</code> and routes 90% of requests to the base model and 10% to the fine-tuned variant. LiteLLM records the <code>model_info.id</code> value as <code>model_id</code> inside the <code>hidden_params</code> metadata of each Langfuse generation, enabling Braintrust evaluations to separate results by model variant. The <code>finetuned-v1</code> deployment returns errors until the fine-tuning step loads that adapter into vLLM, so set its <code>weight</code> to <code>0</code> until then.</p>
 <p>Set environment variables:</p>
 <pre><code class="language-bash">export OPENAI_API_KEY=&quot;sk-...&quot;
 export LANGFUSE_PUBLIC_KEY=&quot;pk-lf-...&quot;
 export LANGFUSE_SECRET_KEY=&quot;sk-lf-...&quot;
-export LANGFUSE_HOST=&quot;http://localhost:3000&quot;
+export LANGFUSE_BASE_URL=&quot;http://localhost:3000&quot;
 </code></pre>
 <p>Start the LiteLLM proxy:</p>
 <pre><code class="language-bash">litellm --config litellm_config.yaml --host 0.0.0.0 --port 4000
@@ -309,15 +288,17 @@ export LANGFUSE_HOST=&quot;http://localhost:3000&quot;
 <h2>Wiring the Components</h2>
 <p>With all components installed individually, the final step connects them into the continuous improvement cycle described in the architecture chapter.</p>
 <h3>Langfuse Trace Capture Integration</h3>
-<p>Save the following script as <code>scripts/traced_application.py</code>. It demonstrates Langfuse trace capture for both LangChain and LlamaIndex applications:</p>
+<p>Save the following script as <code>scripts/traced_application.py</code>. It demonstrates Langfuse trace capture for a LangChain application:</p>
 <pre><code class="language-python">import os
-from langfuse.callback import CallbackHandler as LangfuseHandler
+from langfuse import Langfuse
+from langfuse.langchain import CallbackHandler
 
-langfuse_handler = LangfuseHandler(
+langfuse = Langfuse(
     public_key=os.environ[&quot;LANGFUSE_PUBLIC_KEY&quot;],
     secret_key=os.environ[&quot;LANGFUSE_SECRET_KEY&quot;],
-    host=os.environ.get(&quot;LANGFUSE_HOST&quot;, &quot;http://localhost:3000&quot;),
+    base_url=os.environ.get(&quot;LANGFUSE_BASE_URL&quot;, &quot;http://localhost:3000&quot;),
 )
+langfuse_handler = CallbackHandler()
 
 # --- LangChain application example ---
 from langchain_openai import ChatOpenAI
@@ -336,55 +317,72 @@ messages = [
 ]
 
 response = llm.invoke(messages, config={&quot;callbacks&quot;: [langfuse_handler]})
+langfuse.flush()
 
 print(&quot;Response:&quot;, response.content)
 print(&quot;Trace exported to Langfuse.&quot;)
 </code></pre>
 <h3>Langfuse-to-Braintrust Dataset Curation</h3>
-<p>Save the following script as <code>scripts/curate_dataset.py</code>. It queries Langfuse for production traces and creates a Braintrust evaluation dataset:</p>
-<pre><code class="language-python">import os
+<p>Save the following script as <code>scripts/curate_dataset.py</code>. It queries Langfuse for production traces (the root observation of each trace) and creates a Braintrust evaluation dataset:</p>
+<pre><code class="language-python">import json
+import os
 from langfuse import Langfuse
 import braintrust
 
 langfuse = Langfuse(
     public_key=os.environ[&quot;LANGFUSE_PUBLIC_KEY&quot;],
     secret_key=os.environ[&quot;LANGFUSE_SECRET_KEY&quot;],
-    host=os.environ.get(&quot;LANGFUSE_HOST&quot;, &quot;http://localhost:3000&quot;),
+    base_url=os.environ.get(&quot;LANGFUSE_BASE_URL&quot;, &quot;http://localhost:3000&quot;),
 )
 
-traces = langfuse.fetch_traces(limit=100).data
+traces = langfuse.api.observations.get_many(
+    is_root_observation=True,
+    fields=&quot;core,io,metadata&quot;,
+    expand_metadata=&quot;hidden_params&quot;,
+    limit=100,
+).data
 print(f&quot;Fetched {len(traces)} traces from Langfuse.&quot;)
 
-client = braintrust.init(project=&quot;eval-loop-demo&quot;)
-dataset = client.create_dataset(
+dataset = braintrust.init_dataset(
+    project=&quot;eval-loop-demo&quot;,
     name=&quot;production-traces-v1&quot;,
-    description=&quot;Evaluation dataset curated from production traces&quot;
+    description=&quot;Evaluation dataset curated from production traces&quot;,
 )
+
+
+def as_text(value):
+    if isinstance(value, str):
+        try:
+            value = json.loads(value)
+        except json.JSONDecodeError:
+            return value
+    if isinstance(value, dict):
+        return str(value.get(&quot;content&quot;, value))
+    return str(value)
+
+
+def lookup_model_id(metadata):
+    hidden = metadata.get(&quot;hidden_params&quot;) if isinstance(metadata, dict) else None
+    if isinstance(hidden, str):
+        try:
+            hidden = json.loads(hidden)
+        except json.JSONDecodeError:
+            hidden = None
+    return hidden.get(&quot;model_id&quot;, &quot;unknown&quot;) if isinstance(hidden, dict) else &quot;unknown&quot;
+
 
 curated_count = 0
 for trace in traces:
     if not trace.input or not trace.output:
         continue
 
-    input_text = trace.input
-    if isinstance(input_text, dict):
-        input_text = input_text.get(&quot;content&quot;, str(input_text))
-    if isinstance(input_text, list):
-        input_text = str(input_text)
-
-    output_text = trace.output
-    if isinstance(output_text, dict):
-        output_text = output_text.get(&quot;content&quot;, str(output_text))
-
-    model_id = trace.metadata.get(&quot;model_id&quot;, &quot;unknown&quot;) if trace.metadata else &quot;unknown&quot;
-
     dataset.insert(
-        input=str(input_text),
-        expected=str(output_text),
+        input=as_text(trace.input),
+        expected=as_text(trace.output),
         metadata={
-            &quot;trace_id&quot;: trace.id,
-            &quot;model_id&quot;: model_id,
-            &quot;timestamp&quot;: str(trace.timestamp),
+            &quot;trace_id&quot;: trace.trace_id,
+            &quot;model_id&quot;: lookup_model_id(trace.metadata),
+            &quot;timestamp&quot;: str(trace.start_time),
         }
     )
     curated_count += 1
@@ -524,31 +522,32 @@ model.save_pretrained(OUTPUT_DIR)
 tokenizer.save_pretrained(OUTPUT_DIR)
 print(f&quot;LoRA adapter saved to {OUTPUT_DIR}&quot;)
 print(f&quot;Load into vLLM with: curl -X POST http://localhost:8000/v1/load_lora_adapter \\&quot;)
+print(f&quot;  -H &#39;Content-Type: application/json&#39; \\&quot;)
 print(f&quot;  -d &#39;{{\&quot;lora_name\&quot;: \&quot;finetuned-v1\&quot;, \&quot;lora_path\&quot;: \&quot;{OUTPUT_DIR}\&quot;}}&#39;&quot;)
 </code></pre>
 <p>The <code>training_data.jsonl</code> file should contain one JSON object per line with instruction-response pairs derived from high-scoring Braintrust evaluation records:</p>
 <pre><code class="language-json">{&quot;text&quot;: &quot;&lt;|begin_of_text|&gt;&lt;|start_header_id|&gt;user&lt;|end_header_id|&gt;\n\nSummarize the key benefits of container orchestration.&lt;|eot_id|&gt;&lt;|start_header_id|&gt;assistant&lt;|end_header_id|&gt;\n\nContainer orchestration automates deployment, scaling, and management of containerized applications...&lt;|eot_id|&gt;&quot;}
 </code></pre>
 <h3>A/B Routing Weight Adjustment</h3>
-<p>After evaluation results confirm the fine-tuned model&#39;s quality, adjust LiteLLM&#39;s routing weights by updating <code>litellm_config.yaml</code>:</p>
+<p>Adjust LiteLLM&#39;s routing weights in <code>litellm_config.yaml</code> once evaluation results confirm the fine-tuned model&#39;s quality. Only the two <code>weight</code> values change, and the judge model, callback, and master key settings remain as configured in Step 5:</p>
 <pre><code class="language-yaml">model_list:
   - model_name: app-model
     litellm_params:
       model: openai/meta-llama/Llama-3.1-8B-Instruct
       api_base: http://localhost:8000/v1
       api_key: token-placeholder
+      weight: 50
     model_info:
       id: base-model
-    weight: 50
 
   - model_name: app-model
     litellm_params:
       model: openai/finetuned-v1
       api_base: http://localhost:8000/v1
       api_key: token-placeholder
+      weight: 50
     model_info:
       id: finetuned-v1
-    weight: 50
 </code></pre>
 <p>Restart the LiteLLM proxy to apply the new weights. The traffic split shifts from 90/10 to 50/50, increasing the fine-tuned model&#39;s production exposure for further evaluation.</p>
 <h2>Verification</h2>

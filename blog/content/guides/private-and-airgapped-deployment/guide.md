@@ -1,13 +1,13 @@
-# [Private and Airgapped Deployment](guide-private-and-airgapped-deployment.html): Setup Guide
+# Private and Airgapped Deployment: Setup Guide
 
-<!-- SUMMARY: A step-by-step installation and configuration guide for assembling the [Private and Airgapped Deployment](guide-private-and-airgapped-deployment.html) stack, covering air-gap transfer procedures, LlamaIndex and LangGraph setup, LiteLLM gateway configuration for internal-only routing, vLLM and SGLang model serving, Qdrant vector database provisioning, Docling document parsing, Arize Phoenix observability, and Unsloth fine-tuning, with integration wiring and end-to-end verification steps. -->
+<!-- SUMMARY: A step-by-step installation and configuration guide for assembling the Private and Airgapped Deployment stack, covering air-gap transfer procedures, LlamaIndex and LangGraph setup, LiteLLM gateway configuration for internal-only routing, vLLM and SGLang model serving, Qdrant vector database provisioning, Docling document parsing, Arize Phoenix observability, and Unsloth fine-tuning, with integration wiring and end-to-end verification steps. -->
 
 The [Private and Airgapped Deployment](guide-private-and-airgapped-deployment.html) architecture chapter explains the rationale behind each component selection, the network boundary constraint, and the substitutions required to eliminate all external dependencies. This guide provides the concrete installation commands, configuration snippets, and wiring steps needed to bring that architecture to a working state on isolated infrastructure. All installation steps assume that dependencies have been pre-staged through the air-gap transfer process described in the prerequisites.
 
 ## Prerequisites
 
 - **Operating system**: Linux with systemd or a container runtime. All components run on Linux; macOS and Windows are not supported for production airgapped deployments.
-- **Python**: Version 3.10 or later, with `pip` available. All Python packages must be pre-downloaded as wheel files and transferred to the airgapped network.
+- **Python**: Version 3.11 or later, with `pip` available. All Python packages must be pre-downloaded as wheel files and transferred to the airgapped network.
 - **Node.js**: Version 18 or later, with `npx` available. Required for MCP server execution.
 - **GPU hardware**: At least one NVIDIA GPU with 24GB+ VRAM for vLLM and SGLang serving. Multi-GPU configurations enable serving larger models. A separate GPU or shared GPU time is needed for Unsloth fine-tuning.
 - **Network**: Internal network access between all components. No outbound internet connectivity exists by design.
@@ -23,26 +23,31 @@ pip download -d ./offline_packages \
   llama-index llama-index-core llama-index-vector-stores-qdrant \
   llama-index-llms-openai-like llama-index-embeddings-huggingface \
   langgraph langgraph-checkpoint-sqlite langgraph-checkpoint-postgres \
-  litellm qdrant-client docling arize-phoenix \
+  "litellm[proxy]" qdrant-client docling arize-phoenix \
   opentelemetry-api opentelemetry-sdk opentelemetry-exporter-otlp \
-  unsloth peft transformers datasets accelerate bitsandbytes \
-  uvicorn fastapi
+  unsloth trl peft transformers datasets accelerate bitsandbytes \
+  uvicorn fastapi mcp-server-git
+
+# Serving engines: resolved separately because vLLM and SGLang pin conflicting dependency versions
+pip download -d ./offline_packages vllm
+pip download -d ./offline_packages sglang
 
 # Model weights: download from Hugging Face
-huggingface-cli download meta-llama/Llama-3.1-70B-Instruct --local-dir ./models/llama-70b
-huggingface-cli download meta-llama/Llama-3.1-8B-Instruct --local-dir ./models/llama-8b
-huggingface-cli download BAAI/bge-large-en-v1.5 --local-dir ./models/bge-large
+# The meta-llama repositories are gated: accept the license on Hugging Face and run `hf auth login` first
+hf download meta-llama/Llama-3.1-70B-Instruct --local-dir ./models/llama-70b
+hf download meta-llama/Llama-3.1-8B-Instruct --local-dir ./models/llama-8b
+hf download BAAI/bge-large-en-v1.5 --local-dir ./models/bge-large
 
 # Qdrant binary
-curl -L -o ./binaries/qdrant.tar.gz \
+curl -L --create-dirs -o ./binaries/qdrant.tar.gz \
   https://github.com/qdrant/qdrant/releases/latest/download/qdrant-x86_64-unknown-linux-gnu.tar.gz
 
-# MCP server packages
-npm pack @modelcontextprotocol/server-filesystem
-npm pack @modelcontextprotocol/server-git
+# MCP filesystem server, installed with its npm dependencies
+# (the Git MCP server is the Python package mcp-server-git, downloaded above)
+npm install --prefix ./mcp_servers @modelcontextprotocol/server-filesystem
 ```
 
-Transfer the `offline_packages/`, `models/`, `binaries/`, and MCP `.tgz` files to approved media and follow the organizational transfer and scanning procedures.
+Transfer the `offline_packages/`, `models/`, `binaries/`, and `mcp_servers/` directories to approved media and follow the organizational transfer and scanning procedures.
 
 ## Step 1: LlamaIndex and LangGraph
 
@@ -65,10 +70,11 @@ pip install --no-index --find-links ./offline_packages \
 **Verification**:
 
 ```python
+from importlib.metadata import version
 import llama_index.core
 import langgraph
 print(f"LlamaIndex Core: {llama_index.core.__version__}")
-print(f"LangGraph: {langgraph.__version__}")
+print(f"LangGraph: {version('langgraph')}")
 ```
 
 A successful installation prints both version numbers without import errors.
@@ -95,6 +101,8 @@ service:
 
 cluster:
   enabled: false
+
+telemetry_disabled: true
 ```
 
 Start the Qdrant server:
@@ -176,6 +184,16 @@ vllm serve /path/to/models/llama-70b \
 
 The `--served-model-name` flag sets the model name that appears in the API response, which LiteLLM references in its routing table. Using a local path instead of a Hugging Face model ID bypasses any network download attempt.
 
+Each vLLM process serves one base model. Start a second vLLM process for the BGE-Large embedding model referenced in the LiteLLM configuration, on a GPU that is not already allocated to the 70B deployment:
+
+```bash
+vllm serve /path/to/models/bge-large \
+  --host 0.0.0.0 \
+  --port 8003 \
+  --runner pooling \
+  --served-model-name bge-large-en-v1.5
+```
+
 **Verification**:
 
 ```bash
@@ -198,7 +216,7 @@ A successful test returns a chat completion response.
 
 ## Step 4: SGLang
 
-SGLang provides structured output generation for tasks requiring constrained decoding. Install from pre-staged packages:
+SGLang provides structured output generation for tasks requiring constrained decoding. SGLang pins different versions of shared dependencies such as `flashinfer-python` than vLLM does, so install it in a separate virtual environment or on the dedicated SGLang host. Install from pre-staged packages:
 
 ```bash
 pip install --no-index --find-links ./offline_packages sglang
@@ -229,7 +247,7 @@ A successful deployment returns a JSON list containing `llama-8b-structured`.
 LiteLLM provides the unified gateway between LlamaIndex agents and the local serving engines. Install from pre-staged packages:
 
 ```bash
-pip install --no-index --find-links ./offline_packages litellm uvicorn
+pip install --no-index --find-links ./offline_packages "litellm[proxy]" uvicorn
 ```
 
 Create `litellm_config.yaml` with internal-only routing:
@@ -250,12 +268,12 @@ model_list:
 
   - model_name: bge-large-embedding
     litellm_params:
-      model: openai/BAAI/bge-large-en-v1.5
-      api_base: http://vllm-server:8000/v1
+      model: openai/bge-large-en-v1.5
+      api_base: http://vllm-server:8003/v1
       api_key: token-not-used
 
 litellm_settings:
-  success_callback: ["arize_phoenix"]
+  callbacks: ["arize_phoenix"]
 
 general_settings:
   master_key: sk-internal-master-key
@@ -286,7 +304,11 @@ Docling provides local document parsing. Install from pre-staged packages:
 pip install --no-index --find-links ./offline_packages docling
 ```
 
-Docling's compact vision models must be pre-staged along with the Python packages. On the internet-connected staging machine, run Docling once on a test document to trigger the model download, then copy the cached models from `~/.cache/docling/` to the airgapped system's equivalent path.
+Docling's compact vision models must be pre-staged along with the Python packages. On the internet-connected staging machine, run `docling-tools models download`, which stores the models in `~/.cache/docling/models`. Copy that directory to the airgapped system and point Docling at it with the `DOCLING_ARTIFACTS_PATH` environment variable:
+
+```bash
+export DOCLING_ARTIFACTS_PATH="/path/to/docling/models"
+```
 
 **Verification**:
 
@@ -321,11 +343,11 @@ phoenix serve --host 0.0.0.0 --port 6006
 Set the environment variables that instrumented components use to export traces:
 
 ```bash
-export PHOENIX_COLLECTOR_ENDPOINT="http://phoenix-server:6006"
+export PHOENIX_COLLECTOR_ENDPOINT="http://phoenix-server:6006/v1/traces"
 export OTEL_EXPORTER_OTLP_ENDPOINT="http://phoenix-server:6006"
 ```
 
-Replace `phoenix-server` with the actual hostname or IP address.
+Replace `phoenix-server` with the actual hostname or IP address. Restart the LiteLLM proxy from a shell where these variables are set so that its `arize_phoenix` callback exports to this endpoint.
 
 **Verification**:
 
@@ -341,7 +363,7 @@ Unsloth provides memory-efficient fine-tuning. Install from pre-staged packages:
 
 ```bash
 pip install --no-index --find-links ./offline_packages \
-  unsloth peft transformers datasets accelerate bitsandbytes
+  unsloth trl peft transformers datasets accelerate bitsandbytes
 ```
 
 A minimal supervised fine-tuning script for the airgapped environment. Save as `scripts/finetune_airgapped.py`:
@@ -389,7 +411,7 @@ trainer = SFTTrainer(
     model=model,
     train_dataset=dataset,
     args=training_config,
-    tokenizer=tokenizer,
+    processing_class=tokenizer,
 )
 
 trainer.train()
@@ -404,13 +426,14 @@ The training data file `training_data.jsonl` contains instruction-response pairs
 {"text": "<|begin_of_text|><|start_header_id|>user<|end_header_id|>\n\nSummarize the findings from document SEC-2024-0847.<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\nThe document identifies three compliance gaps in the Q3 audit...<|eot_id|>"}
 ```
 
-After training, deploy the fine-tuned model to vLLM:
+The script saves LoRA adapter weights rather than a full model. Deploy the trained adapter to vLLM on top of the base model:
 
 ```bash
-vllm serve /path/to/fine-tuned-airgapped \
+vllm serve /path/to/models/llama-8b \
   --host 0.0.0.0 \
   --port 8002 \
-  --served-model-name llama-8b-finetuned
+  --enable-lora \
+  --lora-modules llama-8b-finetuned=/path/to/fine-tuned-airgapped
 ```
 
 Add the fine-tuned model to the LiteLLM configuration:
@@ -543,13 +566,13 @@ graph.add_edge(START, "research")
 graph.add_edge("research", "analysis")
 graph.add_edge("analysis", END)
 
-checkpointer = SqliteSaver.from_conn_string("airgapped_workflow.db")
-app = graph.compile(checkpointer=checkpointer)
+with SqliteSaver.from_conn_string("airgapped_workflow.db") as checkpointer:
+    app = graph.compile(checkpointer=checkpointer)
 
-result = app.invoke(
-    {"query": "Identify compliance gaps from recent audit documents"},
-    config={"configurable": {"thread_id": "analysis-001"}}
-)
+    result = app.invoke(
+        {"query": "Identify compliance gaps from recent audit documents"},
+        config={"configurable": {"thread_id": "analysis-001"}}
+    )
 
 print("Analysis result:")
 print(result["analysis_result"])
@@ -618,7 +641,7 @@ def main():
                 id=str(uuid.uuid4()),
                 vector=embedding,
                 payload={
-                    "content": chunk,
+                    "text": chunk,
                     "source": filepath,
                     "doc_type": os.path.splitext(filepath)[1],
                     "chunk_index": i,

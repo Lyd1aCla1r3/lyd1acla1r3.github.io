@@ -1,6 +1,6 @@
-# [Solo Developer Stack](guide-solo-developer-stack.html): Setup Guide
+# Solo Developer Stack: Setup Guide
 
-<!-- SUMMARY: A step-by-step installation and configuration guide for assembling the [Solo Developer Stack](guide-solo-developer-stack.html), covering Claude Code setup, MCP server configuration, Ollama local inference, ChromaDB vector storage, and Docling document parsing, with end-to-end verification commands confirming the full system operates correctly. -->
+<!-- SUMMARY: A step-by-step installation and configuration guide for assembling the Solo Developer Stack, covering Claude Code setup, MCP server configuration, Ollama local inference, ChromaDB vector storage, and Docling document parsing, with end-to-end verification commands confirming the full system operates correctly. -->
 
 The [Solo Developer Stack](guide-solo-developer-stack.html) architecture chapter explains the rationale behind each component selection and how the pieces interconnect. This guide provides the concrete installation commands, configuration snippets, and wiring steps needed to bring that architecture to a working state on a single development machine.
 
@@ -8,7 +8,8 @@ The [Solo Developer Stack](guide-solo-developer-stack.html) architecture chapter
 
 - **Operating system**: macOS, Linux, or Windows with WSL2
 - **Python**: Version 3.10 or later, with `pip` available
-- **Node.js**: Version 18 or later, with `npx` available
+- **Node.js**: Version 22 or later, with `npx` available
+- **uv**: The Python package manager, which provides the `uvx` runner used to launch the Git MCP server (`brew install uv` or `pip install uv`)
 - **Hardware**: At least 16GB of RAM for running local models alongside development tools. A GPU is beneficial for Ollama inference speed but not strictly required; Apple Silicon and CPU-only configurations are supported.
 - **Anthropic account**: An active Claude subscription or API key for Claude Code access
 
@@ -20,14 +21,14 @@ Claude Code is Anthropic's terminal-native agentic coding assistant. Installatio
 npm install -g @anthropic-ai/claude-code
 ```
 
-After installation, launch Claude Code from any project directory:
+Launch Claude Code from any project directory after installation:
 
 ```bash
 cd /path/to/project
 claude
 ```
 
-The first launch prompts for Anthropic API authentication. Once authenticated, Claude Code operates directly in the terminal, reading and writing files, running shell commands, and reasoning about the project structure.
+The first launch prompts for authentication with a Claude subscription or an Anthropic API key. Claude Code then operates directly in the terminal, reading and writing files, running shell commands, and reasoning about the project structure.
 
 **Verification**:
 
@@ -55,10 +56,9 @@ Create or edit the project-level MCP configuration file at `.mcp.json` in the pr
       ]
     },
     "git": {
-      "command": "npx",
+      "command": "uvx",
       "args": [
-        "-y",
-        "@modelcontextprotocol/server-git",
+        "mcp-server-git",
         "--repository",
         "/path/to/project"
       ]
@@ -67,7 +67,7 @@ Create or edit the project-level MCP configuration file at `.mcp.json` in the pr
       "command": "npx",
       "args": [
         "-y",
-        "@modelcontextprotocol/server-web-search"
+        "@brave/brave-search-mcp-server"
       ],
       "env": {
         "BRAVE_API_KEY": "your-brave-api-key-here"
@@ -77,7 +77,7 @@ Create or edit the project-level MCP configuration file at `.mcp.json` in the pr
 }
 ```
 
-Replace `/path/to/project` with the actual project directory path. The web search server requires a Brave Search API key, which is available at no cost for limited usage through the Brave Search API portal.
+Replace `/path/to/project` with the actual project directory path. The Git server is distributed as a Python package, so `uvx` downloads and launches it on demand without a separate install step. The web search server is Brave's maintained MCP server, which runs over `stdio` by default and requires a Brave Search API key from the Brave Search API portal, where a recurring monthly credit covers light personal usage.
 
 **Verification**:
 
@@ -108,14 +108,14 @@ curl -fsSL https://ollama.com/install.sh | sh
 
 **Windows**: Download the installer from `https://ollama.com/download/windows`.
 
-After installation, start the Ollama service and pull a model:
+Start the Ollama service and pull a model once installation completes:
 
 ```bash
 ollama serve &
 ollama pull llama3.1:8b
 ```
 
-The `llama3.1:8b` model requires approximately 4.7GB of disk space and runs on machines with 8GB or more of RAM. Developers with more capable hardware can pull larger models like `llama3.1:70b` for higher-quality local inference.
+The `llama3.1:8b` model requires approximately 4.9GB of disk space and runs on machines with 8GB or more of RAM. Developers with more capable hardware can pull larger models like `llama3.1:70b` for higher-quality local inference.
 
 **Verification**:
 
@@ -172,15 +172,15 @@ Docling parses PDFs, DOCX files, and other document formats into clean structure
 pip install docling
 ```
 
-The first run downloads Docling's compact vision models, approximately 800MB total. Subsequent runs use the cached models.
+The first conversion downloads Docling's compact layout and table-structure models. Subsequent runs use the cached models.
 
 **Verification**:
 
 ```bash
-python -c "from docling.document_converter import DocumentConverter; print('Docling imported successfully.')"
+python -c "from docling.document_converter import DocumentConverter; print('OK')"
 ```
 
-A successful installation prints the confirmation message without errors.
+A successful installation prints `OK` without errors.
 
 ## Wiring the Components
 
@@ -228,7 +228,7 @@ def main():
     doc_files = []
     for root, dirs, files in os.walk(DOCS_DIR):
         for f in files:
-            if f.endswith((".pdf", ".docx", ".md", ".txt")):
+            if f.endswith((".pdf", ".docx", ".md")):
                 doc_files.append(os.path.join(root, f))
 
     print(f"Found {len(doc_files)} documents to process.")
@@ -237,9 +237,13 @@ def main():
         print(f"Processing: {filepath}")
         result = converter.convert(filepath)
         text = result.document.export_to_markdown()
+        if not text.strip():
+            print("  Skipped: no extractable text.")
+            continue
         chunks = chunk_text(text)
 
-        ids = [f"{os.path.basename(filepath)}_chunk_{i}" for i in range(len(chunks))]
+        rel_path = os.path.relpath(filepath, DOCS_DIR)
+        ids = [f"{rel_path}_chunk_{i}" for i in range(len(chunks))]
         metadatas = [{"source": filepath, "chunk_index": i} for i in range(len(chunks))]
 
         collection.upsert(
@@ -249,7 +253,7 @@ def main():
         )
         print(f"  Stored {len(chunks)} chunks.")
 
-    print(f"\nTotal documents in collection: {collection.count()}")
+    print(f"\nTotal chunks in collection: {collection.count()}")
 
 if __name__ == "__main__":
     main()
