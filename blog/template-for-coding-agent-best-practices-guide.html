@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Template for Coding Agent Best Practices: Setup Guide — Lydia Pedersen</title>
+  <link rel="stylesheet" href="../css/styles.css?v=1.2">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .blog-post {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: var(--space-4xl) var(--space-md);
+        background: var(--bg-card);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 8px 32px rgba(183, 110, 121, 0.05);
+        border: 1px solid var(--border-subtle);
+    }
+    .blog-post h1, .blog-post h2, .blog-post h3 {
+        color: var(--text-primary);
+        font-family: var(--font-display);
+        margin-top: var(--space-2xl);
+        margin-bottom: var(--space-md);
+    }
+    .blog-post h1 { font-size: var(--fs-3xl); margin-top: 0; line-height: 1.1; }
+    .blog-post h2, .blog-post h3 { border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-sm); }
+    .blog-post h2 { font-size: var(--fs-2xl); }
+    .blog-post h3 { font-size: var(--fs-xl); }
+    .blog-post p, .blog-post li {
+        color: var(--text-secondary);
+        line-height: var(--lh-relaxed);
+        margin-bottom: var(--space-md);
+        font-size: var(--fs-md);
+    }
+    .blog-post img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-md);
+        margin: var(--space-lg) 0;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .blog-post a:not(.pagination-link) {
+        color: var(--text-accent);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s ease;
+    }
+    .blog-post a:not(.pagination-link):hover {
+        border-bottom-color: var(--text-accent);
+    }
+    .blog-post {
+        background: rgba(255, 255, 255, 0.65);
+        padding: var(--space-2xl);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-subtle);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .blog-post .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; display: flex; gap: 1rem; align-items: center; }
+    .blog-post .meta span { display: inline-flex; align-items: center; gap: 0.25rem; }
+    .blog-post p { line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1.05rem; }
+    .blog-post ul, .blog-post ol { margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem; }
+    .blog-post li { margin-bottom: 0.5rem; }
+    .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+    .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
+    .blog-post table { width: auto; margin: var(--space-2xl) 0; border-collapse: collapse; text-align: left; }
+    .blog-post th, .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post th { font-weight: 600; color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-subtle); }
+    .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 4px 10px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; font-size: 0.95rem; color: var(--rose-gold-dark); margin-right: 6px; }
+
+    /* Responsive: horizontally scroll tables on mobile */
+    @media (max-width: 768px) {
+      .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
+    }
+    
+    /* Post Tabs */
+    .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
+    .post-tabs::-webkit-scrollbar { display: none; }
+    .post-tab-btn { padding: 8px 16px; border: none; background: transparent; color: var(--text-muted); font-family: var(--font-display); font-size: 1rem; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; white-space: nowrap; transition: color 0.2s, border-color 0.2s; }
+    .post-tab-btn:hover { color: var(--text-primary); }
+    .post-tab-btn.active { color: var(--text-accent); border-bottom-color: var(--text-accent); font-weight: 500; }
+    .post-tab-content { display: none; padding-top: var(--space-md); }
+    .post-tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+  <!-- Fixed chip visual (always visible, bottom-left, behind everything) -->
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
+  <!-- Full-screen overlay canvas for the diagonal binary→agent→text animation -->
+  <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="../index.html" class="nav__logo" aria-label="Home">lydia<span>.</span>pedersen</a>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="../index.html#about" class="nav__link">About</a></li>
+        <li><a href="../index.html#samples" class="nav__link">Writing</a></li>
+        <li><a href="../index.html#case-studies" class="nav__link">Engineering</a></li>
+        <li><a href="../index.html#skills" class="nav__link">Skills</a></li>
+        <li><a href="index.html" class="nav__link">Blog</a></li>
+        <li><a href="../ebooks/index.html" class="nav__link">Ebooks</a></li>
+        <li><a href="../index.html#contact" class="nav__link">Contact</a></li>
+      </ul>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="nav__toggle-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-lg));">
+    <div class="container">
+<nav aria-label="breadcrumb" class="breadcrumbs"><ol>
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="index.html">Blog</a></li><li><a href="guide-template-for-coding-agent-best-practices.html">Guides: Template for Coding Agent Best Practices</a></li><li aria-current="page">Template for Coding Agent Best Practices: Setup Guide</li></ol></nav>
+        <article class="blog-post ">
+<h1>Template for Coding Agent Best Practices: Setup Guide</h1>
+<!-- SUMMARY: A step-by-step setup guide for the coding agent operating layer: copying a tested template tree into a project, then wiring always-on rules, on-demand skills, isolated subagents, hook guards with a Git pre-commit backstop, permissions, model roles, and session state, with a verification check for each layer across seven supported agent targets. -->
+<style>
+  /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+  .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+  .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+  .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+  .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+  .blog-post details.code-drop > summary::marker { content: ""; }
+  .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+  .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+  .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+  .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+  .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+  .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+  .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+  .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+  .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+  .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+  .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+  .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+  .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+  .blog-post li > strong:first-child { color: var(--text-primary); }
+  @media (prefers-reduced-motion: reduce) {
+    .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+  }
+  /* table: bordered card with horizontal row dividers and alternating palette shades. */
+  .blog-post table { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+  .blog-post thead tr { background: var(--rose-gold-glow); }
+  .blog-post th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+  .blog-post tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+  .blog-post tbody tr:nth-child(even) { background: var(--blush-glow); }
+  .blog-post td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+  .blog-post td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+  .blog-post tbody tr:last-child td { border-bottom: none; }
+  @media (min-width: 769px) {
+    .blog-post th:first-child, .blog-post td:first-child { white-space: nowrap; }
+  }
+  @media (max-width: 768px) {
+    .blog-post table { overflow-x: auto; }
+  }
+</style><p>The <a href="template-for-coding-agent-best-practices-configuration.html">Architecture and Configuration</a> chapter explains why the operating layer splits into rules, skills, subagents, hooks, and state. This guide installs that layer in an existing project. Every file it references lives in the <a href="https://github.com/Lyd1aCla1r3/coding-agent-best-practices">template repository</a>, which holds one tested drop-in tree per tool, so the steps below show short excerpts and link to the full files. Claude Code paths serve as the running example, and Step 2 maps them to the other six trees.</p>
+<h2>Prerequisites</h2>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Coding agent</td>
+<td>Claude Code, Cursor, Google Antigravity, Posit Assistant, Windsurf (now Devin Desktop), or Cline. The Universal tree suits any other agent that reads <code>AGENTS.md</code>.</td>
+</tr>
+<tr>
+<td>Git</td>
+<td>Any recent version, for the commit backstop.</td>
+</tr>
+<tr>
+<td>jq</td>
+<td>The JSON processor the guard scripts use to read each payload (<code>brew install jq</code> or <code>apt install jq</code>).</td>
+</tr>
+<tr>
+<td>Python</td>
+<td>Version 3.10 or later, for the linter, the style hooks, the Cline hook, and the test harness.</td>
+</tr>
+<tr>
+<td>Bash</td>
+<td>Standard macOS or Linux shell, or WSL2 on Windows, for the guard and helper scripts.</td>
+</tr>
+<tr>
+<td>Operating system<br>sandbox</td>
+<td>Optional workspace confinement enabled in five of the agent trees.</td>
+</tr>
+</tbody></table>
+<h2>Step 1: Get the Templates</h2>
+<p>Clone the <a href="https://github.com/Lyd1aCla1r3/coding-agent-best-practices">template repository</a> into the home folder, then copy one platform tree into the root of the target project. Replace <code>&lt;tool&gt;</code> with a folder name from Step 2, such as <code>claude-code</code>. Copying <code>.</code> rather than <code>*</code> brings along hidden folders such as <code>.claude/</code> and <code>.githooks/</code>.</p>
+<pre><code class="language-bash">git clone &lt;repo-url&gt; ~/tpl
+cd ~/tpl/platforms/&lt;tool&gt;
+cp -R . /path/to/project/
+</code></pre>
+<p>The copy overwrites files with the same names, including <code>CLAUDE.md</code>, <code>AGENTS.md</code>, <code>session_checkpoint.md</code>, and existing tool settings, so merge those by hand in a project that already has them. Then activate the Git backstop from the project root:</p>
+<pre><code class="language-bash">cd /path/to/project
+git config core.hooksPath \
+  .githooks
+</code></pre>
+<p>Five trees need one more step after the copy:</p>
+<ul>
+<li><strong>Cursor</strong>: Open the project in a trusted workspace so project hooks load.</li>
+<li><strong>Posit Assistant</strong>: Run <code>/trust</code> in the session to enable project hooks.</li>
+<li><strong>Cline</strong>: Turn on <strong>Enable Hooks</strong> in the extension settings.</li>
+<li><strong>Google Antigravity and Windsurf</strong>: Merge <code>.agents/cli-settings.example.json</code> or <code>.devin/user-config.example.json</code> into the user configuration for model, sandbox, and permission choices.</li>
+</ul>
+<p><strong>Verification</strong>:</p>
+<pre><code class="language-bash">git config core.hooksPath
+</code></pre>
+<p>The command prints <code>.githooks</code>.</p>
+<h2>Step 2: Layout per Tool</h2>
+<p>Every tree carries the same shared files at its root: the checkpoint, three policy lists, the commit hook, and two scripts. Claude Code adds <code>CLAUDE.md</code> at the root, Cursor and Cline add no root instruction file, and the other four trees add <code>AGENTS.md</code>. Inside each tool folder, rules live in <code>rules/</code>, skills in <code>skills/</code>, and subagents in <code>agents/</code>, except in three trees:</p>
+<ul>
+<li><strong>Posit Assistant</strong>: Keeps subagent prompts in <code>handoffs/</code> instead of <code>agents/</code>.</li>
+<li><strong>Cline</strong>: Places numbered rules directly in <code>.clinerules/</code>, subagent prompts in <code>newtask-prompts/</code> inside it, and skills in <code>.cline/skills/</code>.</li>
+<li><strong>Universal</strong>: Inlines every rule into <code>AGENTS.md</code> and keeps <code>handoffs/</code> at the root.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Tool folder</th>
+<th>Hook wiring</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Claude Code</td>
+<td><code>.claude/</code></td>
+<td><code>settings.json</code></td>
+</tr>
+<tr>
+<td>Cursor</td>
+<td><code>.cursor/</code></td>
+<td><code>hooks.json</code></td>
+</tr>
+<tr>
+<td>Google Antigravity</td>
+<td><code>.agents/</code></td>
+<td><code>hooks.json</code></td>
+</tr>
+<tr>
+<td>Posit Assistant</td>
+<td><code>.posit/assistant/</code></td>
+<td><code>settings.json</code></td>
+</tr>
+<tr>
+<td>Windsurf</td>
+<td><code>.devin/</code></td>
+<td><code>hooks.v1.json</code></td>
+</tr>
+<tr>
+<td>Cline</td>
+<td><code>.clinerules/</code></td>
+<td><code>hooks/PreToolUse</code></td>
+</tr>
+<tr>
+<td>Universal</td>
+<td><code>.agents/</code></td>
+<td>Git hook only</td>
+</tr>
+</tbody></table>
+<p>Windsurf reads <code>hooks.v1.json</code> for its default Devin Local agent and <code>hooks.json</code> for the older Cascade agent. The trees below show each <a href="https://github.com/Lyd1aCla1r3/coding-agent-best-practices/tree/main/platforms">platform folder</a>, with the six skill folders folded into one line.</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">platforms/claude-code/</span><span class="code-drop__meta">Tree · 32 lines</span></summary><pre><code class="language-text">platforms/claude-code/
+  .claude/
+    agents/
+      codebase-explorer.md
+      style-auditor.md
+      web-researcher.md
+    hooks/
+      check-style.sh
+      guard-destructive.sh
+      guard-freeze.sh
+      guard-network.sh
+      guard-secrets.sh
+    plans/
+    rules/
+      agency.md
+      freeze-paths.md
+      ground-truth.md
+      planning-mode.md
+      writing-style.md
+    skills/            6 skill folders, one SKILL.md each (see Step 4)
+    settings.json
+  .githooks/
+    pre-commit
+  checkpoints/
+  scripts/
+    lint_prose.py
+    plan.sh
+  .freeze-paths.txt
+  .style-denylist.txt
+  .style-phrases.txt
+  CLAUDE.md
+  session_checkpoint.md
+</code></pre>
+</details><details class="code-drop">
+<summary><span class="code-drop__name">platforms/cursor/</span><span class="code-drop__meta">Tree · 33 lines</span></summary><pre><code class="language-text">platforms/cursor/
+  .cursor/
+    agents/
+      codebase-explorer.md
+      style-auditor.md
+      web-researcher.md
+    hooks/
+      check-style.sh
+      guard-destructive.sh
+      guard-freeze.sh
+      guard-network.sh
+      guard-secrets.sh
+    plans/
+    rules/
+      agency.mdc
+      freeze-paths.mdc
+      ground-truth.mdc
+      planning-mode.mdc
+      writing-style.mdc
+    skills/            6 skill folders, one SKILL.md each (see Step 4)
+    hooks.json
+    permissions.json
+    sandbox.json
+  .githooks/
+    pre-commit
+  checkpoints/
+  scripts/
+    lint_prose.py
+    plan.sh
+  .freeze-paths.txt
+  .style-denylist.txt
+  .style-phrases.txt
+  session_checkpoint.md
+</code></pre>
+</details><details class="code-drop">
+<summary><span class="code-drop__name">platforms/antigravity/</span><span class="code-drop__meta">Tree · 33 lines</span></summary><pre><code class="language-text">platforms/antigravity/
+  .agents/
+    agents/
+      codebase-explorer.md
+      style-auditor.md
+      web-researcher.md
+    hooks/
+      check-style.sh
+      guard-destructive.sh
+      guard-freeze.sh
+      guard-network.sh
+      guard-secrets.sh
+    plans/
+    rules/
+      agency.md
+      freeze-paths.md
+      ground-truth.md
+      planning-mode.md
+      writing-style.md
+    skills/            6 skill folders, one SKILL.md each (see Step 4)
+    cli-settings.example.json
+    hooks.json
+  .githooks/
+    pre-commit
+  checkpoints/
+  scripts/
+    lint_prose.py
+    plan.sh
+  .freeze-paths.txt
+  .style-denylist.txt
+  .style-phrases.txt
+  AGENTS.md
+  session_checkpoint.md
+</code></pre>
+</details><details class="code-drop">
+<summary><span class="code-drop__name">platforms/posit-assistant/</span><span class="code-drop__meta">Tree · 33 lines</span></summary><pre><code class="language-text">platforms/posit-assistant/
+  .githooks/
+    pre-commit
+  .posit/
+    assistant/
+      handoffs/
+        codebase-explorer-prompt.md
+        style-auditor-prompt.md
+        web-researcher-prompt.md
+      hooks/
+        check-style.sh
+        guard-destructive.sh
+        guard-freeze.sh
+        guard-network.sh
+        guard-secrets.sh
+      plans/
+      rules/
+        agency.md
+        freeze-paths.md
+        ground-truth.md
+        planning-mode.md
+        writing-style.md
+      skills/            6 skill folders, one SKILL.md each (see Step 4)
+      settings.json
+  checkpoints/
+  scripts/
+    lint_prose.py
+    plan.sh
+  .freeze-paths.txt
+  .style-denylist.txt
+  .style-phrases.txt
+  AGENTS.md
+  session_checkpoint.md
+</code></pre>
+</details><details class="code-drop">
+<summary><span class="code-drop__name">platforms/windsurf/</span><span class="code-drop__meta">Tree · 35 lines</span></summary><pre><code class="language-text">platforms/windsurf/
+  .devin/
+    agents/
+      codebase-explorer.md
+      style-auditor.md
+      web-researcher.md
+    hooks/
+      check-style.sh
+      guard-destructive.sh
+      guard-freeze.sh
+      guard-network.sh
+      guard-secrets.sh
+    plans/
+    rules/
+      agency.md
+      freeze-paths.md
+      ground-truth.md
+      planning-mode.md
+      writing-style.md
+    skills/            6 skill folders, one SKILL.md each (see Step 4)
+    config.json
+    hooks.json
+    hooks.v1.json
+    user-config.example.json
+  .githooks/
+    pre-commit
+  checkpoints/
+  scripts/
+    lint_prose.py
+    plan.sh
+  .freeze-paths.txt
+  .style-denylist.txt
+  .style-phrases.txt
+  AGENTS.md
+  session_checkpoint.md
+</code></pre>
+</details><details class="code-drop">
+<summary><span class="code-drop__name">platforms/cline/</span><span class="code-drop__meta">Tree · 27 lines</span></summary><pre><code class="language-text">platforms/cline/
+  .cline/
+    skills/            6 skill folders, one SKILL.md each (see Step 4)
+  .clinerules/
+    hooks/
+      PreToolUse
+    newtask-prompts/
+      codebase-explorer-prompt.md
+      style-auditor-prompt.md
+      web-researcher-prompt.md
+    01-agency.md
+    02-ground-truth.md
+    03-planning-mode.md
+    04-writing-style.md
+    05-freeze-paths.md
+  .githooks/
+    pre-commit
+  checkpoints/
+  plans/
+  scripts/
+    lint_prose.py
+    plan.sh
+  .clineignore
+  .freeze-paths.txt
+  .style-denylist.txt
+  .style-phrases.txt
+  session_checkpoint.md
+</code></pre>
+</details><details class="code-drop">
+<summary><span class="code-drop__name">platforms/universal/</span><span class="code-drop__meta">Tree · 19 lines</span></summary><pre><code class="language-text">platforms/universal/
+  .agents/
+    skills/            6 skill folders, one SKILL.md each (see Step 4)
+  .githooks/
+    pre-commit
+  checkpoints/
+  handoffs/
+    codebase-explorer-prompt.md
+    style-auditor-prompt.md
+    web-researcher-prompt.md
+  plans/
+  scripts/
+    lint_prose.py
+    plan.sh
+  .freeze-paths.txt
+  .style-denylist.txt
+  .style-phrases.txt
+  AGENTS.md
+  session_checkpoint.md
+</code></pre>
+</details><h2>Step 3: Always-On Rules</h2>
+<p>Five short rule files shape every turn:</p>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Agency</td>
+<td>Act on unambiguous tasks, search locally before asking, and fix root causes.</td>
+</tr>
+<tr>
+<td>Ground truth</td>
+<td>Read a file before describing it, and tag every claim with an evidence tier.</td>
+</tr>
+<tr>
+<td>Planning mode</td>
+<td>Stop for questions and an approved plan before changing three or more files, a shared interface, a build pipeline, or the dependencies.</td>
+</tr>
+<tr>
+<td>Writing style</td>
+<td>Keep terminology consistent, use active voice, spell out acronyms on first use, and format code identifiers in backticks.</td>
+</tr>
+<tr>
+<td>Freeze paths</td>
+<td>Treat <code>published/</code> and <code>archive/</code> as read-only, and record a restore-point commit before shared build files change.</td>
+</tr>
+</tbody></table>
+<p>Customize the rule and style files before the first session, noting how each tool wraps the <a href="https://github.com/Lyd1aCla1r3/coding-agent-best-practices/tree/main/core/rules">shared rule bodies</a>:</p>
+<ul>
+<li><strong>Writing conventions</strong>: Replace the example conventions in the <a href="https://github.com/Lyd1aCla1r3/coding-agent-best-practices/blob/main/core/rules/writing-style.md">writing-style rule</a> with the team&#39;s own.</li>
+<li><strong>Mechanical bans</strong>: Replace the sample term in <code>.style-denylist.txt</code> and add phrases to <code>.style-phrases.txt</code>, where the linter and the style hook enforce them.</li>
+<li><strong>Rule frontmatter</strong>: Keep or adjust the trigger frontmatter that Cursor, Antigravity, and Windsurf add to each rule body and the <code>paths:</code> frontmatter that Claude Code and Cline use to scope the writing rule to Markdown files.</li>
+<li><strong>Native plan mode</strong>: Review the tool-specific section at the bottom of the planning rule so it matches the team&#39;s preferred plan-mode command or default setting.</li>
+</ul>
+<details class="code-drop">
+<summary><span class="code-drop__name">.claude/rules/planning-mode.md</span><span class="code-drop__meta">Markdown · 11 lines</span></summary><pre><code class="language-markdown"># Planning Gate and Approval Protocol
+
+## When to Trigger the Planning Gate
+- **Trigger Conditions:** Enter the planning gate before writing application code when a task modifies 3 or more files, alters shared interfaces, touches build pipelines, or introduces new dependencies.
+- **Clarify Before Planning:** Ask focused clarifying questions to resolve underspecified requirements before drafting the plan.
+- **Approval Boundary:** Present the structured plan (objective, affected files, verification commands, and rollback steps) and wait for explicit user approval (`&quot;approved&quot;` or `&quot;proceed&quot;`) before executing edits.
+
+## Native Plan Mode Integration (Claude Code)
+- **Mode Activation:** Start complex sessions in native Plan mode (`Shift+Tab`, `/plan`, or `claude --permission-mode plan`), or set `permissions.defaultMode` to `&quot;plan&quot;` in `.claude/settings.json`.
+- **Durable Plan File:** Pair native Plan mode with `bash scripts/plan.sh new &lt;slug&gt;` so the approved plan persists in `.claude/plans/` across sessions.
+- **Doc Reference:** https://code.claude.com/docs/en/permission-modes
+</code></pre>
+</details><p><strong>Verification</strong>: Start a session and ask the agent when it must stop to plan. The answer should restate the three-file trigger.</p>
+<h2>Step 4: Skills</h2>
+<p>Each skill is a folder containing a <code>SKILL.md</code> file. The agent indexes every name and description at startup and loads a body only when a task matches it or the developer calls the skill by name:</p>
+<table>
+<thead>
+<tr>
+<th>Skill</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>checkpoint</code></td>
+<td>Rewrites <code>session_checkpoint.md</code> and archives a detailed session log.</td>
+</tr>
+<tr>
+<td><code>handoff</code></td>
+<td>Prints a bootstrap prompt for the next session.</td>
+</tr>
+<tr>
+<td><code>tree-of-thought</code></td>
+<td>Scores three or more candidate approaches before one is chosen.</td>
+</tr>
+<tr>
+<td><code>adversarial-self-audit</code></td>
+<td>Attacks a plan, diff, or draft for failure modes and style violations.</td>
+</tr>
+<tr>
+<td><code>deep-research</code></td>
+<td>Gathers primary documentation and tags each claim with its evidence tier.</td>
+</tr>
+<tr>
+<td><code>autonomous-debugger</code></td>
+<td>Isolates failures through hypothesis-driven reproduction.</td>
+</tr>
+</tbody></table>
+<p>Every skill has the same shape: a one-sentence description that decides when it loads, then numbered steps. New skills need a description specific enough for the agent to match it to a task.</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">.claude/skills/tree-of-thought/SKILL.md</span><span class="code-drop__meta">Markdown · 19 lines</span></summary><pre><code class="language-markdown">---
+name: tree-of-thought
+description: Evaluate architectural decisions across three or more distinct candidate branches before implementation.
+---
+
+# Tree of Thought (ToT) Decision Protocol
+
+## When to Invoke
+Invoke this skill when choosing between competing architectures, data schemas, state-management strategies, or tool integrations where a single-path assumption risks a local optimum.
+
+## Execution Steps
+1. **Define the Decision Axis:** State the engineering problem and the hard constraints (latency, security, portability, maintenance cost) in two sentences.
+2. **Generate Candidate Branches:** Formulate at least 3 genuinely distinct approaches (Branch A, Branch B, Branch C). Do not include strawman options.
+3. **Evaluate Against Constraints:** Build a comparison table scoring each branch across:
+   - **Primary Strength:** What the branch solves best.
+   - **Failure Mode / Risk:** Where the branch breaks under load or edge cases.
+   - **Verification Cost:** How the branch can be tested deterministically.
+   - **Verdict:** `Reject` or `Selected` with a one-sentence justification.
+4. **Record Selection:** Write the chosen branch and its rationale into the active plan file or `session_checkpoint.md` before writing implementation code.
+</code></pre>
+</details><p><strong>Verification</strong>: Ask the agent which skills it can load. The reply should name all six.</p>
+<h2>Step 5: Subagents</h2>
+<p>Three roles keep heavy reading and critique out of the main conversation:</p>
+<table>
+<thead>
+<tr>
+<th>Subagent</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Codebase explorer</td>
+<td>Runs read-only searches and returns a file map with line-range citations.</td>
+</tr>
+<tr>
+<td>Web researcher</td>
+<td>Fetches primary vendor documentation and tags each claim as documented or unconfirmed.</td>
+</tr>
+<tr>
+<td>Style auditor</td>
+<td>Reviews drafts in read-only mode against the writing rule and restricted-term lists on a strong reasoning model.</td>
+</tr>
+</tbody></table>
+<p>In Claude Code, the <code>tools:</code> line limits each role to the tools it needs and the <code>model:</code> line pins its model, so the explorer below cannot write files even when a prompt asks it to.</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">.claude/agents/codebase-explorer.md</span><span class="code-drop__meta">Markdown · 16 lines</span></summary><pre><code class="language-markdown">---
+name: codebase-explorer
+description: Read-only codebase mapping specialist for tracing symbol definitions, call graphs, and configuration layouts without polluting main-thread context.
+tools: Read, Grep, Glob
+model: sonnet
+---
+
+You are a read-only codebase exploration subagent. Your role is to locate files, trace symbol usages, and summarize architectural boundaries so the main agent receives a compact, citation-backed map without filling its context window with raw search logs.
+
+## Operating Constraints
+- **Strictly Read-Only:** Do not create, modify, rename, or delete any files.
+- **Line-Range Citations:** Cite every finding with its project-relative file path and line range (`path/to/file.ext:L10-L25`).
+- **Structured Output:** Return a concise report with three sections:
+  1. `### Entrypoints &amp; File Map`
+  2. `### Data &amp; Control Flow`
+  3. `### Key Interfaces &amp; Constraints`
+</code></pre>
+</details><p>Posit Assistant, Cline, and the Universal tree have no subagent files. Their trees ship the three roles as handoff prompts to paste into a fresh session, which keeps the isolation at the cost of one manual step.</p>
+<h2>Step 6: Hooks and Pre-Commit</h2>
+<p>Hooks turn the rules that matter most into code. The runtime pipes each proposed command or file edit to a guard as JSON, the guard reads only the target path or command, and a match returns the tool&#39;s block signal. Every tree except Universal ships five guards covering frozen paths, destructive commands, network safety, secrets, and prose style on file writes and edits. Five of the agent trees keep them as separate scripts in <code>hooks/</code>, and Cline folds all five into <code>.clinerules/hooks/PreToolUse</code>.</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">.claude/hooks/guard-destructive.sh</span><span class="code-drop__meta">Bash · 20 lines</span></summary><pre><code class="language-bash">#!/usr/bin/env bash
+# Deterministic destructive-command guard for Claude Code (blocks via exit code 2).
+# Rejects recursive force-deletes, hard resets, force pushes, and schema drops.
+
+set -euo pipefail
+
+CMD=$(jq -r &#39;.tool_input.command // empty&#39;)
+
+if [ -z &quot;$CMD&quot; ]; then
+  exit 0
+fi
+
+DESTRUCTIVE_PAT=&quot;(rm[[:space:]]+-[a-zA-Z]*r[a-zA-Z]*f|rm[[:space:]]+-[a-zA-Z]*f[a-zA-Z]*r|git[[:space:]]+reset[[:space:]]+--hard|git[[:space:]]+push[[:space:]]+(--force|-f)|git[[:space:]]+clean[[:space:]]+-[a-zA-Z]*f|DROP[[:space:]]+TABLE)&quot;
+if printf &#39;%s\n&#39; &quot;$CMD&quot; |
+   grep -qE &quot;$DESTRUCTIVE_PAT&quot;; then
+  echo &quot;BLOCKED [guard-destructive]: destructive command pattern detected.&quot; &gt;&amp;2
+  exit 2
+fi
+
+exit 0
+</code></pre>
+</details><p>Claude Code wires the guards in <code>.claude/settings.json</code>. Shell commands pass the four guards shown below, and a second matcher sends every Write or Edit through the freeze, secrets, and style checks.</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">.claude/settings.json</span><span class="code-drop__meta">JSON · 27-line excerpt</span></summary><pre><code class="language-json">  &quot;hooks&quot;: {
+    &quot;PreToolUse&quot;: [
+      {
+        &quot;matcher&quot;: &quot;Bash&quot;,
+        &quot;hooks&quot;: [
+          {
+            &quot;type&quot;: &quot;command&quot;,
+            &quot;command&quot;: &quot;bash .claude/hooks/guard-freeze.sh&quot;,
+            &quot;timeout&quot;: 10
+          },
+          {
+            &quot;type&quot;: &quot;command&quot;,
+            &quot;command&quot;: &quot;bash .claude/hooks/guard-destructive.sh&quot;,
+            &quot;timeout&quot;: 10
+          },
+          {
+            &quot;type&quot;: &quot;command&quot;,
+            &quot;command&quot;: &quot;bash .claude/hooks/guard-network.sh&quot;,
+            &quot;timeout&quot;: 10
+          },
+          {
+            &quot;type&quot;: &quot;command&quot;,
+            &quot;command&quot;: &quot;bash .claude/hooks/guard-secrets.sh&quot;,
+            &quot;timeout&quot;: 10
+          }
+        ]
+      },
+</code></pre>
+</details><p>Each tree&#39;s scripts already return their tool&#39;s block signal:</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Block signal</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Claude Code</td>
+<td><code>exit 2</code></td>
+</tr>
+<tr>
+<td>Cursor</td>
+<td><code>&quot;permission&quot;: &quot;deny&quot;</code> plus <code>exit 2</code></td>
+</tr>
+<tr>
+<td>Google Antigravity</td>
+<td><code>&quot;decision&quot;: &quot;deny&quot;</code></td>
+</tr>
+<tr>
+<td>Posit Assistant</td>
+<td><code>exit 2</code></td>
+</tr>
+<tr>
+<td>Windsurf</td>
+<td><code>exit 2</code></td>
+</tr>
+<tr>
+<td>Cline</td>
+<td><code>&quot;cancel&quot;: true</code></td>
+</tr>
+<tr>
+<td>Universal</td>
+<td><code>exit 1</code> from the commit hook</td>
+</tr>
+</tbody></table>
+<p>Agent hooks can be switched off, and some runtimes let an action through when a hook crashes. The Git hook from Step 1 repeats the checks at commit time: it blocks staged paths that match <code>.freeze-paths.txt</code>, scans added lines for credentials and private keys, and sends staged Markdown to the prose linter.</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">.githooks/pre-commit</span><span class="code-drop__meta">Bash · 40-line excerpt</span></summary><pre><code class="language-bash">STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACMRD)
+if [ -z &quot;$STAGED_FILES&quot; ]; then
+  exit 0
+fi
+
+# 1. Freeze guard against staged paths
+FREEZE_REGEX=&quot;^(published|archive)/&quot;
+if [ -f &quot;.freeze-paths.txt&quot; ]; then
+  CUSTOM_PAT=$(
+    grep -vE &quot;^(#|[[:space:]]*$)&quot; .freeze-paths.txt | paste -sd &quot;|&quot; - || true
+  )
+  if [ -n &quot;$CUSTOM_PAT&quot; ]; then
+    FREEZE_REGEX=&quot;^($CUSTOM_PAT)&quot;
+  fi
+fi
+
+if printf &#39;%s\n&#39; &quot;$STAGED_FILES&quot; |
+   grep -qE &quot;$FREEZE_REGEX&quot;; then
+  echo &quot;BLOCKED [pre-commit]: staged changes touch a frozen path matching $FREEZE_REGEX&quot; &gt;&amp;2
+  exit 1
+fi
+
+# 2. Secret scan against staged additions
+ADDED_LINES=$(git diff --cached -U0 | grep -E &quot;^\+[^+]&quot; || true)
+SECRET_PAT=&quot;(sk-[A-Za-z0-9]{20,}|ghp_[A-Za-z0-9]{36}|AKIA[0-9A-Z]{16}|-----BEGIN [A-Z ]*PRIVATE KEY-----)&quot;
+if printf &#39;%s\n&#39; &quot;$ADDED_LINES&quot; |
+   grep -qE &quot;$SECRET_PAT&quot;; then
+  echo &quot;BLOCKED [pre-commit]: staged diff contains a high-confidence secret or private key.&quot; &gt;&amp;2
+  exit 1
+fi
+
+# 3. Deterministic prose &amp; hygiene linter on staged markdown files
+MD_FILES=$(
+  git diff --cached --name-only --diff-filter=ACMR |
+  grep -E &quot;\.(md|mdx)$&quot; || true
+)
+if [ -n &quot;$MD_FILES&quot; ] &amp;&amp; [ -f &quot;scripts/lint_prose.py&quot; ]; then
+  # Pass staged markdown files to lint_prose.py
+  printf &#39;%s\n&#39; &quot;$MD_FILES&quot; | xargs python3 scripts/lint_prose.py
+fi
+</code></pre>
+</details><p>Only the commit hook reads <code>.freeze-paths.txt</code>. The per-turn freeze guards and permission deny lists name <code>published/</code> and <code>archive/</code> directly, so add any new protected folder to those files as well.</p>
+<p><strong>Verification</strong>: Run the <a href="https://github.com/Lyd1aCla1r3/coding-agent-best-practices/blob/main/tests/run_hook_tests.py">hook test harness</a> from the clone to test every guard and the commit tooling against sample payloads for each supported tool.</p>
+<pre><code class="language-bash">cd ~/tpl/tests
+python3 run_hook_tests.py
+</code></pre>
+<p>A passing run prints <code>Passed 96/96 checks.</code> Sample payloads test the scripts rather than the live agent runtime, so finish with one live case in an agent tree: leave plan mode, ask the agent to run <code>echo DROP TABLE demo</code>, and confirm that the destructive guard blocks it.</p>
+<h2>Step 7: Permissions, Sandbox, MCP</h2>
+<p>Permissions decide what the agent may run without asking, and the sandbox limits what a permitted command can reach. The Claude Code tree allows read-only Git commands and the two project scripts, asks before commits and pushes, denies reads of <code>.env</code> files and writes to the frozen folders, and starts in plan mode with the sandbox on.</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">.claude/settings.json</span><span class="code-drop__meta">JSON · 25-line excerpt</span></summary><pre><code class="language-json">{
+  &quot;model&quot;: &quot;opusplan&quot;,
+  &quot;permissions&quot;: {
+    &quot;defaultMode&quot;: &quot;plan&quot;,
+    &quot;allow&quot;: [
+      &quot;Bash(git status*)&quot;,
+      &quot;Bash(git diff*)&quot;,
+      &quot;Bash(python3 scripts/lint_prose.py*)&quot;,
+      &quot;Bash(bash scripts/plan.sh*)&quot;
+    ],
+    &quot;ask&quot;: [
+      &quot;Bash(git commit*)&quot;,
+      &quot;Bash(git push*)&quot;
+    ],
+    &quot;deny&quot;: [
+      &quot;Read(./.env)&quot;,
+      &quot;Read(./.env.*)&quot;,
+      &quot;Write(./published/**)&quot;,
+      &quot;Write(./archive/**)&quot;
+    ]
+  },
+  &quot;sandbox&quot;: {
+    &quot;enabled&quot;: true,
+    &quot;autoAllowBashIfSandboxed&quot;: true
+  },
+</code></pre>
+</details><p>Each agent tree defines its permission and sandbox rules in its own configuration files; review the list before the first session:</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Permission and Sandbox Configuration</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Claude Code</td>
+<td>Allow, ask, deny, and sandbox rules in <code>settings.json</code></td>
+</tr>
+<tr>
+<td>Cursor</td>
+<td>Terminal allowlist in <code>permissions.json</code> and workspace sandbox in <code>sandbox.json</code></td>
+</tr>
+<tr>
+<td>Google Antigravity</td>
+<td>Permission and sandbox settings in <code>.agents/cli-settings.example.json</code></td>
+</tr>
+<tr>
+<td>Posit Assistant</td>
+<td>Permission policy and sandbox setting in <code>settings.json</code></td>
+</tr>
+<tr>
+<td>Windsurf</td>
+<td>Permission policy in <code>.devin/config.json</code> and sandbox setting in <code>.devin/user-config.example.json</code></td>
+</tr>
+<tr>
+<td>Cline</td>
+<td>Auto-approve toggles in extension settings plus <code>.clineignore</code></td>
+</tr>
+</tbody></table>
+<p>The template ships no MCP servers. Add them in the tool&#39;s own file, such as <code>.mcp.json</code> for Claude Code or <code>.cursor/mcp.json</code> for Cursor, and scope each server as narrowly as the permission lists.</p>
+<h2>Step 8: Model Routing</h2>
+<p>The template assigns work to four roles rather than to product names:</p>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Model Tier and Use</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Strategy and constraints</td>
+<td>A frontier reasoning model for planning, audits, and tree-of-thought comparisons.</td>
+</tr>
+<tr>
+<td>Daily driver</td>
+<td>A fast model with reliable tool calling for implementation, debugging, research, and exploration.</td>
+</tr>
+<tr>
+<td>Long-context archivist</td>
+<td>A model with an extended context window for whole-repository audits and checkpoint condensation.</td>
+</tr>
+<tr>
+<td>Local privacy vault</td>
+<td>An open-weight model on the workstation for scrubbing logs and for offline tasks.</td>
+</tr>
+</tbody></table>
+<p>Five trees pin those roles with their own model aliases:</p>
+<ul>
+<li><strong>Claude Code</strong>: Sets <code>&quot;model&quot;: &quot;opusplan&quot;</code> in <code>settings.json</code> to plan on the top tier and execute on the daily tier, with <code>sonnet</code> on the explorer and researcher and <code>opus</code> on the auditor.</li>
+<li><strong>Cursor</strong>: Sets <code>model: inherit</code> in its subagent files so every subagent follows the session model.</li>
+<li><strong>Google Antigravity</strong>: Sets <code>&quot;model&quot;: &quot;pro&quot;</code> in the example settings, with <code>flash</code> on the explorer and researcher and <code>pro</code> on the auditor.</li>
+<li><strong>Windsurf</strong>: Sets <code>&quot;model&quot;: &quot;opus&quot;</code> and <code>&quot;subagent_model&quot;: &quot;sonnet&quot;</code> in the example settings, with <code>sonnet</code> on the explorer and researcher and <code>opus</code> on the auditor.</li>
+<li><strong>Posit Assistant</strong>: Maps the low, medium, and high tiers in <code>settings.json</code> to <code>haiku</code>, <code>sonnet</code>, and <code>opus</code>.</li>
+</ul>
+<p>No tree pins the local privacy role. Point it at a local endpoint, such as the Ollama server from the <a href="solo-developer-stack-guide.html">Solo Developer Stack</a>, wherever the tool accepts a custom provider.</p>
+<h2>Step 9: State and Continuity</h2>
+<p>Session state lives in files. The agent reads <code>session_checkpoint.md</code> first in every session, and the file stays at 150 lines or fewer. Fill in the project name, restore point, and frozen paths before the first session:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">session_checkpoint.md</span><span class="code-drop__meta">Markdown · 21 lines</span></summary><pre><code class="language-markdown"># Session Checkpoint
+
+## Project &amp; Scope
+- **Project:** &lt;project-name&gt;
+- **Active Phase:** Phase 1 (Initial Implementation)
+- **Restore Point SHA:** &lt;record git rev-parse HEAD before integration edits&gt;
+- **Frozen Paths:** `published/`, `archive/` (configured in `.freeze-paths.txt`)
+
+## Constraints &amp; Decisions
+- **Verification Policy:** Every quantitative metric traces to a command output; every platform claim cites an official vendor documentation URL.
+- **Style Policy:** Prose follows the `writing-style` rule, and `python3 scripts/lint_prose.py` reports zero violations.
+- **Selected Architecture:** &lt;summarize chosen Tree of Thought branch and rationale&gt;
+
+## Accomplished &amp; Verified
+- [x] Initialized configuration layout, rules, skills, subagents, and deterministic hooks.
+- [x] Verified hook guards against synthetic allow and deny payloads.
+
+## Next Phase Tasks
+1. Read `session_checkpoint.md` and the active plan in full before editing.
+2. Execute the next scoped deliverable and verify with `python3 scripts/lint_prose.py`.
+3. Run the `checkpoint` and `handoff` skills before closing the session.
+</code></pre>
+</details><p>Plans are dated Markdown files created by <code>scripts/plan.sh</code>, which finds the tool&#39;s plans folder on its own:</p>
+<pre><code class="language-bash">bash scripts/plan.sh new demo
+bash scripts/plan.sh active
+</code></pre>
+<p>Close every session by running <code>checkpoint</code>, which rewrites <code>session_checkpoint.md</code> within its line cap and saves a detailed log in <code>checkpoints/</code>. Then run <code>handoff</code> to print a prompt naming the next objective, the files to read first, and the frozen paths so the next session starts in a clean context window.</p>
+<p><strong>Verification</strong>: The first command prints <code>Created plan:</code> followed by a dated path. Archive the test plan with <code>bash scripts/plan.sh done &lt;path&gt;</code>, and confirm with <code>wc -l session_checkpoint.md</code> that the checkpoint stays at 150 lines or fewer.</p>
+<h2>Verification</h2>
+<p>The following checks confirm that every layer is installed and active.</p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Command</th>
+<th>Expected Result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Git backstop</td>
+<td><code>git config core.hooksPath</code></td>
+<td>Prints <code>.githooks</code></td>
+</tr>
+<tr>
+<td>Rules</td>
+<td>Ask when the agent must stop to plan</td>
+<td>Restates the three-file trigger</td>
+</tr>
+<tr>
+<td>Skills</td>
+<td>Ask the agent to list its skills</td>
+<td>Names all six skills</td>
+</tr>
+<tr>
+<td>Hook harness</td>
+<td><code>python3 run_hook_tests.py</code></td>
+<td>Prints <code>Passed 96/96 checks.</code></td>
+</tr>
+<tr>
+<td>Live guard (agent trees)</td>
+<td>Ask the agent to run <code>echo DROP TABLE demo</code></td>
+<td>Blocks with <code>guard-destructive</code></td>
+</tr>
+<tr>
+<td>Commit backstop</td>
+<td>Stage a file in <code>published/</code>, then commit</td>
+<td>Stops with <code>BLOCKED [pre-commit]</code></td>
+</tr>
+<tr>
+<td>Plans</td>
+<td><code>bash scripts/plan.sh new demo</code></td>
+<td>Prints <code>Created plan:</code> and a dated path</td>
+</tr>
+<tr>
+<td>Checkpoint</td>
+<td>Run the <code>checkpoint</code> skill</td>
+<td>Rewrites <code>session_checkpoint.md</code> within 150 lines</td>
+</tr>
+</tbody></table>
+<p>The harness check runs in <code>~/tpl/tests</code>, and the rest run in the project. The operating layer is in place once all eight checks pass.</p>
+<h2>Troubleshooting</h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Guards never fire</td>
+<td>Trust the workspace, or turn on Enable Hooks in Cline</td>
+</tr>
+<tr>
+<td>Hook output shows <code>jq: command not found</code></td>
+<td>Install <code>jq</code>, since tools differ on whether a failing hook blocks or allows</td>
+</tr>
+<tr>
+<td>Commits skip the checks</td>
+<td>Rerun the Step 1 <code>git config</code> command and confirm the hook is executable</td>
+</tr>
+<tr>
+<td>A new frozen folder is still writable</td>
+<td>Add it to the freeze guard and any deny list, not only <code>.freeze-paths.txt</code></td>
+</tr>
+<tr>
+<td>A safe command is blocked</td>
+<td>Narrow the pattern in the guard script, then rerun the harness</td>
+</tr>
+</tbody></table>
+<h2>References</h2>
+<ol>
+<li>Claude Code Documentation: Hooks, Settings, and Subagents, Anthropic.</li>
+<li>Cursor Documentation: Rules, Hooks, and Permissions, Anysphere Inc.</li>
+<li>Google Antigravity Documentation, Google DeepMind.</li>
+<li>Posit Assistant Documentation, Posit Software, PBC.</li>
+<li>Devin Desktop and Windsurf Documentation, Cognition AI.</li>
+<li>Cline Documentation: Rules, Skills, and Hooks, Cline Bot Inc.</li>
+<li>Agent Skills Specification, Agent Skills Open Standard.</li>
+<li>Model Context Protocol Specification, Anthropic and MCP Steering Group.</li>
+<li>Git Documentation: githooks and core.hooksPath, Software Freedom Conservancy.</li>
+<li>jq Manual, jq Project.</li>
+</ol>
+
+<div class="blog-pagination">
+      <a href="template-for-coding-agent-best-practices-configuration.html" class="pagination-link prev">
+        <span class="pagination-label">Previous</span>
+        <span class="pagination-title">Template for Coding Agent Best Practices</span>
+      </a><div style="flex: 1;"></div></div>
+        </article>
+    </div>
+  </main>
+  <script src="../js/main.js"></script>
+
+  <!-- KaTeX for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" 
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], fleqn: true});">
+  </script>
+
+  <!-- Mermaid for Diagram Rendering -->
+  <style>
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: var(--space-2xl) 0;
+    }
+    .mermaid svg {
+      filter: drop-shadow(0 4px 16px rgba(183, 110, 121, 0.12));
+    }
+    .mermaid .node rect {
+      rx: 12px !important;
+      ry: 12px !important;
+    }
+  </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ 
+      startOnLoad: true, 
+      securityLevel: 'loose',
+      theme: 'base',
+      themeVariables: {
+        fontFamily: "'Outfit', -apple-system, BlinkMacSystemFont, sans-serif",
+        primaryColor: '#ffffff',
+        primaryBorderColor: '#b76e79',
+        primaryTextColor: '#8b4f5a',
+        lineColor: '#b76e79',
+        nodeBorder: '#b76e79',
+        clusterBkg: 'rgba(232, 180, 184, 0.15)',
+        clusterBorder: '#d4a0a0'
+      }
+    });
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      // Mermaid
+      const blocks = document.querySelectorAll('.language-mermaid');
+      blocks.forEach((block) => {
+        const parent = block.parentElement;
+        if (parent.tagName === 'PRE') {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          parent.replaceWith(mermaidDiv);
+        }
+      });
+      
+      // Tabs
+      const tabGroups = document.querySelectorAll('[data-tab-group]');
+      tabGroups.forEach(group => {
+        const buttons = group.querySelectorAll('[data-tab]');
+        const contents = group.querySelectorAll('[data-tab-content]');
+        
+        buttons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const target = btn.getAttribute('data-tab');
+            
+            buttons.forEach(b => b.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+            
+            btn.classList.add('active');
+            const targetContent = group.querySelector(`[data-tab-content="${target}"]`);
+            if (targetContent) targetContent.classList.add('active');
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

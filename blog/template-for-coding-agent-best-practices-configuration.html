@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Template for Coding Agent Best Practices — Lydia Pedersen</title>
+  <link rel="stylesheet" href="../css/styles.css?v=1.2">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .blog-post {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: var(--space-4xl) var(--space-md);
+        background: var(--bg-card);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 8px 32px rgba(183, 110, 121, 0.05);
+        border: 1px solid var(--border-subtle);
+    }
+    .blog-post h1, .blog-post h2, .blog-post h3 {
+        color: var(--text-primary);
+        font-family: var(--font-display);
+        margin-top: var(--space-2xl);
+        margin-bottom: var(--space-md);
+    }
+    .blog-post h1 { font-size: var(--fs-3xl); margin-top: 0; line-height: 1.1; }
+    .blog-post h2, .blog-post h3 { border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-sm); }
+    .blog-post h2 { font-size: var(--fs-2xl); }
+    .blog-post h3 { font-size: var(--fs-xl); }
+    .blog-post p, .blog-post li {
+        color: var(--text-secondary);
+        line-height: var(--lh-relaxed);
+        margin-bottom: var(--space-md);
+        font-size: var(--fs-md);
+    }
+    .blog-post img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-md);
+        margin: var(--space-lg) 0;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .blog-post a:not(.pagination-link) {
+        color: var(--text-accent);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s ease;
+    }
+    .blog-post a:not(.pagination-link):hover {
+        border-bottom-color: var(--text-accent);
+    }
+    .blog-post {
+        background: rgba(255, 255, 255, 0.65);
+        padding: var(--space-2xl);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-subtle);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .blog-post .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; display: flex; gap: 1rem; align-items: center; }
+    .blog-post .meta span { display: inline-flex; align-items: center; gap: 0.25rem; }
+    .blog-post p { line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1.05rem; }
+    .blog-post ul, .blog-post ol { margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem; }
+    .blog-post li { margin-bottom: 0.5rem; }
+    .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+    .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
+    .blog-post table { width: auto; margin: var(--space-2xl) 0; border-collapse: collapse; text-align: left; }
+    .blog-post th, .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post th { font-weight: 600; color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-subtle); }
+    .blog-post td { padding: 8px 16px; border: none; }
+    .blog-post td code { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 4px 10px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); display: inline-block; font-size: 0.95rem; color: var(--rose-gold-dark); margin-right: 6px; }
+
+    /* Responsive: horizontally scroll tables on mobile */
+    @media (max-width: 768px) {
+      .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
+    }
+    
+    /* Post Tabs */
+    .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
+    .post-tabs::-webkit-scrollbar { display: none; }
+    .post-tab-btn { padding: 8px 16px; border: none; background: transparent; color: var(--text-muted); font-family: var(--font-display); font-size: 1rem; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; white-space: nowrap; transition: color 0.2s, border-color 0.2s; }
+    .post-tab-btn:hover { color: var(--text-primary); }
+    .post-tab-btn.active { color: var(--text-accent); border-bottom-color: var(--text-accent); font-weight: 500; }
+    .post-tab-content { display: none; padding-top: var(--space-md); }
+    .post-tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+  <!-- Fixed chip visual (always visible, bottom-left, behind everything) -->
+  <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
+  <!-- Full-screen overlay canvas for the diagonal binary→agent→text animation -->
+  <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="../index.html" class="nav__logo" aria-label="Home">lydia<span>.</span>pedersen</a>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="../index.html#about" class="nav__link">About</a></li>
+        <li><a href="../index.html#samples" class="nav__link">Writing</a></li>
+        <li><a href="../index.html#case-studies" class="nav__link">Engineering</a></li>
+        <li><a href="../index.html#skills" class="nav__link">Skills</a></li>
+        <li><a href="index.html" class="nav__link">Blog</a></li>
+        <li><a href="../ebooks/index.html" class="nav__link">Ebooks</a></li>
+        <li><a href="../index.html#contact" class="nav__link">Contact</a></li>
+      </ul>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="nav__toggle-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-lg));">
+    <div class="container">
+<nav aria-label="breadcrumb" class="breadcrumbs"><ol>
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="index.html">Blog</a></li><li><a href="guide-template-for-coding-agent-best-practices.html">Guides: Template for Coding Agent Best Practices</a></li><li aria-current="page">Template for Coding Agent Best Practices</li></ol></nav>
+        <article class="blog-post ">
+<h1>Template for Coding Agent Best Practices</h1>
+<!-- SUMMARY: An architecture walkthrough of the operating layer around a coding agent: always-on rules, on-demand skills, context-isolated subagents, deterministic hooks and linters, and file-based session state. The configuration enforces critical constraints in code rather than prompts, keeps context lean across long efforts, and lives in version control so any team can reproduce it. -->
+<style>
+  /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+  .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+  .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+  .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+  .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+  .blog-post details.code-drop > summary::marker { content: ""; }
+  .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+  .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+  .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+  .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+  .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+  .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+  .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+  .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+  .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+  .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+  .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+  .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+  .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+  .blog-post li > strong:first-child { color: var(--text-primary); }
+  @media (prefers-reduced-motion: reduce) {
+    .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+  }
+  /* table: bordered card with horizontal row dividers and alternating palette shades. */
+  .blog-post table { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+  .blog-post thead tr { background: var(--rose-gold-glow); }
+  .blog-post th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+  .blog-post tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+  .blog-post tbody tr:nth-child(even) { background: var(--blush-glow); }
+  .blog-post td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+  .blog-post td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+  .blog-post tbody tr:last-child td { border-bottom: none; }
+  @media (min-width: 769px) {
+    .blog-post th:first-child, .blog-post td:first-child { white-space: nowrap; }
+  }
+  @media (max-width: 768px) {
+    .blog-post table { overflow-x: auto; }
+  }
+</style><p>The <a href="series-ai-tooling.html">AI Tooling series</a> surveys the coding agents, protocols, and runtime services that make up an AI development environment, and the five configurations in the <a href="index.html#tab-guides">Guides collection</a> wire those services into working stacks. Every one of those stacks places a coding agent at its interactive center, yet none of them configures the agent itself.</p>
+<p>An agent installed with default settings forgets project rules under load, trusts prose to stop destructive commands, loses decisions as transcripts grow, and keeps its behavior in editor dialogs that never reach version control. This configuration adds the missing operating layer: five kinds of committed files that shape, constrain, and preserve the agent&#39;s work inside any of those stacks.</p>
+<h2>The Problem</h2>
+<p>An agent left at its defaults degrades in four predictable ways during sustained engineering work. Fixing all four failures takes the same move: separate what the model should consider from what code must enforce, and keep both in the repository next to the source they govern. The template applies that split across seven targets: Claude Code, Cursor, Google Antigravity, Posit Assistant, Windsurf, Cline, and a vendor-neutral baseline built on plain instruction files and Git hooks.</p>
+<h3>Instruction Dilution</h3>
+<p>Teams usually respond to agent mistakes by appending another paragraph to a single root instruction file, until coding conventions, debugging checklists, documentation templates, and safety prohibitions share one long prompt. The agent rereads that file on every turn. A long block of instructions raises the token cost of every tool call, competes with the task for attention, and buries rules in its middle, where the model is least likely to follow them.</p>
+<h3>Silent Non-Compliance</h3>
+<p>A system prompt states every instruction as a request, and a language model honors requests statistically. Asking in prose for the agent to leave a released directory alone, avoid destructive shell commands, or keep credentials out of committed files works most of the time.</p>
+<p>Under the reasoning load of a multi-file refactor, negative constraints are the first to slip. The agent overwrites a locked file or commits a local path and then reports success, so the failure surfaces only in review or after release.</p>
+<h3>Context Degradation</h3>
+<p>Long sessions accumulate raw search output, abandoned debugging attempts, full file reads, and superseded plans. Recall degrades as that clutter grows, well before the advertised context limit. A decision settled two hours earlier fades from effective memory, and the agent reintroduces a fixed bug or reverses an agreed design choice. Switching models mid-task compounds the loss, because the only record of the work lives in a chat transcript that the next model never sees.</p>
+<h3>Non-Reproducible Configuration</h3>
+<p>Settings toggled in an editor preferences pane and prompts typed ad hoc exist on one workstation only. Without committed files and tests, a teammate cannot clone the setup, a reviewer cannot diff it across branches, and continuous integration cannot verify it.</p>
+<h2>Architecture Overview</h2>
+<pre><code class="language-mermaid">graph TD
+    Dev(&quot;Developer Task&quot;) --&gt; Agent(&quot;Coding Agent&quot;)
+    Rules(&quot;Always-On Rules&quot;) --&gt; Agent
+    Agent --&gt; Skills(&quot;On-Demand Skills&quot;)
+    Agent --&gt; Sub(&quot;Isolated Subagents&quot;)
+    Agent --&gt; Hooks(&quot;Lifecycle Hooks&quot;)
+    Hooks -. deny .-&gt; Agent
+    Hooks --&gt; Repo(&quot;Project Files and Shell&quot;)
+    Repo --&gt; Commit(&quot;Pre-Commit Linter&quot;)
+    Agent --&gt; State(&quot;Checkpoint and Plans&quot;)
+    State -. next session .-&gt; Agent
+</code></pre>
+<p>A task enters at the top of the diagram. The coding agent reads the always-on rules, loads a skill or dispatches a subagent when the work calls for one, and sends every shell command and file edit through the lifecycle hooks. Permitted actions reach the project files and shell, while a denied action returns to the agent along the dashed deny edge. Committed work passes the pre-commit linter, and the session closes by writing the checkpoint and plan files that the next session reads first.</p>
+<h3>Guidance Versus Enforcement</h3>
+<p>The first boundary runs through every turn and separates probabilistic guidance from deterministic enforcement:</p>
+<ul>
+<li><strong>Guidance side</strong>: Always-on rules enter every prompt and stay short. Skills load only when a task calls for them. Subagents run in their own context windows and return compact summaries, so heavy reading never reaches the main conversation.</li>
+<li><strong>Enforcement side</strong>: Hooks and linters inspect every proposed command or file edit as structured data and block violations before they take effect. A hook denial returns to the agent as an error it must work around, and the pre-commit linter repeats the checks when work reaches Git.</li>
+</ul>
+<h3>Working Memory Versus Durable State</h3>
+<p>The second boundary separates one session from the next. Context windows are working memory, not storage, so the state layer moves durable facts onto disk. A short checkpoint file records scope, decisions, verified results, and next tasks, while plans live as dated files and a handoff prompt tells the next session which files to read first.</p>
+<p>The next session starts with a clean context window and the same project knowledge, regardless of which model or tool runs it. The dashed edge from the checkpoint and plans back to the agent is the only path between sessions, and it runs through files that a reviewer can open and read.</p>
+<h2>Component Selection</h2>
+<h3>Rules</h3>
+<p>Always-on rules state the passive boundaries that apply to every turn: how much initiative the agent takes, what counts as evidence, when it must stop and plan, how it writes, and which paths it must never touch. The template splits these concerns into five short files, which replace the monolithic root prompt, keep the per-turn cost low, and let a team edit one concern without rereading the rest:</p>
+<ul>
+<li><strong>Agency</strong>: Tells the agent to act on unambiguous tasks, exhaust local search before asking where something lives, skip unsolicited recaps, and fix root causes instead of masking symptoms.</li>
+<li><strong>Ground truth</strong>: Requires the agent to read a file in the current session before describing it, and asks for every claim to carry an evidence tier: executed locally, stated in vendor documentation, or unconfirmed.</li>
+<li><strong>Planning mode</strong>: Requires clarifying questions and an approved plan before any change that touches three or more files, a shared interface, a build pipeline, or a new dependency.</li>
+<li><strong>Writing style</strong>: Ships as a placeholder with four neutral examples, because every team has its own conventions.</li>
+<li><strong>Freeze paths</strong>: Marks released directories as read-only and asks for a restore-point commit hash before shared build files change.</li>
+</ul>
+<p>Scoping matters as much as size. Most of the supported tools can attach a rule to file patterns, so the writing rule loads only when the agent edits documentation, and code turns skip it. The vendor-neutral tree, built for tools that read only <code>AGENTS.md</code>, places all five rules in that single file. Rules remain requests, however. Anything destructive or mechanically testable also needs a hook, and the rule exists to tell the agent about the constraint before the hook has to enforce it.</p>
+<h3>Skills</h3>
+<p>Skills hold repeatable multi-step procedures that would bloat every prompt if written as rules. Each skill is a folder containing a <code>SKILL.md</code> file, following the Agent Skills open format that every tool in the template reads natively. The file opens with a name and a one-sentence description, and the body holds the procedure.</p>
+<p>At startup the agent indexes only the descriptions. The body loads when a task matches the description or when the developer invokes the skill by name, and supporting reference files load only when a step reads them. In the template, the six descriptions together amount to less than a tenth of the full skill text, so the procedures cost almost nothing until a task needs them.</p>
+<p>The six skills fall into two groups, with two continuity skills that close a session and four reasoning skills that shape the work in between:</p>
+<ul>
+<li><strong><code>checkpoint</code></strong>: Writes the rolling state file and a detailed session log.</li>
+<li><strong><code>handoff</code></strong>: Prints the bootstrap prompt for the next session.</li>
+<li><strong><code>tree-of-thought</code></strong>: Requires at least three candidate approaches, each scored on strength, failure mode, and verification cost, before one is chosen.</li>
+<li><strong><code>adversarial-self-audit</code></strong>: Attacks a finished plan, change, or draft for unsupported claims, edge-case failures, drift between documentation and implementation, leaked data, and style violations.</li>
+<li><strong><code>deep-research</code></strong>: Gathers primary documentation with evidence tags.</li>
+<li><strong><code>autonomous-debugger</code></strong>: Isolates failures through hypothesis-driven reproduction.</li>
+</ul>
+<p>Skills replace two weaker patterns. Pasting a procedure into chat works once and disappears with the transcript. Folding it into an always-on rule makes every turn pay for a procedure used once a week. A skill file is versioned like code, shared through the repository, and copied unchanged into every tool tree, where a sync test confirms that no copy has drifted.</p>
+<h3>Subagents</h3>
+<p>Subagents solve two problems that rules and skills cannot: context pollution and self-confirmation. A task such as tracing a symbol across a large repository reads dozens of files, and every line of raw output that lands in the main conversation competes with the task for attention. A subagent runs that work in a separate context window without the parent&#39;s history and returns a compact, cited report, so the main agent keeps the conclusions and never sees the noise. A reviewing subagent that did not write a draft and cannot see the reasoning behind it also has no stake in defending the work, making it a sharper critic than an authoring agent reviewing its own output.</p>
+<p>The template defines three roles:</p>
+<ul>
+<li><strong>Codebase explorer</strong>: Runs read-only searches and returns a file map with line-range citations.</li>
+<li><strong>Web researcher</strong>: Pulls primary vendor documentation and tags each claim as documented or unconfirmed.</li>
+<li><strong>Style auditor</strong>: Reviews drafts against the writing rule and the restricted-term lists on a strong reasoning model, where lighter models miss violations.</li>
+</ul>
+<p>Each role is scoped by tool restrictions in its definition file, so the explorer and the auditor cannot write files even when a prompt tells them to. Several of the supported tools read subagent files natively. Tools without them receive the same roles as handoff prompts that run in a fresh session, which preserves the isolation at the cost of one manual step.</p>
+<h3>Hooks and Linters</h3>
+<p>Rules, skills, and subagents all influence a probabilistic model. Hooks and linters enforce. A lifecycle hook is a short script that the agent runtime calls before a tool runs. The runtime passes the proposed command or file edit as a JSON payload, and the script uses <code>jq</code> or Python to read only the relevant fields, such as the target path or command, so mentioning a protected path in prose never triggers a false block. The script then allows the action or blocks it with the tool&#39;s documented signal, usually a nonzero exit code or a JSON deny decision. The check consumes no model tokens and does not depend on whether the agent remembered a rule.</p>
+<p>The template ships five guards:</p>
+<ul>
+<li><strong>Freeze guard</strong>: Keeps released directories intact.</li>
+<li><strong>Destructive-command guard</strong>: Refuses recursive force deletes, hard resets, forced pushes, and dropped tables.</li>
+<li><strong>Network guard</strong>: Blocks remote scripts piped into a shell and uploads of local credential files.</li>
+<li><strong>Secrets guard</strong>: Blocks file edits and commands that contain common API key prefixes or private key headers.</li>
+<li><strong>Style hook</strong>: Checks written prose against local home paths, restricted terms, and banned phrases.</li>
+</ul>
+<p>A companion test harness runs 96 checks across the guards and the commit linter using sample payloads for each supported tool, verifying that safe actions pass and forbidden actions fail before the configuration is deployed.</p>
+<p>Agent hooks can be switched off in settings, and some runtimes let an action proceed when a hook crashes or times out. A Git pre-commit hook closes that gap. Activated once with <code>git config core.hooksPath .githooks</code>, it reruns the freeze and secrets checks against the staged diff, passes staged Markdown through <code>scripts/lint_prose.py</code>, and aborts the commit on any failure, whichever agent or person produced the change. Operating system sandboxing, where a tool offers it, adds a third line of defense that limits file and network access regardless of what any script decides.</p>
+<h3>State Artifacts</h3>
+<p>State artifacts replace transcript memory with Markdown or plain-text files in Git, so any model and any tool can read them, and none of it depends on a vendor&#39;s memory feature:</p>
+<ul>
+<li><strong><code>session_checkpoint.md</code></strong>: A rolling summary capped at 150 lines and read first at the start of every session. The file holds four sections covering project scope, constraints and decisions, verified results, and next tasks. Each closeout rewrites the summary in full, carries scope and decisions forward, and writes a detailed log into <code>checkpoints/</code> so verbose command output stays off the active path.</li>
+<li><strong>Dated plan files</strong>: Markdown plans created in the tool&#39;s plans folder by <code>scripts/plan.sh</code>, which also lists active plans and archives finished ones. An approved plan on disk outlives the session that wrote it, and a reviewer can read it in a pull request.</li>
+<li><strong>Policy lists</strong>: Three plain-text files at the project root that configure the mechanical checks. <code>.freeze-paths.txt</code> lists protected directories for the commit hook, and <code>.style-denylist.txt</code> and <code>.style-phrases.txt</code> list restricted terms and banned prose phrases for the style hook and the linter.</li>
+</ul>
+<h3>Model Routing</h3>
+<p>No single model suits every step of a session. Routing planning and auditing to an economy model invites the model to lose track of hard constraints, and routing mechanical edits to a slow frontier model wastes time and budget. The template assigns work to four roles by capability rather than by product name, so the mapping survives model releases:</p>
+<ul>
+<li><strong>Strategy and constraints</strong>: A frontier reasoning model for planning, tree-of-thought comparisons, constraint-heavy drafting, and adversarial audits.</li>
+<li><strong>Daily driver</strong>: A fast model that handles tool calls reliably, used for implementation, debugging loops, research, and codebase exploration.</li>
+<li><strong>Long-context archivist</strong>: A model with an extended context window for whole-repository audits and checkpoint condensation.</li>
+<li><strong>Local privacy vault</strong>: An open-weight model on the workstation for scrubbing credentials or personal data from logs and for offline utility tasks.</li>
+</ul>
+<p>Several tools let a session pin one model for planning and another for execution, subagent definitions pin a model per role, and each tool tree maps the roles to its own model names. The state files make switching roles cheap, because a handoff carries the work to whichever model takes the next step.</p>
+<h2>Integration Walkthrough</h2>
+<p>A single task shows how the layers cooperate in sequence. The example task is a request to add a configuration option that touches a parser, its tests, and the user documentation:</p>
+<ol>
+<li><strong>Plan gate</strong>: The always-on rules are already in context. The planning mode rule recognizes a change across three or more files, so the agent asks clarifying questions and then writes a plan with <code>bash scripts/plan.sh new &lt;slug&gt;</code>, listing the objective, affected files, verification commands, and rollback steps. No application code changes until the developer approves. Most tools pair the rule with a native plan mode that keeps the agent read-only until approval.</li>
+<li><strong>Skill</strong>: A design question remains: where the new option should be validated. The agent invokes <code>tree-of-thought</code> and records the scored branches in the plan. The procedure enters context only at that moment, and the scored table lands in the plan file, where later sessions can read it.</li>
+<li><strong>Subagent</strong>: The agent dispatches the codebase explorer to find every caller of the parser, and the returned map of call sites becomes the file list in the plan.</li>
+<li><strong>Hook and linter</strong>: During implementation, every command and edit passes through the guards. The destructive-command guard denies a cleanup step that reaches for a recursive force delete, and the agent receives the reason and proposes a narrower command for approval. At commit time, the pre-commit hook reruns the secrets, freeze, and prose checks and aborts the commit with a file and line number when the documentation contains a pasted local home path.</li>
+<li><strong>Audit</strong>: Before requesting review, the agent runs <code>adversarial-self-audit</code> on the diff and hands the documentation to the style auditor, whose line-cited fixes go in before the commit.</li>
+<li><strong>Checkpoint and handoff</strong>: The session ends with <code>checkpoint</code>, which records the working tree state, writes the detailed log, and rewrites the rolling checkpoint within its line cap. <code>handoff</code> then prints a self-contained prompt naming the next objective, the files to read first, and the frozen paths. The next session, possibly on a different model or tool, starts from that prompt and a clean context window, reads the checkpoint and the active plan, and continues without inheriting the noise of the previous transcript.</li>
+</ol>
+<p>Scoping each session to one deliverable keeps the loop tight: one plan, one set of changes, one checkpoint. Long efforts become a sequence of short, verifiable sessions joined by files rather than one sprawling conversation that slowly forgets its own decisions.</p>
+<h2>Tradeoffs and Alternatives</h2>
+<p>This configuration optimizes for constraint compliance, session longevity, and reproducibility. Every behavior that matters lives in a committed file, and every rule that can be tested in code is enforced in code. Carrying that discipline introduces three operational costs:</p>
+<ul>
+<li><strong>Vendor churn</strong>: Each tool names its folders, definition keys, and hook contracts differently, and those details change between releases. A team on one tool maintains one tree, while a multi-tool team maintains several. The template contains that cost by keeping one shared source for skills, scripts, and rule bodies and running a sync test that flags any copy that has drifted.</li>
+<li><strong>Planning ceremony</strong>: A gate that demands questions, a written plan, and approval slows down medium-sized changes, and teams that make many of them may raise the threshold.</li>
+<li><strong>Mechanical check limits</strong>: Regex linters and shell guards catch leaked paths, credentials, and forbidden commands, yet they cannot judge whether an architecture is sound or a claim is true. Those questions still depend on tests, the auditor subagent, and human review, and the guards set a floor rather than a ceiling.</li>
+</ul>
+<p><strong>Alternative approaches</strong>:</p>
+<ul>
+<li><strong>Minimal baseline</strong>: A short-lived prototype can adopt only the vendor-neutral tree, a root <code>AGENTS.md</code> plus the Git pre-commit hook, and run the same linter in continuous integration, trading per-turn feedback for a simpler setup.</li>
+<li><strong>Single-model operation</strong>: An environment with one approved model endpoint can let every subagent inherit the session model, trading higher exploration cost for simpler provider configuration.</li>
+<li><strong>Shared rules only</strong>: A team that wants guidance without enforcement can adopt the rules and skills alone, accepting that every constraint returns to being a request the model may drop under load.</li>
+</ul>
+<p>The template drops into each of the five stacks without changing them:</p>
+<ul>
+<li><strong><a href="solo-developer-stack-configuration.html">Solo Developer Stack</a></strong>: Maps the local privacy role to the Ollama endpoint already on the workstation.</li>
+<li><strong><a href="enterprise-agentic-pipeline-configuration.html">Enterprise Agentic Pipeline</a></strong>: Gains uniform secret detection before code reaches CI.</li>
+<li><strong><a href="private-and-airgapped-deployment-configuration.html">Private and Airgapped Deployment</a></strong>: Carries the dependency-light scripts across the air gap in Git.</li>
+<li><strong><a href="rag-first-knowledge-system-configuration.html">RAG-First Knowledge System</a></strong>: Uses the subagents to keep raw corpus text out of the main conversation context.</li>
+<li><strong><a href="evaluation-driven-development-loop-configuration.html">Evaluation-Driven Development Loop</a></strong>: Uses the prose linter and hook test harness as deterministic local scorers alongside the evaluation suite.</li>
+</ul>
+<p>The companion <a href="template-for-coding-agent-best-practices-guide.html">Setup Guide</a> installs each layer step by step, and the <a href="https://github.com/Lyd1aCla1r3/coding-agent-best-practices">template repository</a> holds the complete, tested files for all seven targets.</p>
+<h2>References</h2>
+<ol>
+<li>Agent Skills Specification, Agent Skills Open Standard.</li>
+<li>AGENTS.md Open Format for Coding Agents, AGENTS.md Community Specification.</li>
+<li>Model Context Protocol Specification, Anthropic and MCP Steering Group.</li>
+<li>Claude Code Documentation, Anthropic.</li>
+<li>Cursor Documentation, Anysphere Inc.</li>
+<li>Google Antigravity Documentation, Google DeepMind.</li>
+<li>Posit Assistant Documentation, Posit Software, PBC.</li>
+<li>Devin Desktop and Windsurf Documentation, Cognition AI.</li>
+<li>Cline Documentation, Cline Bot Inc.</li>
+<li>Git Documentation: githooks and core.hooksPath, Software Freedom Conservancy.</li>
+</ol>
+
+<div class="blog-pagination"><div style="flex: 1;"></div>
+      <a href="template-for-coding-agent-best-practices-guide.html" class="pagination-link next">
+        <span class="pagination-label">Next</span>
+        <span class="pagination-title">Template for Coding Agent Best Practices: Setup Guide</span>
+      </a></div>
+        </article>
+    </div>
+  </main>
+  <script src="../js/main.js"></script>
+
+  <!-- KaTeX for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" 
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], fleqn: true});">
+  </script>
+
+  <!-- Mermaid for Diagram Rendering -->
+  <style>
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: var(--space-2xl) 0;
+    }
+    .mermaid svg {
+      filter: drop-shadow(0 4px 16px rgba(183, 110, 121, 0.12));
+    }
+    .mermaid .node rect {
+      rx: 12px !important;
+      ry: 12px !important;
+    }
+  </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ 
+      startOnLoad: true, 
+      securityLevel: 'loose',
+      theme: 'base',
+      themeVariables: {
+        fontFamily: "'Outfit', -apple-system, BlinkMacSystemFont, sans-serif",
+        primaryColor: '#ffffff',
+        primaryBorderColor: '#b76e79',
+        primaryTextColor: '#8b4f5a',
+        lineColor: '#b76e79',
+        nodeBorder: '#b76e79',
+        clusterBkg: 'rgba(232, 180, 184, 0.15)',
+        clusterBorder: '#d4a0a0'
+      }
+    });
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      // Mermaid
+      const blocks = document.querySelectorAll('.language-mermaid');
+      blocks.forEach((block) => {
+        const parent = block.parentElement;
+        if (parent.tagName === 'PRE') {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          parent.replaceWith(mermaidDiv);
+        }
+      });
+      
+      // Tabs
+      const tabGroups = document.querySelectorAll('[data-tab-group]');
+      tabGroups.forEach(group => {
+        const buttons = group.querySelectorAll('[data-tab]');
+        const contents = group.querySelectorAll('[data-tab-content]');
+        
+        buttons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const target = btn.getAttribute('data-tab');
+            
+            buttons.forEach(b => b.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+            
+            btn.classList.add('active');
+            const targetContent = group.querySelector(`[data-tab-content="${target}"]`);
+            if (targetContent) targetContent.classList.add('active');
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -139,6 +139,8 @@ for (const fileObj of mdFiles) {
       let guideDisplay = guideName.split('-').map(word => {
           if (word.toLowerCase() === 'rag') return 'RAG';
           if (word.toLowerCase() === 'ai') return 'AI';
+          if (word.toLowerCase() === 'and') return 'and';
+          if (word.toLowerCase() === 'for') return 'for';
           return word.charAt(0).toUpperCase() + word.slice(1);
       }).join(' ');
       breadcrumbHtml += `<li><a href="guide-${guideName}.html">Guides: ${guideDisplay}</a></li>`;
@@ -420,7 +422,8 @@ if (posts.length > 0) {
       'enterprise-agentic-pipeline',
       'private-and-airgapped-deployment',
       'rag-first-knowledge-system',
-      'evaluation-driven-development-loop'
+      'evaluation-driven-development-loop',
+      'template-for-coding-agent-best-practices'
     ];
 
     function formatGuideName(gName) {
@@ -428,6 +431,7 @@ if (posts.length > 0) {
         if (word.toLowerCase() === 'rag') return 'RAG';
         if (word.toLowerCase() === 'ai') return 'AI';
         if (word.toLowerCase() === 'and') return 'and';
+        if (word.toLowerCase() === 'for') return 'for';
         return word.charAt(0).toUpperCase() + word.slice(1);
       }).join(' ');
     }
