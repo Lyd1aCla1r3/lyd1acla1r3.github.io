@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -138,18 +179,18 @@
       border-radius: 0.4em !important;
     }
   }
-</style><!-- SUMMARY: Neural networks fundamentally operate on numerical tensors, establishing a strict requirement to translate raw text into structured integer sequences. Byte Pair Encoding satisfies this mathematical constraint by statistically discovering subword units, serving as the critical bridge to the initial embedding matrix. --><p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/tokenization-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p><p>The Transformer architecture relies entirely on continuous vector spaces and linear transformations to process information. Neural networks compute by calculating dot products and multiplying matrices. This strict mathematical reality dictates that raw text cannot be fed directly into the initial embedding matrix. A rigorous translation layer must exist to convert discrete character strings into vectors within an $n$-dimensional space before any neural computation can occur.</p>
+</style><!-- SUMMARY: Neural networks fundamentally operate on numerical tensors, establishing a strict requirement to translate raw text into structured integer sequences. Byte Pair Encoding satisfies this mathematical constraint by statistically discovering subword units, serving as the critical bridge to the initial embedding matrix. --><p><em>Prefer to read this offline? <a href="../assets/docs/tokenization-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p><p>The Transformer architecture relies entirely on continuous vector spaces and linear transformations to process information. Neural networks compute by calculating dot products and multiplying matrices. This strict mathematical reality dictates that raw text cannot be fed directly into the initial embedding matrix. A rigorous translation layer must exist to convert discrete character strings into vectors within a $d_{\text{model}}$-dimensional space before any neural computation can occur.</p>
 <h2>The Numerical Constraint</h2>
 <p>Deep learning models require structured mathematical inputs. The attention mechanisms and feed-forward layers detailed throughout the <a href="series-transformers.html">Transformer series</a> execute pure linear algebra. These mathematical operations mandate numerical tensors, which are defined as multi-dimensional arrays of numbers. Tokenization satisfies this requirement by segmenting raw strings into discrete units called tokens. </p>
-<p>Once isolated, each token is assigned a random integer ID. This ID functions solely as a lookup mechanism and possesses no mathematical meaning itself. The true semantic content of a token exists entirely within its corresponding vector in the embedding matrix $W_E$. When a token ID is passed into the architecture, it retrieves a dense vector spanning $n$ dimensions. Every dimension within this vector represents an identifying feature of the character string. The numerical values populating these dimensions are rigorously refined and updated throughout the training process to capture semantic relationships.</p>
-<p>The quality of the initial string segmentation dictates the foundation upon which all subsequent layers build. If the tokenization strategy is flawed, the resulting geometric vectors will be inherently limited, regardless of how effectively the network trains.</p>
+<p>Each isolated token receives a deterministic integer ID. This ID functions solely as an ordinal lookup index and possesses no inherent mathematical magnitude. The semantic content of a token resides entirely within its corresponding row vector in the embedding matrix $W_E$. Passing a token ID into the architecture retrieves a dense vector spanning $d_{\text{model}}$ dimensions. Every dimension within this vector represents a learned feature of the character string. The numerical weights populating these dimensions are refined and updated throughout the training process to capture semantic relationships.</p>
+<p>The quality of the initial string segmentation dictates the foundation upon which all subsequent layers build. A flawed tokenization strategy constrains the resulting geometric vectors, regardless of how effectively the network trains.</p>
 <h2>The Tokenization Landscape</h2>
 <p>Several algorithms exist to perform this segmentation, including WordPiece and Unigram language models. Byte Pair Encoding emerges as the dominant standard powering architectures ranging from the GPT family to Llama. The algorithm succeeds by operating without rigid word boundaries, relying instead on a data-driven approach that extracts optimal subword units based strictly on their statistical frequency.</p>
 <p>This series explores the mechanics of Byte Pair Encoding from the ground up. To make the abstract process concrete, the algorithm will be executed entirely by hand on a carefully designed toy corpus featuring distinct morphological patterns:</p>
 <div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2; text-align: left;">
 <span style="font-size: 0.9em;"><b><code>waking</code></b> <b><code>woke</code></b> <b><code>woken</code></b> <b><code>walking</code></b> <b><code>walked</code></b> <b><code>walker</code></b> <b><code>talking</code></b> <b><code>talked</code></b> <b><code>talker</code></b></span>
-</div><p>This vocabulary provides the structural variation necessary to demonstrate how Byte Pair Encoding organically extracts shared stems and suffixes. The corpus groups three distinct root verbs alongside their present, past, and agent noun variations. The shared linguistic suffixes like &quot;ing&quot;, &quot;ed&quot;, and &quot;er&quot; guarantee that the algorithm will mathematically discover these recurring semantic structures through statistical frequency alone. The subsequent section examines the fundamental tension between character-level and word-level tokenization, mathematically proving why the subword compromise is necessary.</p>
-<p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/tokenization-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p>
+</div><p>This vocabulary provides the structural variation necessary to demonstrate how Byte Pair Encoding organically extracts shared stems and suffixes. The corpus groups nine inflected word forms across three verb families spanning present-participle, past-tense, past-participle, and agent-noun variations. Shared linguistic suffixes such as <code>ing</code>, <code>ed</code>, and <code>er</code> guarantee that the algorithm will mathematically discover these recurring morphological structures through statistical frequency alone. The subsequent chapter examines the fundamental tension between character-level and word-level tokenization, proving why the subword compromise is necessary.</p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/tokenization-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p>
 
 <div class="blog-pagination"><div style="flex: 1;"></div>
       <a href="tokenization-chapter_01.html" class="pagination-link next">

@@ -2,60 +2,78 @@
 
 <!-- SUMMARY: Projecting discrete tokens into a high-dimensional vector space provides the differentiable manifold required for gradient-based optimization. At initialization, these vectors are drawn from a random distribution, creating an isotropic expanse where all tokens are geometrically orthogonal and devoid of semantic relationships. -->
 
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p>
 
-The linear projection of a one-hot vector through the embedding matrix $W_E$ fundamentally alters the mathematical domain of the tokens. The gap from a discrete, categorical space ($\mathbb{Z}$) into a dense, continuous vector space ($\mathbb{R}^{d_{model}}$) has been bridged. 
+The linear projection of a one-hot vector through the embedding matrix $W_E$ alters the mathematical domain of the tokens, bridging the gap from a discrete categorical set ($\mathbb{Z}$) into a dense, continuous vector space ($\mathbb{R}^{d_{\text{model}}}$).
 
-This transition is a structural prerequisite for deep learning. 
+This domain transition is a structural prerequisite for deep learning.
 
 ## The Differentiable Manifold
 
-Neural networks learn through calculus—specifically, by calculating gradients and traversing a loss landscape via backpropagation. Calculus requires a continuous, differentiable manifold. The gradient of a discrete integer ID cannot be calculated, nor can a microscopic mathematical adjustment be made to a categorical label.
+Neural networks learn through calculus by computing partial derivatives and traversing a continuous loss landscape via backpropagation. Differential calculus requires a continuous manifold: a discrete integer ID admits no derivative, and a categorical label cannot absorb a microscopic numerical perturbation.
 
-By projecting tokens into a dense, continuous space, each token becomes parameterized by a vector of floating-point numbers. If the architecture dictates a dimension size of $d_{model} = 512$, the token `walk` is now defined by 512 independent, tunable parameters:
+Projecting tokens into $\mathbb{R}^{d_{\text{model}}}$ parameterizes each vocabulary entry as a vector of floating-point coordinates. Scaling the hidden dimension from the 3-dimensional whiteboard model ($d_{\text{model}} = 3$) to a production dimensionality of $d_{\text{model}} = 512$ represents a token such as `brown` with 512 independent, tunable parameters:
 
 $$
-\mathbf{v}_{walk} = [0.124, -0.841, 0.339, \dots, -0.052] \in \mathbb{R}^{512}
+\mathbf{v}_{\text{brown}} = \begin{bmatrix} 0.124 & -0.841 & 0.339 & \dots & -0.052 \end{bmatrix} \in \mathbb{R}^{512}
 $$
 
-Because these parameters are continuous, they are entirely unconstrained. A gradient descent step can apply an arbitrarily small perturbation to $\mathbf{v}_{walk}$ (e.g., subtracting $0.001$ from its first dimension) to incrementally improve the model's objective function. This continuous adjustment mechanism is what allows the network to gradually map semantic relationships into geometric proximity.
+Continuous coordinates impose no discrete grid constraints on parameter updates. A single gradient descent step can apply an arbitrarily small perturbation to $\mathbf{v}_{\text{brown}}$ (such as subtracting $0.001$ from its first coordinate) to reduce the training loss incrementally. Repeated continuous perturbations allow the optimization process to translate statistical co-occurrence patterns into geometric proximity.
 
 ## The Isotropic Expanse
 
-These initial 512 dimensions do not correspond to latent human concepts. At initialization, one dimension does not encode "plurality," while another encodes "sentiment."
+These initial 512 dimensions do not correspond to latent human concepts. At initialization, one dimension does not encode plurality while another encodes sentiment.
 
-When a model is instantiated, the weights of $W_E$ are populated by sampling from a random probability distribution, such as a standard normal distribution $\mathcal{N}(0, \sigma^2)$. Because every dimension is drawn independently from the exact same symmetric distribution, the resulting vector space is **isotropic**—meaning it looks completely uniform in every direction.
+Model initialization populates the entries of $W_E$ by sampling independently from a zero-mean probability distribution, such as a Gaussian distribution $\mathcal{N}(0, \sigma^2)$ with mean $0$ and variance $\sigma^2$. Independent sampling from an identical symmetric distribution across all coordinates produces an **isotropic** vector space, meaning its statistical properties remain uniform in every direction.
 
-High-dimensional geometry invalidates the intuition of a 3D cloud of points with varied clustering. In 512 dimensions, a mathematical phenomenon called the *concentration of measure* dominates. Calculating the length of a vector requires summing its 512 squared dimensions. Due to the massive sample size, the Law of Large Numbers dictates that the final lengths of all the randomized vectors will average out to be virtually identical. Instead of a solid, uneven blob of points, the random initialization creates a perfectly uniform, hollow shell. Every single token sits on the exact same surface of a high-dimensional hypersphere, devoid of any structural bias.
+High-dimensional geometry invalidates low-dimensional intuition about random point clouds. In a 512-dimensional space, a statistical phenomenon known as **concentration of measure** governs vector magnitudes. Computing the Euclidean length (norm) of a vector $\mathbf{v} \in \mathbb{R}^{d}$ requires summing its $d = 512$ squared coordinates and taking the square root:
 
-Consider the vastness of a high-dimensional space. In a standard 2D plane, there are exactly 4 geometric quadrants. Randomly scattering a vocabulary of 50,000 tokens across a 2D plane inevitably creates dense clusters due to spatial constraints.
+$$
+\|\mathbf{v}\| = \sqrt{\sum_{m=1}^{d} v_m^2}
+$$
 
-However, a 512-dimensional space contains $2^{512}$ distinct quadrants (mathematically known as orthants). To put that scale into perspective, $2^{512}$ is approximately $1.3 \times 10^{154}$. When a token is initialized, it is dropped onto the hypersphere in one of these $1.3 \times 10^{154}$ orthants. The mathematical surface area dictates that every single token in the vocabulary lands in profound isolation. Accidental clustering is mathematically improbable.
+Summing 512 independent random variables invokes the Law of Large Numbers, causing the Euclidean norms of all randomly initialized token vectors to concentrate tightly around $\sqrt{d \cdot \sigma^2}$. Rather than forming an uneven solid cloud, random initialization places every token vector onto a thin spherical shell of radius $\sqrt{d}\sigma$, devoid of directional bias.
+
+The exponential growth of volume across dimensions reinforces this isolation. A two-dimensional plane contains $2^2 = 4$ quadrants, so scattering a 50,000-token vocabulary across $\mathbb{R}^2$ forces thousands of tokens into the same quadrant.
+
+A 512-dimensional space partitions into $2^{512}$ distinct sign regions, known mathematically as **orthants**. That exponent evaluates to $2^{512} \approx 1.34 \times 10^{154}$ orthants. Random sign assignment across 512 coordinates drops each initialized token into one of those $1.34 \times 10^{154}$ orthants, ensuring that every vocabulary entry begins in extreme spatial isolation with negligible probability of accidental clustering.
 
 ## The Geometry of Orthogonality
 
-Within this vast, isolated expanse, a geometric phenomenon occurs: random initial vectors for `walk` and `ing` are mathematically guaranteed to be virtually **orthogonal** (perpendicular) to one another. 
+Within this isotropic expanse, a second high-dimensional invariant emerges: any two independently initialized token vectors (such as `brown` and `fox`) are nearly **orthogonal** (perpendicular) to one another.
 
-The relationship between two vectors is measured to understand this. In the context of neural networks, **cosine similarity** is predominantly used. 
+Quantifying the directional alignment between two vectors $\mathbf{a}, \mathbf{b} \in \mathbb{R}^{d}$ requires computing their **cosine similarity**, defined as the cosine of the angle $\theta$ between them. The geometric dot product relates the two vectors through the identity $\mathbf{a} \cdot \mathbf{b} = \|\mathbf{a}\| \|\mathbf{b}\| \cos(\theta)$, where $\|\mathbf{a}\|$ and $\|\mathbf{b}\|$ denote the Euclidean norms of $\mathbf{a}$ and $\mathbf{b}$. Dividing both sides by the product of the norms isolates $\cos(\theta)$:
 
-The geometric formula for the dot product is $A \cdot B = ||A|| \times ||B|| \times \cos(\theta)$. By dividing the dot product of two vectors by their lengths ($||A|| \times ||B||$), $\cos(\theta)$ is isolated, yielding the cosine similarity. This formula reveals that the cosine of the angle between two vectors is directly proportional to their **dot product**—the mathematical operation of pairing up corresponding dimensions, multiplying them together, and summing the results.
+$$
+\cos(\theta) = \frac{\mathbf{a} \cdot \mathbf{b}}{\|\mathbf{a}\| \|\mathbf{b}\|} = \frac{\sum_{m=1}^{d} a_m b_m}{\|\mathbf{a}\| \|\mathbf{b}\|}
+$$
 
-When two dimensions randomly drawn from a distribution centered at zero are multiplied, the product is equally likely to be positive (if the signs agree) or negative (if the signs disagree). 
+This identity demonstrates that the cosine of the angle $\theta$ is directly proportional to the algebraic **dot product**: the sum of the element-wise products $a_m b_m$ across all $d$ coordinates.
 
-In a simple 3D space, the dot product only sums 3 of these randomized terms. Due to the small sample size, variance dominates. It is highly probable that all 3 terms will randomly agree, resulting in a large positive sum. Consequently, in low dimensions, random vectors frequently point in roughly the same direction.
+Multiplying two coordinates $a_m$ and $b_m$ drawn independently from a symmetric distribution centered at zero produces a positive product when their signs match and a negative product with equal probability ($p = 0.5$) when their signs oppose.
 
-But in a 512-dimensional space, the dot product sums 512 independent terms. At this massive scale, variance shrinks and the Law of Large Numbers strictly takes over. Probability dictates that the outcomes must forcefully regress to the mean. An almost perfect balance is mathematically guaranteed: roughly 256 products will be positive, and the exact other half will be negative. 
+In a 3-dimensional toy space ($d = 3$), the dot product sums only three random products. Small sample sizes exhibit high variance: all three terms share the same sign with probability $2 \times (0.5)^3 = 0.25$, producing wide fluctuations in $\cos(\theta)$ that frequently align random vectors in similar directions.
 
-Furthermore, because the underlying probability distribution is symmetrical, there is no mathematical bias skewing the absolute size of these numbers. The 256 positive terms are, on average, exactly as large as the 256 negative terms. 
+In a 512-dimensional space ($d = 512$), the dot product sums 512 independent zero-mean products. Law of Large Numbers convergence shrinks the relative variance of the normalized dot product at a rate of $1/\sqrt{d}$:
 
-When summed together, the positive and negative halves perfectly cancel each other out, collapsing the entire dot product to exactly zero. Because the cosine of the angle is proportional to this dot product, a value of zero results in a cosine of $0.0$. In trigonometry, the angle whose cosine is exactly zero is a 90-degree angle. Therefore, any two random tokens—whether they are `walk` and `ing`, or `walk` and `dog`—begin their existence geometrically orthogonal to one another.
+- **Sign Balance:** Expected sign symmetry yields roughly 256 positive products ($a_m b_m > 0$) and 256 negative products ($a_m b_m < 0$).
+- **Magnitude Symmetry:** Symmetric sampling around zero ensures that the positive terms and negative terms share the same expected magnitude.
+- **Mutual Cancellation:** Summing all 512 terms cancels the positive half against the negative half, driving the expected dot product $\mathbf{a} \cdot \mathbf{b}$ and the resulting cosine similarity $\cos(\theta)$ toward $0.0$ (with standard deviation $1/\sqrt{512} \approx 0.044$).
+
+| Spatial Regime | Dimensionality (`d`) | Distinct Orthants (`2^d`) | Dot-Product Terms | Pairwise Cosine Similarity |
+| :--- | :--- | :--- | :--- | :--- |
+| **2D Plane** | `2` | `4` | `2` | High variance (`0.71` std dev); severe crowding |
+| **3D Whiteboard Model** | `3` | `8` | `3` | Moderate variance (`0.58` std dev); frequent alignment |
+| **Production Space** | `512` | `2^512` (`~1.34e154`) | `512` | Tight concentration near `0.0` (`0.044` std dev); near-orthogonal |
+
+An angle whose cosine equals $0.0$ measures $90^\circ$. Every pair of randomly initialized tokens in a high-dimensional embedding matrix begins geometrically orthogonal to one another.
 
 ## A Feature, Not a Bug
 
-This natural propensity toward orthogonality is a structurally advantageous property. 
+Near-orthogonality at initialization provides a foundational structural advantage for gradient-based optimization.
 
-Orthogonality provides a mathematically clean, unentangled starting point. If the vectors started out randomly clustered, the network would have to spend significant computational effort separating those accidental correlations. Because every token begins maximally uncorrelated and non-committal, a true blank slate is presented. The architecture possesses the maximal bandwidth to selectively pull related tokens together and push unrelated tokens apart, driven purely by the objective truth of the training data.
+Orthogonal vectors establish an unentangled coordinate baseline. Random initial clustering would force early training steps to expend gradient updates untangling spurious correlations between unrelated words. Initializing every token at roughly $90^\circ$ from every other token presents the optimizer with an uncorrelated geometric slate, allowing backpropagation to pull co-occurring tokens together and push unrelated tokens apart purely in response to corpus statistics.
 
-The embedding matrix begins as an orthogonal coordinate system. The tokens possess no semantic clustering and no grammatical hierarchy. The imposition of structural meaning upon this isotropic expanse—by evaluating predictions and continuously adjusting these free parameters—is the core mechanism of end-to-end learning explored next.
+The initialized embedding matrix $W_E$ thus begins as a nearly orthogonal set of points on a hypersphere, encoding neither semantic clusters nor grammatical hierarchy. Imposing linguistic structure onto this isotropic expanse requires evaluating predictions and updating the weights of $W_E$ through the forward and backward passes derived in the next three chapters.
 
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p>

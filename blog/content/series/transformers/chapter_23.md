@@ -1,20 +1,32 @@
 # Part 23: Backpropagation - Attention (Part 2: Q, K, V)
 
-<!-- SUMMARY: Following the calculation of the attention score gradients, the error signal is distributed backward into the query, key, and value matrices. Reversing the weighted sums geometrically mirrors the forward pass, successfully translating the output error into precise updates for the self-attention weight matrices. -->
+<!-- SUMMARY: Following the calculation of the attention score gradients, the error signal is distributed backward into the query, key, and value matrices. Reversing the weighted sums geometrically mirrors the forward pass, translating the output error into parameter updates for the self-attention weight matrices. -->
 
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>
 
-The previous installment navigated the complexities of the softmax function and the causal mask. That stage calculated the gradient of the loss with respect to the raw, unmasked attention scores, yielding a precise measurement of how each attention connection requires adjustment. The process now reaches the final stage of backpropagating through the self-attention mechanism. The objective requires distributing these score gradients, alongside the gradients from the attention output itself, backward into the Query, Key, and Value matrices. Ultimately, the network must route these signals all the way back to the weight matrices that created them and the input sequence that initiated the forward pass.
+Part 22 navigated the Softmax Jacobian and the causal mask to obtain the gradient of the loss with respect to the unmasked attention scores. Completing the backward pass through self-attention requires distributing these score gradients, alongside the attention output gradient $d\_Z$, into the Query ($Q$), Key ($K$), and Value ($V$) projections. From those three subspace gradients, the chain rule computes the weight updates for $W_Q$, $W_K$, and $W_V$ and merges the three input branches back into the $4 \times 6$ residual stream.
+
+| Target Tensor | Backward Equation | Input Shapes | Output Shape | Geometric Role |
+| :--- | :--- | :--- | :--- | :--- |
+| **Value Gradient (`d_V`)** | `P^T * d_Z` | `(4 x 4)^T * (4 x 2)` | `4 x 2` | Attributes output error across Value rows |
+| **Value Weights (`d_W_V`)** | `X^T * d_V` | `(4 x 6)^T * (4 x 2)` | `6 x 2` | Accumulates Value projection updates |
+| **Query Gradient (`d_Q`)** | `(d_S * K) / sqrt(d_k)` | `(4 x 4) * (4 x 2)` | `4 x 2` | Projects score adjustments onto Keys |
+| **Key Gradient (`d_K`)** | `(d_S^T * Q) / sqrt(d_k)` | `(4 x 4)^T * (4 x 2)` | `4 x 2` | Projects transposed score adjustments onto Queries |
+| **Query Weights (`d_W_Q`)** | `X^T * d_Q` | `(4 x 6)^T * (4 x 2)` | `6 x 2` | Accumulates Query projection updates |
+| **Key Weights (`d_W_K`)** | `X^T * d_K` | `(4 x 6)^T * (4 x 2)` | `6 x 2` | Accumulates Key projection updates |
+| **Input Gradient (`d_X`)** | `d_V W_V^T + d_Q W_Q^T + d_K W_K^T` | `3 * [(4 x 2) * (2 x 6)]` | `4 x 6` | Sums gradients from all three subspace branches |
+
+To illustrate non-zero gradient entries across all four rows at four-decimal precision, the numerical matrices below evaluate a standardized single-head benchmark state (`np.random.seed(42)` draws for $X \in \mathbb{R}^{4 \times 6}$, $W_Q, W_K, W_V \in \mathbb{R}^{6 \times 2}$, $Q = X W_Q$, $K = X W_K$, causal probabilities $P$, upstream output gradient $d\_Z$, and a general lower-triangular score perturbation $d\_S$ with $d\_S_{0,0} = -0.0404$).
 
 ## The Value Matrix Gradient
 
-During the forward pass, the attention mechanism produced its final output by multiplying the probability matrix by the Value matrix. Denoting the output gradient as $d\_Z$, the attention probabilities as $P$, and the values as $V$, the gradient of the loss with respect to $V$ follows the chain rule of matrix calculus. The transpose of the probability matrix multiplies the gradient of the output:
+During the forward pass, the attention head produced its output $Z$ by multiplying the $4 \times 4$ probability matrix $P$ by the $4 \times 2$ Value matrix $V$. Differentiating $Z = P V$ with respect to $V$ multiplies the transposed probability matrix $P^T$ by the upstream output gradient $d\_Z$:
 
 $$
 d\_V = P^T d\_Z
 $$
 
-The transpose operation provides an intuitive geometric reversal. In the forward pass, a row of $P$ determined how much of each value vector to mix into a single output token. During backpropagation, a column of $P^T$ dictates how much of the output error should be attributed to a specific value vector. The network explicitly reverses the weighted sum to calculate the exact error signal for the Value matrix:
+Transposing $P$ reverses the forward routing geometry. In the forward pass, row $i$ of $P$ specified how strongly output token $i$ blended each Value row. In the backward pass, column $i$ of $P$ (which becomes row $i$ of $P^T$) gathers the output errors from every token that attended to Value vector $i$, producing the $4 \times 2$ Value gradient matrix $d\_V$:
 
 $$
 d\_V = \begin{bmatrix}
@@ -25,13 +37,13 @@ d\_V = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-Once the gradient for the Value matrix is established, finding the gradient for its corresponding weight matrix $W\_V$ follows standard linear layer backpropagation. The transpose of the input $X$ multiplies the Value gradient:
+With $d\_V$ established, backpropagating through the linear projection $V = X W_V$ multiplies the transposed layer input $X^T$ ($6 \times 4$) by the Value gradient $d\_V$ ($4 \times 2$):
 
 $$
 d\_W_V = X^T d\_V
 $$
 
-This operation yields the precise matrix of updates required for the Value weights:
+Contracting across the four sequence positions yields the $6 \times 2$ gradient matrix for the Value projection weights:
 
 $$
 d\_W_V = \begin{bmatrix}
@@ -46,17 +58,17 @@ $$
 
 ## Routing Gradients to Queries and Keys
 
-The Query and Key matrices generate the attention scores. In the forward pass, the scaled dot-product attention scores were computed as $S = \frac{Q K^T}{\sqrt{d_k}}$.
+The Query and Key matrices generated the scaled dot-product attention scores during the forward pass via $S = \frac{Q K^T}{\sqrt{d_k}}$.
 
-The gradient with respect to these scores, denoted as $d\_S$, dictates how the alignment between every query and key must change. To distribute this gradient back to the Queries and Keys, the matrix derivative rules for multiplication apply, incorporating the necessary scaling factor.
+The $4 \times 4$ score gradient $d\_S$ specifies how the pairwise alignment between every query and key must shift. Differentiating the bilinear product $\frac{Q K^T}{\sqrt{d_k}}$ distributes $d\_S$ across both factors while retaining the $\frac{1}{\sqrt{d_k}}$ scaling factor ($d_k = 2$).
 
-For the Query matrix gradient, the score gradient multiplies the Key matrix:
+Multiplying the $4 \times 4$ score gradient $d\_S$ by the $4 \times 2$ Key matrix $K$ and dividing by $\sqrt{d_k}$ yields the $4 \times 2$ Query gradient $d\_Q$:
 
 $$
 d\_Q = \frac{d\_S K}{\sqrt{d_k}}
 $$
 
-Calculating this yields the explicit error signal for the Queries:
+Evaluating this scaled product on the general lower-triangular perturbation state produces the $4 \times 2$ error signal for the Query representations (whereas substituting the zero-sum Softmax score gradient $d\_S$ from Part 22, where Row 1 is $[0, 0, 0, 0]$, sets Row 1 of $d\_Q$ identically to $[0.0000, 0.0000]$ and rows 2 through 4 to $[-0.0292, -0.0451]$, $[0.0352, 0.0549]$, and $[-0.0019, -0.0088]$):
 
 $$
 d\_Q = \begin{bmatrix}
@@ -67,13 +79,13 @@ d\_Q = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-For the Key matrix gradient, the transposed score gradient multiplies the Query matrix:
+The transpose $K^T$ appears in the forward equation $S = \frac{Q K^T}{\sqrt{d_k}}$, so differentiating with respect to $K$ multiplies the transposed score gradient $d\_S^T$ ($4 \times 4$) by the $4 \times 2$ Query matrix $Q$:
 
 $$
 d\_K = \frac{d\_S^T Q}{\sqrt{d_k}}
 $$
 
-This produces the corresponding error signal for the Keys:
+Evaluating this product yields the $4 \times 2$ error signal for the Key representations:
 
 $$
 d\_K = \begin{bmatrix}
@@ -84,9 +96,9 @@ d\_K = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-The geometry of these operations perfectly mirrors the forward pass. The score gradient $d\_S$ represents how the alignment between queries and keys needs to shift. To determine the necessary adjustment for a specific query vector, the operation projects that required change onto the key vectors it interacted with. Applying the transpose for the Key gradient properly aligns the dimensions, effectively routing the error from the queries back to the keys.
+These two equations exhibit dual geometric symmetry. Adjusting query vector $i$ requires projecting row $i$ of the score gradient $d\_S$ onto the Key vectors $K$ it scored against. Adjusting key vector $j$ requires projecting column $j$ of $d\_S$ (row $j$ of $d\_S^T$) onto the Query vectors $Q$ that attended to it.
 
-Similar to the Value weights, the gradients for the Query and Key weight matrices emerge by multiplying the transposed input by their respective gradients:
+Multiplying the transposed input matrix $X^T$ ($6 \times 4$) by $d\_Q$ and $d\_K$ produces the $6 \times 2$ parameter gradients for the Query and Key weight matrices:
 
 $$
 d\_W_Q = X^T d\_Q
@@ -96,7 +108,7 @@ $$
 d\_W_K = X^T d\_K
 $$
 
-This finalizes the learning signals for the remaining attention weight matrices:
+Evaluating both matrix products completes the parameter gradients for $W_Q$ and $W_K$:
 
 $$
 d\_W_Q = \begin{bmatrix}
@@ -122,9 +134,9 @@ $$
 
 ## The Confluence at the Input
 
-The concluding step in this layer requires routing the gradients back to the input matrix $X$. In the forward pass, the input branched into three parallel paths to create the Queries, Keys, and Values.
+The concluding step inside the attention head routes the subspace gradients back to the $4 \times 6$ input matrix $X$. During the forward pass, $X$ branched into three parallel linear projections ($Q = X W_Q$, $K = X W_K$, and $V = X W_V$).
 
-When gradients flow backward through a branching architecture, they sum together at the point of origin. The calculation requires deriving the gradient with respect to the input from each of the three paths and summing the results:
+By the multivariable chain rule, gradients flowing backward through a fan-out branch sum together at the shared origin. Multiplying each $4 \times 2$ subspace gradient by the transpose of its $6 \times 2$ projection matrix maps the three error signals back into $\mathbb{R}^{4 \times 6}$:
 
 $$
 d\_X_V = d\_V W_V^T
@@ -138,10 +150,10 @@ $$
 d\_X_K = d\_K W_K^T
 $$
 
-The total gradient flowing backward out of the attention block and down the residual stream equals the sum of these three components:
+Summing the three $4 \times 6$ branch contributions produces the total attention input gradient:
 
 $$
-d\_X_{Total} = d\_X_V + d\_X_Q + d\_X_K
+d\_X_{\text{Total}} = d\_X_V + d\_X_Q + d\_X_K
 $$
 
 ```mermaid
@@ -157,7 +169,7 @@ graph TD
     dX_K --> dX
 ```
 
-This aggregation produces the final, contextualized error signal for the sequence:
+Evaluating the sum across all three branches yields the $4 \times 6$ input gradient matrix $d\_X$:
 
 $$
 d\_X = \begin{bmatrix}
@@ -168,6 +180,6 @@ d\_X = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-The network has completely backpropagated through the self-attention mechanism. This process successfully translated the error from the network's output into specific updates for the $W\_Q$, $W\_K$, and $W\_V$ matrices. Furthermore, it prepared the error signal to continue its journey backward down the residual stream. The next phase will follow this signal as it reaches the very beginning of the network to update the original token embeddings.
+The backward traversal through self-attention is now complete. The mechanism has translated the upstream output and score gradients into explicit weight updates for $W_Q$, $W_K$, and $W_V$ while assembling the unified $4 \times 6$ gradient $d\_X$ to continue down the residual stream. Part 24 traces this accumulated signal back to the initial token embedding lookup table to complete the training step.
 
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>

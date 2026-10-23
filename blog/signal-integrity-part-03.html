@@ -164,19 +164,19 @@
                           <a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html">
                               <article class="blog-item series-item">
                                   <h2>Jitter Decomposition and Measurement</h2>
-                                  <p>A receiver decides bits by sampling a waveform against a threshold, making crossing timing as critical as voltage. This guide defines the unit interval, separates total jitter into its random and deterministic components, and lays out the measurement flow for root-cause isolation.</p>
+                                  <p>A receiver decides bits by sampling a waveform against a threshold, making crossing timing as critical as voltage. The analysis defines the unit interval, separates total jitter into random and deterministic components, and establishes the measurement flow for root-cause isolation.</p>
                               </article>
                           </a>
                           <a href="signal-integrity-11_Dual_Dirac_Model_and_BER_Extrapolation.html">
                               <article class="blog-item series-item">
                                   <h2>Dual-Dirac Model and BER Extrapolation</h2>
-                                  <p>Compliance targets like $10^{-12}$ describe edges too rare to capture directly. This guide shows how the Dual-Dirac model extrapolates total jitter from visible tails ($\text{TJ} = \text{DJ} + 2Q \cdot \text{RJ}$), constructing the bathtub curve to safely project bit error ratios beyond the measured histogram.</p>
+                                  <p>Compliance targets like 10^-12 describe edges too rare to capture directly in an oscilloscope record. The analysis derives how the Dual-Dirac model extrapolates total jitter from the visible Gaussian tails (TJ = DJ + 2Q · RJ) and constructs the bathtub curve to project bit error ratios beyond the measured histogram.</p>
                               </article>
                           </a>
                           <a href="signal-integrity-12_Test_Patterns_and_Jitter_Isolation.html">
                               <article class="blog-item series-item">
                                   <h2>Test Patterns and Jitter Isolation</h2>
-                                  <p>Separating jitter components requires a repeating test pattern and ordered edge records. This guide shows how averaging suppresses random jitter by $1/\sqrt{M}$, isolates data-dependent interference, and leverages FFT residuals to separate periodic jitter from the underlying random floor.</p>
+                                  <p>Separating jitter components requires a repeating test pattern and ordered edge records. Synchronous averaging suppresses random jitter in proportion to the square root of the repetition count, isolates data-dependent interference, and leaves an uncorrelated residual whose Fourier spectrum separates periodic spurs from the random noise floor.</p>
                               </article>
                           </a>
                       </div>

@@ -30,9 +30,9 @@ $$
 a_{mn} = \mathbf{q}_m^\top \mathbf{k}_n
 $$
 
-Because both $\mathbf{q}_m$ and $\mathbf{k}_n$ are $d_{model} \times 1$ column vectors, the first vector must be transposed into a $1 \times d_{model}$ row vector to compute the scalar dot product via matrix multiplication. Moving the transpose to the second vector ($\mathbf{q}_m \mathbf{k}_n^\top$) would incorrectly compute a full $d_{model} \times d_{model}$ matrix. Reversing the order of the vectors entirely ($\mathbf{k}_n^\top \mathbf{q}_m$) computes the exact same scalar value, but standard mathematical convention places the querying vector on the left.
+Both $\mathbf{q}_m$ and $\mathbf{k}_n$ are $d_{model} \times 1$ column vectors, so the first vector must be transposed into a $1 \times d_{model}$ row vector to compute the scalar dot product via matrix multiplication. Moving the transpose to the second vector ($\mathbf{q}_m \mathbf{k}_n^\top$) would instead compute a full $d_{model} \times d_{model}$ outer-product matrix. Reversing the order of the vectors ($\mathbf{k}_n^\top \mathbf{q}_m$) computes the identical scalar value, though standard mathematical convention places the querying vector on the left.
 
-A large positive score indicates that position $m$ considers position $n$ highly relevant; a score near zero indicates low relevance; a negative score indicates that the content at position $n$ is actively irrelevant to the query at position $m$. The matrix $A \in \mathbb{R}^{T \times T}$ of all pairwise relevance scores determines the flow of information across the sequence.
+A large positive score indicates that position $m$ considers position $n$ strongly relevant; a score near zero indicates low relevance; a negative score indicates that the content at position $n$ is actively irrelevant to the query at position $m$. The matrix $A \in \mathbb{R}^{T \times T}$ of all pairwise relevance scores determines the flow of information across the sequence.
 
 The score $a_{mn}$ is not symmetric in general: position $m$ may consider position $n$ relevant without the converse holding, because $W_Q \neq W_K$ and therefore $\mathbf{q}_m^\top \mathbf{k}_n \neq \mathbf{q}_n^\top \mathbf{k}_m$.
 
@@ -286,9 +286,9 @@ The matrix is not symmetric: $a_{01} = -0.1007$ but $a_{10} = -0.0587$. Position
 
 The similarity matrix $S = XX^\top$ from Chapter 1 exhibited permutation invariance: reversing the sequence produced $S' = PSP^\top$, a rearrangement of the same scores. The relevance score matrix $A$ inherits this invariance.
 
-The step-by-step vector projections ($\mathbf{q}_t = W_Q \mathbf{x}_t$) treat each embedding as a $3 \times 1$ column vector. In the full $4 \times 3$ embedding tensor $X$, however, each token's embedding is a row ($\mathbf{x}_t^\top$).
+The step-by-step vector projections ($\mathbf{q}_t = W_Q \mathbf{x}_t$) treat each embedding as a $3 \times 1$ column vector. In the full $4 \times 3$ embedding tensor $X$, each token's embedding is stored as a row ($\mathbf{x}_t^\top$).
 
-To compute the entire set of queries simultaneously as a single matrix operation, the projection equation is transposed:
+Transposing the projection equation computes the entire set of queries simultaneously as a single matrix operation:
 
 $$
 \mathbf{q}_t^\top = (W_Q \mathbf{x}_t)^\top = \mathbf{x}_t^\top W_Q^\top
@@ -306,7 +306,7 @@ $$
 Q = X W_Q^\top, \qquad K = X W_K^\top
 $$
 
-For the reversed sequence `fox` `brown` `quick` `The`, the embedding tensor is permuted: $X_{rev} = PX$. To see exactly why the linear projections cannot break this permutation, the row operations can be tracked visually.
+For the reversed sequence `fox` `brown` `quick` `The`, the embedding tensor is permuted: $X_{rev} = PX$. Tracking the row operations visually demonstrates why linear projections cannot break this permutation.
 
 First, consider projecting the permuted tensor ($X_{rev} W_Q^\top$). The permutation matrix $P$ moves the rows of $X$ into reverse order, and then the projection $W_Q^\top$ transforms each row:
 
@@ -328,11 +328,11 @@ $$
 = \begin{bmatrix} 0 & 0 & 0 & 1 \\ 0 & 0 & 1 & 0 \\ 0 & 1 & 0 & 0 \\ 1 & 0 & 0 & 0 \end{bmatrix} \begin{bmatrix} \leftarrow & \mathbf{q}_0^\top & \rightarrow \\ \leftarrow & \mathbf{q}_1^\top & \rightarrow \\ \leftarrow & \mathbf{q}_2^\top & \rightarrow \\ \leftarrow & \mathbf{q}_3^\top & \rightarrow \end{bmatrix} = \begin{bmatrix} \leftarrow & \mathbf{q}_3^\top & \rightarrow \\ \leftarrow & \mathbf{q}_2^\top & \rightarrow \\ \leftarrow & \mathbf{q}_1^\top & \rightarrow \\ \leftarrow & \mathbf{q}_0^\top & \rightarrow \end{bmatrix}
 $$
 
-Both paths produce the exact same matrix. Multiplication on the left ($PX$) rearranges the row order without modifying the vectors themselves. Multiplication on the right ($X W_Q^\top$) projects each vector independently; the query vector for a given token is computed solely from its own embedding, completely unaffected by the other tokens in the sequence. Because the left-side permutation only alters positions and the right-side projection only alters internal values, the two operations never interfere. Projecting a shuffled sequence yields the exact same matrix as shuffling a projected sequence.
+Both paths produce the identical matrix. Multiplication on the left ($PX$) rearranges the row order without modifying the vectors themselves. Multiplication on the right ($X W_Q^\top$) projects each vector independently; the query vector for a given token is computed solely from its own embedding, completely unaffected by the other tokens in the sequence. Left-side permutation only alters row positions and right-side projection only alters internal row values, so the two operations never interfere. Projecting a shuffled sequence yields the same matrix as shuffling a projected sequence.
 
 The same visual expansion holds for the key matrix ($K_{rev} = PK$).
 
-This property is significant because it proves that the linear projections of the attention mechanism cannot break permutation invariance on their own. The relevance score matrix for the permuted sequence inherits the exact same invariance as the original dot-product similarity matrix $S = X X^\top$:
+This commutativity proves that the linear projections of the attention mechanism cannot break permutation invariance on their own. The relevance score matrix for the permuted sequence inherits the same invariance as the original dot-product similarity matrix $S = X X^\top$:
 
 $$
 A_{rev} = Q_{rev} \, K_{rev}^\top = (PQ)(PK)^\top = PQ K^\top P^\top = P A P^\top
@@ -346,17 +346,13 @@ $$
 
 Every score in $A$ appears in $A_{rev}$, relocated according to the permutation. The self-relevance of `quick` is $a_{11} = 0.1517$ in the original ordering and $(A_{rev})_{22} = 0.1517$ in the reversed ordering (because `quick` moved from position 1 to position 2). The score from `brown` querying `fox` is $a_{23} = 0.0606$ in the original and $(A_{rev})_{10} = 0.0606$ in the reversed ordering.
 
-<div style="font-size: 0.9em;">
-
-| Token Pair | Score in $A$ | Position in $A$ | Score in $A_{rev}$ | Position in $A_{rev}$ |
+| Query-Key Pair | Position in `A` | Score in `A` | Position in `A_rev` | Score in `A_rev` |
 |---|---|---|---|---|
-| `The` queries `quick` | $-0.1007$ | $A_{01}$ | $-0.1007$ | $(A_{rev})_{32}$ |
-| `quick` queries `quick` | $\phantom{-}0.1517$ | $A_{11}$ | $\phantom{-}0.1517$ | $(A_{rev})_{22}$ |
-| `quick` queries `brown` | $-0.0123$ | $A_{12}$ | $-0.0123$ | $(A_{rev})_{21}$ |
-| `brown` queries `fox` | $\phantom{-}0.0606$ | $A_{23}$ | $\phantom{-}0.0606$ | $(A_{rev})_{10}$ |
-| `fox` queries `brown` | $\phantom{-}0.0660$ | $A_{32}$ | $\phantom{-}0.0660$ | $(A_{rev})_{01}$ |
-
-</div>
+| `The` queries `quick` | `A[0, 1]` | `-0.1007` | `A_rev[3, 2]` | `-0.1007` |
+| `quick` queries `quick` | `A[1, 1]` | `0.1517` | `A_rev[2, 2]` | `0.1517` |
+| `quick` queries `brown` | `A[1, 2]` | `-0.0123` | `A_rev[2, 1]` | `-0.0123` |
+| `brown` queries `fox` | `A[2, 3]` | `0.0606` | `A_rev[1, 0]` | `0.0606` |
+| `fox` queries `brown` | `A[3, 2]` | `0.0660` | `A_rev[0, 1]` | `0.0660` |
 
 The permutation invariance problem from Chapter 1 manifests identically in the query-key relevance scores. The sequences `The` `quick` `brown` `fox` and `fox` `brown` `quick` `The` produce the same set of relevance scores, differing only in their assignment to matrix positions. No mechanism operating on these scores can distinguish the two orderings.
 
@@ -412,7 +408,7 @@ $$
 
 The first term is the original content-only relevance score (invariant to position). The fourth term depends only on the positions $m$ and $n$ (invariant to content). But the second and third terms are cross-terms that entangle content and absolute position: $\mathbf{q}_m^\top W_K \mathbf{p}_n$ depends on the content at position $m$ and the absolute position $n$, not the relative offset $m - n$.
 
-To verify concretely, the four-term decomposition for the pair (`The`, `quick`) at positions $(m = 0, n = 1)$:
+For the pair (`The`, `quick`) at positions $(m = 0, n = 1)$, the sinusoidal vectors $\mathbf{p}_0 = \begin{bmatrix} 0 & 1 & 0 \end{bmatrix}^\top$ and $\mathbf{p}_1 = \begin{bmatrix} 0.8415 & 0.5403 & 0.0022 \end{bmatrix}^\top$ from Chapter 2 project to $W_Q \mathbf{p}_0 = \begin{bmatrix} 0.1000 & 0.4000 & -0.2000 \end{bmatrix}^\top$ and $W_K \mathbf{p}_1 = \begin{bmatrix} 0.2458 & 0.2828 & -0.0596 \end{bmatrix}^\top$, yielding the four-term decomposition:
 
 $$
 \text{content-content: } \mathbf{q}_0^\top \mathbf{k}_1 = -0.1007
@@ -434,9 +430,9 @@ $$
 \text{sum} = -0.1007 + (-0.0689) + 0.1320 + 0.1496 = \mathbf{0.1120}
 $$
 
-The cross-terms ($-0.0689$ and $0.1320$) depend on the specific absolute positions 0 and 1, not on the offset $\Delta = 0 - 1 = -1$. If the same tokens appeared at positions $(5, 6)$ (same offset $\Delta = -1$, same content), the cross-terms would differ because $\mathbf{p}_5 \neq \mathbf{p}_0$ and $\mathbf{p}_6 \neq \mathbf{p}_1$.
+The cross-terms ($-0.0689$ and $0.1320$) depend on the specific absolute positions 0 and 1, not on the offset $\Delta = 0 - 1 = -1$. Shifting the same tokens to positions $(5, 6)$ preserves the offset $\Delta = -1$ and the content vectors, yet the cross-terms change because $\mathbf{p}_5 \neq \mathbf{p}_0$ and $\mathbf{p}_6 \neq \mathbf{p}_1$.
 
-The sinusoidal formula does encode a rotational relationship between positions: Chapter 2 demonstrated that the positional encoding satisfies relative representability (the relationship between any two positions can be expressed as a fixed rotation). But the additive injection mechanism does not preserve this relationship through the projection. After multiplication by $W_Q$ and $W_K$, the rotational structure of the positional encodings is obscured by the projection weights, and the clean relative-distance property is lost.
+The sinusoidal formula does encode a rotational relationship between positions: Chapter 2 demonstrated that the positional encoding satisfies relative representability (the relationship between any two positions can be expressed as a fixed rotation). The additive injection mechanism fails to preserve this relationship through the projection. Multiplication by $W_Q$ and $W_K$ obscures the rotational structure of the positional encodings behind the projection weights, destroying the clean relative-distance property.
 
 ## Preview: Rotation as Position Encoding
 
@@ -456,6 +452,6 @@ $$
 
 The product $R_m^\top R_n$ collapses to a single rotation $R_{n-m}$ that depends only on the offset $\Delta = n - m$, because rotation matrices compose by adding angles. The resulting score depends on the content vectors and the relative offset, satisfying the requirement by algebraic construction rather than by learned approximation.
 
-Nothing is added to the embedding vectors. No information is superimposed in the same dimensions. The positional signal is encoded in the geometric orientation of the query and key vectors, not in their coordinates. The next chapter derives the rotation matrix, computes it for every position in the toy model, and applies it to the query and key vectors computed in this chapter.
+Nothing is added to the embedding vectors. No information is superimposed in the same dimensions. The positional signal is encoded in the geometric orientation of the query and key vectors, not in their coordinates. Chapter 5 derives the rotation matrix and computes its angular frequency for the toy model, Chapter 6 evaluates the rotated query and key vectors at every position, and Chapter 7 proves the relative-distance identity from first principles.
 
 <p><em>Prefer to read this offline? <a href="../assets/docs/positional-encoding-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Positional Encoding Ebook here.</a></em></p>

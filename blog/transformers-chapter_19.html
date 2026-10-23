@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -118,16 +159,62 @@
     <li><a href="index.html">Blog</a></li><li><a href="series-transformers.html">Series: Transformers</a></li><li aria-current="page">Part 19: The Cross-Entropy Loss Function</li></ol></nav>
         <article class="blog-post series-transformers">
 <h1>Part 19: The Cross-Entropy Loss Function</h1>
-<!-- SUMMARY: The error of the raw predictions is formalized by calculating the cross-entropy loss against the one-hot target distribution. This asymmetric logarithmic penalty heavily punishes confidently incorrect predictions, yielding a mathematically elegant error signal for the network to optimize. --><p>The final softmax operation completes the forward pass by producing a strict probability distribution over the vocabulary for every position in the sequence. Assessing the quality of these predictions requires a rigorous metric that quantifies exactly how incorrect the current hypotheses are. This metric is the loss function, producing the single scalar value that the entire architecture is designed to minimize.</p>
-<p>Measuring the error of these predictions first requires defining a perfect prediction. When the input sequence begins with the start token, the actual next token is the word &quot;i&quot;. The ideal probability distribution would assign a value of 1.0 to the target token and 0.0 to all other tokens. This perfectly certain distribution is identical to the one-hot vectors used to construct the initial embedding matrix. The loss function must calculate the mathematical distance between the predicted distribution and this sharp, one-hot target state.</p>
-<p>A naive approach to calculating this distance involves taking the squared difference between the predicted probabilities and the target probabilities. While mean squared error works exceptionally well for continuous regression tasks, it behaves poorly for classification probabilities. When a model is confidently wrong, the gradients of mean squared error shrink. This slows down the learning process precisely when the network needs to make the largest structural corrections.</p>
-<p>The architecture instead utilizes cross-entropy loss. For a single prediction against a pure one-hot target vector, cross-entropy evaluates only the predicted probability assigned exclusively to the correct target class. The function is defined as the negative natural logarithm of the predicted probability of the target token.</p>
+<!-- SUMMARY: The error of the raw predictions is formalized by calculating the cross-entropy loss against the one-hot target distribution. This asymmetric logarithmic penalty heavily punishes confidently incorrect predictions, yielding a mathematically clean error signal for the network to optimize. --><p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p><p>The final Softmax operation completes the forward pass by producing a strict probability distribution over the vocabulary for every position in the sequence. Assessing the quality of these predictions requires a metric that quantifies how far the current hypotheses deviate from the ground truth. That metric is the loss function, which produces the single scalar value that the entire architecture is trained to minimize.</p>
+<h2>Defining the Target Distribution</h2>
+<p>Measuring prediction error first requires defining an ideal prediction. At the first time step where the input sequence begins with <code>&lt;BOS&gt;</code>, the actual next token in the training sequence is <code>i</code>. An ideal probability distribution assigns a probability of <code>1.0</code> to the target token and <code>0.0</code> to all other vocabulary tokens. That target distribution is identical to the one-hot vector used to look up the initial token embedding in Part 1. The loss function measures the divergence between the predicted probability distribution and this one-hot target state.</p>
+<p>A naive approach to measuring this divergence takes the squared difference between the predicted probabilities and the target probabilities. Mean squared error performs well for continuous regression tasks, yet it degrades optimization over classification probabilities. Confidently wrong predictions push the Softmax output into flat asymptotic regions where mean squared error gradients shrink, slowing parameter updates when the network requires the largest structural corrections.</p>
+<p>The architecture instead uses cross-entropy loss. Against a one-hot target vector, cross-entropy evaluates only the predicted probability assigned to the ground-truth target class, defined as the negative natural logarithm of the target probability:</p>
 <p>$$
 \text{Loss} = -\log(P_{\text{target}})
 $$</p>
-<p>The natural logarithm exhibits ideal properties for measuring probabilistic error. If the network predicts the correct token with a probability of 1.0, the logarithm evaluates to zero, resulting in zero loss. As the predicted probability approaches zero, the logarithm approaches negative infinity. This asymmetric penalty heavily punishes the model for assigning very low probabilities to the true target, forcing aggressive weight adjustments. The logarithm also translates the multiplication of probabilities into addition, simplifying the calculus required for backpropagation.</p>
-<p>The architecture evaluates these predictions across the entire sequence simultaneously using a technique known as teacher forcing. The input sequence consists of four tokens representing the phrase beginning with the start token, continuing with &quot;i&quot;, &quot;woke&quot;, and &quot;up&quot;. The target sequence shifts one position forward, requiring the model to predict &quot;i&quot;, &quot;woke&quot;, &quot;up&quot;, and &quot;late&quot;. This parallel evaluation utilizes a probability tensor with dimensions corresponding to a batch size of one, a sequence length of four, and a vocabulary size of twelve.</p>
-<p>The actual loss calculation extracts the probability assigned to the correct token at each of the four discrete time steps. Applying the negative logarithm to these extracted probabilities produces an individual penalty for each position.</p>
+<p>The natural logarithm has three mathematical properties suited to probabilistic error measurement:</p>
+<ul>
+<li><strong>Zero Penalty at Certainty:</strong> Assigning a probability of <code>1.0</code> to the target token yields $-\log(1.0) = 0$, producing zero loss.</li>
+<li><strong>Asymmetric Divergence Near Zero:</strong> Decreasing the target probability toward <code>0.0</code> drives $-\log(P_{\text{target}})$ toward $+\infty$, penalizing confident misclassifications and forcing large corrective gradients.</li>
+<li><strong>Additive Log-Likelihood:</strong> Taking the logarithm converts the product of independent sequence probabilities into a sum of positional log-losses, simplifying the chain-rule derivatives during backpropagation.</li>
+</ul>
+<h2>Teacher Forcing Across the Sequence</h2>
+<p>The architecture evaluates predictions across all sequence positions in parallel using teacher forcing. The input sequence consists of the four tokens <code>&lt;BOS&gt;</code>, <code>i</code>, <code>woke</code>, and <code>up</code>. The target sequence shifts one position forward, requiring the network to predict <code>i</code>, <code>woke</code>, <code>up</code>, and <code>late</code> across a probability tensor of shape $B \times S \times V = 1 \times 4 \times 12$.</p>
+<table>
+<thead>
+<tr>
+<th align="left">Position</th>
+<th align="left">Input Token</th>
+<th align="left">Target Token (<code>Index</code>)</th>
+<th align="left">Target Probability (<code>P_target</code>)</th>
+<th align="left">Positional Loss (<code>-log P_target</code>)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Step 1</strong></td>
+<td align="left"><code>&lt;BOS&gt;</code></td>
+<td align="left"><code>i</code> (<code>3</code>)</td>
+<td align="left"><code>0.0843</code></td>
+<td align="left"><code>2.4734</code></td>
+</tr>
+<tr>
+<td align="left"><strong>Step 2</strong></td>
+<td align="left"><code>i</code></td>
+<td align="left"><code>woke</code> (<code>5</code>)</td>
+<td align="left"><code>0.0831</code></td>
+<td align="left"><code>2.4877</code></td>
+</tr>
+<tr>
+<td align="left"><strong>Step 3</strong></td>
+<td align="left"><code>woke</code></td>
+<td align="left"><code>up</code> (<code>7</code>)</td>
+<td align="left"><code>0.0833</code></td>
+<td align="left"><code>2.4853</code></td>
+</tr>
+<tr>
+<td align="left"><strong>Step 4</strong></td>
+<td align="left"><code>up</code></td>
+<td align="left"><code>late</code> (<code>8</code>)</td>
+<td align="left"><code>0.0833</code></td>
+<td align="left"><code>2.4853</code></td>
+</tr>
+</tbody></table>
+<p>Extracting the probability assigned to the ground-truth target index at each of the four time steps from the Part 18 probability matrix and applying the negative natural logarithm produces the four-element positional loss vector:</p>
 <p>$$
 \text{Loss} = \begin{bmatrix}
    -\log(P_{\text{i}}) \\
@@ -146,12 +233,14 @@ $$</p>
    2.4853
 \end{bmatrix}
 $$</p>
-<p>Aggregating these individual positional penalties produces a single overarching scalar value. Summing the values and dividing by the sequence length computes the mean cross-entropy loss across the time steps.</p>
+<h2>Evaluating the Untrained Baseline</h2>
+<p>Averaging the four positional penalties across the sequence length $S = 4$ reduces the loss vector to a single scalar objective:</p>
 <p>$$
 \text{Mean Loss} = \frac{2.4734 + 2.4877 + 2.4853 + 2.4853}{4} = 2.4829
 $$</p>
-<p>This calculated mean loss of 2.4829 quantifies the current inaccuracy of the network. This specific value is highly informative. For a completely untrained model, the weights act as random noise, causing the softmax function to distribute probability relatively evenly across the entire vocabulary. With a vocabulary size of twelve, a uniform distribution assigns a probability of one divided by twelve to every token. The theoretical cross-entropy loss for a uniform distribution is the negative logarithm of this fraction, which evaluates to approximately 2.4849. </p>
-<p>The calculated loss of 2.4829 is nearly identical to this theoretical baseline. This confirms the forward pass mathematical integrity and clearly demonstrates the initial state of total uncertainty. The subsequent backward pass will apply the chain rule of calculus to compute the gradient of this specific loss scalar, initiating the learning process.</p>
+<p>This mean loss of <code>2.4829</code> reflects the uniform uncertainty of an untrained network. Uncalibrated weight matrices distribute probability mass nearly evenly across all $V = 12$ vocabulary tokens, assigning each token a baseline probability near $1/12 \approx 0.0833$. A uniform distribution over twelve classes produces a theoretical cross-entropy loss of $-\log(1/12) = \log(12) \approx 2.4849$.</p>
+<p>The proximity of the calculated loss (<code>2.4829</code>) to the uniform entropy baseline (<code>2.4849</code>) verifies the numerical integrity of the forward pass and confirms that the initialized network begins near maximum entropy. The backward pass next applies the chain rule of calculus to differentiate this scalar loss and propagate parameter updates back through the network.</p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="transformers-chapter_18.html" class="pagination-link prev">

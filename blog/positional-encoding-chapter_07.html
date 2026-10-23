@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -126,11 +167,11 @@
 \mathbf{q}'^{\top}_m \mathbf{k}'_n = (R_m \mathbf{q}_m)^\top (R_n \mathbf{k}_n) = \mathbf{q}_m^\top R_m^\top R_n \, \mathbf{k}_n = \mathbf{q}_m^\top R_{n-m} \, \mathbf{k}_n
 $$</p>
 <p>The first equality substitutes the definition of rotated vectors. The second equality uses the transpose property of matrix products: $(R_m \mathbf{q}_m)^\top = \mathbf{q}_m^\top R_m^\top$. The third equality is the claim: the matrix product $R_m^\top R_n$ collapses to a single rotation matrix $R_{n-m}$ whose angle depends only on the offset $n - m$.</p>
-<p>If this claim holds, then the relevance score between positions $m$ and $n$ is:</p>
+<p>Under this identity, the relevance score between positions $m$ and $n$ reduces to:</p>
 <p>$$
 \mathbf{q}'^{\top}_m \mathbf{k}'_n = \mathbf{q}_m^\top R_{n-m} \, \mathbf{k}_n
 $$</p>
-<p>The right-hand side depends on the content vectors $\mathbf{q}_m$ and $\mathbf{k}_n$ and on the relative offset $\Delta = n - m$, but not on the absolute positions $m$ and $n$ individually. This is exactly the relative position requirement stated in Chapter 4.</p>
+<p>The right-hand side depends on the content vectors $\mathbf{q}_m$ and $\mathbf{k}_n$ and on the relative offset $\Delta = n - m$, but not on the absolute positions $m$ and $n$ individually. That functional form satisfies the relative position requirement stated in Chapter 4.</p>
 <p>The claim rests on a single algebraic fact: the rotation composition identity $R_m^\top R_n = R_{n-m}$. The remainder of this section proves it from first principles.</p>
 <h2>Proving the Rotation Composition Identity</h2>
 <h3>The Transpose of a Rotation Matrix</h3>
@@ -142,7 +183,7 @@ $$</p>
 <p>$$
 R_{\alpha}^\top = \begin{bmatrix} \cos\alpha & \sin\alpha \\ -\sin\alpha & \cos\alpha \end{bmatrix}
 $$</p>
-<p>Because cosine is an even function ($\cos(-\alpha) = \cos\alpha$) and sine is an odd function ($\sin(-\alpha) = -\sin\alpha$), this transpose is identical to a rotation by $-\alpha$:</p>
+<p>Cosine is an even function ($\cos(-\alpha) = \cos\alpha$) and sine is an odd function ($\sin(-\alpha) = -\sin\alpha$), so this transpose is identical to a rotation by $-\alpha$:</p>
 <p>$$
 R_{-\alpha} = \begin{bmatrix} \cos(-\alpha) & -\sin(-\alpha) \\ \sin(-\alpha) & \cos(-\alpha) \end{bmatrix} = \begin{bmatrix} \cos\alpha & \sin\alpha \\ -\sin\alpha & \cos\alpha \end{bmatrix} = R_{\alpha}^\top
 $$</p>
@@ -152,7 +193,7 @@ $$</p>
 <p>$$
 R_\alpha^\top R_\beta = R_{-\alpha} \cdot R_\beta = R_{\beta - \alpha}
 $$</p>
-<p>To prove this, the product of $R_{-\alpha}$ and $R_\beta$ is computed directly:</p>
+<p>Computing the matrix product of $R_{-\alpha}$ and $R_\beta$ directly verifies this equivalence:</p>
 <p>$$
 R_{-\alpha} \cdot R_\beta = \begin{bmatrix} \cos\alpha & \sin\alpha \\ -\sin\alpha & \cos\alpha \end{bmatrix} \begin{bmatrix} \cos\beta & -\sin\beta \\ \sin\beta & \cos\beta \end{bmatrix} = \begin{bmatrix} \mathbf{\cos\alpha\cos\beta + \sin\alpha\sin\beta} & \mathbf{-\cos\alpha\sin\beta + \sin\alpha\cos\beta} \\ \mathbf{-\sin\alpha\cos\beta + \cos\alpha\sin\beta} & \mathbf{\sin\alpha\sin\beta + \cos\alpha\cos\beta} \end{bmatrix}
 $$</p>
@@ -186,7 +227,7 @@ $$</p>
 <p>$$
 R_{-\alpha} \cdot R_\beta = \begin{bmatrix} \cos(\beta - \alpha) & -\sin(\beta - \alpha) \\ \sin(\beta - \alpha) & \cos(\beta - \alpha) \end{bmatrix} = R_{\beta - \alpha}
 $$</p>
-<p>This is the standard $2 \times 2$ rotation matrix for angle $\beta - \alpha$. Therefore:</p>
+<p>That matrix is the standard $2 \times 2$ rotation operator for angle $\beta - \alpha$, establishing the composition identity:</p>
 <p>$$
 R_\alpha^\top R_\beta = R_{\beta - \alpha}
 $$</p>
@@ -194,12 +235,12 @@ $$</p>
 <p>$$
 R_{m\theta_i}^\top R_{n\theta_i} = R_{(n-m)\theta_i}
 $$</p>
-<p>Because this relative-angle identity holds independently for every block on the diagonal, the full position-dependent matrix satisfies:</p>
+<p>This relative-angle identity holds independently for every block on the diagonal, so the full position-dependent matrix satisfies:</p>
 <p>$$
 R_m^\top R_n = R_{n-m}
 $$</p>
-<p>The product of the transposed rotation at position $m$ and the rotation at position $n$ is a single rotation whose angle depends only on the offset $n - m$. This is the rotation composition identity, and it is exact (not an approximation), because it follows from the algebraic properties of sine and cosine.</p>
-<p>For the full $3 \times 3$ block-diagonal matrix used in the toy model, the identity applies to the upper-left $2 \times 2$ block, and the lower-right $1 \times 1$ identity block trivially satisfies $1 \cdot 1 = 1$. The composition identity therefore holds for the full $3 \times 3$ rotation matrix at every position.</p>
+<p>The product of the transposed rotation at position $m$ and the rotation at position $n$ is a single rotation whose angle depends only on the offset $n - m$. This rotation composition identity holds as a strict equality (not an approximation), following directly from the trigonometric angle-addition identities for sine and cosine.</p>
+<p>For the full $3 \times 3$ block-diagonal matrix used in the toy model, the identity applies to the upper-left $2 \times 2$ block, and the lower-right $1 \times 1$ identity block trivially satisfies $1 \cdot 1 = 1$. The composition identity holds across the full $3 \times 3$ rotation matrix at every position.</p>
 <h2>Numerical Verification with the Toy Model</h2>
 <p>The algebraic proof establishes the identity in general. This section verifies it concretely using the rotated vectors from Chapter 6. The pair chosen for verification is <code>quick</code> (position 1) and <code>fox</code> (position 3), with offset $\Delta = n - m = 2$.</p>
 <h3>Method 1: Direct Dot Product of Rotated Vectors ($\mathbf{q}'^{\top}_1 \mathbf{k}'_3$)</h3>
@@ -244,16 +285,16 @@ $$</p>
 \mathbf{q}'^{\top}_1 \mathbf{k}'_3 = \mathbf{0.0043} = \mathbf{q}_1^\top R_2 \, \mathbf{k}_3
 $$</p>
 <p>The direct dot product of the rotated vectors (Method 1) equals the dot product obtained by applying only the relative rotation $R_2$ to the unrotated key (Method 2). The absolute positions 1 and 3 have disappeared from the computation; only the offset $\Delta = 2$ remains.</p>
-<p>This is the relative-distance property in action. If <code>quick</code> appeared at position 5 and <code>fox</code> at position 7 (same content, same offset $\Delta = 2$), the same rotation $R_2$ would produce the same relevance score. The score $0.0043$ is determined by the content of <code>quick</code> and <code>fox</code> and by their separation of 2 positions, regardless of where in the sequence that separation occurs.</p>
+<p>That equivalence demonstrates the relative-distance property in action. Placing <code>quick</code> at position 5 and <code>fox</code> at position 7 (same content, same offset $\Delta = 2$) applies the identical relative rotation $R_2$ and produces the identical relevance score. The score $0.0043$ is determined by the content of <code>quick</code> and <code>fox</code> and by their separation of 2 positions, regardless of where in the sequence that separation occurs.</p>
 <h2>The Full Post-RoPE Relevance Score Matrix</h2>
 <p>The dot product $A'_{ij} = \mathbf{q}'^{\top}_i \mathbf{k}'_j$ is now computed for all 16 pairs of positions using the rotated vectors from Chapter 6:</p>
-<div style="font-size: 0.85em; overflow-x: auto;"><p>$$
+<p>$$
 \mathbf{q}'_0 = \begin{bmatrix} -0.0800 \\ -0.1300 \\ \phantom{-}0.2100 \end{bmatrix}, \quad \mathbf{q}'_1 = \begin{bmatrix} \phantom{-}0.3322 \\ \phantom{-}0.2027 \\ -0.2700 \end{bmatrix}, \quad \mathbf{q}'_2 = \begin{bmatrix} -0.3899 \\ -0.2774 \\ -0.0700 \end{bmatrix}, \quad \mathbf{q}'_3 = \begin{bmatrix} \phantom{-}0.0212 \\ \phantom{-}0.0778 \\ \phantom{-}0.1500 \end{bmatrix}
 $$</p>
 <p>$$
 \mathbf{k}'_0 = \begin{bmatrix} -0.1500 \\ \phantom{-}0.1000 \\ -0.0400 \end{bmatrix}, \quad \mathbf{k}'_1 = \begin{bmatrix} \phantom{-}0.0371 \\ \phantom{-}0.2614 \\ -0.3200 \end{bmatrix}, \quad \mathbf{k}'_2 = \begin{bmatrix} \phantom{-}0.0880 \\ \phantom{-}0.2162 \\ \phantom{-}0.3600 \end{bmatrix}, \quad \mathbf{k}'_3 = \begin{bmatrix} \phantom{-}0.0439 \\ -0.1174 \\ -0.0500 \end{bmatrix}
 $$</p>
-</div><p><strong>Row 0</strong> (<code>The</code> queries each position):</p>
+<p><strong>Row 0</strong> (<code>The</code> queries each position):</p>
 <p>$$
 A'_{00} = (-0.0800)(-0.1500) + (-0.1300)(0.1000) + (0.2100)(-0.0400) = \mathbf{-0.0094}
 $$</p>
@@ -314,132 +355,137 @@ $$</p>
 <p>$$
 A = \begin{bmatrix} -0.0094 & -0.1007 & \phantom{-}0.0849 & -0.0200 \\ -0.0587 & \phantom{-}0.1517 & -0.0123 & -0.0262 \\ \phantom{-}0.0633 & \phantom{-}0.0525 & -0.1195 & \phantom{-}0.0606 \\ -0.0125 & -0.0592 & \phantom{-}0.0660 & -0.0157 \end{bmatrix}
 $$</p>
-<p>Several structural observations emerge from comparing $A$ and $A'$.</p>
-<p><strong>The diagonal is unchanged.</strong> The diagonal entries $A'_{ii} = A_{ii}$ for all $i$:</p>
+<p>Three structural observations emerge from comparing $A$ and $A'$.</p>
+<h3>Unchanged Diagonal Entries</h3>
+<p>The diagonal entries satisfy $A'_{ii} = A_{ii}$ for all $i$:</p>
 <table>
 <thead>
 <tr>
 <th>Position</th>
-<th>$A_{ii}$</th>
-<th>$A'_{ii}$</th>
+<th><code>A[i, i]</code> (Pre-RoPE)</th>
+<th><code>A&#39;[i, i]</code> (Post-RoPE)</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>0 (<code>The</code>)</td>
-<td>$-0.0094$</td>
-<td>$-0.0094$</td>
+<td><code>0</code> (<code>The</code>)</td>
+<td><code>-0.0094</code></td>
+<td><code>-0.0094</code></td>
 </tr>
 <tr>
-<td>1 (<code>quick</code>)</td>
-<td>$\phantom{-}0.1517$</td>
-<td>$\phantom{-}0.1517$</td>
+<td><code>1</code> (<code>quick</code>)</td>
+<td><code>0.1517</code></td>
+<td><code>0.1517</code></td>
 </tr>
 <tr>
-<td>2 (<code>brown</code>)</td>
-<td>$-0.1195$</td>
-<td>$-0.1195$</td>
+<td><code>2</code> (<code>brown</code>)</td>
+<td><code>-0.1195</code></td>
+<td><code>-0.1195</code></td>
 </tr>
 <tr>
-<td>3 (<code>fox</code>)</td>
-<td>$-0.0157$</td>
-<td>$-0.0157$</td>
+<td><code>3</code> (<code>fox</code>)</td>
+<td><code>-0.0157</code></td>
+<td><code>-0.0157</code></td>
 </tr>
 </tbody></table>
-<p>This is a direct consequence of the rotation composition identity. For the diagonal, $m = n$, so the relative rotation is $R_{n-n} = R_0 = I$ (the identity matrix). The self-relevance score $\mathbf{q}_i^\top R_0 \mathbf{k}_i = \mathbf{q}_i^\top \mathbf{k}_i$ is the same as the unrotated dot product. A token&#39;s relevance to itself is unaffected by its absolute position, because the relative offset to itself is always zero.</p>
-<p><strong>Off-diagonal entries have changed.</strong> Every off-diagonal entry differs between $A$ and $A'$:</p>
+<p>Diagonal invariance is a direct consequence of the rotation composition identity. On the diagonal, $m = n$, so the relative rotation is $R_{n-n} = R_0 = I$ (the identity matrix). The self-relevance score $\mathbf{q}_i^\top R_0 \mathbf{k}_i = \mathbf{q}_i^\top \mathbf{k}_i$ equals the unrotated dot product. A token&#39;s relevance to itself is unaffected by its absolute position because the relative offset to itself is always zero.</p>
+<h3>Modified Off-Diagonal Entries</h3>
+<p>Every off-diagonal entry differs between $A$ and $A'$:</p>
 <table>
 <thead>
 <tr>
-<th>Token Pair</th>
-<th>Offset $\Delta$</th>
-<th>$A_{ij}$ (pre-RoPE)</th>
-<th>$A'_{ij}$ (post-RoPE)</th>
+<th>Query-Key Pair</th>
+<th>Offset <code>Delta</code></th>
+<th><code>A[i, j]</code> (Pre-RoPE)</th>
+<th><code>A&#39;[i, j]</code> (Post-RoPE)</th>
 </tr>
 </thead>
 <tbody><tr>
-<td><code>The</code> $\to$ <code>quick</code></td>
-<td>$\phantom{-}1$</td>
-<td>$-0.1007$</td>
-<td>$-0.1041$</td>
+<td><code>The</code> queries <code>quick</code></td>
+<td><code>+1</code></td>
+<td><code>-0.1007</code></td>
+<td><code>-0.1041</code></td>
 </tr>
 <tr>
-<td><code>The</code> $\to$ <code>brown</code></td>
-<td>$\phantom{-}2$</td>
-<td>$\phantom{-}0.0849$</td>
-<td>$\phantom{-}0.0405$</td>
+<td><code>The</code> queries <code>brown</code></td>
+<td><code>+2</code></td>
+<td><code>0.0849</code></td>
+<td><code>0.0405</code></td>
 </tr>
 <tr>
-<td><code>The</code> $\to$ <code>fox</code></td>
-<td>$\phantom{-}3$</td>
-<td>$-0.0200$</td>
-<td>$\phantom{-}0.0012$</td>
+<td><code>The</code> queries <code>fox</code></td>
+<td><code>+3</code></td>
+<td><code>-0.0200</code></td>
+<td><code>0.0012</code></td>
 </tr>
 <tr>
-<td><code>quick</code> $\to$ <code>The</code></td>
-<td>$-1$</td>
-<td>$-0.0587$</td>
-<td>$-0.0188$</td>
+<td><code>quick</code> queries <code>The</code></td>
+<td><code>-1</code></td>
+<td><code>-0.0587</code></td>
+<td><code>-0.0188</code></td>
 </tr>
 <tr>
-<td><code>quick</code> $\to$ <code>brown</code></td>
-<td>$\phantom{-}1$</td>
-<td>$-0.0123$</td>
-<td>$-0.0241$</td>
+<td><code>quick</code> queries <code>brown</code></td>
+<td><code>+1</code></td>
+<td><code>-0.0123</code></td>
+<td><code>-0.0241</code></td>
 </tr>
 <tr>
-<td><code>quick</code> $\to$ <code>fox</code></td>
-<td>$\phantom{-}2$</td>
-<td>$-0.0262$</td>
-<td>$\phantom{-}0.0043$</td>
+<td><code>quick</code> queries <code>fox</code></td>
+<td><code>+2</code></td>
+<td><code>-0.0262</code></td>
+<td><code>0.0043</code></td>
 </tr>
 <tr>
-<td><code>brown</code> $\to$ <code>The</code></td>
-<td>$-2$</td>
-<td>$\phantom{-}0.0633$</td>
-<td>$\phantom{-}0.0335$</td>
+<td><code>brown</code> queries <code>The</code></td>
+<td><code>-2</code></td>
+<td><code>0.0633</code></td>
+<td><code>0.0335</code></td>
 </tr>
 <tr>
-<td><code>brown</code> $\to$ <code>quick</code></td>
-<td>$-1$</td>
-<td>$\phantom{-}0.0525$</td>
-<td>$-0.0646$</td>
+<td><code>brown</code> queries <code>quick</code></td>
+<td><code>-1</code></td>
+<td><code>0.0525</code></td>
+<td><code>-0.0646</code></td>
 </tr>
 <tr>
-<td><code>brown</code> $\to$ <code>fox</code></td>
-<td>$\phantom{-}1$</td>
-<td>$\phantom{-}0.0606$</td>
-<td>$\phantom{-}0.0190$</td>
+<td><code>brown</code> queries <code>fox</code></td>
+<td><code>+1</code></td>
+<td><code>0.0606</code></td>
+<td><code>0.0190</code></td>
 </tr>
 <tr>
-<td><code>fox</code> $\to$ <code>The</code></td>
-<td>$-3$</td>
-<td>$-0.0125$</td>
-<td>$-0.0014$</td>
+<td><code>fox</code> queries <code>The</code></td>
+<td><code>-3</code></td>
+<td><code>-0.0125</code></td>
+<td><code>-0.0014</code></td>
 </tr>
 <tr>
-<td><code>fox</code> $\to$ <code>quick</code></td>
-<td>$-2$</td>
-<td>$-0.0592$</td>
-<td>$-0.0269$</td>
+<td><code>fox</code> queries <code>quick</code></td>
+<td><code>-2</code></td>
+<td><code>-0.0592</code></td>
+<td><code>-0.0269</code></td>
 </tr>
 <tr>
-<td><code>fox</code> $\to$ <code>brown</code></td>
-<td>$-1$</td>
-<td>$\phantom{-}0.0660$</td>
-<td>$\phantom{-}0.0727$</td>
+<td><code>fox</code> queries <code>brown</code></td>
+<td><code>-1</code></td>
+<td><code>0.0660</code></td>
+<td><code>0.0727</code></td>
 </tr>
 </tbody></table>
-<p>The rotation has modified the relevance landscape. Consider the pair <code>The</code> $\to$ <code>brown</code> (positions 0 and 2): the pre-RoPE score $0.0849$ drops to $0.0405$ after RoPE. The rotation $R_2$ applied to the relative offset $\Delta = 2$ has reduced the apparent relevance. Meanwhile, <code>quick</code> $\to$ <code>fox</code> (positions 1 and 3, same offset $\Delta = 2$) shifts from $-0.0262$ to $0.0043$, crossing from negative to positive. The same relative rotation $R_2$ produces different effects on different content pairs, because the rotation interacts with the content vectors differently. This is by design: the score depends on both content and relative position.</p>
-<p><strong>Permutation invariance is broken.</strong> The pre-RoPE matrix $A$ satisfies $A_{rev} = PAP^\top$ (Chapter 4): reversing the input sequence rearranges the scores but does not change them. The post-RoPE matrix $A'$ does not satisfy this property. In the reversed sequence <code>fox</code> <code>brown</code> <code>quick</code> <code>The</code>, the token <code>fox</code> would occupy position 0 and <code>The</code> would occupy position 3. Their relative offset would be $\Delta = 3 - 0 = 3$ (not $\Delta = -3$ as in the original sequence). Because $R_3 \neq R_{-3}$, the relevance score between <code>fox</code> and <code>The</code> would differ from the original ordering. RoPE has broken permutation invariance through the mechanism of position-dependent rotation.</p>
+<p>The rotation has modified the relevance landscape. Consider the pair <code>The</code> querying <code>brown</code> (positions 0 and 2): the pre-RoPE score $0.0849$ drops to $0.0405$ after RoPE. The rotation $R_2$ applied to the relative offset $\Delta = 2$ has reduced the apparent relevance. Meanwhile, <code>quick</code> querying <code>fox</code> (positions 1 and 3, same offset $\Delta = 2$) shifts from $-0.0262$ to $0.0043$, crossing from negative to positive. The same relative rotation $R_2$ produces different effects on different content pairs because the rotation interacts with the content vectors differently. That interaction is intentional: the score depends on both content and relative position.</p>
+<h3>Broken Permutation Invariance</h3>
+<p>The pre-RoPE matrix $A$ satisfies $A_{rev} = PAP^\top$ (Chapter 4): reversing the input sequence rearranges the scores without changing their values. The post-RoPE matrix $A'$ breaks this symmetry. In the reversed sequence <code>fox</code> <code>brown</code> <code>quick</code> <code>The</code>, the token <code>fox</code> occupies position 0 and <code>The</code> occupies position 3, shifting their relative offset to $\Delta = 3 - 0 = 3$ rather than $\Delta = -3$ as in the original sequence. Distinct offsets produce distinct rotation matrices ($R_3 \neq R_{-3}$), so the relevance score between <code>fox</code> and <code>The</code> changes under sequence reversal. RoPE breaks permutation invariance through position-dependent rotation.</p>
 <h2>Grounding the Result</h2>
 <p>The relevance score between <code>quick</code> (position 1) and <code>fox</code> (position 3) is $A'_{13} = 0.0043$. This score depends on the semantic content of <code>quick</code> and <code>fox</code> (encoded in the query vector $\mathbf{q}_1$ and key vector $\mathbf{k}_3$) and on the offset $\Delta = 2$ between their positions (encoded in the rotation $R_2$). It does not depend on the absolute position indices 1 and 3.</p>
-<p>If <code>quick</code> appeared at position 5 and <code>fox</code> at position 7, the content vectors $\mathbf{q}$ and $\mathbf{k}$ would be identical (same tokens, same projection matrices), and the relative rotation would be $R_{7-5} = R_2$ (same offset). The relevance score would be $\mathbf{q}^\top R_2 \mathbf{k} = 0.0043$, unchanged. If <code>quick</code> appeared at position 100 and <code>fox</code> at position 102, the score would again be $0.0043$. The absolute positions are irrelevant; only the offset $\Delta = 2$ between the two tokens determines the rotational transformation.</p>
-<p>This is the relative position requirement from Chapter 4, now satisfied by algebraic construction.</p>
+<p>Shifting <code>quick</code> to position 5 and <code>fox</code> to position 7 leaves the content vectors $\mathbf{q}$ and $\mathbf{k}$ unchanged (same tokens, same projection matrices) and preserves the relative rotation $R_{7-5} = R_2$ (same offset), yielding the identical relevance score $\mathbf{q}^\top R_2 \mathbf{k} = 0.0043$. Shifting <code>quick</code> to position 100 and <code>fox</code> to position 102 again yields $0.0043$. The absolute positions drop out of the inner product; only the offset $\Delta = 2$ between the two tokens determines the rotational transformation.</p>
+<p>That shift invariance realizes the relative position requirement from Chapter 4 by algebraic construction.</p>
 <h2>Why This Property Matters</h2>
-<p>The relative-distance property of RoPE has three consequences that distinguish it from additive positional encoding.</p>
-<p><strong>Relative relationships, not absolute labels.</strong> The model learns how tokens at different separations interact, not what happens at position 47 specifically. A verb three positions after its subject receives the same relative rotation regardless of whether the subject appears at position 0, position 50, or position 500. This aligns with the linguistic observation that syntactic and semantic relationships between tokens typically depend on their relative displacement, not on their absolute indices within the sequence.</p>
-<p><strong>Length generalization.</strong> Because the rotation $R_\Delta$ depends only on the offset $\Delta$, the mechanism encounters a rotation for offset $\Delta = 200$ during inference even if the longest training sequence had length 150 (provided $\Delta = 200$ arose in some training context). Sinusoidal absolute PE, by contrast, assigns absolute position encodings that degrade for unseen positions. RoPE&#39;s relative encoding extends more naturally to sequence lengths beyond the training distribution, though practical generalization still requires careful frequency scaling (the subject of Chapter 8).</p>
-<p><strong>Exact algebraic identity.</strong> The property $R_m^\top R_n = R_{n-m}$ is not an approximation learned during training, nor an empirical observation that holds approximately for most inputs. It is an algebraic identity that follows from the angle-addition formulas for sine and cosine. Every rotated dot product in every attention head at every layer satisfies this property exactly, because it is a consequence of the mathematical structure of rotation matrices, not of the learned parameters. The model&#39;s positional encoding is correct by construction.</p>
+<p>The relative-distance property of RoPE produces three architectural advantages over additive positional encoding:</p>
+<ul>
+<li><strong>Translation-Invariant Token Interactions:</strong> Models how tokens at a given separation $\Delta$ interact regardless of absolute sequence index, ensuring that a verb three positions after its subject receives the same relative rotation whether the subject appears at position 0, position 50, or position 500.</li>
+<li><strong>Local-Offset Generalization Across Sequence Lengths:</strong> Evaluates any familiar relative offset $\Delta$ (such as $\Delta = 50$) using the identical rotation matrix $R_{50}$ even when the interacting tokens appear at unseen absolute positions (such as $m = 500$ and $n = 550$ in a sequence longer than the training length $T_{train} = 256$), whereas unseen offsets beyond $T_{train}$ require the frequency-scaling extensions covered in Chapter 8.</li>
+<li><strong>Parameter-Free Algebraic Guarantee:</strong> Enforces the composition law $R_m^\top R_n = R_{n-m}$ across every attention head and every layer through the trigonometric angle-addition identities rather than requiring the optimizer to approximate relative offsets from entangled embeddings.</li>
+</ul>
 <p>The rotation composition identity, proved from the angle-addition identities and verified numerically with the toy model, completes the mathematical foundation of RoPE. The next chapter surveys the broader landscape of positional encoding mechanisms, including learned absolute encodings, relative position biases, ALiBi, iRoPE, and frequency-scaling extensions for long-context generalization.</p>
 <p><em>Prefer to read this offline? <a href="../assets/docs/positional-encoding-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Positional Encoding Ebook here.</a></em></p>
 

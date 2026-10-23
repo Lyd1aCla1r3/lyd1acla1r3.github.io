@@ -25,42 +25,46 @@
 
 <!-- SUMMARY: Translating raw text into a rigorous geometric representation requires mapping discrete tokens into orthogonal one-hot vectors. This process mathematically motivates the necessity of the embedding matrix to compress these isolated dimensions into a dense semantic space, enabling the natural inference of conceptual relationships. -->
 
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>
 
 The Preface established that every operation in the Transformer reads from and writes to a central $4 \times 6$ matrix. Bridging the gap between raw text and that geometric representation is the next requirement. Text is inherently abstract. Computers cannot multiply words. Computers multiply numbers. A rigorous mechanical process is needed to translate human language into a mathematical format that a neural network can manipulate.
 
-This translation happens in three distinct stages. First, the sentence is broken down into discrete pieces called tokens. Second, each token is mapped to a strict geometric location using a one-hot vector. Third, those isolated vectors are projected into a shared, continuous space using an Embedding Matrix. 
+This translation executes in three sequential stages:
+
+1. **Tokenization:** Segment the input string into discrete vocabulary symbols and map each symbol to its integer index.
+2. **One-Hot Encoding:** Convert each integer index into an orthogonal unit vector in $\mathbb{R}^V$ to remove arbitrary index magnitude.
+3. **Embedding Projection:** Multiply the one-hot matrix by a learned embedding matrix $W_E$ to project the isolated basis vectors into a continuous semantic subspace $\mathbb{R}^{d_{\text{model}}}$.
 
 ## The Vocabulary Space and Tokenization
 
-The objective is to process the sequence `<BOS>` `i` `woke` `up`. 
+The objective is to process the sequence `<BOS>` `i` `woke` `up`.
 
-Before processing this sequence, the model needs a predefined universe of concepts to draw from. This universe is the vocabulary. In this example, the vocabulary is restricted to exactly twelve words. 
+Before processing this sequence, the model requires a predefined universe of discrete symbols known as the vocabulary. In this configuration, the vocabulary consists of twelve tokens indexed from `0` to `11`:
 
 <div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2; text-align: left;">
 <span style="font-size: 0.9em;"><b><code>&lt;BOS&gt;</code></b> <b><code>&lt;EOS&gt;</code></b> <b><code>&lt;PAD&gt;</code></b> <b><code>i</code></b> <b><code>we</code></b> <b><code>woke</code></b> <b><code>stayed</code></b> <b><code>up</code></b> <b><code>late</code></b> <b><code>early</code></b> <b><code>today</code></b> <b><code>yesterday</code></b></span>
 </div>
-Tokenization maps raw text to the corresponding integer indices in this vocabulary list. The index acts as a unique identifier for the concept. 
 
-For this sequence, the mapping is straightforward. 
-The `<BOS>` token maps to index 0. 
-The word `i` maps to index 3. 
-The word `woke` maps to index 5. 
-The word `up` maps to index 7.
+Tokenization maps each raw token in the prompt to its integer index in the vocabulary table:
 
-This yields an array of integers representing the sequence. 
+- **`<BOS>`:** Maps to vocabulary index `0`.
+- **`i`:** Maps to vocabulary index `3`.
+- **`woke`:** Maps to vocabulary index `5`.
+- **`up`:** Maps to vocabulary index `7`.
+
+Collecting these four lookups in sequence order produces the integer index array:
 
 $$ \text{Sequence Indices} = [0, 3, 5, 7] $$
 
 ## The Geometry of One-Hot Encodings
 
-While integers are numbers, their direct use is mathematically problematic in a neural network context. If the integer 5 is fed into the model to represent "woke" and the integer 10 to represent "today", the model will naturally interpret "today" as being twice as large or twice as important as "woke". This numerical relationship is entirely arbitrary. The word "today" is not the mathematical double of "woke". 
+Feeding raw integer indices directly into a neural network introduces an artificial numerical hierarchy. Assigning the integer `5` to `woke` and the integer `10` to `today` causes linear layers to treat `today` as twice the scalar magnitude of `woke`. That numerical ratio is an arbitrary artifact of vocabulary ordering rather than a linguistic property.
 
-This false magnitude must be removed. This is accomplished by translating the integers into one-hot encoded vectors.
+Translating the integer indices into one-hot encoded vectors eliminates this false scalar ordering.
 
-A one-hot vector isolates a concept geometrically. For a vocabulary of size 12, each word becomes a 12-dimensional vector filled with zeros, with a single 1 placed at the vocabulary index. 
+A one-hot vector isolates a concept geometrically. For a vocabulary of size 12, each word becomes a 12-dimensional vector filled with zeros, with a single `1.0` placed at the vocabulary index.
 
-Converting the four tokens into one-hot vectors creates a $4 \times 12$ matrix. 
+Converting the four tokens into one-hot vectors creates a $4 \times 12$ matrix:
 
 $$
 X_{\text{one-hot}} = \begin{bmatrix}
@@ -71,23 +75,23 @@ X_{\text{one-hot}} = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-By treating each word as an independent axis in a 12-dimensional space, every word remains exactly the same distance from every other word. The vectors are perfectly orthogonal. The word "i" has no mathematical relationship to the word "woke". The false magnitude problem is eliminated and replaced with perfect neutrality.
+Treating each vocabulary entry as an independent coordinate axis in $\mathbb{R}^{12}$ places every distinct token pair at an identical Euclidean distance of $\sqrt{2}$. The resulting vectors are mutually orthogonal. The token `i` shares zero inner-product similarity with the token `woke`, replacing arbitrary index magnitude with geometric neutrality.
 
 ## The Problem with Neutrality
 
-Perfect neutrality creates a new problem. The word "i" is highly related to the word "we", and the word "late" is highly related to the word "early". If the vectors remain orthogonal, the model cannot infer that these concepts are similar. It is forced to learn the rules of grammar independently for every single word. 
+Complete orthogonality introduces a severe representational bottleneck. The pronoun `i` shares grammatical structure with `we`, and the temporal modifier `late` shares semantic structure with `early`. Orthogonal one-hot vectors erase all pairwise similarity, forcing the network to learn syntactic rules independently for every vocabulary item.
 
-Furthermore, these one-hot vectors are 12 dimensions wide. In a production model like GPT-4, the vocabulary size frequently exceeds 100,000. Maintaining a matrix of that width at every stage of the network is computationally infeasible. 
+One-hot representations also scale poorly with vocabulary size. Production language models routinely operate over vocabularies exceeding 100,000 subword tokens, making a matrix of that width computationally intractable across deep layers.
 
-The perfectly isolated 12-dimensional vectors must be compressed into a denser, richer space where words with similar meanings are physically grouped together. This dense space represents the $d_{model}$ dimension. In this architecture, this width is 6. 
+The isolated 12-dimensional vectors must be projected into a denser, lower-dimensional subspace where tokens with related meanings occupy neighboring coordinates. This dense subspace corresponds to the model dimension $d_{\text{model}} = 6$.
 
 ## The Embedding Matrix
 
-This compression is achieved using the Embedding Matrix, denoted as $W_E$. This matrix serves as a lookup table. It maps every 12-dimensional word to a specific 6-dimensional location. The shape of $W_E$ must therefore be $12 \times 6$. 
+This compression is achieved using the Embedding Matrix, denoted as $W_E$. This matrix serves as a learnable lookup table that maps every 12-dimensional one-hot vector to a 6-dimensional coordinate vector, giving $W_E$ a shape of $12 \times 6$.
 
-When a neural network is initialized, this matrix is filled with random numbers. Over thousands of training iterations, the model slowly adjusts these numbers via backpropagation. It physically moves the coordinates of similar words closer together to minimize prediction error.
+Network initialization populates $W_E$ with small random values. Over thousands of training iterations, backpropagation updates these coordinates and pulls semantically related tokens into neighboring regions of the vector space to minimize prediction error.
 
-To demonstrate these calculations manually, the training phase is bypassed and a $12 \times 6$ embedding matrix is explicitly designed to show these semantic clusters. 
+To demonstrate these calculations manually, the training phase is bypassed and a $12 \times 6$ embedding matrix is explicitly designed to show these semantic clusters:
 
 $$
 W_E = \begin{bmatrix}
@@ -106,13 +110,13 @@ W_E = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-The rows for the pronouns, found at indices 3 and 4 representing "i" and "we", share high positive values in the second column. The rows for the temporal adverbs, found at indices 8, 9, 10, and 11 representing "late", "early", "today", and "yesterday", share high positive values in the fifth column. 
+The pronoun rows at indices 3 and 4 (`i` and `we`) share large positive values in the second column. The temporal modifier rows at indices 8, 9, 10, and 11 (`late`, `early`, `today`, and `yesterday`) share large positive values in the fifth column.
 
-The Embedding Matrix acts as a coordinate map of meaning rather than just a list of numbers. By pushing related concepts into similar numerical spaces, the model learns abstract rules. If a rule is learned regarding the word "i", that rule automatically applies to the word "we", simply because their vectors are positioned next to each other.
+The Embedding Matrix functions as a continuous coordinate map of meaning. Positioning related concepts in neighboring regions of the subspace allows downstream linear layers to generalize across clusters. A grammatical transformation learned for the coordinate region containing `i` transfers directly to `we` because both vectors occupy adjacent coordinates.
 
 ## Generating the Central Tensor
 
-To transform the neutral one-hot vectors into this rich geometric space, a standard matrix multiplication is performed. The $4 \times 12$ input matrix is multiplied by the $12 \times 6$ embedding matrix. 
+To transform the neutral one-hot vectors into this rich geometric space, a standard matrix multiplication is performed. The $4 \times 12$ input matrix is multiplied by the $12 \times 6$ embedding matrix:
 
 $$ X = X_{\text{one-hot}} \times W_E $$
 
@@ -122,9 +126,9 @@ graph LR
     B --> C("X (4 x 6)")
 ```
 
-Due to the nature of matrix multiplication, multiplying by a one-hot vector simply extracts the corresponding row from the embedding matrix. 
+Multiplying a one-hot row vector by $W_E$ selects the single row of the embedding matrix corresponding to the active token index.
 
-The final tensor $X$ takes the following form.
+The resulting $4 \times 6$ embedding matrix $X$ takes the following form:
 
 $$
 X = \begin{bmatrix}
@@ -135,11 +139,11 @@ X = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-Row 1 is the coordinate vector for `<BOS>`.
-Row 2 is the coordinate vector for `i`.
-Row 3 is the coordinate vector for `woke`.
-Row 4 is the coordinate vector for `up`.
+- **Row 1 (`[0.1, 0.0, 0.0, 0.0, 0.0, 0.0]`):** Coordinate vector for `<BOS>` (vocabulary index `0`).
+- **Row 2 (`[0.0, 0.8, -0.1, 0.2, 0.0, 0.5]`):** Coordinate vector for `i` (vocabulary index `3`).
+- **Row 3 (`[0.0, -0.2, 0.9, 0.1, -0.4, 0.1]`):** Coordinate vector for `woke` (vocabulary index `5`).
+- **Row 4 (`[0.0, -0.1, 0.4, 0.9, -0.2, 0.0]`):** Coordinate vector for `up` (vocabulary index `7`).
 
-The text is now successfully translated into the central $4 \times 6$ tensor that moves along the residual stream. The subsequent section examines a critical flaw in this representation and mathematically proves why Transformers require positional encoding to understand sequential order.
+The text is now translated into the central $4 \times 6$ tensor that moves along the residual stream. The subsequent section examines a structural limitation in this representation and demonstrates why Transformers require positional encoding to represent sequential order.
 
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>

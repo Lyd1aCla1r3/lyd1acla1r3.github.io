@@ -2,7 +2,9 @@
 
 <!-- SUMMARY: The isolated outputs of multiple attention heads are concatenated into a unified matrix to preserve structural integrity without destructive interference. These discrete features are synthesized into higher-order contextual representations by projecting them through a learned cross-head mixing matrix, preparing the vectors to rejoin the residual stream. -->
 
-The computations detailed in Parts 5 and 6 successfully resolve the core attention mechanism, yielding isolated outputs from the network's multiple attention heads. These discrete insights must now be synthesized into a unified structure before projecting the contextual representations forward.
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>
+
+The computations detailed in Parts 5 and 6 resolve the core attention mechanism, yielding isolated outputs from the parallel attention heads of the network. These discrete features must now combine into a unified structure before projecting the contextual representations forward.
 
 ## The Concatenation Step
 
@@ -10,13 +12,13 @@ The previous phase completed the journey of a single attention head. The mechani
 
 That process yields a contextually enriched vector for each token in the sequence. These vectors only possess a dimension of $d_v = 2$, whereas the overall model dimension is $d_{model} = 6$. The architecture deliberately splits into three parallel attention heads so the network can simultaneously look for different types of semantic relationships. Head 1 might attend to subject-verb pairings, while Head 2 looks for temporal markers, and Head 3 focuses on pronoun antecedents.
 
-The system now faces a critical architectural challenge. Three isolated sets of findings exist. The model must unify these independent insights back into a single cohesive representation for each token, and this representation must seamlessly reintegrate with the overarching $d_{model} = 6$ architecture.
+The system now faces a structural challenge. Three isolated sets of findings exist. The model must unify these independent representations back into a single cohesive vector for each token that matches the overarching $d_{model} = 6$ dimension.
 
-The most straightforward way to combine the outputs of the three heads might seem to be addition. The system could simply sum the three matrices together. Summation destroys the distinct structural information each head worked tirelessly to extract. If Head 1 finds a strong positive signal for a specific feature and Head 2 finds a strong negative signal, adding them together cancels out the values, effectively erasing the evidence gathered by both heads.
+The most direct way to combine the outputs of the three heads might appear to be element-wise addition. Summing the three $4 \times 2$ matrices destroys the distinct subspace features extracted by each head. A strong positive activation in Head 1 paired with a strong negative activation in Head 2 cancels out under addition, erasing the directional evidence gathered by both heads.
 
-Instead of summing, the architecture concatenates the outputs along the feature dimension. Placing the three $4 \times 2$ matrices side-by-side preserves every piece of information. The resulting matrix has a sequence length of 4 and a new feature dimension of $3 \times 2 = 6$.
+Instead of summing, the architecture concatenates the outputs along the feature dimension. Placing the three $4 \times 2$ matrices side by side preserves every subspace coordinate. The resulting matrix has a sequence length of 4 and a combined feature dimension of $3 \times 2 = 6$.
 
-The actual output of the three heads illustrates this process. The exact Head 1 output calculated previously sits alongside simulated outputs for Head 2 and Head 3.
+The numerical outputs of the three heads illustrate this concatenation step. The Head 1 matrix calculated in Part 6 sits alongside the corresponding outputs from Head 2 and Head 3:
 
 $$
 \text{Head 1} = \begin{bmatrix}
@@ -45,7 +47,7 @@ $$
 \end{bmatrix}
 $$
 
-Concatenating these three matrices horizontally achieves the target width of 6.
+Concatenating these three matrices horizontally achieves the target width of 6:
 
 $$
 \text{Concatenated} = \begin{bmatrix}
@@ -58,9 +60,18 @@ $$
 
 ## The Projection Matrix
 
-Concatenation perfectly resolves the sizing issue. The dimensions return to a $4 \times 6$ matrix. However, a geometric problem remains. The features are entirely segregated. The first two columns belong exclusively to Head 1, the middle two to Head 2, and the final two to Head 3. The insights exist in the same mathematical structure, yet they do not interact.
+Concatenation restores the required $4 \times 6$ matrix dimensions, yet a geometric isolation problem remains. The features stay partitioned by head: columns 1 and 2 belong exclusively to Head 1, columns 3 and 4 to Head 2, and columns 5 and 6 to Head 3. The extracted features occupy the same matrix without interacting.
 
-A neural network derives its power from synthesizing discrete pieces of evidence into higher-order concepts. To facilitate this synthesis, the architecture introduces the final learned parameter of the attention mechanism, the Projection Matrix, denoted as $W_O$.
+Synthesizing discrete subspace features into higher-order concepts requires cross-head interaction. The architecture achieves this synthesis through the final learned parameter of the attention block: the output projection matrix $W_O$.
+
+| Tensor | Symbol | Shape | Architectural Role |
+| :--- | :--- | :--- | :--- |
+| **Head 1 Output** | `Head 1` | `4 x 2` | Captures subspace 1 contextual payload (`Columns 1-2`) |
+| **Head 2 Output** | `Head 2` | `4 x 2` | Captures subspace 2 contextual payload (`Columns 3-4`) |
+| **Head 3 Output** | `Head 3` | `4 x 2` | Captures subspace 3 contextual payload (`Columns 5-6`) |
+| **Concatenated Heads** | `Concatenated` | `4 x 6` | Aligns all three `4 x 2` head outputs side by side |
+| **Output Projection** | `W_O` | `6 x 6` | Mixes features across all heads via learned linear weights |
+| **Attention Block Output** | `Output` | `4 x 6` | Produces unified contextual update for the residual stream |
 
 ```mermaid
 graph TD
@@ -72,9 +83,9 @@ graph TD
     M["Final Attention Output<br>4x6"]
 ```
 
-The matrix $W_O$ has dimensions of $d_{model} \times d_{model}$, which in this case is $6 \times 6$. It acts as a cross-head mixer. Multiplying the concatenated matrix by $W_O$ produces a resulting matrix that is a linear combination of all the features from all the heads. The network can learn that a high value in column 1 from Head 1, when combined with a low value in column 5 from Head 3, implies a specific semantic meaning that should be passed forward to the rest of the architecture.
+The matrix $W_O$ has dimensions of $d_{model} \times d_{model}$, which in this configuration is $6 \times 6$. It acts as a cross-head mixer. Multiplying the concatenated matrix by $W_O$ produces a resulting matrix that is a linear combination of all features across all heads. The network can learn that a high value in column 1 from Head 1 combined with a low value in column 5 from Head 3 encodes a composite syntactic signal that should pass forward to the rest of the architecture.
 
-The randomly initialized projection matrix $W_O$ for the toy model appears as follows.
+The initialized projection matrix $W_O$ for the toy model takes the following form:
 
 $$
 W_O = \begin{bmatrix}
@@ -87,7 +98,7 @@ W_O = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-Taking the dot product of the concatenated outputs and $W_O$ applies the final transformation.
+Multiplying the concatenated outputs by $W_O$ applies the cross-head linear transformation:
 
 $$
 \text{Output} = \text{Concatenated} \cdot W_O
@@ -104,6 +115,8 @@ $$
 
 ## Rejoining the Stream
 
-This final calculation successfully completes the Multi-Head Self-Attention block. The process began with basic token embeddings representing the sequence `<BOS>` `i` `woke` `up`. The architecture split those representations, allowed them to search for context across the sequence, gathered their findings, and fused those findings back into a unified $4 \times 6$ matrix.
+This calculation completes the Multi-Head Self-Attention block. The process began with token embeddings representing the sequence `<BOS>` `i` `woke` `up`. The architecture projected those representations into three subspaces, gathered causal context across the sequence, and fused the resulting head outputs into a unified $4 \times 6$ matrix.
 
-Every vector in this output matrix now contains rich, contextualized information about its surrounding tokens. These advanced representations are ready to merge back into the main residual stream of the Transformer.
+Every row vector in this output matrix now encodes contextualized information drawn from its preceding tokens. These updates are ready to merge back into the main residual stream of the Transformer.
+
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>

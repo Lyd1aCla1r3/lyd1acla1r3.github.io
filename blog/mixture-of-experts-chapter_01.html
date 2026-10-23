@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -118,14 +159,14 @@
     <li><a href="index.html">Blog</a></li><li><a href="series-mixture-of-experts.html">Series: Mixture Of Experts</a></li><li aria-current="page">Part 1: The Dense FFN Bottleneck</li></ol></nav>
         <article class="blog-post series-mixture-of-experts">
 <h1>Part 1: The Dense FFN Bottleneck</h1>
-<!-- SUMMARY: The standard dense Feed-Forward Network forces every token to activate the entire parameter bank, creating severe computational inefficiencies at scale. Replacing this monolithic structure with a Mixture of Experts architecture introduces conditional computation, allowing models to scale total parameter capacity independently of the floating-point operations executed per token. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p><p>The preceding preface established the core goal: separate a model&#39;s total parameter capacity from its per-token computational cost. Grounding this goal in concrete mathematics requires a precise accounting of the waste embedded within the standard monolithic Feed-Forward Network.</p>
+<!-- SUMMARY: The standard dense Feed-Forward Network forces every token to activate the entire parameter bank, creating severe computational inefficiencies at scale. Replacing this monolithic structure with a Mixture of Experts architecture introduces conditional computation, allowing models to scale total parameter capacity independently of the floating-point operations executed per token. --><p><em>Prefer to read this offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p><p>The preceding preface established the core goal: separate a model&#39;s total parameter capacity from its per-token computational cost. Grounding this goal in concrete mathematics requires a precise accounting of the waste embedded within the standard monolithic Feed-Forward Network.</p>
 <h2>The Dense Activation Penalty</h2>
 <p>The dense Feed-Forward Network operates as a two-layer key-value memory bank. A token vector $x$ is expanded through a weight matrix $W_1$, passed through a nonlinear activation function, and contracted through a second weight matrix $W_2$:</p>
 <p>$$
 \text{FFN}(x) = \text{ReLU}(x W_1) W_2
 $$</p>
 <p>The mathematical dimensions directly dictate the computational cost. A standard toy-scale dense model configures the representation space with a model dimension of $d_{model} = 6$ and an intermediate hidden dimension of $d_{ff} = 8$. The expansion matrix $W_1 \in \mathbb{R}^{6 \times 8}$ contains 48 parameters. The contraction matrix $W_2 \in \mathbb{R}^{8 \times 6}$ contains an identical 48 parameters. The total parameter count for the monolithic layer equals 96 parameters.</p>
-<p>The four token representations entering the layer carry the exact geometric coordinates established in the prior <a href="series-transformers.html">Transformer series</a>:</p>
+<p>The four token representations entering the layer carry the four-token coordinate matrix established in the prior <a href="series-transformers.html">Transformer series</a>:</p>
 <p>$$
 X_{4 \times 6} = \begin{bmatrix}
 0.0200 & 1.2900 & 0.1800 & 1.3500 & 0.0000 & 0.6700 \\
@@ -134,41 +175,43 @@ X_{4 \times 6} = \begin{bmatrix}
 0.1900 & -1.0300 & 1.5600 & 1.2100 & 0.5800 & 0.6900
 \end{bmatrix}
 $$</p>
-<p>The dense architecture forces every token to activate every parameter. Processing this specific sequence of $T = 4$ tokens requires full execution across the entire layer structure. The sequence activation demands a total of $4 \times 96 = 384$ total operations.</p>
+<p>The dense architecture forces every token to activate every parameter. Processing this sequence of $T = 4$ tokens requires full execution across the entire layer structure, demanding $4 \times 96 = 384$ parameter activations across the batch.</p>
 <h2>The Cost of Scale</h2>
 <p>This monolithic activation strategy scales poorly. A modern 70-billion-parameter dense architecture dedicates approximately 47 billion parameters exclusively to its Feed-Forward Network layers. During text generation, every single token propagating through the network activates all 47 billion parameters. This architectural design creates an unsustainable ceiling on model capacity dictated by the sheer cost of floating-point operations.</p>
 <p>The fix is straightforward in concept. Each token should activate only the parameters relevant to its representation, leaving the rest dormant.</p>
 <h2>The Mixture of Experts Architecture</h2>
 <p>The Mixture of Experts paradigm replaces the single dense Feed-Forward Network with $E$ independent, smaller expert networks. A learned router, also called a gating network, examines each $6$-dimensional token vector and selects $k$ experts to process it, where $k$ is strictly less than $E$.</p>
-<p>The toy-scale Mixture of Experts architecture establishes specific geometric configurations to match the computational footprint of the dense baseline. The dense baseline activates a total intermediate dimension of $8$. To replicate this active compute footprint, the sparse architecture halves the intermediate dimension of each expert to $d_{ff} = 4$, and sets the active expert count to $k = 2$. When exactly two experts process a token, their combined hidden dimensions perfectly equal the original baseline dimension of $8$. </p>
-<p>The total number of experts is arbitrarily set to $E = 4$. This establishes a pool of networks large enough to demonstrate selective routing while remaining tractable for explicit mathematical calculation. The router projects each token vector into this $4$-dimensional decision space to determine the appropriate assignment.</p>
-<p>This structural change dramatically shifts the parameter economics. The total parameter count now far exceeds what any single token activates. The $4$ experts each contain $48$ parameters, totaling $192$ parameters. The router requires a $6 \times 4$ weight matrix, adding $24$ parameters. The complete architecture stores $216$ parameters total.</p>
-<p>Processing a single token, however, touches only a fraction of that capacity. The token passes through the router, activating $24$ parameters, and through exactly two experts, activating $96$ parameters. The per-token cost is just $120$ active parameters. </p>
+<p>The toy-scale Mixture of Experts architecture establishes specific geometric dimensions to match the active computational footprint of the dense baseline. The dense baseline activates an intermediate dimension of $8$. To replicate this active hidden width, the sparse architecture halves the intermediate dimension of each expert to $d_{ff} = 4$ and sets the active expert count to $k = 2$. Routing a token through two selected experts yields a combined hidden dimension of $2 \times 4 = 8$, matching the original baseline dimension.</p>
+<p>The total number of experts is set to $E = 4$. This configuration establishes a pool of sub-networks large enough to demonstrate selective routing while remaining tractable for explicit matrix calculation. The router projects each token vector into this $4$-dimensional decision space to determine the expert assignment.</p>
+<p>This structural change shifts the parameter economics by decoupling stored capacity from active computation. Each of the $4$ experts contains $6 \times 4 + 4 \times 6 = 48$ parameters, totaling $192$ expert parameters. The router requires a $6 \times 4$ weight matrix, adding $24$ parameters and bringing the complete architecture to $216$ total parameters. Processing a single token activates only the router ($24$ parameters) and two selected experts ($2 \times 48 = 96$ parameters), resulting in $120$ active parameters per token.</p>
 <table>
 <thead>
 <tr>
-<th>Configuration</th>
-<th>Total Parameters</th>
-<th>Active Parameters per Token</th>
-<th>Ratio</th>
+<th align="left">Configuration</th>
+<th align="left">Layer Hyperparameters</th>
+<th align="left">Total Parameters</th>
+<th align="left">Active Parameters per Token</th>
+<th align="left">Total-to-Active Ratio</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>Dense FFN, $d_{ff}=8$</td>
-<td>$6 \times 8 + 8 \times 6 = 96$</td>
-<td>96</td>
-<td>1:1</td>
+<td align="left"><strong>Dense FFN</strong></td>
+<td align="left"><code>d_model = 6</code>, <code>d_ff = 8</code></td>
+<td align="left"><code>6 * 8 + 8 * 6 = 96</code></td>
+<td align="left"><code>96</code></td>
+<td align="left"><code>1.0 : 1</code></td>
 </tr>
 <tr>
-<td>MoE, $E=4, k=2, d_{ff}=4$</td>
-<td>$4 \times [6 \times 4 + 4 \times 6] + 6 \times 4 = 216$</td>
-<td>$2 \times 48 + 24 = 120$</td>
-<td>1.8:1</td>
+<td align="left"><strong>Sparse MoE</strong></td>
+<td align="left"><code>E = 4</code>, <code>k = 2</code>, <code>d_ff = 4</code></td>
+<td align="left"><code>4 * (6 * 4 + 4 * 6) + 6 * 4 = 216</code></td>
+<td align="left"><code>2 * 48 + 24 = 120</code></td>
+<td align="left"><code>1.8 : 1</code></td>
 </tr>
 </tbody></table>
-<p>Comparing these values directly reveals the mathematical advantage. The Mixture of Experts configuration houses $2.25$ times the total parameters of the dense baseline, calculated as $216$ divided by $96$. Simultaneously, the architecture requires only $1.25$ times the active compute per token, calculated as $120$ divided by $96$. This toy-scale ratio expands dramatically in production environments, decoupling knowledge capacity from inference latency entirely.</p>
-<p>The structural foundation for sparse computation is now established. The subsequent section formalizes the mathematics of the router, calculating exactly how the architecture maps specific tokens to targeted expert pathways.</p>
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p>
+<p>Comparing these values reveals the mathematical advantage of conditional computation. Within the sparse layer, total parameter capacity exceeds active per-token compute by a ratio of $1.8:1$ ($216$ total parameters versus $120$ active parameters). Relative to the dense baseline, the Mixture of Experts configuration stores $2.25$ times the total parameters ($216 / 96$) while requiring $1.25$ times the active parameters per token ($120 / 96$). In production environments where expert matrices far outweigh the router projection, this ratio expands dramatically, decoupling knowledge capacity from inference latency.</p>
+<p>The structural foundation for sparse computation is now established. The next chapter formalizes the mathematics of the router, calculating how the gating network maps specific tokens to targeted expert pathways.</p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="mixture-of-experts-preface.html" class="pagination-link prev">

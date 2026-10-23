@@ -1,16 +1,16 @@
 # Inductance, Magnetic Coupling, and Crosstalk
 
-<!-- SUMMARY: A changing current creates a magnetic field that induces voltage across adjacent conductors. This guide models mutual inductance and capacitance, deriving near-end (NEXT) and far-end (FEXT) crosstalk signatures, and explains why FEXT scales with coupled length while NEXT saturates at the delay boundary. -->
+<!-- SUMMARY: A changing current creates a magnetic field that induces voltage across adjacent conductors. Mutual inductance and mutual capacitance govern near-end (NEXT) and far-end (FEXT) crosstalk signatures, explaining why FEXT scales with coupled length while NEXT saturates once the coupled delay exceeds half the rise time. -->
 
-<p><em>Prefer to read offline? <a href="../../../assets/docs/signal-integrity-ebook-v2.0.pdf" target="_blank" rel="noopener">Download the complete Signal Integrity (Advanced Edition) ebook.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
 
-[Chapter 3](03_Impedance_Reflections_and_Termination.md) used the inductance $L$ as a given number: a 1 nH parasitic inductor reflects the edge, and a narrow trace behaves as a series inductance. This chapter explains where that number comes from, why it depends on geometry, and how the magnetic field of one conductor induces a voltage in another, which is the mechanism behind crosstalk between neighboring traces.
+[Chapter 3](03_Impedance_Reflections_and_Termination.md) used the inductance $L$ as a given number: a 1 nH parasitic inductor reflects the edge, and a narrow trace behaves as a series inductance. Electromagnetic field theory explains where that number comes from, why it depends on geometry, and how the magnetic field of one conductor induces a voltage in another, which is the mechanism behind crosstalk between neighboring traces.
 
 The electric field of a transmission line stores energy in the dielectric between the trace and the ground plane and defines the capacitance. The magnetic field stores energy in the current loop formed by the outbound trace and the return path and defines the inductance. [Chapter 1](01_Wave_Propagation_and_Transmission_Lines.md) showed that the ratio of the two per-unit-length quantities sets the characteristic impedance and that their product sets the propagation velocity, so controlling inductance is inseparable from controlling signal integrity.
 
-The subject divides into two mechanisms that differ in which conductor receives the induced voltage. Self-inductance describes the opposition that a conductor's own changing field creates against changes in its own current. Mutual inductance describes the coupling between two separate conductors, in which the changing field of one induces a voltage in the other. Both act simultaneously in every transmission line, and the total loop inductance depends on the self-inductance of the outbound trace, the self-inductance of the return path, and the mutual inductance between them.
+The subject divides into two mechanisms that differ in which conductor receives the induced voltage. Self-inductance describes the opposition that the changing field of a conductor creates against changes in its own current. Mutual inductance describes the coupling between two separate conductors, in which the changing field of one induces a voltage in the other. Both act simultaneously in every transmission line, and the total loop inductance depends on the self-inductance of the outbound trace, the self-inductance of the return path, and the mutual inductance between them.
 
-This guide develops the physics in order: the field of a current from Ampere's law, the field inside a conductor, Faraday's and Lenz's laws and the two rules for applying the right-hand rule, the four cases of induction, the definitions of self, mutual, and loop inductance, and finally the crosstalk that mutual coupling produces between adjacent traces.
+The sections below develop the physics in sequence: the magnetic field of a current from Ampere's law, the field inside a conductor, Faraday's and Lenz's laws and the two right-hand procedures, the four cases of induction, the definitions of self, mutual, and loop inductance, and the crosstalk that mutual coupling produces between adjacent traces.
 
 ## Core Concepts
 
@@ -20,7 +20,7 @@ Ampere's law states that the line integral of the magnetic field $\mathbf{B}$ ar
 
 $$\oint \mathbf{B} \cdot d\mathbf{l} = \mu_0 I_{enc}$$
 
-Charges in motion produce the field, and the field of any conductor is the vector sum of the contributions of all its moving charges. This is the principle of superposition: the total field at a point is the addition, with direction, of the fields that each current element produces there.
+Charges in motion produce the field, and the field of any conductor is the vector sum of the contributions of all its moving charges. This vector summation reflects the principle of superposition: the total field at a point is the addition, with direction, of the fields that each current element produces there.
 
 The right-hand rule gives the direction of the field. This series calls the procedure the **Generation Rule**: point the thumb of the right hand along the current, and the fingers curl in the direction of the magnetic field circling the conductor. The Generation Rule answers the question of which way the field points when a current is known, and it is applied once, at the start of any analysis.
 
@@ -28,7 +28,9 @@ For a long straight wire, symmetry makes the field tangent to circles centered o
 
 $$B \cdot 2\pi r = \mu_0 I \quad \Rightarrow \quad B(r) = \frac{\mu_0 I}{2\pi r}$$
 
-The field falls in inverse proportion to the distance from the wire. A wide, flat conductor such as a ground plane shapes the field differently. Consider a very wide sheet carrying a current per unit width $K$. At a point above the sheet, the contributions of strips lying at equal distances to the left and to the right have equal magnitudes and point at mirror-image angles, so the components perpendicular to the sheet cancel while the components parallel to the sheet add. The resulting field is parallel to the sheet, and Ampere's law with a rectangular path that straddles the sheet (two sides parallel to the sheet at equal heights above and below, each of length $w$) gives:
+The field falls in inverse proportion to the distance from the wire. A wide, flat conductor such as a ground plane shapes the field differently. Consider a wide sheet carrying a current per unit width $K$.
+
+At a point above the sheet, the contributions of strips lying at equal distances to the left and to the right have equal magnitudes and point at mirror-image angles, so the components perpendicular to the sheet cancel while the components parallel to the sheet add. The resulting field is parallel to the sheet, and Ampere's law with a rectangular path that straddles the sheet (two sides parallel to the sheet at equal heights above and below, each of length $w$) gives:
 
 $$B \cdot 2w = \mu_0 K w \quad \Rightarrow \quad B = \frac{\mu_0 K}{2}$$
 
@@ -48,17 +50,19 @@ $$B \cdot 2\pi r = \mu_0 I \, \frac{r^2}{a^2} \quad \Rightarrow \quad B(r) = \fr
 
 The field is zero at the center, where a circle of zero radius encloses no current, and grows in direct proportion to $r$, because the enclosed current grows with the area ($\propto r^2$) while the circumference grows only with the radius ($\propto r$). At the surface ($r = a$) the result equals the external expression $\mu_0 I/(2\pi a)$, and beyond the surface the field falls as $1/r$. Assume 1 A flows in a wire of radius 0.1 mm. The field is 1 mT halfway to the surface, reaches its maximum of 2 mT at the surface, and falls to 0.2 mT at a distance of 1 mm from the axis.
 
-Ampere's law uses only the enclosed current, so the copper outside the circle contributes nothing at radius $r$. The same fact follows from a geometric argument about a hollow current-carrying pipe. Consider a point inside the cavity and a narrow cone of angle $d\theta$ that opens from the point and cuts the wall on both sides. The wall length cut by the cone is proportional to the distance from the point, so the nearer segment carries less current and the farther segment carries more current in direct proportion to its distance. A line current produces a field proportional to its current divided by its distance, so both segments produce fields of equal magnitude, and they point in opposite directions. Every cone cancels, and the field inside a hollow current-carrying cylinder is zero. A solid wire is a nest of such hollow tubes, so only the current inside radius $r$ produces the field at radius $r$.
+Ampere's law uses only the enclosed current, so the copper outside the circle contributes nothing at radius $r$. The same fact follows from a geometric argument about a hollow current-carrying pipe. Consider a point inside the cavity and a narrow cone of angle $d\theta$ that opens from the point and cuts the wall on both sides. The wall length cut by the cone is proportional to the distance from the point, so the nearer segment carries less current and the farther segment carries more current in direct proportion to its distance.
+
+A line current produces a field proportional to its current divided by its distance, so both segments produce fields of equal magnitude, and they point in opposite directions. Every cone cancels, and the field inside a hollow current-carrying cylinder is zero. A solid wire is a nest of such hollow tubes, so only the current inside radius $r$ produces the field at radius $r$.
 
 The uniform current density assumed here holds at DC. At high frequency the changing field inside the conductor drives currents of its own, which push the current distribution toward the surface, and [Chapter 5](05_Skin_Effect_and_Dielectric_Loss.md) analyzes that redistribution.
 
 ### Faraday's Law, Lenz's Law, and Ampere's Law as Three Distinct Statements
 
-Three statements about electromagnetic induction are often blended, and keeping them separate removes most of the confusion about which direction is which.
+Three statements about electromagnetic induction are often blended, and keeping them separate removes most of the confusion about which direction is which:
 
-1. **Ampere's law** describes the generation of a magnetic field by a current. A current is the cause and a field is the effect.
-2. **Faraday's law** describes the generation of a voltage by a changing magnetic flux. The magnetic flux $\Phi$ through a surface is the integral of the perpendicular component of $\mathbf{B}$ over the surface, and a changing flux through a loop produces an electromotive force (EMF) around the loop: $\mathcal{E} = -d\Phi/dt$.
-3. **Lenz's law** is the minus sign in Faraday's law. It states that the EMF drives a current whose own magnetic field opposes the change in flux that produced it.
+- **Ampere's law:** Electric current generates a circulating magnetic field; the current is the cause and the magnetic field is the effect.
+- **Faraday's law:** A time-varying magnetic flux $\Phi$ through a surface induces an electromotive force (EMF) around the enclosing loop according to $\mathcal{E} = -d\Phi/dt$.
+- **Lenz's law:** The minus sign in Faraday's law dictates that the induced EMF drives a current whose own magnetic field opposes the flux change that produced it.
 
 Ampere's law concerns the field that a current creates, and Lenz's law concerns the reaction of a conductor to a change in the field that passes through it. A conductor that is not exposed to a changing field shows no Lenz effect, and a conductor carrying a steady current is surrounded by a steady field with no induced EMF.
 
@@ -66,25 +70,24 @@ Ampere's law concerns the field that a current creates, and Lenz's law concerns 
 
 Applying the right-hand rule to find the direction of an induced current requires a second procedure, distinct from the Generation Rule. This series calls it the **Reaction Rule**:
 
-1. Use the Generation Rule to find the direction of the existing field and decide whether its magnitude is increasing or decreasing.
-2. Write down the direction of the opposing field that Lenz's law demands: opposite to the existing field when the flux grows, and parallel to it when the flux shrinks.
-3. Point the right-hand thumb along that opposing field, and read the direction of the induced current from the curl of the fingers around the thumb.
+1. **Primary field evaluation:** Apply the Generation Rule to find the direction of the existing magnetic field and determine whether its magnitude is increasing or decreasing.
+2. **Opposing field alignment:** Establish the direction of the opposing field required by Lenz's law, pointing opposite to the existing field when the flux grows and parallel to it when the flux shrinks.
+3. **Induced current readout:** Point the right-hand thumb along that opposing field and read the direction of the induced current from the curl of the fingers.
 
 The two rules are applied one after the other with a pause between them, and they are never chained into a single motion. The Generation Rule starts from a current and produces a field. The Reaction Rule starts from a changing field, produces an opposing field, and only then reads the current that would generate that opposing field. [Chapter 5](05_Skin_Effect_and_Dielectric_Loss.md) uses the Reaction Rule inside a single conductor to explain the skin effect, and the crosstalk section below uses it between two conductors.
 
 ### The Four Cases of Induction
 
-Four situations cover the cases in which a conductor and a magnetic field interact.
+Four distinct physical cases classify how a conductor and a magnetic field interact:
 
-**Case 1: a constant current in an isolated conductor.** The field is steady, the flux is constant, and $d\Phi/dt = 0$. No EMF is induced and the conductor shows only its DC resistance.
+| Case | Conductor and Field State | Flux Rate (`dPhi/dt`) | Physical Mechanism and Signal Integrity Role |
+|---|---|---|---|
+| **Case 1: Steady isolated current** | Constant DC current in a single conductor | `dPhi/dt = 0` | Static magnetic field induces zero EMF; conductor exhibits only DC resistance. |
+| **Case 2: Changing isolated current** | Time-varying current in a single conductor | `dPhi/dt != 0` (self-flux) | Changing self-flux induces a back-EMF (`-L * dI/dt`) that opposes current changes and drives the high-frequency skin effect ([Chapter 5](05_Skin_Effect_and_Dielectric_Loss.md)). |
+| **Case 3: Changing current near a neighbor** | Time-varying current in conductor 1 coupling into conductor 2 | `dPhi_21/dt != 0` (mutual flux) | Changing field from the aggressor links the victim loop and induces mutual EMF (`-M * dI_1/dt`), producing inductive crosstalk. |
+| **Case 4: Moving conductor in static field** | Conductor moving mechanically through a stationary field | Motional Lorentz force | Generates motional EMF in rotating machinery; absent in stationary PCB interconnects. |
 
-**Case 2: a changing current in an isolated conductor.** The field changes in proportion to the current, and the changing flux induces an EMF that opposes the change in the conductor's own current. This opposition is the back-EMF of self-inductance. It acts on every part of the conductor, and the internal distribution of that opposition is the cause of the skin effect treated in Chapter 5.
-
-**Case 3: a changing current near a second conductor.** The changing field of the first conductor passes through the loop of the second, and the induced EMF drives a current in the second conductor. This is mutual inductance, and it is the inductive part of crosstalk.
-
-**Case 4: a conductor moving through a static field.** The force on the moving charges produces an EMF without any change in the field. This motional EMF is the principle of generators and has no role in the signal paths studied here, and it is included for completeness.
-
-Case 2 occurs inside Case 3, because every conductor reacts to the changing field of its own current and to the changing fields of its neighbors at the same time, and the two effects add by linear superposition. A current already flowing in the second conductor does not alter the induced current from the first, because the induced contribution is simply added to it.
+Case 2 occurs inside Case 3, because every conductor reacts to the changing field of its own current and to the changing fields of its neighbors at the same time, and the two effects add by linear superposition. A current already flowing in the second conductor does not alter the induced current from the first, because the induced contribution superposes linearly onto the existing current.
 
 ### Inductance Defined
 
@@ -120,7 +123,7 @@ Geometry alone determines how strongly the two paths couple. A thick dielectric 
 
 ### The Reciprocity Theorem
 
-A narrow trace and a wide ground plane are very different shapes. The trace produces a dense, localized field, and the plane produces a broad, uniform one. It seems that the flux linking the plane because of a current in the trace should differ from the flux linking the trace because of the same current in the plane. The reciprocity theorem states that the two are equal:
+A narrow trace and a wide ground plane have markedly different geometries. The trace produces a dense, localized field, and the plane produces a broad, uniform one. It seems that the flux linking the plane because of a current in the trace should differ from the flux linking the trace because of the same current in the plane. The reciprocity theorem states that the two are equal:
 
 $$M_{12} = M_{21}$$
 
@@ -128,7 +131,7 @@ The equality follows from the Neumann formula for the mutual inductance of two c
 
 $$M_{12} = \frac{\mu_0}{4\pi} \oint_{C_1} \oint_{C_2} \frac{d\mathbf{l}_1 \cdot d\mathbf{l}_2}{r}$$
 
-where $r$ is the distance between the two line elements. The expression is unchanged when the labels 1 and 2 are exchanged, so $M_{12} = M_{21}$ for any pair of shapes. The derivation of the Neumann formula uses vector calculus beyond the scope of this guide, and it is stated here with every symbol defined. The physical content is that a concentrated source projecting onto a large receiver and a diffuse source projecting onto a small receiver couple the same total flux, and mutual inductance is a property of the pair of conductors and not of either one alone.
+where $r$ is the distance between the two line elements. The expression is unchanged when the labels 1 and 2 are exchanged, so $M_{12} = M_{21}$ for any pair of shapes. The derivation of the Neumann formula follows from the Biot-Savart law and the magnetic vector potential, and the integral form above defines the geometric coupling between the two closed loops. The physical content is that a concentrated source projecting onto a large receiver and a diffuse source projecting onto a small receiver couple the same total flux, and mutual inductance is a property of the pair of conductors and not of either one alone.
 
 The symmetry is the reason the loop inductance equation below contains the term $2M$ and not the sum $M_{12} + M_{21}$ of two different values.
 
@@ -166,9 +169,11 @@ High-frequency return current gathers directly beneath the trace to minimize the
 
 ### Loop Resistance and Why It Lacks Spatial Interaction
 
-Resistance and inductance respond to conductor spacing differently at DC. The resistance of a conductor of length $\ell$ and cross-section $A$ is $R = \rho_r\, \ell / A$, where $\rho_r$ is the resistivity of copper. Spreading the return current across the full width of the ground plane enlarges $A$ and lowers the resistance. At DC the current is confined to the copper and distributes itself uniformly, so the spacing between the outbound and return paths has no effect on the total series resistance, and the term "loop resistance" carries no extra information beyond the sum of the two resistances. Magnetic fields project into the surrounding space, so the spacing changes the mutual inductance strongly, and "loop inductance" is a central design parameter.
+Resistance and inductance respond to conductor spacing differently at DC. The resistance of a conductor of length $\ell$ and cross-section $A$ is $R = \rho_r\, \ell / A$, where $\rho_r$ is the resistivity of copper. Spreading the return current across the full width of the ground plane enlarges $A$ and lowers the resistance.
 
-The statement is exact only for uniform current. At high frequency the currents in neighboring conductors redistribute under each other's fields, an effect called the proximity effect, and the effective resistance then depends on spacing.
+At DC the current is confined to the copper and distributes itself uniformly, so the spacing between the outbound and return paths has no effect on the total series resistance, and the term "loop resistance" carries no extra information beyond the sum of the two resistances. Magnetic fields project into the surrounding space, so the spacing changes the mutual inductance strongly, and "loop inductance" is a central design parameter.
+
+That independence holds strictly only for uniform DC current. At high frequency the currents in neighboring conductors redistribute under each other's fields, an effect called the proximity effect, and the effective resistance then depends on spacing.
 
 The frequency-dependent distribution of return current follows from the comparison between the two terms. At low frequencies the inductive reactance $\omega L$ is small, the DC resistance dominates the impedance, and the current spreads across the whole ground plane to minimize resistance. At high frequencies the reactance grows to dominate the impedance, and the current gathers under the trace to minimize the loop inductance, accepting a higher resistance as the price of the much larger reduction in the inductive term.
 
@@ -180,8 +185,8 @@ Two locations on the victim define the measurements. The **near end** is the end
 
 The directions follow from how each mechanism launches waves on the victim. A short segment of the aggressor with a rising edge passing through it couples two sources into the matching segment of the victim:
 
-- The capacitive coupling injects a displacement current of $C_m\,\Delta z\,dV_a/dt$, where $V_a$ is the aggressor voltage. A current source in a transmission line launches equal currents away from the injection point in both directions, so half of the current travels toward each end, and both launched waves have the positive polarity of the injected current.
-- The inductive coupling induces a series EMF of $L_m\,\Delta z\,dI_a/dt$ in the victim. By Lenz's law and the Reaction Rule, the induced current opposes the aggressor's current, so it flows against the direction of the aggressor's travel. A series voltage source launches a forward wave and a backward wave of opposite voltage polarity: the current is continuous through the source, so both waves carry current in the same direction along the line, and the backward wave travels the other way, which reverses the sign of its voltage relative to its current. The induced current in the victim flows backward, so the backward wave has positive polarity and the forward wave has negative polarity.
+- **Capacitive coupling injection:** Mutual capacitance injects a displacement current of $C_m\,\Delta z\,dV_a/dt$, where $V_a$ is the aggressor voltage. A shunt current source on a transmission line launches equal currents away from the injection point in both directions, so half of the current travels toward each end with the positive polarity of the injected current.
+- **Inductive coupling EMF:** Mutual inductance induces a series EMF of $L_m\,\Delta z\,dI_a/dt$ along the victim. By Lenz's law and the Reaction Rule, the induced current opposes the aggressor's current and flows toward the near end. A series voltage source drives current in the same physical direction on both sides of the injection point, so the backward-traveling wave toward the near end has positive voltage polarity while the forward-traveling wave toward the far end has negative voltage polarity.
 
 Both couplings therefore produce a positive wave toward the near end, and the two contributions add. Toward the far end, the capacitive contribution is positive and the inductive contribution is negative, and the two subtract. Backward coupling is the sum of capacitive and inductive coupling, and forward coupling is their difference.
 
@@ -219,9 +224,13 @@ Crosstalk from several aggressors with uncorrelated data adds in power and not i
 
 A fixed coordinate frame removes the ambiguity of "above" and "below". Imagine looking down at a flat desk. The $x$ axis points to the right, the $y$ axis points toward the top of the page, and the $z$ axis points up out of the desk toward the viewer.
 
-**Case 2 (self-inductance):** Wire A lies on the desk along the $x$ axis, with its current flowing to the right and increasing. The Generation Rule (thumb to the right) gives a field that points out of the desk, in the $+z$ direction, at points on the $+y$ side of the wire and into the desk, in the $-z$ direction, on the $-y$ side. The field at every point grows in proportion to the current. The Reaction Rule demands an opposing field at each point. Where the original field points out of the desk, the opposing field points into the desk, and the right-hand thumb into the desk gives a clockwise circulation of induced current as seen from above. The induced current therefore reduces the net field, which is the back-EMF of self-inductance, and its distribution inside a single conductor is the subject of Chapter 5.
+**Case 2 (self-inductance):** Wire A lies on the desk along the $x$ axis, with its current flowing to the right and increasing. The Generation Rule (thumb to the right) gives a field that points out of the desk, in the $+z$ direction, at points on the $+y$ side of the wire and into the desk, in the $-z$ direction, on the $-y$ side. The field at every point grows in proportion to the current.
 
-**Case 3 (mutual inductance):** Wire B lies on the desk parallel to Wire A on its $-y$ side, so Wire A is above Wire B in the picture, and the return path of Wire B lies farther toward $-y$. Wire B and its return path form a long rectangle, and the flux through that rectangle is the flux of Wire A's field at the rectangle. Wire A's field points into the desk at Wire B and grows with the current. The Reaction Rule demands an opposing field out of the desk, and the right-hand thumb out of the desk gives a counterclockwise circulation around the rectangle. Wire B is the edge of the rectangle nearest to Wire A, so a counterclockwise circulation carries the current in Wire B from right to left, opposite to the current in Wire A. This opposition is the property of inductive crosstalk used above, and the induced voltage is $-M\,dI_A/dt$.
+The Reaction Rule demands an opposing field at each point. Where the original field points out of the desk, the opposing field points into the desk, and the right-hand thumb into the desk gives a clockwise circulation of induced current as seen from above. The induced current therefore reduces the net field, which is the back-EMF of self-inductance, and its distribution inside a single conductor is the subject of [Chapter 5](05_Skin_Effect_and_Dielectric_Loss.md).
+
+**Case 3 (mutual inductance):** Wire B lies on the desk parallel to Wire A on its $-y$ side, so Wire A is above Wire B in the picture, and the return path of Wire B lies farther toward $-y$. Wire B and its return path form a long rectangle, and the flux through that rectangle is the flux of the field of Wire A at the rectangle.
+
+The field of Wire A points into the desk at Wire B and grows with the current. The Reaction Rule demands an opposing field out of the desk, and the right-hand thumb out of the desk gives a counterclockwise circulation around the rectangle. Wire B is the edge of the rectangle nearest to Wire A, so a counterclockwise circulation carries the current in Wire B from right to left, opposite to the current in Wire A. This opposition is the property of inductive crosstalk used above, and the induced voltage is $-M\,dI_A/dt$.
 
 The rectangle formed by Wire B and its return path is the closed loop whose enclosed changing flux sets the EMF, and it is the same loop area that governs loop inductance in [Chapter 6](06_Return_Path_Dynamics_and_Parasitic_Effects.md). Case 2 occurs inside Case 3 in this example. The total EMF in the rectangle is the sum of the EMF from Wire B's own changing current and the EMF from Wire A's changing current:
 
@@ -231,13 +240,15 @@ A current that already flows in Wire B contributes only through the first term, 
 
 ### Loop Inductance of a 50 Ω Microstrip
 
-Chapter 1 gave a velocity of $1.46\times10^8$ m/s for FR4. The relation $L' = Z_0/v_p$ then gives the loop inductance per unit length of a 50 Ω line:
+[Chapter 1](01_Wave_Propagation_and_Transmission_Lines.md) gave a velocity of $1.46\times10^8$ m/s for FR4. The relation $L' = Z_0/v_p$ then gives the loop inductance per unit length of a 50 Ω line:
 
 $$L' = \frac{50}{1.46\times10^8} = 342\ \text{nH/m} \approx 8.7\ \text{nH/in}$$
 
 The capacitance per unit length follows from $C' = 1/(Z_0 v_p) = 137$ pF/m, which is about 3.5 pF/in, and the two values reproduce $Z_0 = \sqrt{L'/C'} = 50\ \Omega$.
 
-The loop inductance of one inch combines the partial inductances according to $L_{loop} = L_1 + L_2 - 2M$. Assume partial inductances $L_1 = 14$ nH for the trace and $L_2 = 2$ nH for the plane (illustrative values chosen to reproduce the 8.7 nH/in loop value). A mutual inductance of $M = 3.65$ nH gives $14 + 2 - 7.3 = 8.7$ nH, matching the figure above. Thinning the dielectric until $M = 4.5$ nH lowers the loop inductance to $16 - 9 = 7.0$ nH. The coupling bound is $M \le \sqrt{14 \cdot 2} = 5.29$ nH, so even perfect coupling leaves a floor of $(\sqrt{14} - \sqrt{2})^2 = 5.4$ nH. The reduction available from thinning the dielectric is therefore limited, and the loop inductance never approaches zero.
+The loop inductance of one inch combines the partial inductances according to $L_{loop} = L_1 + L_2 - 2M$. Assume partial inductances $L_1 = 14$ nH for the trace and $L_2 = 2$ nH for the plane (illustrative values chosen to reproduce the 8.7 nH/in loop value). A mutual inductance of $M = 3.65$ nH gives $14 + 2 - 7.3 = 8.7$ nH, matching the figure above.
+
+Thinning the dielectric until $M = 4.5$ nH lowers the loop inductance to $16 - 9 = 7.0$ nH. The coupling bound is $M \le \sqrt{14 \cdot 2} = 5.29$ nH, so even perfect coupling leaves a floor of $(\sqrt{14} - \sqrt{2})^2 = 5.4$ nH. The reduction available from thinning the dielectric is therefore limited, and the loop inductance never approaches zero.
 
 ### A Narrow Neck as a Series Inductor
 
@@ -245,7 +256,9 @@ Assume a manufacturing defect narrows a 2 mm section of a 50 Ω trace so that it
 
 $$\Delta L = \frac{65 - 50}{1.46\times10^8}\,(2\times10^{-3}) \approx 0.21\ \text{nH}$$
 
-The reduced capacitance of the narrow neck partly compensates this inductance, as the cancellation condition of Chapter 3 describes, so the net behavior is smaller than that of the inductance alone. Using the inductance alone as an upper estimate and the series-inductor reflection of Chapter 3, $|\Gamma| = \omega \Delta L / |2Z_0 + j\omega \Delta L|$ gives 0.013 at 1 GHz and 0.128 at 10 GHz. The neck is nearly invisible to a slow edge and reflects about 13% of the voltage at the highest frequencies of a fast one, which rounds the edge at the receiver as described above. On a TDR display, which [Chapter 7](07_Time_Domain_Reflectometry.md) treats, the neck appears as a positive impedance bump.
+The reduced capacitance of the narrow neck partly compensates this inductance, as the cancellation condition of [Chapter 3](03_Impedance_Reflections_and_Termination.md) describes, so the net behavior is smaller than that of the inductance alone.
+
+Using the inductance alone as an upper estimate and the series-inductor reflection of [Chapter 3](03_Impedance_Reflections_and_Termination.md), $|\Gamma| = \omega \Delta L / |2Z_0 + j\omega \Delta L|$ gives 0.013 at 1 GHz and 0.128 at 10 GHz. The neck is nearly invisible to a slow edge and reflects about 13% of the voltage at the highest frequencies of a fast one, which rounds the edge at the receiver as described above. On a TDR display, which [Chapter 7](07_Time_Domain_Reflectometry.md) treats, the neck appears as a positive impedance bump.
 
 ### Crosstalk Numbers: Microstrip versus Stripline
 
@@ -255,7 +268,7 @@ For a microstrip, assume $C_m/C = 0.04$ and $L_m/L = 0.08$ (illustrative values 
 
 For a stripline with the same total coupling, assume $C_m/C = L_m/L = 0.06$. The backward coefficient is again $K_b = 0.03$, and NEXT is the same 30 mV. The forward terms cancel, and FEXT is zero.
 
-NEXT depends on the sum of the two couplings and FEXT on their difference, so identical NEXT can accompany very different FEXT. Both quantities fall with greater spacing or with a thinner dielectric, which ties the fields of each trace to its own reference plane.
+NEXT depends on the sum of the two couplings and FEXT on their difference, so identical NEXT amplitudes can accompany substantially different FEXT waveforms. Both quantities fall with greater spacing or with a thinner dielectric, which ties the fields of each trace to its own reference plane.
 
 ## Edge Cases
 
@@ -273,4 +286,6 @@ The NEXT expression $K_b[V_a(t) - V_a(t - 2T_c)]$ applies for any coupled length
 
 The derivation assumed that both ends of the victim are terminated in $Z_0$. An unmatched victim end reflects the arriving crosstalk wave with the reflection coefficient $\Gamma$ of [Chapter 3](03_Impedance_Reflections_and_Termination.md), so a high-impedance receiver at the far end of the victim doubles the arriving FEXT, and a low-impedance driver at the near end of the victim reflects part of the backward wave toward the far end. The crosstalk observed at an unmatched victim is therefore the sum of the coupling terms above and their reflections.
 
-The next chapter applies the Reaction Rule inside a single conductor, where the changing field of the current itself drives eddy currents that push the current toward the surface, and it examines the loss in the dielectric. The two mechanisms together set the frequency-dependent attenuation that rounds the edges whose spectrum Chapter 2 quantified.
+[Chapter 5](05_Skin_Effect_and_Dielectric_Loss.md) applies the Reaction Rule inside a single conductor, where the changing field of the current itself drives eddy currents that push the current toward the surface, and examines the polarization loss in the dielectric. The two mechanisms together set the frequency-dependent attenuation that rounds the edges whose spectrum [Chapter 2](02_Frequency_Content_of_Digital_Signals.md) quantified.
+
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>

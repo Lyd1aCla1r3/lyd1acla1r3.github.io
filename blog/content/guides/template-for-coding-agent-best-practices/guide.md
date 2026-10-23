@@ -1,47 +1,6 @@
 # Template for Coding Agent Best Practices: Setup Guide
 
 <!-- SUMMARY: A step-by-step setup guide for the coding agent operating layer: copying a tested template tree into a project, then wiring always-on rules, on-demand skills, isolated subagents, hook guards with a Git pre-commit backstop, permissions, model roles, and session state, with a verification check for each layer across seven supported agent targets. -->
-<style>
-  /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
-  .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
-  .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
-  .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
-  .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
-  .blog-post details.code-drop > summary::marker { content: ""; }
-  .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
-  .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
-  .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
-  .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
-  .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
-  .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
-  .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
-  .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
-  .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
-  .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
-  .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
-  .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
-  .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
-  .blog-post li > strong:first-child { color: var(--text-primary); }
-  @media (prefers-reduced-motion: reduce) {
-    .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
-  }
-  /* table: bordered card with horizontal row dividers and alternating palette shades. */
-  .blog-post table { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
-  .blog-post thead tr { background: var(--rose-gold-glow); }
-  .blog-post th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
-  .blog-post tbody tr:nth-child(odd) { background: var(--bg-secondary); }
-  .blog-post tbody tr:nth-child(even) { background: var(--blush-glow); }
-  .blog-post td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
-  .blog-post td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
-  .blog-post tbody tr:last-child td { border-bottom: none; }
-  @media (min-width: 769px) {
-    .blog-post th:first-child, .blog-post td:first-child { white-space: nowrap; }
-  }
-  @media (max-width: 768px) {
-    .blog-post table { overflow-x: auto; }
-  }
-</style>
 
 The [Architecture and Configuration](template-for-coding-agent-best-practices-configuration.html) chapter explains why the operating layer splits into rules, skills, subagents, hooks, and state. This guide installs that layer in an existing project. Every file it references lives in the [template repository](https://github.com/Lyd1aCla1r3/coding-agent-best-practices), which holds one tested drop-in tree per tool, so the steps below show short excerpts and link to the full files. Claude Code paths serve as the running example, and Step 2 maps them to the other six trees.
 

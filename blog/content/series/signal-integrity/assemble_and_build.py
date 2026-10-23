@@ -4,20 +4,24 @@ Two-pass ebook assembly and build pipeline for the Signal Integrity series.
 1. Reads all 21 chapter files and applies transforms.
 2. Writes frontmatter.md (title, copyright, TOC) and body.md (chapters with Part dividers) separately.
 3. Generates frontmatter.pdf (no page numbers) and body.pdf (page numbers starting at 1).
-4. Merges them into signal-integrity-ebook-v2.0.pdf using pypdf.
+4. Merges them into signal-integrity-ebook-v1.0.pdf using pypdf.
 """
 import os
 import re
+import sys
 import subprocess
 import base64
 
-directory = '/Users/lydia/Desktop/personal/career/resumes/portfolio/blog/content/series/signal-integrity'
-scripts_dir = '/Users/lydia/.gemini/config/skills/pdf_generator/scripts'
+directory = os.path.dirname(os.path.abspath(__file__))
+portfolio_root = os.path.abspath(os.path.join(directory, '..', '..', '..', '..'))
+if not os.path.exists(os.path.join(portfolio_root, 'assets', 'images', 'signal_integrity_cover.jpg')):
+    portfolio_root = os.path.abspath(os.path.join(directory, '..', '..', '..'))
+scripts_dir = os.path.expanduser('~/.gemini/config/skills/pdf_generator/scripts')
 frontmatter_file = os.path.join(directory, 'frontmatter.md')
 body_file = os.path.join(directory, 'body.md')
 frontmatter_pdf = os.path.join(directory, 'frontmatter.pdf')
 body_pdf = os.path.join(directory, 'body.pdf')
-final_pdf = '/Users/lydia/Desktop/personal/career/resumes/portfolio/assets/docs/signal-integrity-ebook-v2.0.pdf'
+final_pdf = os.path.join(portfolio_root, 'assets', 'docs', 'signal-integrity-ebook-v1.0.pdf')
 
 # --- Part/Chapter structure ---
 parts = [
@@ -81,12 +85,12 @@ parts = [
 ]
 
 # --- Cover image ---
-cover_image_path = '/Users/lydia/Desktop/personal/career/resumes/portfolio/assets/images/signal_integrity_cover.jpg'
+cover_image_path = os.path.join(portfolio_root, 'assets', 'images', 'signal_integrity_cover.jpg')
 with open(cover_image_path, 'rb') as image_file:
     encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
 
 # --- Part divider images ---
-images_dir = '/Users/lydia/Desktop/personal/career/resumes/portfolio/assets/images'
+images_dir = os.path.join(portfolio_root, 'assets', 'images')
 part_images = {}
 part_image_files = {
     1: 'si_part1_electromagnetic.jpg',
@@ -97,7 +101,11 @@ part_image_files = {
     6: 'si_part6_coherent_optics.jpg',
 }
 for part_id, filename in part_image_files.items():
-    with open(os.path.join(images_dir, filename), 'rb') as f:
+    candidate_path = os.path.join(images_dir, filename)
+    if not os.path.exists(candidate_path):
+        fallback_name = 'coherent_optics_cover.jpg' if part_id == 6 else 'signal_integrity_cover.jpg'
+        candidate_path = os.path.join(images_dir, fallback_name)
+    with open(candidate_path, 'rb') as f:
         part_images[part_id] = base64.b64encode(f.read()).decode('utf-8')
 
 title_page = f"""<style>
@@ -198,7 +206,7 @@ for entry in toc_entries:
         content = f.read()
 
     # Remove download CTA links
-    content = re.sub(r'<p><em>Prefer to read offline\?.*?</em></p>\n*', '', content, flags=re.IGNORECASE)
+    content = re.sub(r'<p><em>Prefer to read(?: this)?(?:\s+seamlessly)? offline\?.*?</em></p>\n*', '', content, flags=re.IGNORECASE)
 
     # Remove SUMMARY comments
     content = re.sub(r'<!--\s*SUMMARY:[\s\S]*?-->\n*', '', content)
@@ -229,10 +237,10 @@ for entry in toc_entries:
 
     # Colon-context sticking (prevent page breaks between intro text and math/code)
     content = re.sub(r'(:)\n+(\s*```)', r'\1\n<div style="page-break-after: avoid;"></div>\n\n\2', content)
-    content = re.sub(r'(:)\n+(\s*\$\$)', r'\1\n<div style="page-break-after: avoid;"></div>\n\n\2', content)
+    content = re.sub(r'(:)\n+(\s*[$]{2})', r'\1\n<div style="page-break-after: avoid;"></div>\n\n\2', content)
 
-    # Inline math + punctuation sticking (prevent line breaks between $math$ and following punctuation)
-    content = re.sub(r'(\$[^$\n]+?\$)([.,;:)\]])', r'<span style="white-space: nowrap">\1\2</span>', content)
+    # Inline math + punctuation sticking (prevent line breaks between inline math and following punctuation)
+    content = re.sub(r'(\x24[^\x24\n]+?\x24)([.,;:)\]])', r'<span style="white-space: nowrap">\1\2</span>', content)
 
     # Diagram orphan prevention
     blocks = content.split('\n\n')
@@ -307,11 +315,15 @@ if result.returncode != 0:
 print("  Done.")
 
 # --- Merge PDFs ---
-print("Merging frontmatter.pdf + body.pdf -> signal-integrity-ebook-v2.0.pdf...")
+print("Merging frontmatter.pdf + body.pdf -> signal-integrity-ebook-v1.0.pdf...")
 from pypdf import PdfWriter
 merger = PdfWriter()
 merger.append(frontmatter_pdf)
 merger.append(body_pdf)
 merger.write(final_pdf)
 merger.close()
+if '--keep-temp' not in sys.argv:
+    for temp_path in (frontmatter_file, body_file, frontmatter_pdf, body_pdf):
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
 print(f"  Done. Final ebook: {final_pdf}")

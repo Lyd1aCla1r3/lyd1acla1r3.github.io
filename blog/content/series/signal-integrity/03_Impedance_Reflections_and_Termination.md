@@ -1,16 +1,16 @@
 # Impedance, Reflections, and Termination
 
-<!-- SUMMARY: A wavefront meeting an impedance change splits into reflected and transmitted waves. This guide derives $Z_0$ reflection coefficients and power fractions from Kirchhoff's laws, and traces edge reflections between a driver and load through series and parallel terminations until reaching the DC divider voltage. -->
+<!-- SUMMARY: A wavefront meeting an impedance change splits into reflected and transmitted waves. Kirchhoff's laws govern the reflection and transmission coefficients, the reflected and transmitted power fractions, and the multi-bounce settling of series- and parallel-terminated links to the steady-state DC divider voltage. -->
 
-<p><em>Prefer to read offline? <a href="../../../assets/docs/signal-integrity-ebook-v2.0.pdf" target="_blank" rel="noopener">Download the complete Signal Integrity (Advanced Edition) ebook.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
 
-[Chapter 2](02_Frequency_Content_of_Digital_Signals.md) derived the spectrum of an edge and showed that every structure a wavefront meets responds to that spectrum one frequency at a time. This chapter treats the first such structure, a change in impedance, and answers two questions: how much of the incident wave reflects, and how do capacitors and inductors, whose opposition to current depends on frequency, respond to each frequency in the edge?
+[Chapter 2](02_Frequency_Content_of_Digital_Signals.md) derived the spectrum of an edge and showed that every structure a wavefront meets responds to that spectrum one frequency at a time. The first such structure is a change in impedance, which raises two fundamental questions: how much of the incident wave reflects, and how do capacitors and inductors, whose opposition to current depends on frequency, respond to each frequency in the edge?
 
 A transmission line carries electromagnetic energy forward as a propagating wave, and the characteristic impedance $Z_0$ sets the ratio of voltage to current within that wave as long as the geometry remains uniform. At a boundary where the impedance changes, the voltage and current on the two sides must still satisfy Kirchhoff's laws, and no single forward wave can satisfy both laws at once. A second wave, traveling backward, appears to make up the difference.
 
 The reflection coefficient $\Gamma$ is the ratio of the reflected voltage to the incident voltage at the boundary. It follows directly from Kirchhoff's voltage and current laws, and it underlies every TDR measurement, every impedance-controlled stackup, every termination resistor, and every via optimization. The symbol $\Gamma$ is reserved for reflection throughout this series, and resistivity receives a separate subscripted symbol so that the two never share one.
 
-This guide derives the impedance of the two reactive elements, derives the reflection and transmission coefficients and the power each carries, and inverts the reflection coefficient to recover impedance. It then follows the reflections between a driver and a load until the line settles into its DC state, compares the two basic termination strategies, and closes with numerical examples and the conditions under which inductance and capacitance cancel each other's reflections.
+The sections below derive the impedance of the two reactive elements, establish the reflection and transmission coefficients and the power each carries, and invert the reflection coefficient to recover impedance. Subsequent sections trace the reflections between a driver and a load until the line settles into its DC state, compare series and parallel termination strategies, and derive the condition under which inductance and capacitance cancel each other's reflections.
 
 ## Core Concepts
 
@@ -72,7 +72,7 @@ Differentiating the rotating point with respect to time brings down the factor $
 
 $$\frac{d}{dt}\mathrm{Re}\left\{\hat{V} e^{j\omega t}\right\} = \mathrm{Re}\left\{j\omega\,\hat{V} e^{j\omega t}\right\}$$
 
-The imaginary unit satisfies $j = e^{j 90^\circ}$, a rotation by a quarter turn. Multiplying a phasor by $j\omega$ therefore scales its amplitude by $\omega$ and advances its phase by 90°, which is exactly the change that the derivative of a sine wave produced in the previous two sections. In phasor form, a time derivative is a multiplication by $j\omega$.
+The imaginary unit satisfies $j = e^{j 90^\circ}$, a rotation by a quarter turn. Multiplying a phasor by $j\omega$ therefore scales its amplitude by $\omega$ and advances its phase by 90°, matching the amplitude and phase change that the derivative of a sine wave produced in the previous two sections. In phasor form, a time derivative is a multiplication by $j\omega$.
 
 Applying this rule to the capacitor equation $i = C\,dv/dt$ gives $\hat{I} = j\omega C\,\hat{V}$, and the impedance is the ratio of voltage phasor to current phasor:
 
@@ -88,12 +88,12 @@ The real part of an impedance is its resistance, and the imaginary part is its r
 
 The two magnitudes scale in opposite directions, because the capacitive reactance falls in inverse proportion to frequency, and the inductive reactance rises in direct proportion to it. Assume a parasitic capacitance of 0.5 pF, a plausible value for a via, and a parasitic inductance of 1 nH:
 
-- The capacitor presents $1/(2\pi \cdot 10^3 \cdot 0.5\times10^{-12}) \approx 318\ \text{M}\Omega$ at 1 kHz, about 318 kΩ at 1 MHz, about 318 Ω at 1 GHz, and about 32 Ω at 10 GHz. Each factor of ten in frequency lowers the magnitude by a factor of ten.
-- The inductor presents $2\pi \cdot 10^9 \cdot 10^{-9} \approx 6.3\ \Omega$ at 1 GHz and about 63 Ω at 10 GHz.
+- **Capacitive reactance scaling:** The 0.5 pF capacitor presents $1/(2\pi \cdot 10^3 \cdot 0.5\times10^{-12}) \approx 318\ \text{M}\Omega$ at 1 kHz, about 318 kΩ at 1 MHz, about 318 Ω at 1 GHz, and about 32 Ω at 10 GHz, dropping by a factor of ten for each decade increase in frequency.
+- **Inductive reactance scaling:** The 1 nH inductor presents $2\pi \cdot 10^9 \cdot 10^{-9} \approx 6.3\ \Omega$ at 1 GHz and about 63 Ω at 10 GHz, rising by a factor of ten for each decade increase in frequency.
 
 At low frequencies the capacitor therefore looks like an open circuit and the inductor like a short circuit, and neither disturbs a 50 Ω line. Near 10 GHz the same two elements have magnitudes comparable to $Z_0$ and change the impedance the wave encounters.
 
-The physical reason follows from the defining equations. A capacitor changes its voltage only by receiving or delivering charge, so a fast transition requires a large current and a slow one requires a small current. At DC the voltage does not change and no current flows. An inductor opposes a change in its current with a voltage proportional to the rate of change (the back EMF derived in Chapter 4), so a rapidly varying current requires a large voltage across the inductor for each ampere and a constant current requires none.
+The physical reason follows from the defining equations. A capacitor changes its voltage only by receiving or delivering charge, so a fast transition requires a large current and a slow one requires a small current. At DC the voltage does not change and no current flows. An inductor opposes a change in its current with a voltage proportional to the rate of change (the back EMF derived in [Chapter 4](04_Inductance_Magnetic_Coupling_and_Crosstalk.md)), so a rapidly varying current requires a large voltage across the inductor for each ampere and a constant current requires none.
 
 ### The RC Half-Power Point
 
@@ -109,19 +109,19 @@ The magnitude of a complex denominator is the square root of the sum of the squa
 
 $$|H| = \frac{1}{\sqrt{1 + (\omega RC)^2}}$$
 
-With the time constant $\tau = RC$ and the definition $f_{3\text{dB}} = 1/(2\pi\tau)$, the product $\omega RC = 2\pi f \tau$ equals $f/f_{3\text{dB}}$, and the magnitude becomes the single-pole expression used in Chapter 2:
+With the time constant $\tau = RC$ and the definition $f_{3\text{dB}} = 1/(2\pi\tau)$, the product $\omega RC = 2\pi f \tau$ equals $f/f_{3\text{dB}}$, and the magnitude becomes the single-pole expression used in [Chapter 2](02_Frequency_Content_of_Digital_Signals.md):
 
 $$|H| = \frac{1}{\sqrt{1 + (f/f_{3\text{dB}})^2}}$$
 
-At $f = f_{3\text{dB}}$ the magnitude is $1/\sqrt{2} \approx 0.707$, which is half of the input power. This is also the frequency at which the capacitive reactance $1/(\omega C)$ equals $R$, because $\omega RC = 1$ there.
+At $f = f_{3\text{dB}}$ the magnitude is $1/\sqrt{2} \approx 0.707$, which is half of the input power. This half-power point is also the frequency at which the capacitive reactance $1/(\omega C)$ equals $R$, because $\omega RC = 1$ there.
 
 ### The Reflection Coefficient: Derivation from Kirchhoff's Laws
 
 An incident wave travels down a transmission line with characteristic impedance $Z_0$ and strikes a boundary where the impedance changes to $Z_L$. At this boundary, the incident wave splits into a reflected wave that travels backward and a transmitted wave that continues forward into $Z_L$. Three waves exist at the boundary:
 
-1. **Incident wave:** carries the voltage $V_{inc}$ and the current $I_{inc}$ toward the boundary.
-2. **Reflected wave:** carries the voltage $V_{ref}$ and the current $I_{ref}$ back toward the source.
-3. **Transmitted wave:** carries the voltage $V_{trans}$ and the current $I_{trans}$ into the load.
+- **Incident wave:** This forward-traveling wave carries voltage $V_{inc}$ and current $I_{inc}$ toward the boundary.
+- **Reflected wave:** This backward-traveling wave carries voltage $V_{ref}$ and current $I_{ref}$ back toward the source.
+- **Transmitted wave:** This continuing wave carries voltage $V_{trans}$ and current $I_{trans}$ into the load.
 
 Two constraints hold at the plane of the boundary.
 
@@ -133,11 +133,11 @@ $$V_{inc} + V_{ref} = V_{trans}$$
 
 $$I_{inc} + I_{ref} = I_{trans}$$
 
-Each wave carries a current set by the impedance of the medium it travels in. Chapter 1 showed that a forward wave on the line has $V/I = Z_0$. Take current as positive when it flows in the direction of the incident wave, toward the load. A wave moving backward carries current in the opposite direction for the same sign of voltage, so the three currents are:
+Each wave carries a current set by the impedance of the medium it travels in. [Chapter 1](01_Wave_Propagation_and_Transmission_Lines.md) showed that a forward wave on the line has $V/I = Z_0$. Take current as positive when it flows in the direction of the incident wave, toward the load. A wave moving backward carries current in the opposite direction for the same sign of voltage, so the three currents are:
 
-- The incident wave carries the current $I_{inc} = V_{inc} / Z_0$.
-- The reflected wave carries the current $I_{ref} = -V_{ref} / Z_0$.
-- The transmitted wave carries the current $I_{trans} = V_{trans} / Z_L$.
+- **Incident wave current:** The forward wave carries current $I_{inc} = V_{inc} / Z_0$.
+- **Reflected wave current:** The backward wave carries current $I_{ref} = -V_{ref} / Z_0$.
+- **Transmitted wave current:** The load wave carries current $I_{trans} = V_{trans} / Z_L$.
 
 The sign of $I_{ref}$ records the direction of travel, because the reflected wave moves backward and the current is a signed quantity that follows the direction of the wave. Substituting these currents into Kirchhoff's current law:
 
@@ -215,13 +215,13 @@ This pair of equations, $\Gamma(Z_L)$ and $Z_L(\Gamma)$, is the working relation
 
 ### Three Canonical Terminations
 
-The reflection coefficient formula produces three boundary cases that define the extremes of termination behavior, summarized here with the transmission coefficient and the power fractions.
+Evaluating the reflection and transmission equations at three limiting load impedances establishes the canonical boundary conditions of a transmission line:
 
-**Matched termination ($Z_L = Z_0$):** The numerator vanishes, so $\Gamma = 0$ and $\tau = 1$. The entire wave enters the load, and the load absorbs all of the incident power. A 50 Ω trace terminated by a 50 Ω resistor produces no reflection.
-
-**Open circuit ($Z_L \to \infty$):** The reflection coefficient approaches $\Gamma = +1$ and the transmission coefficient approaches $\tau = 2$. The reflected voltage has the same polarity as the incident voltage and adds to it, doubling the voltage at the boundary. No current flows into the open circuit, because the reflected current equals the incident current and flows the other way. All of the incident power returns on the reflected wave.
-
-**Short circuit ($Z_L = 0$):** The reflection coefficient equals $\Gamma = -1$ and $\tau = 0$. The reflected voltage has the opposite polarity and cancels the incident voltage, so the boundary voltage is zero. The total current doubles, because the reflected current flows in the same direction as the incident current, and all of the incident power again returns.
+| Termination Case | Load Impedance (`Z_L`) | Coefficients (`Gamma`, `tau`) | Boundary Voltage and Current | Power Distribution |
+|---|---|---|---|---|
+| **Matched load** | `Z_L = Z_0` | `Gamma = 0`, `tau = 1` | Boundary voltage equals `V_inc`; boundary current equals `I_inc`. | `100%` absorbed by load (`P_ref = 0`) |
+| **Open circuit** | `Z_L -> infinity` | `Gamma = +1`, `tau = 2` | Reflected voltage adds in phase to double boundary voltage (`2 * V_inc`); net boundary current is zero. | `100%` reflected back to source |
+| **Short circuit** | `Z_L = 0` | `Gamma = -1`, `tau = 0` | Reflected voltage inverts and cancels boundary voltage (`0 V`); boundary current doubles (`2 * I_inc`). | `100%` reflected back to source |
 
 ### Impedance as a Property of the Medium
 
@@ -293,11 +293,10 @@ The wave solution and the DC solution are the same solution observed at differen
 
 ### Termination Strategies
 
-The ping-pong series ends after at most one reflection when either $\Gamma_S$ or $\Gamma_L$ is zero, because the product $\Gamma_S\Gamma_L$ then vanishes and nothing returns for a second trip. This observation defines the two basic termination strategies.
+The ping-pong series ends after at most one reflection when either $\Gamma_S$ or $\Gamma_L$ is zero, because the product $\Gamma_S\Gamma_L$ then vanishes and nothing returns for a second trip. This observation defines the two primary termination architectures:
 
-**Series (source) termination** adds a resistor $R_T$ at the driver so that $R_S + R_T = Z_0$ and $\Gamma_S = 0$. The launched voltage is $V_S/2$, which reaches an open load and doubles to the full $V_S$. The reflection returns to the source and is absorbed completely, so the line settles after one round trip. No DC current flows with a high-impedance receiver, which makes the method power-efficient. The line voltage between the driver and the load equals only $V_S/2$ until the reflection passes, so every receiver must sit at the far end, and the method suits point-to-point links.
-
-**Parallel (end) termination** places a resistor equal to $Z_0$ from the load end to a reference voltage, so that $\Gamma_L = 0$. The load absorbs the wave and no reflection forms, regardless of the source resistance. The resistor draws a steady current whenever the line is held high, which costs static power. In the 10 Ω example above, a 50 Ω end termination draws $1.2/60 = 20$ mA, dissipating 20 mW in the termination while the line is high, and the steady-state swing is reduced to the divider voltage of 1.0 V. High-speed receivers commonly place this resistor on the die, where it is called on-die termination, to remove the stub that a discrete resistor would add.
+- **Series (source) termination:** A resistor $R_T$ placed in series with the driver sets $R_S + R_T = Z_0$ and $\Gamma_S = 0$. The launched wave has amplitude $V_S/2$, travels to the open-circuit receiver ($\Gamma_L = +1$), and doubles to the full $V_S$ on arrival. The reflected wave returns to the source and is absorbed in a single round trip, drawing zero steady-state DC current with a high-impedance receiver. Points mid-way along the trace sit at $V_S/2$ until the reflection passes, restricting series termination to point-to-point links with a single far-end load.
+- **Parallel (end) termination:** A resistor equal to $Z_0$ connected from the receiver input to a reference voltage sets $\Gamma_L = 0$. The load absorbs the incident wave on first arrival without reflection, regardless of source resistance. Holding the line high draws a continuous DC current through the termination resistor ($1.2\ \text{V} / 60\ \Omega = 20\ \text{mA}$, dissipating 20 mW in the 10 Ω driver example) and reduces the steady-state swing to the divider voltage of 1.0 V. High-speed receivers integrate this resistor on-die as on-die termination (ODT) to eliminate package-pin stubs.
 
 ## Worked Examples
 
@@ -317,11 +316,11 @@ Assume the 1.2 V, 10 Ω driver from the Architecture section drives a 50 Ω line
 
 The voltage at the load at each arrival follows from the series above. The first arrival at time $T$ doubles the wave to 2.0 V. Each later arrival adds twice the incident amplitude, which is multiplied by $\Gamma_S\Gamma_L = -2/3$ per round trip:
 
-- At time $T$ the load voltage is 2.0 V.
-- At time $3T$ the load voltage is $2.0 + 2(1.0)(-2/3) = 0.667$ V.
-- At time $5T$ the load voltage is $0.667 + 2(0.444) = 1.556$ V.
-- At time $7T$ the load voltage is $1.556 + 2(-0.296) = 0.963$ V.
-- At time $9T$ the load voltage is $0.963 + 2(0.198) = 1.358$ V.
+1. **First arrival ($t = T$):** The incident 1.0 V wave doubles at the open receiver to produce a load voltage of 2.0 V.
+2. **Second arrival ($t = 3T$):** The first source reflection arrives and shifts the load voltage to $2.0 + 2(1.0)(-2/3) = 0.667$ V.
+3. **Third arrival ($t = 5T$):** The next bounce raises the load voltage to $0.667 + 2(0.444) = 1.556$ V.
+4. **Fourth arrival ($t = 7T$):** The inverted bounce pulls the load voltage down to $1.556 + 2(-0.296) = 0.963$ V.
+5. **Fifth arrival ($t = 9T$):** The fifth bounce brings the load voltage to $0.963 + 2(0.198) = 1.358$ V.
 
 The sequence oscillates around the final value $V_S R_L/(R_S + R_L) = 1.2$ V, and the departures from 1.2 V shrink by a factor of $2/3$ each round trip: +0.8 V, -0.53 V, +0.36 V, -0.24 V, +0.16 V. The first overshoot reaches 2.0 V, well above the 1.2 V supply, and can exceed the voltage rating of the receiver. The period of this oscillation is the round-trip delay $2T$, which depends only on trace length and velocity. The Gibbs ringing of [Chapter 2](02_Frequency_Content_of_Digital_Signals.md) has a different origin, because its period depends on the bandwidth of the system and not on the length of the line.
 
@@ -359,12 +358,18 @@ $$Z = \sqrt{\frac{L' + \Delta L'}{C' + \Delta C'}} = \sqrt{\frac{L'}{C'}} = Z_0 
 
 The section is slower than the surrounding line, because the product $LC$ increased and the velocity $1/\sqrt{LC}$ fell, but it produces no reflection, and a TDR trace shows a flat impedance profile even though the geometry changed.
 
-A short lumped network of a series inductor and a shunt capacitor imitates a short section of line when $L/C = Z_0^2$. Assume a pad adds 0.5 pF to a 50 Ω line. A neck of narrow trace with $L = Z_0^2 C = 2500 \cdot 0.5\times10^{-12} = 1.25$ nH next to the pad forms a matched section. The imitation holds for edge content well below $1/(\pi\sqrt{LC})$, which is about 12.7 GHz for these values, and the match degrades as the frequency approaches that limit. A discontinuity shorter than the critical length of Chapter 1 behaves as such a lumped element, which is why a via is modeled as a capacitance and an inductance. Engineers exploit this cancellation in connector launches and via designs ([Chapter 6](06_Return_Path_Dynamics_and_Parasitic_Effects.md)).
+A short lumped network of a series inductor and a shunt capacitor imitates a short section of line when $L/C = Z_0^2$. Assume a pad adds 0.5 pF to a 50 Ω line. A neck of narrow trace with $L = Z_0^2 C = 2500 \cdot 0.5\times10^{-12} = 1.25$ nH next to the pad forms a matched section.
+
+The imitation holds for edge content well below $1/(\pi\sqrt{LC})$, which is about 12.7 GHz for these values, and the match degrades as the frequency approaches that limit. A discontinuity shorter than the critical length of [Chapter 1](01_Wave_Propagation_and_Transmission_Lines.md) behaves as such a lumped element, which is why a via is modeled as a capacitance and an inductance. Engineers exploit this cancellation in connector launches and via designs ([Chapter 6](06_Return_Path_Dynamics_and_Parasitic_Effects.md)).
 
 ### Reactive Terminations Reflect All of the Power
 
 A load that is purely reactive, $Z_L = jX$, has no resistance to dissipate power. The magnitudes of the numerator and denominator of the reflection coefficient are equal, because $|jX - Z_0| = |jX + Z_0| = \sqrt{X^2 + Z_0^2}$, so $|\Gamma| = 1$ at every frequency. All of the incident power returns, and only the phase of the reflection changes with frequency. This unit magnitude is why purely reactive loads lie on the outer boundary of the Smith chart in [Chapter 9](09_Smith_Charts.md).
 
-In the time domain, a capacitor $C$ at the end of a line initially holds no charge and acts as a short circuit, so the first reflection has $\Gamma = -1$. The capacitor then charges through the line impedance. An incident step of amplitude $V$ drives the load voltage as $2V$ through an effective source resistance $Z_0$, so $v_L(t) = 2V(1 - e^{-t/(Z_0 C)})$, and the instantaneous reflection coefficient $v_L/V - 1$ moves from $-1$ toward $+1$ with the time constant $Z_0 C$. A 0.5 pF capacitor on a 50 Ω line has $Z_0 C = 25$ ps, so it is a short circuit for edges much faster than 25 ps and an open circuit for edges much slower.
+In the time domain, a capacitor $C$ at the end of a line initially holds no charge and acts as a short circuit, so the first reflection has $\Gamma = -1$. The capacitor then charges through the line impedance.
 
-The inductance that appears in every example of this chapter has so far been a given quantity. The next chapter derives it from the laws of Ampere and Faraday, shows how the magnetic field of one trace induces a voltage in its neighbors, and answers the question of how much energy a neighboring trace receives, which is the problem of crosstalk.
+An incident step of amplitude $V$ drives the load voltage as $2V$ through an effective source resistance $Z_0$, so $v_L(t) = 2V(1 - e^{-t/(Z_0 C)})$, and the instantaneous reflection coefficient $v_L/V - 1$ moves from $-1$ toward $+1$ with the time constant $Z_0 C$. A 0.5 pF capacitor on a 50 Ω line has $Z_0 C = 25$ ps, so it acts as a short circuit for edges much faster than 25 ps and an open circuit for edges much slower.
+
+The inductance that appears in every example of this chapter has so far been a given quantity. [Chapter 4](04_Inductance_Magnetic_Coupling_and_Crosstalk.md) derives it from the laws of Ampere and Faraday, shows how the magnetic field of one trace induces a voltage in its neighbors, and answers the question of how much energy a neighboring trace receives, which is the problem of crosstalk.
+
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>

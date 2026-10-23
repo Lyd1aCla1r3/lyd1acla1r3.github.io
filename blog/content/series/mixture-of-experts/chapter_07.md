@@ -1,16 +1,16 @@
 # Part 7: Fine-Grained Experts and Shared Expert Isolation
 
-<!-- SUMMARY: The elimination of static hardware capacity constraints enables a radical restructuring of the expert layer into a highly granular federation of specialized networks. Isolating a subset of these networks as universal shared experts guarantees the application of foundational linguistic patterns, allowing the remaining routed experts to achieve unprecedented expressive power through combinatorial activation without increasing the computational budget per token. -->
+<!-- SUMMARY: The elimination of static hardware capacity constraints enables a radical restructuring of the expert layer into a fine-grained federation of specialized networks. Isolating a subset of these networks as universal shared experts guarantees the application of foundational linguistic patterns, allowing the remaining routed experts to achieve combinatorial expressive power without increasing the computational budget per token. -->
 
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p>
 
-The transition to dropless computation and block-sparse matrix operations eliminates the physical capacity constraint that historically bottlenecked routing. Small numbers of massive experts were previously necessary to keep hardware utilization stable. With 64 tiny experts, token assignments become highly jagged, and under strict capacity limits, this means massive dropping or padding waste. Block-sparse execution lets the hardware process these variable-length queues efficiently, removing that limitation. This freedom opens the door to hyper-granular expert configurations, shifting the design from coarse domain buckets toward combinatorial expressivity.
+The transition to dropless computation and block-sparse matrix operations eliminates the physical capacity constraint that historically bottlenecked routing. Small numbers of massive experts were previously necessary to keep hardware utilization stable. With 64 tiny experts, token assignments become sharply jagged, and under strict capacity limits, that skew causes massive dropping or padding waste. Block-sparse execution lets the hardware process these variable-length queues efficiently, removing that limitation. This freedom opens the door to hyper-granular expert configurations, shifting the design from coarse domain buckets toward combinatorial expressivity.
 
 ## The Coarse Expert Problem
 
 Early sparse architectures rely on a small total number of experts, typically $E=8$, selecting $k=2$ per token. To maintain a constant parameter count, each of these eight experts must contain a massive weight matrix. The limitation of this coarse configuration emerges during training. The router can only partition the token space into eight macroscopic buckets, forcing each expert to bundle vast, unrelated knowledge domains into the same physical weights.
 
-A single coarse expert simultaneously acts as the repository for Python syntax, historical dates, and geometric reasoning. This artificial bundling dilutes the specialization of the expert. When a token requires geometric reasoning, activating the expert necessarily pulls in the dormant weights dedicated to Python syntax, wasting memory bandwidth and computational capacity on irrelevant parameters. 
+A single coarse expert simultaneously acts as the repository for Python syntax, historical dates, and geometric reasoning. This artificial bundling dilutes the specialization of the expert. Processing a token that requires geometric reasoning forces the activation of dormant weights dedicated to Python syntax, wasting memory bandwidth and computational capacity on irrelevant parameters. 
 
 Fine-grained expert segmentation, introduced in the DeepSeekMoE architecture by Dai and colleagues in 2024, solves this problem by shattering the monolithic experts into a massive federation of smaller networks. Instead of $8$ large experts, the model deploys $64$ smaller experts. To maintain identical active computation per token, the router selects $8$ of these smaller experts rather than $2$ large ones.
 
@@ -38,11 +38,11 @@ $$
 \binom{64}{8} = \frac{64!}{8!(64-8)!} = 4,426,165,368 \text{ combinations}
 $$
 
-Scaling to the ultra-fine granularity of DeepSeek-V3, which selects 8 experts from a pool of 256, yields approximately $4.38 \times 10^{14}$ distinct routing combinations. This combinatorial explosion allows the network to assemble a highly precise, bespoke feed-forward network for every individual token by dynamically composing atomic slivers of specialized knowledge, all without increasing the active computational budget.
+Scaling to the ultra-fine granularity of DeepSeek-V3, which selects 8 experts from a pool of 256, yields approximately $4.38 \times 10^{14}$ distinct routing combinations. This combinatorial explosion allows the network to assemble a tailored, bespoke feed-forward network for every individual token by dynamically composing atomic slivers of specialized knowledge, all without increasing the active computational budget.
 
 ## Shared Expert Isolation
 
-Forcing all FFN parameters to undergo routing introduces a structural inefficiency. Certain linguistic components, such as grammar syntax, punctuation rules, and foundational logic, are universally required by almost every token in a sequence. If all experts are subject to dynamic routing, the network is forced to redundantly encode these universal rules across multiple routed experts to ensure they are available regardless of which specific combination the router selects.
+Forcing all FFN parameters to undergo routing introduces a structural inefficiency. Certain linguistic components, such as grammar syntax, punctuation rules, and foundational logic, are universally required by almost every token in a sequence. Routing every expert dynamically forces the network to redundantly encode these universal rules across multiple routed experts so those rules remain available regardless of which specific combination the router selects.
 
 Shared expert isolation optimizes this redundancy by explicitly partitioning the layer. A small number of experts, designated as $K_s$, are permanently isolated from the router and activated unconditionally for every token. These shared experts act as a universal memory bank for foundational patterns. The remaining experts, designated as $E_r$, act as the routed pool from which $K_r$ experts are dynamically selected. 
 
@@ -52,16 +52,18 @@ $$
 y = x + \sum_{j=1}^{K_s} \text{FFN}_j^{shared}(x) + \sum_{i \in \mathcal{K}} g_i \cdot \text{FFN}_i^{routed}(x)
 $$
 
-This equation defines the exact computation executed for a single token. The original input token vector $x$ passes through the residual connection, ensuring the baseline representation is preserved. The first summation adds the output of all $K_s$ shared experts, applying their universal transformations unconditionally. The second summation calculates the specialized update by iterating exclusively over the subset of selected routed experts, denoted by the index set $\mathcal{K}$. Each active routed expert processes the input vector $x$, and its output is scaled by the corresponding gating weight $g_i$ assigned by the router. This scaling ensures the network dynamically adjusts the influence of each specialized expert based on the routing preference.
+This equation defines the complete computation executed for a single token. The original input token vector $x$ passes through the residual connection, ensuring the baseline representation is preserved. The first summation adds the output of all $K_s$ shared experts, applying their universal transformations unconditionally. The second summation calculates the specialized update by iterating exclusively over the subset of selected routed experts, denoted by the index set $\mathcal{K}$. Each active routed expert processes the input vector $x$, and its output is scaled by the corresponding gating weight $g_i$ assigned by the router. This scaling ensures the network dynamically adjusts the influence of each specialized expert based on the routing preference.
 
 ## The Shared and Routed Forward Pass
 
-In production architectures, fine-grained segmentation is achieved by reducing the intermediate dimension $d_{ff}$ of each expert while proportionally increasing the number of active experts $k$. This structural division guarantees that the total active parameter count remains strictly identical to the coarse configuration, even as the combinatorial pathways explode. To demonstrate the mechanics of shared expert isolation without expanding the toy matrices to unreadable dimensions, the established configuration is partitioned to feature 1 shared expert, where $K_s = 1$, and 4 routed experts, where $E_r = 4$. The router continues to select the top 2 routed experts per token, setting $K_r = 2$, and the intermediate dimension remains $d_{ff} = 4$. The shared expert, the four routed experts, and the gating network are initialized with new, independent weight matrices.
+In production architectures, fine-grained segmentation reduces the intermediate dimension $d_{ff}$ of each expert while proportionally increasing the number of active experts $k$. This structural division keeps the total active parameter count identical to the coarse configuration even as the combinatorial pathways expand.
+
+To demonstrate the mechanics of shared expert isolation without expanding the toy matrices to unreadable dimensions, the established configuration is partitioned into 1 shared expert ($K_s = 1$) and 4 routed experts ($E_r = 4$). The router continues to select the top 2 routed experts per token ($K_r = 2$), and the intermediate dimension remains $d_{ff} = 4$. The shared expert, the four routed experts, and the gating network are initialized with new, independent weight matrices.
 
 ### Step 1: Router Projection and Gating Weights
 
-**Goal:** Determine which specialized experts process each token and assign a proportional scaling weight to the chosen paths.<br>
-**Equation:** $g(x) = \text{Softmax}(\text{TopK}(xW_g))$
+- **Goal:** Determine which specialized experts process each token and assign a proportional scaling weight to the chosen paths.
+- **Equation:** $g(x) = \text{Softmax}(\text{TopK}(xW_g))$
 
 The sequence begins with the standard $4 \times 6$ input matrix $x$ containing the 4 embedded tokens established in the [Transformer series](series-transformers.html). All matrices are formatted to 4 decimal places for precision:
 
@@ -130,8 +132,8 @@ $$
 
 ### Step 2: The Shared Expert Projection
 
-**Goal:** Compute a universal foundational knowledge update applied unconditionally to every token in the sequence.<br>
-**Equation:** $\text{FFN}^{shared}(x) = \text{ReLU}(xW_1^{shared})W_2^{shared}$
+- **Goal:** Compute a universal foundational knowledge update applied unconditionally to every token in the sequence.
+- **Equation:** $\text{FFN}^{shared}(x) = \text{ReLU}(xW_1^{shared})W_2^{shared}$
 
 The shared expert processes all four tokens unconditionally. The input matrix $x$ is first multiplied by the shared expansion matrix $W_1^{shared}$ to produce the pre-activation intermediate state:
 
@@ -188,10 +190,10 @@ $$
 
 ### Step 3: The Routed Expert Projections
 
-**Goal:** Calculate the specialized knowledge updates from the dynamically selected experts and scale them by the router weights.<br>
-**Equation:** $\sum_{i \in \mathcal{K}} g_i \cdot \text{ReLU}(x W_{1}^i) W_{2}^i$
+- **Goal:** Calculate the specialized knowledge updates from the dynamically selected experts and scale them by the router weights.
+- **Equation:** $\sum_{i \in \mathcal{K}} g_i \cdot \text{ReLU}(x W_{1}^i) W_{2}^i$
 
-The routed experts execute precisely as established in Chapter 3. For the first token $x_1$, representing the top row of the input matrix:
+The routed experts execute as established in Chapter 3. For the first token $x_1$, representing the top row of the input matrix:
 
 $$
 x_1 = \begin{bmatrix} 0.0200 &  1.2900 &  0.1800 &  1.3500 &  0.0000 &  0.6700 \end{bmatrix}
@@ -231,7 +233,7 @@ $$
 \text{FFN}_0^{routed}(x_1) = \text{ReLU}(x_1 W_{1}^0) W_{2}^0 = \begin{bmatrix} -0.0213 & -0.0035 &  0.0630 &  0.0902 &  0.0654 &  0.0094 \end{bmatrix}
 $$
 
-Simultaneously, the exact same sequence occurs through the isolated weights of Expert 2:
+Simultaneously, the identical sequence executes through the isolated weights of Expert 2:
 
 $$
 W_{1}^2 = \begin{bmatrix}
@@ -279,7 +281,7 @@ Summing these two scaled vectors forms the combined routed output for the first 
 
 $$
 \sum_{i \in \mathcal{K}} g_i \cdot \text{FFN}_i^{routed}(x) = \begin{bmatrix}
--0.0107 &  0.0394 &  0.0480 &  0.0504 &  0.0948 & -0.0565 \\
+-0.0108 &  0.0394 &  0.0480 &  0.0504 &  0.0948 & -0.0565 \\
 -0.0096 &  0.0386 &  0.0795 &  0.0500 &  0.1232 & -0.0539 \\
  0.0012 & -0.0315 &  0.0275 & -0.0137 &  0.0422 &  0.0260 \\
 -0.0083 & -0.0267 & -0.0126 & -0.0322 &  0.0309 &  0.0292
@@ -288,8 +290,8 @@ $$
 
 ### Step 4: Merging the Forward Pass
 
-**Goal:** Merge the original token representations with the new universal and specialized knowledge updates to prevent representation collapse.<br>
-**Equation:** $y = x + \text{FFN}^{shared}(x) + \sum_{i \in \mathcal{K}} g_i \cdot \text{FFN}_i^{routed}(x)$
+- **Goal:** Merge the original token representations with the new universal and specialized knowledge updates to prevent representation collapse.
+- **Equation:** $y = x + \text{FFN}^{shared}(x) + \sum_{i \in \mathcal{K}} g_i \cdot \text{FFN}_i^{routed}(x)$
 
 The MoE layer concludes by summing the original input vector $x$, the universal shared output, and the specialized routed output. This addition operation merges the foundational linguistic structures with the bespoke, combinatorially selected knowledge fragments. Expanding the specific addition for the first token demonstrates the final residual merge:
 
@@ -301,19 +303,21 @@ $$
 \begin{aligned}
 y_1 &= \begin{bmatrix} 0.0200 &  1.2900 &  0.1800 &  1.3500 &  0.0000 &  0.6700 \end{bmatrix} \\
 &+ \begin{bmatrix} 0.0070 & -0.0128 &  0.0198 &  0.0295 & -0.0271 &  0.0103 \end{bmatrix} \\
-&+ \begin{bmatrix} -0.0107 &  0.0394 &  0.0480 &  0.0504 &  0.0948 & -0.0565 \end{bmatrix}
+&+ \begin{bmatrix} -0.0108 &  0.0394 &  0.0480 &  0.0504 &  0.0948 & -0.0565 \end{bmatrix}
 \end{aligned}
 $$
 
 $$
 y_{final} = \begin{bmatrix}
- 0.0163 &  1.3166 &  0.2478 &  1.4299 &  0.0677 &  0.6238 \\
- 0.7531 &  1.7717 &  0.5542 &  1.6198 &  0.2918 &  1.1757 \\
- 0.8745 & -0.3299 &  1.8086 &  1.0061 &  0.1445 &  0.9468 \\
- 0.1761 & -1.0499 &  1.5487 &  1.1888 &  0.6144 &  0.7272
+ 0.0162 &  1.3166 &  0.2478 &  1.4299 &  0.0677 &  0.6238 \\
+ 0.7532 &  1.7716 &  0.5542 &  1.6198 &  0.2919 &  1.1757 \\
+ 0.8746 & -0.3300 &  1.8086 &  1.0061 &  0.1444 &  0.9468 \\
+ 0.1760 & -1.0500 &  1.5487 &  1.1888 &  0.6143 &  0.7272
 \end{bmatrix}
 $$
 
-The shared and routed components are now successfully merged back into the central residual stream, producing a mathematically complete forward pass that maximizes parameter expressivity. The shared expert bypasses the router, meaning load balancing applies exclusively to the routed experts. However, to train this highly fragmented architecture effectively, the standard auxiliary loss must be abandoned entirely. When attempting to balance hundreds of fine-grained routed experts, the traditional auxiliary loss severely distorts the routing gradients. The optimizer is forced to route tokens sub-optimally simply to satisfy the aggressive load balancing penalty, actively degrading the primary language modeling performance. DeepSeek-V3 resolves this conflict in favor of auxiliary-loss-free dynamic bias updates that operate entirely outside the bounds of backpropagation, a mechanism examined next.
+The shared and routed components are now merged back into the central residual stream, producing a complete forward pass that maximizes parameter expressivity. The shared expert bypasses the router, meaning load balancing applies exclusively to the routed experts.
 
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p>
+Training this finely segmented architecture effectively requires abandoning the standard auxiliary loss. Balancing hundreds of fine-grained routed experts through the traditional auxiliary loss distorts the routing gradients. The optimizer is forced to route tokens sub-optimally solely to satisfy the aggressive load-balancing penalty, degrading primary language modeling performance. DeepSeek-V3 resolves this conflict through auxiliary-loss-free dynamic bias updates that operate outside backpropagation, a mechanism examined next.
+
+<p><em>Prefer to read this offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p>

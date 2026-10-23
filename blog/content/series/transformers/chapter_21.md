@@ -1,56 +1,59 @@
 # Part 21: Backpropagating Through the Unembedding and Residual Stream
 
-<!-- SUMMARY: The backward pass initiates by routing the error signal from the vocabulary logits through the unembedding matrix and into the final residual stream. Applying the chain rule demonstrates how the gradient symmetrically branches through the multi-layer perceptron to update intermediate weights. -->
+<!-- SUMMARY: The backward pass initiates by routing the error signal from the vocabulary logits through the unembedding matrix and into the final residual stream. Applying the chain rule demonstrates how the gradient branches undisturbed across residual additions and projects through the multi-layer perceptron to update intermediate weights. -->
 
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>
 
-The previous installment discovered the elegant simplicity of the cross-entropy loss derivative. The gradient of the loss with respect to the raw, pre-softmax logits simplifies entirely to the predicted probability distribution minus the one-hot encoded target vector. This single matrix, measuring how wrong the predictions were across the sequence, serves as the physical error signal that must now be routed backward through the network to update its weights.
+Part 20 derived the cross-entropy loss gradient with respect to the pre-Softmax logits, reducing the output error signal to the $4 \times 12$ matrix $P - Y$. That matrix quantifies the directional error across all four sequence positions and twelve vocabulary candidates. Backpropagation now routes this gradient backward through the unembedding projection $W_U$, down the central residual stream, and into the Layer 2 Multi-Layer Perceptron (MLP).
 
-The network is now ready to execute the chain rule. The process begins at the very end of the architecture, pushing the error signal backward through the unembedding matrix, down into the final residual stream, and ultimately into the Layer 2 multi-layer perceptron. 
+| Backward Stage | Weight Gradient | Weight Shape | Input Gradient | Input Shape |
+| :--- | :--- | :--- | :--- | :--- |
+| **Unembedding (`W_U`)** | `X_L2^T * dZ` | `6 x 12` | `dZ * W_U^T` | `4 x 6` |
+| **Residual Add** | `None` | `N/A` | `dX_L2` (both branches) | `4 x 6` |
+| **MLP Output (`W_2`)** | `H^T * dX_L2` | `24 x 6` | `dX_L2 * W_2^T` | `4 x 24` |
 
 ## The Chain Rule at the Unembedding Layer
 
-The unembedding layer is the final linear transformation in the Transformer. During the forward pass, this step multiplied the final contextualized vectors of the sequence by the unembedding weight matrix $W_U$ to produce the vocabulary-sized logits.
-
-Mathematically, the forward pass for this step is defined as:
+The unembedding layer is the final linear projection in the Transformer. During the forward pass (Part 17), this layer multiplied the Layer 2 output matrix $\text{Output}_{\text{Layer2}}$ ($4 \times 6$) by the unembedding weight matrix $W_U$ ($6 \times 12$) to produce the vocabulary logits:
 
 $$
 \text{Logits} = \text{Output}_{\text{Layer2}} \times W_U
 $$
 
-Here, $\text{Output}_{\text{Layer2}}$ has a shape of 4 by 6, representing the sequence length by the model dimension. The weight matrix $W_U$ has a shape of 6 by 12, representing the model dimension by the vocabulary size. The resulting logits have a shape of 4 by 12.
+Given the incoming logit gradient $\frac{\partial L}{\partial \text{Logits}}$ of shape $4 \times 12$, backpropagation through a linear multiplication $Z = A B$ computes two distinct derivatives:
 
-The system possesses the gradient of the loss with respect to these logits, denoted as $\partial L / \partial \text{Logits}$. To update the network, two new gradients are required. First, the gradient with respect to the weights $W_U$ is needed so the optimizer can adjust them. Second, the gradient with respect to the input $\text{Output}_{\text{Layer2}}$ is necessary to continue passing the error backward.
+1. **Weight Gradient ($\frac{\partial L}{\partial W_U}$):** Measures how each parameter in $W_U$ contributed to the logit error so the optimizer can update the unembedding weights.
+2. **Input Activation Gradient ($\frac{\partial L}{\partial \text{Output}_{\text{Layer2}}}$):** Projects the error signal back into the $d_{\text{model}} = 6$ subspace so preceding layers can be updated.
 
 ### Updating the Unembedding Weights
 
-The gradient of the loss with respect to the unembedding weights requires multiplying the transposed input by the incoming error signal. 
+Computing the gradient of the loss with respect to the unembedding weights multiplies the transposed layer input by the incoming logit gradient:
 
 $$
 \frac{\partial L}{\partial W_U} = \text{Output}_{\text{Layer2}}^T \times \frac{\partial L}{\partial \text{Logits}}
 $$
 
-To visualize this geometrically, mapping the dimensions proves highly effective. Transposing the 4 by 6 input transforms it into a 6 by 4 matrix. Multiplying this by the 4 by 12 error signal yields a gradient matrix that perfectly matches the 6 by 12 shape of the original $W_U$ matrix. Each element in this new matrix calculates exactly how to nudge a specific weight in $W_U$ to decrease the overall loss.
+Tracking the matrix dimensions confirms the geometric alignment. Transposing the $4 \times 6$ input matrix $\text{Output}_{\text{Layer2}}$ produces a $6 \times 4$ matrix. Multiplying that $6 \times 4$ transpose by the $4 \times 12$ logit gradient contracts across the sequence dimension ($S = 4$) and yields a $6 \times 12$ gradient matrix matching the shape of $W_U$. Each entry accumulates the error contribution of a specific model-dimension feature to a specific vocabulary token across all four sequence positions.
 
 ### Passing the Error Backward
 
-Updating the final weights is only half the task. The architecture must also pull the error signal backward to the preceding layers. To find the gradient with respect to the input $\text{Output}_{\text{Layer2}}$, the incoming error signal is multiplied by the transposed weight matrix.
+Propagating the error signal to the preceding layer requires differentiating the loss with respect to $\text{Output}_{\text{Layer2}}$. That derivative multiplies the incoming logit gradient by the transpose of the unembedding weight matrix:
 
 $$
 \frac{\partial L}{\partial \text{Output}_{\text{Layer2}}} = \frac{\partial L}{\partial \text{Logits}} \times W_U^T
 $$
 
-The dimensions align perfectly once more. Multiplying the 4 by 12 error signal by the 12 by 6 transposed weight matrix yields a 4 by 6 matrix. This new matrix represents the error signal scaled and rotated back into the $d_{model}$ dimensionality of the residual stream.
+Multiplying the $4 \times 12$ logit gradient by the $12 \times 6$ transposed matrix $W_U^T$ contracts across the vocabulary dimension ($V = 12$) and produces a $4 \times 6$ matrix. This operation projects the vocabulary-space error back into the $d_{\text{model}} = 6$ coordinate space of the residual stream.
 
 ## Splitting the Signal: The Residual Connection
 
-The network has successfully routed the error signal back into the $d_{model}$ dimensional space at the very end of Layer 2. During the forward pass, this final state was constructed by adding the output of the Layer 2 multi-layer perceptron to the pre-existing residual stream.
+The $4 \times 6$ gradient $\frac{\partial L}{\partial \text{Output}_{\text{Layer2}}}$ now arrives at the output boundary of Layer 2. During the forward pass (Part 16), this state was formed by adding the Layer 2 MLP output to the intermediate residual stream:
 
 $$
 \text{Output}_{\text{Layer2}} = \text{Residual}_{\text{Pre-MLP}} + \text{MLP}_{\text{Output}}
 $$
 
-In vector calculus, the derivative of a sum is simply the sum of the individual derivatives. When executing backpropagation through an addition operation, the incoming gradient is distributed equally and unchanged to both branches. 
+In multivariable calculus, the derivative of a sum equals the sum of the derivatives, so each additive term has a local partial derivative equal to the identity matrix $I$. Backpropagating through an element-wise addition distributes the upstream gradient equally and without modification to both incoming branches:
 
 ```mermaid
 graph TD
@@ -60,34 +63,32 @@ graph TD
     Out --> MLP(Layer 2 MLP Output)
 ```
 
-This means the 4 by 6 error signal just calculated copies itself. One copy travels directly down the central residual stream, preserving the unmodified error signal for earlier layers. The second copy flows directly into the output of the multi-layer perceptron.
+The $4 \times 6$ gradient matrix bifurcates into two identical copies. One copy continues directly down the main residual highway toward the attention sub-layer and Layer 1, while the second copy enters the output of the Layer 2 MLP.
 
 ## Entering the Multi-Layer Perceptron
 
-The final operation inside the Layer 2 multi-layer perceptron during the forward pass was a linear projection. The internal activations of the layer were multiplied by the second weight matrix, $W_2$, to project the data from the expanded $d_{ff}$ dimension back down to the $d_{model}$ dimension.
+Inside the Layer 2 MLP, the final forward-pass operation contracted the 24-dimensional hidden activations back to the 6-dimensional model space via the second weight matrix $W_2$ ($24 \times 6$):
 
 $$
 \text{MLP}_{\text{Output}} = \text{Activations} \times W_2
 $$
 
-Since the error signal flowing into this layer is exactly the error signal from the residual stream, the network can apply the exact same linear algebra rules used for the unembedding layer to continue the backward pass.
+The residual connection delivers $\frac{\partial L}{\partial \text{Output}_{\text{Layer2}}}$ directly to $\text{MLP}_{\text{Output}}$, so the same matrix-calculus transpose rules govern the backward pass through $W_2$.
 
-To find the gradient for the $W_2$ weights, the incoming activations are transposed and multiplied by the error signal:
+Computing the weight gradient for $W_2$ multiplies the transposed hidden activations by the incoming $4 \times 6$ error signal:
 
 $$
 \frac{\partial L}{\partial W_2} = \text{Activations}^T \times \frac{\partial L}{\partial \text{Output}_{\text{Layer2}}}
 $$
 
-The internal activations were expanded to $d_{ff} = 24$. Transposing the 4 by 24 activations yields a 24 by 4 matrix. Multiplying this by the 4 by 6 error signal produces a 24 by 6 gradient matrix, perfectly matching the dimensions of $W_2$. 
+Transposing the $4 \times 24$ activation matrix yields a $24 \times 4$ matrix. Multiplying by the $4 \times 6$ residual gradient produces a $24 \times 6$ weight gradient matching the dimensions of $W_2$. (When a bias vector $b_2$ is included, its $1 \times 6$ gradient is the column-wise sum of $\frac{\partial L}{\partial \text{Output}_{\text{Layer2}}}$ across the four sequence rows.)
 
-To continue pulling the error backward through the activation function and into the first half of the layer, the error signal is multiplied by the transposed $W_2$ matrix:
+Propagating the error signal backward toward the ReLU gate and the first MLP projection $W_1$ multiplies the $4 \times 6$ residual gradient by the transposed weight matrix $W_2^T$ ($6 \times 24$):
 
 $$
 \frac{\partial L}{\partial \text{Activations}} = \frac{\partial L}{\partial \text{Output}_{\text{Layer2}}} \times W_2^T
 $$
 
-This operation takes the 4 by 6 error signal, multiplies it by the 6 by 24 transposed weight matrix, and produces a 4 by 24 error signal ready to be passed backward through the non-linear activation function.
+This multiplication expands the $4 \times 6$ error signal into a $4 \times 24$ gradient tensor aligned with the hidden neurons of the feed-forward layer. Passing through the ReLU derivative masks out coordinates whose forward pre-activations were negative, and multiplying by $W_1^T$ returns the MLP branch gradient to the residual stream. The next installment traces how the combined residual gradient navigates the Softmax Jacobian and causal mask of the self-attention mechanism.
 
-By strictly following the rules of matrix multiplication and addition, the error signal has successfully navigated from the vocabulary-level predictions deep into the internal mechanisms of Layer 2. The next analysis will tackle the rigorous calculus of routing these gradients through the softmax function and the causal mask of the attention mechanism.
-
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>

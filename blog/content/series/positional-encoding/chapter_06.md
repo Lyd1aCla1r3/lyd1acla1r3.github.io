@@ -8,7 +8,7 @@ The preceding chapter derived the $3 \times 3$ rotation matrix for the toy model
 
 ## Computing the Rotation Matrices
 
-Each position $t \in \{0, 1, 2, 3\}$ has a specific $3 \times 3$ rotation matrix. Because the rotation angle is exactly $t$, the nine matrix entries are derived directly from $\cos(t)$ and $\sin(t)$.
+Each position $t \in \{0, 1, 2, 3\}$ has a specific $3 \times 3$ rotation matrix. The unit angular frequency $\theta_0 = 1$ sets the rotation angle to $t$ radians, so the nine matrix entries derive directly from $\cos(t)$ and $\sin(t)$.
 
 ### Position $t = 0$ (rotation by $0$ radians)
 
@@ -44,7 +44,7 @@ $$
 R_2 = \begin{bmatrix} -0.4161 & -0.9093 & 0 \\ \phantom{-}0.9093 & -0.4161 & 0 \\ 0 & 0 & 1 \end{bmatrix}
 $$
 
-At $2$ radians, the cosine has crossed zero and turned negative. The $90^\circ$ boundary ($\pi/2 \approx 1.57$ radians) dictates the sign of a dot product. If the angle between two vectors is less than $90^\circ$, their dot product is positive; if it exceeds $90^\circ$, the dot product is negative. Because $2 > 1.57$, the vector has rotated past this orthogonal boundary into the second quadrant. It now points away from its original orientation. The negative diagonal entries reflect this quadrant shift.
+At $2$ radians, the cosine has crossed zero and turned negative. The $90^\circ$ boundary ($\pi/2 \approx 1.57$ radians) dictates the sign of a dot product. Angles below $90^\circ$ yield a positive dot product; angles above $90^\circ$ yield a negative dot product. An angle of $2$ radians exceeds $1.57$, rotating the vector past this orthogonal boundary into the second quadrant so that it points away from its original orientation. The negative diagonal entries reflect this quadrant shift.
 
 ### Position $t = 3$ (rotation by $3$ radians)
 
@@ -56,18 +56,18 @@ $$
 R_3 = \begin{bmatrix} -0.9900 & -0.1411 & 0 \\ \phantom{-}0.1411 & -0.9900 & 0 \\ 0 & 0 & 1 \end{bmatrix}
 $$
 
-At 3 radians ($\approx 171.9°$), the rotation is nearly a full half-turn. The cosine is close to $-1$, meaning dimension 0 is nearly inverted, and the sine is small and positive, meaning dimension 1 contributes only a small correction. The rotation matrix is close to $\text{diag}(-1, -1, 1)$, which would be an exact $180°$ rotation at $t = \pi$.
+At 3 radians ($\approx 171.9°$), the rotation is nearly a full half-turn. The cosine is close to $-1$, meaning dimension 0 is nearly inverted, and the sine is small and positive, meaning dimension 1 contributes only a small correction. The rotation matrix approaches $\text{diag}(-1, -1, 1)$, which corresponds to a full $180^\circ$ half-turn at $t = \pi$.
 
 ### Summary of Rotation Matrices
 
-| Position $t$ | Angle (radians) | $\cos(t)$ | $\sin(t)$ |
+| Position `t` | Angle (radians) | `cos(t)` | `sin(t)` |
 |---|---|---|---|
-| $0$ | $0.0000$ | $\phantom{-}1.0000$ | $0.0000$ |
-| $1$ | $1.0000$ | $\phantom{-}0.5403$ | $0.8415$ |
-| $2$ | $2.0000$ | $-0.4161$ | $0.9093$ |
-| $3$ | $3.0000$ | $-0.9900$ | $0.1411$ |
+| `0` | `0.0000` | `1.0000` | `0.0000` |
+| `1` | `1.0000` | `0.5403` | `0.8415` |
+| `2` | `2.0000` | `-0.4161` | `0.9093` |
+| `3` | `3.0000` | `-0.9900` | `0.1411` |
 
-Every derived rotation matrix $R_t$ is strictly orthogonal. This is an emergent structural property of the rotation matrix itself, rooted directly in the Pythagorean trigonometric identity $\cos^2(\alpha) + \sin^2(\alpha) = 1$.
+Every derived rotation matrix $R_t$ is strictly orthogonal, an emergent structural property of the rotation matrix rooted directly in the Pythagorean trigonometric identity $\cos^2(\alpha) + \sin^2(\alpha) = 1$.
 
 Multiplying a $2 \times 2$ rotation block $R$ by its transpose $R^\top$ explicitly demonstrates this property:
 
@@ -101,7 +101,7 @@ $$
 = \mathbf{v}^\top I \mathbf{v} = \mathbf{v}^\top \mathbf{v} = \|\mathbf{v}\|^2
 $$
 
-Because the squared norms are equal, the magnitudes are strictly identical ($\|R_t \mathbf{v}\| = \|\mathbf{v}\|$).
+Equal squared norms guarantee identical Euclidean magnitudes ($\|R_t \mathbf{v}\| = \|\mathbf{v}\|$).
 
 This geometric preservation of magnitude provides a major structural advantage for RoPE over absolute additive encoding (like the sinusoidal encoding from Chapter 2). Additive encoding alters the original vector's length by directly adding a positional vector to it. RoPE only changes the vector's orientation, leaving its semantic magnitude completely intact.
 
@@ -138,18 +138,14 @@ $$
 
 ### Rotated Query Vectors Summary
 
-<div style="font-size: 0.9em; overflow-x: auto;">
-
-| Position | Token | $\mathbf{q}_t$ (before RoPE) | $\mathbf{q}'_t$ (after RoPE) |
+| Position | Token | `q_t` (Before RoPE) | `q'_t` (After RoPE) |
 |---|---|---|---|
-| $0$ | `The` | $[-0.0800, -0.1300, \phantom{-}0.2100\;]$ | $[-0.0800, -0.1300, \phantom{-}0.2100\;]$ |
-| $1$ | `quick` | $[\phantom{-}0.3500, -0.1700, -0.2700\;]$ | $[\phantom{-}0.3322, \phantom{-}0.2027, -0.2700\;]$ |
-| $2$ | `brown` | $[-0.0900, \phantom{-}0.4700, -0.0700\;]$ | $[-0.3899, -0.2774, -0.0700\;]$ |
-| $3$ | `fox` | $[-0.0100, -0.0800, \phantom{-}0.1500\;]$ | $[\phantom{-}0.0212, \phantom{-}0.0778, \phantom{-}0.1500\;]$ |
+| `0` | `The` | `[-0.0800, -0.1300, 0.2100]` | `[-0.0800, -0.1300, 0.2100]` |
+| `1` | `quick` | `[0.3500, -0.1700, -0.2700]` | `[0.3322, 0.2027, -0.2700]` |
+| `2` | `brown` | `[-0.0900, 0.4700, -0.0700]` | `[-0.3899, -0.2774, -0.0700]` |
+| `3` | `fox` | `[-0.0100, -0.0800, 0.1500]` | `[0.0212, 0.0778, 0.1500]` |
 
 The third component of every vector is unchanged (the identity block for the unpaired dimension). The first two components are rotated by increasing angles: 0, 1, 2, 3 radians. At position 0, no rotation occurs. At position 2, the rotation of $2$ radians has reversed the sign of $q'_2[1]$ (from $0.47$ to $-0.2774$) and driven $q'_2[0]$ more negative (from $-0.09$ to $-0.3899$). These are not additive modifications; the vector has been geometrically reoriented in the 2D plane formed by dimensions 0 and 1.
-
-</div>
 
 ## Applying RoPE to the Key Vectors
 
@@ -181,30 +177,23 @@ $$
 
 ### Rotated Key Vectors Summary
 
-<div style="font-size: 0.9em; overflow-x: auto;">
-
-| Position | Token | $\mathbf{k}_t$ (before RoPE) | $\mathbf{k}'_t$ (after RoPE) |
+| Position | Token | `k_t` (Before RoPE) | `k'_t` (After RoPE) |
 |---|---|---|---|
-| $0$ | `The` | $[-0.1500, \phantom{-}0.1000, -0.0400\;]$ | $[-0.1500, \phantom{-}0.1000, -0.0400\;]$ |
-| $1$ | `quick` | $[\phantom{-}0.2400, \phantom{-}0.1100, -0.3200\;]$ | $[\phantom{-}0.0371, \phantom{-}0.2614, -0.3200\;]$ |
-| $2$ | `brown` | $[\phantom{-}0.1600, -0.1700, \phantom{-}0.3600\;]$ | $[\phantom{-}0.0880, \phantom{-}0.2162, \phantom{-}0.3600\;]$ |
-| $3$ | `fox` | $[-0.0600, \phantom{-}0.1100, -0.0500\;]$ | $[\phantom{-}0.0439, -0.1174, -0.0500\;]$ |
-
-</div>
+| `0` | `The` | `[-0.1500, 0.1000, -0.0400]` | `[-0.1500, 0.1000, -0.0400]` |
+| `1` | `quick` | `[0.2400, 0.1100, -0.3200]` | `[0.0371, 0.2614, -0.3200]` |
+| `2` | `brown` | `[0.1600, -0.1700, 0.3600]` | `[0.0880, 0.2162, 0.3600]` |
+| `3` | `fox` | `[-0.0600, 0.1100, -0.0500]` | `[0.0439, -0.1174, -0.0500]` |
 
 ## What Has Been Accomplished
 
-The RoPE operation has injected positional information into every query and key vector through geometric rotation, without adding any vector to the embeddings. The key structural properties of this encoding:
+The RoPE operation has injected positional information into every query and key vector through geometric rotation, without adding any vector to the embeddings. Four structural properties characterize this encoding:
 
-**Nothing is added.** Unlike sinusoidal PE (Chapter 3), RoPE does not add a positional vector to the embedding. The embedding tensor $X$ is untouched. The positional signal exists only in the rotated orientation of the query and key vectors, not in their magnitudes.
+- **Zero Additive Distortion:** Leaves the input embedding tensor $X$ untouched rather than superimposing a positional vector onto the semantic coordinates as in sinusoidal PE (Chapter 3).
+- **Euclidean Norm Preservation:** Guarantees $\|\mathbf{q}'_t\| = \|\mathbf{q}_t\|$ and $\|\mathbf{k}'_t\| = \|\mathbf{k}_t\|$ through the orthogonality of $R_t$, altering only the planar direction in dimensions 0 and 1 while preserving vector magnitude.
+- **Position-Proportional Orientation:** Rotates each position by a linearly increasing angle ($0, 1, 2, 3$ radians), assigning a distinct geometric orientation to every sequence index relative to the reference orientation at position 0.
+- **Unpaired-Dimension Passthrough:** Maps dimension 2 through the $1 \times 1$ identity block across all positions in the odd-dimensional toy model ($d_{model} = 3$), whereas production models use even $d_{model}$ so that every dimension pair participates in rotation.
 
-**Norms are preserved.** Because $R_t$ is an orthogonal matrix, $\|\mathbf{q}'_t\| = \|\mathbf{q}_t\|$ and $\|\mathbf{k}'_t\| = \|\mathbf{k}_t\|$. The semantic magnitude of each vector is unaltered; only its direction in the 2D subspace formed by dimensions 0 and 1 has changed.
-
-**Each position receives a distinct rotation.** Position 0 is the reference orientation (no rotation). Position 1 is rotated by 1 radian. Position 2 by 2 radians. Position 3 by 3 radians. The rotation angle increases linearly with position, producing a unique geometric orientation for each position index.
-
-**The unpaired dimension carries no positional signal.** Dimension 2 passes through the identity for all positions. In the toy model with $d_{model} = 3$, two out of three dimensions carry positional information. In production models with even $d_{model}$, all dimensions are paired and all carry positional signal.
-
-The rotated query and key vectors are now ready to be consumed directly by the Transformer's attention mechanism. It is critical to understand that the Transformer never "decodes" these rotated vectors back into their original absolute positions. Instead, the positional information is structurally baked into the vectors, and the attention mechanism computes the dot product ($(\mathbf{q}'_m)^\top \mathbf{k}'_n$) between them. Because the Value vectors ($V$) are not rotated by RoPE, the positional information influences *only* the attention scores (which tokens pay attention to which), not the semantic content that is ultimately extracted.
+The rotated query and key vectors are now ready to be consumed directly by the Transformer's attention mechanism. The Transformer never decodes these rotated vectors back into their original absolute positions. Positional information is structurally embedded into the vector orientations, and the attention mechanism consumes that geometry directly through the dot product $(\mathbf{q}'_m)^\top \mathbf{k}'_n$. Value vectors ($V$) are not rotated by RoPE, so the positional rotation influences *only* the attention scores (which tokens attend to which), not the semantic content aggregated from the values.
 
 The next chapter proves the central geometric property of RoPE: how the dot product of two rotated vectors $(\mathbf{q}'_m)^\top \mathbf{k}'_n$ mathematically collapses to depend exclusively on their relative distance ($m - n$), satisfying the relative positional requirement established in Chapter 4.
 

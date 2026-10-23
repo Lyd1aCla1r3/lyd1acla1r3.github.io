@@ -164,19 +164,19 @@
                           <a href="signal-integrity-16_SerDes_Architecture_and_Eye_Diagrams.html">
                               <article class="blog-item series-item">
                                   <h2>SerDes Architecture and Eye Diagrams</h2>
-                                  <p>A SerDes link confines high-speed analog processing to a compact front end. This guide traces the receiver signal path, derives differential common-mode rejection, compares analog versus converter-based architectures, and explains how real-time oscilloscopes and BERTs construct measurement eye diagrams.</p>
+                                  <p>A SerDes link confines multi-gigahertz analog processing to a compact physical medium attachment (PMA) front end before deserializing data to parallel logic clocks. Tracing the receiver signal path establishes differential common-mode rejection, contrasts analog slicer front ends against ADC-based digital signal processing (DSP) receivers, and connects real-time oscilloscope, sampling oscilloscope, and BERT eye diagrams.</p>
                               </article>
                           </a>
                           <a href="signal-integrity-17_CDR_and_PLL_Loop_Dynamics.html">
                               <article class="blog-item series-item">
                                   <h2>CDR and PLL Loop Dynamics</h2>
-                                  <p>Serial links embed the sampling clock directly in the data. This guide models the phase-locked loop (PLL) that recovers this clock, deriving the jitter transfer and error functions to reconcile low-pass tracking with high-pass jitter tolerance across early/late and baud-rate phase detectors.</p>
+                                  <p>Serial links embed the sampling clock directly in the data stream. Phase-locked loop (PLL) dynamics govern how clock and data recovery (CDR) circuits extract this timing reference, linking the jitter transfer and error transfer functions to low-pass tracking and high-pass jitter tolerance across early/late and baud-rate phase detectors.</p>
                               </article>
                           </a>
                           <a href="signal-integrity-18_Line_Coding_FEC_and_Protocol_Framing.html">
                               <article class="blog-item series-item">
                                   <h2>Line Coding, FEC, and Protocol Framing</h2>
-                                  <p>Recovered bits require structural processing to become data. This guide explores line coding to bound run lengths, explains self-synchronous scramblers, and derives Reed-Solomon error correction capabilities like $n - k + 1$ and $t = (n - k)/2$ before detailing protocol framing and alignment.</p>
+                                  <p>Recovered slicer decisions require structural processing before becoming usable payload data. Line coding and self-synchronous scramblers bound run lengths and running disparity, cyclic redundancy checks detect frame errors, and Reed-Solomon forward error correction repairs symbol error bursts prior to word and lane alignment.</p>
                               </article>
                           </a>
                       </div>

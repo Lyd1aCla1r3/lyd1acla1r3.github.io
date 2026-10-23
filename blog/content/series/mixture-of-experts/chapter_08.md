@@ -1,16 +1,16 @@
-# Part 8: The Frontier
+# Part 8: The Frontier: Auxiliary-Loss-Free Routing
 
 <!-- SUMMARY: The traditional auxiliary loss forces a direct trade-off between routing quality and load balance, degrading language modeling performance as expert counts increase. DeepSeek-V3 eliminates this conflict by introducing a dynamic bias mechanism that operates entirely outside of gradient computation, achieving hardware-balanced routing without distorting the mathematical integrity of the learned expert affinities. -->
 
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p>
 
-The fine-grained shared and routed configuration massively expands the number of distinct expert combinations available to each token without increasing the active compute cost. Training this highly fragmented architecture effectively, however, exposes a conflict buried inside the load balancing mechanism itself.
+The fine-grained shared and routed configuration massively expands the number of distinct expert combinations available to each token without increasing the active compute cost. Training this finely segmented architecture effectively, however, exposes a conflict buried inside the load balancing mechanism itself.
 
 ## The Auxiliary Loss Trade-Off
 
 The auxiliary loss introduced in Chapter 5 adds a differentiable penalty to the primary language modeling objective, pulling the routing logits of under-utilized experts upward and pushing the logits of overloaded experts downward. With a small number of coarse experts, this gradient-based correction is gentle enough to balance the load without materially harming the router's ability to select the mathematically best experts for each token.
 
-When scaling to hundreds of fine-grained experts, this correction becomes destructive. The optimizer is forced to route tokens to sub-optimal experts simply to satisfy the balancing penalty, actively degrading the quality of the language model's predictions. A stronger penalty weight $\alpha$ produces better load balance at the cost of worse predictions. A weaker $\alpha$ produces better predictions at the cost of expert collapse. There is no value of $\alpha$ that simultaneously optimizes both objectives. Improving one metric requires strictly degrading the other.
+Scaling to hundreds of fine-grained experts makes this correction destructive. The optimizer is forced to route tokens to sub-optimal experts solely to satisfy the balancing penalty, degrading the quality of the language model's predictions. A stronger penalty weight $\alpha$ produces better load balance at the cost of worse predictions. A weaker $\alpha$ produces better predictions at the cost of expert collapse. There is no value of $\alpha$ that simultaneously optimizes both objectives. Improving one metric requires strictly degrading the other.
 
 The solution is to remove the load balancing penalty from the gradient computation entirely. Instead of a differentiable loss term, the correction takes the form of a simple arithmetic bias that the optimizer never sees. This preserves the integrity of the language modeling gradients while still enforcing balanced hardware utilization.
 
@@ -20,7 +20,7 @@ The auxiliary-loss-free mechanism also replaces the Softmax gating function used
 
 The Sigmoid function evaluates each expert independently. For a given token vector $x$ and the $i$-th column of the gating matrix $W_g$, the dot product $x \cdot e_i$ measures how strongly the token aligns with expert centroid $e_i$. An expert centroid is a learned vector in the gating matrix representing the geometric center of the concepts that expert specializes in. This dot product quantifies how closely the token's position in $\mathbb{R}^{d_{model}}$ matches that ideal.
 
-This raw dot product spans an unbounded numerical range. The Sigmoid function compresses this unbounded value into the interval between zero and one, producing a stable affinity score. While the affinity $s_i$ for a single expert is calculated via the dot product $x \cdot e_i$, the complete affinity matrix $s$ for all tokens across all experts is calculated simultaneously via the matrix multiplication of the sequence $x$ and the full gating matrix $W_g$:
+This raw dot product spans an unbounded numerical range. The Sigmoid function compresses this unbounded value into the interval between zero and one, producing a stable affinity score. Computing the affinity $s_i$ for a single expert via the dot product $x \cdot e_i$ generalizes directly to the full sequence: the affinity matrix $s$ across all tokens and experts is calculated via the matrix multiplication of the sequence $x$ and the gating matrix $W_g$:
 
 $$
 s = \text{Sigmoid}(x W_g)
@@ -37,14 +37,14 @@ The core architectural innovation separates the routing process into two distinc
 A dynamic bias vector $b$ maintains one scalar value per expert. This bias is added to the Sigmoid affinity scores before the Top-K selection:
 
 $$
-\mathcal{K} = \text{TopK}\left(\{s_i + b_i\}_{i=1}^{E_r},\; K_r\right)
+\mathcal{K} = \text{TopK}\left(\{s_i + b_i\}_{i=0}^{E_r-1},\; K_r\right)
 $$
 
-The set notation $\{s_i + b_i\}_{i=1}^{E_r}$ represents the complete list of biased scores for all $E_r$ routed experts. The $\text{TopK}$ function sorts this list and returns the index set $\mathcal{K}$ containing the $K_r$ experts with the highest biased scores. If an expert has been receiving fewer tokens than average, its bias $b_i$ is pushed positive, artificially raising its score and increasing the chance that it enters the top-$K_r$ set. This boost has nothing to do with genuine alignment between the token and the expert. It is purely an administrative correction to equalize hardware utilization.
+The set notation $\{s_i + b_i\}_{i=0}^{E_r-1}$ represents the complete list of biased scores for all $E_r$ routed experts. The $\text{TopK}$ function sorts this list and returns the index set $\mathcal{K}$ containing the $K_r$ experts with the highest biased scores. An expert receiving fewer tokens than average accumulates a positive bias $b_i$, artificially raising its score and increasing the chance that it enters the top-$K_r$ set. This boost has nothing to do with genuine alignment between the token and the expert. It is purely an administrative correction to equalize hardware utilization.
 
 ### Phase 2: Unbiased Weighting
 
-Once the set $\mathcal{K}$ of active experts has been determined, the bias is discarded. The gating weight $g_i$ applied to each selected expert's output is computed by normalizing exclusively the original, un-biased Sigmoid scores of the selected experts:
+Determining the set $\mathcal{K}$ of active experts completes the role of the bias, which is then discarded. The gating weight $g_i$ applied to each selected expert's output is computed by normalizing exclusively the original, un-biased Sigmoid scores of the selected experts:
 
 $$
 g_i = \frac{s_i}{\sum_{j \in \mathcal{K}} s_j}
@@ -54,12 +54,12 @@ The denominator sums only the un-biased scores of the experts within $\mathcal{K
 
 ## The Dynamic Bias Forward Pass
 
-To demonstrate the numerical mechanics, a new four-expert routing configuration is initialized with $E_r = 4$ and $K_r = 2$. The bias vector $b$ is initialized to all zeros. All matrices are formatted to 4 decimal places for precision.
+To isolate the effect of Sigmoid gating and dynamic bias updates against the Softmax router from Chapter 2, the four-expert routing configuration ($E_r = 4, K_r = 2$) reuses the $6 \times 4$ gating matrix $W_g$ from Chapter 2. The bias vector $b$ is initialized to all zeros. All matrices are formatted to 4 decimal places for precision.
 
 ### Step 1: Sigmoid Affinity Scores
 
-**Goal:** Compute the independent affinity between each token and every expert centroid, bounded to a stable numerical range.<br>
-**Equation:** $s = \text{Sigmoid}(x W_g)$
+- **Goal:** Compute the independent affinity between each token and every expert centroid, bounded to a stable numerical range.
+- **Equation:** $s = \text{Sigmoid}(x W_g)$
 
 The sequence begins with the standard $4 \times 6$ input matrix $x$ containing the 4 embedded tokens established in the [Transformer series](series-transformers.html):
 
@@ -111,8 +111,8 @@ Every value in this matrix is bounded between zero and one, regardless of the ma
 
 ### Step 2: Biased Selection
 
-**Goal:** Determine which experts process each token by adding the load-balancing bias to the affinity scores before ranking.<br>
-**Equation:** $\mathcal{K} = \text{TopK}\left(\{s_i + b_i\}_{i=1}^{E_r},\; K_r\right)$
+- **Goal:** Determine which experts process each token by adding the load-balancing bias to the affinity scores before ranking.
+- **Equation:** $\mathcal{K} = \text{TopK}\left(\{s_i + b_i\}_{i=0}^{E_r-1},\; K_r\right)$
 
 The bias vector $b$ is initialized to all zeros at the start of training:
 
@@ -146,8 +146,8 @@ This masked representation explicitly reveals the routing topology for the batch
 
 ### Step 3: Unbiased Gating Weights
 
-**Goal:** Compute the final output blending weights using exclusively the pure Sigmoid scores, discarding the bias entirely.<br>
-**Equation:** $g_i = \frac{s_i}{\sum_{j \in \mathcal{K}} s_j}$
+- **Goal:** Compute the final output blending weights using exclusively the pure Sigmoid scores, discarding the bias entirely.
+- **Equation:** $g_i = \frac{s_i}{\sum_{j \in \mathcal{K}} s_j}$
 
 For the first token, Expert 0 and Expert 2 are selected. The gating weight for Expert 0 divides its un-biased Sigmoid score by the sum of both selected scores:
 
@@ -162,11 +162,11 @@ $$
 The two weights sum to $0.5154 + 0.4846 = 1.0000$, confirming the normalization. The same calculation is applied across all four tokens. For token 3, where Expert 0 and Expert 1 are selected:
 
 $$
-g_{0} = \frac{0.5289}{0.5289 + 0.4712} = \frac{0.5289}{1.0000} = 0.5289
+g_{0} = \frac{0.5289}{0.5289 + 0.4712} = \frac{0.5289}{1.0001} = 0.5288
 $$
 
 $$
-g_{1} = \frac{0.4712}{0.5289 + 0.4712} = \frac{0.4712}{1.0000} = 0.4711
+g_{1} = \frac{0.4712}{0.5289 + 0.4712} = \frac{0.4712}{1.0001} = 0.4712
 $$
 
 Repeating across all rows yields the final gating weight matrix:
@@ -175,8 +175,8 @@ $$
 g(x) = \begin{bmatrix}
  0.5154 &  0.0000 &  0.4846 &  0.0000 \\
  0.5164 &  0.0000 &  0.4836 &  0.0000 \\
- 0.5289 &  0.4711 &  0.0000 &  0.0000 \\
- 0.5198 &  0.4802 &  0.0000 &  0.0000
+ 0.5288 &  0.4712 &  0.0000 &  0.0000 \\
+ 0.5197 &  0.4803 &  0.0000 &  0.0000
 \end{bmatrix}
 $$
 
@@ -184,8 +184,8 @@ Every weight in this matrix derives from the pure geometric alignment between to
 
 ### Step 4: Out-of-Graph Bias Update
 
-**Goal:** Adjust the bias vector to correct load imbalance, operating entirely outside of gradient computation.<br>
-**Equation:** $b_{new} = b_{old} + \gamma \cdot (\bar{L} - L)$
+- **Goal:** Adjust the bias vector to correct load imbalance, operating entirely outside of gradient computation.
+- **Equation:** $b_{new} = b_{old} + \gamma \cdot (\bar{L} - L)$
 
 At the boundary of each training step, the system counts how many tokens were assigned to each expert during the preceding batch. With 4 tokens and 2 selections per token, the batch produces 8 total expert assignments. The empirical load $L_i$ for each expert is computed by dividing its assignment count by the total assignments:
 
@@ -224,19 +224,17 @@ b_{new} = \begin{bmatrix} 0.0000 & 0.0000 & 0.0000 & 0.0000 \end{bmatrix} + 0.00
 $$
 
 $$
-b_{new} = \begin{bmatrix} -0.0003 & 0.0000 & 0.0000 & 0.0003 \end{bmatrix}
+b_{new} = \begin{bmatrix} -0.00025 & 0.00000 & 0.00000 & 0.00025 \end{bmatrix}
 $$
 
-The overloaded Expert 0 receives a negative bias of $-0.0003$, which will subtract from its affinity score in the next routing step, reducing its likelihood of selection. The starved Expert 3 receives a positive bias of $+0.0003$, which will add to its affinity score, increasing its likelihood of selection. Experts 1 and 2 received exactly the target load and require no correction.
+The overloaded Expert 0 receives a negative bias of $-0.00025$, which subtracts from its affinity score in the next routing step, reducing its likelihood of selection. The starved Expert 3 receives a positive bias of $+0.00025$, which adds to its affinity score, increasing its likelihood of selection. Experts 1 and 2 matched the target load of $0.2500$ and require no correction.
 
 This update is a simple arithmetic operation applied directly to the bias vector. The optimizer never differentiates through it. No gradient is computed with respect to $b_i$, and the primary language modeling loss function remains mathematically unaware that the bias exists. Over thousands of training steps, these incremental adjustments accumulate, gradually steering the routing distribution toward uniform utilization across the entire expert pool.
 
-## Device-Limited Routing
+## From Algorithmic Balance to Cluster Economics
 
-Deploying hundreds of experts across a distributed cluster introduces a final physical constraint. During the forward pass, tokens must traverse physical network links to reach the GPUs hosting their assigned experts. This data transfer is executed via an All-to-All communication shuffle, a specialized network operation where every GPU simultaneously transmits tokens to every other GPU. 
+Decoupling load balance from backpropagation completes the mathematical evolution of the router. The network selects specialized pathways through biased Sigmoid affinities, blends expert outputs through unbiased geometric weights, and equalizes hardware load through out-of-graph arithmetic updates.
 
-To bound this communication overhead, modern architectures constrain the router to select experts hosted on a maximum of $M$ physical nodes per token. To enforce this without breaking the affinity logic, the routing operation executes in two hierarchical steps. First, the router calculates the cumulative affinity for each physical node by summing the biased scores of all experts hosted on that specific node, identifying the top $M$ nodes. Second, a negative infinity mask is applied to all experts residing outside those $M$ nodes. This mathematically restricts the final Top-$K_r$ selection exclusively to the hardware-constrained pool. State-of-the-art architectures frequently limit this boundary to $M=3$ or $M=4$ nodes. This mechanism represents a systems-level constraint on hardware communication latency, rather than a learning constraint on the model's representational capacity.
+Scaling this architecture to hundreds of fine-grained experts across a multi-node GPU cluster shifts the primary engineering bottleneck from mathematical optimization to physical systems economics. The decoupling of total parameter capacity from active Floating-Point Operations (FLOPs) per token, together with the memory and interconnect constraints of distributed expert parallelism, defines the economic structure examined in the final chapter.
 
-The decoupling of total parameter count from active computational operations, known as Floating-Point Operations or FLOPs, achieved by these sparse architectures alters the economic landscape of training frontier language models. This paradigm shift is detailed in the final section.
-
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p>

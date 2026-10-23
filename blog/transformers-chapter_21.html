@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -118,59 +159,91 @@
     <li><a href="index.html">Blog</a></li><li><a href="series-transformers.html">Series: Transformers</a></li><li aria-current="page">Part 21: Backpropagating Through the Unembedding and Residual Stream</li></ol></nav>
         <article class="blog-post series-transformers">
 <h1>Part 21: Backpropagating Through the Unembedding and Residual Stream</h1>
-<!-- SUMMARY: The backward pass initiates by routing the error signal from the vocabulary logits through the unembedding matrix and into the final residual stream. Applying the chain rule demonstrates how the gradient symmetrically branches through the multi-layer perceptron to update intermediate weights. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p><p>The previous installment discovered the elegant simplicity of the cross-entropy loss derivative. The gradient of the loss with respect to the raw, pre-softmax logits simplifies entirely to the predicted probability distribution minus the one-hot encoded target vector. This single matrix, measuring how wrong the predictions were across the sequence, serves as the physical error signal that must now be routed backward through the network to update its weights.</p>
-<p>The network is now ready to execute the chain rule. The process begins at the very end of the architecture, pushing the error signal backward through the unembedding matrix, down into the final residual stream, and ultimately into the Layer 2 multi-layer perceptron. </p>
+<!-- SUMMARY: The backward pass initiates by routing the error signal from the vocabulary logits through the unembedding matrix and into the final residual stream. Applying the chain rule demonstrates how the gradient branches undisturbed across residual additions and projects through the multi-layer perceptron to update intermediate weights. --><p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p><p>Part 20 derived the cross-entropy loss gradient with respect to the pre-Softmax logits, reducing the output error signal to the $4 \times 12$ matrix $P - Y$. That matrix quantifies the directional error across all four sequence positions and twelve vocabulary candidates. Backpropagation now routes this gradient backward through the unembedding projection $W_U$, down the central residual stream, and into the Layer 2 Multi-Layer Perceptron (MLP).</p>
+<table>
+<thead>
+<tr>
+<th align="left">Backward Stage</th>
+<th align="left">Weight Gradient</th>
+<th align="left">Weight Shape</th>
+<th align="left">Input Gradient</th>
+<th align="left">Input Shape</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Unembedding (<code>W_U</code>)</strong></td>
+<td align="left"><code>X_L2^T * dZ</code></td>
+<td align="left"><code>6 x 12</code></td>
+<td align="left"><code>dZ * W_U^T</code></td>
+<td align="left"><code>4 x 6</code></td>
+</tr>
+<tr>
+<td align="left"><strong>Residual Add</strong></td>
+<td align="left"><code>None</code></td>
+<td align="left"><code>N/A</code></td>
+<td align="left"><code>dX_L2</code> (both branches)</td>
+<td align="left"><code>4 x 6</code></td>
+</tr>
+<tr>
+<td align="left"><strong>MLP Output (<code>W_2</code>)</strong></td>
+<td align="left"><code>H^T * dX_L2</code></td>
+<td align="left"><code>24 x 6</code></td>
+<td align="left"><code>dX_L2 * W_2^T</code></td>
+<td align="left"><code>4 x 24</code></td>
+</tr>
+</tbody></table>
 <h2>The Chain Rule at the Unembedding Layer</h2>
-<p>The unembedding layer is the final linear transformation in the Transformer. During the forward pass, this step multiplied the final contextualized vectors of the sequence by the unembedding weight matrix $W_U$ to produce the vocabulary-sized logits.</p>
-<p>Mathematically, the forward pass for this step is defined as:</p>
+<p>The unembedding layer is the final linear projection in the Transformer. During the forward pass (Part 17), this layer multiplied the Layer 2 output matrix $\text{Output}_{\text{Layer2}}$ ($4 \times 6$) by the unembedding weight matrix $W_U$ ($6 \times 12$) to produce the vocabulary logits:</p>
 <p>$$
 \text{Logits} = \text{Output}_{\text{Layer2}} \times W_U
 $$</p>
-<p>Here, $\text{Output}_{\text{Layer2}}$ has a shape of 4 by 6, representing the sequence length by the model dimension. The weight matrix $W_U$ has a shape of 6 by 12, representing the model dimension by the vocabulary size. The resulting logits have a shape of 4 by 12.</p>
-<p>The system possesses the gradient of the loss with respect to these logits, denoted as $\partial L / \partial \text{Logits}$. To update the network, two new gradients are required. First, the gradient with respect to the weights $W_U$ is needed so the optimizer can adjust them. Second, the gradient with respect to the input $\text{Output}_{\text{Layer2}}$ is necessary to continue passing the error backward.</p>
+<p>Given the incoming logit gradient $\frac{\partial L}{\partial \text{Logits}}$ of shape $4 \times 12$, backpropagation through a linear multiplication $Z = A B$ computes two distinct derivatives:</p>
+<ol>
+<li><strong>Weight Gradient ($\frac{\partial L}{\partial W_U}$):</strong> Measures how each parameter in $W_U$ contributed to the logit error so the optimizer can update the unembedding weights.</li>
+<li><strong>Input Activation Gradient ($\frac{\partial L}{\partial \text{Output}_{\text{Layer2}}}$):</strong> Projects the error signal back into the $d_{\text{model}} = 6$ subspace so preceding layers can be updated.</li>
+</ol>
 <h3>Updating the Unembedding Weights</h3>
-<p>The gradient of the loss with respect to the unembedding weights requires multiplying the transposed input by the incoming error signal. </p>
+<p>Computing the gradient of the loss with respect to the unembedding weights multiplies the transposed layer input by the incoming logit gradient:</p>
 <p>$$
 \frac{\partial L}{\partial W_U} = \text{Output}_{\text{Layer2}}^T \times \frac{\partial L}{\partial \text{Logits}}
 $$</p>
-<p>To visualize this geometrically, mapping the dimensions proves highly effective. Transposing the 4 by 6 input transforms it into a 6 by 4 matrix. Multiplying this by the 4 by 12 error signal yields a gradient matrix that perfectly matches the 6 by 12 shape of the original $W_U$ matrix. Each element in this new matrix calculates exactly how to nudge a specific weight in $W_U$ to decrease the overall loss.</p>
+<p>Tracking the matrix dimensions confirms the geometric alignment. Transposing the $4 \times 6$ input matrix $\text{Output}_{\text{Layer2}}$ produces a $6 \times 4$ matrix. Multiplying that $6 \times 4$ transpose by the $4 \times 12$ logit gradient contracts across the sequence dimension ($S = 4$) and yields a $6 \times 12$ gradient matrix matching the shape of $W_U$. Each entry accumulates the error contribution of a specific model-dimension feature to a specific vocabulary token across all four sequence positions.</p>
 <h3>Passing the Error Backward</h3>
-<p>Updating the final weights is only half the task. The architecture must also pull the error signal backward to the preceding layers. To find the gradient with respect to the input $\text{Output}_{\text{Layer2}}$, the incoming error signal is multiplied by the transposed weight matrix.</p>
+<p>Propagating the error signal to the preceding layer requires differentiating the loss with respect to $\text{Output}_{\text{Layer2}}$. That derivative multiplies the incoming logit gradient by the transpose of the unembedding weight matrix:</p>
 <p>$$
 \frac{\partial L}{\partial \text{Output}_{\text{Layer2}}} = \frac{\partial L}{\partial \text{Logits}} \times W_U^T
 $$</p>
-<p>The dimensions align perfectly once more. Multiplying the 4 by 12 error signal by the 12 by 6 transposed weight matrix yields a 4 by 6 matrix. This new matrix represents the error signal scaled and rotated back into the $d_{model}$ dimensionality of the residual stream.</p>
+<p>Multiplying the $4 \times 12$ logit gradient by the $12 \times 6$ transposed matrix $W_U^T$ contracts across the vocabulary dimension ($V = 12$) and produces a $4 \times 6$ matrix. This operation projects the vocabulary-space error back into the $d_{\text{model}} = 6$ coordinate space of the residual stream.</p>
 <h2>Splitting the Signal: The Residual Connection</h2>
-<p>The network has successfully routed the error signal back into the $d_{model}$ dimensional space at the very end of Layer 2. During the forward pass, this final state was constructed by adding the output of the Layer 2 multi-layer perceptron to the pre-existing residual stream.</p>
+<p>The $4 \times 6$ gradient $\frac{\partial L}{\partial \text{Output}_{\text{Layer2}}}$ now arrives at the output boundary of Layer 2. During the forward pass (Part 16), this state was formed by adding the Layer 2 MLP output to the intermediate residual stream:</p>
 <p>$$
 \text{Output}_{\text{Layer2}} = \text{Residual}_{\text{Pre-MLP}} + \text{MLP}_{\text{Output}}
 $$</p>
-<p>In vector calculus, the derivative of a sum is simply the sum of the individual derivatives. When executing backpropagation through an addition operation, the incoming gradient is distributed equally and unchanged to both branches. </p>
+<p>In multivariable calculus, the derivative of a sum equals the sum of the derivatives, so each additive term has a local partial derivative equal to the identity matrix $I$. Backpropagating through an element-wise addition distributes the upstream gradient equally and without modification to both incoming branches:</p>
 <pre><code class="language-mermaid">graph TD
     Err(Incoming Error Signal) --&gt; Unembed(Unembedding Layer)
     Unembed --&gt; Out(Layer 2 Output Error)
     Out --&gt; Res(Main Residual Stream)
     Out --&gt; MLP(Layer 2 MLP Output)
 </code></pre>
-<p>This means the 4 by 6 error signal just calculated copies itself. One copy travels directly down the central residual stream, preserving the unmodified error signal for earlier layers. The second copy flows directly into the output of the multi-layer perceptron.</p>
+<p>The $4 \times 6$ gradient matrix bifurcates into two identical copies. One copy continues directly down the main residual highway toward the attention sub-layer and Layer 1, while the second copy enters the output of the Layer 2 MLP.</p>
 <h2>Entering the Multi-Layer Perceptron</h2>
-<p>The final operation inside the Layer 2 multi-layer perceptron during the forward pass was a linear projection. The internal activations of the layer were multiplied by the second weight matrix, $W_2$, to project the data from the expanded $d_{ff}$ dimension back down to the $d_{model}$ dimension.</p>
+<p>Inside the Layer 2 MLP, the final forward-pass operation contracted the 24-dimensional hidden activations back to the 6-dimensional model space via the second weight matrix $W_2$ ($24 \times 6$):</p>
 <p>$$
 \text{MLP}_{\text{Output}} = \text{Activations} \times W_2
 $$</p>
-<p>Since the error signal flowing into this layer is exactly the error signal from the residual stream, the network can apply the exact same linear algebra rules used for the unembedding layer to continue the backward pass.</p>
-<p>To find the gradient for the $W_2$ weights, the incoming activations are transposed and multiplied by the error signal:</p>
+<p>The residual connection delivers $\frac{\partial L}{\partial \text{Output}_{\text{Layer2}}}$ directly to $\text{MLP}_{\text{Output}}$, so the same matrix-calculus transpose rules govern the backward pass through $W_2$.</p>
+<p>Computing the weight gradient for $W_2$ multiplies the transposed hidden activations by the incoming $4 \times 6$ error signal:</p>
 <p>$$
 \frac{\partial L}{\partial W_2} = \text{Activations}^T \times \frac{\partial L}{\partial \text{Output}_{\text{Layer2}}}
 $$</p>
-<p>The internal activations were expanded to $d_{ff} = 24$. Transposing the 4 by 24 activations yields a 24 by 4 matrix. Multiplying this by the 4 by 6 error signal produces a 24 by 6 gradient matrix, perfectly matching the dimensions of $W_2$. </p>
-<p>To continue pulling the error backward through the activation function and into the first half of the layer, the error signal is multiplied by the transposed $W_2$ matrix:</p>
+<p>Transposing the $4 \times 24$ activation matrix yields a $24 \times 4$ matrix. Multiplying by the $4 \times 6$ residual gradient produces a $24 \times 6$ weight gradient matching the dimensions of $W_2$. (When a bias vector $b_2$ is included, its $1 \times 6$ gradient is the column-wise sum of $\frac{\partial L}{\partial \text{Output}_{\text{Layer2}}}$ across the four sequence rows.)</p>
+<p>Propagating the error signal backward toward the ReLU gate and the first MLP projection $W_1$ multiplies the $4 \times 6$ residual gradient by the transposed weight matrix $W_2^T$ ($6 \times 24$):</p>
 <p>$$
 \frac{\partial L}{\partial \text{Activations}} = \frac{\partial L}{\partial \text{Output}_{\text{Layer2}}} \times W_2^T
 $$</p>
-<p>This operation takes the 4 by 6 error signal, multiplies it by the 6 by 24 transposed weight matrix, and produces a 4 by 24 error signal ready to be passed backward through the non-linear activation function.</p>
-<p>By strictly following the rules of matrix multiplication and addition, the error signal has successfully navigated from the vocabulary-level predictions deep into the internal mechanisms of Layer 2. The next analysis will tackle the rigorous calculus of routing these gradients through the softmax function and the causal mask of the attention mechanism.</p>
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p>This multiplication expands the $4 \times 6$ error signal into a $4 \times 24$ gradient tensor aligned with the hidden neurons of the feed-forward layer. Passing through the ReLU derivative masks out coordinates whose forward pre-activations were negative, and multiplying by $W_1^T$ returns the MLP branch gradient to the residual stream. The next installment traces how the combined residual gradient navigates the Softmax Jacobian and causal mask of the self-attention mechanism.</p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="transformers-chapter_20.html" class="pagination-link prev">

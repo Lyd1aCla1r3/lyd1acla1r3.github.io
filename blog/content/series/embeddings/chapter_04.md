@@ -1,70 +1,70 @@
 # Part 4: Backpropagation Through Loss and Softmax
 
-<!-- SUMMARY: With the loss computed, the gradient signal is traced backwards through the loss and Softmax layer. Each partial derivative is derived from first principles, revealing how the coupled Softmax-Cross-Entropy pipeline collapses into the unified "predicted minus truth" gradient expression. -->
+<!-- SUMMARY: With the loss computed, the gradient signal is traced backward through the loss and Softmax layer. Each partial derivative is derived from first principles, revealing how the coupled Softmax-Cross-Entropy pipeline collapses into the unified "predicted minus truth" gradient expression. -->
 
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p>
 
-The previous chapter ended with a single scalar: $L = 0.79$. This number is the network's total error—a mathematical verdict on the quality of the forward pass. To learn, the network must translate this single number into specific, targeted corrections to thousands of individual weights distributed across two matrices ($W_U$ and $W_E$).
+The previous chapter ended with a single scalar: $L = 0.79$. This number represents the network's total error, a mathematical verdict on the quality of the forward pass. To learn, the network must translate this single scalar into targeted corrections across the individual weights of both matrices ($W_U$ and $W_E$).
 
-The mechanism that accomplishes this is **Backpropagation**: the systematic application of the chain rule from calculus, working backwards from the loss through each layer of the network. The output is the **gradient**—a vector of partial derivatives that dictates how much each weight contributed to the error, and in which direction it must move to reduce it.
+**Backpropagation** accomplishes this credit assignment through the systematic application of the calculus chain rule, working backward from the loss through each layer of the network. The output is the **gradient**, a collection of partial derivatives that specifies how much each weight contributed to the error and which direction reduces the loss.
 
 ## From Scalar to Signal
 
-The expression $\frac{\partial L}{\partial w}$ asks a precise question: *if this single weight $w$ is nudged by an infinitesimally small amount, while holding every other weight in the network frozen, how does the loss $L$ change?*
+The partial derivative $\frac{\partial L}{\partial w}$ answers a specific question: *holding every other weight in the network frozen, how does nudging this single weight $w$ by an infinitesimally small amount change the loss $L$?*
 
-The goal is to drive the loss to zero—a perfect prediction. If the derivative is positive, increasing $w$ increases the loss. If it is negative, increasing $w$ decreases the loss. When the derivative is exactly zero, the weight is sitting at a point where the loss is locally minimized. The magnitude dictates how *sensitive* the loss is to this particular weight: a large magnitude means small changes to $w$ cause large swings in the loss, while a magnitude near zero means the weight is nearly irrelevant to the prediction.
+The optimization objective drives the loss toward zero, corresponding to an accurate prediction. A positive derivative indicates that increasing $w$ increases the loss. A negative derivative indicates that increasing $w$ decreases the loss. A zero derivative indicates that the weight sits at a stationary point where the loss is locally minimized. The magnitude measures how *sensitive* the loss is to this particular weight: a large magnitude means small changes to $w$ cause large swings in the loss, whereas a magnitude near zero means the weight barely affects the prediction.
 
-Computing this derivative for a weight in the final layer is straightforward, as it directly connects to the loss. For a weight in $W_E$, located at the first layer, the relationship is indirect: a change in $W_E$ alters the hidden state $\mathbf{h}$, which alters the logits $\mathbf{z}$, which alters the Softmax probabilities $\hat{\mathbf{y}}$, which finally alters the loss $L$. The **chain rule** decomposes this dependency into a product of simple, local derivatives:
+Computing this derivative for a weight in the final layer is direct because that layer connects immediately to the loss. For a weight in $W_E$, located at the first layer, the relationship is indirect: a change in $W_E$ alters the hidden state $\mathbf{h}$, which alters the logits $\mathbf{z}$, which alters the Softmax probabilities $\hat{\mathbf{y}}$, which finally alters the loss $L$. The **chain rule** decomposes this dependency into a product of local derivatives:
 
 $$
 \frac{\partial L}{\partial W_E} = \frac{\partial L}{\partial \hat{\mathbf{y}}} \cdot \frac{\partial \hat{\mathbf{y}}}{\partial \mathbf{z}} \cdot \frac{\partial \mathbf{z}}{\partial \mathbf{h}} \cdot \frac{\partial \mathbf{h}}{\partial W_E}
 $$
 
-Each factor in this product is a tractable computation. Each derivative is now derived, starting from the loss and working backwards to $W_E$.
+Each factor in this product is a tractable local computation. The derivation proceeds step by step from the loss backward toward $W_E$.
 
 ## The Loss Derivative: $\frac{\partial L}{\partial \hat{\mathbf{y}}}$
 
-The first link in the chain is straightforward. The question is: how does the loss change when the predicted probabilities change?
+The first link in the chain measures how the loss changes when the predicted probabilities change.
 
-Recall from Chapter 3 that the Cross-Entropy Loss, after collapsing under the one-hot encoded truth vector, reduces to:
-
-$$
-L = -\log(\hat{y}_{true})
-$$
-
-The loss depends on exactly one element of the predicted distribution: $\hat{y}_{true}$, the probability the network assigned to the correct word (`fox`, at index 3). It is completely independent of the probabilities assigned to every other word. This means the partial derivative of the loss with respect to any incorrect word's probability is simply zero:
+Recall from Chapter 3 that the Cross-Entropy Loss, after collapsing under the one-hot encoded ground-truth vector, reduces to:
 
 $$
-\frac{\partial L}{\partial \hat{y}_k} = 0 \quad \text{for all } k \neq true
+L = -\log(\hat{y}_{\text{true}})
 $$
 
-For the correct word, the derivative of $-\log(x)$ with respect to $x$ is required. This is a standard result from calculus: the derivative of $\log(x)$ is $\frac{1}{x}$, and the leading negative sign carries through:
+The loss depends on a single element of the predicted distribution: $\hat{y}_{\text{true}}$, the probability the network assigned to the target word (`fox`, at index `3`). The loss expression is independent of the probabilities assigned to every other word, so the partial derivative of the loss with respect to any incorrect word's probability equals zero:
 
 $$
-\frac{\partial L}{\partial \hat{y}_{true}} = \frac{-1}{\hat{y}_{true}}
+\frac{\partial L}{\partial \hat{y}_k} = 0 \quad \text{for all } k \neq \text{true}
 $$
 
-This result has a clear interpretation. If the network assigned a high probability to the correct word (say, $\hat{y}_{true} = 0.95$), the derivative is small: $\frac{-1}{0.95} \approx -1.05$. The loss is barely sensitive to further changes—the network is already nearly correct. But if the network assigned a tiny probability (say, $\hat{y}_{true} = 0.01$), the derivative is massive: $\frac{-1}{0.01} = -100$. The loss is *extremely* sensitive, generating a strong signal to fix the prediction. The negative sign indicates that *increasing* $\hat{y}_{true}$ will *decrease* the loss.
+For the target word, differentiation requires the derivative of $-\log(x)$ with respect to $x$. By standard calculus, the derivative of the natural logarithm $\log(x)$ is $\frac{1}{x}$, and the leading negative sign carries through:
+
+$$
+\frac{\partial L}{\partial \hat{y}_{\text{true}}} = \frac{-1}{\hat{y}_{\text{true}}}
+$$
+
+This inverse relationship calibrates the strength of the learning signal. A high predicted probability for the target word (such as $\hat{y}_{\text{true}} = 0.95$) produces a small derivative: $\frac{-1}{0.95} \approx -1.05$. The loss is barely sensitive to further changes because the prediction is already nearly accurate. A tiny predicted probability (such as $\hat{y}_{\text{true}} = 0.01$) produces a massive derivative: $\frac{-1}{0.01} = -100$. That steep slope generates a strong corrective signal, and the negative sign indicates that *increasing* $\hat{y}_{\text{true}}$ *decreases* the loss.
 
 ## The Softmax Derivative: $\frac{\partial \hat{\mathbf{y}}}{\partial \mathbf{z}}$
 
-The second link in the chain is more involved. The question becomes: how does each Softmax output $\hat{y}_i$ change when a single logit $z_j$ is adjusted?
+The second link in the chain measures how each Softmax output $\hat{y}_i$ changes when a single logit $z_j$ is adjusted.
 
-The three index variables used throughout this derivation are defined as follows:
+Three 0-based index variables ($i, j, k \in \{0, \dots, V-1\}$) govern this derivation:
 
-- **$i$** — the index of the word whose **probability** is being measured (the "target" of the observation).
-- **$j$** — the index of the word whose **logit** is being altered (the "cause" of the change).
-- **$k$** — a summation placeholder that ranges over all $V$ words in the vocabulary. It appears only inside $\sum_k$ expressions.
+- **Output Index ($i$):** Identifies the vocabulary word whose **predicted probability** $\hat{y}_i$ is being measured.
+- **Input Index ($j$):** Identifies the vocabulary word whose **logit** $z_j$ is being perturbed.
+- **Summation Index ($k$):** Ranges across all $V$ words in the vocabulary inside the normalization denominator $\sum_{k=0}^{V-1} e^{z_k}$.
 
-Recall the Softmax definition:
+Recall the Softmax definition from Chapter 3:
 
 $$
-\hat{y}_i = \frac{e^{z_i}}{\sum_{k=1}^{V} e^{z_k}}
+\hat{y}_i = \frac{e^{z_i}}{\sum_{k=0}^{V-1} e^{z_k}}
 $$
 
-This is a fraction: a numerator ($e^{z_i}$) divided by a denominator ($\sum_k e^{z_k}$). The denominator is a sum over *all* logits in the vocabulary. Changing a single logit $z_j$ does not only affect the probability $\hat{y}_j$ for that word—it also changes the denominator, which in turn changes *every other* probability $\hat{y}_i$.
+The Softmax expression forms a fraction with numerator $e^{z_i}$ and denominator $\sum_{k=0}^{V-1} e^{z_k}$. The denominator sums the exponentiated logits across the entire vocabulary. Adjusting a single logit $z_j$ alters both the probability $\hat{y}_j$ for that word and the shared denominator, which shifts *every other* probability $\hat{y}_i$ in the distribution.
 
-To differentiate this fraction, the **quotient rule** from calculus is applied. For any function expressed as a fraction $\frac{f}{g}$, the quotient rule states:
+Differentiating this ratio requires the **quotient rule** from calculus. For any differentiable ratio $\frac{f}{g}$, the quotient rule states:
 
 $$
 \frac{d}{dx}\left(\frac{f}{g}\right) = \frac{f' \cdot g \;-\; f \cdot g'}{g^2}
@@ -72,115 +72,115 @@ $$
 
 where $f'$ denotes the derivative of the numerator and $g'$ denotes the derivative of the denominator.
 
-Here, the Softmax numerator is $f = e^{z_i}$ and the denominator is $g = \sum_k e^{z_k}$. Applying the quotient rule requires $f'$ and $g'$—the derivatives of the numerator and denominator with respect to the logit $z_j$ being differentiated. The derivative of the numerator $e^{z_i}$ depends entirely on whether $z_j$ is the *same* variable as $z_i$ or a *different* one.
+The Softmax numerator is $f = e^{z_i}$ and the denominator is $g = \sum_{k=0}^{V-1} e^{z_k}$. Applying the quotient rule requires the derivatives $f'$ and $g'$ of the numerator and denominator with respect to the target logit $z_j$. The derivative of the numerator $e^{z_i}$ depends on whether $z_j$ is the *same* variable as $z_i$ or a *different* variable.
 
-If measuring how the probability of `fox` changes when adjusting the logit for `fox` itself ($i = j$), the numerator $e^{z_{fox}}$ depends on the variable of differentiation, making its derivative non-zero. If measuring how the probability of `fox` changes when adjusting the logit for `The` ($i \neq j$), the numerator $e^{z_{fox}}$ does not contain $z_{The}$ at all—it is a constant, and its derivative is zero. This fundamental difference in the numerator's derivative produces two structurally different results, requiring the two cases to be handled separately.
+Differentiating the probability of `fox` with respect to the logit for `fox` itself ($i = j$) means the numerator $e^{z_{\text{fox}}}$ contains the variable of differentiation, yielding a non-zero derivative. Differentiating the probability of `fox` with respect to the logit for `The` ($i \neq j$) means the numerator $e^{z_{\text{fox}}}$ does not contain $z_{\text{The}}$, so the numerator acts as a constant whose derivative is zero. This structural distinction splits the Softmax derivative into two cases.
 
-### Case 1: $i = j$ (same word)
+### Case 1: $i = j$ (Same Word)
 
-The probability $\hat{y}_i$ is differentiated with respect to its *own* logit, $z_i$. This models how the predicted probability of `fox` changes when the logit for `fox` is adjusted.
+In the diagonal case, the probability $\hat{y}_i$ is differentiated with respect to its *own* logit, $z_i$, measuring how the predicted probability of `fox` changes when the logit for `fox` is adjusted.
 
-The derivatives of both the numerator and denominator with respect to $z_i$ are calculated as follows:
+The derivatives of both the numerator and denominator with respect to $z_i$ evaluate as follows:
 
-- **Numerator derivative**: $f' = \frac{\partial}{\partial z_i} e^{z_i} = e^{z_i}$. The exponential function is its own derivative, and since the numerator *does* contain $z_i$, the result is non-zero.
-- **Denominator derivative**: $g' = \frac{\partial}{\partial z_i} \sum_k e^{z_k} = e^{z_i}$. The sum contains many terms ($e^{z_1}, e^{z_2}, \dots$), but only the one term $e^{z_i}$ depends on $z_i$. All other terms are constants with respect to $z_i$ and vanish under differentiation.
+- **Numerator Derivative ($f'$):** $f' = \frac{\partial}{\partial z_i} e^{z_i} = e^{z_i}$. The natural exponential function is its own derivative, and the numerator contains $z_i$, producing a non-zero result.
+- **Denominator Derivative ($g'$):** $g' = \frac{\partial}{\partial z_i} \sum_{k=0}^{V-1} e^{z_k} = e^{z_i}$. The sum contains $V$ terms ($e^{z_0}, e^{z_1}, \dots, e^{z_{V-1}}$), but only the single term $e^{z_i}$ depends on $z_i$. Every other term acts as a constant with respect to $z_i$ and vanishes under differentiation.
 
-Substituting $f$, $g$, $f'$, and $g'$ into the quotient rule formula $\frac{f'g - fg'}{g^2}$:
-
-$$
-\frac{\partial \hat{y}_i}{\partial z_i} = \frac{e^{z_i} \cdot \sum_k e^{z_k} \;-\; e^{z_i} \cdot e^{z_i}}{\left(\sum_k e^{z_k}\right)^2}
-$$
-
-Factoring $e^{z_i}$ out of the numerator yields:
+Substituting $f$, $g$, $f'$, and $g'$ into the quotient rule formula $\frac{f'g - fg'}{g^2}$ yields:
 
 $$
-= \frac{e^{z_i} \left(\sum_k e^{z_k} \;-\; e^{z_i}\right)}{\left(\sum_k e^{z_k}\right)^2}
+\frac{\partial \hat{y}_i}{\partial z_i} = \frac{e^{z_i} \cdot \sum_{k=0}^{V-1} e^{z_k} \;-\; e^{z_i} \cdot e^{z_i}}{\left(\sum_{k=0}^{V-1} e^{z_k}\right)^2}
 $$
 
-This single fraction is then split into a product of two fractions:
+Factoring $e^{z_i}$ out of the numerator produces:
 
 $$
-= \frac{e^{z_i}}{\sum_k e^{z_k}} \cdot \frac{\sum_k e^{z_k} \;-\; e^{z_i}}{\sum_k e^{z_k}}
+= \frac{e^{z_i} \left(\sum_{k=0}^{V-1} e^{z_k} \;-\; e^{z_i}\right)}{\left(\sum_{k=0}^{V-1} e^{z_k}\right)^2}
 $$
 
-The first fraction is, by definition, $\hat{y}_i$. The second fraction is $1 - \hat{y}_i$ (the full sum minus the $i$-th term, divided by the full sum). Therefore:
+Splitting this single fraction into a product of two ratios isolates the Softmax terms:
+
+$$
+= \frac{e^{z_i}}{\sum_{k=0}^{V-1} e^{z_k}} \cdot \frac{\sum_{k=0}^{V-1} e^{z_k} \;-\; e^{z_i}}{\sum_{k=0}^{V-1} e^{z_k}}
+$$
+
+The first fraction equals $\hat{y}_i$ by definition, and the second fraction simplifies to $1 - \hat{y}_i$ (the full sum minus the $i$-th term, divided by the full sum), yielding the diagonal Softmax derivative:
 
 $$
 \frac{\partial \hat{y}_i}{\partial z_i} = \hat{y}_i(1 - \hat{y}_i)
 $$
 
-This result has a natural interpretation. The derivative is largest when $\hat{y}_i \approx 0.5$—maximum uncertainty—and shrinks toward zero as $\hat{y}_i$ approaches $0$ or $1$. A confident prediction is *insensitive* to small logit perturbations; an uncertain one is highly responsive. This is a fundamental property of sigmoid-family functions, reflecting the fact that Softmax **saturates** at its extremes.
+This quadratic expression peaks at $\hat{y}_i = 0.5$ (maximum uncertainty, where $\hat{y}_i(1 - \hat{y}_i) = 0.25$) and shrinks toward zero as $\hat{y}_i$ approaches $0$ or $1$. Confident predictions near the boundaries are *insensitive* to small logit perturbations, whereas uncertain predictions near the midpoint respond strongly because Softmax **saturates** at its extremes.
 
-### Case 2: $i \neq j$ (different words)
+### Case 2: $i \neq j$ (Different Words)
 
-The probability $\hat{y}_i$ is differentiated with respect to a *different* logit, $z_j$. This models how the predicted probability of `The` changes when the logit for `fox` is adjusted.
+In the off-diagonal case, the probability $\hat{y}_i$ is differentiated with respect to a *different* logit, $z_j$, measuring how the predicted probability of `The` changes when the logit for `fox` is adjusted.
 
-The numerator and denominator derivatives with respect to $z_j$ are:
+The numerator and denominator derivatives with respect to $z_j$ evaluate as follows:
 
-- **Numerator derivative**: $f' = \frac{\partial}{\partial z_j} e^{z_i} = 0$. The numerator $e^{z_i}$ does not contain $z_j$ at all—it is a constant with respect to $z_j$—so its derivative is zero. This is the key difference from Case 1.
-- **Denominator derivative**: $g' = \frac{\partial}{\partial z_j} \sum_k e^{z_k} = e^{z_j}$. Just as before, only the one term $e^{z_j}$ in the sum depends on $z_j$.
+- **Numerator Derivative ($f'$):** $f' = \frac{\partial}{\partial z_j} e^{z_i} = 0$. The numerator $e^{z_i}$ does not contain $z_j$ and acts as a constant with respect to $z_j$, so its derivative evaluates to zero.
+- **Denominator Derivative ($g'$):** $g' = \frac{\partial}{\partial z_j} \sum_{k=0}^{V-1} e^{z_k} = e^{z_j}$. Only the single term $e^{z_j}$ in the summation depends on $z_j$.
 
-Substituting into the quotient rule formula $\frac{f'g - fg'}{g^2}$:
-
-$$
-\frac{\partial \hat{y}_i}{\partial z_j} = \frac{0 \cdot \sum_k e^{z_k} \;-\; e^{z_i} \cdot e^{z_j}}{\left(\sum_k e^{z_k}\right)^2}
-$$
-
-The first term in the numerator vanishes (anything multiplied by zero is zero), leaving:
+Substituting into the quotient rule formula $\frac{f'g - fg'}{g^2}$ yields:
 
 $$
-= \frac{-e^{z_i} \cdot e^{z_j}}{\left(\sum_k e^{z_k}\right)^2}
+\frac{\partial \hat{y}_i}{\partial z_j} = \frac{0 \cdot \sum_{k=0}^{V-1} e^{z_k} \;-\; e^{z_i} \cdot e^{z_j}}{\left(\sum_{k=0}^{V-1} e^{z_k}\right)^2}
 $$
 
-This splits into a product of two fractions, each recognized as a Softmax output:
+The first term in the numerator vanishes, leaving:
 
 $$
-= -\frac{e^{z_i}}{\sum_k e^{z_k}} \cdot \frac{e^{z_j}}{\sum_k e^{z_k}} = -\hat{y}_i \cdot \hat{y}_j
+= \frac{-e^{z_i} \cdot e^{z_j}}{\left(\sum_{k=0}^{V-1} e^{z_k}\right)^2}
 $$
 
-Recall from Chapter 3 that all Softmax outputs must sum to exactly $1.0$. The total probability is fixed. If the logit for `fox` ($z_j$) increases, the probability of `fox` ($\hat{y}_j$) grows. To maintain a sum of $1.0$, every other word's probability must shrink.
+Factoring the expression into a product of two ratios isolates the Softmax probabilities for indices $i$ and $j$:
 
-The derivative $-\hat{y}_i \cdot \hat{y}_j$ dictates exactly how much each word loses. For example, if the probability of `fox` is $\hat{y}_{fox} = 0.45$ and the probability of `The` is $\hat{y}_{The} = 0.18$, then the rate at which `The` loses probability when the logit for `fox` is increased is $-0.18 \times 0.45 = -0.081$. If the probability of `jumps` is only $\hat{y}_{jumps} = 0.009$, it loses probability at a rate of $-0.009 \times 0.45 = -0.004$. Words holding larger probability mass have more to lose; words near zero are barely affected.
+$$
+= -\frac{e^{z_i}}{\sum_{k=0}^{V-1} e^{z_k}} \cdot \frac{e^{z_j}}{\sum_{k=0}^{V-1} e^{z_k}} = -\hat{y}_i \cdot \hat{y}_j
+$$
+
+Chapter 3 established that all Softmax outputs sum to $1.0$, fixing the total probability mass. Increasing the logit for `fox` ($z_j$) raises the probability of `fox` ($\hat{y}_j$), forcing every other word's probability to shrink so the distribution continues to sum to $1.0$.
+
+The off-diagonal derivative $-\hat{y}_i \cdot \hat{y}_j$ quantifies each competing word's rate of probability loss. With $\hat{y}_{\text{fox}} = 0.45$ and $\hat{y}_{\text{The}} = 0.18$ from Chapter 3, increasing the logit for `fox` reduces the probability of `The` at an instantaneous rate of $-0.18 \times 0.45 = -0.081$. By contrast, `jumps` holds a much smaller probability of $\hat{y}_{\text{jumps}} = 0.009$ and loses mass at a rate of only $-0.009 \times 0.45 = -0.004$. Words holding larger probability mass surrender more probability; words near zero remain barely affected.
 
 ### Summary of the Softmax Derivative
 
-These two cases fully describe how the Softmax function responds to logit changes. Case 1 dictates how a word's own probability responds to its own logit, while Case 2 dictates how every other word's probability responds. These results are now combined with the loss derivative to compute the gradient of the loss with respect to the logits, $\frac{\partial L}{\partial \mathbf{z}}$.
+These two cases specify the complete Jacobian of the Softmax function. Case 1 governs how a word's probability responds to its own logit, while Case 2 governs how every competing word's probability responds. Combining these two cases with the loss derivative yields the gradient of the loss with respect to the logits, $\frac{\partial L}{\partial \mathbf{z}}$.
 
 ## Combining: The Gradient at the Logits ($\frac{\partial L}{\partial \mathbf{z}}$)
 
-The first two links of the chain have been computed independently. The loss derivative (Step 1) dictates how the loss responds to changes in the predicted probabilities. The Softmax derivative (Step 2) dictates how the predicted probabilities respond to changes in the logits. These are combined via the chain rule to determine how the loss responds to changes in the logits:
+The first two links of the chain have been derived independently. The loss derivative governs how the loss responds to changes in the predicted probabilities, and the Softmax derivative governs how the predicted probabilities respond to changes in the logits. Chaining these two factors sums across all $V$ intermediate probabilities:
 
 $$
-\frac{\partial L}{\partial z_i} = \sum_{k=1}^{V} \frac{\partial L}{\partial \hat{y}_k} \cdot \frac{\partial \hat{y}_k}{\partial z_i}
+\frac{\partial L}{\partial z_i} = \sum_{k=0}^{V-1} \frac{\partial L}{\partial \hat{y}_k} \cdot \frac{\partial \hat{y}_k}{\partial z_i}
 $$
 
-This summation ranges over every word in the vocabulary, because changing a single logit $z_i$ affects every Softmax output $\hat{y}_k$. However, Step 1 established that $\frac{\partial L}{\partial \hat{y}_k} = 0$ for every $k \neq true$. This means every term in the sum where $k$ is an incorrect word multiplies by zero and vanishes. Only the term where $k = true$ survives:
+This summation ranges over every word in the vocabulary because changing a single logit $z_i$ affects every Softmax output $\hat{y}_k$. Step 1 established that $\frac{\partial L}{\partial \hat{y}_k} = 0$ for every $k \neq \text{true}$, so every term in the sum where $k$ is an incorrect word multiplies by zero and vanishes. Only the single term where $k = \text{true}$ survives:
 
 $$
-\frac{\partial L}{\partial z_i} = \frac{-1}{\hat{y}_{true}} \cdot \frac{\partial \hat{y}_{true}}{\partial z_i}
+\frac{\partial L}{\partial z_i} = \frac{-1}{\hat{y}_{\text{true}}} \cdot \frac{\partial \hat{y}_{\text{true}}}{\partial z_i}
 $$
 
-The appropriate Softmax derivative case is substituted depending on whether $z_i$ is the logit for the correct word or an incorrect word.
+Substituting the appropriate Softmax derivative case depends on whether $z_i$ is the logit for the target word or an incorrect word.
 
-**For the correct class ($i = true$):** Case 1 is used, where $\frac{\partial \hat{y}_{true}}{\partial z_{true}} = \hat{y}_{true}(1 - \hat{y}_{true})$:
-
-$$
-\frac{\partial L}{\partial z_{true}} = \frac{-1}{\hat{y}_{true}} \cdot \hat{y}_{true}(1 - \hat{y}_{true})
-$$
-
-The $\hat{y}_{true}$ in the denominator cancels with the $\hat{y}_{true}$ in the numerator:
+**For the target class ($i = \text{true}$):** Substituting Case 1, where $\frac{\partial \hat{y}_{\text{true}}}{\partial z_{\text{true}}} = \hat{y}_{\text{true}}(1 - \hat{y}_{\text{true}})$, yields:
 
 $$
-= -(1 - \hat{y}_{true}) = \hat{y}_{true} - 1
+\frac{\partial L}{\partial z_{\text{true}}} = \frac{-1}{\hat{y}_{\text{true}}} \cdot \hat{y}_{\text{true}}(1 - \hat{y}_{\text{true}})
 $$
 
-**For every incorrect class ($i \neq true$):** Case 2 is used, where $\frac{\partial \hat{y}_{true}}{\partial z_i} = -\hat{y}_{true} \cdot \hat{y}_i$:
+Canceling $\hat{y}_{\text{true}}$ between the denominator and numerator simplifies the expression:
 
 $$
-\frac{\partial L}{\partial z_i} = \frac{-1}{\hat{y}_{true}} \cdot (-\hat{y}_{true} \cdot \hat{y}_i)
+= -(1 - \hat{y}_{\text{true}}) = \hat{y}_{\text{true}} - 1
 $$
 
-The two negative signs cancel each other, and $\hat{y}_{true}$ cancels between the numerator and denominator:
+**For every incorrect class ($i \neq \text{true}$):** Substituting Case 2, where $\frac{\partial \hat{y}_{\text{true}}}{\partial z_i} = -\hat{y}_{\text{true}} \cdot \hat{y}_i$, yields:
+
+$$
+\frac{\partial L}{\partial z_i} = \frac{-1}{\hat{y}_{\text{true}}} \cdot (-\hat{y}_{\text{true}} \cdot \hat{y}_i)
+$$
+
+The two negative signs cancel each other, and $\hat{y}_{\text{true}}$ cancels between the numerator and denominator:
 
 $$
 = \hat{y}_i
@@ -188,30 +188,31 @@ $$
 
 ### The Unified Gradient Expression
 
-The two results are summarized as follows:
+The two cases produce two apparent expressions:
 
-- **For the correct class** ($i = true$, which is `fox` at index 3): the gradient is $\hat{y}_{true} - 1$.
-- **For every incorrect class** ($i \neq true$, such as `The`, `quick`, `brown`, etc.): the gradient is $\hat{y}_i$.
+- **Target Class ($i = \text{true}$, `fox` at index `3`):** The logit gradient evaluates to $\hat{y}_{\text{true}} - 1$.
+- **Incorrect Classes ($i \neq \text{true}$, such as `The`, `quick`, `brown`):** The logit gradient evaluates to $\hat{y}_i$.
 
-These appear as two different formulas. However, the true label vector $\mathbf{y}$ is one-hot encoded—it contains $1$ at index 3 (`fox`) and $0$ at every other index. Writing each case as $\hat{y}_i - y_i$ yields the following:
+The one-hot target vector $\mathbf{y}$ unifies both formulas because $y_i = 1$ at index `3` (`fox`) and $y_i = 0$ at every other index. Expressing the gradient at every index $i$ as $\hat{y}_i - y_i$ recovers both cases simultaneously:
 
-- For `fox` (index 3): $y_3 = 1$, so $\hat{y}_3 - y_3 = \hat{y}_{true} - 1$. This matches our correct-class result.
-- For `The` (index 0): $y_0 = 0$, so $\hat{y}_0 - y_0 = \hat{y}_0 - 0 = \hat{y}_0$. This matches our incorrect-class result.
-- For `quick` (index 1): $y_1 = 0$, so $\hat{y}_1 - y_1 = \hat{y}_1$. Same pattern.
+| Vocabulary Token | Index (`i`) | One-Hot Target (`y_i`) | Unified Formula | Evaluated Form | Toy Numerical Gradient |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `The` | `0` | `y_0 = 0` | `y_hat_0 - 0` | `y_hat_0` (Incorrect class) | `+0.18` |
+| `quick` | `1` | `y_1 = 0` | `y_hat_1 - 0` | `y_hat_1` (Incorrect class) | `+0.03` |
+| `fox` (Target) | `3` | `y_3 = 1` | `y_hat_3 - 1` | `y_hat_true - 1` (Target class) | `0.45 - 1 = -0.55` |
 
-Both cases follow the identical formula: $\hat{y}_i - y_i$. The one-hot structure of $\mathbf{y}$ naturally absorbs the case distinction—the $-1$ only appears at the correct class because that is the only index where $y_i$ is non-zero. The gradient for *every* logit in the vocabulary is therefore expressed as a single, unified vector expression:
+Both cases obey the identical algebraic rule: $\hat{y}_i - y_i$. The one-hot structure of $\mathbf{y}$ absorbs the case distinction because the $-1$ subtraction occurs solely at the target index where $y_i = 1$. Stacking all $V$ indices yields a single vector equation for the gradient across the entire vocabulary:
 
 $$
 \frac{\partial L}{\partial \mathbf{z}} = \hat{\mathbf{y}} - \mathbf{y}
 $$
 
-The entire pipeline—quotient rules, logarithmic derivatives, case-splitting across the Softmax—reduces entirely to **predicted minus truth**.
+The entire derivation across quotient rules, logarithmic derivatives, and Softmax case-splitting collapses to **predicted minus truth**.
 
-Cross-Entropy Loss is mathematically structured to pair with Softmax and produce this result. The logarithm in the loss algebraically cancels with the exponential in Softmax, and the normalization structure ensures the gradient is always bounded and well-behaved. This coupling is why Cross-Entropy is the standard loss function for classification: it guarantees numerically stable gradients pointing directly toward the correct answer.
+Cross-Entropy Loss is mathematically structured to pair with Softmax and produce this cancellation. The logarithm in the loss inverts the exponential in Softmax, and the normalization denominator keeps the resulting gradient bounded between $-1$ and $+1$. This algebraic pairing makes Cross-Entropy the standard loss function for classification, guaranteeing numerically stable gradients that point directly toward the target distribution.
 
-For our toy network, this gradient is interpretable at a glance. Every incorrect word in the vocabulary receives a *positive* gradient (its predicted probability minus zero), signaling that its logit should decrease. The correct word `fox` receives a *negative* gradient ($\hat{y}_{fox} - 1$, a number less than zero), signaling that its logit should increase. The magnitudes are self-calibrating—the most overconfident wrong answers receive the strongest corrections.
-
+In the 8-word toy network, this gradient vector is interpretable at a glance. Every incorrect word in the vocabulary receives a *positive* gradient ($\hat{y}_i - 0 = \hat{y}_i$), signaling that its logit should decrease under gradient descent. The target word `fox` receives a *negative* gradient ($\hat{y}_{\text{fox}} - 1 = -0.55$), signaling that its logit should increase. The magnitudes are self-calibrating: the most overconfident wrong predictions receive the largest positive gradients and the strongest downward corrections.
 
 The gradient at the logits has been established. The next chapter continues the backward pass through the weight matrices.
 
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p>

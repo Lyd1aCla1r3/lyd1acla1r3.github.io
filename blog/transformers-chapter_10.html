@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -118,44 +159,44 @@
     <li><a href="index.html">Blog</a></li><li><a href="series-transformers.html">Series: Transformers</a></li><li aria-current="page">Part 10: The Residual Stream and MLP Expansion</li></ol></nav>
         <article class="blog-post series-transformers">
 <h1>Part 10: The Residual Stream and MLP Expansion</h1>
-<!-- SUMMARY: The expansion phase of the feed-forward network acts as a high-dimensional key-value memory retrieval mechanism. By projecting token vectors into a substantially larger geometric space, the model computes dot products against learned key patterns to measure alignment with higher-order conceptual features. --><p>The calculations outlined in Parts 8 and 9 successfully update the residual stream and stabilize the geometry of the network through layer normalization. These operations preserve forward information flow while neutralizing gradient degradation, leaving the token vectors perfectly positioned for the next architectural phase.</p>
+<!-- SUMMARY: The expansion phase of the feed-forward network acts as a high-dimensional key-value memory retrieval mechanism. By projecting token vectors into a substantially larger geometric space, the model computes dot products against learned key patterns to measure alignment with higher-order conceptual features. --><p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p><p>The calculations outlined in Parts 8 and 9 update the residual stream and stabilize the geometry of the network through layer normalization. These operations preserve forward information flow while neutralizing gradient degradation, leaving the token vectors positioned for the next architectural phase.</p>
 <h2>The MLP as a Key-Value Memory Bank</h2>
-<p>The model has successfully normalized the residual stream. The vectors are now stable, centered, and scaled, ready for the next major transformation. Up until this point, the self-attention mechanism has allowed tokens to move information <em>between</em> one another. The representation for &quot;up&quot; has reached out and pulled in context from &quot;woke&quot;. Attention, however, merely routes information. It does not possess the capacity to interpret that combined information into a new, higher-level concept.</p>
-<p>To process the newly contextualized vector, the architecture passes it into the Feed-Forward Network, often referred to as the Multi-Layer Perceptron or MLP.</p>
-<p>Historically, the MLP has been described simply as a function that &quot;expands dimensions&quot; and introduces non-linearity. Mechanistic interpretability offers a far more precise and compelling geometric framing. One can view the MLP as a massive Key-Value memory bank stored directly within the weights of the network. The following section will focus entirely on the first linear layer of the MLP, which acts as the &quot;Keys&quot; in this memory retrieval system.</p>
+<p>The model has standardized the residual stream into centered, unit-variance token vectors. Up to this stage, self-attention has routed contextual information between sequence positions: the representation for <code>up</code> has pulled in contextual features from <code>woke</code>. Self-attention routes information across tokens, yet linear attention mixing alone cannot non-linearly transform those combined features into higher-order semantic concepts.</p>
+<p>Processing each contextualized token vector individually requires the second major sub-layer of the Transformer block: the Feed-Forward Network, also called the Multi-Layer Perceptron (MLP).</p>
+<p>Introductory treatments often describe the MLP merely as a two-layer feed-forward network that expands dimensionality and applies a non-linear activation. Mechanistic interpretability provides a concrete geometric framing: the MLP functions as a learned Key-Value memory bank stored within its weight matrices. This section examines the first linear projection of the MLP, which serves as the Key lookup stage of that memory retrieval system.</p>
 <h2>The Geometry of the Keys</h2>
-<p>The model dimensionality is $d_{model} = 6$. The standard architecture of a Transformer dictates that the hidden layer of the MLP is significantly wider than the residual stream, typically expanding the dimensionality by a factor of four. Therefore, the feed-forward dimension is $d_{ff} = 24$.</p>
-<p>The first projection matrix, $W_1$, has a shape of $6 \times 24$. The calculation multiplies the normalized residual stream $X_{norm}$ with a shape of $4 \times 6$ by $W_1$, resulting in a projected matrix of shape $4 \times 24$.</p>
-<p>Rather than viewing $W_1$ as a monolithic mathematical operation, examining its internal structure reveals a deeper mechanism. $W_1$ consists of 24 distinct column vectors, each existing in the 6-dimensional space. Each of these 24 columns represents a specific &quot;Key.&quot;</p>
-<p>A Key is a learned spatial pattern. When computing the dot product of a token&#39;s vector with one of these column vectors, the operation is measuring geometric similarity. It is asking the model a very specific question. Does the contextualized token contain the features described by this Key?</p>
-<p>Defining the first column of the learned $W_1$ matrix as the key $k_1$ illustrates this principle:</p>
+<p>The model dimension is $d_{model} = 6$. Standard Transformer architectures expand the hidden layer of the MLP by a factor of four relative to the residual stream, setting the feed-forward dimension to $d_{ff} = 4 \times d_{model} = 24$.</p>
+<p>The first projection matrix, $W_1$, has a shape of $6 \times 24$. The calculation multiplies the normalized residual stream $X_{norm}$ ($4 \times 6$) by $W_1$, resulting in a projected matrix of shape $4 \times 24$.</p>
+<p>Rather than viewing $W_1$ as a monolithic block, examining its column structure clarifies its geometric role. The matrix $W_1$ consists of 24 distinct column vectors in $\mathbb{R}^6$, where each column represents a learned Key pattern.</p>
+<p>Each Key column represents a learned spatial pattern in $\mathbb{R}^6$. Computing the dot product between a normalized token vector and a Key column measures their directional alignment, testing whether the contextualized token exhibits the specific feature combination encoded by that Key.</p>
+<p>Defining the first column of the learned $W_1$ matrix as the key vector $k_1$ illustrates this lookup mechanism:</p>
 <p>$$
 k_1 = \begin{bmatrix}
--0.07 \\
- 0.44 \\
--0.31 \\
- 0.31 \\
- 0.61 \\
- 0.05
+ 0.33 \\
+-0.51 \\
+-1.89 \\
+ 0.67 \\
+ 0.86 \\
+ 1.55
 \end{bmatrix}
 $$</p>
-<p>Next, the system extracts the normalized vector for the third token, &quot;woke&quot;, from the $X_{norm}$ matrix calculated in the previous step:</p>
+<p>The system extracts the normalized vector for the third token, <code>woke</code>, from Row 3 of the $X_{norm}$ matrix calculated in Part 9:</p>
 <p>$$
 x_{woke} = \begin{bmatrix}
--0.17 & -2.12 & 1.29 & 0.01 & -1.45 & -0.12
+ 0.23 & -1.54 & 1.57 & 0.40 & -0.94 & 0.28
 \end{bmatrix}
 $$</p>
-<p>To determine how strongly the &quot;woke&quot; token aligns with the pattern defined by $k_1$, the process computes their dot product:</p>
+<p>Computing the dot product between $x_{woke}$ and $k_1$ quantifies how strongly the contextualized <code>woke</code> token aligns with the first Key pattern:</p>
 <p>$$
-x_{woke} \cdot k_1 = (-0.17 \times -0.07) + (-2.12 \times 0.44) + (1.29 \times -0.31) + (0.01 \times 0.31) + (-1.45 \times 0.61) + (-0.12 \times 0.05)
+x_{woke} \cdot k_1 = (0.23 \times 0.33) + (-1.54 \times -0.51) + (1.57 \times -1.89) + (0.40 \times 0.67) + (-0.94 \times 0.86) + (0.28 \times 1.55)
 $$</p>
 <p>$$
-x_{woke} \cdot k_1 = 0.01 - 0.93 - 0.40 + 0.00 - 0.88 - 0.01 = -2.21
+x_{woke} \cdot k_1 = 0.08 + 0.79 - 2.97 + 0.27 - 0.81 + 0.43 = -2.21
 $$</p>
-<p>A negative dot product indicates that the vector for &quot;woke&quot; points in the opposite direction of the key $k_1$. This specific token does not contain the conceptual features that $k_1$ is looking for.</p>
-<p>By performing this multiplication across the entire matrix, the system simultaneously checks every token against all 24 Keys.</p>
+<p>A negative dot product indicates that the vector for <code>woke</code> points away from $k_1$ in six-dimensional space, meaning this token does not match the feature pattern represented by the first Key.</p>
+<p>Performing this matrix multiplication across all four rows simultaneously checks every token against all 24 Keys.</p>
 <h2>The Projection Calculation</h2>
-<p>The complete matrix multiplication $X_{norm} W_1 = X_{proj}$ follows. To keep the display manageable while rigorously showing the math, the following matrix presents the full result of checking the 4 sequence tokens against all 24 Keys.</p>
+<p>The complete matrix multiplication $X_{norm} W_1 = X_{proj}$ follows:</p>
 <p>$$
 X_{proj} = \begin{bmatrix}
  0.64 & -0.30 & -0.93 & -0.86 &  0.53 & -1.24 &  0.88 &  0.71 & -2.13 & \dots & -0.19 \\
@@ -164,15 +205,18 @@ X_{proj} = \begin{bmatrix}
 -0.62 & -0.74 & -0.58 & -0.56 &  0.00 &  2.26 & -0.71 &  0.74 &  2.40 & \dots &  1.53
 \end{bmatrix}
 $$</p>
-<p>Each row in $X_{proj}$ represents a token. Each column corresponds to one of the 24 Keys. The value at Row 3, Column 1 is significant. It is $-2.21$, exactly as calculated manually for the &quot;woke&quot; token interacting with $k_1$.</p>
-<p>Conversely, Row 3, Column 9 tells a different story. The value is a highly positive $3.32$. This indicates that the &quot;woke&quot; token strongly activated the 9th Key in the network. The pattern has been successfully recognized.</p>
+<p>Each row in $X_{proj}$ corresponds to one of the four sequence tokens, and each column corresponds to one of the 24 Keys. The entry at Row 3, Column 1 equals $-2.21$, matching the manual dot product computed between <code>woke</code> and $k_1$.</p>
+<p>Row 3, Column 9 exhibits a strong positive score of $3.32$, indicating that the contextualized representation for <code>woke</code> aligns closely with the ninth Key vector.</p>
 <h2>The Bias Vector</h2>
-<p>In a standard linear layer, a learned bias vector $b_1$ is applied immediately after the matrix multiplication. The bias vector shifts the results, acting as a baseline activation threshold for each of the 24 Keys.</p>
+<p>In a standard linear layer, a learned bias vector $b_1$ is added immediately after the matrix multiplication. The bias vector shifts the pre-activation scores, acting as a baseline activation threshold for each of the 24 Keys:</p>
 <p>$$
 X_{proj\_biased} = X_{proj} + b_1
 $$</p>
-<p>If a particular Key requires a very strict match to activate, the network can learn a highly negative bias for that position, forcing the dot product to be exceedingly large to overcome the penalty. If a Key should trigger easily, the network learns a positive bias.</p>
-<p>For this model, the architecture applies a randomly initialized $b_1$ vector of length 24 to every row in $X_{proj}$, yielding the final pre-activation state:</p>
+<p>A negative bias raises the activation threshold for a Key, requiring a large positive dot product to overcome the offset, whereas a positive bias lowers the threshold so the Key fires more readily.</p>
+<p>Adding the learned bias vector $b_1$ across every row of $X_{proj}$ produces the pre-activation state $X_{proj\_biased}$:</p>
+<p>$$
+b_1 = \begin{bmatrix} -0.06 & 0.04 & -0.16 & -0.04 & 0.03 & 0.08 & 0.14 & 0.00 & -0.12 & \dots & 0.15 \end{bmatrix}
+$$</p>
 <p>$$
 X_{proj\_biased} = \begin{bmatrix}
  0.58 & -0.26 & -1.09 & -0.90 &  0.56 & -1.16 &  1.03 &  0.71 & -2.25 & \dots & -0.04 \\
@@ -181,8 +225,8 @@ X_{proj\_biased} = \begin{bmatrix}
 -0.69 & -0.71 & -0.74 & -0.60 &  0.03 &  2.34 & -0.56 &  0.74 &  2.29 & \dots &  1.68
 \end{bmatrix}
 $$</p>
-<p>The vectors have successfully probed the memory bank. The calculation has measured exactly how well each token aligns with the 24 internal Key patterns. The next step is determining which of these patterns actually &quot;fires,&quot; dropping irrelevant matches to zero before writing new conceptual information back into the residual stream. This thresholding introduces non-linearity, bringing the network to the Activation Function.</p>
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p>The token vectors have now queried all 24 Key patterns in the memory bank. The next stage applies a non-linear activation gate to zero out negative non-matches before projecting the surviving activations back into the residual stream.</p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="transformers-chapter_09.html" class="pagination-link prev">

@@ -16,7 +16,7 @@ The position index $t$ is distinct from the indices $i$ and $j$ used in Chapter 
 
 ### Constraint 1: Uniqueness
 
-Each position $t$ must map to a distinct vector. If $\mathbf{p}(t_1) = \mathbf{p}(t_2)$ for $t_1 \neq t_2$, the encoding cannot distinguish those two positions, and permutation invariance between them persists. Formally:
+Each position $t$ must map to a distinct vector. An equality $\mathbf{p}(t_1) = \mathbf{p}(t_2)$ for $t_1 \neq t_2$ prevents the encoding from distinguishing those two positions, and permutation invariance between them persists. Formally:
 
 $$
 t_1 \neq t_2 \implies \mathbf{p}(t_1) \neq \mathbf{p}(t_2)
@@ -24,7 +24,7 @@ $$
 
 ### Constraint 2: Boundedness
 
-The values of $\mathbf{p}(t)$ must remain bounded, regardless of $t$. If positional encoding values grow with position, adding them to the embedding vectors would distort the magnitude of embeddings at later positions, overwhelming the semantic signal with a positional artifact.
+The values of $\mathbf{p}(t)$ must remain bounded, regardless of $t$. Unbounded positional encoding values that grow with position would distort the magnitude of embeddings at later positions, overwhelming the semantic signal with a positional artifact.
 
 The notation $p_k(t)$ denotes the $k$-th component of the vector $\mathbf{p}(t)$, where $k \in \{0, 1, \ldots, d_{model} - 1\}$ indexes the individual dimensions of the encoding vector (for the toy model, $k \in \{0, 1, 2\}$). The index $k$ is introduced here rather than reusing $i$ or $j$ because $i$ will serve as the dimension pair index in the sinusoidal formula later in this chapter, and $j$ already indexes columns in the similarity matrix from Chapter 1. The constraint requires that every component of every positional encoding vector remains bounded:
 
@@ -32,25 +32,25 @@ $$
 |\,p_k(t)\,| \leq 1 \quad \text{for all } t, k
 $$
 
-The specific bound $[-1, 1]$ is chosen to match the scale of the embedding components. The toy model's embedding matrix $X$ contains values ranging from $-0.8$ to $0.9$, all within this interval. In production models, layer normalization constrains embedding components to a comparable magnitude. Because the positional encoding is added element-wise to the embedding (as derived in Chapter 3), the two signals must be of the same order: a positional encoding bounded in $[-1, 1]$ contributes a signal commensurate with the semantic content. A wider bound would allow the positional signal to dominate the embedding; a narrower bound would render it negligible.
+The specific bound $[-1, 1]$ is chosen to match the scale of the embedding components. The toy model's embedding matrix $X$ contains values ranging from $-0.8$ to $0.9$, all within this interval. In production models, layer normalization constrains embedding components to a comparable magnitude. Element-wise addition of the positional encoding to the embedding (derived in Chapter 3) requires the two signals to share the same scale: a positional encoding bounded in $[-1, 1]$ contributes a signal commensurate with the semantic content. A wider bound would allow the positional signal to dominate the embedding; a narrower bound would render it negligible.
 
 ### Constraint 3: Determinism
 
-The encoding must be a fixed, deterministic function of position, not a set of learned parameters. A learned positional embedding (a trainable matrix $W_P \in \mathbb{R}^{T_{max} \times d_{model}}$) introduces $T_{max} \times d_{model}$ additional parameters and imposes a hard maximum sequence length $T_{max}$. Because each position's vector is an independent parameter, the mechanism cannot generalize to positions unseen during training: if a model is trained exclusively on sequences up to $1024$ tokens, it possesses no vector for position $1024$ during inference, and lacks a mathematical rule to generate one. A deterministic function avoids these limitations: it requires no training, imposes no maximum length, and evaluates validly for any position index $t$ on demand.
+The encoding must be a fixed, deterministic function of position, not a set of learned parameters. A learned positional embedding (a trainable matrix $W_P \in \mathbb{R}^{T_{max} \times d_{model}}$) introduces $T_{max} \times d_{model}$ additional parameters and imposes a hard maximum sequence length $T_{max}$. Treating each position's vector as an independent parameter prevents the mechanism from generalizing to positions unseen during training: a model trained exclusively on sequences up to $1024$ tokens possesses no vector for position $1024$ during inference and lacks a mathematical rule to generate one. A deterministic function avoids these limitations: it requires no training, imposes no maximum length, and evaluates validly for any position index $t$ on demand.
 
 ### Constraint 4: Smoothness
 
-Nearby positions should produce nearby encoding vectors. If $\mathbf{p}(t)$ and $\mathbf{p}(t+1)$ are distant in $\mathbb{R}^{d_{model}}$, the encoding treats adjacent positions as unrelated. This discards the assumption that sequential proximity implies structural relevance: words located next to each other are structurally more related than words separated by a large distance. Formally, the Euclidean distance $\|\mathbf{p}(t) - \mathbf{p}(t+1)\|$ should be small relative to $\|\mathbf{p}(t) - \mathbf{p}(t+\Delta)\|$ for offset $\Delta > 1$.
+Nearby positions should produce nearby encoding vectors. Large distances between $\mathbf{p}(t)$ and $\mathbf{p}(t+1)$ in $\mathbb{R}^{d_{model}}$ cause the encoding to treat adjacent positions as unrelated. Such a discontinuity discards the assumption that sequential proximity implies structural relevance: words located next to each other are structurally more related than words separated by a large distance. Formally, the Euclidean distance $\|\mathbf{p}(t) - \mathbf{p}(t+1)\|$ should be small relative to $\|\mathbf{p}(t) - \mathbf{p}(t+\Delta)\|$ for offset $\Delta > 1$.
 
 ### Constraint 5: Relative Representability
 
-The relationship between any two positions $t$ and $t + \Delta$ should be expressible as a fixed linear transformation that depends only on the offset $\Delta$, not on the absolute positions. This means there exists a matrix $M_\Delta$ (independent of $t$) such that:
+The relationship between any two positions $t$ and $t + \Delta$ should be expressible as a fixed linear transformation that depends only on the offset $\Delta$, not on the absolute positions. Formally, a matrix $M_\Delta$ (independent of $t$) must exist such that:
 
 $$
 \mathbf{p}(t + \Delta) = M_\Delta \, \mathbf{p}(t)
 $$
 
-This constraint enables the model to learn relative positional relationships (the token 3 positions ahead) rather than memorizing absolute position labels (position 7). Relative relationships generalize across different positions in the sequence and across different sequence lengths.
+Satisfying this condition allows the attention mechanism to learn relative positional relationships (the token 3 positions ahead) rather than memorizing absolute position labels (position 7). Relative relationships generalize across different positions in the sequence and across different sequence lengths.
 
 ## Trigonometric Functions as the Natural Solution
 
@@ -58,10 +58,10 @@ The five constraints collectively point to a narrow family of functions. The req
 
 Trigonometric functions ($\sin$ and $\cos$) satisfy the first four constraints by construction:
 
-- **Bounded** in $[-1, 1]$ for all inputs.
-- **Smooth** (infinitely differentiable).
-- **Deterministic** (fixed functions with no parameters).
-- **Unique** when combined at multiple frequencies (the vector of values at different frequencies produces a distinct fingerprint for each position).
+- **Boundedness:** Values remain within $[-1, 1]$ for all real inputs.
+- **Smoothness:** Continuous, infinitely differentiable curves map nearby positions to nearby values.
+- **Determinism:** Closed-form evaluations require zero trainable parameters.
+- **Uniqueness:** Multi-frequency combinations produce a distinct vector fingerprint for each position.
 
 The fifth constraint (relative representability) is the decisive one. The angle-addition identities for sine and cosine provide the required linear transformation. For a single frequency $\omega$, the value at an offset position $t + \Delta$ expands algebraically into cross-terms:
 
@@ -79,9 +79,9 @@ $$
 \begin{bmatrix} \sin(\omega(t + \Delta)) \\ \cos(\omega(t + \Delta)) \end{bmatrix} = \begin{bmatrix} \cos(\omega \Delta) & \sin(\omega \Delta) \\ -\sin(\omega \Delta) & \cos(\omega \Delta) \end{bmatrix} \begin{bmatrix} \sin(\omega t) \\ \cos(\omega t) \end{bmatrix}
 $$
 
-The $2 \times 2$ matrix on the right depends exclusively on the offset $\Delta$ and the frequency $\omega$, completely independent of the absolute position $t$. This is the standard formulation of a two-dimensional rotation matrix. Shifting the position index from $t$ to $t + \Delta$ increases the function's argument by exactly $\omega \Delta$. Geometrically, adding an angle to a vector's current angular position is the definition of a rotation. Thus, advancing the sequence position is mathematically equivalent to rotating the vector $[\sin, \cos]^\top$ by an angle of $\omega \Delta$. 
+The $2 \times 2$ matrix on the right depends exclusively on the offset $\Delta$ and the frequency $\omega$, completely independent of the absolute position $t$. That matrix is the standard formulation of a two-dimensional rotation operator. Shifting the position index from $t$ to $t + \Delta$ increases the function's argument by $\omega \Delta$. Geometrically, adding an angle to a vector's current angular position defines a planar rotation. Advancing the sequence position is mathematically equivalent to rotating the vector $[\sin(\omega t), \cos(\omega t)]^\top$ by an angle of $\omega \Delta$. 
 
-Trigonometric functions are the unique solution to this constraint. Mathematically, the only continuous functions that can translate an additive shift ($t + \Delta$) into a fixed linear transformation (a matrix multiplication independent of $t$) are exponential functions and sinusoids. Because real exponentials either explode to infinity or decay to zero (violating the boundedness constraint), sinusoids remain as the sole elementary function family capable of providing this translation-invariant property while maintaining a stable magnitude.
+Trigonometric functions are the unique solution to this constraint. Mathematically, the only continuous functions that can translate an additive shift ($t + \Delta$) into a fixed linear transformation (a matrix multiplication independent of $t$) are exponential functions and sinusoids. Real exponentials either explode to infinity or decay to zero (violating the boundedness constraint), leaving sinusoids as the sole elementary function family capable of providing this translation-invariant property while maintaining a stable magnitude.
 
 ## The Sinusoidal Positional Encoding Formula
 
@@ -95,12 +95,12 @@ $$
 PE(t, 2i+1) = \cos\!\left(\frac{t}{10000^{\,2i\,/\,d_{model}}}\right)
 $$
 
-The formula requires two independent variables to compute a specific entry in the $T \times d_{model}$ positional encoding matrix:
+The formula combines two indexing variables and two architectural constants to compute each entry in the $T \times d_{model}$ positional encoding matrix:
 
-- $t \in \{0, 1, \ldots, T-1\}$ is the **position index** (the matrix row). It identifies where the token sits in the sequence. To encode a single position $t$, the formula must generate an entire $d_{model}$-dimensional vector.
-- $i$ is the **dimension pair index** (the matrix column pair). It sweeps across the dimensions of the vector being generated. The maximum $i$ is determined by halving $d_{model}$ and zero-indexing. For a production architecture with $d_{model} = 128$, the index ranges from $i = 0$ through $i = 63$. Each increment of $i$ fills two adjacent columns: an even dimension $2i$ with a sine evaluation, and an odd dimension $2i+1$ with a cosine evaluation.
-- $d_{model}$ is the **embedding dimension**, which dictates the total number of frequencies needed.
-- $10000$ is a **base constant** that determines the minimum frequency.
+- **Position Index ($t \in \{0, 1, \ldots, T-1\}$):** Identifies the matrix row corresponding to where the token sits in the sequence. Encoding a single position $t$ generates an entire $d_{model}$-dimensional vector.
+- **Dimension Pair Index ($i$):** Sweeps across the column pairs of the generated vector. Halving $d_{model}$ with zero-indexing determines the range (for $d_{model} = 128$, $i$ runs from $0$ through $63$). Each increment of $i$ fills two adjacent columns: an even dimension $2i$ with a sine evaluation and an odd dimension $2i+1$ with a cosine evaluation.
+- **Embedding Dimension ($d_{model}$):** Dictates the width of each positional vector and the total number of frequency pairs.
+- **Base Constant ($10000$):** Sets the geometric progression ratio that determines the minimum angular frequency.
 
 The argument to the trigonometric functions can be written as $t \cdot \omega_i$, where the **angular frequency** for pair $i$ is:
 
@@ -108,9 +108,9 @@ $$
 \omega_i = \frac{1}{10000^{\,2i\,/\,d_{model}}}
 $$
 
-As the column pair index $i$ increases, the exponent $2i / d_{model}$ increases, the denominator grows, and the frequency $\omega_i$ decreases. The first dimension pair ($i = 0$) oscillates rapidly with a wavelength of $2\pi \approx 6.28$ positions. The final dimension pair oscillates extremely slowly, taking approximately $2\pi \cdot 10000 \approx 62{,}832$ positions to complete a single cycle. 
+Increasing the column pair index $i$ raises the exponent $2i / d_{model}$, enlarges the denominator, and decreases the frequency $\omega_i$. The first dimension pair ($i = 0$) oscillates rapidly with a wavelength of $2\pi \approx 6.28$ positions. The final dimension pair oscillates extremely slowly, taking approximately $2\pi \cdot 10000 \approx 62{,}832$ positions to complete a single cycle. 
 
-This spectrum of frequencies allows the encoding to operate at multiple scales simultaneously. The rapid oscillations act as a fine-grained signal, pinpointing exact local offsets (separating adjacent positions). The slow oscillations act as a coarse-grained signal, identifying broad regional placement (distinguishing the beginning of a document from the end).
+This spectrum of frequencies allows the encoding to operate at multiple scales simultaneously. The rapid oscillations act as a fine-grained signal, pinpointing local offsets between adjacent positions. The slow oscillations act as a coarse-grained signal, identifying broad regional placement (distinguishing the beginning of a document from the end).
 
 ## Wavelengths for the Toy Model ($d_{model} = 3$)
 
@@ -128,7 +128,7 @@ $$
 \lambda_0 = \frac{2\pi}{\omega_0} = \frac{2\pi}{1} = 2\pi \approx 6.2832 \text{ positions}
 $$
 
-Dimension 0 receives $\sin(t \cdot 1) = \sin(t)$, and dimension 1 receives $\cos(t \cdot 1) = \cos(t)$. This is the fastest oscillation: the sine and cosine values cycle through a full period every $\approx 6.28$ positions.
+Dimension 0 receives $\sin(t \cdot 1) = \sin(t)$, and dimension 1 receives $\cos(t \cdot 1) = \cos(t)$. Pair $i = 0$ produces the fastest oscillation: the sine and cosine values cycle through a full period every $\approx 6.28$ positions.
 
 **Pair $i = 1$ (dimension 2 only, the odd-dimension edge case):**
 
@@ -142,13 +142,15 @@ $$
 \lambda_1 = \frac{2\pi}{\omega_1} = 2\pi \cdot 10000^{2/3} = 2\pi \cdot 464.1589 \approx 2916.40 \text{ positions}
 $$
 
-Because $d_{model} = 3$ is odd, the second pair is incomplete. Dimension $2i = 2$ exists and receives $\sin(t \cdot \omega_1)$, but the corresponding cosine component would require dimension $2i + 1 = \mathbf{3}$. Because the vector only has three dimensions (indexed 0, 1, and 2), this cosine component has no dimension to occupy.
+An odd embedding dimension ($d_{model} = 3$) leaves the second pair incomplete. Dimension $2i = 2$ exists and receives $\sin(t \cdot \omega_1)$, whereas the corresponding cosine component would require dimension $2i + 1 = \mathbf{3}$. The three-dimensional vector contains only indices 0, 1, and 2, leaving no coordinate for that cosine component to occupy.
 
-The sinusoidal formula allocates frequencies in sine-cosine pairs precisely because of the algebraic expansion derived in Constraint 5. To express a relative positional offset as a rotation, the mechanism must compute a linear combination of two orthogonal components. As established by the identity $\sin(\omega(t + \Delta)) = \sin(\omega t)\cos(\omega \Delta) + \cos(\omega t)\sin(\omega \Delta)$, the unshifted cosine component $\cos(\omega t)$ is strictly required to determine the shifted sine value. Because the two components are algebraically entangled, the rotation cannot be performed without evaluating both a sine and a cosine at the same frequency. 
+The sinusoidal formula allocates frequencies in sine-cosine pairs to satisfy the algebraic expansion derived in Constraint 5. Expressing a relative positional offset as a planar rotation requires a linear combination of two orthogonal components. The identity $\sin(\omega(t + \Delta)) = \sin(\omega t)\cos(\omega \Delta) + \cos(\omega t)\sin(\omega \Delta)$ shows that the unshifted cosine component $\cos(\omega t)$ is required to determine the shifted sine value. Algebraic entanglement between the two components prevents the rotation from executing without evaluating both a sine and a cosine at the same frequency. 
 
-When an architecture specifies an odd embedding dimension, the dimension count cannot accommodate full pairs. The final frequency is structurally truncated to a solitary sine component. Without its paired cosine, this final dimension cannot undergo 2D rotation and thus fails the relative representability constraint. Production architectures universally avoid this structural failure by specifying even dimensions (typically multiples of 64 or 128 per attention head).
+An odd embedding dimension cannot accommodate full sine-cosine pairs. The final frequency is structurally truncated to a solitary sine component. Without its paired cosine, this final dimension cannot undergo 2D rotation and thus fails the relative representability constraint. Production architectures universally avoid this structural failure by specifying even dimensions (typically multiples of 64 or 128 per attention head).
 
-The slow rate of change in dimension 2 is determined entirely by its assigned frequency, independent of the truncation. For this dimension, the pair index is $i = 1$, which yields the constant frequency $\omega_1 \approx 0.002154$. As the formula evaluates sequence positions from row $t = 0$ to row $t = 3$, this constant frequency is multiplied by the row index to produce the argument for the sine function ($t \cdot \omega_1$). Because the frequency is so small, the resulting argument grows extremely slowly: from $0$ at the first position to just $3 \times 0.002154 \approx 0.006463$ radians at the final position. For angles this small, the sine function is nearly linear ($\sin(\theta) \approx \theta$). Consequently, dimension 2 contains values very close to zero that increase steadily, acting as a coarse positional signal across the sequence.
+The slow rate of change in dimension 2 is determined entirely by its assigned frequency, independent of the truncation. Pair index $i = 1$ governs this coordinate and yields the constant frequency $\omega_1 \approx 0.002154$. Evaluating sequence positions from row $t = 0$ to row $t = 3$ multiplies this constant frequency by the row index to produce the sine argument ($t \cdot \omega_1$).
+
+That small frequency causes the argument to grow slowly, rising from $0$ at the first position to $3 \times 0.002154 \approx 0.006463$ radians at the final position. For angles near zero, the sine function is nearly linear ($\sin(\theta) \approx \theta$). Dimension 2 therefore contains small positive values near zero that increase steadily, acting as a coarse positional signal across the sequence.
 
 ## Computing the Positional Encoding Matrix
 
@@ -176,7 +178,7 @@ $$
 PE(0, 2) = \sin(0 \cdot 0.002154) = \sin(0) = \mathbf{0.0000}
 $$
 
-Position 0 receives the vector $\begin{bmatrix} 0 & 1 & 0 \end{bmatrix}$. The sine components are zero at the origin, and the cosine component is at its maximum. These are exact values, not approximations.
+Position 0 receives the vector $\begin{bmatrix} 0 & 1 & 0 \end{bmatrix}$. The sine components are zero at the origin, and the cosine component is at its maximum. These entries are closed-form integer values, not rounded approximations.
 
 ### Position $t = 1$
 
@@ -244,9 +246,9 @@ Each row is the positional encoding vector for the corresponding position. Row 0
 
 ### Uniqueness
 
-To verify uniqueness, let $\mathbf{p}_t$ denote the positional encoding vector for position $t$ (row $t$ of the $PE$ matrix). The Euclidean distance between any two vectors is zero if and only if the vectors are mathematically identical. Therefore, demonstrating that the distance between every pair of rows is strictly positive proves that no two rows are the same.
+To verify uniqueness, let $\mathbf{p}_t$ denote the positional encoding vector for position $t$ (row $t$ of the $PE$ matrix). The Euclidean distance between any two vectors is zero if and only if the vectors are mathematically identical. Demonstrating that the distance between every pair of rows is strictly positive proves that no two rows are identical.
 
-For example, the distance between the vectors for position 0 and position 1 is computed by summing the squared differences of their components and taking the square root:
+The Euclidean distance between the vectors for position 0 and position 1 is computed by summing the squared differences of their components and taking the square root:
 
 $$
 \|\mathbf{p}_0 - \mathbf{p}_1\| = \sqrt{(0.0000 - 0.8415)^2 + (1.0000 - 0.5403)^2 + (0.0000 - 0.0022)^2}
@@ -257,22 +259,22 @@ $$
 
 Computing the distances between all six possible pairs of rows yields:
 
-| Pair (Offset) | Distance |
-|---|---|
-| $\|\mathbf{p}_0 - \mathbf{p}_1\|$ ($\Delta = 1$) | $0.9589$ |
-| $\|\mathbf{p}_0 - \mathbf{p}_2\|$ ($\Delta = 2$) | $1.6829$ |
-| $\|\mathbf{p}_0 - \mathbf{p}_3\|$ ($\Delta = 3$) | $1.9950$ |
-| $\|\mathbf{p}_1 - \mathbf{p}_2\|$ ($\Delta = 1$) | $0.9589$ |
-| $\|\mathbf{p}_1 - \mathbf{p}_3\|$ ($\Delta = 2$) | $1.6829$ |
-| $\|\mathbf{p}_2 - \mathbf{p}_3\|$ ($\Delta = 1$) | $0.9589$ |
+| Vector Pair | Relative Offset | Euclidean Distance |
+| :--- | :--- | :--- |
+| `\|\|p_0 - p_1\|\|` | `Δ = 1` | `0.9589` |
+| `\|\|p_0 - p_2\|\|` | `Δ = 2` | `1.6829` |
+| `\|\|p_0 - p_3\|\|` | `Δ = 3` | `1.9950` |
+| `\|\|p_1 - p_2\|\|` | `Δ = 1` | `0.9589` |
+| `\|\|p_1 - p_3\|\|` | `Δ = 2` | `1.6829` |
+| `\|\|p_2 - p_3\|\|` | `Δ = 1` | `0.9589` |
 
-Every distance is strictly positive, confirming uniqueness. Furthermore, the distances reveal a specific pattern: pairs separated by the same relative offset $\Delta$ share the identical distance (e.g., all adjacent positions where $\Delta = 1$ are exactly $0.9589$ units apart). 
+Every distance is strictly positive, confirming uniqueness. The computed distances also reveal a structural pattern: pairs separated by the same relative offset $\Delta$ share the identical distance (all adjacent positions with $\Delta = 1$ are $0.9589$ units apart). 
 
-This regularity is a geometric consequence of the rotation structure. Each dimension pair traces a path along a 2D circle at its assigned frequency. The complete encoding vector, composed of multiple pairs, traces a path on a high-dimensional torus (the mathematical product of multiple circles). Because shifting position by an offset $\Delta$ applies a fixed rotational angle to each circle, a shift of $\Delta$ always translates the point by a constant Euclidean distance across the surface of the torus, independent of the absolute starting position $t$.
+This regularity is a geometric consequence of the rotation structure. Each dimension pair traces a path along a 2D circle at its assigned frequency. The complete encoding vector, composed of multiple pairs, traces a path on a high-dimensional torus (the mathematical product of multiple circles). Shifting position by an offset $\Delta$ applies a fixed rotational angle to each circle, translating the point by a constant Euclidean distance across the surface of the torus regardless of the starting position $t$.
 
 ### Boundedness
 
-Every entry of $PE$ lies in $[-1, 1]$. The minimum value is $-0.9900$ (dimension 1, position 3), and the maximum is $1.0000$ (dimension 1, position 0). This bound holds for all positions, not just $t \in \{0, 1, 2, 3\}$. Geometrically, the trigonometric functions represent the $y$ and $x$ coordinates of a point traversing the unit circle (a circle with a radius of exactly 1). Because the radius is 1, no coordinate can ever exceed 1 or fall below $-1$. This structural property ensures that the output of $\sin(x)$ and $\cos(x)$ for any arbitrary real input $x$ is strictly bounded by $[-1, 1]$, perfectly satisfying the constraint.
+Every entry of $PE$ lies in $[-1, 1]$. The minimum value is $-0.9900$ (dimension 1, position 3), and the maximum is $1.0000$ (dimension 1, position 0). This bound holds for all positions, not just $t \in \{0, 1, 2, 3\}$. Geometrically, the trigonometric functions represent the $y$ and $x$ coordinates of a point traversing the unit circle of radius 1. Unit radius ensures that no coordinate ever exceeds $1$ or falls below $-1$. That unit-circle geometry guarantees that the output of $\sin(x)$ and $\cos(x)$ for any real input $x$ remains bounded within $[-1, 1]$, satisfying the constraint.
 
 ### Determinism
 
@@ -290,7 +292,7 @@ These are smaller than the distances between non-adjacent positions ($1.6829$ fo
 
 ### Relative Representability
 
-As derived in the trigonometric motivation above, shifting position by $\Delta$ applies a fixed linear transformation (a rotation by angle $\omega_i \Delta$) to each dimension pair. The transformation depends only on $\Delta$, not on the absolute position $t$. This property is inherited directly from the angle-addition identities for sine and cosine and will be verified numerically in a later chapter.
+The trigonometric derivation above established that shifting position by $\Delta$ applies a fixed linear transformation (a rotation by angle $\omega_i \Delta$) to each dimension pair. The transformation depends only on $\Delta$, not on the absolute position $t$. This property is inherited directly from the angle-addition identities for sine and cosine and will be verified numerically in a later chapter.
 
 ## Looking Forward
 

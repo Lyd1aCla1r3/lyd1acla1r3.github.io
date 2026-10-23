@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -118,36 +159,33 @@
     <li><a href="index.html">Blog</a></li><li><a href="series-transformers.html">Series: Transformers</a></li><li aria-current="page">Part 12: The MLP as a Key-Value Memory and Layer 1 Completion</li></ol></nav>
         <article class="blog-post series-transformers">
 <h1>Part 12: The MLP as a Key-Value Memory and Layer 1 Completion</h1>
-<!-- SUMMARY: The feed-forward network acts as a vast conceptual memory bank for the Transformer. By projecting the residual stream into a higher-dimensional space, the first linear layer functions as a series of specific pattern-matching keys, probing each token vector for complex linguistic and contextual features learned during training. The architecture of the first layer is then finalized by integrating the newly synthesized conceptual features back into the residual stream via additive updates. To counteract the resulting geometric instability and magnitude expansion, layer normalization is applied to prepare the contextualized vectors for deeper processing in subsequent layers. --><p>The self-attention mechanism allowed the tokens to mathematically look around the sequence, gathering context and shifting their geometric positions based on the surrounding words. The residual stream now carries these enriched, context-aware representations, stabilized by layer normalization. The next destination for these vectors is the Multilayer Perceptron, or MLP. While standard explanations describe this block simply as a feed-forward network that non-linearly expands and contracts dimensions, viewing the MLP through the lens of mechanistic interpretability reveals a much more profound structure, specifically a sophisticated Key-Value memory bank.</p>
-<p>To understand this memory bank, one must examine the first half of the MLP block. The architecture projects the normalized residual stream into a significantly wider dimensional space. In the toy model, the stream expands from a working dimension of six, $d_{model} = 6$, out to twenty-four, $d_{ff} = 24$. This expansion is driven by the first weight matrix, $W_1$. Rather than viewing this matrix as a black box of parameters, one can conceptualize each of its twenty-four columns as a distinct mathematical Key.</p>
-<p>During training, the network optimizes these Keys to recognize highly specific contextual concepts. One Key might be tuned to activate strongly when the vector represents a noun acting as the subject of a past-tense verb. Another Key might search for the concept of time. When the normalized residual stream is multiplied by $W_1$, the system is fundamentally computing the dot product between the tokens and every single one of these twenty-four Keys. A high dot product indicates a strong conceptual match between the token&#39;s current context and the pattern the Key is searching for.</p>
-<p>The $W_1$ matrix acts as the lock mechanism for this memory bank. To see this in action, it is helpful to observe the values of the $W_1$ projection matrix itself.</p>
+<!-- SUMMARY: The feed-forward network acts as a conceptual memory bank for the Transformer. Projecting the residual stream into a higher-dimensional space allows the first linear layer to function as a set of pattern-matching keys that probe each token vector for contextual features learned during training. Layer 1 then concludes by adding the synthesized MLP updates back into the residual stream and applying layer normalization to stabilize the vectors for Layer 2. --><p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p><h2>Complete Key-Value Memory Synthesis</h2>
+<p>Self-attention enables tokens to gather context across the sequence and shift their geometric positions based on surrounding words. Layer Normalization then standardizes those context-enriched vectors before they enter the Multi-Layer Perceptron (MLP). Viewed through mechanistic interpretability, the two linear layers of the MLP form a complete Key-Value memory bank: the expansion matrix $W_1$ ($6 \times 24$) stores 24 six-dimensional Key columns, the ReLU gate filters out negative alignments, and the contraction matrix $W_2$ ($24 \times 6$) writes the matched Value rows back into the $d_{model} = 6$ subspace.</p>
+<p>Inspecting the 10-column view of the calibrated $W_1$ matrix alongside the resulting pre-activation state $X_{\text{proj\_biased}}$ consolidates the forward trace of the memory lookup stage before the output merges back into the residual stream:</p>
 <p>$$
 W_1 = \begin{bmatrix}
--0.07 & -0.09 & -0.06 &  0.35 & -0.06 & -0.75 &  0.17 & -0.13 & -0.11 & \dots &  0.25 \\
- 0.44 & -0.12 &  0.19 &  0.12 &  0.39 & -0.56 &  0.28 & -0.76 & -1.31 & \dots &  0.24 \\
--0.31 & -0.36 & -0.23 &  0.25 & -0.13 &  1.17 & -0.41 & -0.55 &  0.38 & \dots &  1.16 \\
- 0.31 & -0.30 & -0.28 & -0.42 &  0.48 & -0.28 & -0.04 &  0.37 & -0.36 & \dots &  0.19 \\
- 0.61 & -0.01 &  0.98 & -0.18 &  0.80 &  0.06 & -0.26 & -0.56 & -0.08 & \dots & -0.18 \\
- 0.05 & -0.62 &  0.11 & -0.60 &  0.44 &  0.00 &  1.14 &  0.14 &  0.68 & \dots &  1.01
+ 0.33 & -0.71 &  0.20 &  0.15 &  0.71 & -0.90 &  0.55 & -0.72 & -0.44 & \dots &  1.34 \\
+-0.51 &  1.01 & -0.44 &  0.44 & -1.17 &  0.04 & -0.53 &  0.52 & -0.34 & \dots & -1.68 \\
+-1.89 &  1.56 & -1.29 &  0.83 & -2.77 &  2.09 & -1.75 &  1.56 &  1.94 & \dots & -2.10 \\
+ 0.67 & -0.70 & -0.02 & -0.55 &  1.07 & -0.56 &  0.27 & -0.11 & -0.79 & \dots &  0.85 \\
+ 0.86 & -0.17 &  1.20 & -0.25 &  1.14 & -0.19 & -0.09 & -0.87 & -0.43 & \dots &  0.06 \\
+ 1.55 & -2.53 &  1.14 & -1.22 &  3.02 & -0.86 &  2.47 & -1.93 & -0.83 & \dots &  4.32
 \end{bmatrix}
 $$</p>
-<p>When the normalized vectors from the sequence, specifically <code>&lt;BOS&gt;</code> <code>i</code> <code>woke</code> <code>up</code>, are multiplied by this matrix, and the learned bias terms are added, the result is a massive expansion of the data. Every token vector transforms from six numbers into twenty-four distinct activation potentials. </p>
+<p>Multiplying the normalized sequence representation $X_{norm}$ for <code>&lt;BOS&gt;</code>, <code>i</code>, <code>woke</code>, and <code>up</code> by $W_1$ and adding the bias vector $b_1$ produces the 24 pre-activation potentials in $X_{\text{proj\_biased}}$:</p>
 <p>$$
-\text{Projected State} = \begin{bmatrix}
+\text{Projected State } (X_{\text{proj\_biased}}) = \begin{bmatrix}
  0.58 & -0.26 & -1.09 & -0.90 &  0.56 & -1.16 &  1.03 &  0.71 & -2.25 & \dots & -0.04 \\
  1.01 & -1.28 & -0.81 & -1.00 &  1.50 & -2.11 &  2.30 & -0.21 & -2.75 & \dots &  1.88 \\
 -2.27 & -0.07 & -2.28 &  0.29 & -2.16 &  2.81 & -0.78 &  1.72 &  3.20 & \dots &  1.24 \\
 -0.69 & -0.71 & -0.74 & -0.60 &  0.03 &  2.34 & -0.56 &  0.74 &  2.29 & \dots &  1.68
 \end{bmatrix}
 $$</p>
-<p>This matrix represents the degree to which every token resonated with the twenty-four conceptual Keys in the memory bank. A highly positive number indicates a strong semantic match, suggesting the Key found exactly what it was trained to look for in the token&#39;s geometry. Conversely, a negative number indicates the absence of that concept. </p>
-<p>At this precise mathematical juncture, the network has successfully queried the memory bank. However, memory must be selectively recalled to be useful. The network requires a mechanism to silence the irrelevant concepts and amplify the critical discoveries before writing the findings back into the residual stream. This critical filtering role falls to the non-linear activation function, which bridges the gap between the Keys and their corresponding Values.</p>
-<p>After the MLP processes these values, the output represents a set of additive updates containing new features discovered within the local context of each token.</p>
+<p>Positive entries in this matrix mark strong directional matches between a token and the corresponding Key column, whereas negative entries mark absent features that the ReLU activation clamps to zero. Projecting the surviving positive activations through the Value matrix $W_2$ and adding $b_2$ (as computed in Part 11) yields the $4 \times 6$ update matrix $MLP_{output}$.</p>
 <h2>The Information Accumulator</h2>
-<p>It was established earlier that the Transformer does not pass data sequentially through a series of filters that discard old information. It maintains a persistent vector for each token, and each sublayer reads from this vector and adds its findings back to it.</p>
-<p>The output of the MLP is not a replacement for the representation of the token. It is an additive update. The system adds the MLP output vector directly to the Residual Stream vector as it existed prior to entering the MLP block.</p>
-<p>The original stream entering this phase is defined as $X_1$. This tensor contains the original embeddings enriched with the outputs of the Attention mechanism.</p>
+<p>The Transformer does not pass data sequentially through destructive filters that overwrite prior representations. It maintains a persistent residual vector for each token, and each sub-layer reads from this vector and adds its computed update back into the stream.</p>
+<p>The output of the MLP is an additive update rather than a replacement for the representation of the token. The architecture adds the MLP output matrix directly to the Residual Stream state $X_1$ that exited the first attention residual connection in Part 8.</p>
+<p>The residual stream entering this addition is $X_1$, which holds the positionally encoded embeddings enriched with the Layer 1 self-attention updates:</p>
 <p>$$
 X_1 = \begin{bmatrix}
  0.02 &  1.29 &  0.18 &  1.35 &  0.00 &  0.67 \\
@@ -156,7 +194,7 @@ X_1 = \begin{bmatrix}
  0.19 & -1.03 &  1.56 &  1.21 &  0.58 &  0.69
 \end{bmatrix}
 $$</p>
-<p>The MLP calculated a set of additive updates representing new features discovered within the local context of each token.</p>
+<p>The MLP contracted output matrix from Part 11 provides the feature updates discovered within the local context of each token:</p>
 <p>$$
 MLP_{output} = \begin{bmatrix}
 -4.07 &  0.04 & -0.06 & -1.74 & -1.17 & -0.77 \\
@@ -165,7 +203,7 @@ MLP_{output} = \begin{bmatrix}
  1.18 & -2.83 & -0.72 & -1.89 &  1.58 &  4.39
 \end{bmatrix}
 $$</p>
-<p>The updated Residual Stream $X_2$ is computed through simple elementwise addition.</p>
+<p>Adding $X_1$ and $MLP_{output}$ element by element produces the updated Residual Stream $X_2$:</p>
 <p>$$
 X_2 = X_1 + MLP_{output} = \begin{bmatrix}
 -4.05 &  1.33 &  0.12 & -0.39 & -1.17 & -0.10 \\
@@ -174,14 +212,14 @@ X_2 = X_1 + MLP_{output} = \begin{bmatrix}
  1.37 & -3.86 &  0.84 & -0.68 &  2.16 &  5.08
 \end{bmatrix}
 $$</p>
-<p>The magnitudes in the bottom two rows, representing the tokens &quot;woke&quot; and &quot;up&quot;, have grown significantly. The network has injected a strong semantic signal into these specific token representations based on their local context.</p>
+<p>The magnitudes in the bottom two rows, representing the tokens <code>woke</code> and <code>up</code>, have grown substantially. The MLP has injected a strong semantic update into these token representations based on their local context.</p>
 <h2>Preparing for Layer 2 Normalization</h2>
-<p>While adding vectors is a powerful way to accumulate information, it introduces geometric instability. As more vectors are added together, the overall magnitude of the resulting vector grows. If these enlarged vectors are passed into the next layer of the network, the dot products in the upcoming Attention mechanism will explode. This leads directly to the Softmax saturation problem solved previously.</p>
-<p>To maintain a stable geometric space, Layer Normalization is applied before passing these vectors into Layer 2. The mean and variance are calculated across the $d_{model}$ dimension for each token independently.</p>
+<p>Accumulating updates through vector addition increases activation magnitudes across sub-layers. Passing unnormalized vectors with variances as large as $10.89$ directly into Layer 2 would inflate the Query-Key dot products in the next attention block, triggering the Softmax saturation problem analyzed in Part 4.</p>
+<p>Applying a second Layer Normalization operation before Layer 2 restores zero mean and unit variance across the $d_{model} = 6$ dimension for each token independently:</p>
 <p>$$
 \text{Means} = \begin{bmatrix} -0.71 \\ -1.15 \\  1.57 \\  0.82 \end{bmatrix} \quad \text{Variances} = \begin{bmatrix} 2.78 \\  5.85 \\ 10.89 \\  7.40 \end{bmatrix}
 $$</p>
-<p>By subtracting the mean and dividing by the standard deviation, each vector is recentered around zero and its components are scaled to have a unit variance.</p>
+<p>Subtracting the row mean and dividing by the row standard deviation recenters each token vector at zero and scales its spread to unit variance:</p>
 <p>$$
 Normed_2 = \begin{bmatrix}
 -2.00 &  1.22 &  0.50 &  0.19 & -0.28 &  0.37 \\
@@ -190,23 +228,23 @@ Normed_2 = \begin{bmatrix}
  0.20 & -1.72 &  0.01 & -0.55 &  0.49 &  1.57
 \end{bmatrix}
 $$</p>
-<p>The relative information encoded in the direction of the vector is perfectly preserved, while the overall magnitude is brought back into a mathematically manageable range.</p>
+<p>The directional relationships encoded across the six coordinates are preserved, while the overall vector magnitudes return to a well-conditioned numerical range.</p>
 <h2>Visualizing the Complete Layer 1 Architecture</h2>
-<p>The sequence of operations in the first layer of the Transformer is now complete. This entire block of computation can be visualized to see how information flows from the initial input to the output of Layer 1.</p>
+<p>The sequence of operations in the first layer of the Transformer is now complete. The full Layer 1 computation graph traces how tensors flow from the initial prompt to the normalized input of Layer 2:</p>
 <pre><code class="language-mermaid">graph TD
-    A[&quot;&lt;BOS&gt; i woke up&quot;] --&gt; B[&quot;Embeddings and Positional Encoding&quot;]
-    B --&gt; C[&quot;Layer Normalization&quot;]
-    C --&gt; D[&quot;Self Attention Block&quot;]
-    D --&gt; E[&quot;Residual Addition 1&quot;]
-    B --&gt; E
-    E --&gt; F[&quot;Layer Normalization&quot;]
-    F --&gt; G[&quot;MLP Block&quot;]
-    G --&gt; H[&quot;Residual Addition 2&quot;]
-    E --&gt; H
+    A[&quot;&amp;lt;BOS&amp;gt; i woke up&quot;] --&gt; B[&quot;Embeddings and Positional Encoding X_in&quot;]
+    B --&gt; C[&quot;Multi-Head Self-Attention&quot;]
+    C --&gt; D[&quot;Residual Addition 1: X_1&quot;]
+    B --&gt; D
+    D --&gt; E[&quot;Layer Normalization 1: X_norm&quot;]
+    E --&gt; F[&quot;MLP Block: W_1, ReLU, W_2&quot;]
+    F --&gt; G[&quot;Residual Addition 2: X_2&quot;]
+    D --&gt; G
+    G --&gt; H[&quot;Layer Normalization 2: Normed_2&quot;]
     H --&gt; I[&quot;Layer 2 Input&quot;]
 </code></pre>
-<p>The vectors exiting this block are no longer simple dictionary lookups. They are highly contextualized representations. The vector for the token &quot;woke&quot; now inherently contains information about the preceding pronoun &quot;i&quot; and the subsequent particle &quot;up&quot;. The foundational features have been extracted, mixed, and amplified. In the next phase, these enriched vectors will be passed into Layer 2, allowing the network to form even deeper abstract associations.</p>
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p>The vectors exiting Layer 1 are no longer static dictionary lookups; they are contextualized geometric representations. The vector for the token <code>woke</code> now encodes relational features from the preceding pronoun <code>i</code> alongside local conceptual updates from the MLP. Passing this normalized $4 \times 6$ matrix into Layer 2 allows the next self-attention block to compute higher-order associations across multi-token phrases.</p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="transformers-chapter_11.html" class="pagination-link prev">

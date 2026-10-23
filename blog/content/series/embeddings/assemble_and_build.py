@@ -6,23 +6,25 @@ Two-pass ebook assembly and build pipeline for Vector Embeddings.
 3. Generates frontmatter.pdf (no page numbers) and body.pdf (page numbers starting at 1).
 4. Merges them into embeddings-ebook-v1.0.pdf using pypdf.
 """
+import base64
 import os
 import re
 import subprocess
+import sys
 
-directory = '/Users/lydia/Desktop/personal/career/resumes/portfolio/blog/content/series/embeddings'
-scripts_dir = '/Users/lydia/enablement/.agents/skills/pdf_generator/scripts'
+directory = os.path.dirname(os.path.abspath(__file__))
+portfolio_root = os.path.abspath(os.path.join(directory, '..', '..', '..', '..'))
+scripts_dir = os.path.expanduser('~/.gemini/config/skills/pdf_generator/scripts')
 frontmatter_file = os.path.join(directory, 'frontmatter.md')
 body_file = os.path.join(directory, 'body.md')
 frontmatter_pdf = os.path.join(directory, 'frontmatter.pdf')
 body_pdf = os.path.join(directory, 'body.pdf')
-final_pdf = '/Users/lydia/Desktop/personal/career/resumes/portfolio/assets/docs/embeddings-ebook-v1.0.pdf'
+final_pdf = os.path.join(portfolio_root, 'assets', 'docs', 'embeddings-ebook-v1.0.pdf')
+cover_image_path = os.path.join(portfolio_root, 'assets', 'images', 'embeddings_cover.jpg')
 
 files = ['preface.md'] + [f'chapter_{i:02d}.md' for i in range(1, 8)]
 
-import base64
-
-with open("/Users/lydia/Desktop/personal/career/resumes/portfolio/assets/images/embeddings_cover.jpg", "rb") as image_file:
+with open(cover_image_path, 'rb') as image_file:
     encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
 
 title_page = f"""<style>
@@ -52,61 +54,98 @@ copyright_page = """<div style="height: calc(100vh - 50mm); display: flex; flex-
 
 toc = "<h1 style='border: none; text-align: left;'>Table of Contents</h1>\n<ul style='list-style-type: none; padding: 0; font-size: 0.9em;'>\n"
 
-# --- Helpers ---
+
 def escape_mermaid(match):
     mermaid_content = match.group(0)
-    mermaid_content = mermaid_content.replace('<BOS>', '&lt;BOS&gt;').replace('<EOS>', '&lt;EOS&gt;').replace('<PAD>', '&lt;PAD&gt;')
+    mermaid_content = (
+        mermaid_content.replace('<BOS>', '&lt;BOS&gt;')
+        .replace('<EOS>', '&lt;EOS&gt;')
+        .replace('<PAD>', '&lt;PAD&gt;')
+    )
     return mermaid_content
 
-# --- Process chapters ---
+
 content_bodies = []
 for filename in files:
     filepath = os.path.join(directory, filename)
-    with open(filepath, 'r') as f:
+    with open(filepath, 'r', encoding='utf-8') as f:
         content = f.read()
-    
+
     # Remove download CTA links from the ebook build
-    content = re.sub(r'<p><em>Prefer to read this seamlessly offline\?.*?</em></p>\n*', '', content, flags=re.IGNORECASE)
-    
+    content = re.sub(
+        r'<p><em>Prefer to read this (?:seamlessly )?offline\?.*?</em></p>\n*',
+        '',
+        content,
+        flags=re.IGNORECASE,
+    )
+
+    # Convert relative web series links to plain text for standalone PDF reading
+    content = re.sub(r'\[([^\]]+)\]\([^)#]+\.html\)', r'\1', content)
+
     # Remove <style> blocks
     content = re.sub(r'<style>.*?</style>\s*', '', content, flags=re.DOTALL)
-    
+
     # Part -> Chapter renaming
     content = re.sub(r'# Part (\d+):', r'# Chapter \1:', content)
     content = re.sub(r'\bPart (\d+)\b', r'Chapter \1', content)
     content = re.sub(r'\bpart (\d+)\b', r'chapter \1', content)
-    
+
     # Escape mermaid HTML-like tags
     content = re.sub(r'```mermaid.*?```', escape_mermaid, content, flags=re.DOTALL)
-    
+
     # Extract title for TOC and anchor
     title_match = re.search(r'^#\s+(.+)$', content, re.MULTILINE)
     if title_match:
         title = title_match.group(1)
-        anchor = title.lower().replace(' ', '-').replace(':', '').replace('&', '').replace('(', '').replace(')', '').replace(',', '').replace('.', '').replace('$', '').replace('\\', '')
+        anchor = (
+            title.lower()
+            .replace(' ', '-')
+            .replace(':', '')
+            .replace('&', '')
+            .replace('(', '')
+            .replace(')', '')
+            .replace(',', '')
+            .replace('.', '')
+            .replace('$', '')
+            .replace('\\', '')
+        )
         toc += f"<li style='margin-bottom: 8px;'><a href='#{anchor}' style='color: var(--primary-color); text-decoration: none;'>{title}</a></li>\n"
-        content = re.sub(r'^#\s+(.+)$', lambda m: f'<h1 id="{anchor}">{title}</h1>', content, count=1, flags=re.MULTILINE)
-        
+        content = re.sub(
+            r'^#\s+(.+)$',
+            lambda m: f'<h1 id="{anchor}">{title}</h1>',
+            content,
+            count=1,
+            flags=re.MULTILINE,
+        )
+
     # Colon-context sticking (prevent page breaks between intro text and math/code)
-    content = re.sub(r'(:)\n+(\s*```)', r'\1\n<div style="page-break-after: avoid;"></div>\n\n\2', content)
-    content = re.sub(r'(:)\n+(\s*\$\$)', r'\1\n<div style="page-break-after: avoid;"></div>\n\n\2', content)
-    
+    content = re.sub(
+        r'(:)\n+(\s*```)',
+        r'\1\n<div style="page-break-after: avoid;"></div>\n\n\2',
+        content,
+    )
+    content = re.sub(
+        r'(:)\n+(\s*[$]{2})',
+        r'\1\n<div style="page-break-after: avoid;"></div>\n\n\2',
+        content,
+    )
+
     # Diagram orphan prevention
     blocks = content.split('\n\n')
     for i in range(len(blocks)):
         if '```mermaid' in blocks[i] and i > 0:
-            if not blocks[i-1].strip().startswith(('<', '#', '```')):
-                blocks[i-1] = '<div style="page-break-inside: avoid;">\n\n' + blocks[i-1]
+            if not blocks[i - 1].strip().startswith(('<', '#', '```')):
+                blocks[i - 1] = '<div style="page-break-inside: avoid;">\n\n' + blocks[i - 1]
                 blocks[i] = blocks[i] + '\n\n</div>'
     content = '\n\n'.join(blocks)
-    
+
     content_bodies.append(content)
 
 toc += "</ul>\n"
 
 # --- Write frontmatter.md ---
 frontmatter_content = title_page + copyright_page + toc
-with open(frontmatter_file, 'w') as f:
+with open(frontmatter_file, 'w', encoding='utf-8') as f:
     f.write(frontmatter_content)
 print("Wrote frontmatter.md")
 
@@ -117,9 +156,15 @@ for i, body in enumerate(content_bodies):
         body_content += '\n\n<div style="page-break-before: always;"></div>\n\n'
     body_content += body
 
-# Inject CSS for pill box styling to match the blog
+# Inject CSS for pill box styling and page-break containment to match the blog
 body_content += """
 <style>
+.trace-container {
+  page-break-inside: avoid;
+}
+.trace-container td {
+  white-space: nowrap !important;
+}
 .trace-container code {
   color: #8b4f5a !important;
   background-color: #ffffff !important;
@@ -131,6 +176,12 @@ body_content += """
   border-radius: 100px !important;
   padding: 4px 10px !important;
 }
+.trace-container b code {
+  font-weight: 900 !important;
+  color: #9a5b65 !important;
+  background-color: #fdf5f6 !important;
+  border: 1px solid #e0c6cb !important;
+}
 @media (prefers-color-scheme: dark) {
   .trace-container code {
     color: #e6b3bc !important;
@@ -141,7 +192,7 @@ body_content += """
 </style>
 """
 
-with open(body_file, 'w') as f:
+with open(body_file, 'w', encoding='utf-8') as f:
     f.write(body_content)
 print("Wrote body.md")
 
@@ -152,30 +203,38 @@ print("Generating frontmatter.pdf (no page numbers)...")
 result = subprocess.run(
     ['node', generate_pdf, frontmatter_file, frontmatter_pdf, 'false'],
     cwd=scripts_dir,
-    capture_output=True, text=True
+    capture_output=True,
+    text=True,
 )
 if result.returncode != 0:
     print(f"ERROR generating frontmatter.pdf: {result.stderr}")
-    exit(1)
+    raise SystemExit(1)
 print("  Done.")
 
 print("Generating body.pdf (with page numbers starting at 1)...")
 result = subprocess.run(
     ['node', generate_pdf, body_file, body_pdf, 'true'],
     cwd=scripts_dir,
-    capture_output=True, text=True
+    capture_output=True,
+    text=True,
 )
 if result.returncode != 0:
     print(f"ERROR generating body.pdf: {result.stderr}")
-    exit(1)
+    raise SystemExit(1)
 print("  Done.")
 
 # --- Merge PDFs ---
+os.makedirs(os.path.dirname(final_pdf), exist_ok=True)
 print("Merging frontmatter.pdf + body.pdf -> embeddings-ebook-v1.0.pdf...")
 from pypdf import PdfWriter
+
 merger = PdfWriter()
 merger.append(frontmatter_pdf)
 merger.append(body_pdf)
 merger.write(final_pdf)
 merger.close()
+if '--keep-temp' not in sys.argv:
+    for temp_path in (frontmatter_file, body_file, frontmatter_pdf, body_pdf):
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
 print(f"  Done. Final ebook: {final_pdf}")

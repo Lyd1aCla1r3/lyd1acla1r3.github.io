@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -118,13 +159,74 @@
     <li><a href="index.html">Blog</a></li><li><a href="series-transformers.html">Series: Transformers</a></li><li aria-current="page">Part 23: Backpropagation - Attention (Part 2: Q, K, V)</li></ol></nav>
         <article class="blog-post series-transformers">
 <h1>Part 23: Backpropagation - Attention (Part 2: Q, K, V)</h1>
-<!-- SUMMARY: Following the calculation of the attention score gradients, the error signal is distributed backward into the query, key, and value matrices. Reversing the weighted sums geometrically mirrors the forward pass, successfully translating the output error into precise updates for the self-attention weight matrices. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p><p>The previous installment navigated the complexities of the softmax function and the causal mask. That stage calculated the gradient of the loss with respect to the raw, unmasked attention scores, yielding a precise measurement of how each attention connection requires adjustment. The process now reaches the final stage of backpropagating through the self-attention mechanism. The objective requires distributing these score gradients, alongside the gradients from the attention output itself, backward into the Query, Key, and Value matrices. Ultimately, the network must route these signals all the way back to the weight matrices that created them and the input sequence that initiated the forward pass.</p>
+<!-- SUMMARY: Following the calculation of the attention score gradients, the error signal is distributed backward into the query, key, and value matrices. Reversing the weighted sums geometrically mirrors the forward pass, translating the output error into parameter updates for the self-attention weight matrices. --><p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p><p>Part 22 navigated the Softmax Jacobian and the causal mask to obtain the gradient of the loss with respect to the unmasked attention scores. Completing the backward pass through self-attention requires distributing these score gradients, alongside the attention output gradient $d\_Z$, into the Query ($Q$), Key ($K$), and Value ($V$) projections. From those three subspace gradients, the chain rule computes the weight updates for $W_Q$, $W_K$, and $W_V$ and merges the three input branches back into the $4 \times 6$ residual stream.</p>
+<table>
+<thead>
+<tr>
+<th align="left">Target Tensor</th>
+<th align="left">Backward Equation</th>
+<th align="left">Input Shapes</th>
+<th align="left">Output Shape</th>
+<th align="left">Geometric Role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Value Gradient (<code>d_V</code>)</strong></td>
+<td align="left"><code>P^T * d_Z</code></td>
+<td align="left"><code>(4 x 4)^T * (4 x 2)</code></td>
+<td align="left"><code>4 x 2</code></td>
+<td align="left">Attributes output error across Value rows</td>
+</tr>
+<tr>
+<td align="left"><strong>Value Weights (<code>d_W_V</code>)</strong></td>
+<td align="left"><code>X^T * d_V</code></td>
+<td align="left"><code>(4 x 6)^T * (4 x 2)</code></td>
+<td align="left"><code>6 x 2</code></td>
+<td align="left">Accumulates Value projection updates</td>
+</tr>
+<tr>
+<td align="left"><strong>Query Gradient (<code>d_Q</code>)</strong></td>
+<td align="left"><code>(d_S * K) / sqrt(d_k)</code></td>
+<td align="left"><code>(4 x 4) * (4 x 2)</code></td>
+<td align="left"><code>4 x 2</code></td>
+<td align="left">Projects score adjustments onto Keys</td>
+</tr>
+<tr>
+<td align="left"><strong>Key Gradient (<code>d_K</code>)</strong></td>
+<td align="left"><code>(d_S^T * Q) / sqrt(d_k)</code></td>
+<td align="left"><code>(4 x 4)^T * (4 x 2)</code></td>
+<td align="left"><code>4 x 2</code></td>
+<td align="left">Projects transposed score adjustments onto Queries</td>
+</tr>
+<tr>
+<td align="left"><strong>Query Weights (<code>d_W_Q</code>)</strong></td>
+<td align="left"><code>X^T * d_Q</code></td>
+<td align="left"><code>(4 x 6)^T * (4 x 2)</code></td>
+<td align="left"><code>6 x 2</code></td>
+<td align="left">Accumulates Query projection updates</td>
+</tr>
+<tr>
+<td align="left"><strong>Key Weights (<code>d_W_K</code>)</strong></td>
+<td align="left"><code>X^T * d_K</code></td>
+<td align="left"><code>(4 x 6)^T * (4 x 2)</code></td>
+<td align="left"><code>6 x 2</code></td>
+<td align="left">Accumulates Key projection updates</td>
+</tr>
+<tr>
+<td align="left"><strong>Input Gradient (<code>d_X</code>)</strong></td>
+<td align="left"><code>d_V W_V^T + d_Q W_Q^T + d_K W_K^T</code></td>
+<td align="left"><code>3 * [(4 x 2) * (2 x 6)]</code></td>
+<td align="left"><code>4 x 6</code></td>
+<td align="left">Sums gradients from all three subspace branches</td>
+</tr>
+</tbody></table>
+<p>To illustrate non-zero gradient entries across all four rows at four-decimal precision, the numerical matrices below evaluate a standardized single-head benchmark state (<code>np.random.seed(42)</code> draws for $X \in \mathbb{R}^{4 \times 6}$, $W_Q, W_K, W_V \in \mathbb{R}^{6 \times 2}$, $Q = X W_Q$, $K = X W_K$, causal probabilities $P$, upstream output gradient $d\_Z$, and a general lower-triangular score perturbation $d\_S$ with $d\_S_{0,0} = -0.0404$).</p>
 <h2>The Value Matrix Gradient</h2>
-<p>During the forward pass, the attention mechanism produced its final output by multiplying the probability matrix by the Value matrix. Denoting the output gradient as $d\_Z$, the attention probabilities as $P$, and the values as $V$, the gradient of the loss with respect to $V$ follows the chain rule of matrix calculus. The transpose of the probability matrix multiplies the gradient of the output:</p>
+<p>During the forward pass, the attention head produced its output $Z$ by multiplying the $4 \times 4$ probability matrix $P$ by the $4 \times 2$ Value matrix $V$. Differentiating $Z = P V$ with respect to $V$ multiplies the transposed probability matrix $P^T$ by the upstream output gradient $d\_Z$:</p>
 <p>$$
 d\_V = P^T d\_Z
 $$</p>
-<p>The transpose operation provides an intuitive geometric reversal. In the forward pass, a row of $P$ determined how much of each value vector to mix into a single output token. During backpropagation, a column of $P^T$ dictates how much of the output error should be attributed to a specific value vector. The network explicitly reverses the weighted sum to calculate the exact error signal for the Value matrix:</p>
+<p>Transposing $P$ reverses the forward routing geometry. In the forward pass, row $i$ of $P$ specified how strongly output token $i$ blended each Value row. In the backward pass, column $i$ of $P$ (which becomes row $i$ of $P^T$) gathers the output errors from every token that attended to Value vector $i$, producing the $4 \times 2$ Value gradient matrix $d\_V$:</p>
 <p>$$
 d\_V = \begin{bmatrix}
 0.0634 & -0.1513 \\
@@ -133,11 +235,11 @@ d\_V = \begin{bmatrix}
 0.0285 & -0.0100
 \end{bmatrix}
 $$</p>
-<p>Once the gradient for the Value matrix is established, finding the gradient for its corresponding weight matrix $W\_V$ follows standard linear layer backpropagation. The transpose of the input $X$ multiplies the Value gradient:</p>
+<p>With $d\_V$ established, backpropagating through the linear projection $V = X W_V$ multiplies the transposed layer input $X^T$ ($6 \times 4$) by the Value gradient $d\_V$ ($4 \times 2$):</p>
 <p>$$
 d\_W_V = X^T d\_V
 $$</p>
-<p>This operation yields the precise matrix of updates required for the Value weights:</p>
+<p>Contracting across the four sequence positions yields the $6 \times 2$ gradient matrix for the Value projection weights:</p>
 <p>$$
 d\_W_V = \begin{bmatrix}
 0.0547 & -0.2043 \\
@@ -149,13 +251,13 @@ d\_W_V = \begin{bmatrix}
 \end{bmatrix}
 $$</p>
 <h2>Routing Gradients to Queries and Keys</h2>
-<p>The Query and Key matrices generate the attention scores. In the forward pass, the scaled dot-product attention scores were computed as $S = \frac{Q K^T}{\sqrt{d_k}}$.</p>
-<p>The gradient with respect to these scores, denoted as $d\_S$, dictates how the alignment between every query and key must change. To distribute this gradient back to the Queries and Keys, the matrix derivative rules for multiplication apply, incorporating the necessary scaling factor.</p>
-<p>For the Query matrix gradient, the score gradient multiplies the Key matrix:</p>
+<p>The Query and Key matrices generated the scaled dot-product attention scores during the forward pass via $S = \frac{Q K^T}{\sqrt{d_k}}$.</p>
+<p>The $4 \times 4$ score gradient $d\_S$ specifies how the pairwise alignment between every query and key must shift. Differentiating the bilinear product $\frac{Q K^T}{\sqrt{d_k}}$ distributes $d\_S$ across both factors while retaining the $\frac{1}{\sqrt{d_k}}$ scaling factor ($d_k = 2$).</p>
+<p>Multiplying the $4 \times 4$ score gradient $d\_S$ by the $4 \times 2$ Key matrix $K$ and dividing by $\sqrt{d_k}$ yields the $4 \times 2$ Query gradient $d\_Q$:</p>
 <p>$$
 d\_Q = \frac{d\_S K}{\sqrt{d_k}}
 $$</p>
-<p>Calculating this yields the explicit error signal for the Queries:</p>
+<p>Evaluating this scaled product on the general lower-triangular perturbation state produces the $4 \times 2$ error signal for the Query representations (whereas substituting the zero-sum Softmax score gradient $d\_S$ from Part 22, where Row 1 is $[0, 0, 0, 0]$, sets Row 1 of $d\_Q$ identically to $[0.0000, 0.0000]$ and rows 2 through 4 to $[-0.0292, -0.0451]$, $[0.0352, 0.0549]$, and $[-0.0019, -0.0088]$):</p>
 <p>$$
 d\_Q = \begin{bmatrix}
 -0.0298 & 0.0408 \\
@@ -164,11 +266,11 @@ d\_Q = \begin{bmatrix}
 -0.0182 & -0.0480
 \end{bmatrix}
 $$</p>
-<p>For the Key matrix gradient, the transposed score gradient multiplies the Query matrix:</p>
+<p>The transpose $K^T$ appears in the forward equation $S = \frac{Q K^T}{\sqrt{d_k}}$, so differentiating with respect to $K$ multiplies the transposed score gradient $d\_S^T$ ($4 \times 4$) by the $4 \times 2$ Query matrix $Q$:</p>
 <p>$$
 d\_K = \frac{d\_S^T Q}{\sqrt{d_k}}
 $$</p>
-<p>This produces the corresponding error signal for the Keys:</p>
+<p>Evaluating this product yields the $4 \times 2$ error signal for the Key representations:</p>
 <p>$$
 d\_K = \begin{bmatrix}
 -0.0037 & -0.1250 \\
@@ -177,15 +279,15 @@ d\_K = \begin{bmatrix}
 -0.0017 & -0.0016
 \end{bmatrix}
 $$</p>
-<p>The geometry of these operations perfectly mirrors the forward pass. The score gradient $d\_S$ represents how the alignment between queries and keys needs to shift. To determine the necessary adjustment for a specific query vector, the operation projects that required change onto the key vectors it interacted with. Applying the transpose for the Key gradient properly aligns the dimensions, effectively routing the error from the queries back to the keys.</p>
-<p>Similar to the Value weights, the gradients for the Query and Key weight matrices emerge by multiplying the transposed input by their respective gradients:</p>
+<p>These two equations exhibit dual geometric symmetry. Adjusting query vector $i$ requires projecting row $i$ of the score gradient $d\_S$ onto the Key vectors $K$ it scored against. Adjusting key vector $j$ requires projecting column $j$ of $d\_S$ (row $j$ of $d\_S^T$) onto the Query vectors $Q$ that attended to it.</p>
+<p>Multiplying the transposed input matrix $X^T$ ($6 \times 4$) by $d\_Q$ and $d\_K$ produces the $6 \times 2$ parameter gradients for the Query and Key weight matrices:</p>
 <p>$$
 d\_W_Q = X^T d\_Q
 $$</p>
 <p>$$
 d\_W_K = X^T d\_K
 $$</p>
-<p>This finalizes the learning signals for the remaining attention weight matrices:</p>
+<p>Evaluating both matrix products completes the parameter gradients for $W_Q$ and $W_K$:</p>
 <p>$$
 d\_W_Q = \begin{bmatrix}
 -0.0497 & 0.0279 \\
@@ -207,8 +309,8 @@ d\_W_K = \begin{bmatrix}
 \end{bmatrix}
 $$</p>
 <h2>The Confluence at the Input</h2>
-<p>The concluding step in this layer requires routing the gradients back to the input matrix $X$. In the forward pass, the input branched into three parallel paths to create the Queries, Keys, and Values.</p>
-<p>When gradients flow backward through a branching architecture, they sum together at the point of origin. The calculation requires deriving the gradient with respect to the input from each of the three paths and summing the results:</p>
+<p>The concluding step inside the attention head routes the subspace gradients back to the $4 \times 6$ input matrix $X$. During the forward pass, $X$ branched into three parallel linear projections ($Q = X W_Q$, $K = X W_K$, and $V = X W_V$).</p>
+<p>By the multivariable chain rule, gradients flowing backward through a fan-out branch sum together at the shared origin. Multiplying each $4 \times 2$ subspace gradient by the transpose of its $6 \times 2$ projection matrix maps the three error signals back into $\mathbb{R}^{4 \times 6}$:</p>
 <p>$$
 d\_X_V = d\_V W_V^T
 $$</p>
@@ -218,9 +320,9 @@ $$</p>
 <p>$$
 d\_X_K = d\_K W_K^T
 $$</p>
-<p>The total gradient flowing backward out of the attention block and down the residual stream equals the sum of these three components:</p>
+<p>Summing the three $4 \times 6$ branch contributions produces the total attention input gradient:</p>
 <p>$$
-d\_X_{Total} = d\_X_V + d\_X_Q + d\_X_K
+d\_X_{\text{Total}} = d\_X_V + d\_X_Q + d\_X_K
 $$</p>
 <pre><code class="language-mermaid">graph TD
     dZ(Gradient of Output) --&gt; dV(Gradient of V)
@@ -233,7 +335,7 @@ $$</p>
     dX_Q --&gt; dX
     dX_K --&gt; dX
 </code></pre>
-<p>This aggregation produces the final, contextualized error signal for the sequence:</p>
+<p>Evaluating the sum across all three branches yields the $4 \times 6$ input gradient matrix $d\_X$:</p>
 <p>$$
 d\_X = \begin{bmatrix}
 0.5536 & 0.1088 & -0.1536 & 0.0560 & 0.0463 & -0.3314 \\
@@ -242,8 +344,8 @@ d\_X = \begin{bmatrix}
 0.0348 & 0.0179 & -0.0020 & -0.0572 & 0.0338 & 0.0424
 \end{bmatrix}
 $$</p>
-<p>The network has completely backpropagated through the self-attention mechanism. This process successfully translated the error from the network&#39;s output into specific updates for the $W\_Q$, $W\_K$, and $W\_V$ matrices. Furthermore, it prepared the error signal to continue its journey backward down the residual stream. The next phase will follow this signal as it reaches the very beginning of the network to update the original token embeddings.</p>
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p>The backward traversal through self-attention is now complete. The mechanism has translated the upstream output and score gradients into explicit weight updates for $W_Q$, $W_K$, and $W_V$ while assembling the unified $4 \times 6$ gradient $d\_X$ to continue down the residual stream. Part 24 traces this accumulated signal back to the initial token embedding lookup table to complete the training step.</p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="transformers-chapter_22.html" class="pagination-link prev">

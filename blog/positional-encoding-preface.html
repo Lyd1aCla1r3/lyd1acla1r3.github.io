@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -124,25 +165,25 @@
 <h2>The Scope</h2>
 <p>The derivation proceeds through two distinct positional encoding paradigms, each worked through the same concrete toy model:</p>
 <ul>
-<li><strong>Vocabulary ($V = 8$):</strong> <code>The</code> <code>quick</code> <code>brown</code> <code>fox</code> <code>jumps</code> <code>over</code> <code>lazy</code> <code>dog</code></li>
-<li><strong>Embedding Dimension ($d_{model}$):</strong> 3 dimensions.</li>
-<li><strong>Toy sequence ($T = 4$):</strong> <code>The</code> <code>quick</code> <code>brown</code> <code>fox</code></li>
+<li><strong>Vocabulary ($V = 8$):</strong> Eight token types (<code>The</code>, <code>quick</code>, <code>brown</code>, <code>fox</code>, <code>jumps</code>, <code>over</code>, <code>lazy</code>, <code>dog</code>).</li>
+<li><strong>Embedding Dimension ($d_{model} = 3$):</strong> Three continuous coordinates per token vector.</li>
+<li><strong>Toy Sequence ($T = 4$):</strong> Four-token input clause (<code>The</code> <code>quick</code> <code>brown</code> <code>fox</code>).</li>
 </ul>
 <p>The first paradigm is the <strong>sinusoidal absolute positional encoding</strong> introduced by Vaswani et al. (2017) in the original Transformer paper. This mechanism assigns a fixed, deterministic vector to each position in the sequence and adds it element-wise to the embedding vector. It is the historical starting point: the first published solution to the problem of injecting order into a set-based architecture. The series derives the sinusoidal formula from its design constraints, computes every entry of the positional encoding matrix, and demonstrates the addition operation that produces the positionally-enriched tensor.</p>
-<p>The second paradigm is <strong>Rotary Position Embeddings</strong> (RoPE), introduced by Su et al. (2021). As of 2026, RoPE is the positional encoding mechanism used in every major frontier language model, including GPT-4, Claude, Gemini, Llama 3, DeepSeek, Mistral, and Qwen. Rather than adding a positional vector to the embedding, RoPE applies a position-dependent rotation to the query and key vectors inside the attention mechanism, ensuring that the dot product between any two positions depends only on their relative offset. The series derives RoPE from its complex-number foundations, computes every rotation matrix, and proves the relative-distance property that makes it the dominant mechanism in production.</p>
+<p>The second paradigm is <strong>Rotary Position Embeddings</strong> (RoPE), introduced by Su et al. (2021). Modern frontier Transformer architectures, including the GPT, Claude, Gemini, Llama, DeepSeek, Mistral, and Qwen model families, standardize on RoPE as their primary positional encoding mechanism. Rather than adding a positional vector to the embedding, RoPE applies a position-dependent rotation to the query and key vectors inside the attention mechanism, ensuring that the dot product between any two positions depends only on their relative offset. The series derives RoPE from its complex-number foundations, computes every rotation matrix, and proves the relative-distance property that makes it the dominant mechanism in production.</p>
 <p>The sinusoidal derivation is not wasted effort. It establishes the trigonometric vocabulary, the rotation interpretation, and the relative-distance intuition that RoPE generalizes. The two paradigms share a frequency base, and the mathematical progression from additive encoding to rotational encoding is itself the central narrative of the series.</p>
 <p>The <a href="series-transformers.html">Transformers series</a> (which follows this one in the pipeline) includes a brief treatment of sinusoidal positional encoding using a different toy model ($V = 12$, $d_{model} = 6$). Readers who complete both series will recognize the identical mathematical structure applied at different scales.</p>
 <h2>The Architecture</h2>
 <p>The series follows the progression from the order-agnostic embedding tensor to the position-aware representations consumed by the Transformer:</p>
 <ol>
-<li><strong>The Permutation Invariance Problem.</strong> The pairwise dot-product similarity matrix $S = X X^\top$ is computed for the toy sequence and shown to be invariant under row permutations: reordering the sequence changes the labels but not the similarity scores. The embedding tensor carries no positional information.</li>
-<li><strong>Design Constraints and the Sinusoidal Formula.</strong> Five mathematical constraints (uniqueness, boundedness, determinism, smoothness, relative representability) are enumerated, and the sinusoidal positional encoding formula is derived as the function satisfying all five. Every entry of the $4 \times 3$ positional encoding matrix is computed from the formula.</li>
-<li><strong>Element-Wise Addition and the Positionally-Enriched Tensor.</strong> The sinusoidal encoding is added element-wise to the embedding tensor, producing $X_{pos} = X + PE$. The similarity matrix is recomputed and shown to break permutation invariance. The structural limitations of additive absolute encoding (single-layer injection, absolute position labels, length extrapolation degradation) are identified.</li>
-<li><strong>The Query-Key Framework and the Relative Position Requirement.</strong> The minimal query-key dot-product mechanism is introduced at the scope required by RoPE: learned projection matrices $W_Q$ and $W_K$ map embeddings to query and key vectors whose dot product determines relevance scores. The relative position requirement is stated formally.</li>
-<li><strong>Rotary Position Embeddings: Deriving the Rotation Matrix.</strong> The RoPE operation is derived from its complex-number foundations. Each dimension pair of the query and key vectors is represented as a complex number and rotated by a position-dependent angle. The $2 \times 2$ rotation blocks are expanded into the full block-diagonal rotation matrix, and the angular frequency for the toy model is computed.</li>
-<li><strong>Rotary Position Embeddings: Computing the Rotated Vectors.</strong> The rotation matrix is evaluated at every position in the toy sequence, producing four distinct rotation matrices $R_0$ through $R_3$. These matrices are applied to every query and key vector from Chapter 4, producing the rotated vectors consumed by the attention mechanism.</li>
-<li><strong>The Relative-Distance Property of RoPE.</strong> The central algebraic identity $R_m^\top R_n = R_{n-m}$ is proved from the angle-addition formulas for sine and cosine. The identity is verified numerically using the rotated vectors from the previous chapter: the dot product of rotated queries and keys is shown to depend only on relative position offset.</li>
-<li><strong>The Modern Landscape and Frontier Extensions.</strong> Learned absolute PE, relative PE (Shaw et al., 2018), ALiBi (Press et al., 2022), iRoPE (Meta, 2025), and RoPE long-context extensions (YaRN, NTK-aware scaling) are surveyed. Each mechanism is explained through its motivation, its conceptual operation, and the shortcomings that drove the field toward its successor, tracing the evolutionary arc that culminated in RoPE&#39;s dominance.</li>
+<li><strong>The Permutation Invariance Problem:</strong> Computes the pairwise dot-product similarity matrix $S = X X^\top$ for the toy sequence and proves its invariance under row permutations, demonstrating that reordering the sequence changes row labels without altering similarity scores.</li>
+<li><strong>Design Constraints and the Sinusoidal Formula:</strong> Enumerates five mathematical constraints (uniqueness, boundedness, determinism, smoothness, and relative representability), derives the sinusoidal positional encoding formula satisfying all five, and computes every entry of the $4 \times 3$ positional encoding matrix.</li>
+<li><strong>Element-Wise Addition and the Positionally-Enriched Tensor:</strong> Adds the sinusoidal encoding element-wise to the embedding tensor to form $X_{pos} = X + PE$, recomputes the similarity matrix to prove that permutation invariance is broken, and identifies the structural limitations of additive absolute encoding (single-layer injection, absolute position labels, and length extrapolation degradation).</li>
+<li><strong>The Query-Key Framework and the Relative Position Requirement:</strong> Introduces learned projection matrices $W_Q$ and $W_K$ that map embeddings to query and key vectors whose dot products determine relevance scores, then states the formal relative position requirement.</li>
+<li><strong>Rotary Position Embeddings: Deriving the Rotation Matrix:</strong> Derives the RoPE operation from complex-number multiplication, represents each query and key dimension pair as a complex number rotated by a position-dependent angle, expands the $2 \times 2$ blocks into a block-diagonal rotation matrix, and computes the angular frequency for the toy model.</li>
+<li><strong>Rotary Position Embeddings: Computing the Rotated Vectors:</strong> Evaluates the rotation matrix at every position in the toy sequence ($R_0$ through $R_3$), proves orthogonality and norm preservation, and rotates every query and key vector from Chapter 4.</li>
+<li><strong>The Relative-Distance Property of RoPE:</strong> Proves the central algebraic identity $R_m^\top R_n = R_{n-m}$ from the angle-addition formulas for sine and cosine, and verifies numerically that the dot product of rotated queries and keys depends exclusively on relative position offset.</li>
+<li><strong>The Modern Landscape and Frontier Extensions:</strong> Surveys learned absolute positional embeddings, relative positional encodings (Shaw et al., 2018), ALiBi (Press et al., 2022), iRoPE (Meta, 2025), and RoPE long-context extensions (Position Interpolation, NTK-aware scaling, and YaRN), tracing the structural tradeoffs that established RoPE as the production standard.</li>
 </ol>
 <p>Every trigonometric identity is derived explicitly. Every rotation matrix is computed entry by entry. Every abstract result is grounded in the toy vocabulary. The mathematics speaks for itself.</p>
 <p><em>Prefer to read this offline? <a href="../assets/docs/positional-encoding-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Positional Encoding Ebook here.</a></em></p>

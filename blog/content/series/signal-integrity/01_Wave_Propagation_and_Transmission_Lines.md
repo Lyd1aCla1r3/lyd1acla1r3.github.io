@@ -1,12 +1,12 @@
 # Wave Propagation and Transmission Lines
 
-<!-- SUMMARY: Information in high-speed digital systems travels as electromagnetic waves, not as drifting electrons. This guide traces the physical mechanism of transmission lines, deriving characteristic impedance and propagation velocity from the Telegrapher's Equations to explain why a steady current flows behind every propagating wavefront. -->
+<!-- SUMMARY: Information in high-speed digital systems travels as electromagnetic waves, not as drifting electrons. The physical mechanism of transmission lines governs how characteristic impedance and propagation velocity emerge from the Telegrapher's Equations and why a steady current flows behind every propagating wavefront. -->
 
-<p><em>Prefer to read offline? <a href="../../../assets/docs/signal-integrity-ebook-v2.0.pdf" target="_blank" rel="noopener">Download the complete Signal Integrity (Advanced Edition) ebook.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
 
 Every high-speed digital system operates on a single physical principle: information travels as electromagnetic waves, not as electrons drifting through copper. The moment a transistor connects a trace to a voltage rail, a localized electric field boundary forms and propagates through the dielectric material at a significant fraction of the speed of light, while the electrons themselves barely move. Understanding this distinction is the foundation on which all signal integrity analysis rests, from characteristic impedance and TDR measurements to jitter budgeting and equalization design.
 
-This guide traces the complete physical mechanism of wave propagation on a PCB transmission line: the distributed nature of trace geometry, the CMOS switching event that launches a wavefront, the segment-by-segment chain reaction that constitutes propagation, the relationship between signal voltage and current, and the Telegrapher's Equations, from which the characteristic impedance and the propagation velocity are derived.
+The physical mechanism of wave propagation on a PCB transmission line spans five linked stages: the distributed nature of trace geometry, the CMOS switching event that launches a wavefront, the segment-by-segment chain reaction that constitutes propagation, the relationship between signal voltage and current, and the Telegrapher's Equations, from which the characteristic impedance and the propagation velocity are derived.
 
 ## Core Concepts
 
@@ -22,7 +22,9 @@ These two parameters are geometrically coupled, so a change that raises one usua
 
 $$Z_0 = \sqrt{\frac{L}{C}}$$
 
-The boundary between lumped and distributed behavior is set by comparing the time the wave needs to cross the trace with the duration of the signal transition. A trace whose one-way propagation delay is a small fraction of the rise time charges almost uniformly during the edge, and a single lumped capacitor models it adequately. A trace whose delay is comparable to the rise time has one end changing voltage while the other end has not yet responded, and only the distributed model describes it. A widely used guideline treats a trace as lumped only when its length is less than about one sixth of the spatial length of the rising edge, which is the distance the edge travels during one rise time. Assume a driver with a 30 ps rise time on FR4, where the wave travels about 0.147 mm per picosecond (derived in the velocity section below). The rising edge spans about 4.4 mm of trace, so the lumped limit, called the critical length, is roughly 0.7 mm. Essentially every trace in a multi-gigabit link is longer than this and must be analyzed as a transmission line.
+The boundary between lumped and distributed behavior is set by comparing the time the wave needs to cross the trace with the duration of the signal transition. A trace whose one-way propagation delay is a small fraction of the rise time charges almost uniformly during the edge, and a single lumped capacitor models it adequately. A trace whose delay is comparable to the rise time has one end changing voltage while the other end has not yet responded, and only the distributed model describes it.
+
+A widely used guideline treats a trace as lumped only when its length is less than about one sixth of the spatial length of the rising edge, which is the distance the edge travels during one rise time. Assume a driver with a 30 ps rise time on FR4, where the wave travels about 0.147 mm per picosecond (derived in the velocity section below). The rising edge spans about 4.4 mm of trace, so the lumped limit, called the critical length, is roughly 0.7 mm. Every trace in a multi-gigabit link exceeds this threshold and must be analyzed as a transmission line.
 
 ### Why Ohm's Law Fails at High Speed
 
@@ -36,9 +38,11 @@ The ratio of voltage to current within the traveling wave is determined by the t
 
 A static voltage applied by a disconnected battery creates a pure electric field with no associated magnetic field. A steady DC current creates a constant magnetic field with no changing electric field. Neither of these scenarios produces a propagating wave.
 
-Propagation requires both fields to exist simultaneously and to vary in time, and two of Maxwell's equations supply the coupling between them. The Ampere-Maxwell law states that a changing electric field produces a magnetic field in the same way a conduction current does; this contribution is the displacement current that appears again in the propagation sequence below. Faraday's law states that a changing magnetic field produces an electric field, and [Chapter 4](04_Inductance_Magnetic_Coupling_and_Crosstalk.md) develops it in detail as the basis of inductance. Each changing field regenerates the other a short distance further along the line, and the pair travels as a self-sustaining transverse electromagnetic (TEM) wave through the dielectric material between the trace and the ground plane. The word transverse means that both fields point across the direction of travel: the electric field runs from the trace down to the plane, and the magnetic field circles the trace within the cross-section.
+Propagation requires both fields to exist simultaneously and to vary in time, and two of Maxwell's equations supply the coupling between them. The Ampere-Maxwell law states that a changing electric field produces a magnetic field in the same way a conduction current does; this contribution is the displacement current that appears again in the propagation sequence below. Faraday's law states that a changing magnetic field produces an electric field, and [Chapter 4](04_Inductance_Magnetic_Coupling_and_Crosstalk.md) develops it in detail as the basis of inductance.
 
-The electromagnetic wave propagates through the dielectric material, not through the copper. The copper trace and the ground plane serve as physical guide rails that confine and direct the wave. This is the fundamental reason that the properties of the PCB laminate material (dielectric constant, loss tangent) dominate high-speed signal integrity engineering.
+Each changing field regenerates the other a short distance further along the line, and the pair travels as a self-sustaining transverse electromagnetic (TEM) wave through the dielectric material between the trace and the ground plane. The word transverse means that both fields point across the direction of travel: the electric field runs from the trace down to the plane, and the magnetic field circles the trace within the cross-section.
+
+The electromagnetic wave propagates through the dielectric material, not through the copper. The copper trace and the ground plane serve as physical guide rails that confine and direct the wave. This dielectric propagation path explains why the properties of the PCB laminate material (dielectric constant, loss tangent) dominate high-speed signal integrity engineering.
 
 ### Propagation Velocity and the Dielectric Constant
 
@@ -76,7 +80,9 @@ Substituting this product into the geometric velocity formula:
 
 $$v_p = \frac{1}{\sqrt{LC}} = \frac{1}{\sqrt{\mu_0 \epsilon_0}} \cdot \frac{1}{\sqrt{\epsilon_r}} = \frac{c}{\sqrt{\epsilon_r}}$$
 
-The last step uses the defining relationship of the speed of light, $c = 1/\sqrt{\mu_0 \epsilon_0}$. Widening the trace raises $C$ and lowers $L$ by the same factor, which is the geometric coupling described earlier expressed as an equation, so widening a trace changes its impedance while leaving its velocity unchanged. The same two expressions give the impedance of the wide trace, $Z_0 = \sqrt{L/C} = (h/w)\sqrt{\mu_0/(\epsilon_0 \epsilon_r)}$, which falls as the trace widens or moves closer to the plane. A microstrip departs from the uniform-dielectric case in degree: part of its field travels through the air above the trace, so the wave sees an effective dielectric constant between 1 and $\epsilon_r$ and travels slightly faster than a stripline buried in the same laminate.
+The last step uses the defining relationship of the speed of light, $c = 1/\sqrt{\mu_0 \epsilon_0}$. Widening the trace raises $C$ and lowers $L$ by the same factor, which is the geometric coupling described earlier expressed as an equation, so widening a trace changes its impedance while leaving its velocity unchanged.
+
+The same two expressions give the impedance of the wide trace, $Z_0 = \sqrt{L/C} = (h/w)\sqrt{\mu_0/(\epsilon_0 \epsilon_r)}$, which falls as the trace widens or moves closer to the plane. A microstrip departs from the uniform-dielectric case in degree: part of its field travels through the air above the trace, so the wave sees an effective dielectric constant between 1 and $\epsilon_r$ and travels slightly faster than a stripline buried in the same laminate.
 
 ### The Telegrapher's Equations: Deriving Z0 and Velocity
 
@@ -144,7 +150,7 @@ The power supply provides the constant potential energy, and the transistor deci
 
 ### The Wavefront Launch Event
 
-Consider a trace currently sitting at 0V. At the exact picosecond the pull-up transistor switches on, the physical copper at the beginning of the trace is abruptly exposed to the +1.2V potential from the rail.
+Consider a trace currently sitting at 0V. At the instant the pull-up transistor switches on, the physical copper at the beginning of the trace is abruptly exposed to the +1.2V potential from the rail.
 
 The entire length of the trace cannot instantly jump to 1.2V. The distributed parasitic capacitance requires time to charge, and the distributed series inductance resists sudden current flow. A sharp boundary forms right at the transmitter between the newly applied 1.2V region and the existing 0V region.
 
@@ -154,7 +160,9 @@ The 1.2V difference concentrated across this narrow boundary creates an intense,
 
 The physical mechanism of propagation can be understood by mentally dividing the entire trace into millions of microscopic, contiguous segments. Each segment is a tiny piece of copper separated from the ground plane by an insulator, making each segment a tiny capacitor with a tiny series inductance.
 
-**Time $t = 0$:** The transistor switches on, abruptly exposing the very first microscopic segment of the trace (at $d = 0$) to the 1.2V rail. To bring this first segment up to 1.2V, charge must be deposited onto it. A localized burst of conventional current flows from the power supply into this segment (physically, electrons are pulled out of the copper, as the section on conventional current below explains). This movement of charge is the conduction current. The accumulating charge rapidly builds an electric field across the dielectric, pointing from the trace down to the ground plane. Maxwell showed that a changing electric field produces a magnetic field exactly as a current does. This displacement current bridges the physical gap of the insulator, completing the local circuit loop back through the ground plane to the source. At this moment, only the first microscopic segment is affected, and the rest of the trace has not yet received any signal.
+**Time $t = 0$:** The transistor switches on, abruptly exposing the first microscopic segment of the trace (at $d = 0$) to the 1.2V rail. Bringing this first segment up to 1.2V requires depositing charge onto it. A localized burst of conventional current flows from the power supply into this segment (physically, electrons are pulled out of the copper, as the section on conventional current below explains). This movement of charge is the conduction current.
+
+The accumulating charge rapidly builds an electric field across the dielectric, pointing from the trace down to the ground plane. Maxwell showed that a changing electric field produces a magnetic field in the same manner as a conduction current. This displacement current bridges the physical gap of the insulator, completing the local circuit loop back through the ground plane to the source. At this moment, only the first microscopic segment is affected, and the rest of the trace has not yet received any signal.
 
 **Time $t > 0$:** Segment 1 is now charged to 1.2V, but segment 2 remains at 0V. The voltage difference causes segment 1 to act as the local power source for segment 2. Charge shifts from segment 1 into segment 2. The local series inductance briefly resists this sudden movement, but charge transfers. Segment 2 charges, and an electric field forms beneath it, creating a local displacement current through the dielectric and a local magnetic field around the copper. Segment 2 then acts as the source for segment 3, which in turn charges segment 4.
 
@@ -164,15 +172,13 @@ This continuous, sequential charging of microscopic segments is the physical mec
 
 Freezing time while the wavefront is halfway down the board reveals three distinct zones:
 
-1. **Behind the wavefront:** The trace is fully charged to 1.2V. A static electric field holds steady between the trace and the ground plane, and because the voltage is not changing, no displacement current flows here. The conduction current is steady and nonzero: a current of $V/Z_0$ flows along the trace from the driver to the wavefront and returns along the ground plane beneath it, surrounding the trace with a static magnetic field. This current delivers the charge that the wavefront deposits on each newly reached segment, as the next section quantifies.
-
-2. **Ahead of the wavefront:** The trace is still at 0V, its voltage is not changing, and neither conduction current nor displacement current flows.
-
-3. **Exactly at the wavefront:** The voltage is actively transitioning from 0V to 1.2V. Charge is shifting to charge the local segment (conduction current). The electric field is growing, passing energy through the dielectric (displacement current). The current flows in a loop: forward on the trace from the driver to the wavefront, vertically through the dielectric as displacement current, and backward through the ground plane to the source. The vertical leg of this loop, the only place where the fields are changing, slides down the transmission line at the propagation velocity, so the loop lengthens as the signal travels.
+- **Charged region behind the wavefront:** The trace is fully charged to 1.2V. A static electric field holds steady between the trace and the ground plane, and because the voltage is not changing, no displacement current flows here. The conduction current is steady and nonzero: a current of $V/Z_0$ flows along the trace from the driver to the wavefront and returns along the ground plane beneath it, surrounding the trace with a static magnetic field that delivers charge to each newly reached segment.
+- **Uncharged region ahead of the wavefront:** The trace remains at 0V, its voltage is not changing, and neither conduction current nor displacement current flows.
+- **Active transition zone at the wavefront:** The voltage actively transitions from 0V to 1.2V as conduction current charges the local segment and a growing electric field passes displacement current through the dielectric. Current flows forward on the trace from the driver to the wavefront, vertically through the dielectric as displacement current, and backward through the ground plane to the source. The vertical leg of this loop, the only region where the fields change, slides down the transmission line at the propagation velocity and lengthens the loop as the signal travels.
 
 ### The Role of the Power Supply During Propagation
 
-A critical physical detail: segment 1 does not simply dump its stored charge into segment 2 and go dead. Segment 1 remains continuously connected to the 1.2V power supply through the closed transistor switch. The power supply acts as a continuous, high-pressure source that forces charge into the trace at $d = 0$ to feed the propagating wavefront. Every segment behind the wavefront stays firmly pinned at 1.2V.
+A critical physical detail governs energy delivery: segment 1 does not dump its stored charge into segment 2 and go dead. Segment 1 remains continuously connected to the 1.2V power supply through the closed transistor switch. The power supply acts as a continuous, high-pressure source that forces charge into the trace at $d = 0$ to feed the propagating wavefront. Every segment behind the wavefront stays firmly pinned at 1.2V.
 
 The rate at which the supply must deliver charge follows from the geometry. In each second, the wavefront advances a distance $v_p$ and charges that length of line, whose capacitance is $C v_p$, to the voltage $V$. The charge delivered per second is the current:
 
@@ -186,13 +192,13 @@ The transmitter sends a logic "0" by disconnecting the 1.2V rail and connecting 
 
 ### Conventional Current vs. Electron Motion
 
-Operating a standard positive voltage rail (+1.2V) means the power supply is performing the exact opposite of "pushing electrons into the trace." Electrons carry negative charge, and the copper trace naturally contains an equal number of protons and electrons, giving it a neutral 0V baseline. Creating a +1.2V potential on the trace requires the power supply to *strip electrons away* from the copper atoms and deposit them into the ground plane.
+Operating a standard positive voltage rail (+1.2V) means the power supply performs the direct opposite of "pushing electrons into the trace." Electrons carry negative charge, and the copper trace naturally contains an equal number of protons and electrons, giving it a neutral 0V baseline. Creating a +1.2V potential on the trace requires the power supply to *strip electrons away* from the copper atoms and deposit them into the ground plane.
 
 This removal of electrons creates a localized electron deficiency (a net positive charge) at $d = 0$. The propagating wavefront requires the power supply to continuously pull more electrons out of the trace at $d = 0$ so that each newly encountered segment reaches that same +1.2V state of electron deficiency.
 
 Operating a negative voltage rail (-1.2V) reverses this: the power supply forces surplus electrons into the trace, creating a state of electron overdensity.
 
-Electrical engineers typically use "conventional current" and state that "the power supply pushes charge into the trace" for a positive voltage. This is a historical mathematical convention established by Benjamin Franklin before the electron was discovered. The physical reality of the subatomic motion is always reversed for positive voltages. The core mechanical principle remains identical regardless of polarity: the power supply actively does physical work at $d = 0$ to alter the electron density of the copper, and it must continuously perform that work to keep the entire length of the transmission line fully charged behind the wavefront. The rest of this series describes current in the conventional direction.
+Electrical engineers typically use "conventional current" and state that "the power supply pushes charge into the trace" for a positive voltage. This directional assignment is a historical mathematical convention established by Benjamin Franklin before the electron was discovered. The physical reality of the subatomic motion is always reversed for positive voltages. The core mechanical principle remains identical regardless of polarity: the power supply actively does physical work at $d = 0$ to alter the electron density of the copper, and it must continuously perform that work to keep the entire length of the transmission line fully charged behind the wavefront. The rest of this series describes current in the conventional direction.
 
 ## Worked Examples
 
@@ -228,22 +234,24 @@ A higher voltage pushes more current through a given transmission line geometry.
 
 Information is carried by the arrival time of wavefronts, not by the receiver interpreting the frequency content of each edge.
 
-The receiver at the far end of the trace is essentially a voltmeter that samples the line at instants set by a recovered clock ([Chapter 17](17_CDR_and_PLL_Loop_Dynamics.md) explains how the receiver extracts that clock from the data itself). A rising-edge wavefront arrives, the receiver's local voltage jumps from 0V to 1.2V, and at the next clock tick the receiver reads 1.2V and records a "1." At the following tick the trace is still fully charged, since the transmitter kept the pull-up transistor closed and no falling edge has arrived, so the receiver records a second "1." A falling-edge wavefront then arrives and discharges the trace to 0V, and the receiver records a "0" at the next tick.
+The receiver at the far end of the trace acts as a high-speed voltage comparator that samples the line at instants set by a recovered clock ([Chapter 17](17_CDR_and_PLL_Loop_Dynamics.md) explains how the receiver extracts that clock from the data itself). A rising-edge wavefront arrives, the local voltage at the receiver jumps from 0V to 1.2V, and at the next clock tick the receiver reads 1.2V and records a "1."
 
-The data is encoded purely in the time duration between wavefronts. The high-frequency content of each edge, quantified in [Chapter 2](02_Frequency_Content_of_Digital_Signals.md), is the physical mechanism that makes those edges steep and sharp. An edge lacking that content would be slow and sloped, and the receiver would struggle to identify the exact moment the transition crossed the threshold, leading to jitter and bit errors.
+At the following tick the trace is still fully charged, since the transmitter kept the pull-up transistor closed and no falling edge has arrived, so the receiver records a second "1." A falling-edge wavefront then arrives and discharges the trace to 0V, and the receiver records a "0" at the next tick.
+
+The data is encoded purely in the time duration between wavefronts. The high-frequency content of each edge, quantified in [Chapter 2](02_Frequency_Content_of_Digital_Signals.md), is the physical mechanism that makes those edges steep and sharp. An edge lacking that content would be slow and sloped, and the receiver would struggle to identify the specific instant the transition crossed the threshold, leading to jitter and bit errors.
 
 ## Edge Cases
 
 ### The Telegrapher's Equations with Losses
 
-The derivation in Core Concepts assumes perfect copper and a perfect insulator. A real line adds two more distributed parameters, so each infinitesimal slice contains four:
+The derivation in Core Concepts assumes perfect copper and a perfect insulator. A real transmission line models each infinitesimal slice using four distributed parameters per unit length, grouped by whether they act in series along the conductor path or in shunt across the dielectric:
 
-- **$R$** (series resistance): the resistance per unit length of the conductor and its return path, which rises with frequency because of the skin effect ([Chapter 5](05_Skin_Effect_and_Dielectric_Loss.md)).
-- **$L$** (series inductance): the self-inductance of the current loop formed by the trace and its return path on the ground plane.
-- **$G$** (shunt conductance): the conductance per unit length through the dielectric between the trace and the ground plane. $G$ is a separate parameter, not the reciprocal of $R$. DC leakage through a good laminate is negligible; at high frequencies $G$ is dominated by dielectric loss and is approximately $\omega C \tan\delta$, where $\tan\delta$ is the loss tangent of the laminate ([Chapter 5](05_Skin_Effect_and_Dielectric_Loss.md)).
-- **$C$** (shunt capacitance): the parallel capacitance between the trace and the ground plane.
-
-The series elements ($R$ and $L$) are in-line with the current path. They dictate the impedance that the physical current encounters while traveling along the conductor. The shunt elements ($G$ and $C$) are in parallel between the trace and the ground plane. They determine how much current leaks across the dielectric at each point along the line.
+| Parameter | Circuit Placement | Physical Origin | Frequency Dependence |
+|---|---|---|---|
+| `R` (series resistance) | In-line with the current path | Ohmic resistance of the trace and return path | Rises as `sqrt(f)` due to the skin effect ([Chapter 5](05_Skin_Effect_and_Dielectric_Loss.md)) |
+| `L` (series inductance) | In-line with the current path | Magnetic energy stored in the trace-to-plane current loop | Approximately constant at high frequencies |
+| `G` (shunt conductance) | Parallel across the dielectric | Dielectric polarization loss (distinct from `1/R`) | Negligible at DC; scales as `omega * C * tan(delta)` ([Chapter 5](05_Skin_Effect_and_Dielectric_Loss.md)) |
+| `C` (shunt capacitance) | Parallel across the dielectric | Electric field energy stored between trace and plane | Approximately constant across signal bandwidths |
 
 Adding $R$ to the voltage equation and $G$ to the current equation gives the full Telegrapher's Equations:
 
@@ -281,4 +289,6 @@ Between edge transitions, no new frequency content propagates along the trace. T
 
 The trace remains in this static state until the next wavefront arrives to change it. The changing fields, and therefore the high-frequency content of the signal, are confined to the rising and falling edges, while the flat portions between edges hold only static fields.
 
-The next chapter determines how much high-frequency content a single edge carries, which sets the bandwidth that every later structure in the channel, and every instrument that measures it, must support.
+[Chapter 2](02_Frequency_Content_of_Digital_Signals.md) determines how much high-frequency content a single edge carries, which sets the bandwidth that every later structure in the channel, and every instrument that measures it, must support.
+
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>

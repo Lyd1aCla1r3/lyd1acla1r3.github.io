@@ -25,13 +25,13 @@
 
 <!-- SUMMARY: Executing the Byte Pair Encoding algorithm against a concrete corpus reveals how abstract statistical rules collapse character-level data into optimized semantic units. Tracing the frequency counts and merge selections across a fourteen-step compression sequence demonstrates the deterministic derivation of morphological stems and suffixes without linguistic programming. -->
 
-<p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/tokenization-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/tokenization-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p>
 
-The formal definition of the Byte Pair Encoding algorithm establishes a greedy, iterative mechanism for subword compression. Executing this mechanism against a concrete corpus reveals exactly how these abstract rules operate in practice. The procedure relies entirely on statistical frequency rather than linguistic programming.
+The formal definition of the Byte Pair Encoding algorithm establishes a greedy, iterative mechanism for subword compression. Executing this mechanism against a concrete corpus demonstrates how these abstract rules operate in practice. The procedure relies entirely on statistical frequency rather than linguistic programming.
 
 ## The Initial State
 
-The training process begins with the nine distinct verbs defined in the preceding article. Each word is split into individual character tokens, terminated by the `</w>` boundary marker. Once the initial state of the corpus is established, the discrete token sequences and their absolute frequencies are tracked across the text.
+The training process begins with the nine distinct inflected word forms defined in the preceding chapter. Each word splits into individual character tokens terminated by the `</w>` boundary marker. This initialized corpus state allows the algorithm to track discrete token sequences and their absolute frequencies across the text.
 
 
 <div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2; text-align: left;">
@@ -81,7 +81,7 @@ The algorithm evaluates the frequency of every adjacent token pair in this initi
 
 
 
-This operation immediately alters the subsequent frequency distribution. The second merge iteration tallies adjacent pairs across the newly updated corpus. The pair `al` + `k` emerges as the most frequent pattern.
+This merge operation immediately alters the subsequent frequency distribution. The second merge iteration tallies adjacent pairs across the updated corpus, where `al` + `k` and `k` + `e` tie for the highest frequency at six occurrences each. Lexicographical tie-breaking selects `al` + `k` as the next merge target.
 
 
 <div class="trace-container">
@@ -129,7 +129,7 @@ The merge operation fuses these tokens, creating the cohesive `alk` unit. The th
 </div>
 
 
-After merely three iterations, the counting mechanism derives `alk`, the central morphological root shared by the majority of the corpus. This fragment serves as the structural foundation for *walking*, *walked*, *walker*, *talking*, *talked*, and *talker*. The internal representation of the text compresses significantly.
+Three merge iterations suffice for the counting mechanism to derive `alk`, the central morphological root shared by two-thirds of the corpus. This fragment serves as the structural foundation for *walking*, *walked*, *walker*, *talking*, *talked*, and *talker*, compressing the internal representation of the text.
 
 
 <div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2; text-align: left;">
@@ -273,7 +273,7 @@ The initial `alk` fragment transforms into three complete lexical structures: `a
 </div>
 
 
-After fourteen merge operations, the original sequences of isolated characters transition into large subword fragments. The internal representation of the text demonstrates profound compression.
+Fourteen merge operations transform the original sequences of isolated characters into consolidated subword fragments. The internal representation of the text achieves substantial sequence compression.
 
 
 <div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2; text-align: left;">
@@ -292,15 +292,15 @@ After fourteen merge operations, the original sequences of isolated characters t
 
 ## Finalization of the Vocabulary
 
-The Byte Pair Encoding algorithm naturally halts when the maximum frequency of any adjacent pair drops to 1, because merging a pair that only occurs once offers no further compression benefit. Following step fourteen, the frequency of every remaining adjacent pair in our toy corpus has dropped to exactly 1. Therefore, the training algorithm definitively halts at this exact state. 
+The Byte Pair Encoding algorithm halts when the maximum frequency of every remaining adjacent pair drops to `1`, as merging a pair that occurs only once provides no generalizable compression across words. Step 14 reduces the frequency of every remaining adjacent pair in the toy corpus to `1`, terminating the training loop.
 
-The execution of exactly fourteen merge operations yields a deterministic, highly compressed token inventory. It is crucial to distinguish between the final state of the corpus and the final trained vocabulary. The nine sequences shown above represent the completely compressed state of the corpus. The structural update has collapsed the original sequence of isolated characters into larger subword fragments. 
+Executing these 14 merge operations produces a deterministic, compressed token inventory. A structural distinction separates the final encoded corpus from the trained vocabulary dictionary. The nine sequences displayed above represent the compressed state of the training corpus, where repeated character patterns have collapsed into larger subword units.
 
-The corpus, however, does not perfectly compress into nine single-token words. This is a fundamental feature of subword tokenization: because the word *talking* only appears once in this tiny corpus, its leading consonant `t` never achieves a high enough frequency to merge with its suffix. Rare words are natively preserved as sequences of smaller, common subwords.
+The encoded corpus does not collapse into nine single-token words. This partial compression reflects a core design property of subword tokenization: the word *talking* appears only once in the corpus, so its leading consonant `t` never reaches the pair frequency required to merge with `alking</w>`. Rare words remain represented as compositions of smaller, shared subwords.
 
-The *vocabulary dictionary* itself contains exactly 27 items: the 13 initial base characters plus the 14 new subwords generated during the merges. Because the vocabulary size directly dictates the architecture's input dimensions, the neural network's embedding matrix will now be instantiated with exactly 27 rows, one for each of these learned tokens.
+The trained *vocabulary dictionary* contains 27 tokens: the 13 initial base characters plus the 14 subword tokens minted across the merge sequence. This vocabulary count directly governs the input dimensions of the neural network, instantiating the embedding matrix with 27 rows corresponding to the 27 learned tokens.
 
-<div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2;">
+<div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2; text-align: left;">
 <code>&lt;/w&gt;</code> <code>a</code> <b><code>al</code></b> <b><code>alk</code></b> <b><code>alke</code></b> <b><code>alked</code></b> <b><code>alked&lt;/w&gt;</code></b> <b><code>alker</code></b> <b><code>alker&lt;/w&gt;</code></b> <b><code>alking&lt;/w&gt;</code></b> <code>d</code> <code>e</code> <code>g</code> <b><code>g&lt;/w&gt;</code></b> <code>i</code> <b><code>in</code></b> <b><code>ing&lt;/w&gt;</code></b> <code>k</code> <b><code>ke</code></b> <code>l</code> <code>n</code> <code>o</code> <b><code>oke</code></b> <code>r</code> <code>t</code> <code>w</code> <b><code>woke</code></b>
 </div>
 
@@ -309,6 +309,6 @@ The *vocabulary dictionary* itself contains exactly 27 items: the 13 initial bas
 
 
 
-The statistical frequency analysis successfully identified the structural regularities of the English language. This trained 27-token vocabulary now exists as a fixed, immutable dictionary. The subsequent article explores how this finalized dictionary processes completely new, unseen text through the corresponding encoding algorithm.
+The statistical frequency analysis identified the recurring morphological regularities of the corpus. This trained 27-token vocabulary now stands as a fixed, immutable dictionary. The next chapter explores how this finalized dictionary processes unseen text through the corresponding encoding algorithm.
 
-<p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/tokenization-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/tokenization-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p>

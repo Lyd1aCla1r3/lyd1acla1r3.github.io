@@ -164,19 +164,19 @@
                           <a href="signal-integrity-13_Transmitter_FFE.html">
                               <article class="blog-item series-item">
                                   <h2>Transmitter Feed-Forward Equalization</h2>
-                                  <p>A lossy channel spreads a bit's pulse into its neighbors. This guide defines the transmitter's finite impulse response (FIR) filter, deriving its $H(z)$ transfer function to show how pre-cursor and post-cursor taps cancel channel dispersion by selectively attenuating low-frequency content.</p>
+                                  <p>Channel dispersion spreads each transmitted pulse into neighboring unit intervals. A three-tap finite impulse response (FIR) transmitter filter shapes the launched spectrum by attenuating low-frequency runs relative to high-frequency transitions, cancelling pre-cursor and post-cursor intersymbol interference within a fixed peak-voltage swing.</p>
                               </article>
                           </a>
                           <a href="signal-integrity-14_CTLE_and_DFE.html">
                               <article class="blog-item series-item">
                                   <h2>Continuous Time Linear Equalization and Decision Feedback Equalization</h2>
-                                  <p>A receiver employs two distinct equalizers. This guide derives the continuous time linear equalizer (CTLE) that restores high-frequency channel loss, and models the decision feedback equalizer (DFE) that subtracts post-cursor interference without amplifying noise, concluding with LMS gradient descent training.</p>
+                                  <p>High-speed receivers combine two distinct equalizers to recover attenuated signals. A continuous-time linear equalizer (CTLE) applies a zero-pole high-pass boost to flatten channel insertion loss, while a decision feedback equalizer (DFE) subtracts decided post-cursor interference without amplifying noise, trained jointly by least-mean-square gradient descent.</p>
                               </article>
                           </a>
                           <a href="signal-integrity-15_PAM4_Signaling_and_Gray_Coding.html">
                               <article class="blog-item series-item">
                                   <h2>PAM4 Signaling and Gray Coding</h2>
-                                  <p>PAM4 encodes two bits per symbol by dividing the transmitter swing into four levels. This guide derives the $-9.54$ dB penalty in eye amplitude, links it to target error ratios, and explains the symbol error reductions achieved by Gray coding and three-slicer receivers.</p>
+                                  <p>Four-level pulse amplitude modulation (PAM4) encodes two bits per symbol across four voltage levels to halve the channel Nyquist frequency. Dividing the peak voltage swing into three eyes introduces a -9.54 dB amplitude margin penalty, requiring three-slicer thermometer decoding, Gray coding to halve adjacent-threshold bit errors, and forward error correction.</p>
                               </article>
                           </a>
                       </div>

@@ -24,7 +24,7 @@
 
 <!-- SUMMARY: This foundational overview introduces an autoregressive Decoder-only Transformer built from scratch using rigorous tensor notation and geometric principles. The text defines the vocabulary space, architectural dimensions, and the central residual stream required to calculate the forward pass. -->
 
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>
 
 ## The Problem with Tutorials
 
@@ -41,43 +41,43 @@ The objective is to train a Transformer to predict the next word in a specific s
 **Input:** `<BOS>` `i` `woke` `up`  
 **Target:** `late`
 
-The token `<BOS>` stands for Beginning of Sequence. This is a standard marker that tells the network a new sequence has started. 
+The token `<BOS>` stands for Beginning of Sequence and serves as a standard boundary marker indicating the start of a sequence.
 
-This sentence is chosen carefully. It allows the attention mechanism to perform observable work. To predict the word "late", the network cannot merely look at the word "up". It must contextualize the combination of "woke" and "up" together. 
+This four-token prompt requires the attention mechanism to perform observable contextual work. Predicting the target token `late` requires more than inspecting the final token `up` in isolation; the network must combine `woke` and `up` into a unified phrasal concept.
 
 ### The Vocabulary Space
 
-To make the math tractable, the model is restricted to a vocabulary of exactly twelve tokens. The total size of the vocabulary is represented by the variable $V$. In this configuration, $V$ equals 12.
+To keep every matrix operation tractable by hand, the model operates on a fixed vocabulary of twelve tokens. The variable $V$ denotes the total vocabulary size, setting $V = 12$ for this configuration.
 
 <div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2; text-align: left;">
-<span style="font-size: 0.9em;"><b><code>&lt;BOS&gt;</code></b> <b><code>we</code></b> <b><code>late</code></b> <b><code>&lt;PAD&gt;</code></b> <b><code>&lt;EOS&gt;</code></b> <b><code>woke</code></b> <b><code>early</code></b> <b><code>i</code></b> <b><code>stayed</code></b> <b><code>today</code></b> <b><code>yesterday</code></b> <b><code>up</code></b></span>
+<span style="font-size: 0.9em;"><b><code>&lt;BOS&gt;</code></b> <b><code>&lt;EOS&gt;</code></b> <b><code>&lt;PAD&gt;</code></b> <b><code>i</code></b> <b><code>we</code></b> <b><code>woke</code></b> <b><code>stayed</code></b> <b><code>up</code></b> <b><code>late</code></b> <b><code>early</code></b> <b><code>today</code></b> <b><code>yesterday</code></b></span>
 </div>
-This small vocabulary features natural semantic clusters. The pronouns "i" and "we" form one cluster. The temporal adverbs "late", "early", and "today" form another. This gives the matrix operations the opportunity to physically group related concepts in vector space. As the model trains, these clusters will visibly form within the numerical representations.
+
+This compact vocabulary contains distinct semantic clusters. The pronouns `i` and `we` form one grammatical group, while the temporal modifiers `late`, `early`, `today`, and `yesterday` form another. These groupings allow the matrix operations to cluster related concepts geometrically in vector space during training.
 
 ## The Architecture
 
-Before defining the dimensions of the data, the architecture processing that data must be clearly defined. The network utilizes an autoregressive Decoder-only architecture. This is the exact framework that powers models like GPT.
+Before specifying the tensor dimensions, the network topology must be established. The model uses an autoregressive, Decoder-only Transformer architecture, which forms the standard structural foundation for causal language modeling.
 
-Two distinct terms explain this design.
+Two architectural properties define this topology:
 
-First, the term autoregressive describes how the model generates text. The model predicts the next word based on its own previous outputs. Once a word is predicted, the network appends that new word to the input sequence and runs the entire process again to predict the subsequent word. The model feeds its own output back into itself in a continuous loop.
+- **Autoregressive Generation:** The network predicts the next token from its own preceding outputs. Completing a token prediction appends that newly generated token to the input sequence, and the forward pass repeats in a continuous feedback loop to generate subsequent text.
+- **Decoder-Only Topology:** Early sequence-to-sequence Transformers paired a bidirectional Encoder for processing a source sequence with a causal Decoder for generating a target sequence. Next-token prediction operates on a single continuous sequence rather than translating between two distinct sequences, eliminating the Encoder and retaining only the causal Decoder stack.
 
 ```mermaid
 graph LR
-    A("<BOS> i woke up") --> B("Transformer")
+    A("&lt;BOS&gt; i woke up") --> B("Transformer")
     B --> C("late")
     C -. Appended to Input .-> A
 ```
 
-Second, the designation Decoder-only refers to the structure of the network. Early Transformers featured two halves. An Encoder processed a source language like French, and a Decoder generated a target language like English. The current objective does not require translation between two different sequences. The model only needs to predict the continuation of a single sequence. The Encoder is discarded entirely, and only the Decoder is retained.
-
 ### The Residual Stream
 
-Inside this Decoder exists a central memory bus known as the residual stream. This serves as the most critical structural concept in the entire architecture.
+Inside this Decoder exists a central memory bus known as the residual stream, which forms the primary structural backbone of the architecture.
 
-The residual stream acts as a main highway running continuously from the very first layer of the network to the very last. When a word enters the network, the data is placed on this highway as a vector. As this vector travels through the network, the Attention and Multi-Layer Perceptron blocks do not intercept and replace the values. Instead, these components read from the vector, calculate new contextual information, and then add that new information back into the original vector.
+The residual stream acts as a continuous data highway running from the initial embedding layer to the final output projection. Entering tokens are placed onto this highway as dense vectors. Rather than overwriting those vectors in place, the Attention and Multi-Layer Perceptron (MLP) sub-layers read from the stream, compute contextual updates, and add those updates back into the original vectors.
 
-This additive process ensures that the original information is never destroyed or compressed through a bottleneck. The vector simply accumulates richness and context as the forward pass continues.
+This additive update rule preserves the initial representation without compressing it through a destructive bottleneck. Each token vector accumulates semantic and syntactic context as the forward pass progresses across layers.
 
 ```mermaid
 graph TD
@@ -93,43 +93,32 @@ graph TD
 
 ## The Dimensions
 
-With the architecture established, the specific size of the pathways processing the data must be defined. The dimensions are scaled down to the specifications below.
+Six hyperparameters govern the shape of every tensor and weight matrix in the toy architecture:
 
-### Sequence Length
+| Hyperparameter | Symbol | Toy Value | Architectural Role |
+| :--- | :--- | :--- | :--- |
+| **Sequence Length** | `S` | `4` | Number of tokens processed simultaneously in one forward pass |
+| **Model Dimensionality** | `d_model` | `6` | Width of each token vector traveling along the residual stream |
+| **Batch Size** | `B` | `1` | Number of independent token sequences processed in parallel |
+| **Attention Heads** | `H` | `3` | Number of parallel subspaces used to route token-to-token context |
+| **Head Dimensionality** | `d_k`, `d_v` | `2` | Subspace width per attention head (`d_model / H = 6 / 3`) |
+| **Feed-Forward Dimension** | `d_ff` | `24` | Expanded hidden width of the MLP block (`4 * d_model = 24`) |
 
-Sequence length dictates how many tokens the model processes at one time. For an input of four tokens, the sequence length is 4.
+Three structural tradeoffs motivate these specific hyperparameter choices:
 
-### Model Dimensionality
-
-Every token is represented by a vector traveling on the residual stream. The variable $d_{model}$ defines the width of that pathway. A 6-dimensional vector represents each token. This allows for straightforward visualization on a screen without losing the capacity to store complex features.
-
-### Batch Size
-
-GPUs act as highly parallel execution units. Instead of passing one sequence through the network at a time, practitioners stack many independent sequences together into a batch to process them simultaneously. Batching repeats the exact same math in parallel across different inputs. The batch size is set to 1 to keep focus entirely on a single sequence.
-
-### Attention Heads
-
-The attention mechanism finds relationships between tokens. Rather than deploying one monolithic attention process, the workload is divided into multiple independent heads. This division allows the network to learn different types of relationships simultaneously. One head might specialize in grammar, while another focuses on semantic meaning. The model utilizes 3 parallel heads.
-
-### Head Dimensionality
-
-The 3 heads divide up the 6-dimensional residual stream. Each individual head operates in a 2-dimensional subspace. The matrices powering the attention mechanism will therefore be simple $6 \times 2$ structures.
-
-### Feed-Forward Dimension
-
-While the residual stream securely moves information between layers, the pathway is too narrow to perform complex reasoning.
-
-The Multi-Layer Perceptron solves this constraint by expanding the data into a much wider, higher-dimensional space. In this expanded space, complex, entangled concepts can be linearly separated and processed before being compressed back down into the residual stream. An empirical standard in deep learning dictates expanding this space by a factor of 4. The feed-forward dimension is $6 \times 4$, resulting in 24.
+- **Single-Sequence Batching (`B = 1`):** Parallel hardware accelerators stack multiple independent sequences into a batch to execute matrix multiplications concurrently across inputs. Setting the batch size to `1` isolates the geometry of a single four-token prompt without altering the underlying linear algebra.
+- **Multi-Head Subspace Splitting (`H = 3`, `d_k = 2`):** Dividing the 6-dimensional residual stream across 3 parallel heads assigns each head a $6 \times 2$ projection matrix. Independent heads can specialize in distinct linguistic relationships simultaneously, such as pairing subjects with verbs in one subspace while tracking temporal modifiers in another.
+- **Feed-Forward Expansion (`d_ff = 24`):** A 6-dimensional residual stream suffices to transport token representations between layers, whereas non-linear feature extraction requires a wider workspace. The MLP projects each 6-dimensional vector into a 24-dimensional intermediate space (following the standard $4 \times d_{\text{model}}$ expansion ratio) so entangled concepts can be linearly separated before projecting back into the residual stream.
 
 ## The Central Tensor
 
 Before text enters the Transformer, the characters must be converted into numbers. The process begins by assigning a unique integer index to every word in the vocabulary.
 
-That integer is then mapped to a one-hot encoded vector. A one-hot vector is an array of zeros with a single '1' placed at the index corresponding to that word. For a twelve-word vocabulary, the one-hot vector for the fourth word is a 12-dimensional array consisting of eleven zeros and one '1' in the fourth position.
+That integer is then mapped to a one-hot encoded vector. A one-hot vector is an array of zeros with a single `1` placed at the index corresponding to that word. For a twelve-word vocabulary, the one-hot vector for the fourth word is a 12-dimensional array consisting of eleven zeros and one `1` in the fourth position.
 
-When text enters the Transformer, this one-hot vector is embedded into a continuous mathematical space. This embedding creates the foundational tensor that travels through the entire network. The shape of this tensor is defined as Batch by Sequence Length by Model Dimension.
+Projecting each one-hot vector into a continuous vector space produces the foundational tensor that travels through the network. The full three-dimensional tensor has shape $\text{Batch} \times \text{Sequence Length} \times \text{Model Dimension}$.
 
-For this specific architecture, the shape is $1 \times 4 \times 6$. Since the batch size is 1, the batch dimension can be stripped away, leaving the data as a straightforward $4 \times 6$ matrix moving along the residual stream.
+Under the toy hyperparameters, this tensor has shape $1 \times 4 \times 6$. Dropping the unit batch dimension ($B = 1$) leaves a $4 \times 6$ matrix $X$ traveling along the residual stream:
 
 $$
 X = \begin{bmatrix} 
@@ -144,4 +133,4 @@ Every single mathematical operation in the forward pass reads from and writes to
 
 The raw text is then mapped to the vocabulary indices, preparing for the first genuine calculation. The one-hot encoded vectors are transformed into this $4 \times 6$ geometric representation.
 
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>

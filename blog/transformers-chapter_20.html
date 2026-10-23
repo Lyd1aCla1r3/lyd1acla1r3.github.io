@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -118,19 +159,23 @@
     <li><a href="index.html">Blog</a></li><li><a href="series-transformers.html">Series: Transformers</a></li><li aria-current="page">Part 20: The Beautiful Cancellation</li></ol></nav>
         <article class="blog-post series-transformers">
 <h1>Part 20: The Beautiful Cancellation</h1>
-<!-- SUMMARY: Chaining the derivatives of the cross-entropy loss and the softmax function reveals a mathematical cancellation that simplifies the gradient. This interpretation establishes the primary error signal as the precise difference between the predicted probabilities and the ground truth. --><p>The previous phase established the geometry of the cross-entropy loss function by calculating exactly how far the predicted probability distribution strayed from the ground truth one-hot vector. That resulting scalar loss value represents the total error of the entire network. Assigning blame for that accumulated error initiates the backpropagation phase. The very first step requires calculating the gradient of the loss with respect to the final unnormalized scores, known as the logits.</p>
+<!-- SUMMARY: Chaining the derivatives of the cross-entropy loss and the softmax function reveals an algebraic cancellation that simplifies the output gradient. This derivation establishes the primary error signal as the direct difference between the predicted probabilities and the ground-truth one-hot targets. --><p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p><p>Part 19 established the geometry of the cross-entropy loss function by measuring how far the predicted probability distribution strayed from the ground-truth one-hot vector. That scalar loss value quantifies the total prediction error of the network. Assigning credit and blame for that accumulated error initiates backpropagation, starting with the gradient of the loss with respect to the final unnormalized scores, known as the logits.</p>
 <h2>The Calculus Problem</h2>
-<p>Backpropagation relies entirely on the chain rule of calculus. Finding how a specific weight deep inside the network contributed to the final error requires multiplying the gradients of every operation situated between that weight and the final loss. The journey backward begins at the very end of the network architecture, tracing from the scalar cross-entropy loss, through the softmax function, and directly into the logits.</p>
-<p>Taking the derivative of these two final operations individually reveals significant complexity. The softmax function is not an element-wise operation. Modifying the unnormalized logit for a single word inherently changes the output probability of every other word in the vocabulary to maintain a total sum of one. The derivative of softmax is therefore not a simple vector, but rather a full Jacobian matrix tracking the interaction of every single output with every single input. The derivative of the cross-entropy loss introduces further complexity by requiring the derivative of a logarithm, which yields fractional terms.</p>
-<p>Multiplying a fractional gradient by a complex Jacobian matrix typically results in a computational bottleneck. A profound mathematical elegance emerges when combining these two specific functions.</p>
+<p>Backpropagation relies on the chain rule of calculus. Determining how a specific weight inside the network contributed to the final error requires multiplying the local derivatives of every operation situated between that weight and the scalar loss. The backward traversal begins at the output boundary of the architecture, moving from the cross-entropy loss, through the Softmax normalization, and into the vocabulary logits.</p>
+<p>Differentiating these two output operations in isolation introduces substantial algebraic complexity. Softmax is a coupled normalization rather than an element-wise function: perturbing the unnormalized logit for a single token alters the denominator sum and shifts the output probability of every token in the vocabulary. The derivative of a Softmax vector with respect to its logit vector forms a dense Jacobian matrix tracking all pairwise output-input interactions:</p>
+<ul>
+<li><strong>Diagonal Entries ($i = j$):</strong> Evaluate to $P_i(1 - P_i)$, measuring how a logit change affects its own token probability.</li>
+<li><strong>Off-Diagonal Entries ($i \neq j$):</strong> Evaluate to $-P_i P_j$, capturing how increasing one logit suppresses the probabilities of competing tokens.</li>
+</ul>
+<p>The derivative of the cross-entropy loss $-\log(P_{\text{target}})$ introduces an inverse probability factor $-1 / P_{\text{target}}$. Multiplying that fractional gradient through the full Softmax Jacobian appears computationally expensive until the terms are combined algebraically.</p>
 <h2>The Mathematical Elegance</h2>
-<p>Applying the chain rule to calculate the gradient of the cross-entropy loss $L$ with respect to the pre-softmax logits $z$ causes the complex terms of the Jacobian matrix and the logarithmic derivatives to perfectly cancel each other out. The mathematical proof of this cancellation is a foundational concept in vector calculus, yielding a final derivative that is stunningly simple.</p>
+<p>Applying the chain rule to combine the cross-entropy derivative with the Softmax Jacobian causes the nonlinear fractional terms and coupling products to cancel out. For a single sequence position (or summing positional losses $L = \sum_{t=1}^S L_t$ across the sequence), the gradient of the cross-entropy loss $L$ with respect to the pre-Softmax logit tensor $z$ reduces to a linear subtraction:</p>
 <p>$$
 \frac{\partial L}{\partial z} = P - Y
 $$</p>
-<p>In this equation, $P$ represents the predicted probability distribution, and $Y$ represents the ground truth one-hot encoded target vector. The gradient of the loss with respect to the logits is strictly the difference between the predicted model probabilities and the actual target states.</p>
+<p>In this expression, $P$ denotes the $4 \times 12$ predicted probability matrix from the Softmax layer, and $Y$ denotes the $4 \times 12$ ground-truth one-hot target matrix. Averaging the loss over $S = 4$ positions scales this matrix by a constant factor of $1/4$, which is absorbed into the optimizer learning rate during parameter updates.</p>
 <h2>Applying the Cancellation</h2>
-<p>This beautiful cancellation translates directly into the concrete matrices of the toy example. The forward pass generated a sequence of predicted probabilities for the four time steps, which must now be compared against the correct target tokens.</p>
+<p>This algebraic cancellation maps directly onto the concrete matrices of the four-token sequence. Each row compares the forward-pass probability distribution against the one-hot target token for that time step:</p>
 <table>
 <thead>
 <tr>
@@ -138,34 +183,39 @@ $$</p>
 <th align="left">Input Token</th>
 <th align="left">Target Token</th>
 <th align="left">Target Index</th>
+<th align="left">Target Logit Gradient (<code>P_target - 1</code>)</th>
 </tr>
 </thead>
 <tbody><tr>
-<td align="left">1</td>
+<td align="left"><strong>Step 1</strong></td>
 <td align="left"><code>&lt;BOS&gt;</code></td>
 <td align="left"><code>i</code></td>
-<td align="left">3</td>
+<td align="left"><code>3</code></td>
+<td align="left"><code>-0.9157</code> (<code>0.0843 - 1.0</code>)</td>
 </tr>
 <tr>
-<td align="left">2</td>
+<td align="left"><strong>Step 2</strong></td>
 <td align="left"><code>i</code></td>
 <td align="left"><code>woke</code></td>
-<td align="left">5</td>
+<td align="left"><code>5</code></td>
+<td align="left"><code>-0.9169</code> (<code>0.0831 - 1.0</code>)</td>
 </tr>
 <tr>
-<td align="left">3</td>
+<td align="left"><strong>Step 3</strong></td>
 <td align="left"><code>woke</code></td>
 <td align="left"><code>up</code></td>
-<td align="left">7</td>
+<td align="left"><code>7</code></td>
+<td align="left"><code>-0.9167</code> (<code>0.0833 - 1.0</code>)</td>
 </tr>
 <tr>
-<td align="left">4</td>
+<td align="left"><strong>Step 4</strong></td>
 <td align="left"><code>up</code></td>
 <td align="left"><code>late</code></td>
-<td align="left">8</td>
+<td align="left"><code>8</code></td>
+<td align="left"><code>-0.9167</code> (<code>0.0833 - 1.0</code>)</td>
 </tr>
 </tbody></table>
-<p>These target tokens form a matrix of one-hot vectors designated as $Y$. Each row corresponds to a discrete time step, and the column of the correct target token contains a value of exactly <code>1.0</code>.</p>
+<p>Stacking the four one-hot target vectors forms the $4 \times 12$ ground-truth matrix $Y$, where each row places a <code>1.0</code> at the target vocabulary index and <code>0</code> at the remaining eleven indices:</p>
 <p>$$
 Y = \begin{bmatrix}
  0 &  0 &  0 &  1.0 &  0 &  0 &  0 &  0 &  0 & \dots &  0 \\
@@ -174,7 +224,7 @@ Y = \begin{bmatrix}
  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  1.0 & \dots &  0
 \end{bmatrix}
 $$</p>
-<p>The gradient calculation extracts the predicted probability tensor $P$ generated during the softmax phase. Finding the exact gradient requires subtracting the target matrix $Y$ from the prediction matrix $P$.</p>
+<p>Subtracting the one-hot target matrix $Y$ from the Part 18 probability matrix $P$ produces the $4 \times 12$ logit gradient matrix $\frac{\partial L}{\partial z}$:</p>
 <p>$$
 \frac{\partial L}{\partial z} = \begin{bmatrix}
  0.0854 &  0.0850 &  0.0846 & -0.9157 &  0.0839 &  0.0835 &  0.0831 &  0.0828 &  0.0824 & \dots &  0.0813 \\
@@ -184,10 +234,14 @@ $$</p>
 \end{bmatrix}
 $$</p>
 <h2>The Physical Intuition</h2>
-<p>This resulting matrix represents the precise direction and magnitude of the necessary corrections for the unnormalized logits. This gradient acts physically as a set of forces pulling upon the network outputs.</p>
-<p>Gradient descent minimizes the total error by subtracting the computed gradient from the active parameters. For the correct token in each sequence, the model predicted a small probability near <code>0.084</code> when the ideal value was <code>1.0</code>. The subtraction yields a negative gradient of roughly <code>-0.916</code>. When the optimizer subtracts this negative value during the update step, it mathematically forces an increase in the unnormalized logit for the correct token.</p>
-<p>For all incorrect tokens, the target value was <code>0.0</code>. The subtraction yields a positive gradient exactly equal to the mistakenly predicted probability. The optimizer subtracts this positive value, which aggressively decreases the unnormalized logits for all incorrect tokens.</p>
-<p>The mathematical cancellation of the softmax and cross-entropy operations produces an exceedingly pure learning signal. This signal gently suppresses the logits of wrong answers proportionally to how strongly the model believed them, while simultaneously pulling up the logit of the correct answer with immense force. Establishing this pristine gradient vector at the output allows the architecture to propagate this learning signal backward through the unembedding matrix and directly into the deepest attention layers of the system.</p>
+<p>The matrix $\frac{\partial L}{\partial z}$ encodes both the direction and magnitude of the required correction for every vocabulary logit at every position.</p>
+<p>Gradient descent reduces loss by subtracting a scaled multiple of the gradient from the parameters. That subtraction induces opposite corrective forces on target and non-target columns:</p>
+<ul>
+<li><strong>Target Token Columns ($Y_{t,j} = 1.0$):</strong> The forward pass assigned a probability near <code>0.083</code> where the target value is <code>1.0</code>, producing a large negative gradient near <code>-0.917</code>. Subtracting this negative gradient during optimization increases the unnormalized logit for the ground-truth token.</li>
+<li><strong>Non-Target Token Columns ($Y_{t,j} = 0.0$):</strong> The subtraction $P_{t,j} - 0.0$ yields a positive gradient equal to the predicted probability mass near <code>+0.083</code>. Subtracting this positive gradient pushes down the logits of all eleven incorrect vocabulary candidates in proportion to how much probability mass the model mistakenly allocated to them.</li>
+</ul>
+<p>Combining cross-entropy loss with Softmax normalization produces a self-balancing error signal at the output boundary. The next stage propagates this $4 \times 12$ gradient matrix backward through the unembedding projection $W_U$ and into the Layer 2 residual stream.</p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="transformers-chapter_19.html" class="pagination-link prev">

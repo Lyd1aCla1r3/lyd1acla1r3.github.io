@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -120,7 +161,7 @@
 <h1>Part 6: Rotary Position Embeddings: Computing the Rotated Vectors</h1>
 <!-- SUMMARY: The rotation matrix derived in the preceding chapter is evaluated at every position in the toy sequence. Each 3×3 matrix is computed from cos(t) and sin(t), producing four distinct rotation matrices R_0 through R_3. These matrices are applied to every query and key vector from Chapter 4, producing the rotated vectors that the Transformer's attention mechanism will consume. The orthogonality of the rotation matrices guarantees that vector norms are preserved. --><p><em>Prefer to read this offline? <a href="../assets/docs/positional-encoding-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Positional Encoding Ebook here.</a></em></p><p>The preceding chapter derived the $3 \times 3$ rotation matrix for the toy model&#39;s odd-dimensional embedding space ($d_{model} = 3$). The upper-left $2 \times 2$ block rotates the complete dimension pair (dimensions 0 and 1) by the position-dependent angle $t \cdot \theta_0 = t$ radians, while the lower-right $1 \times 1$ identity block passes dimension 2 through unchanged. This chapter evaluates that matrix at every position in the toy sequence, proves its orthogonality, and applies the resulting rotations to every query and key vector.</p>
 <h2>Computing the Rotation Matrices</h2>
-<p>Each position $t \in \{0, 1, 2, 3\}$ has a specific $3 \times 3$ rotation matrix. Because the rotation angle is exactly $t$, the nine matrix entries are derived directly from $\cos(t)$ and $\sin(t)$.</p>
+<p>Each position $t \in \{0, 1, 2, 3\}$ has a specific $3 \times 3$ rotation matrix. The unit angular frequency $\theta_0 = 1$ sets the rotation angle to $t$ radians, so the nine matrix entries derive directly from $\cos(t)$ and $\sin(t)$.</p>
 <h3>Position $t = 0$ (rotation by $0$ radians)</h3>
 <p>$$
 \cos(0) = 1.0000, \qquad \sin(0) = 0.0000
@@ -144,7 +185,7 @@ $$</p>
 <p>$$
 R_2 = \begin{bmatrix} -0.4161 & -0.9093 & 0 \\ \phantom{-}0.9093 & -0.4161 & 0 \\ 0 & 0 & 1 \end{bmatrix}
 $$</p>
-<p>At $2$ radians, the cosine has crossed zero and turned negative. The $90^\circ$ boundary ($\pi/2 \approx 1.57$ radians) dictates the sign of a dot product. If the angle between two vectors is less than $90^\circ$, their dot product is positive; if it exceeds $90^\circ$, the dot product is negative. Because $2 > 1.57$, the vector has rotated past this orthogonal boundary into the second quadrant. It now points away from its original orientation. The negative diagonal entries reflect this quadrant shift.</p>
+<p>At $2$ radians, the cosine has crossed zero and turned negative. The $90^\circ$ boundary ($\pi/2 \approx 1.57$ radians) dictates the sign of a dot product. Angles below $90^\circ$ yield a positive dot product; angles above $90^\circ$ yield a negative dot product. An angle of $2$ radians exceeds $1.57$, rotating the vector past this orthogonal boundary into the second quadrant so that it points away from its original orientation. The negative diagonal entries reflect this quadrant shift.</p>
 <h3>Position $t = 3$ (rotation by $3$ radians)</h3>
 <p>$$
 \cos(3) = -0.9900, \qquad \sin(3) = 0.1411
@@ -152,43 +193,43 @@ $$</p>
 <p>$$
 R_3 = \begin{bmatrix} -0.9900 & -0.1411 & 0 \\ \phantom{-}0.1411 & -0.9900 & 0 \\ 0 & 0 & 1 \end{bmatrix}
 $$</p>
-<p>At 3 radians ($\approx 171.9°$), the rotation is nearly a full half-turn. The cosine is close to $-1$, meaning dimension 0 is nearly inverted, and the sine is small and positive, meaning dimension 1 contributes only a small correction. The rotation matrix is close to $\text{diag}(-1, -1, 1)$, which would be an exact $180°$ rotation at $t = \pi$.</p>
+<p>At 3 radians ($\approx 171.9°$), the rotation is nearly a full half-turn. The cosine is close to $-1$, meaning dimension 0 is nearly inverted, and the sine is small and positive, meaning dimension 1 contributes only a small correction. The rotation matrix approaches $\text{diag}(-1, -1, 1)$, which corresponds to a full $180^\circ$ half-turn at $t = \pi$.</p>
 <h3>Summary of Rotation Matrices</h3>
 <table>
 <thead>
 <tr>
-<th>Position $t$</th>
+<th>Position <code>t</code></th>
 <th>Angle (radians)</th>
-<th>$\cos(t)$</th>
-<th>$\sin(t)$</th>
+<th><code>cos(t)</code></th>
+<th><code>sin(t)</code></th>
 </tr>
 </thead>
 <tbody><tr>
-<td>$0$</td>
-<td>$0.0000$</td>
-<td>$\phantom{-}1.0000$</td>
-<td>$0.0000$</td>
+<td><code>0</code></td>
+<td><code>0.0000</code></td>
+<td><code>1.0000</code></td>
+<td><code>0.0000</code></td>
 </tr>
 <tr>
-<td>$1$</td>
-<td>$1.0000$</td>
-<td>$\phantom{-}0.5403$</td>
-<td>$0.8415$</td>
+<td><code>1</code></td>
+<td><code>1.0000</code></td>
+<td><code>0.5403</code></td>
+<td><code>0.8415</code></td>
 </tr>
 <tr>
-<td>$2$</td>
-<td>$2.0000$</td>
-<td>$-0.4161$</td>
-<td>$0.9093$</td>
+<td><code>2</code></td>
+<td><code>2.0000</code></td>
+<td><code>-0.4161</code></td>
+<td><code>0.9093</code></td>
 </tr>
 <tr>
-<td>$3$</td>
-<td>$3.0000$</td>
-<td>$-0.9900$</td>
-<td>$0.1411$</td>
+<td><code>3</code></td>
+<td><code>3.0000</code></td>
+<td><code>-0.9900</code></td>
+<td><code>0.1411</code></td>
 </tr>
 </tbody></table>
-<p>Every derived rotation matrix $R_t$ is strictly orthogonal. This is an emergent structural property of the rotation matrix itself, rooted directly in the Pythagorean trigonometric identity $\cos^2(\alpha) + \sin^2(\alpha) = 1$.</p>
+<p>Every derived rotation matrix $R_t$ is strictly orthogonal, an emergent structural property of the rotation matrix rooted directly in the Pythagorean trigonometric identity $\cos^2(\alpha) + \sin^2(\alpha) = 1$.</p>
 <p>Multiplying a $2 \times 2$ rotation block $R$ by its transpose $R^\top$ explicitly demonstrates this property:</p>
 <p>$$
 R^\top R = \begin{bmatrix} \cos(t\theta_i) & \sin(t\theta_i) \\ -\sin(t\theta_i) & \cos(t\theta_i) \end{bmatrix} \begin{bmatrix} \cos(t\theta_i) & -\sin(t\theta_i) \\ \sin(t\theta_i) & \cos(t\theta_i) \end{bmatrix}
@@ -211,7 +252,7 @@ $$</p>
 <p>$$
 = \mathbf{v}^\top I \mathbf{v} = \mathbf{v}^\top \mathbf{v} = \|\mathbf{v}\|^2
 $$</p>
-<p>Because the squared norms are equal, the magnitudes are strictly identical ($\|R_t \mathbf{v}\| = \|\mathbf{v}\|$).</p>
+<p>Equal squared norms guarantee identical Euclidean magnitudes ($\|R_t \mathbf{v}\| = \|\mathbf{v}\|$).</p>
 <p>This geometric preservation of magnitude provides a major structural advantage for RoPE over absolute additive encoding (like the sinusoidal encoding from Chapter 2). Additive encoding alters the original vector&#39;s length by directly adding a positional vector to it. RoPE only changes the vector&#39;s orientation, leaving its semantic magnitude completely intact.</p>
 <h2>Applying RoPE to the Query Vectors</h2>
 <p>The query vectors from Chapter 4 are rotated by their respective position matrices: $\mathbf{q}'_t = R_t \, \mathbf{q}_t$.</p>
@@ -233,42 +274,42 @@ $$</p>
 \mathbf{q}'_3 = R_3 \, \mathbf{q}_3 = \begin{bmatrix} -0.9900 & -0.1411 & 0 \\ \phantom{-}0.1411 & -0.9900 & 0 \\ 0 & 0 & 1 \end{bmatrix} \begin{bmatrix} -0.01 \\ -0.08 \\ \phantom{-}0.15 \end{bmatrix} = \begin{bmatrix} \phantom{-}\mathbf{0.0212} \\ \phantom{-}\mathbf{0.0778} \\ \phantom{-}\mathbf{0.1500} \end{bmatrix}
 $$</p>
 <h3>Rotated Query Vectors Summary</h3>
-<div style="font-size: 0.9em; overflow-x: auto;"><table>
+<table>
 <thead>
 <tr>
 <th>Position</th>
 <th>Token</th>
-<th>$\mathbf{q}_t$ (before RoPE)</th>
-<th>$\mathbf{q}'_t$ (after RoPE)</th>
+<th><code>q_t</code> (Before RoPE)</th>
+<th><code>q&#39;_t</code> (After RoPE)</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>$0$</td>
+<td><code>0</code></td>
 <td><code>The</code></td>
-<td>$[-0.0800, -0.1300, \phantom{-}0.2100\;]$</td>
-<td>$[-0.0800, -0.1300, \phantom{-}0.2100\;]$</td>
+<td><code>[-0.0800, -0.1300, 0.2100]</code></td>
+<td><code>[-0.0800, -0.1300, 0.2100]</code></td>
 </tr>
 <tr>
-<td>$1$</td>
+<td><code>1</code></td>
 <td><code>quick</code></td>
-<td>$[\phantom{-}0.3500, -0.1700, -0.2700\;]$</td>
-<td>$[\phantom{-}0.3322, \phantom{-}0.2027, -0.2700\;]$</td>
+<td><code>[0.3500, -0.1700, -0.2700]</code></td>
+<td><code>[0.3322, 0.2027, -0.2700]</code></td>
 </tr>
 <tr>
-<td>$2$</td>
+<td><code>2</code></td>
 <td><code>brown</code></td>
-<td>$[-0.0900, \phantom{-}0.4700, -0.0700\;]$</td>
-<td>$[-0.3899, -0.2774, -0.0700\;]$</td>
+<td><code>[-0.0900, 0.4700, -0.0700]</code></td>
+<td><code>[-0.3899, -0.2774, -0.0700]</code></td>
 </tr>
 <tr>
-<td>$3$</td>
+<td><code>3</code></td>
 <td><code>fox</code></td>
-<td>$[-0.0100, -0.0800, \phantom{-}0.1500\;]$</td>
-<td>$[\phantom{-}0.0212, \phantom{-}0.0778, \phantom{-}0.1500\;]$</td>
+<td><code>[-0.0100, -0.0800, 0.1500]</code></td>
+<td><code>[0.0212, 0.0778, 0.1500]</code></td>
 </tr>
 </tbody></table>
 <p>The third component of every vector is unchanged (the identity block for the unpaired dimension). The first two components are rotated by increasing angles: 0, 1, 2, 3 radians. At position 0, no rotation occurs. At position 2, the rotation of $2$ radians has reversed the sign of $q'_2[1]$ (from $0.47$ to $-0.2774$) and driven $q'_2[0]$ more negative (from $-0.09$ to $-0.3899$). These are not additive modifications; the vector has been geometrically reoriented in the 2D plane formed by dimensions 0 and 1.</p>
-</div><h2>Applying RoPE to the Key Vectors</h2>
+<h2>Applying RoPE to the Key Vectors</h2>
 <p>The key vectors from Chapter 4 are rotated identically: $\mathbf{k}'_t = R_t \, \mathbf{k}_t$.</p>
 <h3>Position $t = 0$ (<code>The</code>): $\mathbf{k}_0 = \begin{bmatrix} -0.15 & \phantom{-}0.10 & -0.04 \end{bmatrix}^\top$</h3>
 <p>$$
@@ -287,47 +328,49 @@ $$</p>
 \mathbf{k}'_3 = R_3 \, \mathbf{k}_3 = \begin{bmatrix} -0.9900 & -0.1411 & 0 \\ \phantom{-}0.1411 & -0.9900 & 0 \\ 0 & 0 & 1 \end{bmatrix} \begin{bmatrix} -0.06 \\ \phantom{-}0.11 \\ -0.05 \end{bmatrix} = \begin{bmatrix} \phantom{-}\mathbf{0.0439} \\ \mathbf{-0.1174} \\ \mathbf{-0.0500} \end{bmatrix}
 $$</p>
 <h3>Rotated Key Vectors Summary</h3>
-<div style="font-size: 0.9em; overflow-x: auto;"><table>
+<table>
 <thead>
 <tr>
 <th>Position</th>
 <th>Token</th>
-<th>$\mathbf{k}_t$ (before RoPE)</th>
-<th>$\mathbf{k}'_t$ (after RoPE)</th>
+<th><code>k_t</code> (Before RoPE)</th>
+<th><code>k&#39;_t</code> (After RoPE)</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>$0$</td>
+<td><code>0</code></td>
 <td><code>The</code></td>
-<td>$[-0.1500, \phantom{-}0.1000, -0.0400\;]$</td>
-<td>$[-0.1500, \phantom{-}0.1000, -0.0400\;]$</td>
+<td><code>[-0.1500, 0.1000, -0.0400]</code></td>
+<td><code>[-0.1500, 0.1000, -0.0400]</code></td>
 </tr>
 <tr>
-<td>$1$</td>
+<td><code>1</code></td>
 <td><code>quick</code></td>
-<td>$[\phantom{-}0.2400, \phantom{-}0.1100, -0.3200\;]$</td>
-<td>$[\phantom{-}0.0371, \phantom{-}0.2614, -0.3200\;]$</td>
+<td><code>[0.2400, 0.1100, -0.3200]</code></td>
+<td><code>[0.0371, 0.2614, -0.3200]</code></td>
 </tr>
 <tr>
-<td>$2$</td>
+<td><code>2</code></td>
 <td><code>brown</code></td>
-<td>$[\phantom{-}0.1600, -0.1700, \phantom{-}0.3600\;]$</td>
-<td>$[\phantom{-}0.0880, \phantom{-}0.2162, \phantom{-}0.3600\;]$</td>
+<td><code>[0.1600, -0.1700, 0.3600]</code></td>
+<td><code>[0.0880, 0.2162, 0.3600]</code></td>
 </tr>
 <tr>
-<td>$3$</td>
+<td><code>3</code></td>
 <td><code>fox</code></td>
-<td>$[-0.0600, \phantom{-}0.1100, -0.0500\;]$</td>
-<td>$[\phantom{-}0.0439, -0.1174, -0.0500\;]$</td>
+<td><code>[-0.0600, 0.1100, -0.0500]</code></td>
+<td><code>[0.0439, -0.1174, -0.0500]</code></td>
 </tr>
 </tbody></table>
-</div><h2>What Has Been Accomplished</h2>
-<p>The RoPE operation has injected positional information into every query and key vector through geometric rotation, without adding any vector to the embeddings. The key structural properties of this encoding:</p>
-<p><strong>Nothing is added.</strong> Unlike sinusoidal PE (Chapter 3), RoPE does not add a positional vector to the embedding. The embedding tensor $X$ is untouched. The positional signal exists only in the rotated orientation of the query and key vectors, not in their magnitudes.</p>
-<p><strong>Norms are preserved.</strong> Because $R_t$ is an orthogonal matrix, $\|\mathbf{q}'_t\| = \|\mathbf{q}_t\|$ and $\|\mathbf{k}'_t\| = \|\mathbf{k}_t\|$. The semantic magnitude of each vector is unaltered; only its direction in the 2D subspace formed by dimensions 0 and 1 has changed.</p>
-<p><strong>Each position receives a distinct rotation.</strong> Position 0 is the reference orientation (no rotation). Position 1 is rotated by 1 radian. Position 2 by 2 radians. Position 3 by 3 radians. The rotation angle increases linearly with position, producing a unique geometric orientation for each position index.</p>
-<p><strong>The unpaired dimension carries no positional signal.</strong> Dimension 2 passes through the identity for all positions. In the toy model with $d_{model} = 3$, two out of three dimensions carry positional information. In production models with even $d_{model}$, all dimensions are paired and all carry positional signal.</p>
-<p>The rotated query and key vectors are now ready to be consumed directly by the Transformer&#39;s attention mechanism. It is critical to understand that the Transformer never &quot;decodes&quot; these rotated vectors back into their original absolute positions. Instead, the positional information is structurally baked into the vectors, and the attention mechanism computes the dot product ($(\mathbf{q}'_m)^\top \mathbf{k}'_n$) between them. Because the Value vectors ($V$) are not rotated by RoPE, the positional information influences <em>only</em> the attention scores (which tokens pay attention to which), not the semantic content that is ultimately extracted.</p>
+<h2>What Has Been Accomplished</h2>
+<p>The RoPE operation has injected positional information into every query and key vector through geometric rotation, without adding any vector to the embeddings. Four structural properties characterize this encoding:</p>
+<ul>
+<li><strong>Zero Additive Distortion:</strong> Leaves the input embedding tensor $X$ untouched rather than superimposing a positional vector onto the semantic coordinates as in sinusoidal PE (Chapter 3).</li>
+<li><strong>Euclidean Norm Preservation:</strong> Guarantees $\|\mathbf{q}'_t\| = \|\mathbf{q}_t\|$ and $\|\mathbf{k}'_t\| = \|\mathbf{k}_t\|$ through the orthogonality of $R_t$, altering only the planar direction in dimensions 0 and 1 while preserving vector magnitude.</li>
+<li><strong>Position-Proportional Orientation:</strong> Rotates each position by a linearly increasing angle ($0, 1, 2, 3$ radians), assigning a distinct geometric orientation to every sequence index relative to the reference orientation at position 0.</li>
+<li><strong>Unpaired-Dimension Passthrough:</strong> Maps dimension 2 through the $1 \times 1$ identity block across all positions in the odd-dimensional toy model ($d_{model} = 3$), whereas production models use even $d_{model}$ so that every dimension pair participates in rotation.</li>
+</ul>
+<p>The rotated query and key vectors are now ready to be consumed directly by the Transformer&#39;s attention mechanism. The Transformer never decodes these rotated vectors back into their original absolute positions. Positional information is structurally embedded into the vector orientations, and the attention mechanism consumes that geometry directly through the dot product $(\mathbf{q}'_m)^\top \mathbf{k}'_n$. Value vectors ($V$) are not rotated by RoPE, so the positional rotation influences <em>only</em> the attention scores (which tokens attend to which), not the semantic content aggregated from the values.</p>
 <p>The next chapter proves the central geometric property of RoPE: how the dot product of two rotated vectors $(\mathbf{q}'_m)^\top \mathbf{k}'_n$ mathematically collapses to depend exclusively on their relative distance ($m - n$), satisfying the relative positional requirement established in Chapter 4.</p>
 <p><em>Prefer to read this offline? <a href="../assets/docs/positional-encoding-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Positional Encoding Ebook here.</a></em></p>
 <div class="blog-pagination">

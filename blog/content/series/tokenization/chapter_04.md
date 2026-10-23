@@ -24,19 +24,19 @@
 
 <!-- SUMMARY: The deployment of a static vocabulary and ordered list of merge rules enables the rigorous tokenization of novel text. This process mathematically guarantees consistency with the training distribution while gracefully decomposing unseen words into familiar subword units. -->
 
-<p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/tokenization-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/tokenization-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p>
 
-The 14-step training algorithm successfully halted by discovering a final 27-token vocabulary built upon the exact morphological patterns of the corpus. The resulting list of learned merge rules now stands as a static, ordered mapping protocol. Deploying this protocol to tokenize unseen text forms the critical next phase of the subword pipeline.
+The 14-step training algorithm halted after constructing a 27-token vocabulary built upon the recurring morphological patterns of the corpus. The resulting list of learned merge rules now stands as a static, ordered mapping protocol. Deploying this protocol to tokenize unseen text forms the next phase of the subword pipeline.
 
 ## The Ordered Merge Algorithm
 
-The encoding process abandons the dynamic frequency counting that drove the training phase. The algorithm relies entirely instead on the exact sequence of merge operations acquired during training. These rules are applied to any incoming text strictly in the order they were learned. 
+The encoding process abandons the dynamic frequency counting that drove the training phase. The encoder instead applies the fixed sequence of merge operations acquired during training, executing those rules on incoming text strictly in the chronological order they were learned. 
 
 This sequential application constitutes a greedy, longest-match algorithm. Enforcing the original chronological order of merges guarantees that the resulting tokenization mathematically reflects the most dominant statistical patterns of the training data. The algorithm begins by splitting the incoming text into individual characters and appending the boundary marker `</w>`.
 
 ## Encoding the Known Distribution
 
-The application of this static protocol to words from the original training distribution yields highly optimized subword representations. The encoding of the word `walked`, which exists in the original training corpus, demonstrates the systematic execution of these ordered rules.
+Applying this static protocol to words from the original training distribution yields compact subword representations. Encoding the word `walked`, which appears in the original training corpus, demonstrates the systematic execution of these ordered rules.
 
 <div class="trace-container">
 <table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse;">
@@ -114,9 +114,9 @@ The training process naturally halted before discovering a sequence unifying `w`
 
 ## Subword Generalization on Novel Text
 
-The true power of the Byte Pair Encoding algorithm emerges when encountering text wholly absent from the training corpus. The system leverages familiar morphological patterns to parse unseen words without suffering an out-of-vocabulary collapse.
+The generalization capability of the Byte Pair Encoding algorithm emerges when encoding text absent from the training corpus. The encoder reuses learned morphological patterns to parse unseen words into known subword pieces.
 
-Processing the novel word `stalking`, which does not exist in the training corpus, demonstrates this exact mechanism. The algorithm processes the string using the identical static rule sequence.
+Processing the novel word `stalking`, which does not appear in the training corpus, demonstrates this decomposition mechanism. The encoder evaluates the string against the identical ordered rule sequence.
 
 <div class="trace-container">
 <table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse;">
@@ -162,7 +162,7 @@ Processing the novel word `stalking`, which does not exist in the training corpu
 
 
 
-The algorithm isolates the unknown prefix `s` and `t` at the fundamental character level, while assembling the highly frequent suffix `alking</w>` learned from the training data. The resulting three-token sequence `s`, `t`, and `alking</w>` requires no new mathematical components.
+The ordered merge pass leaves the unfamiliar prefix consonants `s` and `t` unmerged as individual characters while assembling the frequent suffix `alking</w>` learned from the training data. Provided the base vocabulary includes the full lowercase alphabet, the resulting three-token sequence `s`, `t`, and `alking</w>` decomposes the unseen word into existing character and subword units.
 
 The novel word `awoke`, similarly absent from the original corpus, undergoes an identical decomposition.
 
@@ -199,8 +199,8 @@ The algorithm discovers the familiar sequence `woke`, leaving the independent pr
 
 ## The Triviality of Decoding
 
-Reversing this process to recover raw text from a token sequence requires no complex algorithms or stored rules. Decoding acts as a pure concatenation operation. The system simply joins the sequence of string tokens together and transforms the `</w>` boundary markers back into standard spaces. This trivial inverse guarantees that the original text is recovered with perfect fidelity.
+Reversing this process to recover raw text from a token sequence requires no complex algorithms or stored merge rules. Decoding acts as a direct string concatenation operation. The decoder joins the sequence of string tokens together and replaces each `</w>` boundary marker with a standard whitespace character. This inverse mapping recovers the original text with full fidelity.
 
-The tokenization pipeline is now mathematically complete, reliably transforming variable text into discrete integer sequences. This system remains bound to an arbitrary initial character set, however. If the encoder encounters a string containing any symbol absent from the original 13 base characters, such as a capital letter or punctuation, the entire process fails. The underlying dictionary possesses no mathematical representation for the unknown input, triggering a catastrophic out-of-vocabulary error. The subsequent section abandons this limitation entirely, examining how modern production systems drive Byte Pair Encoding down to the raw byte level to achieve true universal text encoding.
+The character-level tokenization pipeline transforms variable-length text into discrete token sequences, yet the dictionary remains bound to its initial character inventory. Restricting the base vocabulary strictly to the 13 characters observed in the toy corpus causes the encoder to fail whenever an input contains an unobserved character such as the leading `s` in `stalking`, an uppercase letter, or a punctuation mark. The dictionary lacks a token ID for the unknown symbol, triggering an out-of-vocabulary error. The final chapter eliminates this limitation by driving Byte Pair Encoding down to the raw UTF-8 byte level to achieve universal text encoding.
 
-<p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/tokenization-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/tokenization-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p>

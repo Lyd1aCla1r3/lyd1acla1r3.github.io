@@ -164,37 +164,37 @@
                           <a href="signal-integrity-01_Wave_Propagation_and_Transmission_Lines.html">
                               <article class="blog-item series-item">
                                   <h2>Wave Propagation and Transmission Lines</h2>
-                                  <p>Information in high-speed digital systems travels as electromagnetic waves, not as drifting electrons. This guide traces the physical mechanism of transmission lines, deriving characteristic impedance and propagation velocity from the Telegrapher's Equations to explain why a steady current flows behind every propagating wavefront.</p>
+                                  <p>Information in high-speed digital systems travels as electromagnetic waves, not as drifting electrons. The physical mechanism of transmission lines governs how characteristic impedance and propagation velocity emerge from the Telegrapher's Equations and why a steady current flows behind every propagating wavefront.</p>
                               </article>
                           </a>
                           <a href="signal-integrity-02_Frequency_Content_of_Digital_Signals.html">
                               <article class="blog-item series-item">
                                   <h2>Frequency Content of Digital Signals</h2>
-                                  <p>A digital edge is both a time-domain transition and a frequency-domain spectrum. This guide derives Fourier series and integrals, the $0.35/t_r$ bandwidth relationship, and the Nyquist frequency, before introducing linear channel filters, aliasing, and the Gibbs phenomenon.</p>
+                                  <p>A digital edge is simultaneously a time-domain transition and a frequency-domain spectrum. Fourier series and step integrals establish the 0.35/t_r bandwidth relationship, the Nyquist frequency, linear channel filtering, aliasing, and the Gibbs phenomenon.</p>
                               </article>
                           </a>
                           <a href="signal-integrity-03_Impedance_Reflections_and_Termination.html">
                               <article class="blog-item series-item">
                                   <h2>Impedance, Reflections, and Termination</h2>
-                                  <p>A wavefront meeting an impedance change splits into reflected and transmitted waves. This guide derives $Z_0$ reflection coefficients and power fractions from Kirchhoff's laws, and traces edge reflections between a driver and load through series and parallel terminations until reaching the DC divider voltage.</p>
+                                  <p>A wavefront meeting an impedance change splits into reflected and transmitted waves. Kirchhoff's laws govern the reflection and transmission coefficients, the reflected and transmitted power fractions, and the multi-bounce settling of series- and parallel-terminated links to the steady-state DC divider voltage.</p>
                               </article>
                           </a>
                           <a href="signal-integrity-04_Inductance_Magnetic_Coupling_and_Crosstalk.html">
                               <article class="blog-item series-item">
                                   <h2>Inductance, Magnetic Coupling, and Crosstalk</h2>
-                                  <p>A changing current creates a magnetic field that induces voltage across adjacent conductors. This guide models mutual inductance and capacitance, deriving near-end (NEXT) and far-end (FEXT) crosstalk signatures, and explains why FEXT scales with coupled length while NEXT saturates at the delay boundary.</p>
+                                  <p>A changing current creates a magnetic field that induces voltage across adjacent conductors. Mutual inductance and mutual capacitance govern near-end (NEXT) and far-end (FEXT) crosstalk signatures, explaining why FEXT scales with coupled length while NEXT saturates once the coupled delay exceeds half the rise time.</p>
                               </article>
                           </a>
                           <a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">
                               <article class="blog-item series-item">
                                   <h2>Skin Effect and Dielectric Loss</h2>
-                                  <p>Real transmission lines dissipate signal energy through frequency-dependent mechanisms. This guide derives the square-root attenuation of the skin effect and the linear attenuation of dielectric loss, demonstrating how these losses disperse edge transitions and collapse the data eye.</p>
+                                  <p>Real transmission lines dissipate signal energy through frequency-dependent conductor and dielectric mechanisms. The square-root attenuation of the skin effect and the linear attenuation of dielectric polarization disperse fast edge transitions, generate long post-cursor tails, and close the received data eye.</p>
                               </article>
                           </a>
                           <a href="signal-integrity-06_Return_Path_Dynamics_and_Parasitic_Effects.html">
                               <article class="blog-item series-item">
                                   <h2>Return Path Dynamics and Parasitic Effects</h2>
-                                  <p>Every signal requires a return current, and its path dictates the loop inductance of the circuit. This guide maps current distribution under traces, models vias and split planes as geometric parasitics, and derives the baseline wander imposed by series coupling capacitors.</p>
+                                  <p>Every signal requires a closed return current path that governs the loop inductance of the circuit. Electromagnetic field boundary conditions dictate how high-frequency return current concentrates beneath a trace, how vias and split planes introduce reactive discontinuities, and how series AC-coupling capacitors cause baseline wander.</p>
                               </article>
                           </a>
                       </div>

@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -118,10 +159,10 @@
     <li><a href="index.html">Blog</a></li><li><a href="series-mixture-of-experts.html">Series: Mixture Of Experts</a></li><li aria-current="page">Part 7: Fine-Grained Experts and Shared Expert Isolation</li></ol></nav>
         <article class="blog-post series-mixture-of-experts">
 <h1>Part 7: Fine-Grained Experts and Shared Expert Isolation</h1>
-<!-- SUMMARY: The elimination of static hardware capacity constraints enables a radical restructuring of the expert layer into a highly granular federation of specialized networks. Isolating a subset of these networks as universal shared experts guarantees the application of foundational linguistic patterns, allowing the remaining routed experts to achieve unprecedented expressive power through combinatorial activation without increasing the computational budget per token. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p><p>The transition to dropless computation and block-sparse matrix operations eliminates the physical capacity constraint that historically bottlenecked routing. Small numbers of massive experts were previously necessary to keep hardware utilization stable. With 64 tiny experts, token assignments become highly jagged, and under strict capacity limits, this means massive dropping or padding waste. Block-sparse execution lets the hardware process these variable-length queues efficiently, removing that limitation. This freedom opens the door to hyper-granular expert configurations, shifting the design from coarse domain buckets toward combinatorial expressivity.</p>
+<!-- SUMMARY: The elimination of static hardware capacity constraints enables a radical restructuring of the expert layer into a fine-grained federation of specialized networks. Isolating a subset of these networks as universal shared experts guarantees the application of foundational linguistic patterns, allowing the remaining routed experts to achieve combinatorial expressive power without increasing the computational budget per token. --><p><em>Prefer to read this offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p><p>The transition to dropless computation and block-sparse matrix operations eliminates the physical capacity constraint that historically bottlenecked routing. Small numbers of massive experts were previously necessary to keep hardware utilization stable. With 64 tiny experts, token assignments become sharply jagged, and under strict capacity limits, that skew causes massive dropping or padding waste. Block-sparse execution lets the hardware process these variable-length queues efficiently, removing that limitation. This freedom opens the door to hyper-granular expert configurations, shifting the design from coarse domain buckets toward combinatorial expressivity.</p>
 <h2>The Coarse Expert Problem</h2>
 <p>Early sparse architectures rely on a small total number of experts, typically $E=8$, selecting $k=2$ per token. To maintain a constant parameter count, each of these eight experts must contain a massive weight matrix. The limitation of this coarse configuration emerges during training. The router can only partition the token space into eight macroscopic buckets, forcing each expert to bundle vast, unrelated knowledge domains into the same physical weights.</p>
-<p>A single coarse expert simultaneously acts as the repository for Python syntax, historical dates, and geometric reasoning. This artificial bundling dilutes the specialization of the expert. When a token requires geometric reasoning, activating the expert necessarily pulls in the dormant weights dedicated to Python syntax, wasting memory bandwidth and computational capacity on irrelevant parameters. </p>
+<p>A single coarse expert simultaneously acts as the repository for Python syntax, historical dates, and geometric reasoning. This artificial bundling dilutes the specialization of the expert. Processing a token that requires geometric reasoning forces the activation of dormant weights dedicated to Python syntax, wasting memory bandwidth and computational capacity on irrelevant parameters. </p>
 <p>Fine-grained expert segmentation, introduced in the DeepSeekMoE architecture by Dai and colleagues in 2024, solves this problem by shattering the monolithic experts into a massive federation of smaller networks. Instead of $8$ large experts, the model deploys $64$ smaller experts. To maintain identical active computation per token, the router selects $8$ of these smaller experts rather than $2$ large ones.</p>
 <h2>Combinatorial Expressivity</h2>
 <p>The power of fine-grained segmentation stems from combinatorics rather than pure parameter scaling. The number of distinct functional pathways a token can take through the MoE layer dictates the expressive capacity of the model.</p>
@@ -138,20 +179,23 @@ $$</p>
 <p>$$
 \binom{64}{8} = \frac{64!}{8!(64-8)!} = 4,426,165,368 \text{ combinations}
 $$</p>
-<p>Scaling to the ultra-fine granularity of DeepSeek-V3, which selects 8 experts from a pool of 256, yields approximately $4.38 \times 10^{14}$ distinct routing combinations. This combinatorial explosion allows the network to assemble a highly precise, bespoke feed-forward network for every individual token by dynamically composing atomic slivers of specialized knowledge, all without increasing the active computational budget.</p>
+<p>Scaling to the ultra-fine granularity of DeepSeek-V3, which selects 8 experts from a pool of 256, yields approximately $4.38 \times 10^{14}$ distinct routing combinations. This combinatorial explosion allows the network to assemble a tailored, bespoke feed-forward network for every individual token by dynamically composing atomic slivers of specialized knowledge, all without increasing the active computational budget.</p>
 <h2>Shared Expert Isolation</h2>
-<p>Forcing all FFN parameters to undergo routing introduces a structural inefficiency. Certain linguistic components, such as grammar syntax, punctuation rules, and foundational logic, are universally required by almost every token in a sequence. If all experts are subject to dynamic routing, the network is forced to redundantly encode these universal rules across multiple routed experts to ensure they are available regardless of which specific combination the router selects.</p>
+<p>Forcing all FFN parameters to undergo routing introduces a structural inefficiency. Certain linguistic components, such as grammar syntax, punctuation rules, and foundational logic, are universally required by almost every token in a sequence. Routing every expert dynamically forces the network to redundantly encode these universal rules across multiple routed experts so those rules remain available regardless of which specific combination the router selects.</p>
 <p>Shared expert isolation optimizes this redundancy by explicitly partitioning the layer. A small number of experts, designated as $K_s$, are permanently isolated from the router and activated unconditionally for every token. These shared experts act as a universal memory bank for foundational patterns. The remaining experts, designated as $E_r$, act as the routed pool from which $K_r$ experts are dynamically selected. </p>
 <p>This isolation allows the routed experts to shed their generalized knowledge and achieve extreme, narrow specialization. The combined forward pass mathematically merges the unconditional shared representation with the dynamic routed representation:</p>
 <p>$$
 y = x + \sum_{j=1}^{K_s} \text{FFN}_j^{shared}(x) + \sum_{i \in \mathcal{K}} g_i \cdot \text{FFN}_i^{routed}(x)
 $$</p>
-<p>This equation defines the exact computation executed for a single token. The original input token vector $x$ passes through the residual connection, ensuring the baseline representation is preserved. The first summation adds the output of all $K_s$ shared experts, applying their universal transformations unconditionally. The second summation calculates the specialized update by iterating exclusively over the subset of selected routed experts, denoted by the index set $\mathcal{K}$. Each active routed expert processes the input vector $x$, and its output is scaled by the corresponding gating weight $g_i$ assigned by the router. This scaling ensures the network dynamically adjusts the influence of each specialized expert based on the routing preference.</p>
+<p>This equation defines the complete computation executed for a single token. The original input token vector $x$ passes through the residual connection, ensuring the baseline representation is preserved. The first summation adds the output of all $K_s$ shared experts, applying their universal transformations unconditionally. The second summation calculates the specialized update by iterating exclusively over the subset of selected routed experts, denoted by the index set $\mathcal{K}$. Each active routed expert processes the input vector $x$, and its output is scaled by the corresponding gating weight $g_i$ assigned by the router. This scaling ensures the network dynamically adjusts the influence of each specialized expert based on the routing preference.</p>
 <h2>The Shared and Routed Forward Pass</h2>
-<p>In production architectures, fine-grained segmentation is achieved by reducing the intermediate dimension $d_{ff}$ of each expert while proportionally increasing the number of active experts $k$. This structural division guarantees that the total active parameter count remains strictly identical to the coarse configuration, even as the combinatorial pathways explode. To demonstrate the mechanics of shared expert isolation without expanding the toy matrices to unreadable dimensions, the established configuration is partitioned to feature 1 shared expert, where $K_s = 1$, and 4 routed experts, where $E_r = 4$. The router continues to select the top 2 routed experts per token, setting $K_r = 2$, and the intermediate dimension remains $d_{ff} = 4$. The shared expert, the four routed experts, and the gating network are initialized with new, independent weight matrices.</p>
+<p>In production architectures, fine-grained segmentation reduces the intermediate dimension $d_{ff}$ of each expert while proportionally increasing the number of active experts $k$. This structural division keeps the total active parameter count identical to the coarse configuration even as the combinatorial pathways expand.</p>
+<p>To demonstrate the mechanics of shared expert isolation without expanding the toy matrices to unreadable dimensions, the established configuration is partitioned into 1 shared expert ($K_s = 1$) and 4 routed experts ($E_r = 4$). The router continues to select the top 2 routed experts per token ($K_r = 2$), and the intermediate dimension remains $d_{ff} = 4$. The shared expert, the four routed experts, and the gating network are initialized with new, independent weight matrices.</p>
 <h3>Step 1: Router Projection and Gating Weights</h3>
-<p><strong>Goal:</strong> Determine which specialized experts process each token and assign a proportional scaling weight to the chosen paths.<br>
-<strong>Equation:</strong> $g(x) = \text{Softmax}(\text{TopK}(xW_g))$</p>
+<ul>
+<li><strong>Goal:</strong> Determine which specialized experts process each token and assign a proportional scaling weight to the chosen paths.</li>
+<li><strong>Equation:</strong> $g(x) = \text{Softmax}(\text{TopK}(xW_g))$</li>
+</ul>
 <p>The sequence begins with the standard $4 \times 6$ input matrix $x$ containing the 4 embedded tokens established in the <a href="series-transformers.html">Transformer series</a>. All matrices are formatted to 4 decimal places for precision:</p>
 <p>$$
 x = \begin{bmatrix}
@@ -206,8 +250,10 @@ g(x)_{routed} = \begin{bmatrix}
 \end{bmatrix}
 $$</p>
 <h3>Step 2: The Shared Expert Projection</h3>
-<p><strong>Goal:</strong> Compute a universal foundational knowledge update applied unconditionally to every token in the sequence.<br>
-<strong>Equation:</strong> $\text{FFN}^{shared}(x) = \text{ReLU}(xW_1^{shared})W_2^{shared}$</p>
+<ul>
+<li><strong>Goal:</strong> Compute a universal foundational knowledge update applied unconditionally to every token in the sequence.</li>
+<li><strong>Equation:</strong> $\text{FFN}^{shared}(x) = \text{ReLU}(xW_1^{shared})W_2^{shared}$</li>
+</ul>
 <p>The shared expert processes all four tokens unconditionally. The input matrix $x$ is first multiplied by the shared expansion matrix $W_1^{shared}$ to produce the pre-activation intermediate state:</p>
 <p>$$
 W_1^{shared} = \begin{bmatrix}
@@ -254,9 +300,11 @@ $$</p>
 \end{bmatrix}
 $$</p>
 <h3>Step 3: The Routed Expert Projections</h3>
-<p><strong>Goal:</strong> Calculate the specialized knowledge updates from the dynamically selected experts and scale them by the router weights.<br>
-<strong>Equation:</strong> $\sum_{i \in \mathcal{K}} g_i \cdot \text{ReLU}(x W_{1}^i) W_{2}^i$</p>
-<p>The routed experts execute precisely as established in Chapter 3. For the first token $x_1$, representing the top row of the input matrix:</p>
+<ul>
+<li><strong>Goal:</strong> Calculate the specialized knowledge updates from the dynamically selected experts and scale them by the router weights.</li>
+<li><strong>Equation:</strong> $\sum_{i \in \mathcal{K}} g_i \cdot \text{ReLU}(x W_{1}^i) W_{2}^i$</li>
+</ul>
+<p>The routed experts execute as established in Chapter 3. For the first token $x_1$, representing the top row of the input matrix:</p>
 <p>$$
 x_1 = \begin{bmatrix} 0.0200 &  1.2900 &  0.1800 &  1.3500 &  0.0000 &  0.6700 \end{bmatrix}
 $$</p>
@@ -288,7 +336,7 @@ $$</p>
 <p>$$
 \text{FFN}_0^{routed}(x_1) = \text{ReLU}(x_1 W_{1}^0) W_{2}^0 = \begin{bmatrix} -0.0213 & -0.0035 &  0.0630 &  0.0902 &  0.0654 &  0.0094 \end{bmatrix}
 $$</p>
-<p>Simultaneously, the exact same sequence occurs through the isolated weights of Expert 2:</p>
+<p>Simultaneously, the identical sequence executes through the isolated weights of Expert 2:</p>
 <p>$$
 W_{1}^2 = \begin{bmatrix}
  0.0032 &  0.0383 & -0.0037 & -0.0823 \\
@@ -326,15 +374,17 @@ $$</p>
 <p>Summing these two scaled vectors forms the combined routed output for the first token. This entire mathematical pipeline is evaluated automatically for the remaining three tokens:</p>
 <p>$$
 \sum_{i \in \mathcal{K}} g_i \cdot \text{FFN}_i^{routed}(x) = \begin{bmatrix}
--0.0107 &  0.0394 &  0.0480 &  0.0504 &  0.0948 & -0.0565 \\
+-0.0108 &  0.0394 &  0.0480 &  0.0504 &  0.0948 & -0.0565 \\
 -0.0096 &  0.0386 &  0.0795 &  0.0500 &  0.1232 & -0.0539 \\
  0.0012 & -0.0315 &  0.0275 & -0.0137 &  0.0422 &  0.0260 \\
 -0.0083 & -0.0267 & -0.0126 & -0.0322 &  0.0309 &  0.0292
 \end{bmatrix}
 $$</p>
 <h3>Step 4: Merging the Forward Pass</h3>
-<p><strong>Goal:</strong> Merge the original token representations with the new universal and specialized knowledge updates to prevent representation collapse.<br>
-<strong>Equation:</strong> $y = x + \text{FFN}^{shared}(x) + \sum_{i \in \mathcal{K}} g_i \cdot \text{FFN}_i^{routed}(x)$</p>
+<ul>
+<li><strong>Goal:</strong> Merge the original token representations with the new universal and specialized knowledge updates to prevent representation collapse.</li>
+<li><strong>Equation:</strong> $y = x + \text{FFN}^{shared}(x) + \sum_{i \in \mathcal{K}} g_i \cdot \text{FFN}_i^{routed}(x)$</li>
+</ul>
 <p>The MoE layer concludes by summing the original input vector $x$, the universal shared output, and the specialized routed output. This addition operation merges the foundational linguistic structures with the bespoke, combinatorially selected knowledge fragments. Expanding the specific addition for the first token demonstrates the final residual merge:</p>
 <p>$$
 y_1 = x_1 + \text{FFN}^{shared}(x_1) + \text{Routed}(x_1)
@@ -343,19 +393,20 @@ $$</p>
 \begin{aligned}
 y_1 &= \begin{bmatrix} 0.0200 &  1.2900 &  0.1800 &  1.3500 &  0.0000 &  0.6700 \end{bmatrix} \\
 &+ \begin{bmatrix} 0.0070 & -0.0128 &  0.0198 &  0.0295 & -0.0271 &  0.0103 \end{bmatrix} \\
-&+ \begin{bmatrix} -0.0107 &  0.0394 &  0.0480 &  0.0504 &  0.0948 & -0.0565 \end{bmatrix}
+&+ \begin{bmatrix} -0.0108 &  0.0394 &  0.0480 &  0.0504 &  0.0948 & -0.0565 \end{bmatrix}
 \end{aligned}
 $$</p>
 <p>$$
 y_{final} = \begin{bmatrix}
- 0.0163 &  1.3166 &  0.2478 &  1.4299 &  0.0677 &  0.6238 \\
- 0.7531 &  1.7717 &  0.5542 &  1.6198 &  0.2918 &  1.1757 \\
- 0.8745 & -0.3299 &  1.8086 &  1.0061 &  0.1445 &  0.9468 \\
- 0.1761 & -1.0499 &  1.5487 &  1.1888 &  0.6144 &  0.7272
+ 0.0162 &  1.3166 &  0.2478 &  1.4299 &  0.0677 &  0.6238 \\
+ 0.7532 &  1.7716 &  0.5542 &  1.6198 &  0.2919 &  1.1757 \\
+ 0.8746 & -0.3300 &  1.8086 &  1.0061 &  0.1444 &  0.9468 \\
+ 0.1760 & -1.0500 &  1.5487 &  1.1888 &  0.6143 &  0.7272
 \end{bmatrix}
 $$</p>
-<p>The shared and routed components are now successfully merged back into the central residual stream, producing a mathematically complete forward pass that maximizes parameter expressivity. The shared expert bypasses the router, meaning load balancing applies exclusively to the routed experts. However, to train this highly fragmented architecture effectively, the standard auxiliary loss must be abandoned entirely. When attempting to balance hundreds of fine-grained routed experts, the traditional auxiliary loss severely distorts the routing gradients. The optimizer is forced to route tokens sub-optimally simply to satisfy the aggressive load balancing penalty, actively degrading the primary language modeling performance. DeepSeek-V3 resolves this conflict in favor of auxiliary-loss-free dynamic bias updates that operate entirely outside the bounds of backpropagation, a mechanism examined next.</p>
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p>
+<p>The shared and routed components are now merged back into the central residual stream, producing a complete forward pass that maximizes parameter expressivity. The shared expert bypasses the router, meaning load balancing applies exclusively to the routed experts.</p>
+<p>Training this finely segmented architecture effectively requires abandoning the standard auxiliary loss. Balancing hundreds of fine-grained routed experts through the traditional auxiliary loss distorts the routing gradients. The optimizer is forced to route tokens sub-optimally solely to satisfy the aggressive load-balancing penalty, degrading primary language modeling performance. DeepSeek-V3 resolves this conflict through auxiliary-loss-free dynamic bias updates that operate outside backpropagation, a mechanism examined next.</p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="mixture-of-experts-chapter_06.html" class="pagination-link prev">
@@ -364,7 +415,7 @@ $$</p>
       </a>
       <a href="mixture-of-experts-chapter_08.html" class="pagination-link next">
         <span class="pagination-label">Next</span>
-        <span class="pagination-title">Part 8: The Frontier</span>
+        <span class="pagination-title">Part 8: The Frontier: Auxiliary-Loss-Free Routing</span>
       </a></div>
         </article>
     </div>

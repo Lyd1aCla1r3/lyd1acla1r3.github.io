@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -138,12 +179,12 @@
       border-radius: 0.4em !important;
     }
   }
-</style><!-- SUMMARY: The deployment of a static vocabulary and ordered list of merge rules enables the rigorous tokenization of novel text. This process mathematically guarantees consistency with the training distribution while gracefully decomposing unseen words into familiar subword units. --><p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/tokenization-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p><p>The 14-step training algorithm successfully halted by discovering a final 27-token vocabulary built upon the exact morphological patterns of the corpus. The resulting list of learned merge rules now stands as a static, ordered mapping protocol. Deploying this protocol to tokenize unseen text forms the critical next phase of the subword pipeline.</p>
+</style><!-- SUMMARY: The deployment of a static vocabulary and ordered list of merge rules enables the rigorous tokenization of novel text. This process mathematically guarantees consistency with the training distribution while gracefully decomposing unseen words into familiar subword units. --><p><em>Prefer to read this offline? <a href="../assets/docs/tokenization-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p><p>The 14-step training algorithm halted after constructing a 27-token vocabulary built upon the recurring morphological patterns of the corpus. The resulting list of learned merge rules now stands as a static, ordered mapping protocol. Deploying this protocol to tokenize unseen text forms the next phase of the subword pipeline.</p>
 <h2>The Ordered Merge Algorithm</h2>
-<p>The encoding process abandons the dynamic frequency counting that drove the training phase. The algorithm relies entirely instead on the exact sequence of merge operations acquired during training. These rules are applied to any incoming text strictly in the order they were learned. </p>
+<p>The encoding process abandons the dynamic frequency counting that drove the training phase. The encoder instead applies the fixed sequence of merge operations acquired during training, executing those rules on incoming text strictly in the chronological order they were learned. </p>
 <p>This sequential application constitutes a greedy, longest-match algorithm. Enforcing the original chronological order of merges guarantees that the resulting tokenization mathematically reflects the most dominant statistical patterns of the training data. The algorithm begins by splitting the incoming text into individual characters and appending the boundary marker <code>&lt;/w&gt;</code>.</p>
 <h2>Encoding the Known Distribution</h2>
-<p>The application of this static protocol to words from the original training distribution yields highly optimized subword representations. The encoding of the word <code>walked</code>, which exists in the original training corpus, demonstrates the systematic execution of these ordered rules.</p>
+<p>Applying this static protocol to words from the original training distribution yields compact subword representations. Encoding the word <code>walked</code>, which appears in the original training corpus, demonstrates the systematic execution of these ordered rules.</p>
 <div class="trace-container">
 <table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse;">
   <tbody>
@@ -208,8 +249,8 @@
 </table>
 </div><p>The training process naturally halted before discovering a sequence unifying <code>w</code>, <code>a</code>, and <code>k</code>, causing the final encoding to remain fractured across four distinct tokens: <code>w</code>, <code>a</code>, <code>k</code>, and <code>ing&lt;/w&gt;</code>.</p>
 <h2>Subword Generalization on Novel Text</h2>
-<p>The true power of the Byte Pair Encoding algorithm emerges when encountering text wholly absent from the training corpus. The system leverages familiar morphological patterns to parse unseen words without suffering an out-of-vocabulary collapse.</p>
-<p>Processing the novel word <code>stalking</code>, which does not exist in the training corpus, demonstrates this exact mechanism. The algorithm processes the string using the identical static rule sequence.</p>
+<p>The generalization capability of the Byte Pair Encoding algorithm emerges when encoding text absent from the training corpus. The encoder reuses learned morphological patterns to parse unseen words into known subword pieces.</p>
+<p>Processing the novel word <code>stalking</code>, which does not appear in the training corpus, demonstrates this decomposition mechanism. The encoder evaluates the string against the identical ordered rule sequence.</p>
 <div class="trace-container">
 <table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse;">
   <tbody>
@@ -250,7 +291,7 @@
     </tr>
   </tbody>
 </table>
-</div><p>The algorithm isolates the unknown prefix <code>s</code> and <code>t</code> at the fundamental character level, while assembling the highly frequent suffix <code>alking&lt;/w&gt;</code> learned from the training data. The resulting three-token sequence <code>s</code>, <code>t</code>, and <code>alking&lt;/w&gt;</code> requires no new mathematical components.</p>
+</div><p>The ordered merge pass leaves the unfamiliar prefix consonants <code>s</code> and <code>t</code> unmerged as individual characters while assembling the frequent suffix <code>alking&lt;/w&gt;</code> learned from the training data. Provided the base vocabulary includes the full lowercase alphabet, the resulting three-token sequence <code>s</code>, <code>t</code>, and <code>alking&lt;/w&gt;</code> decomposes the unseen word into existing character and subword units.</p>
 <p>The novel word <code>awoke</code>, similarly absent from the original corpus, undergoes an identical decomposition.</p>
 <div class="trace-container">
 <table style="width: 100%; border: none; margin-bottom: 2rem; border-collapse: collapse;">
@@ -279,9 +320,9 @@
 </table>
 </div><p>The algorithm discovers the familiar sequence <code>woke</code>, leaving the independent prefix <code>a</code> and the final boundary marker <code>&lt;/w&gt;</code> as separate units.</p>
 <h2>The Triviality of Decoding</h2>
-<p>Reversing this process to recover raw text from a token sequence requires no complex algorithms or stored rules. Decoding acts as a pure concatenation operation. The system simply joins the sequence of string tokens together and transforms the <code>&lt;/w&gt;</code> boundary markers back into standard spaces. This trivial inverse guarantees that the original text is recovered with perfect fidelity.</p>
-<p>The tokenization pipeline is now mathematically complete, reliably transforming variable text into discrete integer sequences. This system remains bound to an arbitrary initial character set, however. If the encoder encounters a string containing any symbol absent from the original 13 base characters, such as a capital letter or punctuation, the entire process fails. The underlying dictionary possesses no mathematical representation for the unknown input, triggering a catastrophic out-of-vocabulary error. The subsequent section abandons this limitation entirely, examining how modern production systems drive Byte Pair Encoding down to the raw byte level to achieve true universal text encoding.</p>
-<p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/tokenization-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p>
+<p>Reversing this process to recover raw text from a token sequence requires no complex algorithms or stored merge rules. Decoding acts as a direct string concatenation operation. The decoder joins the sequence of string tokens together and replaces each <code>&lt;/w&gt;</code> boundary marker with a standard whitespace character. This inverse mapping recovers the original text with full fidelity.</p>
+<p>The character-level tokenization pipeline transforms variable-length text into discrete token sequences, yet the dictionary remains bound to its initial character inventory. Restricting the base vocabulary strictly to the 13 characters observed in the toy corpus causes the encoder to fail whenever an input contains an unobserved character such as the leading <code>s</code> in <code>stalking</code>, an uppercase letter, or a punctuation mark. The dictionary lacks a token ID for the unknown symbol, triggering an out-of-vocabulary error. The final chapter eliminates this limitation by driving Byte Pair Encoding down to the raw UTF-8 byte level to achieve universal text encoding.</p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/tokenization-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="tokenization-chapter_03.html" class="pagination-link prev">

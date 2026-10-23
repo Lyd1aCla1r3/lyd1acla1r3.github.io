@@ -2,20 +2,24 @@
 
 <!-- SUMMARY: The unbounded vocabulary logits are transformed into a strict probability distribution using the softmax function. Analyzing this distribution reveals the untrained network's maximum mathematical uncertainty, while techniques like temperature scaling and Top-K decoding provide mechanisms to shape this entropy during actual text generation. -->
 
-Projecting highly contextualized vectors out of the latent model space and back into the vocabulary space yields a matrix of raw scores known as logits. These scalar values assign a geometric magnitude to each of the twelve possible words in the vocabulary. While these magnitudes provide an ordering of likelihood, they do not constitute a mathematically rigorous probability distribution. The values extend across arbitrary bounds and lack the fundamental property of summing to exactly one. Converting these raw signals into actionable predictions requires a normalizing operation.
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>
 
-The architecture employs the softmax function across the vocabulary dimension of the logits matrix to enforce this transformation. The function operates by exponentiating each scalar value and dividing by the sum of all exponentiated values in that row. Exponentiation guarantees that all resultant values become strictly positive fractions while non-linearly amplifying the differences between scores. A slightly higher logit becomes a significantly higher exponentiated value, creating a dynamic that helps the network confidently select a single token. The subsequent division normalizes the outputs. This bounds all values between zero and one, creating a strict probability distribution where the sum across the vocabulary dimension equals exactly one.
+Projecting the contextualized vectors from Layer 2 through the unembedding matrix $W_U$ yields a $4 \times 12$ matrix of raw vocabulary scores known as logits. Each scalar entry measures the inner-product alignment between a sequence position and one of the twelve vocabulary tokens. Raw logits establish a relative ranking across candidates, yet they span arbitrary real bounds and do not sum to $1.0$. Converting these unnormalized scores into actionable token predictions requires a row-wise normalization function.
+
+## Normalizing Vocabulary Logits with Softmax
+
+The architecture applies the Softmax function across the $V = 12$ vocabulary columns of each logit row. Softmax exponentiates every scalar logit $z_i$ and divides by the sum of all exponentiated logits in that row. Exponentiation maps negative and positive numbers alike onto strictly positive values while non-linearly amplifying gaps between scores: a modest lead in raw logit space translates into a multiplicative ratio in probability space. Dividing by the row sum normalizes the outputs onto the interval $(0, 1)$, creating a valid probability distribution whose entries across the $V = 12$ vocabulary columns sum to $1.0$:
 
 $$
-P(z_i) = \frac{e^{z_i}}{\sum_{j} e^{z_j}}
+P(z_i) = \frac{e^{z_i}}{\sum_{j=1}^{V} e^{z_j}}
 $$
 
-Applying this function to the calculated logit matrix transforms the raw scores at each sequence position. The four rows represent the predictions following the tokens start, "i", "woke", and "up".
+Here, $z_i$ denotes the raw logit for vocabulary index $i$ in a given sequence row, and $\sum_{j=1}^{V} e^{z_j}$ sums the exponentiated logits across all $V = 12$ vocabulary tokens. Applying this transformation row by row to the four-decimal `Logits` matrix $X_{\text{final}} W_U$ from Part 17 produces the next-token probability distributions following `<BOS>`, `i`, `woke`, and `up` (note that shifting Row 2 by a constant $-0.0450$ to `[-0.0180, -0.0135, ..., 0.0315]` yields the identical Softmax row because $\text{Softmax}(z + c) = \text{Softmax}(z)$):
 
 $$
 \text{Logits} = \begin{bmatrix}
 -0.0270 & -0.0315 & -0.0360 & -0.0405 & -0.0450 & -0.0495 & -0.0540 & -0.0585 & \dots & -0.0765 \\
--0.0180 & -0.0135 & -0.0090 & -0.0045 &  0.0000 &  0.0045 &  0.0090 &  0.0135 & \dots &  0.0315 \\
+ 0.0270 &  0.0315 &  0.0360 &  0.0405 &  0.0450 &  0.0495 &  0.0540 &  0.0585 & \dots &  0.0765 \\
 -0.0675 & -0.0675 & -0.0675 & -0.0675 & -0.0675 & -0.0675 & -0.0675 & -0.0675 & \dots & -0.0675 \\
  0.0675 &  0.0675 &  0.0675 &  0.0675 &  0.0675 &  0.0675 &  0.0675 &  0.0675 & \dots &  0.0675
 \end{bmatrix}
@@ -30,18 +34,32 @@ $$
 \end{bmatrix}
 $$
 
-The final row of the probability matrix corresponds to the predictions following the word "up". The ultimate objective is for the network to predict the word "late" as the next logical token. However, every single value in that final row is exactly 0.0833. In a vocabulary of twelve words, a completely uniform distribution yields a probability of exactly one divided by twelve for each word. The model is expressing maximum uncertainty, considering every possible word in the vocabulary to be equally likely. This result confirms that the initialized projection matrices act as an empty vessel. The network possesses the structural capacity to route information but lacks specific geometric knowledge.
+Row 4 of the `Probabilities` matrix holds the next-token distribution following `up`, where the training objective requires predicting `late` (vocabulary index `8`). Constant scores of $0.0675$ across all twelve columns of Row 4 in `Logits` cause every entry in Row 4 of `Probabilities` to evaluate to $1 / 12 \approx 0.0833$. A uniform distribution of $1 / 12$ across twelve classes represents maximum Shannon entropy: the untrained network considers every vocabulary token equally probable. This uniform output confirms that the uncalibrated projection matrices possess the structural topology to route information but have not yet encoded task-specific weights.
 
-When generating actual text, the network relies on sampling from this final probability distribution. A naive approach would always select the single highest probability value, a strategy known as greedy decoding. Relying exclusively on greedy decoding traps models in repetitive loops and eliminates the natural variance of language. Introducing controlled stochasticity requires manipulating the shape of the probability distribution before sampling occurs.
+## Shaping the Output Distribution
 
-The standard technique for modulating this distribution is temperature scaling. Before applying the softmax function, each value in the logits matrix is divided by a scalar parameter termed temperature.
+Autoregressive text generation selects the next token from the final row of the probability matrix. Always choosing the single index with the maximum probability is known as greedy decoding; although deterministic, greedy selection frequently traps language models in repetitive phrasing. Controlling generation diversity requires reshaping the logit distribution prior to sampling.
+
+Dividing each raw logit by a positive scalar temperature parameter $T$ before applying Softmax modulates the entropy of the output distribution:
 
 $$
-\text{Scaled Logit} = \frac{\text{Logit}}{\text{Temperature}}
+\text{Scaled Logit}_i = \frac{z_i}{T}
 $$
 
-Setting the temperature value below one increases the absolute magnitude of the logits. This operation geometrically stretches the distances between the values, causing the subsequent softmax operation to assign overwhelmingly high probability mass to the maximum logit. A low temperature setting forces the network toward highly deterministic outputs. Conversely, a temperature setting greater than one compresses the absolute magnitude of the logits. This shrinks the relative differences between the scores, resulting in a flatter probability distribution after the softmax step. A higher temperature injects entropy, assigning non-trivial probabilities to sub-optimal tokens and increasing generation diversity.
+Production inference engines combine temperature scaling with truncation filters such as Top-$K$ and Top-$P$ (nucleus) decoding:
 
-Modern implementations further constrain this sampling process by applying techniques like Top-K decoding. This strategy truncates the probability distribution by zeroing out all values except the top candidates, preventing the selection of statistically impossible continuations while preserving the localized entropy of temperature scaling.
+| Decoding Strategy | Mathematical Mechanism | Effect on Output Distribution |
+| :--- | :--- | :--- |
+| **Greedy Decoding** | Selects `argmax_i P(z_i)` directly | Collapses generation to the single highest-probability token |
+| **Low Temperature (`T < 1`)** | Divides logits by `T in (0, 1)` before Softmax | Magnifies gaps between logits, concentrating probability mass on top candidates |
+| **High Temperature (`T > 1`)** | Divides logits by `T > 1` before Softmax | Compresses differences between logits, flattening the distribution toward uniform entropy |
+| **Top-K Decoding** | Retains the `K` largest logits and sets remaining logits to `-inf` | Prunes low-probability tail tokens while preserving relative weights among the top `K` choices |
+| **Top-P (Nucleus) Sampling** | Retains the smallest sorted token subset whose cumulative probability reaches `p` | Adapts candidate pool size dynamically to the sharpness of each step's distribution |
 
-To make the network predict "late" consistently without relying on artificial sampling constraints, the underlying logit for the correct token must naturally dominate the distribution. Achieving this requires a mechanism to measure how wrong the current uniform prediction is and a method to systematically adjust every single matrix weight to improve it.
+### Autoregressive Generation and KV-Cache Scaling
+
+Sampling a token from Row 4 (such as `late`) during autoregressive inference appends that token to the sequence and initiates a new forward step to predict position 5. The causal mask blocks earlier tokens (`<BOS>`, `i`, `woke`, `up`) from attending to the newly appended token, so their Key and Value projections $K, V \in \mathbb{R}^{S \times d_k}$ across every layer and head remain unchanged. Caching those historical Key and Value rows in a **KV cache** avoids recomputing $X W_K$ and $X W_V$ for past positions, reducing per-step attention compute from quadratic $O(S^2 d_{\text{model}})$ to linear $O(S d_{\text{model}})$ at a memory cost of $2 \times L \times n_{\text{heads}} \times d_k \times S$ scalars ($2 \times 2 \times 3 \times 2 \times 4 = 96$ cached floats for the 4-token prompt).
+
+Making the network predict `late` after `<BOS>` `i` `woke` `up` without relying on heuristic decoding constraints requires shifting the underlying geometry so the logit at index `8` dominates Row 4 naturally. Achieving that shift requires a loss function that quantifies the error of the uniform `0.0833` prediction (Part 19) and a backward pass that updates every weight matrix in the network (Parts 20 through 24).
+
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>

@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -134,45 +175,45 @@
       border-radius: 0.4em !important;
     }
   }
-</style><!-- SUMMARY: Tokenization translates raw text into discrete integer identifiers, but neural networks require continuous representations to perform calculus. The embedding matrix solves this by projecting each discrete token into a high-dimensional vector space via one-hot encoding multiplication, acting as a simple, dense lookup table. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p><p>The preceding series on Tokenization established the rigorous mathematical process of transforming variable, unstructured text into discrete integer sequences. Through subword compression algorithms like Byte Pair Encoding, it was demonstrated how a system can organically parse language into a highly optimized, finite vocabulary.</p>
-<p>When text passes through this tokenizer, a word like &quot;walking&quot; might be decomposed into two distinct subword tokens, each mapped to a specific integer ID in our vocabulary:</p>
+</style><!-- SUMMARY: Tokenization translates raw text into discrete integer identifiers, but neural networks require continuous representations to perform calculus. The embedding matrix solves this by projecting each discrete token into a high-dimensional vector space via one-hot encoding multiplication, acting as a dense lookup table. --><p><em>Prefer to read this offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p><p>The preceding <a href="series-tokenization.html">Tokenization series</a> established the mathematical process of transforming variable, unstructured text into discrete integer sequences. Subword compression algorithms such as Byte Pair Encoding parse raw text into a finite, fixed-size vocabulary where every entry maps to a unique integer index.</p>
+<p>Applying this vocabulary lookup to the 8-word toy corpus introduced in the Preface (<code>The</code> <code>quick</code> <code>brown</code> <code>fox</code> <code>jumps</code> <code>over</code> <code>lazy</code> <code>dog</code>, where $V = 8$) maps each word to a 0-indexed integer identifier from <code>0</code> through <code>7</code>. Extracting two adjectives from that vocabulary yields two discrete integer IDs:</p>
 <div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2; text-align: left;">
-<b><code>walk</code></b> (ID: 4) &nbsp;&nbsp; <b><code>ing</code></b> (ID: 12)
-</div><p>This is where the Tokenization pipeline ends. However, handing the integer IDs <code>4</code> and <code>12</code> directly to a neural network presents an immediate mathematical dead end. </p>
+<b><code>brown</code></b> (ID: 2) &nbsp;&nbsp; <b><code>lazy</code></b> (ID: 6)
+</div><p>The tokenization pipeline terminates at these integer assignments. Passing the raw integers <code>2</code> and <code>6</code> directly into a neural network creates an immediate mathematical contradiction.</p>
 <h2>The Problem with Discrete Integers</h2>
-<p>Deep learning models operate through continuous mathematics: matrix multiplication, calculus, and gradient descent. Discrete integer IDs are merely categorical labels; they possess no inherent algebraic meaning. </p>
-<p>If the IDs <code>4</code> and <code>12</code> are fed directly into a neural network, the model will attempt to perform mathematical operations on them. It might deduce that <code>12</code> is three times as large as <code>4</code>. It might conclude that the &quot;distance&quot; between <code>walk</code> (4) and <code>ing</code> (12) is exactly 8. This is mathematically nonsensical. The integer ID <code>4</code> does not mean the concept of walking is &quot;smaller&quot; than the suffix <code>ing</code>. They are just arbitrary index numbers.</p>
-<p>To participate in a neural network, these discrete, categorical IDs must be transformed into continuous, dense vectors where every dimension represents a tunable parameter.</p>
+<p>Deep learning models operate through continuous mathematics: matrix multiplication, calculus, and gradient descent. Discrete integer IDs function purely as categorical lookup keys and possess no intrinsic algebraic magnitude or metric distance.</p>
+<p>Feeding the integer IDs <code>2</code> and <code>6</code> directly into a linear layer forces the network to treat arbitrary dictionary indices as continuous scalar magnitudes. The arithmetic implies that <code>lazy</code> (<code>6</code>) is three times as large as <code>brown</code> (<code>2</code>), and that the numerical distance between <code>brown</code> (<code>2</code>) and <code>lazy</code> (<code>6</code>) equals <code>4</code>. That numerical ordering is an artifact of dictionary assignment rather than a linguistic relationship; the integer <code>2</code> does not make the color brown algebraically smaller than the adjective lazy.</p>
+<p>Participating in gradient-based optimization requires transforming these discrete categorical indices into continuous, dense vectors where every coordinate serves as an independently tunable parameter.</p>
 <h2>The One-Hot Encoding</h2>
-<p>The first step in this transformation is to convert the categorical ID into a mathematically neutral format: a one-hot encoded vector.</p>
-<p>If the total vocabulary size $(V)$ is 9, the token <code>walk</code> (ID 4) can be represented as a vector of length 9 containing all zeros, except for a single <code>1</code> at the 4th index.</p>
+<p>The first step in this transformation converts each integer token ID into a mathematically neutral representation: a <strong>one-hot encoded vector</strong> $\mathbf{x} \in \{0, 1\}^{1 \times V}$.</p>
+<p>A vocabulary of size $V = 8$ represents the token <code>brown</code> (index <code>2</code> under 0-based indexing) as a row vector of length $8$ containing zeros at every position except index <code>2</code>, which holds a single <code>1</code>:</p>
 <p>$$
-\mathbf{x}_{walk} = \begin{bmatrix} 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \end{bmatrix}_{1 \times 9}
+\mathbf{x}_{\text{brown}} = \begin{bmatrix} 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \end{bmatrix}_{1 \times 8}
 $$</p>
-<p>This sparse vector allows the network to process the categorical identity of the token without accidentally inferring any false mathematical magnitude. The <code>1</code> simply states &quot;this token is present&quot;, while the <code>0</code>s state &quot;these other tokens are not&quot;. However, a one-hot vector is completely sparse and contains no semantic depth. It must be projected into a continuous space.</p>
+<p>This sparse basis vector encodes the categorical identity of the token without introducing false numerical ordering across vocabulary entries. The <code>1</code> at index <code>2</code> marks the presence of <code>brown</code>, while the <code>0</code> entries at indices <code>0, 1, 3, 4, 5, 6, 7</code> mark the absence of every other vocabulary token. A one-hot vector remains completely sparse and fixed, providing no tunable parameters to capture semantic similarity. Encoding continuous relationships requires projecting this sparse vector into a learnable coordinate space.</p>
 <h2>The Embedding Matrix ($W_E$)</h2>
-<p>To give these tokens continuous algebraic meaning, a massive grid of random numbers known as the embedding matrix is initialized, typically denoted as $W_E$. </p>
-<p>This matrix serves as a dense lookup table. It contains exactly one row for every possible token in the architecture&#39;s predefined vocabulary, and the width of every row is defined by the network&#39;s internal model dimensionality ($d_{model}$). </p>
-<p>If the vocabulary size $V$ is 9, and the vector dimensionality $d_{model}$ is 512, the embedding matrix requires exactly $9 \times 512$ parameters. At the moment of initialization, every single one of these parameters is just a random decimal number.</p>
+<p>Projecting discrete tokens into a continuous vector space requires initializing a two-dimensional parameter grid called the <strong>embedding matrix</strong>, denoted as $W_E \in \mathbb{R}^{V \times d_{\text{model}}}$.</p>
+<p>The matrix $W_E$ operates as a parameterized lookup table. The matrix allocates one row for each of the $V$ tokens in the vocabulary, and the width of each row equals the model hidden dimensionality $d_{\text{model}}$.</p>
+<p>The toy configuration with vocabulary size $V = 8$ and embedding dimension $d_{\text{model}} = 3$ instantiates an $8 \times 3$ embedding matrix containing $8 \times 3 = 24$ learnable parameters (whereas a production architecture with $V = 50,000$ and $d_{\text{model}} = 512$ instantiates $50,000 \times 512 = 25,600,000$ parameters). At initialization, every entry $w_{i,m}$ (representing vocabulary row $i \in \{0, \dots, V-1\}$ and embedding dimension $m \in \{1, \dots, d_{\text{model}}\}$) is sampled as a random floating-point number.</p>
 <h2>The Mathematical Extraction</h2>
-<p>How does the network transition from the sparse one-hot vector to the dense 512-dimensional vector? Through standard matrix multiplication.</p>
-<p>By multiplying the one-hot vector $\mathbf{x}_{walk}$ by the embedding matrix $W_E$, the mathematics dictate that all rows multiplied by <code>0</code> are canceled out, leaving only the 4th row (multiplied by <code>1</code>) to pass through. </p>
+<p>Standard vector-matrix multiplication maps the sparse one-hot row vector $\mathbf{x}_{\text{brown}} \in \mathbb{R}^{1 \times 8}$ to its dense embedding vector $\mathbf{h} \in \mathbb{R}^{1 \times 3}$.</p>
+<p>Multiplying the one-hot vector $\mathbf{x}_{\text{brown}}$ by the embedding matrix $W_E$ scales every row $i \neq 2$ by $0$ and scales row $2$ by $1$, isolating the third row of the matrix:</p>
 <p>$$
-\mathbf{x}_{walk} = \begin{bmatrix} 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \end{bmatrix}_{1 \times 9} \times \begin{bmatrix}
-w_{1,1} & \dots & w_{1,512} \\
-w_{2,1} & \dots & w_{2,512} \\
-w_{3,1} & \dots & w_{3,512} \\
-w_{4,1} & \dots & w_{4,512} \\
-\vdots & \ddots & \vdots \\
-w_{9,1} & \dots & w_{9,512}
-\end{bmatrix}_{9 \times 512}
+\mathbf{h} = \mathbf{x}_{\text{brown}} \times W_E = \begin{bmatrix} 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \end{bmatrix}_{1 \times 8} \times \begin{bmatrix}
+w_{0,1} & w_{0,2} & w_{0,3} \\
+w_{1,1} & w_{1,2} & w_{1,3} \\
+\mathbf{w_{2,1}} & \mathbf{w_{2,2}} & \mathbf{w_{2,3}} \\
+w_{3,1} & w_{3,2} & w_{3,3} \\
+\vdots & \vdots & \vdots \\
+w_{7,1} & w_{7,2} & w_{7,3}
+\end{bmatrix}_{8 \times 3}
 $$</p>
 <p>$$
-= \begin{bmatrix} w_{4,1} & w_{4,2} & \dots & w_{4,512} \end{bmatrix}_{1 \times 512}
+\mathbf{h} = \begin{bmatrix} w_{2,1} & w_{2,2} & w_{2,3} \end{bmatrix}_{1 \times 3} = \begin{bmatrix} -0.3 & 0.9 & 0.4 \end{bmatrix}_{1 \times 3}
 $$</p>
-<p>This matrix multiplication involves no learning; it is the linear algebra mechanism for selecting a specific row from a table. The token <code>walk</code> has now been successfully mapped from a discrete integer ID into a continuous, 512-dimensional vector of random numbers. </p>
-<p>The gap into the continuous vector space has been bridged. The nature of these random numbers, the structure of high-dimensional geometry, and the mathematical implications of randomly scattering tokens across this landscape are explored next.</p>
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p>
+<p>Here $\mathbf{h}$ denotes the extracted $1 \times 3$ hidden embedding vector for <code>brown</code>, populated with the concrete initial weights $\begin{bmatrix} -0.3 & 0.9 & 0.4 \end{bmatrix}$ traced throughout Chapters 3 through 7. This vector-matrix multiplication performs a linear row-selection operation: the one-hot encoding plucks row <code>2</code> from $W_E$, mapping the discrete integer ID <code>2</code> into a continuous vector of tunable parameters.</p>
+<p>The projection through $W_E$ bridges the boundary between discrete token indices and continuous vector geometry. The next chapter examines the high-dimensional geometric structure of these randomly initialized vectors and the mathematical consequences of scattering tokens across a high-dimensional space.</p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="embeddings-preface.html" class="pagination-link prev">

@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -118,23 +159,23 @@
     <li><a href="index.html">Blog</a></li><li><a href="series-signal-integrity.html">Series: Signal Integrity</a></li><li><a href="signal-integrity-part-03.html">Part 3: Jitter Analysis</a></li><li aria-current="page">Jitter Decomposition and Measurement</li></ol></nav>
         <article class="blog-post series-signal-integrity">
 <h1>Jitter Decomposition and Measurement</h1>
-<!-- SUMMARY: A receiver decides bits by sampling a waveform against a threshold, making crossing timing as critical as voltage. This guide defines the unit interval, separates total jitter into its random and deterministic components, and lays out the measurement flow for root-cause isolation. --> <p><em>Prefer to read offline? <a href="../../../assets/docs/signal-integrity-ebook-v2.0.pdf" target="_blank" rel="noopener">Download the complete Signal Integrity (Advanced Edition) ebook.</a></em></p><p>The first nine chapters characterize the channel as a frequency-dependent filter that delays, attenuates, and reflects a signal. The receiver at the end of the channel does not see the filter. It sees a waveform and decides, once per bit, whether the level is high or low, and that decision is correct only if the waveform crosses the decision threshold at a suitable time relative to the instant at which the receiver samples. This chapter begins Part 3 by defining the unit interval and the eye diagram that frame the question, defining jitter as the deviation of each threshold crossing from its ideal time, and separating that deviation into components by statistical behavior and physical origin.</p>
+<!-- SUMMARY: A receiver decides bits by sampling a waveform against a threshold, making crossing timing as critical as voltage. The analysis defines the unit interval, separates total jitter into random and deterministic components, and establishes the measurement flow for root-cause isolation. --><p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p><p>The first nine chapters characterize the channel as a frequency-dependent filter that delays, attenuates, and reflects a signal. The receiver at the end of the channel does not see the filter. It sees a waveform and decides, once per bit, whether the level is high or low, and that decision is correct only if the waveform crosses the decision threshold at a suitable time relative to the instant at which the receiver samples. This chapter begins Part 3 by defining the unit interval and the eye diagram that frame the question, defining jitter as the deviation of each threshold crossing from its ideal time, and separating that deviation into components by statistical behavior and physical origin.</p>
 <p>A single number for total jitter is not enough to diagnose a failing link. A signal can miss its timing budget because of thermal noise in the silicon, because of reflections and loss in the channel, because of ripple on the power supply, because of crosstalk from a neighboring lane, or because of asymmetric drive strength in the transmitter. Each cause produces a timing disturbance with a distinct shape and a distinct corrective action, and the decomposition in this chapter is what turns a failed timing measurement into a specific hardware change.</p>
-<p>The chapter first defines the measurement frame (unit interval, eye, time interval error) and the taxonomy of jitter, then shows how a voltage disturbance becomes a timing disturbance through the edge slope, and then treats each component in turn with a physical origin and a size. The measurement flow and the budget examples follow. <a href="signal-integrity-11_Dual_Dirac_Model_and_BER_Extrapolation.html">Dual-Dirac Model and BER Extrapolation</a> develops the statistics that convert the measured distributions into a total jitter at a target bit error ratio, and <a href="signal-integrity-12_Test_Patterns_and_Jitter_Isolation.html">Test Patterns and Jitter Isolation</a> develops the pattern and spectral techniques that isolate the components.</p>
+<p>The chapter first defines the measurement frame (unit interval, eye, time interval error) and the taxonomy of jitter, then shows how a voltage disturbance becomes a timing disturbance through the edge slope, and then treats each component in turn with a physical origin and a size. The measurement flow and the budget examples follow. <a href="signal-integrity-11_Dual_Dirac_Model_and_BER_Extrapolation.html">Chapter 11</a> develops the statistics that convert the measured distributions into a total jitter at a target bit error ratio, and <a href="signal-integrity-12_Test_Patterns_and_Jitter_Isolation.html">Chapter 12</a> develops the pattern and spectral techniques that isolate the components.</p>
 <h2>Core Concepts</h2>
 <h3>The Unit Interval and the Ideal Edge Times</h3>
 <p>A non-return-to-zero (NRZ) link sends one bit in each <strong>unit interval</strong> (UI), and the unit interval is the reciprocal of the bit rate:</p>
 <p>$$UI = \frac{1}{\text{bit rate}}$$</p>
-<p>A 10 Gb/s link has a UI of 100 ps, and a link described as 16 GT/s (gigatransfers per second, which for an NRZ link equals 16 Gb/s on the wire) has a UI of 62.5 ps. A PAM4 link carries two bits in each symbol, so its UI is the reciprocal of the symbol rate and is twice the bit period; <a href="signal-integrity-15_PAM4_Signaling_and_Gray_Coding.html">Chapter 15</a> develops that case.</p>
+<p>A 10 Gbps NRZ link has a UI of 100 ps, and a PCIe Gen 4 link operating at a symbol rate of 16 GT/s NRZ (corresponding to a raw wire bit rate of 16 Gbps and an effective payload rate of 15.754 Gbps after 128b/130b block coding) has a UI of 62.5 ps. A PAM4 link carries two bits in each symbol, so its UI is the reciprocal of the symbol rate (in GBd or GT/s) and equals twice the bit period; <a href="signal-integrity-15_PAM4_Signaling_and_Gray_Coding.html">Chapter 15</a> develops that case.</p>
 <p>The receiver clock defines an ideal time grid. The ideal time of the $k$-th bit boundary is $t_0 + k\,UI$, where $t_0$ is an arbitrary phase offset, and the receiver ideally samples each bit at the middle of the interval, $UI/2$ after the boundary. The frequency $1/(2\,UI)$ is the Nyquist frequency of the link defined in <a href="signal-integrity-02_Frequency_Content_of_Digital_Signals.html">Chapter 2</a>, the fundamental of the alternating 1010 pattern. Jitter is expressed either in picoseconds or as a fraction of the UI: 5 ps of jitter on a 100 ps UI is 0.05 UI.</p>
 <h3>The Eye Diagram</h3>
 <p>The <strong>eye diagram</strong> is a display of the received waveform folded onto a window of fixed length so that every bit interval is drawn on the same axes. The construction is a modulo operation on time. Choose a window of two unit intervals, assign to each instant $t$ of the record the folded coordinate $u = (t - t_0) \bmod 2\,UI$, and draw the voltage at $u$ for every instant. A long record contains every combination of neighboring bits, so the overlay contains the transitions from low to high, from high to low, and the flat segments of repeated bits, all superposed.</p>
-<p>The resulting picture has a standard vocabulary:</p>
+<p>The resulting picture has four standard geometric landmarks:</p>
 <ul>
-<li>The <strong>crossing points</strong> are the places at $u = 0$, $UI$, and $2\,UI$ where rising and falling transitions cross each other near the decision threshold.</li>
-<li>The <strong>eye opening</strong> is the open region between the traces, bounded above by the lowest trace of a high bit and below by the highest trace of a low bit.</li>
-<li>The <strong>eye height</strong> is the vertical size of the opening at the sampling instant $u = UI/2$.</li>
-<li>The <strong>eye width</strong> is the horizontal size of the opening measured at the threshold level, from the latest crossing on the left to the earliest crossing on the right.</li>
+<li><strong>Crossing points:</strong> The regions at $u = 0$, $UI$, and $2\,UI$ where rising and falling transitions intersect near the decision threshold.</li>
+<li><strong>Eye opening:</strong> The clear interior region between the overlaid traces, bounded above by the lowest trace of a high bit and below by the highest trace of a low bit.</li>
+<li><strong>Eye height:</strong> The vertical opening measured at the nominal sampling instant $u = UI/2$.</li>
+<li><strong>Eye width:</strong> The horizontal opening measured at the decision threshold level, spanning from the latest crossing on the left to the earliest crossing on the right.</li>
 </ul>
 <p>The eye width is the quantity that connects the diagram to jitter. Assume that the threshold crossings are spread over a total width $W_x$ (peak to peak) around their ideal positions. The opening that remains between the left and right crossings is</p>
 <p>$$W_{eye} = UI - W_x$$</p>
@@ -152,12 +193,12 @@
 <h3>The Taxonomy of Jitter</h3>
 <p><strong>Total jitter</strong> (TJ) is the full distribution of TIE values. The taxonomy separates it into two primary categories by probability distribution and then divides the bounded category by physical origin.</p>
 <p><strong>Random jitter</strong> (RJ) is unbounded and Gaussian. It comes from thermal noise (the motion of charge carriers in resistive material), shot noise (the discrete arrival of carriers at a junction), and flicker noise, which has a spectrum that rises toward low frequency. RJ is quantified by its standard deviation, $RJ_{\text{rms}}$, because a peak-to-peak value of an unbounded distribution grows with the length of the observation.</p>
-<p><strong>Deterministic jitter</strong> (DJ) is bounded: it has a minimum and a maximum that do not grow with observation time, and it is quantified by a peak-to-peak value, $DJ_{\text{p-p}}$. DJ divides into four components:</p>
+<p><strong>Deterministic jitter</strong> (DJ) is bounded: it has a minimum and a maximum that do not grow with observation time, and it is quantified by a peak-to-peak value, $DJ_{\text{p-p}}$. DJ divides into four subcomponents by physical mechanism:</p>
 <ul>
-<li><strong>Intersymbol interference</strong> (ISI) is the dependence of a crossing time on the preceding bits, caused by the memory of the channel.</li>
-<li><strong>Duty cycle distortion</strong> (DCD) is a difference between the timing of rising and falling edges, caused by asymmetric drive or by a threshold offset.</li>
-<li><strong>Periodic jitter</strong> (PJ) is uncorrelated with the data and repeats at one or more fixed frequencies. <strong>Sinusoidal jitter</strong> (SJ) is the special case of a single sinusoid, which is also the signal that a jitter-tolerance test applies on purpose.</li>
-<li><strong>Bounded uncorrelated jitter</strong> (BUJ) is bounded, uncorrelated with the data of the signal under test, and not periodic. Its principal source is crosstalk from aggressors that carry their own data, as <a href="signal-integrity-04_Inductance_Magnetic_Coupling_and_Crosstalk.html">Chapter 4</a> anticipated.</li>
+<li><strong>Intersymbol interference (ISI):</strong> Pattern-dependent timing shift where each crossing time depends on the preceding bits through the dispersive memory and reflections of the channel.</li>
+<li><strong>Duty cycle distortion (DCD):</strong> Systematic timing offset between rising and falling transitions caused by pull-up/pull-down slew-rate asymmetry or a receiver decision-threshold offset.</li>
+<li><strong>Periodic jitter (PJ):</strong> Cyclic timing variation uncorrelated with the data pattern that repeats at one or more fixed frequencies, with <strong>sinusoidal jitter</strong> (SJ) representing a single tone.</li>
+<li><strong>Bounded uncorrelated jitter (BUJ):</strong> Non-periodic, bounded timing variation uncorrelated with the victim data pattern, driven primarily by crosstalk from neighboring aggressor lanes carrying independent data (<a href="signal-integrity-04_Inductance_Magnetic_Coupling_and_Crosstalk.html">Chapter 4</a>).</li>
 </ul>
 <p>The last category matters because earlier descriptions place crosstalk inside periodic jitter, which is correct only when the aggressor is a clock at a fixed frequency. An aggressor with random data produces a bounded timing disturbance that is neither tied to the victim pattern nor concentrated at one frequency, so the pattern-averaging and spectral methods of <a href="signal-integrity-12_Test_Patterns_and_Jitter_Isolation.html">Chapter 12</a> do not isolate it directly.</p>
 <p>The distribution of each component is different, and two descriptions must be kept apart. The <strong>histogram</strong> (or probability density) counts how many edges fall at each TIE value regardless of when they occurred. The <strong>spectrum</strong> describes how the TIE varies with time. A periodic disturbance has a line in the spectrum and an arcsine shape in the histogram, which is derived below.</p>
@@ -213,7 +254,7 @@
 <p>The slope is signed: it is positive on a rising edge and negative on a falling edge, so a positive disturbance moves a rising crossing earlier and a falling crossing later. The conversion gain is $1/S$ in picoseconds per millivolt, and it is the same for noise, for ISI, for crosstalk, and for a threshold offset. A steeper edge converts the same voltage disturbance into less jitter.</p>
 <p>Every example in this chapter uses one reference receiver. Assume an eye of 400 mV peak to peak (a main-cursor amplitude of $A = 200$ mV on each side of the threshold), a 10 to 90 percent rise time of 64 ps, and therefore a slope at the crossing of $0.8 \times 400\ \text{mV}/64\ \text{ps} = 5$ mV/ps. These values are assumptions that give round numbers. The slope at a real receiver depends on how much the channel has slowed the edge, which <a href="signal-integrity-07_Time_Domain_Reflectometry.html">Chapter 7</a> quantifies, so every jitter value below scales as $1/S$ and should be recomputed for a specific link.</p>
 <h3>Random Jitter</h3>
-<p>Thermal and shot noise voltages are the sum of a very large number of independent microscopic contributions, and the central limit theorem says that such a sum has a distribution close to Gaussian. The noise on the receiver input has a flat (white) spectrum over the bandwidth of the link, so the noise sampled at one edge is independent of the noise sampled at the next. The amplitude-to-phase relation converts the voltage noise to timing noise, and because the conversion is linear, a Gaussian voltage distribution with standard deviation $\sigma_v$ becomes a Gaussian timing distribution with</p>
+<p>Thermal and shot noise voltages are the sum of millions of independent microscopic carrier fluctuations, and the central limit theorem says that such a sum has a distribution close to Gaussian. The noise on the receiver input has a flat (white) spectrum over the bandwidth of the link, so the noise sampled at one edge is independent of the noise sampled at the next. The amplitude-to-phase relation converts the voltage noise to timing noise, and because the conversion is linear, a Gaussian voltage distribution with standard deviation $\sigma_v$ becomes a Gaussian timing distribution with</p>
 <p>$$RJ_{\text{rms}} = \sigma_t = \frac{\sigma_v}{S}$$</p>
 <p>Assume a noise of 7.5 mV rms at the threshold crossing of the reference receiver. Then $\sigma_t = 7.5/5 = 1.5$ ps, the value used in the examples of <a href="signal-integrity-11_Dual_Dirac_Model_and_BER_Extrapolation.html">Chapter 11</a>. Each edge is an independent draw from this distribution, which is the defining contrast with ISI, where the timing of an edge is dictated by the history of the preceding bits.</p>
 <p>The value of $RJ_{\text{rms}}$ is a property of the whole signal path, and it is not a fixed constant of the silicon. It scales as $1/S$, so a slower edge at the receiver has more random jitter for the same noise voltage. It depends on temperature through the noise voltage. It also depends on the bandwidth over which the jitter is measured, because flicker noise concentrates its energy at low frequency, and a clock-recovery loop tracks those slow components and removes them from the jitter that the sampler sees. Two instruments with different reference clocks can therefore report different $RJ_{\text{rms}}$ for the same signal.</p>
@@ -254,51 +295,48 @@
 <h2>Architecture</h2>
 <h3>The Jitter Tree</h3>
 <p>The decomposition forms a tree that maps every timing disturbance to a measurable root cause:</p>
-<pre><code class="language-mermaid">graph LR
-    TJ[&quot;Total Jitter (TJ)&quot;] --&gt; RJ[&quot;Random Jitter (RJ)&quot;]
-    TJ --&gt; DJ[&quot;Deterministic Jitter (DJ)&quot;]
-    RJ --&gt; RJ_DESC[&quot;Gaussian, unbounded, quantified by RJ_rms&lt;br/&gt;Sources: thermal noise, shot noise, flicker noise&quot;]
-    DJ --&gt; DDJ[&quot;Data Dependent Jitter (DDJ)&quot;]
-    DJ --&gt; PJ[&quot;Periodic Jitter (PJ)&quot;]
-    DJ --&gt; BUJ[&quot;Bounded Uncorrelated Jitter (BUJ)&quot;]
-    DDJ --&gt; ISI[&quot;Intersymbol Interference (ISI)&lt;br/&gt;Channel low-pass memory, reflections&quot;]
-    DDJ --&gt; DCD[&quot;Duty Cycle Distortion (DCD)&lt;br/&gt;Slew rate asymmetry, threshold offset&quot;]
-    PJ --&gt; PJ_DESC[&quot;Sinusoidal Jitter (SJ) is the single-tone case&lt;br/&gt;Sources: power supply, EMI, clock crosstalk, PLL spurs&quot;]
-    BUJ --&gt; BUJ_DESC[&quot;Crosstalk from aggressors with their own data&quot;]
+<pre><code class="language-mermaid">flowchart TD
+    TJ[&quot;Total Jitter (TJ)&quot;] --&gt; RJ[&quot;Random Jitter (RJ)&lt;br/&gt;Gaussian, unbounded (RJ_rms)&lt;br/&gt;Thermal, shot, and flicker noise&quot;]
+    TJ --&gt; DJ[&quot;Deterministic Jitter (DJ)&lt;br/&gt;Bounded (DJ_p-p)&quot;]
+    DJ --&gt; DDJ[&quot;Data-Dependent Jitter (DDJ)&quot;]
+    DJ --&gt; PJ[&quot;Periodic Jitter (PJ / SJ)&lt;br/&gt;Supply ripple, EMI, PLL spurs&quot;]
+    DJ --&gt; BUJ[&quot;Bounded Uncorrelated (BUJ)&lt;br/&gt;Asynchronous lane crosstalk&quot;]
+    DDJ --&gt; ISI[&quot;Intersymbol Interference (ISI)&lt;br/&gt;Dispersive loss &amp; reflections&quot;]
+    DDJ --&gt; DCD[&quot;Duty Cycle Distortion (DCD)&lt;br/&gt;Slew asymmetry &amp; threshold offset&quot;]
 </code></pre>
 <p>Each leaf corresponds to a distinct mechanism and a distinct action. ISI is addressed through channel design or equalization. DCD is addressed through transmitter calibration or receiver threshold adjustment. PJ is addressed by identifying the interfering source from the frequency of its spectral line and decoupling it. BUJ is addressed through spacing, layer choice, and shielding, following the crosstalk physics of <a href="signal-integrity-04_Inductance_Magnetic_Coupling_and_Crosstalk.html">Chapter 4</a>. RJ is addressed by lowering the noise voltage or by raising the edge slope at the receiver, since $RJ_{\text{rms}} = \sigma_v/S$.</p>
 <h3>Capturing the TIE</h3>
 <p>The oscilloscope digitizes the received voltage at a high sample rate and interpolates between samples to locate the instant at which each edge crosses the decision threshold (the zero-volt crossing for a differential signal). A software phase-locked loop run on the captured data produces the recovered reference clock, and the TIE of each edge is the difference between its crossing time and the reference time, as defined above.</p>
 <p>The instrument keeps the TIE values in two forms. The <strong>TIE track</strong> is the chronological sequence of values against time, which preserves the order of the edges and is needed to see periodic behavior and to average against a repeating pattern. The <strong>histogram</strong> discards the order and counts the number of edges in each time bin; its horizontal axis is time and its vertical axis is a count.</p>
 <h3>From Histogram to Probability Density</h3>
-<p>The histogram becomes a probability density when each bin count is divided by the total number of edges and by the bin width. The area under the normalized curve is then 1.0, the statement that every edge lands somewhere. This density is the convolution $p_{TJ}$ of the previous section, and all further operations (tail fitting, extrapolation, bathtub construction) act on it.</p>
+<p>The histogram becomes a probability density when each bin count is divided by the total number of edges and by the bin width. The area under the normalized curve is then 1.0, the statement that every edge lands somewhere. That normalized density equals the convolution $p_{TJ}$ of the previous section, and all further operations (tail fitting, extrapolation, bathtub construction) act on it.</p>
 <h3>Separating RJ from DJ in the Tails</h3>
 <p>Deterministic jitter has hard limits, so no edge lies farther from the ideal time than the extreme of the DJ distribution, plus whatever the unbounded random component adds. The outermost parts of the histogram are therefore shaped by random jitter alone, centered on the nearest DJ extreme. The algorithm fits a Gaussian to each outer tail and ignores the center of the histogram, where the DJ clusters and the Gaussian overlap. The standard deviation of the fitted Gaussians is $RJ_{\text{rms}}$, and the separation of their means is the Dual-Dirac deterministic jitter $DJ_{\delta\delta}$. <a href="signal-integrity-11_Dual_Dirac_Model_and_BER_Extrapolation.html">Chapter 11</a> derives the fit, the Q-scale construction that makes it linear, and the extrapolation $TJ(\text{BER}) = DJ_{\delta\delta} + 2\,Q\,RJ_{\text{rms}}$.</p>
 <h3>The Measurement Flow</h3>
-<p>The following numbered list is the single canonical sequence for decomposing jitter; <a href="signal-integrity-12_Test_Patterns_and_Jitter_Isolation.html">Chapter 12</a> refers to the steps by number.</p>
+<p>The following seven-step pipeline is the canonical sequence for decomposing jitter, and <a href="signal-integrity-12_Test_Patterns_and_Jitter_Isolation.html">Chapter 12</a> references each step by number:</p>
 <ol>
-<li><strong>Capture the TIE values</strong> of every edge in the measurement window.</li>
-<li><strong>Construct the TIE histogram</strong> and normalize it to a probability density.</li>
-<li><strong>Fit Gaussians to the outer tails</strong> to extract $RJ_{\text{rms}}$ and $DJ_{\delta\delta}$.</li>
-<li><strong>Record the TIE track</strong>, the chronological TIE values against time, to preserve the order of the edges.</li>
-<li><strong>Average the TIE track synchronously</strong> over many repetitions of a known test pattern such as PRBS-7. Components that are uncorrelated with the pattern average toward zero, and the pattern-correlated ISI and DCD remain.</li>
-<li><strong>Subtract the averaged DDJ</strong> from the TIE track to obtain the uncorrelated residual.</li>
-<li><strong>Apply an FFT to the residual</strong> to separate the spectral lines of PJ from the broadband floor of RJ.</li>
+<li><strong>TIE acquisition:</strong> Capture the threshold-crossing time interval error ($TIE_k$) of every edge in the measurement window.</li>
+<li><strong>Histogram normalization:</strong> Construct the TIE histogram and divide by sample count and bin width to obtain the empirical probability density $p_{TJ}(t)$.</li>
+<li><strong>Outer-tail Gaussian fitting:</strong> Fit Gaussian curves to the left and right outer tails to extract $RJ_{\text{rms}}$ and the Dual-Dirac separation $DJ_{\delta\delta}$.</li>
+<li><strong>Chronological track recording:</strong> Store the time-ordered sequence $TIE_k$ against bit index $k$ to preserve pattern and spectral phase relationships.</li>
+<li><strong>Synchronous pattern averaging:</strong> Average the TIE track across repeated periods of a known test pattern (such as PRBS-7) so uncorrelated components cancel toward zero while pattern-locked ISI and DCD remain.</li>
+<li><strong>DDJ subtraction:</strong> Subtract the pattern-averaged DDJ waveform from the chronological TIE track to isolate the uncorrelated residual jitter.</li>
+<li><strong>Spectral FFT isolation:</strong> Compute the fast Fourier transform of the uncorrelated residual to separate discrete periodic jitter (PJ) spurs from the broadband random jitter (RJ) floor.</li>
 </ol>
 <p>Steps 4 through 7, with the pattern selection, the averaging mathematics, and the spectral analysis, are the subject of <a href="signal-integrity-12_Test_Patterns_and_Jitter_Isolation.html">Chapter 12</a>.</p>
 <h2>Worked Examples</h2>
 <h3>TIE, Period Jitter, and Cycle-to-Cycle Jitter from Four Edges</h3>
-<p>Assume a 10 Gb/s link with $UI = 100$ ps and four consecutive edge crossings measured at 0.2, 100.5, 199.1, and 300.3 ps. The ideal times are 0, 100, 200, and 300 ps, so the TIE values are $+0.2$, $+0.5$, $-0.9$, and $+0.3$ ps. The three periods are 100.3, 98.6, and 101.2 ps, and the period jitter (each period minus the UI) is $+0.3$, $-1.4$, and $+1.2$ ps, which equals the differences of consecutive TIE values. The two cycle-to-cycle values are $98.6 - 100.3 = -1.7$ ps and $101.2 - 98.6 = +2.6$ ps. The cycle-to-cycle values are larger than the TIE values because each is a second difference of the TIE, which emphasizes fast variation.</p>
+<p>Assume a 10 Gbps link with $UI = 100$ ps and four consecutive edge crossings measured at 0.2, 100.5, 199.1, and 300.3 ps. The ideal times are 0, 100, 200, and 300 ps, so the TIE values are $+0.2$, $+0.5$, $-0.9$, and $+0.3$ ps. The three periods are 100.3, 98.6, and 101.2 ps, and the period jitter (each period minus the UI) is $+0.3$, $-1.4$, and $+1.2$ ps, which equals the differences of consecutive TIE values. The two cycle-to-cycle values are $98.6 - 100.3 = -1.7$ ps and $101.2 - 98.6 = +2.6$ ps. The cycle-to-cycle values are larger than the TIE values because each is a second difference of the TIE, which emphasizes fast variation.</p>
 <h3>ISI Jitter from the Cursors of a 12 Inch FR4 Line</h3>
-<p>Use the reference receiver ($A = 200$ mV, $S = 5$ mV/ps) and the conductor-loss cursors of <a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">Chapter 5</a>, whose first seven post-cursors sum to 9 percent of the main cursor. The largest voltage offset is $0.09 \times 200 = 18$ mV on either side. Dividing by the slope gives $\pm 3.6$ ps, so the seven-cursor peak-to-peak ISI jitter is 7.2 ps, or 0.072 UI at 10 Gb/s. The offset also reduces the eye height, as the Edge Cases show. Adding the dielectric loss of the same line increases the tail and the jitter, and the equalizers of <a href="signal-integrity-13_Transmitter_FFE.html">Chapter 13</a> and <a href="signal-integrity-14_CTLE_and_DFE.html">Chapter 14</a> act on exactly these cursors.</p>
+<p>Use the reference receiver ($A = 200$ mV, $S = 5$ mV/ps) and the conductor-loss cursors of <a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">Chapter 5</a>, whose first seven post-cursors sum to 9 percent of the main cursor. The largest voltage offset is $0.09 \times 200 = 18$ mV on either side. Dividing by the slope gives $\pm 3.6$ ps, so the seven-cursor peak-to-peak ISI jitter is 7.2 ps, or 0.072 UI at 10 Gbps. The offset also reduces the eye height, as the Edge Cases show. Adding the dielectric loss of the same line increases the tail and the jitter, and the equalizers of <a href="signal-integrity-13_Transmitter_FFE.html">Chapter 13</a> and <a href="signal-integrity-14_CTLE_and_DFE.html">Chapter 14</a> cancel those post-cursor tails directly.</p>
 <h3>DCD from a Threshold Offset</h3>
 <p>A receiver comparator has an input offset of 10 mV, and the reference receiver has equal rising and falling slopes of 5 mV/ps. The rising crossings move $+2$ ps and the falling crossings $-2$ ps, so the two clusters are 4 ps apart, which is $4\%$ of the 100 ps UI. A calibration that removes the offset removes the DCD, and no change to the transmitter or the channel is needed.</p>
 <h3>Sinusoidal Jitter from Supply Ripple</h3>
 <p>A 30 mV ripple on the driver supply with a sensitivity of 0.1 ps/mV gives sinusoidal jitter of amplitude $A_j = 3$ ps. The peak-to-peak value is 6 ps, the rms value is $3/\sqrt{2} = 2.12$ ps, and the histogram is an arcsine distribution with its peaks at $\pm 3$ ps. The spectral line identifies the regulator frequency, and the corrective action is better decoupling or a lower-ripple regulator.</p>
 <h3>BUJ from Crosstalk</h3>
 <p>The 35 mV far-end crosstalk of <a href="signal-integrity-04_Inductance_Magnetic_Coupling_and_Crosstalk.html">Chapter 4</a> acting on a 1 V, 100 ps victim edge (slope 8 mV/ps) produces at most $\pm 4.4$ ps of timing shift and $BUJ_{\text{p-p}} = 8.75$ ps. Changing the pair from microstrip to stripline with equal coupling cancels the far-end term, so the same spacing in stripline removes most of this component.</p>
-<h3>A Jitter Budget at 10 Gb/s</h3>
-<p>Collect the components of the previous examples for a 10 Gb/s link with $UI = 100$ ps and $RJ_{\text{rms}} = 1.5$ ps. The deterministic components add linearly as an upper bound:</p>
+<h3>A Jitter Budget at 10 Gbps</h3>
+<p>Collect the components of the previous examples for a 10 Gbps link with $UI = 100$ ps and $RJ_{\text{rms}} = 1.5$ ps. The deterministic components add linearly as an upper bound:</p>
 <table>
 <thead>
 <tr>
@@ -332,7 +370,7 @@
 <h3>ISI and the Closed Eye</h3>
 <p>The cursors that shift the crossings also reduce the eye height. The worst-case sampled voltage of a high bit is $A\left(1 - \sum_{j \ne 0}|h_j|\right)$, because every interfering cursor can take the sign that subtracts. The eye height is the difference between the worst high and the worst low:</p>
 <p>$$V_{eye} = 2A\left(1 - \sum_{j \ne 0}|h_j|\right)$$</p>
-<p>For the 9 percent seven-cursor sum and the 200 mV amplitude of the example, $V_{eye} = 400 \times 0.91 = 364$ mV, from the 400 mV that an interference-free eye would have. The eye closes when the sum of the magnitudes of the other cursors reaches the main cursor, $\sum_{j \ne 0}|h_j| \ge 1$. The sampled value of a bit can then lie on the wrong side of the threshold, and the receiver records a bit error even with no noise. This failure is the direct motivation for transmitter equalization (<a href="signal-integrity-13_Transmitter_FFE.html">Chapter 13</a>) and receiver equalization (<a href="signal-integrity-14_CTLE_and_DFE.html">Chapter 14</a>), which reduce the cursor sum.</p>
+<p>For the 9 percent seven-cursor sum and the 200 mV amplitude of the example, $V_{eye} = 400 \times 0.91 = 364$ mV, from the 400 mV that an interference-free eye would have. The eye closes when the sum of the magnitudes of the other cursors reaches the main cursor, $\sum_{j \ne 0}|h_j| \ge 1$. The sampled value of a bit can then lie on the wrong side of the threshold, and the receiver records a bit error even with no noise. That eye-closure threshold is the direct motivation for transmitter equalization (<a href="signal-integrity-13_Transmitter_FFE.html">Chapter 13</a>) and receiver equalization (<a href="signal-integrity-14_CTLE_and_DFE.html">Chapter 14</a>), which reduce the cursor sum.</p>
 <h3>Nonlinear Amplitude-to-Phase Conversion</h3>
 <p>The relation $\Delta t = -\delta v/S$ assumes that the edge is a straight line over the range of the disturbance. Near the rails the edge flattens and the slope falls, so the same voltage disturbance produces a larger timing shift there. A Gaussian noise voltage passed through a slope that varies across the noise range produces a timing distribution with heavier tails on the side where the edge is flatter. The threshold is therefore placed at the middle of the swing, where the slope is largest and the conversion is most nearly linear, and the Gaussian description of random jitter is most reliable for a measurement made at that level.</p>
 <h3>Peak-to-Peak RJ Is a Defined Quantity</h3>
@@ -341,7 +379,8 @@
 <p>The TIE depends on the reference clock. A reference recovered by a high-bandwidth loop follows the slow components of the data timing and reports less low-frequency jitter than a fixed-frequency reference. A receiver with the same tracking behavior is not affected by those slow components either, so the TIE that matters for margin is the one measured against a reference that models the receiver clock. <a href="signal-integrity-17_CDR_and_PLL_Loop_Dynamics.html">Chapter 17</a> quantifies this behavior with the jitter transfer function.</p>
 <h3>The Dual-Dirac Approximation</h3>
 <p>The Dual-Dirac model replaces the full DJ distribution by two impulses and reports the separation of the fitted tails as $DJ_{\delta\delta}$. That separation is a model parameter and is generally smaller than the measured $DJ_{\text{p-p}}$; its relation to the true total jitter, including cases in which the model overestimates and cases in which it underestimates, is treated in <a href="signal-integrity-11_Dual_Dirac_Model_and_BER_Extrapolation.html">Chapter 11</a>.</p>
-<p>The decomposition in this chapter describes what each component is and how large it is, and the open question is how to turn the measured distribution into a statement about the rare edges that cause a bit error once in a trillion bits. The next chapter, <a href="signal-integrity-11_Dual_Dirac_Model_and_BER_Extrapolation.html">Dual-Dirac Model and BER Extrapolation</a>, answers that question.</p>
+<p>The decomposition in this chapter describes what each component is and how large it is, and the open question is how to turn the measured distribution into a statement about the rare edges that cause a bit error once in a trillion bits. <a href="signal-integrity-11_Dual_Dirac_Model_and_BER_Extrapolation.html">Chapter 11</a> answers that question.</p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="signal-integrity-09_Smith_Charts.html" class="pagination-link prev">

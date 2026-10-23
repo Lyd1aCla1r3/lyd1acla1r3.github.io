@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -118,7 +159,7 @@
     <li><a href="index.html">Blog</a></li><li><a href="series-transformers.html">Series: Transformers</a></li><li aria-current="page">Part 2: The Permutation Invariance Problem & Positional Encoding</li></ol></nav>
         <article class="blog-post series-transformers">
 <h1>Part 2: The Permutation Invariance Problem &amp; Positional Encoding</h1>
-<!-- SUMMARY: Matrix operations are inherently permutation invariant, creating a structural flaw that leaves the architecture entirely blind to sequence order. This limitation is resolved by explicitly injecting temporal context through the element-wise addition of mathematically deterministic absolute positional encodings. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p><p>The input sequence <code>&lt;BOS&gt;</code> <code>i</code> <code>woke</code> <code>up</code> is now transformed into a dense, continuous semantic space. Sparse 12-dimensional one-hot vectors are mathematically compressed into a 6-dimensional embedding matrix.</p>
+<!-- SUMMARY: Matrix operations are inherently permutation invariant, creating a structural flaw that leaves the architecture entirely blind to sequence order. This limitation is resolved by explicitly injecting temporal context through the element-wise addition of mathematically deterministic absolute positional encodings. --><p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p><p>The input sequence <code>&lt;BOS&gt;</code> <code>i</code> <code>woke</code> <code>up</code> is now transformed into a dense, continuous semantic space. Sparse 12-dimensional one-hot vectors are mathematically compressed into a 6-dimensional embedding matrix.</p>
 <p>The current tensor representation $X$ for the sequence takes the following form:</p>
 <p>$$
 X = \begin{bmatrix}
@@ -128,21 +169,20 @@ X = \begin{bmatrix}
  0.0 & -0.1 &  0.4 &  0.9 & -0.2 &  0.0
 \end{bmatrix}
 $$</p>
-<p>This matrix captures the semantic meaning of the words. A critical problem remains regarding structural context.</p>
+<p>This matrix captures the semantic meaning of the words. A structural limitation remains regarding sequential context.</p>
 <h2>The Permutation Invariance Problem</h2>
 <p>To understand the nature of this flaw, the processing method of the Attention mechanism must be anticipated. During the computation of self-attention, dot products are calculated between these row vectors to measure similarities.</p>
-<p>A fundamental property of set operations and matrix multiplication is permutation invariance. If the rows of the matrix $X$ are shuffled to represent the sequence &quot;woke i up <code>&lt;BOS&gt;</code>&quot;, the attention mechanism calculates the exact same pairwise similarities. The model processes &quot;i woke up&quot; and &quot;woke i up&quot; as identical semantic concepts. Human language relies entirely on word order to derive meaning. &quot;The dog bit the man&quot; and &quot;The man bit the dog&quot; use identical tokens, yet these phrases describe completely different events.</p>
-<p>Without a mechanism to inject sequence order, the Transformer acts as merely a highly sophisticated bag-of-words model. The architecture is completely order-blind.</p>
+<p>Set operations and row-wise matrix multiplications exhibit permutation invariance. Shuffling the rows of $X$ to represent the reordered sequence <code>woke</code> <code>i</code> <code>up</code> <code>&lt;BOS&gt;</code> produces identical pairwise dot products inside self-attention. The network treats <code>i</code> <code>woke</code> <code>up</code> and <code>woke</code> <code>i</code> <code>up</code> as interchangeable multisets of vectors. Natural language depends on sequential order to establish syntax and causality; <code>&quot;The dog bit the man&quot;</code> and <code>&quot;The man bit the dog&quot;</code> contain identical tokens while describing opposite events.</p>
+<p>Without an explicit mechanism to encode sequence order, the Transformer collapses into a permutation-invariant bag-of-words model.</p>
 <h2>Injecting Time: Positional Encoding</h2>
-<p>Positional information must be explicitly injected into the vectors before they enter the attention layers. This injection is achieved by creating a secondary matrix of identical dimensions to the input tensor, which is then added to it.</p>
-<p>There are two primary philosophies for positional encoding:</p>
-<ol>
-<li><strong>Relative Positional Encoding:</strong> The model learns the distances between words. Instead of treating &quot;woke&quot; as residing at position 2, the system only registers that &quot;woke&quot; is exactly one step away from &quot;i&quot;. Modern architectures like RoPE utilize relative encodings through complex vector rotations.</li>
-<li><strong>Absolute Positional Encoding:</strong> Every position in the sequence receives a unique, static vector signature. The model learns that position 0 always has a specific geometric translation, position 1 has another, and so forth.</li>
-</ol>
-<p>For this rigorous walkthrough, an absolute positional encoding is utilized. A mathematically deterministic and bounded matrix is required, ensuring the numerical variance of the carefully calibrated embeddings does not explode.</p>
-<p>The original Transformer architecture used interweaving sine and cosine waves of varying frequencies. A mathematically similar approach is adopted here. By varying the frequencies across the 6 dimensions, each position generates a completely unique vector signature.</p>
-<p>The exact Positional Encoding matrix $W_{PE}$ for the 4-token sequence is defined below.</p>
+<p>Positional information must be explicitly injected into the vectors before they enter the attention layers. This injection is achieved by creating a secondary matrix of identical dimensions to the input tensor and adding the two matrices element by element.</p>
+<p>Two primary design paradigms encode sequence order in Transformer architectures:</p>
+<ul>
+<li><strong>Relative Positional Encoding:</strong> The attention computation encodes pairwise token distances rather than fixed sequence indices. Instead of assigning <code>woke</code> a static index of <code>2</code>, the mechanism records that <code>woke</code> sits one step after <code>i</code>, using pairwise distance biases or rotary coordinate transformations.</li>
+<li><strong>Absolute Positional Encoding:</strong> Every sequence index receives a unique, deterministic vector signature added directly to the token embedding. Position <code>0</code> applies one fixed geometric translation in $\mathbb{R}^{d_{\text{model}}}$, position <code>1</code> applies a second translation, and each subsequent index shifts its token vector along a distinct trajectory.</li>
+</ul>
+<p>This walkthrough uses a deterministic absolute positional encoding with entries bounded in $[-1, 1]$ so the variance of the token embeddings remains controlled.</p>
+<p>Sinusoidal positional encoding pairs sine and cosine functions of geometrically increasing wavelengths across the $d_{\text{model}} = 6$ dimensions. Using a compact base wavelength of $10$ suited to a 6-dimensional toy space, each coordinate pair $(2i, 2i+1)$ for $i \in \{0, 1, 2\}$ at sequence index $pos \in \{0, 1, 2, 3\}$ follows $\text{PE}_{(pos, 2i)} = \sin(pos / 10^{2i/6})$ and $\text{PE}_{(pos, 2i+1)} = \cos(pos / 10^{2i/6})$. Rounding this wave grid to one decimal place for manual arithmetic yields the $4 \times 6$ Positional Encoding matrix $W_{PE}$:</p>
 <p>$$
 W_{PE} = \begin{bmatrix}
  0.0 &  1.0 &  0.0 &  1.0 &  0.0 &  1.0 \\
@@ -151,15 +191,15 @@ W_{PE} = \begin{bmatrix}
  0.1 & -1.0 &  1.0 &  0.2 &  0.6 &  0.8
 \end{bmatrix}
 $$</p>
-<p>This matrix exhibits geometric elegance. The values fluctuate smoothly between -1.0 and 1.0. Position 0 produces a clean alternating pattern, while subsequent positions introduce complex phase shifts. No two rows are identical.</p>
+<p>This matrix exhibits geometric regularity. The values fluctuate smoothly between <code>-1.0</code> and <code>1.0</code>. Position <code>0</code> produces an alternating <code>[0.0, 1.0, 0.0, 1.0, 0.0, 1.0]</code> pattern, while subsequent positions introduce distinct phase shifts across the three frequency pairs. No two rows are identical.</p>
 <h2>The Final Matrix Addition</h2>
-<p>The integration of positional data is simple. An element-wise matrix addition merges the semantic embeddings $X$ and the positional signatures $W_{PE}$.</p>
+<p>An element-wise matrix addition merges the semantic embeddings $X$ and the positional signatures $W_{PE}$:</p>
 <pre><code class="language-mermaid">graph TD
     X(&quot;Semantic Embeddings X&quot;) --&gt; Add(&quot;Element-wise Addition&quot;)
     PE(&quot;Positional Encoding W_PE&quot;) --&gt; Add
     Add --&gt; XPos(&quot;Contextualized Input X_pos&quot;)
 </code></pre>
-<p>The exact addition for the model is computed as follows:</p>
+<p>Adding the embedding matrix $X$ and the positional matrix $W_{PE}$ element by element produces the positionally encoded input tensor:</p>
 <p>$$
 X_{pos} = \begin{bmatrix}
  0.1 &  0.0 &  0.0 &  0.0 &  0.0 &  0.0 \\
@@ -173,7 +213,7 @@ X_{pos} = \begin{bmatrix}
  0.1 & -1.0 &  1.0 &  0.2 &  0.6 &  0.8
 \end{bmatrix}
 $$</p>
-<p>This operation yields the final, positionally-aware tensor $X_{pos}$:</p>
+<p>This operation yields the final, positionally aware tensor $X_{pos}$:</p>
 <p>$$
 X_{pos} = \begin{bmatrix}
  0.1 &  1.0 &  0.0 &  1.0 &  0.0 &  1.0 \\
@@ -182,9 +222,9 @@ X_{pos} = \begin{bmatrix}
  0.1 & -1.1 &  1.4 &  1.1 &  0.4 &  0.8
 \end{bmatrix}
 $$</p>
-<p>The vector for &quot;woke&quot; is no longer just the abstract concept of waking up. The representation is now explicitly &quot;woke&quot; at position 2.</p>
-<p>The initial preparations are complete. A string of text is successfully translated into a mathematically rich tensor that captures both semantic meaning and sequential time. Next, this matrix is fed into the heart of the architecture to introduce Layer 1 Self-Attention.</p>
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p>The third row vector no longer represents the isolated lexical concept <code>woke</code> in a vacuum; its coordinates now encode <code>woke</code> anchored at sequence index <code>2</code>.</p>
+<p>The initial input preparations are complete. A sequence of discrete tokens has been mapped into a continuous $4 \times 6$ tensor that encodes both lexical identity and sequential position, ready to enter Layer 1 Self-Attention.</p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="transformers-chapter_01.html" class="pagination-link prev">

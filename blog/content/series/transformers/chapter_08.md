@@ -2,15 +2,15 @@
 
 <!-- SUMMARY: The central memory bus of the architecture processes contextual updates from the attention blocks via element-wise addition to the residual stream. Geometrically, this operation acts as a vector translation in high-dimensional space, shifting token representations to incorporate context while preserving their foundational identities. -->
 
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>
 
-The multi-head attention output has been successfully calculated. Treating this output as the sole input to the next layer is a common instinct in traditional feed-forward networks. The Transformer architecture abandons this sequential pipeline. It instead relies on a central shared memory backbone known as the residual stream.
+The multi-head attention output has been calculated. Treating this output as the sole input to the next layer is a common instinct in traditional feed-forward networks. The Transformer architecture abandons this sequential pipeline. It instead relies on a central shared memory backbone known as the residual stream.
 
 ## Reframing the Architecture: The Information Highway
 
-In a standard deep neural network, each layer transforms the data completely. The input to layer two is exclusively the output of layer one. This creates a bottleneck. If a layer destroys information during its transformation, that information is lost forever. Furthermore, during backpropagation, gradients must multiply through the weight matrix of every layer. If those weights are small, the gradients vanish, halting the learning process for early layers.
+In a traditional sequential neural network, each layer overwrites the representation completely because the input to layer two is exclusively the output of layer one. This sequential overwrite creates an information bottleneck: any feature destroyed during an intermediate transformation is lost permanently. Backpropagation through a strictly sequential chain also forces gradients to multiply through the weight matrix of every layer. Small singular values across those weight matrices cause the backpropagated gradients to vanish exponentially, halting weight updates in early layers.
 
-The Transformer solves both problems by treating the network as a continuous highway of information rather than a sequence of transformations. The original positionally encoded input embeddings travel straight through the entire network, from the first block to the final output. The attention mechanisms and feed-forward networks sit alongside this highway. They read from the stream, perform their specialized computations, and write their results back into the stream via addition.
+The Transformer solves both problems by treating the network as a continuous highway of information rather than a sequence of overwrites. The positionally encoded input embeddings travel straight through the entire network, from the first block to the final output. The attention mechanisms and feed-forward networks sit alongside this highway. They read from the stream, perform their specialized computations, and write their results back into the stream via addition.
 
 ```mermaid
 graph TD
@@ -25,15 +25,15 @@ The token vectors do not lose their original identity. The attention block acts 
 
 ## The Mathematics of the Residual Connection
 
-This additive update is formalized with a simple equation:
+This additive update is formalized with a direct equation:
 
 $$
 X_{\text{out}} = X_{\text{in}} + \text{Attention}(X_{\text{in}})
 $$
 
-Here, $X_{\text{in}}$ is the state of the residual stream before the attention block. Currently, this is the positionally encoded input matrix. $\text{Attention}(X_{\text{in}})$ represents the output calculated in the previous step using the final projection matrix. 
+Here, $X_{\text{in}}$ is the state of the residual stream entering the attention block, and $\text{Attention}(X_{\text{in}})$ is the $4 \times 6$ output calculated in Part 7 using the output projection matrix $W_O$.
 
-The exact matrices are as follows. The original positionally encoded input $X_{\text{in}}$ is:
+To match the two-decimal precision of $\text{Attention}(X_{\text{in}})$, the residual stream matrix $X_{\text{in}}$ retains the two-decimal sinusoidal evaluation of $X + W_{PE}$ from Part 2:
 
 $$
 X_{\text{in}} = \begin{bmatrix}
@@ -48,14 +48,14 @@ The output from the multi-head attention block $\text{Attention}(X_{\text{in}})$
 
 $$
 \text{Attention}(X_{\text{in}}) = \begin{bmatrix}
--0.08 &  0.29 &  0.18 &  0.35 & -0.00 & -0.33 \\
+-0.08 &  0.29 &  0.18 &  0.35 &  0.00 & -0.33 \\
 -0.10 &  0.42 &  0.10 &  0.43 & -0.01 & -0.25 \\
 -0.03 &  0.31 &  0.08 &  0.29 &  0.07 & -0.10 \\
  0.05 &  0.06 &  0.18 &  0.13 &  0.18 & -0.11
 \end{bmatrix}
 $$
 
-These two matrices are added together element by element. This operation literally writes the newly discovered contextual relationships into the original vector representations.
+These two matrices are added together element by element, writing the newly discovered contextual relationships directly into the original vector representations:
 
 $$
 X_{\text{out}} = \begin{bmatrix}
@@ -68,13 +68,13 @@ $$
 
 ## The Geometric Implications of Addition
 
-Adding the attention output to the original embedding performs vector translation. The attention block calculates a directional shift based on the surrounding context. Adding this shift vector to the original token vector moves the token to a new location in the $d_{model}$ dimensional space. 
+Adding the attention output to the original embedding performs vector translation. The attention block calculates a directional shift based on the surrounding context. Adding this shift vector to the original token vector moves the token to a new location in the $d_{model}$-dimensional space.
 
-For instance, the vector for the word "woke" originally represented the abstract concept of waking. After adding the attention output, the vector has been translated in a direction that incorporates its relationship with "i" and "up". The base identity remains intact, while the new coordinate location reflects its specific role in the sentence.
+The vector for the token `woke` originally represented the static embedding of waking at position `2`. Adding the attention output translates that vector along a direction that incorporates its syntactic relationship with `i` and `up`. The foundational token identity remains intact, and the shifted coordinate reflects its contextual role in the sequence.
 
 ## Gradient Flow and the Residual Highway
 
-Deep neural networks learn by calculating the gradient of the loss function and propagating that error signal backward through the layers. In a strictly sequential architecture, the gradient multiplies by the derivative of each layer. A sub-layer operation frequently yields a derivative matrix containing small values. An idealized sub-layer Jacobian matrix containing values of 0.1 perfectly illustrates the danger.
+Deep neural networks learn by calculating the gradient of the loss function and propagating that error signal backward through the layers. In a strictly sequential architecture, the gradient multiplies by the derivative of each layer. A sub-layer operation frequently yields a derivative matrix containing small values. An idealized sub-layer Jacobian matrix containing diagonal values of `0.10` illustrates this decay:
 
 $$
 \text{Jacobian} = \begin{bmatrix}
@@ -87,7 +87,7 @@ $$
 \end{bmatrix}
 $$
 
-Backpropagating an error signal through four consecutive layers of this type requires multiplying the Jacobian matrix by itself four times. This exponentiation causes the gradient to decay exponentially. The resulting matrix demonstrates complete signal loss, rendering the earliest layers entirely incapable of learning.
+Backpropagating an error signal through four consecutive layers of this type requires multiplying the Jacobian matrix by itself four times ($0.10^4 = 0.0001 \approx 0.00$). This exponentiation causes the gradient to decay exponentially. The resulting matrix demonstrates signal loss at two-decimal precision, leaving the earliest layers unable to update their parameters:
 
 $$
 \text{Sequential Gradient Multiplier} = \begin{bmatrix}
@@ -100,13 +100,13 @@ $$
 \end{bmatrix}
 $$
 
-The residual addition elegantly neutralizes this vanishing gradient problem. The mathematical derivative of an addition operation distributes the gradient equally to both inputs. When calculating the derivative of the residual equation with respect to the input stream, the original input receives a strict derivative of one. This transforms the gradient multiplier for a single layer from the Jacobian matrix alone into the Jacobian matrix added to the Identity matrix.
+The residual addition neutralizes this vanishing gradient problem. Differentiating an addition operation distributes the upstream gradient equally to both branches. Differentiating the residual equation $X_{\text{out}} = X_{\text{in}} + \text{Attention}(X_{\text{in}})$ with respect to $X_{\text{in}}$ assigns an identity derivative $I$ to the skip path. This additive identity term shifts the single-layer gradient multiplier from the sub-layer Jacobian alone to the sum of the identity matrix and the Jacobian:
 
 $$
 \text{Residual Multiplier} = I + \text{Jacobian}
 $$
 
-Backpropagating through four layers utilizing residual connections multiplies this updated term by itself four times. The addition of the Identity matrix ensures the gradient mathematically survives the journey backward.
+Backpropagating through four layers utilizing residual connections multiplies this updated term by itself four times ($1.10^4 = 1.4641 \approx 1.46$). The addition of the Identity matrix ensures the gradient survives the backward pass:
 
 $$
 \text{Residual Gradient Multiplier} = \begin{bmatrix}
@@ -119,8 +119,8 @@ $$
 \end{bmatrix}
 $$
 
-The error signal reaches the initial embedding matrices effectively intact. The residual stream functions exactly as a gradient highway. Information flows forward to build deep semantic context, and error signals flow backward unimpeded to meticulously adjust the foundational weights. 
+The error signal reaches the initial embedding matrices intact. The residual stream functions as an unimpeded gradient highway: contextual information accumulates forward across layers, and loss gradients propagate backward to update early parameters.
 
-This central memory bus ensures that every subsequent layer has unimpeded access to both the raw original embeddings and the accumulated contextual updates from all previous layers. Stabilizing these shifting vectors requires layer normalization, which is examined next.
+This central memory bus ensures that every subsequent layer has direct access to both the initial embeddings and the accumulated contextual updates from all previous layers. Stabilizing these shifted vectors requires layer normalization, which is examined next.
 
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>

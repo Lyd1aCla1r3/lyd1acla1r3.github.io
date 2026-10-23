@@ -1,12 +1,16 @@
 # Part 13: The MLP Activation and Layer 2 Self-Attention
 
-<!-- SUMMARY: The activation function serves as the critical gatekeeper within the feed-forward network, filtering the conceptual matches identified by the first layer. The subsequent linear projection then translates these activated patterns into concrete conceptual updates, writing new features back into the residual stream. As the sequence progresses through the second layer of self-attention, token vectors evolve from isolated definitions into contextualized mathematical representations that evaluate high-level syntactic structures. -->
+<!-- SUMMARY: The activation function serves as the non-linear gatekeeper within the feed-forward network, filtering the conceptual matches identified by the first linear projection. The subsequent value projection translates these activated patterns into concrete feature updates for the residual stream. Progressing into the second layer of self-attention transforms token vectors from isolated definitions into contextualized representations that evaluate multi-token syntactic structures. -->
 
-The projection matrix from the previous step expanded the residual stream into a twenty-four-dimensional space, effectively querying a vast bank of conceptual keys. The resulting matrix contained a spectrum of positive and negative values, representing the degree of resonance with each learned pattern. The network must now definitively decide which of these patterns are relevant to the current context and discard the rest. This critical filtering operation is the domain of the activation function.
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>
 
-The toy model employs the Rectified Linear Unit, commonly known as ReLU. The mathematical operation is elegantly simple: any negative value is set to zero, while positive values remain unchanged. Mechanistically, this acts as a strict threshold. If a token vector did not sufficiently match a specific conceptual key, the negative resonance is silenced entirely. The neuron simply does not fire. 
+The projection matrix from Part 10 expanded the normalized residual stream into a twenty-four-dimensional space, querying a learned bank of conceptual keys. The resulting biased projection matrix contained a spectrum of positive and negative values representing the alignment strength with each learned pattern. The network must now determine which of these candidate patterns apply to the current sequence context and discard the rest. This non-linear filtering operation is executed by the activation function.
 
-Applying this non-linearity to the projected state yields the activated memory representation.
+## Non-Linear Filtering and Value Contraction
+
+The toy model employs the Rectified Linear Unit (ReLU), defined as $\text{ReLU}(z) = \max(0, z)$. Every negative entry is clamped to zero, whereas positive entries pass through unchanged. Mechanistically, ReLU enforces a hard firing threshold. A token vector that fails to align with a specific conceptual key produces a negative dot product, which the ReLU threshold clamps to zero. That neuron remains inactive.
+
+Applying this element-wise non-linearity to the biased projection state produces the sparse activated memory representation:
 
 $$
 \text{Activated State} = \begin{bmatrix}
@@ -17,9 +21,9 @@ $$
 \end{bmatrix}
 $$
 
-The landscape is now sparse. Only the most confident conceptual matches survive. The zeroed entries represent features deemed irrelevant to the token in its specific context, preventing noisy or contradictory signals from propagating further. 
+The hidden activation landscape is now sparse: only positive conceptual matches survive. Zeroed entries correspond to features irrelevant to a token in its current context, preventing contradictory signals from propagating into the value projection.
 
-With the precise combination of keys identified, the network moves to the extraction phase. The second half of the Multilayer Perceptron is defined by the $W_2$ weight matrix, which projects the twenty-four-dimensional space back down to the model dimension of six. Continuing the mechanistic analogy, if $W_1$ represented the "Keys" searching for patterns, $W_2$ represents the "Values" corresponding to those patterns.
+With the active keys selected, the network enters the extraction phase. The second half of the Multi-Layer Perceptron (MLP) is parameterized by the $24 \times 6$ weight matrix $W_2$, which projects the twenty-four-dimensional hidden space back down to the model dimension $d_{\text{model}} = 6$. In the Key-Value memory analogy, the columns of $W_1$ act as the Keys that detect patterns, and the rows of $W_2$ store the corresponding Values written back into the residual stream:
 
 $$
 W_2 = \begin{bmatrix}
@@ -50,7 +54,7 @@ W_2 = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-When a specific neuron fires in the activation phase, it triggers the retrieval of the corresponding row in $W_2$. The mathematical operation is a weighted sum. The strength of the activation dictates how forcefully that specific Value vector is added to the final output. The resulting contracted matrix represents the consolidated conceptual insights ready to be injected back into the residual stream.
+Each active neuron in the hidden layer retrieves its corresponding row from the full 24-row Value matrix $W_2$ introduced in Part 11. Multiplying the activated state by $W_2$ and adding the bias vector $b_2$ (`[-0.06, 0.12, -0.15, -0.08, 0.04, 0.09]`) computes a weighted sum of Value rows, producing the consolidated $4 \times 6$ update matrix for the residual stream:
 
 $$
 \text{Contracted Output} = \begin{bmatrix}
@@ -61,21 +65,30 @@ $$
 \end{bmatrix}
 $$
 
-While the foundational architecture utilizes the straightforward ReLU function, modern state-of-the-art architectures frequently employ advanced gated activations like SwiGLU. Understanding the mechanics of SwiGLU requires a slight shift in the Key-Value analogy, elevating the filtering process to a highly nuanced operation.
+### Gated Feed-Forward Networks: SwiGLU
 
-Instead of a single projection matrix creating the expanded space, a SwiGLU architecture utilizes two parallel linear projections. The first projection acts as the standard feature vector, proposing the values that might be useful. The second projection acts exclusively as the gate, calculating how much of the first vector should actually be allowed through. This gating projection is passed through a smooth, non-linear function known as Swish, allowing the gate to regulate the information flow continuously.
+Foundational Transformer architectures apply a single ReLU threshold, whereas contemporary large language models frequently substitute gated activation units such as SwiGLU (Swish-Gated Linear Unit). SwiGLU replaces the single expansion matrix $W_1$ with two parallel linear projections:
 
-The final activated state is the element-wise multiplication of the feature vector by the gate vector. Rather than a harsh threshold like ReLU, SwiGLU provides the network with a nuanced dial. It can selectively attenuate or amplify specific features based on complex contextual interactions. The feature projection might propose a concept, and the gate projection independently decides if that concept is truly relevant in the current context. This decoupling of feature generation and feature filtering grants the network immense expressive power, forming the backbone of highly capable contemporary models. 
+- **Feature Projection ($x W_{\text{up}}$):** Maps the normalized token vector into the expanded intermediate space to propose candidate conceptual features.
+- **Gate Projection ($\text{Swish}(x W_{\text{gate}})$):** Maps the same input through an independent weight matrix and applies the smooth non-linear $\text{Swish}(z) = z \cdot \sigma(z)$ activation to compute a continuous gating scalar for each hidden dimension.
 
-Whether using a strict threshold or a nuanced gate, the fundamental operation remains the same. The Multilayer Perceptron evaluates the context-enriched tokens, selectively retrieves specialized conceptual knowledge, and prepares these refined updates for the final phase of the layer.
+Element-wise multiplication combines the two branches before the final $W_2$ contraction projects the gated state back to $d_{\text{model}}$:
+
+$$
+\text{SwiGLU}(x) = \left(\text{Swish}(x W_{\text{gate}}) \odot (x W_{\text{up}})\right) W_2
+$$
+
+Rather than enforcing a binary zero floor like ReLU, SwiGLU acts as a continuous, context-dependent dial. The feature branch proposes a semantic candidate, and the gate branch independently scales or suppresses that candidate based on token interactions. Decoupling feature generation from feature gating increases the expressive capacity of the feed-forward memory bank.
+
+Whether an architecture uses a ReLU threshold or a SwiGLU gate, the structural role of the MLP remains identical: the block evaluates context-enriched token vectors, retrieves learned conceptual features, and writes those updates into the residual stream.
 
 ## Transition to Layer 2
 
-In the first layer of the Transformer, the self-attention mechanism evaluated relationships between raw, isolated word embeddings. When the tokens for "woke" and "up" were projected into their respective Query and Key spaces, the mechanism measured their static semantic affinity. The network has since routed those localized insights back into the central residual stream, refined them through a Key-Value Multi-Layer Perceptron, and stabilized the geometry with Layer Normalization. As the second layer of self-attention begins, the token vectors no longer represent solitary dictionary definitions. They are now deeply contextualized mathematical summaries of their surrounding linguistic environment.
+In the first layer of the Transformer, the self-attention mechanism evaluated relationships between positionally encoded word embeddings. Projecting the tokens `woke` and `up` into their Layer 1 Query and Key spaces measured their initial lexical affinity. The network then routed those localized updates into the residual stream, refined them through the Key-Value Multi-Layer Perceptron, and standardized their geometry with Layer Normalization. Entering the second layer of self-attention, the token vectors no longer represent isolated dictionary definitions; each row now encodes a contextualized summary of its surrounding linguistic environment.
 
 ## The Contextualized Input
 
-The input to Layer 2, denoted as $X_2$, is the normalized output of the first layer. The vectors occupying this matrix are profoundly different from the initial token embeddings. The first row still corresponds to the `<BOS>` token, the second to "i", the third to "woke", and the fourth to "up". Their numerical values now encode the structural and semantic relationships discovered during Layer 1. 
+The input to Layer 2, denoted as $X_2$, is the normalized output of the first layer derived in Part 12. The vectors occupying this matrix differ substantially from the initial token embeddings. The first row corresponds to `<BOS>`, the second to `i`, the third to `woke`, and the fourth to `up`, and their coordinates now encode the structural and semantic relationships assembled during Layer 1:
 
 $$
 X_2 = \begin{bmatrix}
@@ -86,11 +99,11 @@ X_2 = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-When Layer 2 computes self-attention, it is not merely asking if "woke" is related to "up". It is evaluating whether the complex concept of a sequence beginning with a first-person pronoun performing a waking action should attend to the temporal concept of the word "up". The attention mechanism is now operating on abstractions.
+Layer 2 self-attention does not merely test whether `woke` relates to `up` in isolation. The mechanism evaluates how a verb phrase already linked to the subject `i` aligns with the particle `up` to form a compound phrasal concept. Self-attention in deeper layers operates on multi-token abstractions.
 
 ## The Second Layer Projections
 
-Just as in the first layer, the network must project these high-dimensional 6-element vectors into lower-dimensional 2-element subspaces to compute attention. A new set of weight matrices is initialized for the first head of Layer 2. These matrices, $W_Q^{(2)}$, $W_K^{(2)}$, and $W_V^{(2)}$, serve the exact same geometric function as their Layer 1 counterparts. They define a bilinear form, allowing disparate semantic vectors to align in a shared subspace.
+Just as in Layer 1, the network projects these 6-element residual vectors into 2-element head subspaces ($d_k = 2$) to compute attention. A dedicated set of weight matrices initializes the first head of Layer 2. These matrices, $W_Q^{(2)}$, $W_K^{(2)}$, and $W_V^{(2)}$, serve the same geometric role as their Layer 1 counterparts, defining a bilinear form that aligns contextualized semantic vectors in a shared subspace:
 
 $$
 W_Q^{(2)} = \begin{bmatrix}
@@ -125,11 +138,11 @@ W_V^{(2)} = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-The Queries $Q_2$, Keys $K_2$, and Values $V_2$ are calculated by taking the dot product of the contextualized input $X_2$ with each of these respective weight matrices. 
+Multiplying the full-precision normalized Layer 1 output $X_2$ by each weight matrix and rounding to two decimal places produces the Layer 2 Queries $Q_2$, Keys $K_2$, and Values $V_2$.
 
 ### The Query Space
 
-The $Q_2$ matrix represents what each contextualized token is searching for in the sequence.
+The $Q_2$ matrix represents the contextual patterns each token searches for across the sequence:
 
 $$
 Q_2 = X_2 W_Q^{(2)} = \begin{bmatrix}
@@ -142,7 +155,7 @@ $$
 
 ### The Key Space
 
-The $K_2$ matrix represents the features each contextualized token is advertising to the sequence. 
+The $K_2$ matrix represents the compound features each contextualized token advertises to the sequence:
 
 $$
 K_2 = X_2 W_K^{(2)} = \begin{bmatrix}
@@ -155,7 +168,7 @@ $$
 
 ### The Value Space
 
-The $V_2$ matrix represents the actual information each token will contribute to the next stage of processing if another token attends to it. 
+The $V_2$ matrix stores the contextualized payload each token contributes to downstream positions that attend to it:
 
 $$
 V_2 = X_2 W_V^{(2)} = \begin{bmatrix}
@@ -168,6 +181,6 @@ $$
 
 ## A Shift in Abstraction
 
-The mathematics remain identical to the first layer. An input tensor is projected through three linear transformations to prepare for a scaled dot-product attention calculation. The fundamental shift is entirely in the contents of $X_2$. The Queries and Keys in this layer are no longer matching basic vocabulary traits. They are matching high-level syntactic structures and multi-token semantic combinations. In the next step, the network calculates the attention scores for this second layer to reveal how these deep contextual representations share information.
+The linear algebra remains identical to Layer 1: an input tensor projects through three $6 \times 2$ transformations to prepare for scaled dot-product attention. The shift lies entirely in the information carried by $X_2$. Queries and Keys in Layer 2 no longer match isolated lexical traits; they match multi-token syntactic structures and composite semantic roles. Part 14 verifies the Layer 1 to Layer 2 residual boundary and computes the scaled attention scores from $Q_2$ and $K_2$.
 
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>

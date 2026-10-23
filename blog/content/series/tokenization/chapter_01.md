@@ -25,9 +25,9 @@
 
 <!-- SUMMARY: The translation of raw text into a sequence of integer IDs requires defining a finite vocabulary space. Analyzing word-level and character-level boundaries reveals an inherent mathematical tradeoff between infinite vocabulary expansion and the destruction of semantic meaning, mandating a subword compression algorithm. -->
 
-<p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/tokenization-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/tokenization-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p>
 
-The preceding introduction established that neural networks cannot perform mathematical operations on text directly. Instead, these initial raw text strings need to be translated into continuous, $n$-dimensional vectors, where every dimension represents a distinct semantic feature of the string. The strings receive a randomly assigned, discrete integer ID that allows the architecture to look up the corresponding semantic vector in the embedding matrix. This mapping function necessitates a predefined vocabulary: a finite list of recognized textual elements.
+The preceding introduction established that neural networks cannot execute mathematical operations on raw text directly. Raw text strings must first map into continuous, $d_{\text{model}}$-dimensional vectors, where every dimension encodes a distinct semantic feature of the string. Each recognized string receives a deterministic, discrete integer ID that indexes its corresponding semantic vector in the embedding matrix $W_E$. This lookup function necessitates a predefined vocabulary: a finite inventory of recognized textual elements.
 
 The structural definition of these elements dictates two fundamental properties of the neural network. First, the size of this vocabulary defines the strict memory constraints of the model, as every recognized element requires a dedicated vector in memory. Second, the boundaries of these elements define the semantic capabilities of the architecture, as the model can only learn concepts that are cleanly isolated by its vocabulary.
 
@@ -44,24 +44,24 @@ A minimal toy corpus demonstrates the initial viability of this approach. Applyi
 
 The structural flaw emerges immediately when scaling this strategy to a realistic production corpus. A modern language contains hundreds of thousands of base words. Adding grammatical permutations, prefixes, suffixes, punctuation combinations, and typographical errors results in unbounded expansion.
 
-Every unique token requires a dedicated row in the architecture's embedding matrix. A vocabulary of one million distinct words mandates an embedding matrix with one million rows.
+Every unique token requires a dedicated row in the architecture's embedding matrix $W_E$, where each scalar entry $w_{i,j}$ stores the learned weight for vocabulary row $i \in \{1, \dots, V\}$ at feature dimension $j \in \{1, \dots, d_{\text{model}}\}$. A vocabulary of one million distinct words mandates an embedding matrix with one million rows:
 
 $$
 W_E = \begin{bmatrix}
-w_{1,1} & w_{1,2} & \dots & w_{1,d_{model}} \\
-w_{2,1} & w_{2,2} & \dots & w_{2,d_{model}} \\
+w_{1,1} & w_{1,2} & \dots & w_{1,d_{\text{model}}} \\
+w_{2,1} & w_{2,2} & \dots & w_{2,d_{\text{model}}} \\
 \vdots & \vdots & \ddots & \vdots \\
-w_{V,1} & w_{V,2} & \dots & w_{V,d_{model}}
-\end{bmatrix}_{V \times d_{model}}
+w_{V,1} & w_{V,2} & \dots & w_{V,d_{\text{model}}}
+\end{bmatrix}_{V \times d_{\text{model}}}
 $$
 
-If an architecture defines a vocabulary size $V$ of 1,000,000 and a dimensionality $d_{model}$ of 4096, this single matrix requires over sixteen gigabytes of memory purely to store initial representations. The parameter count explodes proportionally, rendering the system computationally intractable. Furthermore, word-level tokenization treats `walk` and `walking` as completely orthogonal dimensions. This rigid separation discards the obvious morphological relationship shared between the two strings, forcing the optimization process to encode the fundamental geometry of the action twice in unrelated vectors.
+An architecture with a vocabulary size $V$ of $1,000,000$ and a model dimensionality $d_{\text{model}}$ of $4,096$ contains $4.096 \times 10^9$ embedding parameters. Storing this single matrix in 32-bit floating-point precision (4 bytes per parameter) requires $16.384\text{ GB}$ of memory solely to hold initial token representations. The parameter count scales linearly with $V$, rendering unconstrained word-level vocabularies computationally intractable. Word-level tokenization also treats `walk` and `walking` as orthogonal indices. This rigid separation discards the morphological relationship shared between the two strings, forcing gradient optimization to encode the underlying geometry of the action twice in unrelated rows.
 
 ## The Character-Level Destruction
 
 Addressing the dimensionality explosion requires constraining the vocabulary size. The opposite extreme of the tokenization spectrum defines the vocabulary around individual characters.
 
-Applying character-level boundaries to the toy corpus decomposes the text into a tiny, highly constrained vocabulary of thirteen distinct elements, including a designated end-of-word marker `</w>`:
+Applying character-level boundaries to the toy corpus decomposes the text into a compact vocabulary of thirteen distinct elements, including a designated end-of-word marker `</w>`:
 
 <div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2; text-align: left;">
 <code>a</code> <code>d</code> <code>e</code> <code>g</code> <code>i</code> <code>k</code> <code>l</code> <code>n</code> <code>o</code> <code>r</code> <code>t</code> <code>w</code> <code>&lt;/w&gt;</code>
@@ -72,15 +72,19 @@ This approach completely resolves the memory explosion problem. The embedding ma
 
 The catastrophic failure of this method lies in the semantic destruction of the sequence. Individual characters carry zero inherent meaning. The sequence `t`, `a`, `l`, `k` forces the neural network to expend significant computational depth merely to reconstruct the basic semantic unit of conversation. 
 
-The sequence length also expands drastically. The core attention mechanism within a Transformer scales quadratically, requiring every token to mathematically compare itself against every other token in the sequence. If a single word decomposes into six individual characters, the computational cost for that word increases by a factor of thirty-six. A simple paragraph of text transforms into an overwhelmingly long sequence of isolated characters, completely paralyzing the architecture's ability to process long-range context efficiently.
+The sequence length also expands drastically. The self-attention mechanism within a Transformer scales quadratically with sequence length $L$, requiring every token to compare itself against every other token in the sequence. Decomposing a single six-character word into six individual tokens increases the pairwise attention cost for that word by a factor of thirty-six ($6^2$). A short paragraph of text expands into an overwhelmingly long sequence of isolated characters, paralyzing the architecture's ability to process long-range context efficiently.
 
 ## The Subword Compromise
 
-Word-level boundaries provide semantic richness at the cost of infinite parameter expansion. Character-level boundaries provide extreme memory efficiency at the cost of semantic destruction and quadratic sequence scaling.
+Resolving the tension between parameter memory and sequence length requires an intermediate granularity that decomposes rare words into reusable morphemes while preserving frequent words as intact tokens:
 
-Resolving this tension requires a middle ground that balances vocabulary size against sequence length. A subword tokenization algorithm decomposes rare words into smaller, logical pieces while preserving common words as intact units. This approach achieves the necessary mathematical compromise. 
+| Granularity | Toy Vocabulary | Production Scale | Embedding Memory | Sequence & OOV Behavior |
+| :--- | :--- | :--- | :--- | :--- |
+| **Word-Level** | 9 whole words | Unbounded (> 1,000,000) | Extreme (16.384 GB at FP32) | Shortest sequences; fails on unseen words and splits shared stems like `walk` and `walking` |
+| **Character-Level** | 13 symbols (with `</w>`) | Minimal (13 to 256) | Negligible (< 5 MB) | Zero OOV errors, but expands sequence length 5x to 7x and inflates quadratic attention cost |
+| **Subword (BPE)** | 27 tokens (14 merges) | Bounded (32,000 to 128,000) | Balanced (0.5 GB to 2 GB) | Zero OOV errors; keeps frequent words intact while isolating shared suffixes (`ing`, `ed`, `er`) |
 
-Decomposing rare and complex words into reusable subword units strictly bounds the overall vocabulary size, preserving memory efficiency. If the architecture encounters an extremely rare word, it does not need to memorize a completely new vector. Instead, it constructs the meaning using common, pre-learned subword pieces it already knows. Simultaneously, preserving common words as single tokens minimizes the overall sequence length, protecting the attention mechanism from quadratic explosion. A common word remains a single token rather than ten isolated characters, drastically reducing the computational penalty during the attention calculation.
+Decomposing rare and complex words into reusable subword units strictly bounds the overall vocabulary size $V$, preserving memory efficiency. An encounter with an unfamiliar compound word does not require memorizing a dedicated vector; the architecture instead constructs the representation from common, pre-learned subword pieces. Preserving frequent words as single tokens simultaneously minimizes the overall sequence length $L$, protecting the attention mechanism from quadratic scaling. A common word remains a single token rather than ten isolated characters, sharply reducing the computational cost of the attention calculation.
 
 Applying a hypothetical subword algorithm to the toy corpus reveals morphological structures hidden across different verb families. The prefixes `walk` and `talk` might remain whole, while common suffixes like `ing` and `ed` separate into independent, reusable tokens.
 
@@ -95,10 +99,10 @@ The embedding matrix row corresponding to `ing` captures the geometric represent
 
 Achieving this ideal subword state requires a deterministic, data-driven mathematical process rather than a manual set of linguistic rules. Byte Pair Encoding accomplishes this through a systematic sequence of merge operations.
 
-The algorithm initializes at the absolute character level, assuming zero inherent semantic meaning. The system then scans the training corpus to identify the single most frequent adjacent pair of tokens. Upon identifying this highest-frequency pair, the algorithm fuses the two discrete elements into a single, new token. This operation increments the vocabulary size by one while simultaneously shrinking the overall length of the encoded sequence. For example, merging the individual character tokens `i` and `n` into the single token `in` adds a term to the vocabulary but reduces the representation of the word 'walking' by one token, decreasing the overall sequence length the attention mechanism must process.
+The algorithm initializes at the character level, assuming zero inherent lexical meaning. The training loop scans the corpus to identify the single most frequent adjacent pair of tokens and fuses those two discrete elements into a single new token. This merge operation increments the vocabulary size by one while simultaneously shrinking the encoded corpus length. Merging the adjacent character tokens `i` and `n` into the single token `in` adds one entry to the vocabulary while reducing the encoded representation of `walking` by one token. That reduction directly shortens the sequence length that the downstream attention mechanism must process.
 
-This iterative process acts as a localized compression algorithm. The system continuously discovers the most common patterns and binds them together, moving steadily from individual characters up through logical suffixes, full words, and eventually common phrases.
+This iterative process acts as a localized compression algorithm. The system continuously discovers the most frequent character patterns and binds them together, progressing from individual characters through morphological suffixes, root words, and common phrases.
 
-The subsequent article formalizes this training algorithm in detail, as applied to the toy vocabulary, rigorously defining the exact frequency counting and merging rules required to initialize the character-level vocabulary and execute these merges step by step until the final subword token set is completed.
+The next chapter formalizes this training algorithm on the nine-word toy corpus. That derivation specifies the boundary initialization, adjacent-pair frequency counting, and lexicographical tie-breaking rules required to build a subword vocabulary step by step.
 
-<p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/tokenization-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/tokenization-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p>

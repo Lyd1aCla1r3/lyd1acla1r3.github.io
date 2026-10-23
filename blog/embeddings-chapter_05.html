@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -118,93 +159,93 @@
     <li><a href="index.html">Blog</a></li><li><a href="series-embeddings.html">Series: Embeddings</a></li><li aria-current="page">Part 5: Backpropagation Through the Weight Matrices</li></ol></nav>
         <article class="blog-post series-embeddings">
 <h1>Part 5: Backpropagation Through the Weight Matrices</h1>
-<!-- SUMMARY: The backward pass continues through the un-embedding and embedding matrices. By deriving the element-wise gradients for both $W_U$ and $W_E$, and demonstrating how the one-hot sparsity of the input ensures only a single embedding row receives an update, the full end-to-end gradient is computed and the weight update rule is applied. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p><p>The previous chapter established the gradient at the logits: $\frac{\partial L}{\partial \mathbf{z}} = \hat{\mathbf{y}} - \mathbf{y}$. The backward pass now continues through the weight matrices to compute the gradient at the embedding layer itself.</p>
+<!-- SUMMARY: The backward pass continues through the un-embedding and embedding matrices. By deriving the element-wise gradients for both $W_U$ and $W_E$, and demonstrating how the one-hot sparsity of the input ensures only a single embedding row receives an update, the full end-to-end gradient is computed and the weight update rule is applied. --><p><em>Prefer to read this offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p><p>The previous chapter established the gradient at the logits: $\frac{\partial L}{\partial \mathbf{z}} = \hat{\mathbf{y}} - \mathbf{y}$. The backward pass now continues through the weight matrices to compute the gradient at the embedding layer itself.</p>
 <h2>Propagating Through Layer 2: $\frac{\partial \mathbf{z}}{\partial \mathbf{h}}$</h2>
-<p>The first two links of the chain have been combined to form $\frac{\partial L}{\partial \mathbf{z}} = \hat{\mathbf{y}} - \mathbf{y}$. The next link is $\frac{\partial \mathbf{z}}{\partial \mathbf{h}}$: how do the logits change when the hidden state (the embedding vector for <code>brown</code>) is altered?</p>
+<p>The first two links of the chain have been combined to form $\frac{\partial L}{\partial \mathbf{z}} = \hat{\mathbf{y}} - \mathbf{y}$. The next link is $\frac{\partial \mathbf{z}}{\partial \mathbf{h}}$, measuring how the logits change when the hidden state (the embedding vector for <code>brown</code>) is altered.</p>
 <p>Recall from Chapter 3 that the logits are computed by multiplying the hidden state $\mathbf{h}$ by the un-embedding matrix $W_U$:</p>
 <p>$$
 \mathbf{z} = \mathbf{h} \times W_U
 $$</p>
-<p>The result $\mathbf{z}$ is a vector with 8 elements—one logit per vocabulary word (<code>The</code>, <code>quick</code>, <code>brown</code>, <code>fox</code>, <code>jumps</code>, <code>over</code>, <code>lazy</code>, <code>dog</code>). In our toy model, $\mathbf{h}$ is a $1 \times 3$ vector (the 3-dimensional embedding for <code>brown</code>) and $W_U$ is a $3 \times 8$ matrix. Each logit $z_j$ is therefore the dot product of $\mathbf{h}$ with column $j$ of $W_U$.</p>
-<p>To differentiate this, the operations are expanded element-wise. The index $m$ refers to a specific <strong>embedding dimension</strong> (ranging from 1 to 3 in this model). Written out for a single logit $z_j$:</p>
+<p>The output $\mathbf{z}$ is a $1 \times 8$ row vector containing one logit per vocabulary word (<code>The</code>, <code>quick</code>, <code>brown</code>, <code>fox</code>, <code>jumps</code>, <code>over</code>, <code>lazy</code>, <code>dog</code>, indexed $j = 0, \dots, 7$). In the toy model, $\mathbf{h}$ is a $1 \times 3$ vector (the 3-dimensional embedding for <code>brown</code>) and $W_U$ is a $3 \times 8$ matrix. Each logit $z_j$ equals the dot product of $\mathbf{h}$ with column $j$ of $W_U$.</p>
+<p>Differentiating this projection requires expanding the operation element-wise. The index $m \in \{1, 2, 3\}$ denotes a specific <strong>embedding dimension</strong> in the 3-dimensional toy model. Written out for a single logit $z_j$:</p>
 <p>$$
 z_j = h_1 \cdot W_{U_{1,j}} + h_2 \cdot W_{U_{2,j}} + h_3 \cdot W_{U_{3,j}}
 $$</p>
-<p>This is a sum of three terms, each multiplying one embedding dimension $h_m$ by its corresponding weight $W_{U_{m,j}}$. Differentiating this sum with respect to a specific embedding dimension $h_m$ models how $z_j$ changes when $h_m$ is adjusted:</p>
-<p>The weights $W_{U_{1,j}}$, $W_{U_{2,j}}$, and $W_{U_{3,j}}$ are constants—they are fixed parameters of the network during this step. So each term in the sum has the form &quot;constant $\times$ variable&quot; or &quot;constant $\times$ unrelated variable.&quot; Taking the derivative with respect to $h_m$:</p>
+<p>That dot product expands into a sum of three terms, each multiplying one embedding dimension $h_m$ by its corresponding weight $W_{U_{m,j}}$. Differentiating this sum with respect to a specific embedding dimension $h_m$ measures how $z_j$ changes when $h_m$ is adjusted.</p>
+<p>The weights $W_{U_{1,j}}$, $W_{U_{2,j}}$, and $W_{U_{3,j}}$ act as fixed constants during this step. Each term in the sum takes the form of a constant multiplying $h_m$ or a constant multiplying an independent coordinate. Differentiating with respect to $h_m$ separates the terms into two groups:</p>
 <ul>
-<li>The term $h_m \cdot W_{U_{m,j}}$ contains $h_m$, and the derivative of a variable multiplied by a constant is simply the constant: $W_{U_{m,j}}$.</li>
-<li>Every other term (e.g., $h_1 \cdot W_{U_{1,j}}$ when $m \neq 1$) does not contain $h_m$ at all. These are constants with respect to $h_m$, and their derivatives are zero.</li>
+<li><strong>Active Term ($h_m \cdot W_{U_{m,j}}$):</strong> Contains $h_m$, and differentiating a variable multiplied by a constant leaves the constant factor $W_{U_{m,j}}$.</li>
+<li><strong>Remaining Terms ($h_n \cdot W_{U_{n,j}}$ for $n \neq m$):</strong> Do not contain $h_m$, so they act as constants with respect to $h_m$ and their derivatives evaluate to zero.</li>
 </ul>
 <p>The entire sum collapses to a single surviving term:</p>
 <p>$$
 \frac{\partial z_j}{\partial h_m} = W_{U_{m,j}}
 $$</p>
-<p>The derivative is simply the weight that multiplied $h_m$ in the forward pass. This makes intuitive sense: the weight $W_{U_{m,j}}$ controls exactly how much influence the $m$-th embedding dimension has on the $j$-th logit. A large weight means that dimension has a strong effect on that logit; a weight near zero means it has almost none.</p>
+<p>The partial derivative equals the weight that multiplied $h_m$ in the forward pass. That weight $W_{U_{m,j}}$ governs how much influence the $m$-th embedding dimension exerts on the $j$-th logit: a large weight means that dimension strongly affects that logit, whereas a weight near zero means it has almost no effect.</p>
 <h3>The Gradient at the Hidden State ($\frac{\partial L}{\partial \mathbf{h}}$)</h3>
-<p>This result is chained with $\frac{\partial L}{\partial \mathbf{z}}$ to yield the gradient of the loss with respect to $\mathbf{h}$. A single embedding dimension $h_m$ contributes to <em>every</em> logit in $\mathbf{z}$ (it participates in all 8 dot products). This requires a sum over all 8 vocabulary words:</p>
+<p>Chaining this local derivative with $\frac{\partial L}{\partial \mathbf{z}}$ yields the gradient of the loss with respect to $\mathbf{h}$. A single embedding coordinate $h_m$ participates in all 8 dot products across $\mathbf{z}$, so the chain rule sums its contributions across all 8 vocabulary indices ($j = 0, \dots, 7$):</p>
 <p>$$
-\frac{\partial L}{\partial h_m} = \sum_{j=1}^{8} \frac{\partial L}{\partial z_j} \cdot \frac{\partial z_j}{\partial h_m} = \sum_{j=1}^{8} (\hat{y}_j - y_j) \cdot W_{U_{m,j}}
+\frac{\partial L}{\partial h_m} = \sum_{j=0}^{7} \frac{\partial L}{\partial z_j} \cdot \frac{\partial z_j}{\partial h_m} = \sum_{j=0}^{7} (\hat{y}_j - y_j) \cdot W_{U_{m,j}}
 $$</p>
-<p>Each term in this sum isolates how much embedding dimension $m$ of <code>brown</code>&#39;s vector contributed to the error at vocabulary word $j$. The error at each word ($\hat{y}_j - y_j$) is multiplied by the weight connecting $h_m$ to that word ($W_{U_{m,j}}$), and summed across all 8 words.</p>
-<p>Computing this for all three embedding dimensions ($m = 1, 2, 3$) simultaneously yields the complete gradient in matrix notation:</p>
+<p>Each term in this sum isolates how much embedding dimension $m$ of <code>brown</code>&#39;s vector contributed to the error at vocabulary word $j$. The error at each word ($\hat{y}_j - y_j$) multiplies the weight connecting $h_m$ to that word ($W_{U_{m,j}}$), summed across all 8 vocabulary words.</p>
+<p>Computing this sum for all three embedding dimensions ($m = 1, 2, 3$) simultaneously yields the complete hidden-state gradient in matrix notation:</p>
 <p>$$
 \frac{\partial L}{\partial \mathbf{h}} = (\hat{\mathbf{y}} - \mathbf{y}) \cdot W_U^T
 $$</p>
-<p>The transpose $W_U^T$ reverses the direction of the projection. During the forward pass, $W_U$ projected the $3$-dimensional embedding $\mathbf{h}$ <em>up</em> into $8$-dimensional vocabulary space to produce the logits. Now, $W_U^T$ projects the $8$-dimensional error signal <em>back down</em> into $3$-dimensional embedding space. The result is a $1 \times 3$ gradient vector that lives in the same coordinate system as <code>brown</code>&#39;s embedding vector—it tells us the exact direction and magnitude that <code>brown</code>&#39;s vector should be nudged to reduce the loss.</p>
+<p>The transpose $W_U^T$ reverses the direction of the projection. During the forward pass, $W_U$ projected the $3$-dimensional embedding $\mathbf{h}$ <em>up</em> into $8$-dimensional vocabulary space to produce the logits. During backpropagation, $W_U^T$ projects the $8$-dimensional error signal <em>back down</em> into $3$-dimensional embedding space. The result is a $1 \times 3$ gradient vector that inhabits the same coordinate system as <code>brown</code>&#39;s embedding vector, specifying the direction and magnitude needed to nudge <code>brown</code>&#39;s vector to reduce the loss.</p>
 <h3>Updating $W_U$ Along the Way</h3>
-<p>Before continuing backward, note that $W_U$ itself contains weights that require updating. Their gradients are derived from the same element-wise equation:</p>
+<p>Before continuing backward to Layer 1, note that $W_U$ itself contains learnable weights that require updating. Their gradients follow from the same element-wise expansion:</p>
 <p>$$
 z_j = h_1 \cdot W_{U_{1,j}} + h_2 \cdot W_{U_{2,j}} + h_3 \cdot W_{U_{3,j}}
 $$</p>
-<p>This time, the expression is differentiated with respect to a specific <em>weight</em> $W_{U_{m,j}}$ instead of an embedding dimension $h_m$. The roles flip: the embedding values $h_1$, $h_2$, $h_3$ are constants (computed during the forward pass and fixed), and $W_{U_{m,j}}$ is the variable.</p>
+<p>Differentiating this expression with respect to a specific <em>weight</em> $W_{U_{m,j}}$ rather than an embedding coordinate $h_m$ reverses the roles of constants and variables: the embedding coordinates $h_1, h_2, h_3$ act as fixed constants computed during the forward pass, and $W_{U_{m,j}}$ acts as the variable of differentiation.</p>
 <ul>
-<li>The term $h_m \cdot W_{U_{m,j}}$ contains our variable, and the derivative of a constant multiplied by a variable is the constant: $h_m$.</li>
-<li>Every other term (e.g., $h_1 \cdot W_{U_{1,j}}$ when $m \neq 1$) does not contain $W_{U_{m,j}}$, so its derivative is zero.</li>
+<li><strong>Active Term ($h_m \cdot W_{U_{m,j}}$):</strong> Contains the target variable $W_{U_{m,j}}$, and differentiating a constant multiplied by a variable leaves the constant factor $h_m$.</li>
+<li><strong>Remaining Terms ($h_n \cdot W_{U_{n,j}}$ for $n \neq m$):</strong> Do not contain $W_{U_{m,j}}$, so their derivatives evaluate to zero.</li>
 </ul>
-<p>Therefore:</p>
+<p>Only the active term survives differentiation:</p>
 <p>$$
 \frac{\partial z_j}{\partial W_{U_{m,j}}} = h_m
 $$</p>
-<p>Applying the chain rule to get the gradient of the loss:</p>
+<p>Applying the chain rule connects this local derivative to the loss gradient:</p>
 <p>$$
 \frac{\partial L}{\partial W_{U_{m,j}}} = \frac{\partial L}{\partial z_j} \cdot \frac{\partial z_j}{\partial W_{U_{m,j}}} = (\hat{y}_j - y_j) \cdot h_m
 $$</p>
-<p>Each weight&#39;s gradient is the product of two values: the error signal at the vocabulary word it connects to ($\hat{y}_j - y_j$), and the embedding dimension value that flowed through it during the forward pass ($h_m$). These updates are applied alongside the $W_E$ updates at the end.</p>
+<p>Each weight&#39;s gradient equals the product of two quantities: the error signal at the vocabulary word it connects to ($\hat{y}_j - y_j$) and the embedding coordinate value that flowed through it during the forward pass ($h_m$). In matrix form across all coordinates and vocabulary words, this outer product is $\frac{\partial L}{\partial W_U} = \mathbf{h}^T \cdot (\hat{\mathbf{y}} - \mathbf{y})$. These updates are applied alongside the $W_E$ updates at the end of the step.</p>
 <h2>Propagating Through Layer 1: $\frac{\partial \mathbf{h}}{\partial W_E}$</h2>
-<p>The backward pass now reaches the first layer—the origin of the forward pass and the last link in the chain. Recall:</p>
+<p>The backward pass now reaches the first layer, which forms the origin of the forward pass and the final link in the derivative chain. In the forward pass, the hidden state is computed as:</p>
 <p>$$
 \mathbf{h} = \mathbf{x} \times W_E
 $$</p>
-<p>where $\mathbf{x}$ is the one-hot input vector for <code>brown</code>. This is another matrix multiplication, identical in structure to the one just differentiated. The $W_E$ matrix has 8 rows (one per vocabulary word) and 3 columns (one per embedding dimension). Written element-wise for a single embedding dimension $h_m$:</p>
+<p>where $\mathbf{x} \in \mathbb{R}^{1 \times 8}$ is the one-hot input vector for <code>brown</code>. The embedding matrix $W_E \in \mathbb{R}^{8 \times 3}$ contains 8 rows (indexed $i = 0, \dots, 7$, one per vocabulary word) and 3 columns (indexed $m = 1, 2, 3$, one per embedding dimension). Expanding the matrix product element-wise for a single embedding coordinate $h_m$ yields:</p>
 <p>$$
-h_m = x_1 \cdot W_{E_{1,m}} + x_2 \cdot W_{E_{2,m}} + x_3 \cdot W_{E_{3,m}} + \dots + x_8 \cdot W_{E_{8,m}}
+h_m = x_0 \cdot W_{E_{0,m}} + x_1 \cdot W_{E_{1,m}} + x_2 \cdot W_{E_{2,m}} + \dots + x_7 \cdot W_{E_{7,m}}
 $$</p>
-<p>Each term multiplies the input value at a vocabulary index ($x_1$ for <code>The</code>, $x_2$ for <code>quick</code>, $x_3$ for <code>brown</code>, etc.) by the corresponding weight in row $i$ of $W_E$. Just as in Layer 2, the input values $x_i$ are constants (fixed from the one-hot encoding) and $W_{E_{i,m}}$ is the variable. Only the term containing $W_{E_{i,m}}$ survives differentiation:</p>
+<p>Each term multiplies the one-hot input value at vocabulary index $i$ ($x_0$ for <code>The</code>, $x_1$ for <code>quick</code>, $x_2$ for <code>brown</code>, through $x_7$ for <code>dog</code>) by the corresponding weight in row $i$ of $W_E$. Just as in Layer 2, the input values $x_i$ are fixed constants from the one-hot encoding and $W_{E_{i,m}}$ is the variable of differentiation. Only the term containing $W_{E_{i,m}}$ survives differentiation:</p>
 <p>$$
 \frac{\partial h_m}{\partial W_{E_{i,m}}} = x_i
 $$</p>
-<p>The chain rule is applied to connect this to the loss. Because $\frac{\partial L}{\partial h_m}$ was computed in the previous section:</p>
+<p>Applying the chain rule connects this local derivative to the loss gradient $\frac{\partial L}{\partial h_m}$ computed in the previous section:</p>
 <p>$$
 \frac{\partial L}{\partial W_{E_{i,m}}} = \frac{\partial L}{\partial h_m} \cdot \frac{\partial h_m}{\partial W_{E_{i,m}}} = \frac{\partial L}{\partial h_m} \cdot x_i
 $$</p>
-<p>But $\mathbf{x}$ is one-hot: $x_i = 0$ for every vocabulary word except <code>brown</code> (index 2), where $x_2 = 1$. This means:</p>
+<p>The input vector $\mathbf{x}$ is one-hot encoded, so $x_i = 0$ for every vocabulary word except <code>brown</code> at index <code>2</code>, where $x_2 = 1$. Evaluating each row of $W_E$ reveals a sparse update pattern:</p>
 <ul>
-<li>For the row of <code>The</code> ($i = 0$): $\frac{\partial L}{\partial W_{E_{0,m}}} = 0 \cdot \frac{\partial L}{\partial h_m} = 0$. The gradient is zero. That row is untouched.</li>
-<li>For the row of <code>quick</code> ($i = 1$): $\frac{\partial L}{\partial W_{E_{1,m}}} = 0 \cdot \frac{\partial L}{\partial h_m} = 0$. Same—zero gradient.</li>
-<li>For the row of <code>brown</code> ($i = 2$): $\frac{\partial L}{\partial W_{E_{2,m}}} = 1 \cdot \frac{\partial L}{\partial h_m} = \frac{\partial L}{\partial h_m}$. The gradient passes through directly.</li>
-<li>For every remaining row (<code>fox</code>, <code>jumps</code>, <code>over</code>, <code>lazy</code>, <code>dog</code>): zero gradient.</li>
+<li><strong>Row 0 (<code>The</code>, $i = 0$):</strong> $\frac{\partial L}{\partial W_{E_{0,m}}} = 0 \cdot \frac{\partial L}{\partial h_m} = 0$. The gradient is zero, leaving row 0 untouched.</li>
+<li><strong>Row 1 (<code>quick</code>, $i = 1$):</strong> $\frac{\partial L}{\partial W_{E_{1,m}}} = 0 \cdot \frac{\partial L}{\partial h_m} = 0$. The gradient is zero, leaving row 1 untouched.</li>
+<li><strong>Row 2 (<code>brown</code>, $i = 2$):</strong> $\frac{\partial L}{\partial W_{E_{2,m}}} = 1 \cdot \frac{\partial L}{\partial h_m} = \frac{\partial L}{\partial h_m}$. The upstream gradient passes directly into row 2.</li>
+<li><strong>Rows 3 to 7 (<code>fox</code>, <code>jumps</code>, <code>over</code>, <code>lazy</code>, <code>dog</code>):</strong> $\frac{\partial L}{\partial W_{E_{i,m}}} = 0 \cdot \frac{\partial L}{\partial h_m} = 0$. All remaining rows receive zero gradient.</li>
 </ul>
-<p>This is the identical &quot;plucking&quot; mechanism observed in the forward pass, operating in reverse. During the forward pass, the one-hot vector <em>extracted</em> a single row from $W_E$. During backpropagation, it <em>deposits</em> the gradient into that same single row. Only <code>brown</code>&#39;s vector receives an update from this training example. Every other word in the vocabulary remains untouched.</p>
+<p>This sparse gradient routing mirrors the row-extraction mechanism from the forward pass, operating in reverse. During the forward pass, multiplying by the one-hot vector extracted a single row from $W_E$. During backpropagation, multiplying by the one-hot input deposits the gradient into that same row. Only <code>brown</code>&#39;s embedding vector receives an update from this training example; every other word in the vocabulary remains untouched.</p>
 <h2>The Weight Update</h2>
-<p>With the gradient computed end-to-end, the fundamental weight update rule is applied:</p>
+<p>With the gradient computed end-to-end, the gradient descent weight update rule is applied:</p>
 <p>$$
-W_{new} = W_{old} - \alpha \cdot \nabla L
+W_{\text{new}} = W_{\text{old}} - \alpha \cdot \nabla L
 $$</p>
-<p>The scalar $\alpha$ is the <strong>learning rate</strong>, and its role is critical. Why not apply the full gradient and move directly to the position that would perfectly predict <code>fox</code>? Because <code>brown</code> does not exist in a single context. Across the training corpus, <code>brown</code> precedes <code>fox</code>, but also <code>bear</code>, <code>sugar</code>, <code>eyes</code>, and <code>shoes</code>. Each of these contexts generates a different gradient, pulling <code>brown</code>&#39;s vector in a different direction in the embedding space.</p>
-<p>If the learning rate is too large, each training example violently overwrites the previous one. The vector for <code>brown</code> oscillates chaotically, never settling into a meaningful position. A small learning rate ensures each individual example contributes only a microscopic nudge. Over millions of iterations, these nudges accumulate statistically: directions that are consistently reinforced across many contexts grow dominant, while contradictory or noisy signals cancel out. The final resting position of the vector reflects not any single sentence, but the <strong>aggregate statistical geometry</strong> of every context in which <code>brown</code> appeared.</p>
-<p>After this single training step, the 3-dimensional vector for <code>brown</code> has shifted by a fraction of a decimal point. The change is imperceptible. But the same operation is about to execute billions of times, across every token in the corpus, adjusting every vector that participates in each forward pass. The cumulative effect of these microscopic nudges—and the geometric structure that organically emerges from them—is the subject of the next chapter.</p>
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p>
+<p>The scalar $\alpha$ is the <strong>learning rate</strong>, which governs the step size of each parameter update. Applying an unscaled gradient to jump directly to a position that predicts <code>fox</code> would corrupt the representation because <code>brown</code> does not appear in a single context. Across the training corpus, <code>brown</code> precedes <code>fox</code>, <code>bear</code>, <code>sugar</code>, <code>eyes</code>, and <code>shoes</code>. Each of these contexts generates a different gradient, pulling <code>brown</code>&#39;s vector in a different direction in the embedding space.</p>
+<p>An oversized learning rate causes each training example to overwrite the previous update, forcing the vector for <code>brown</code> to oscillate chaotically instead of settling into a stable position. A small learning rate ensures that each individual example contributes a microscopic nudge. Across millions of iterations, these nudges accumulate statistically: directions that are consistently reinforced across many contexts grow dominant, whereas contradictory or noisy signals cancel out. The converged position of the vector reflects not any single sentence, but the <strong>aggregate statistical geometry</strong> of every context in which <code>brown</code> appeared.</p>
+<p>Completing this single training step shifts the 3-dimensional vector for <code>brown</code> by a fraction of a decimal point. That single change is imperceptible in isolation, yet training executes this identical operation billions of times across every token in the corpus, adjusting every vector that participates in each forward pass. The cumulative effect of these microscopic nudges and the geometric structure that emerges from them form the subject of the next chapter.</p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="embeddings-chapter_04.html" class="pagination-link prev">

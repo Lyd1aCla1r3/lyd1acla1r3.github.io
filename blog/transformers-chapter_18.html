@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -118,16 +159,17 @@
     <li><a href="index.html">Blog</a></li><li><a href="series-transformers.html">Series: Transformers</a></li><li aria-current="page">Part 18: Final Softmax and Predictions</li></ol></nav>
         <article class="blog-post series-transformers">
 <h1>Part 18: Final Softmax and Predictions</h1>
-<!-- SUMMARY: The unbounded vocabulary logits are transformed into a strict probability distribution using the softmax function. Analyzing this distribution reveals the untrained network's maximum mathematical uncertainty, while techniques like temperature scaling and Top-K decoding provide mechanisms to shape this entropy during actual text generation. --><p>Projecting highly contextualized vectors out of the latent model space and back into the vocabulary space yields a matrix of raw scores known as logits. These scalar values assign a geometric magnitude to each of the twelve possible words in the vocabulary. While these magnitudes provide an ordering of likelihood, they do not constitute a mathematically rigorous probability distribution. The values extend across arbitrary bounds and lack the fundamental property of summing to exactly one. Converting these raw signals into actionable predictions requires a normalizing operation.</p>
-<p>The architecture employs the softmax function across the vocabulary dimension of the logits matrix to enforce this transformation. The function operates by exponentiating each scalar value and dividing by the sum of all exponentiated values in that row. Exponentiation guarantees that all resultant values become strictly positive fractions while non-linearly amplifying the differences between scores. A slightly higher logit becomes a significantly higher exponentiated value, creating a dynamic that helps the network confidently select a single token. The subsequent division normalizes the outputs. This bounds all values between zero and one, creating a strict probability distribution where the sum across the vocabulary dimension equals exactly one.</p>
+<!-- SUMMARY: The unbounded vocabulary logits are transformed into a strict probability distribution using the softmax function. Analyzing this distribution reveals the untrained network's maximum mathematical uncertainty, while techniques like temperature scaling and Top-K decoding provide mechanisms to shape this entropy during actual text generation. --><p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p><p>Projecting the contextualized vectors from Layer 2 through the unembedding matrix $W_U$ yields a $4 \times 12$ matrix of raw vocabulary scores known as logits. Each scalar entry measures the inner-product alignment between a sequence position and one of the twelve vocabulary tokens. Raw logits establish a relative ranking across candidates, yet they span arbitrary real bounds and do not sum to $1.0$. Converting these unnormalized scores into actionable token predictions requires a row-wise normalization function.</p>
+<h2>Normalizing Vocabulary Logits with Softmax</h2>
+<p>The architecture applies the Softmax function across the $V = 12$ vocabulary columns of each logit row. Softmax exponentiates every scalar logit $z_i$ and divides by the sum of all exponentiated logits in that row. Exponentiation maps negative and positive numbers alike onto strictly positive values while non-linearly amplifying gaps between scores: a modest lead in raw logit space translates into a multiplicative ratio in probability space. Dividing by the row sum normalizes the outputs onto the interval $(0, 1)$, creating a valid probability distribution whose entries across the $V = 12$ vocabulary columns sum to $1.0$:</p>
 <p>$$
-P(z_i) = \frac{e^{z_i}}{\sum_{j} e^{z_j}}
+P(z_i) = \frac{e^{z_i}}{\sum_{j=1}^{V} e^{z_j}}
 $$</p>
-<p>Applying this function to the calculated logit matrix transforms the raw scores at each sequence position. The four rows represent the predictions following the tokens start, &quot;i&quot;, &quot;woke&quot;, and &quot;up&quot;.</p>
+<p>Here, $z_i$ denotes the raw logit for vocabulary index $i$ in a given sequence row, and $\sum_{j=1}^{V} e^{z_j}$ sums the exponentiated logits across all $V = 12$ vocabulary tokens. Applying this transformation row by row to the four-decimal <code>Logits</code> matrix $X_{\text{final}} W_U$ from Part 17 produces the next-token probability distributions following <code>&lt;BOS&gt;</code>, <code>i</code>, <code>woke</code>, and <code>up</code> (note that shifting Row 2 by a constant $-0.0450$ to <code>[-0.0180, -0.0135, ..., 0.0315]</code> yields the identical Softmax row because $\text{Softmax}(z + c) = \text{Softmax}(z)$):</p>
 <p>$$
 \text{Logits} = \begin{bmatrix}
 -0.0270 & -0.0315 & -0.0360 & -0.0405 & -0.0450 & -0.0495 & -0.0540 & -0.0585 & \dots & -0.0765 \\
--0.0180 & -0.0135 & -0.0090 & -0.0045 &  0.0000 &  0.0045 &  0.0090 &  0.0135 & \dots &  0.0315 \\
+ 0.0270 &  0.0315 &  0.0360 &  0.0405 &  0.0450 &  0.0495 &  0.0540 &  0.0585 & \dots &  0.0765 \\
 -0.0675 & -0.0675 & -0.0675 & -0.0675 & -0.0675 & -0.0675 & -0.0675 & -0.0675 & \dots & -0.0675 \\
  0.0675 &  0.0675 &  0.0675 &  0.0675 &  0.0675 &  0.0675 &  0.0675 &  0.0675 & \dots &  0.0675
 \end{bmatrix}
@@ -140,15 +182,52 @@ $$</p>
  0.0833 &  0.0833 &  0.0833 &  0.0833 &  0.0833 &  0.0833 &  0.0833 &  0.0833 & \dots &  0.0833
 \end{bmatrix}
 $$</p>
-<p>The final row of the probability matrix corresponds to the predictions following the word &quot;up&quot;. The ultimate objective is for the network to predict the word &quot;late&quot; as the next logical token. However, every single value in that final row is exactly 0.0833. In a vocabulary of twelve words, a completely uniform distribution yields a probability of exactly one divided by twelve for each word. The model is expressing maximum uncertainty, considering every possible word in the vocabulary to be equally likely. This result confirms that the initialized projection matrices act as an empty vessel. The network possesses the structural capacity to route information but lacks specific geometric knowledge.</p>
-<p>When generating actual text, the network relies on sampling from this final probability distribution. A naive approach would always select the single highest probability value, a strategy known as greedy decoding. Relying exclusively on greedy decoding traps models in repetitive loops and eliminates the natural variance of language. Introducing controlled stochasticity requires manipulating the shape of the probability distribution before sampling occurs.</p>
-<p>The standard technique for modulating this distribution is temperature scaling. Before applying the softmax function, each value in the logits matrix is divided by a scalar parameter termed temperature.</p>
+<p>Row 4 of the <code>Probabilities</code> matrix holds the next-token distribution following <code>up</code>, where the training objective requires predicting <code>late</code> (vocabulary index <code>8</code>). Constant scores of $0.0675$ across all twelve columns of Row 4 in <code>Logits</code> cause every entry in Row 4 of <code>Probabilities</code> to evaluate to $1 / 12 \approx 0.0833$. A uniform distribution of $1 / 12$ across twelve classes represents maximum Shannon entropy: the untrained network considers every vocabulary token equally probable. This uniform output confirms that the uncalibrated projection matrices possess the structural topology to route information but have not yet encoded task-specific weights.</p>
+<h2>Shaping the Output Distribution</h2>
+<p>Autoregressive text generation selects the next token from the final row of the probability matrix. Always choosing the single index with the maximum probability is known as greedy decoding; although deterministic, greedy selection frequently traps language models in repetitive phrasing. Controlling generation diversity requires reshaping the logit distribution prior to sampling.</p>
+<p>Dividing each raw logit by a positive scalar temperature parameter $T$ before applying Softmax modulates the entropy of the output distribution:</p>
 <p>$$
-\text{Scaled Logit} = \frac{\text{Logit}}{\text{Temperature}}
+\text{Scaled Logit}_i = \frac{z_i}{T}
 $$</p>
-<p>Setting the temperature value below one increases the absolute magnitude of the logits. This operation geometrically stretches the distances between the values, causing the subsequent softmax operation to assign overwhelmingly high probability mass to the maximum logit. A low temperature setting forces the network toward highly deterministic outputs. Conversely, a temperature setting greater than one compresses the absolute magnitude of the logits. This shrinks the relative differences between the scores, resulting in a flatter probability distribution after the softmax step. A higher temperature injects entropy, assigning non-trivial probabilities to sub-optimal tokens and increasing generation diversity.</p>
-<p>Modern implementations further constrain this sampling process by applying techniques like Top-K decoding. This strategy truncates the probability distribution by zeroing out all values except the top candidates, preventing the selection of statistically impossible continuations while preserving the localized entropy of temperature scaling.</p>
-<p>To make the network predict &quot;late&quot; consistently without relying on artificial sampling constraints, the underlying logit for the correct token must naturally dominate the distribution. Achieving this requires a mechanism to measure how wrong the current uniform prediction is and a method to systematically adjust every single matrix weight to improve it.</p>
+<p>Production inference engines combine temperature scaling with truncation filters such as Top-$K$ and Top-$P$ (nucleus) decoding:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Decoding Strategy</th>
+<th align="left">Mathematical Mechanism</th>
+<th align="left">Effect on Output Distribution</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Greedy Decoding</strong></td>
+<td align="left">Selects <code>argmax_i P(z_i)</code> directly</td>
+<td align="left">Collapses generation to the single highest-probability token</td>
+</tr>
+<tr>
+<td align="left"><strong>Low Temperature (<code>T &lt; 1</code>)</strong></td>
+<td align="left">Divides logits by <code>T in (0, 1)</code> before Softmax</td>
+<td align="left">Magnifies gaps between logits, concentrating probability mass on top candidates</td>
+</tr>
+<tr>
+<td align="left"><strong>High Temperature (<code>T &gt; 1</code>)</strong></td>
+<td align="left">Divides logits by <code>T &gt; 1</code> before Softmax</td>
+<td align="left">Compresses differences between logits, flattening the distribution toward uniform entropy</td>
+</tr>
+<tr>
+<td align="left"><strong>Top-K Decoding</strong></td>
+<td align="left">Retains the <code>K</code> largest logits and sets remaining logits to <code>-inf</code></td>
+<td align="left">Prunes low-probability tail tokens while preserving relative weights among the top <code>K</code> choices</td>
+</tr>
+<tr>
+<td align="left"><strong>Top-P (Nucleus) Sampling</strong></td>
+<td align="left">Retains the smallest sorted token subset whose cumulative probability reaches <code>p</code></td>
+<td align="left">Adapts candidate pool size dynamically to the sharpness of each step&#39;s distribution</td>
+</tr>
+</tbody></table>
+<h3>Autoregressive Generation and KV-Cache Scaling</h3>
+<p>Sampling a token from Row 4 (such as <code>late</code>) during autoregressive inference appends that token to the sequence and initiates a new forward step to predict position 5. The causal mask blocks earlier tokens (<code>&lt;BOS&gt;</code>, <code>i</code>, <code>woke</code>, <code>up</code>) from attending to the newly appended token, so their Key and Value projections $K, V \in \mathbb{R}^{S \times d_k}$ across every layer and head remain unchanged. Caching those historical Key and Value rows in a <strong>KV cache</strong> avoids recomputing $X W_K$ and $X W_V$ for past positions, reducing per-step attention compute from quadratic $O(S^2 d_{\text{model}})$ to linear $O(S d_{\text{model}})$ at a memory cost of $2 \times L \times n_{\text{heads}} \times d_k \times S$ scalars ($2 \times 2 \times 3 \times 2 \times 4 = 96$ cached floats for the 4-token prompt).</p>
+<p>Making the network predict <code>late</code> after <code>&lt;BOS&gt;</code> <code>i</code> <code>woke</code> <code>up</code> without relying on heuristic decoding constraints requires shifting the underlying geometry so the logit at index <code>8</code> dominates Row 4 naturally. Achieving that shift requires a loss function that quantifies the error of the uniform <code>0.0833</code> prediction (Part 19) and a backward pass that updates every weight matrix in the network (Parts 20 through 24).</p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="transformers-chapter_17.html" class="pagination-link prev">

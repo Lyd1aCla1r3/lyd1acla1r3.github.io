@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -118,10 +159,10 @@
     <li><a href="index.html">Blog</a></li><li><a href="series-mixture-of-experts.html">Series: Mixture Of Experts</a></li><li aria-current="page">Part 2: The Router</li></ol></nav>
         <article class="blog-post series-mixture-of-experts">
 <h1>Part 2: The Router</h1>
-<!-- SUMMARY: The monolithic feed-forward network is replaced by a routing mechanism that dynamically evaluates the affinity of each token for specialized sub-networks. This gating network projects the token representation into a lower-dimensional space to compute a strict probability distribution over available experts, enabling conditional computation. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p><p>The dense feed-forward bottleneck makes the case for separating total parameter count from per-token computation. The mechanism that performs this separation is a dynamic gate that decides which subset of parameters activates for any given token.</p>
+<!-- SUMMARY: The monolithic feed-forward network is replaced by a routing mechanism that dynamically evaluates the affinity of each token for specialized sub-networks. This gating network projects the token representation into a lower-dimensional space to compute a strict probability distribution over available experts, enabling conditional computation. --><p><em>Prefer to read this offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p><p>The dense feed-forward bottleneck makes the case for separating total parameter count from per-token computation. The mechanism that performs this separation is a dynamic gate that decides which subset of parameters activates for any given token.</p>
 <h2>The Gating Network</h2>
-<p>The foundational component of a Mixture of Experts layer is the router, formally known as the gating network. This mechanism is a learned affine projection that maps the incoming token representation from the model dimension into the expert dimension.</p>
-<p>Given the standard sequence of four token vectors, $X_{4 \times 6}$, moving along the residual stream, the gating network applies a weight matrix, $W_g \in \mathbb{R}^{d_{model} \times E}$. Each column of $W_g$ represents the geometric centroid of an expert within the embedding space.</p>
+<p>The foundational component of a Mixture of Experts layer is the router, formally known as the gating network. This mechanism is a learned linear projection that maps the incoming token representation from the model dimension $d_{model}$ into the expert dimension $E$.</p>
+<p>The standard sequence of four token vectors, $X_{4 \times 6}$, arrives from the residual stream, and the gating network multiplies it by a weight matrix $W_g \in \mathbb{R}^{d_{model} \times E}$. Each 0-indexed column of $W_g$ (corresponding to Expert 0 through Expert 3) represents the geometric centroid of an expert within the $6$-dimensional embedding space.</p>
 <p>$$
 X_{4 \times 6} = \begin{bmatrix}
  0.0200 & 1.2900 & 0.1800 & 1.3500 & 0.0000 & 0.6700 \\
@@ -152,9 +193,12 @@ $$</p>
 <p>The resulting tensor contains the unnormalized preference of each token for each of the four available experts.</p>
 <h2>Hard Routing and Top-K Masking</h2>
 <p>The unnormalized tensor, $h(x)$, represents the affinity of each token across the four available experts. Each row corresponds to a single token in the sequence, and each column corresponds to one of the four experts. Converting these raw logits into usable routing decisions requires normalization.</p>
-<p>Early conditional computation architectures experimented with soft routing. In a soft routing paradigm, every token is processed by every expert, and the final representation is computed as a weighted average of all expert outputs based on a continuous probability distribution. While this preserves smooth differentiability, activating all parameters for all tokens defeats the computational efficiency that originally motivated the architecture. The combined parameter count of the routing mechanism and all experts far exceeds the size of a dense model, resulting in an unacceptable increase in computational cost. Furthermore, modern soft routing variants construct expert inputs by taking a weighted average of all tokens in the sequence. This operation requires visibility into future tokens, mandating a violation of causal masking. Consequently, production causal models, which are autoregressive decoders that generate text left-to-right, utilize hard routing exclusively. Hard routing strictly limits computation by dispatching each token to a discrete, restricted subset of experts, ensuring that unselected experts perform zero computation.</p>
-<p>An alternative mechanism, hash-based routing, attempted to eliminate the learned gating network entirely by assigning tokens using a deterministic hash function applied to the token ID. This approach was initially pursued because it requires zero routing parameters. The method was swiftly abandoned due to two critical flaws. First, it provided zero contextual plasticity. A token like &quot;bank&quot; routes to the exact same expert regardless of whether the surrounding sequence describes a river or a financial institution. The fixed routing mechanism cannot adapt to the shifting semantic meaning of the contextualized hidden state. Second, human vocabulary follows Zipf&#39;s law, meaning a small handful of tokens appear with extreme frequency. A deterministic hash function that assigns highly frequent tokens to a specific expert causes that expert to suffer catastrophic load imbalance, while experts assigned to rare words starve.</p>
-<p>The standard mechanism that resolves these limitations is top-$k$ selection, a direct implementation of hard routing. This operation successfully decouples the total parameter capacity of the model from the active computational cost per token.</p>
+<p>Designing a routing mechanism requires balancing differentiability, contextual adaptability, and sparse execution. Early conditional computation research explored three primary routing paradigms before converging on learned hard routing:</p>
+<ul>
+<li><strong>Soft Routing:</strong> Every expert processes every token, and the layer computes a continuous weighted average across all expert outputs. Full differentiability is preserved, but activating every parameter for every token destroys the computational savings of sparsity. Sequence-level soft routing variants, which construct expert inputs as weighted averages across all tokens in a sequence, also require visibility into future tokens and violate autoregressive causal masking.</li>
+<li><strong>Hash-Based Routing:</strong> A deterministic hash function maps each discrete token ID directly to an expert without learned gating parameters. Static hashing provides zero contextual plasticity: a polysemous token such as <code>&quot;bank&quot;</code> routes to the same expert whether the surrounding clause describes a river or a financial institution. Natural language token frequencies follow a Zipfian power law, so deterministic hashing maps high-frequency tokens to specific experts, creating severe load imbalance while starving experts assigned to rare tokens.</li>
+<li><strong>Learned Hard Routing (Top-$K$ Selection):</strong> A learned gating projection scores each contextualized token vector and dispatches it to a discrete subset of $k < E$ experts, leaving all unselected experts dormant. Autoregressive decoders rely on hard top-$k$ routing to preserve causal masking while decoupling total parameter capacity from per-token compute.</li>
+</ul>
 <p>The masked logit tensor is the direct output of an algorithmic selection operation applied to the raw logits, rather than the result of a matrix multiplication. For a configuration where $k=2$, an algorithmic pass evaluates each row independently, identifies the two highest numerical values, and explicitly masks all other values in that row to negative infinity. The output tensor takes the following form:</p>
 <p>$$
 \text{TopK}(h(x), 2)_{4 \times 4} = \begin{bmatrix}
@@ -164,9 +208,9 @@ $$</p>
  0.0320 & -0.1227 & -\infty & -\infty
 \end{bmatrix}
 $$</p>
-<p>This discrete masking operation introduces a mathematical friction. In continuous calculus, a derivative measures how an infinitesimally small change in an input variable affects the output. The algorithmic selection of the top two elements acts as a discontinuous step function. If a raw logit increases slightly but fails to alter the ranking threshold, the discrete routing assignment remains entirely unchanged. An infinitesimal change in the input logit produces precisely zero change in the routing selection, causing the mathematical gradient to evaluate to zero. Without a continuous gradient signal, the optimizer cannot update the gating weights, rendering the step non-differentiable.</p>
+<p>This discrete masking operation introduces a fundamental differentiability barrier. In continuous calculus, a derivative measures how an infinitesimally small perturbation in an input variable alters the output. The algorithmic selection of the top two elements acts as a discontinuous step function. A slight increase in a raw logit that fails to cross the ranking threshold leaves the discrete routing assignment unchanged. An infinitesimal perturbation in the input logit produces zero change in the discrete selection mask, causing the selection gradient to evaluate to zero. Without a continuous gradient path through the ranking threshold, the discrete selection step itself is non-differentiable.</p>
 <h2>Softmax Normalization</h2>
-<p>The top-$k$ masking operation identifies the surviving experts without normalizing their values. To combine the outputs of the selected experts proportionally, the masked logits pass through a continuous softmax function. This operation converts the surviving logits into a strict probability distribution over the selected experts, ensuring their weights sum to exactly one.</p>
+<p>The top-$k$ masking operation identifies the surviving experts without normalizing their values. To combine the outputs of the selected experts proportionally, the masked logits pass through a row-wise softmax function. This operation converts the surviving logits into a valid probability distribution over the selected experts, ensuring their weights sum to $1.0$:</p>
 <p>$$
 g(x)_{4 \times 4} = \text{Softmax}(\text{TopK}(h(x), 2))
 $$</p>
@@ -178,11 +222,12 @@ g(x)_{4 \times 4} = \begin{bmatrix}
  0.5386 & 0.4614 & 0.0000 & 0.0000
 \end{bmatrix}
 $$</p>
-<p>The resulting gating weights, $g(x)$, specify the exact proportional contribution each selected expert provides to the final token representation. The first token is routed to Experts 1 and 3. The second token undergoes an identical routing path. The third and fourth tokens are routed to Experts 1 and 2.</p>
-<p>The application of a continuous softmax function does not circumvent the non-differentiability of the algorithmic masking step; it simply provides a differentiable path for the values that survived the mask. During backpropagation, gradients flow backward from the final loss, through the softmax function, and strictly into the non-masked elements of the logit tensor. These selected elements are mathematically identical to the original raw logits, allowing the gradient to pass cleanly through to the corresponding columns of $W_g$. </p>
-<p>The masking operation replaces unselected logits with a constant value of negative infinity. The negative infinity is a mathematically rigorous trick to set the derivative to exactly zero, cleanly severing the backward path without throwing any errors or causing undefined behavior. This substitution is safely evaluated by the exponential function inside the softmax operator, where $e^{-\infty}$ equals zero. In continuous calculus, the derivative of the exponential function $e^x$ as $x$ approaches negative infinity evaluates cleanly to zero. When the chain rule multiplies this zero-valued local derivative backward, the mathematical path is severed. The gating network receives no gradient signal for unselected experts, while gradients continue to flow unaffected through the independent paths of the surviving logits. The discrete ranking boundaries remain invisible to calculus, preventing the architecture from learning which experts to select directly via gradient descent. Gradient descent only adjusts the centroids of the experts already selected. This structural limitation necessitates a dedicated load balancing mechanism, explored in a subsequent chapter, to prevent the routing mechanism from endlessly reinforcing the same subset of parameters.</p>
-<p>The gating network has successfully resolved the routing decisions for the sequence. The execution of the independent expert feed-forward computations and their subsequent weighted combination is detailed in the next section.</p>
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p>
+<p>The resulting gating weights, $g(x)$, specify the proportional contribution each selected expert provides to the final token representation. Indexing the four expert columns from $0$ to $3$, the first and second tokens route to Expert 0 and Expert 2, while the third and fourth tokens route to Expert 0 and Expert 1.</p>
+<p>Applying a continuous softmax function does not make the discrete ranking step differentiable; instead, the normalization provides a continuous gradient path exclusively for the logits that survived the mask. During backpropagation, gradients flow backward from the language modeling loss, through the softmax operator, and into the unmasked entries of the logit tensor. Surviving entries retain their original dot-product values, allowing the gradient to pass cleanly into the corresponding columns of $W_g$.</p>
+<p>Replacing unselected logits with $-\infty$ severs the backward path for dormant experts through the properties of the exponential function. Inside the softmax operator, $e^{-\infty}$ evaluates to $0$, and the local derivative $\lim_{z \to -\infty} \frac{d}{dz} e^z = 0$ vanishes as well. Multiplying this zero-valued local derivative into the backward chain rule zeroes out the gradient for every masked column of $W_g$ without producing undefined numerical states.</p>
+<p>This selective gradient flow carries a critical training consequence. The gating network receives zero gradient signal from the primary loss for unselected experts, whereas surviving pathways receive continuous updates. Discrete ranking boundaries remain invisible to standard backpropagation, so gradient descent adjusts only the centroids of experts that were already selected. This asymmetry motivates a dedicated load-balancing mechanism, derived in Chapter 4 and Chapter 5, to prevent the router from reinforcing the same subset of experts indefinitely.</p>
+<p>The gating network has resolved the routing decisions for the sequence. The execution of the independent expert feed-forward computations and their subsequent weighted combination is detailed in the next section.</p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="mixture-of-experts-chapter_01.html" class="pagination-link prev">

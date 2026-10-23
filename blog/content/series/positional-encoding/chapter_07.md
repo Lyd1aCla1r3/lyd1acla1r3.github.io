@@ -18,13 +18,13 @@ $$
 
 The first equality substitutes the definition of rotated vectors. The second equality uses the transpose property of matrix products: $(R_m \mathbf{q}_m)^\top = \mathbf{q}_m^\top R_m^\top$. The third equality is the claim: the matrix product $R_m^\top R_n$ collapses to a single rotation matrix $R_{n-m}$ whose angle depends only on the offset $n - m$.
 
-If this claim holds, then the relevance score between positions $m$ and $n$ is:
+Under this identity, the relevance score between positions $m$ and $n$ reduces to:
 
 $$
 \mathbf{q}'^{\top}_m \mathbf{k}'_n = \mathbf{q}_m^\top R_{n-m} \, \mathbf{k}_n
 $$
 
-The right-hand side depends on the content vectors $\mathbf{q}_m$ and $\mathbf{k}_n$ and on the relative offset $\Delta = n - m$, but not on the absolute positions $m$ and $n$ individually. This is exactly the relative position requirement stated in Chapter 4.
+The right-hand side depends on the content vectors $\mathbf{q}_m$ and $\mathbf{k}_n$ and on the relative offset $\Delta = n - m$, but not on the absolute positions $m$ and $n$ individually. That functional form satisfies the relative position requirement stated in Chapter 4.
 
 The claim rests on a single algebraic fact: the rotation composition identity $R_m^\top R_n = R_{n-m}$. The remainder of this section proves it from first principles.
 
@@ -44,7 +44,7 @@ $$
 R_{\alpha}^\top = \begin{bmatrix} \cos\alpha & \sin\alpha \\ -\sin\alpha & \cos\alpha \end{bmatrix}
 $$
 
-Because cosine is an even function ($\cos(-\alpha) = \cos\alpha$) and sine is an odd function ($\sin(-\alpha) = -\sin\alpha$), this transpose is identical to a rotation by $-\alpha$:
+Cosine is an even function ($\cos(-\alpha) = \cos\alpha$) and sine is an odd function ($\sin(-\alpha) = -\sin\alpha$), so this transpose is identical to a rotation by $-\alpha$:
 
 $$
 R_{-\alpha} = \begin{bmatrix} \cos(-\alpha) & -\sin(-\alpha) \\ \sin(-\alpha) & \cos(-\alpha) \end{bmatrix} = \begin{bmatrix} \cos\alpha & \sin\alpha \\ -\sin\alpha & \cos\alpha \end{bmatrix} = R_{\alpha}^\top
@@ -60,7 +60,7 @@ $$
 R_\alpha^\top R_\beta = R_{-\alpha} \cdot R_\beta = R_{\beta - \alpha}
 $$
 
-To prove this, the product of $R_{-\alpha}$ and $R_\beta$ is computed directly:
+Computing the matrix product of $R_{-\alpha}$ and $R_\beta$ directly verifies this equivalence:
 
 $$
 R_{-\alpha} \cdot R_\beta = \begin{bmatrix} \cos\alpha & \sin\alpha \\ -\sin\alpha & \cos\alpha \end{bmatrix} \begin{bmatrix} \cos\beta & -\sin\beta \\ \sin\beta & \cos\beta \end{bmatrix} = \begin{bmatrix} \mathbf{\cos\alpha\cos\beta + \sin\alpha\sin\beta} & \mathbf{-\cos\alpha\sin\beta + \sin\alpha\cos\beta} \\ \mathbf{-\sin\alpha\cos\beta + \cos\alpha\sin\beta} & \mathbf{\sin\alpha\sin\beta + \cos\alpha\cos\beta} \end{bmatrix}
@@ -112,7 +112,7 @@ $$
 R_{-\alpha} \cdot R_\beta = \begin{bmatrix} \cos(\beta - \alpha) & -\sin(\beta - \alpha) \\ \sin(\beta - \alpha) & \cos(\beta - \alpha) \end{bmatrix} = R_{\beta - \alpha}
 $$
 
-This is the standard $2 \times 2$ rotation matrix for angle $\beta - \alpha$. Therefore:
+That matrix is the standard $2 \times 2$ rotation operator for angle $\beta - \alpha$, establishing the composition identity:
 
 $$
 R_\alpha^\top R_\beta = R_{\beta - \alpha}
@@ -124,15 +124,15 @@ $$
 R_{m\theta_i}^\top R_{n\theta_i} = R_{(n-m)\theta_i}
 $$
 
-Because this relative-angle identity holds independently for every block on the diagonal, the full position-dependent matrix satisfies:
+This relative-angle identity holds independently for every block on the diagonal, so the full position-dependent matrix satisfies:
 
 $$
 R_m^\top R_n = R_{n-m}
 $$
 
-The product of the transposed rotation at position $m$ and the rotation at position $n$ is a single rotation whose angle depends only on the offset $n - m$. This is the rotation composition identity, and it is exact (not an approximation), because it follows from the algebraic properties of sine and cosine.
+The product of the transposed rotation at position $m$ and the rotation at position $n$ is a single rotation whose angle depends only on the offset $n - m$. This rotation composition identity holds as a strict equality (not an approximation), following directly from the trigonometric angle-addition identities for sine and cosine.
 
-For the full $3 \times 3$ block-diagonal matrix used in the toy model, the identity applies to the upper-left $2 \times 2$ block, and the lower-right $1 \times 1$ identity block trivially satisfies $1 \cdot 1 = 1$. The composition identity therefore holds for the full $3 \times 3$ rotation matrix at every position.
+For the full $3 \times 3$ block-diagonal matrix used in the toy model, the identity applies to the upper-left $2 \times 2$ block, and the lower-right $1 \times 1$ identity block trivially satisfies $1 \cdot 1 = 1$. The composition identity holds across the full $3 \times 3$ rotation matrix at every position.
 
 ## Numerical Verification with the Toy Model
 
@@ -202,13 +202,11 @@ $$
 
 The direct dot product of the rotated vectors (Method 1) equals the dot product obtained by applying only the relative rotation $R_2$ to the unrotated key (Method 2). The absolute positions 1 and 3 have disappeared from the computation; only the offset $\Delta = 2$ remains.
 
-This is the relative-distance property in action. If `quick` appeared at position 5 and `fox` at position 7 (same content, same offset $\Delta = 2$), the same rotation $R_2$ would produce the same relevance score. The score $0.0043$ is determined by the content of `quick` and `fox` and by their separation of 2 positions, regardless of where in the sequence that separation occurs.
+That equivalence demonstrates the relative-distance property in action. Placing `quick` at position 5 and `fox` at position 7 (same content, same offset $\Delta = 2$) applies the identical relative rotation $R_2$ and produces the identical relevance score. The score $0.0043$ is determined by the content of `quick` and `fox` and by their separation of 2 positions, regardless of where in the sequence that separation occurs.
 
 ## The Full Post-RoPE Relevance Score Matrix
 
 The dot product $A'_{ij} = \mathbf{q}'^{\top}_i \mathbf{k}'_j$ is now computed for all 16 pairs of positions using the rotated vectors from Chapter 6:
-
-<div style="font-size: 0.85em; overflow-x: auto;">
 
 $$
 \mathbf{q}'_0 = \begin{bmatrix} -0.0800 \\ -0.1300 \\ \phantom{-}0.2100 \end{bmatrix}, \quad \mathbf{q}'_1 = \begin{bmatrix} \phantom{-}0.3322 \\ \phantom{-}0.2027 \\ -0.2700 \end{bmatrix}, \quad \mathbf{q}'_2 = \begin{bmatrix} -0.3899 \\ -0.2774 \\ -0.0700 \end{bmatrix}, \quad \mathbf{q}'_3 = \begin{bmatrix} \phantom{-}0.0212 \\ \phantom{-}0.0778 \\ \phantom{-}0.1500 \end{bmatrix}
@@ -217,8 +215,6 @@ $$
 $$
 \mathbf{k}'_0 = \begin{bmatrix} -0.1500 \\ \phantom{-}0.1000 \\ -0.0400 \end{bmatrix}, \quad \mathbf{k}'_1 = \begin{bmatrix} \phantom{-}0.0371 \\ \phantom{-}0.2614 \\ -0.3200 \end{bmatrix}, \quad \mathbf{k}'_2 = \begin{bmatrix} \phantom{-}0.0880 \\ \phantom{-}0.2162 \\ \phantom{-}0.3600 \end{bmatrix}, \quad \mathbf{k}'_3 = \begin{bmatrix} \phantom{-}0.0439 \\ -0.1174 \\ -0.0500 \end{bmatrix}
 $$
-
-</div>
 
 **Row 0** (`The` queries each position):
 
@@ -306,57 +302,61 @@ $$
 A = \begin{bmatrix} -0.0094 & -0.1007 & \phantom{-}0.0849 & -0.0200 \\ -0.0587 & \phantom{-}0.1517 & -0.0123 & -0.0262 \\ \phantom{-}0.0633 & \phantom{-}0.0525 & -0.1195 & \phantom{-}0.0606 \\ -0.0125 & -0.0592 & \phantom{-}0.0660 & -0.0157 \end{bmatrix}
 $$
 
-Several structural observations emerge from comparing $A$ and $A'$.
+Three structural observations emerge from comparing $A$ and $A'$.
 
-**The diagonal is unchanged.** The diagonal entries $A'_{ii} = A_{ii}$ for all $i$:
+### Unchanged Diagonal Entries
 
-| Position | $A_{ii}$ | $A'_{ii}$ |
+The diagonal entries satisfy $A'_{ii} = A_{ii}$ for all $i$:
+
+| Position | `A[i, i]` (Pre-RoPE) | `A'[i, i]` (Post-RoPE) |
 |---|---|---|
-| 0 (`The`) | $-0.0094$ | $-0.0094$ |
-| 1 (`quick`) | $\phantom{-}0.1517$ | $\phantom{-}0.1517$ |
-| 2 (`brown`) | $-0.1195$ | $-0.1195$ |
-| 3 (`fox`) | $-0.0157$ | $-0.0157$ |
+| `0` (`The`) | `-0.0094` | `-0.0094` |
+| `1` (`quick`) | `0.1517` | `0.1517` |
+| `2` (`brown`) | `-0.1195` | `-0.1195` |
+| `3` (`fox`) | `-0.0157` | `-0.0157` |
 
-This is a direct consequence of the rotation composition identity. For the diagonal, $m = n$, so the relative rotation is $R_{n-n} = R_0 = I$ (the identity matrix). The self-relevance score $\mathbf{q}_i^\top R_0 \mathbf{k}_i = \mathbf{q}_i^\top \mathbf{k}_i$ is the same as the unrotated dot product. A token's relevance to itself is unaffected by its absolute position, because the relative offset to itself is always zero.
+Diagonal invariance is a direct consequence of the rotation composition identity. On the diagonal, $m = n$, so the relative rotation is $R_{n-n} = R_0 = I$ (the identity matrix). The self-relevance score $\mathbf{q}_i^\top R_0 \mathbf{k}_i = \mathbf{q}_i^\top \mathbf{k}_i$ equals the unrotated dot product. A token's relevance to itself is unaffected by its absolute position because the relative offset to itself is always zero.
 
-**Off-diagonal entries have changed.** Every off-diagonal entry differs between $A$ and $A'$:
+### Modified Off-Diagonal Entries
 
-| Token Pair | Offset $\Delta$ | $A_{ij}$ (pre-RoPE) | $A'_{ij}$ (post-RoPE) |
+Every off-diagonal entry differs between $A$ and $A'$:
+
+| Query-Key Pair | Offset `Delta` | `A[i, j]` (Pre-RoPE) | `A'[i, j]` (Post-RoPE) |
 |---|---|---|---|
-| `The` $\to$ `quick` | $\phantom{-}1$ | $-0.1007$ | $-0.1041$ |
-| `The` $\to$ `brown` | $\phantom{-}2$ | $\phantom{-}0.0849$ | $\phantom{-}0.0405$ |
-| `The` $\to$ `fox` | $\phantom{-}3$ | $-0.0200$ | $\phantom{-}0.0012$ |
-| `quick` $\to$ `The` | $-1$ | $-0.0587$ | $-0.0188$ |
-| `quick` $\to$ `brown` | $\phantom{-}1$ | $-0.0123$ | $-0.0241$ |
-| `quick` $\to$ `fox` | $\phantom{-}2$ | $-0.0262$ | $\phantom{-}0.0043$ |
-| `brown` $\to$ `The` | $-2$ | $\phantom{-}0.0633$ | $\phantom{-}0.0335$ |
-| `brown` $\to$ `quick` | $-1$ | $\phantom{-}0.0525$ | $-0.0646$ |
-| `brown` $\to$ `fox` | $\phantom{-}1$ | $\phantom{-}0.0606$ | $\phantom{-}0.0190$ |
-| `fox` $\to$ `The` | $-3$ | $-0.0125$ | $-0.0014$ |
-| `fox` $\to$ `quick` | $-2$ | $-0.0592$ | $-0.0269$ |
-| `fox` $\to$ `brown` | $-1$ | $\phantom{-}0.0660$ | $\phantom{-}0.0727$ |
+| `The` queries `quick` | `+1` | `-0.1007` | `-0.1041` |
+| `The` queries `brown` | `+2` | `0.0849` | `0.0405` |
+| `The` queries `fox` | `+3` | `-0.0200` | `0.0012` |
+| `quick` queries `The` | `-1` | `-0.0587` | `-0.0188` |
+| `quick` queries `brown` | `+1` | `-0.0123` | `-0.0241` |
+| `quick` queries `fox` | `+2` | `-0.0262` | `0.0043` |
+| `brown` queries `The` | `-2` | `0.0633` | `0.0335` |
+| `brown` queries `quick` | `-1` | `0.0525` | `-0.0646` |
+| `brown` queries `fox` | `+1` | `0.0606` | `0.0190` |
+| `fox` queries `The` | `-3` | `-0.0125` | `-0.0014` |
+| `fox` queries `quick` | `-2` | `-0.0592` | `-0.0269` |
+| `fox` queries `brown` | `-1` | `0.0660` | `0.0727` |
 
-The rotation has modified the relevance landscape. Consider the pair `The` $\to$ `brown` (positions 0 and 2): the pre-RoPE score $0.0849$ drops to $0.0405$ after RoPE. The rotation $R_2$ applied to the relative offset $\Delta = 2$ has reduced the apparent relevance. Meanwhile, `quick` $\to$ `fox` (positions 1 and 3, same offset $\Delta = 2$) shifts from $-0.0262$ to $0.0043$, crossing from negative to positive. The same relative rotation $R_2$ produces different effects on different content pairs, because the rotation interacts with the content vectors differently. This is by design: the score depends on both content and relative position.
+The rotation has modified the relevance landscape. Consider the pair `The` querying `brown` (positions 0 and 2): the pre-RoPE score $0.0849$ drops to $0.0405$ after RoPE. The rotation $R_2$ applied to the relative offset $\Delta = 2$ has reduced the apparent relevance. Meanwhile, `quick` querying `fox` (positions 1 and 3, same offset $\Delta = 2$) shifts from $-0.0262$ to $0.0043$, crossing from negative to positive. The same relative rotation $R_2$ produces different effects on different content pairs because the rotation interacts with the content vectors differently. That interaction is intentional: the score depends on both content and relative position.
 
-**Permutation invariance is broken.** The pre-RoPE matrix $A$ satisfies $A_{rev} = PAP^\top$ (Chapter 4): reversing the input sequence rearranges the scores but does not change them. The post-RoPE matrix $A'$ does not satisfy this property. In the reversed sequence `fox` `brown` `quick` `The`, the token `fox` would occupy position 0 and `The` would occupy position 3. Their relative offset would be $\Delta = 3 - 0 = 3$ (not $\Delta = -3$ as in the original sequence). Because $R_3 \neq R_{-3}$, the relevance score between `fox` and `The` would differ from the original ordering. RoPE has broken permutation invariance through the mechanism of position-dependent rotation.
+### Broken Permutation Invariance
+
+The pre-RoPE matrix $A$ satisfies $A_{rev} = PAP^\top$ (Chapter 4): reversing the input sequence rearranges the scores without changing their values. The post-RoPE matrix $A'$ breaks this symmetry. In the reversed sequence `fox` `brown` `quick` `The`, the token `fox` occupies position 0 and `The` occupies position 3, shifting their relative offset to $\Delta = 3 - 0 = 3$ rather than $\Delta = -3$ as in the original sequence. Distinct offsets produce distinct rotation matrices ($R_3 \neq R_{-3}$), so the relevance score between `fox` and `The` changes under sequence reversal. RoPE breaks permutation invariance through position-dependent rotation.
 
 ## Grounding the Result
 
 The relevance score between `quick` (position 1) and `fox` (position 3) is $A'_{13} = 0.0043$. This score depends on the semantic content of `quick` and `fox` (encoded in the query vector $\mathbf{q}_1$ and key vector $\mathbf{k}_3$) and on the offset $\Delta = 2$ between their positions (encoded in the rotation $R_2$). It does not depend on the absolute position indices 1 and 3.
 
-If `quick` appeared at position 5 and `fox` at position 7, the content vectors $\mathbf{q}$ and $\mathbf{k}$ would be identical (same tokens, same projection matrices), and the relative rotation would be $R_{7-5} = R_2$ (same offset). The relevance score would be $\mathbf{q}^\top R_2 \mathbf{k} = 0.0043$, unchanged. If `quick` appeared at position 100 and `fox` at position 102, the score would again be $0.0043$. The absolute positions are irrelevant; only the offset $\Delta = 2$ between the two tokens determines the rotational transformation.
+Shifting `quick` to position 5 and `fox` to position 7 leaves the content vectors $\mathbf{q}$ and $\mathbf{k}$ unchanged (same tokens, same projection matrices) and preserves the relative rotation $R_{7-5} = R_2$ (same offset), yielding the identical relevance score $\mathbf{q}^\top R_2 \mathbf{k} = 0.0043$. Shifting `quick` to position 100 and `fox` to position 102 again yields $0.0043$. The absolute positions drop out of the inner product; only the offset $\Delta = 2$ between the two tokens determines the rotational transformation.
 
-This is the relative position requirement from Chapter 4, now satisfied by algebraic construction.
+That shift invariance realizes the relative position requirement from Chapter 4 by algebraic construction.
 
 ## Why This Property Matters
 
-The relative-distance property of RoPE has three consequences that distinguish it from additive positional encoding.
+The relative-distance property of RoPE produces three architectural advantages over additive positional encoding:
 
-**Relative relationships, not absolute labels.** The model learns how tokens at different separations interact, not what happens at position 47 specifically. A verb three positions after its subject receives the same relative rotation regardless of whether the subject appears at position 0, position 50, or position 500. This aligns with the linguistic observation that syntactic and semantic relationships between tokens typically depend on their relative displacement, not on their absolute indices within the sequence.
-
-**Length generalization.** Because the rotation $R_\Delta$ depends only on the offset $\Delta$, the mechanism encounters a rotation for offset $\Delta = 200$ during inference even if the longest training sequence had length 150 (provided $\Delta = 200$ arose in some training context). Sinusoidal absolute PE, by contrast, assigns absolute position encodings that degrade for unseen positions. RoPE's relative encoding extends more naturally to sequence lengths beyond the training distribution, though practical generalization still requires careful frequency scaling (the subject of Chapter 8).
-
-**Exact algebraic identity.** The property $R_m^\top R_n = R_{n-m}$ is not an approximation learned during training, nor an empirical observation that holds approximately for most inputs. It is an algebraic identity that follows from the angle-addition formulas for sine and cosine. Every rotated dot product in every attention head at every layer satisfies this property exactly, because it is a consequence of the mathematical structure of rotation matrices, not of the learned parameters. The model's positional encoding is correct by construction.
+- **Translation-Invariant Token Interactions:** Models how tokens at a given separation $\Delta$ interact regardless of absolute sequence index, ensuring that a verb three positions after its subject receives the same relative rotation whether the subject appears at position 0, position 50, or position 500.
+- **Local-Offset Generalization Across Sequence Lengths:** Evaluates any familiar relative offset $\Delta$ (such as $\Delta = 50$) using the identical rotation matrix $R_{50}$ even when the interacting tokens appear at unseen absolute positions (such as $m = 500$ and $n = 550$ in a sequence longer than the training length $T_{train} = 256$), whereas unseen offsets beyond $T_{train}$ require the frequency-scaling extensions covered in Chapter 8.
+- **Parameter-Free Algebraic Guarantee:** Enforces the composition law $R_m^\top R_n = R_{n-m}$ across every attention head and every layer through the trigonometric angle-addition identities rather than requiring the optimizer to approximate relative offsets from entangled embeddings.
 
 The rotation composition identity, proved from the angle-addition identities and verified numerically with the toy model, completes the mathematical foundation of RoPE. The next chapter surveys the broader landscape of positional encoding mechanisms, including learned absolute encodings, relative position biases, ALiBi, iRoPE, and frequency-scaling extensions for long-context generalization.
 

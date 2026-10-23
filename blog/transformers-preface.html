@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -138,34 +179,36 @@
       border-radius: 0.4em !important;
     }
   }
-</style><!-- SUMMARY: This foundational overview introduces an autoregressive Decoder-only Transformer built from scratch using rigorous tensor notation and geometric principles. The text defines the vocabulary space, architectural dimensions, and the central residual stream required to calculate the forward pass. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p><h2>The Problem with Tutorials</h2>
+</style><!-- SUMMARY: This foundational overview introduces an autoregressive Decoder-only Transformer built from scratch using rigorous tensor notation and geometric principles. The text defines the vocabulary space, architectural dimensions, and the central residual stream required to calculate the forward pass. --><p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p><h2>The Problem with Tutorials</h2>
 <p>The typical approach to understanding the Transformer architecture presents a frustrating hurdle. Existing literature relies heavily on abstract analogies. Texts often describe the Query matrix as asking a question and the Key matrix as holding the answer. These metaphors might give a fleeting sense of intuition. They collapse the moment a practitioner attempts to write code, debug a model, or understand the fundamental geometry of deep learning.</p>
 <p>This text takes a different approach. A complete Transformer is built from scratch by calculating every single number by hand. The goal is to translate these complex, abstract operations into meaningful, structural realities. The result is a clear, intuitive grasp of how multi-dimensional tensors flow through linear projections, removing any sense of hidden mechanics.</p>
 <p>To accomplish this, a problem is selected that is small enough to compute on a whiteboard, yet complex enough to demonstrate the true power of the architecture.</p>
 <h2>The Toy Example</h2>
 <p>The objective is to train a Transformer to predict the next word in a specific sequence. </p>
 <p><strong>Input:</strong> <code>&lt;BOS&gt;</code> <code>i</code> <code>woke</code> <code>up</code><br><strong>Target:</strong> <code>late</code></p>
-<p>The token <code>&lt;BOS&gt;</code> stands for Beginning of Sequence. This is a standard marker that tells the network a new sequence has started. </p>
-<p>This sentence is chosen carefully. It allows the attention mechanism to perform observable work. To predict the word &quot;late&quot;, the network cannot merely look at the word &quot;up&quot;. It must contextualize the combination of &quot;woke&quot; and &quot;up&quot; together. </p>
+<p>The token <code>&lt;BOS&gt;</code> stands for Beginning of Sequence and serves as a standard boundary marker indicating the start of a sequence.</p>
+<p>This four-token prompt requires the attention mechanism to perform observable contextual work. Predicting the target token <code>late</code> requires more than inspecting the final token <code>up</code> in isolation; the network must combine <code>woke</code> and <code>up</code> into a unified phrasal concept.</p>
 <h3>The Vocabulary Space</h3>
-<p>To make the math tractable, the model is restricted to a vocabulary of exactly twelve tokens. The total size of the vocabulary is represented by the variable $V$. In this configuration, $V$ equals 12.</p>
+<p>To keep every matrix operation tractable by hand, the model operates on a fixed vocabulary of twelve tokens. The variable $V$ denotes the total vocabulary size, setting $V = 12$ for this configuration.</p>
 <div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2; text-align: left;">
-<span style="font-size: 0.9em;"><b><code>&lt;BOS&gt;</code></b> <b><code>we</code></b> <b><code>late</code></b> <b><code>&lt;PAD&gt;</code></b> <b><code>&lt;EOS&gt;</code></b> <b><code>woke</code></b> <b><code>early</code></b> <b><code>i</code></b> <b><code>stayed</code></b> <b><code>today</code></b> <b><code>yesterday</code></b> <b><code>up</code></b></span>
-</div>
-This small vocabulary features natural semantic clusters. The pronouns "i" and "we" form one cluster. The temporal adverbs "late", "early", and "today" form another. This gives the matrix operations the opportunity to physically group related concepts in vector space. As the model trains, these clusters will visibly form within the numerical representations.<h2>The Architecture</h2>
-<p>Before defining the dimensions of the data, the architecture processing that data must be clearly defined. The network utilizes an autoregressive Decoder-only architecture. This is the exact framework that powers models like GPT.</p>
-<p>Two distinct terms explain this design.</p>
-<p>First, the term autoregressive describes how the model generates text. The model predicts the next word based on its own previous outputs. Once a word is predicted, the network appends that new word to the input sequence and runs the entire process again to predict the subsequent word. The model feeds its own output back into itself in a continuous loop.</p>
+<span style="font-size: 0.9em;"><b><code>&lt;BOS&gt;</code></b> <b><code>&lt;EOS&gt;</code></b> <b><code>&lt;PAD&gt;</code></b> <b><code>i</code></b> <b><code>we</code></b> <b><code>woke</code></b> <b><code>stayed</code></b> <b><code>up</code></b> <b><code>late</code></b> <b><code>early</code></b> <b><code>today</code></b> <b><code>yesterday</code></b></span>
+</div><p>This compact vocabulary contains distinct semantic clusters. The pronouns <code>i</code> and <code>we</code> form one grammatical group, while the temporal modifiers <code>late</code>, <code>early</code>, <code>today</code>, and <code>yesterday</code> form another. These groupings allow the matrix operations to cluster related concepts geometrically in vector space during training.</p>
+<h2>The Architecture</h2>
+<p>Before specifying the tensor dimensions, the network topology must be established. The model uses an autoregressive, Decoder-only Transformer architecture, which forms the standard structural foundation for causal language modeling.</p>
+<p>Two architectural properties define this topology:</p>
+<ul>
+<li><strong>Autoregressive Generation:</strong> The network predicts the next token from its own preceding outputs. Completing a token prediction appends that newly generated token to the input sequence, and the forward pass repeats in a continuous feedback loop to generate subsequent text.</li>
+<li><strong>Decoder-Only Topology:</strong> Early sequence-to-sequence Transformers paired a bidirectional Encoder for processing a source sequence with a causal Decoder for generating a target sequence. Next-token prediction operates on a single continuous sequence rather than translating between two distinct sequences, eliminating the Encoder and retaining only the causal Decoder stack.</li>
+</ul>
 <pre><code class="language-mermaid">graph LR
-    A(&quot;&lt;BOS&gt; i woke up&quot;) --&gt; B(&quot;Transformer&quot;)
+    A(&quot;&amp;lt;BOS&amp;gt; i woke up&quot;) --&gt; B(&quot;Transformer&quot;)
     B --&gt; C(&quot;late&quot;)
     C -. Appended to Input .-&gt; A
 </code></pre>
-<p>Second, the designation Decoder-only refers to the structure of the network. Early Transformers featured two halves. An Encoder processed a source language like French, and a Decoder generated a target language like English. The current objective does not require translation between two different sequences. The model only needs to predict the continuation of a single sequence. The Encoder is discarded entirely, and only the Decoder is retained.</p>
 <h3>The Residual Stream</h3>
-<p>Inside this Decoder exists a central memory bus known as the residual stream. This serves as the most critical structural concept in the entire architecture.</p>
-<p>The residual stream acts as a main highway running continuously from the very first layer of the network to the very last. When a word enters the network, the data is placed on this highway as a vector. As this vector travels through the network, the Attention and Multi-Layer Perceptron blocks do not intercept and replace the values. Instead, these components read from the vector, calculate new contextual information, and then add that new information back into the original vector.</p>
-<p>This additive process ensures that the original information is never destroyed or compressed through a bottleneck. The vector simply accumulates richness and context as the forward pass continues.</p>
+<p>Inside this Decoder exists a central memory bus known as the residual stream, which forms the primary structural backbone of the architecture.</p>
+<p>The residual stream acts as a continuous data highway running from the initial embedding layer to the final output projection. Entering tokens are placed onto this highway as dense vectors. Rather than overwriting those vectors in place, the Attention and Multi-Layer Perceptron (MLP) sub-layers read from the stream, compute contextual updates, and add those updates back into the original vectors.</p>
+<p>This additive update rule preserves the initial representation without compressing it through a destructive bottleneck. Each token vector accumulates semantic and syntactic context as the forward pass progresses across layers.</p>
 <pre><code class="language-mermaid">graph TD
     A(&quot;Initial Vector Input&quot;) --&gt; B(&quot;Residual Stream&quot;)
     B --&gt; C(&quot;Attention Block&quot;)
@@ -177,25 +220,64 @@ This small vocabulary features natural semantic clusters. The pronouns "i" and "
     B --&gt; G(&quot;Final Rich Vector Output&quot;)
 </code></pre>
 <h2>The Dimensions</h2>
-<p>With the architecture established, the specific size of the pathways processing the data must be defined. The dimensions are scaled down to the specifications below.</p>
-<h3>Sequence Length</h3>
-<p>Sequence length dictates how many tokens the model processes at one time. For an input of four tokens, the sequence length is 4.</p>
-<h3>Model Dimensionality</h3>
-<p>Every token is represented by a vector traveling on the residual stream. The variable $d_{model}$ defines the width of that pathway. A 6-dimensional vector represents each token. This allows for straightforward visualization on a screen without losing the capacity to store complex features.</p>
-<h3>Batch Size</h3>
-<p>GPUs act as highly parallel execution units. Instead of passing one sequence through the network at a time, practitioners stack many independent sequences together into a batch to process them simultaneously. Batching repeats the exact same math in parallel across different inputs. The batch size is set to 1 to keep focus entirely on a single sequence.</p>
-<h3>Attention Heads</h3>
-<p>The attention mechanism finds relationships between tokens. Rather than deploying one monolithic attention process, the workload is divided into multiple independent heads. This division allows the network to learn different types of relationships simultaneously. One head might specialize in grammar, while another focuses on semantic meaning. The model utilizes 3 parallel heads.</p>
-<h3>Head Dimensionality</h3>
-<p>The 3 heads divide up the 6-dimensional residual stream. Each individual head operates in a 2-dimensional subspace. The matrices powering the attention mechanism will therefore be simple $6 \times 2$ structures.</p>
-<h3>Feed-Forward Dimension</h3>
-<p>While the residual stream securely moves information between layers, the pathway is too narrow to perform complex reasoning.</p>
-<p>The Multi-Layer Perceptron solves this constraint by expanding the data into a much wider, higher-dimensional space. In this expanded space, complex, entangled concepts can be linearly separated and processed before being compressed back down into the residual stream. An empirical standard in deep learning dictates expanding this space by a factor of 4. The feed-forward dimension is $6 \times 4$, resulting in 24.</p>
+<p>Six hyperparameters govern the shape of every tensor and weight matrix in the toy architecture:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Hyperparameter</th>
+<th align="left">Symbol</th>
+<th align="left">Toy Value</th>
+<th align="left">Architectural Role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Sequence Length</strong></td>
+<td align="left"><code>S</code></td>
+<td align="left"><code>4</code></td>
+<td align="left">Number of tokens processed simultaneously in one forward pass</td>
+</tr>
+<tr>
+<td align="left"><strong>Model Dimensionality</strong></td>
+<td align="left"><code>d_model</code></td>
+<td align="left"><code>6</code></td>
+<td align="left">Width of each token vector traveling along the residual stream</td>
+</tr>
+<tr>
+<td align="left"><strong>Batch Size</strong></td>
+<td align="left"><code>B</code></td>
+<td align="left"><code>1</code></td>
+<td align="left">Number of independent token sequences processed in parallel</td>
+</tr>
+<tr>
+<td align="left"><strong>Attention Heads</strong></td>
+<td align="left"><code>H</code></td>
+<td align="left"><code>3</code></td>
+<td align="left">Number of parallel subspaces used to route token-to-token context</td>
+</tr>
+<tr>
+<td align="left"><strong>Head Dimensionality</strong></td>
+<td align="left"><code>d_k</code>, <code>d_v</code></td>
+<td align="left"><code>2</code></td>
+<td align="left">Subspace width per attention head (<code>d_model / H = 6 / 3</code>)</td>
+</tr>
+<tr>
+<td align="left"><strong>Feed-Forward Dimension</strong></td>
+<td align="left"><code>d_ff</code></td>
+<td align="left"><code>24</code></td>
+<td align="left">Expanded hidden width of the MLP block (<code>4 * d_model = 24</code>)</td>
+</tr>
+</tbody></table>
+<p>Three structural tradeoffs motivate these specific hyperparameter choices:</p>
+<ul>
+<li><strong>Single-Sequence Batching (<code>B = 1</code>):</strong> Parallel hardware accelerators stack multiple independent sequences into a batch to execute matrix multiplications concurrently across inputs. Setting the batch size to <code>1</code> isolates the geometry of a single four-token prompt without altering the underlying linear algebra.</li>
+<li><strong>Multi-Head Subspace Splitting (<code>H = 3</code>, <code>d_k = 2</code>):</strong> Dividing the 6-dimensional residual stream across 3 parallel heads assigns each head a $6 \times 2$ projection matrix. Independent heads can specialize in distinct linguistic relationships simultaneously, such as pairing subjects with verbs in one subspace while tracking temporal modifiers in another.</li>
+<li><strong>Feed-Forward Expansion (<code>d_ff = 24</code>):</strong> A 6-dimensional residual stream suffices to transport token representations between layers, whereas non-linear feature extraction requires a wider workspace. The MLP projects each 6-dimensional vector into a 24-dimensional intermediate space (following the standard $4 \times d_{\text{model}}$ expansion ratio) so entangled concepts can be linearly separated before projecting back into the residual stream.</li>
+</ul>
 <h2>The Central Tensor</h2>
 <p>Before text enters the Transformer, the characters must be converted into numbers. The process begins by assigning a unique integer index to every word in the vocabulary.</p>
-<p>That integer is then mapped to a one-hot encoded vector. A one-hot vector is an array of zeros with a single &#39;1&#39; placed at the index corresponding to that word. For a twelve-word vocabulary, the one-hot vector for the fourth word is a 12-dimensional array consisting of eleven zeros and one &#39;1&#39; in the fourth position.</p>
-<p>When text enters the Transformer, this one-hot vector is embedded into a continuous mathematical space. This embedding creates the foundational tensor that travels through the entire network. The shape of this tensor is defined as Batch by Sequence Length by Model Dimension.</p>
-<p>For this specific architecture, the shape is $1 \times 4 \times 6$. Since the batch size is 1, the batch dimension can be stripped away, leaving the data as a straightforward $4 \times 6$ matrix moving along the residual stream.</p>
+<p>That integer is then mapped to a one-hot encoded vector. A one-hot vector is an array of zeros with a single <code>1</code> placed at the index corresponding to that word. For a twelve-word vocabulary, the one-hot vector for the fourth word is a 12-dimensional array consisting of eleven zeros and one <code>1</code> in the fourth position.</p>
+<p>Projecting each one-hot vector into a continuous vector space produces the foundational tensor that travels through the network. The full three-dimensional tensor has shape $\text{Batch} \times \text{Sequence Length} \times \text{Model Dimension}$.</p>
+<p>Under the toy hyperparameters, this tensor has shape $1 \times 4 \times 6$. Dropping the unit batch dimension ($B = 1$) leaves a $4 \times 6$ matrix $X$ traveling along the residual stream:</p>
 <p>$$
 X = \begin{bmatrix} 
 \text{-- } \langle \text{BOS} \rangle \text{ vector --} \\
@@ -206,7 +288,7 @@ X = \begin{bmatrix}
 $$</p>
 <p>Every single mathematical operation in the forward pass reads from and writes to this $4 \times 6$ matrix.</p>
 <p>The raw text is then mapped to the vocabulary indices, preparing for the first genuine calculation. The one-hot encoded vectors are transformed into this $4 \times 6$ geometric representation.</p>
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>
 
 <div class="blog-pagination"><div style="flex: 1;"></div>
       <a href="transformers-chapter_01.html" class="pagination-link next">

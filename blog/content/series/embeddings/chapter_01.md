@@ -18,71 +18,71 @@
   }
 </style>
 
-<!-- SUMMARY: Tokenization translates raw text into discrete integer identifiers, but neural networks require continuous representations to perform calculus. The embedding matrix solves this by projecting each discrete token into a high-dimensional vector space via one-hot encoding multiplication, acting as a simple, dense lookup table. -->
+<!-- SUMMARY: Tokenization translates raw text into discrete integer identifiers, but neural networks require continuous representations to perform calculus. The embedding matrix solves this by projecting each discrete token into a high-dimensional vector space via one-hot encoding multiplication, acting as a dense lookup table. -->
 
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p>
 
-The preceding series on Tokenization established the rigorous mathematical process of transforming variable, unstructured text into discrete integer sequences. Through subword compression algorithms like Byte Pair Encoding, it was demonstrated how a system can organically parse language into a highly optimized, finite vocabulary.
+The preceding [Tokenization series](series-tokenization.html) established the mathematical process of transforming variable, unstructured text into discrete integer sequences. Subword compression algorithms such as Byte Pair Encoding parse raw text into a finite, fixed-size vocabulary where every entry maps to a unique integer index.
 
-When text passes through this tokenizer, a word like "walking" might be decomposed into two distinct subword tokens, each mapped to a specific integer ID in our vocabulary:
+Applying this vocabulary lookup to the 8-word toy corpus introduced in the Preface (`The` `quick` `brown` `fox` `jumps` `over` `lazy` `dog`, where $V = 8$) maps each word to a 0-indexed integer identifier from `0` through `7`. Extracting two adjectives from that vocabulary yields two discrete integer IDs:
 
 <div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2; text-align: left;">
-<b><code>walk</code></b> (ID: 4) &nbsp;&nbsp; <b><code>ing</code></b> (ID: 12)
+<b><code>brown</code></b> (ID: 2) &nbsp;&nbsp; <b><code>lazy</code></b> (ID: 6)
 </div>
 
-This is where the Tokenization pipeline ends. However, handing the integer IDs `4` and `12` directly to a neural network presents an immediate mathematical dead end. 
+The tokenization pipeline terminates at these integer assignments. Passing the raw integers `2` and `6` directly into a neural network creates an immediate mathematical contradiction.
 
 ## The Problem with Discrete Integers
 
-Deep learning models operate through continuous mathematics: matrix multiplication, calculus, and gradient descent. Discrete integer IDs are merely categorical labels; they possess no inherent algebraic meaning. 
+Deep learning models operate through continuous mathematics: matrix multiplication, calculus, and gradient descent. Discrete integer IDs function purely as categorical lookup keys and possess no intrinsic algebraic magnitude or metric distance.
 
-If the IDs `4` and `12` are fed directly into a neural network, the model will attempt to perform mathematical operations on them. It might deduce that `12` is three times as large as `4`. It might conclude that the "distance" between `walk` (4) and `ing` (12) is exactly 8. This is mathematically nonsensical. The integer ID `4` does not mean the concept of walking is "smaller" than the suffix `ing`. They are just arbitrary index numbers.
+Feeding the integer IDs `2` and `6` directly into a linear layer forces the network to treat arbitrary dictionary indices as continuous scalar magnitudes. The arithmetic implies that `lazy` (`6`) is three times as large as `brown` (`2`), and that the numerical distance between `brown` (`2`) and `lazy` (`6`) equals `4`. That numerical ordering is an artifact of dictionary assignment rather than a linguistic relationship; the integer `2` does not make the color brown algebraically smaller than the adjective lazy.
 
-To participate in a neural network, these discrete, categorical IDs must be transformed into continuous, dense vectors where every dimension represents a tunable parameter.
+Participating in gradient-based optimization requires transforming these discrete categorical indices into continuous, dense vectors where every coordinate serves as an independently tunable parameter.
 
 ## The One-Hot Encoding
 
-The first step in this transformation is to convert the categorical ID into a mathematically neutral format: a one-hot encoded vector.
+The first step in this transformation converts each integer token ID into a mathematically neutral representation: a **one-hot encoded vector** $\mathbf{x} \in \{0, 1\}^{1 \times V}$.
 
-If the total vocabulary size $(V)$ is 9, the token `walk` (ID 4) can be represented as a vector of length 9 containing all zeros, except for a single `1` at the 4th index.
+A vocabulary of size $V = 8$ represents the token `brown` (index `2` under 0-based indexing) as a row vector of length $8$ containing zeros at every position except index `2`, which holds a single `1`:
 
 $$
-\mathbf{x}_{walk} = \begin{bmatrix} 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \end{bmatrix}_{1 \times 9}
+\mathbf{x}_{\text{brown}} = \begin{bmatrix} 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \end{bmatrix}_{1 \times 8}
 $$
 
-This sparse vector allows the network to process the categorical identity of the token without accidentally inferring any false mathematical magnitude. The `1` simply states "this token is present", while the `0`s state "these other tokens are not". However, a one-hot vector is completely sparse and contains no semantic depth. It must be projected into a continuous space.
+This sparse basis vector encodes the categorical identity of the token without introducing false numerical ordering across vocabulary entries. The `1` at index `2` marks the presence of `brown`, while the `0` entries at indices `0, 1, 3, 4, 5, 6, 7` mark the absence of every other vocabulary token. A one-hot vector remains completely sparse and fixed, providing no tunable parameters to capture semantic similarity. Encoding continuous relationships requires projecting this sparse vector into a learnable coordinate space.
 
 ## The Embedding Matrix ($W_E$)
 
-To give these tokens continuous algebraic meaning, a massive grid of random numbers known as the embedding matrix is initialized, typically denoted as $W_E$. 
+Projecting discrete tokens into a continuous vector space requires initializing a two-dimensional parameter grid called the **embedding matrix**, denoted as $W_E \in \mathbb{R}^{V \times d_{\text{model}}}$.
 
-This matrix serves as a dense lookup table. It contains exactly one row for every possible token in the architecture's predefined vocabulary, and the width of every row is defined by the network's internal model dimensionality ($d_{model}$). 
+The matrix $W_E$ operates as a parameterized lookup table. The matrix allocates one row for each of the $V$ tokens in the vocabulary, and the width of each row equals the model hidden dimensionality $d_{\text{model}}$.
 
-If the vocabulary size $V$ is 9, and the vector dimensionality $d_{model}$ is 512, the embedding matrix requires exactly $9 \times 512$ parameters. At the moment of initialization, every single one of these parameters is just a random decimal number.
+The toy configuration with vocabulary size $V = 8$ and embedding dimension $d_{\text{model}} = 3$ instantiates an $8 \times 3$ embedding matrix containing $8 \times 3 = 24$ learnable parameters (whereas a production architecture with $V = 50,000$ and $d_{\text{model}} = 512$ instantiates $50,000 \times 512 = 25,600,000$ parameters). At initialization, every entry $w_{i,m}$ (representing vocabulary row $i \in \{0, \dots, V-1\}$ and embedding dimension $m \in \{1, \dots, d_{\text{model}}\}$) is sampled as a random floating-point number.
 
 ## The Mathematical Extraction
 
-How does the network transition from the sparse one-hot vector to the dense 512-dimensional vector? Through standard matrix multiplication.
+Standard vector-matrix multiplication maps the sparse one-hot row vector $\mathbf{x}_{\text{brown}} \in \mathbb{R}^{1 \times 8}$ to its dense embedding vector $\mathbf{h} \in \mathbb{R}^{1 \times 3}$.
 
-By multiplying the one-hot vector $\mathbf{x}_{walk}$ by the embedding matrix $W_E$, the mathematics dictate that all rows multiplied by `0` are canceled out, leaving only the 4th row (multiplied by `1`) to pass through. 
-
-$$
-\mathbf{x}_{walk} = \begin{bmatrix} 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \end{bmatrix}_{1 \times 9} \times \begin{bmatrix}
-w_{1,1} & \dots & w_{1,512} \\
-w_{2,1} & \dots & w_{2,512} \\
-w_{3,1} & \dots & w_{3,512} \\
-w_{4,1} & \dots & w_{4,512} \\
-\vdots & \ddots & \vdots \\
-w_{9,1} & \dots & w_{9,512}
-\end{bmatrix}_{9 \times 512}
-$$
+Multiplying the one-hot vector $\mathbf{x}_{\text{brown}}$ by the embedding matrix $W_E$ scales every row $i \neq 2$ by $0$ and scales row $2$ by $1$, isolating the third row of the matrix:
 
 $$
-= \begin{bmatrix} w_{4,1} & w_{4,2} & \dots & w_{4,512} \end{bmatrix}_{1 \times 512}
+\mathbf{h} = \mathbf{x}_{\text{brown}} \times W_E = \begin{bmatrix} 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \end{bmatrix}_{1 \times 8} \times \begin{bmatrix}
+w_{0,1} & w_{0,2} & w_{0,3} \\
+w_{1,1} & w_{1,2} & w_{1,3} \\
+\mathbf{w_{2,1}} & \mathbf{w_{2,2}} & \mathbf{w_{2,3}} \\
+w_{3,1} & w_{3,2} & w_{3,3} \\
+\vdots & \vdots & \vdots \\
+w_{7,1} & w_{7,2} & w_{7,3}
+\end{bmatrix}_{8 \times 3}
 $$
 
-This matrix multiplication involves no learning; it is the linear algebra mechanism for selecting a specific row from a table. The token `walk` has now been successfully mapped from a discrete integer ID into a continuous, 512-dimensional vector of random numbers. 
+$$
+\mathbf{h} = \begin{bmatrix} w_{2,1} & w_{2,2} & w_{2,3} \end{bmatrix}_{1 \times 3} = \begin{bmatrix} -0.3 & 0.9 & 0.4 \end{bmatrix}_{1 \times 3}
+$$
 
-The gap into the continuous vector space has been bridged. The nature of these random numbers, the structure of high-dimensional geometry, and the mathematical implications of randomly scattering tokens across this landscape are explored next.
+Here $\mathbf{h}$ denotes the extracted $1 \times 3$ hidden embedding vector for `brown`, populated with the concrete initial weights $\begin{bmatrix} -0.3 & 0.9 & 0.4 \end{bmatrix}$ traced throughout Chapters 3 through 7. This vector-matrix multiplication performs a linear row-selection operation: the one-hot encoding plucks row `2` from $W_E$, mapping the discrete integer ID `2` into a continuous vector of tunable parameters.
 
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p>
+The projection through $W_E$ bridges the boundary between discrete token indices and continuous vector geometry. The next chapter examines the high-dimensional geometric structure of these randomly initialized vectors and the mathematical consequences of scattering tokens across a high-dimensional space.
+
+<p><em>Prefer to read this offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p>

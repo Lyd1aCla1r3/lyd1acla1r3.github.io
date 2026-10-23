@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -118,88 +159,115 @@
     <li><a href="index.html">Blog</a></li><li><a href="index.html#tab-perspectives">Perspectives</a></li><li aria-current="page">The Mathematics of Parallel Training: Teacher Forcing vs. Inference</li></ol></nav>
         <article class="blog-post ">
 <h1>The Mathematics of Parallel Training: Teacher Forcing vs. Inference</h1>
-<!-- SUMMARY: A step-by-step mathematical walkthrough contrasting the parallel nature of Transformer training with the sequential bottleneck of inference. A concrete toy example traces the tensor algebra of causal masking and cross-entropy loss, which makes the mechanics of Teacher Forcing explicit without relying on abstraction. --><p>A fascinating divergence exists between how large language models are trained and how they operate upon deployment. Training a model takes months of processing trillions of tokens, yet the finished model generates a response in seconds. This discrepancy stems from a fundamental difference in how the two phases use the architecture. Training is highly parallelized, whereas deployment, commonly referred to as inference, is strictly sequential.</p>
-<p>During inference, a model generates text one token at a time. A model writing a paragraph cannot write the third sentence without first writing the second. Training at modern model sizes would be computationally impossible with this same sequential process. Researchers avoid the problem with a mathematical technique called Teacher Forcing.</p>
-<p>Rather than discussing these concepts abstractly, this article will construct a small toy example. Tracing the exact matrix operations makes it explicitly clear how Teacher Forcing allows a neural network to process an entire sequence simultaneously.</p>
+<!-- SUMMARY: A step-by-step mathematical walkthrough contrasting the parallel nature of Transformer training with the sequential bottleneck of inference. A concrete toy example traces the tensor algebra of causal masking and cross-entropy loss, which makes the mechanics of Teacher Forcing explicit without relying on abstraction. --><p>A fundamental operational divergence exists between how large language models are trained and how they execute upon deployment. Training a model requires months of processing trillions of tokens, yet the deployed model generates a response in seconds. This discrepancy stems from how the two phases utilize the Transformer architecture. Training is massively parallelized across entire token sequences, whereas deployment, commonly referred to as inference, is strictly sequential.</p>
+<p>During inference, a model generates text one token at a time. A model generating a paragraph cannot produce the third token without first generating the second. Training at modern parameter scales would be computationally intractable under that sequential dependency. Transformer training bypasses this bottleneck through a mathematical technique called Teacher Forcing.</p>
+<p>A concrete numerical walkthrough makes this architectural divide explicit. Tracing the step-by-step matrix operations demonstrates how Teacher Forcing enables a neural network to process an entire token sequence simultaneously.</p>
 <h2>The Auto-Regressive Bottleneck of Inference</h2>
-<p>Consider a scenario where the model must complete the simple sequence &quot;i woke up&quot;, with the goal of predicting the word &quot;late&quot;.</p>
-<p>During inference, the model begins with the first word, &quot;i&quot;. It performs a series of matrix multiplications to predict the next word, &quot;woke&quot;. Next, it appends this new word to its context, creating the input &quot;i woke&quot;, and performs all the calculations again to predict &quot;up&quot;.</p>
-<p>This dependency is the auto-regressive bottleneck: predicting step three mathematically requires the result from step two, so the model has no way to skip ahead.</p>
-<p>Assume the model utilizes an embedding dimension of $d_{model} = 4$, meaning every word is translated into a vector of four numbers. The input tensor for the word &quot;i&quot; at time step $t=1$ then has a shape of $1 \times 1 \times 4$. The final output is a single probability distribution predicting one word.</p>
+<p>Consider a scenario where the model must complete the three-token sequence <code>&quot;i woke up&quot;</code> with the goal of predicting the next token, <code>&quot;late&quot;</code>.</p>
+<p>During inference, the model begins with the first token, <code>&quot;i&quot;</code>. It executes a full forward pass of matrix multiplications to predict the next token, <code>&quot;woke&quot;</code>. Next, it appends that predicted token to its running context, forming the two-token input <code>&quot;i woke&quot;</code>, and repeats the entire forward pass to predict <code>&quot;up&quot;</code>.</p>
+<p>This serial dependency defines the auto-regressive bottleneck: predicting step three mathematically requires the output generated at step two, leaving no way to skip ahead during generation.</p>
+<p>Assume the model uses an embedding dimension of $d_{\text{model}} = 4$, mapping every token to a four-element vector. The input tensor for the single token <code>&quot;i&quot;</code> at time step $t=1$ has a shape of $1 \times 1 \times 4$, representing a batch size of $1$, a sequence length of $1$, and an embedding dimension of $4$. The forward pass yields a single probability distribution predicting one next token.</p>
 <h2>Bypassing the Bottleneck: Teacher Forcing</h2>
-<p>Training avoids this sequential trap entirely, because the ground truth sequence &quot;i woke up late&quot; is known in advance and the architecture does not need to guess one word at a time.</p>
-<p>Instead, Teacher Forcing feeds the entire sequence into the model simultaneously. The input tensor $X$ now represents the three starting words, &quot;i woke up&quot;, all at once. Its shape expands to $1 \times 3 \times 4$, representing one sequence, three words, and four dimensions.</p>
-<p>However, presenting the entire sequence at once introduces a critical flaw. Processing the words &quot;i woke up&quot; simultaneously could allow the attention mechanism to let the word &quot;i&quot; look ahead at &quot;woke&quot; to figure out the context. A model that can see the future during training circumvents the learning process entirely.</p>
+<p>Training avoids this sequential trap because the complete ground-truth sequence <code>&quot;i woke up late&quot;</code> is already available in the training corpus, so the architecture does not need to wait for its own prior predictions before advancing to subsequent positions.</p>
+<p>Instead, Teacher Forcing feeds the entire input sequence into the model simultaneously. The input tensor $X$ encapsulates all three starting tokens, <code>&quot;i woke up&quot;</code>, in a single batch. Its shape expands to $1 \times 3 \times 4$, representing one sequence, three tokens, and four embedding dimensions.</p>
+<p>Presenting the entire sequence at once introduces a structural flaw: information leakage from future positions. Processing the sequence <code>&quot;i woke up&quot;</code> simultaneously allows an unmasked attention mechanism to let the token <code>&quot;i&quot;</code> attend to <code>&quot;woke&quot;</code> and <code>&quot;up&quot;</code> before predicting them. A model that observes future tokens during training circumvents the next-token learning objective entirely.</p>
 <h2>The Solution: The Causal Mask</h2>
-<p>To prevent the model from looking ahead, the architecture employs a mathematical tool known as a Causal Mask.</p>
-<p>The model calculates how much each word should pay attention to the others by generating an Attention Score matrix. For the three-word sequence &quot;i&quot;, &quot;woke&quot;, &quot;up&quot;, this results in a $3 \times 3$ matrix.</p>
-<p>Assume the raw, unmasked attention scores look like this:</p>
+<p>To prevent future tokens from leaking backward in time, the self-attention layer applies an upper-triangular additive matrix called a Causal Mask.</p>
+<h3>Unmasked Attention Scores</h3>
+<p>The self-attention mechanism measures pairwise token affinities by computing an Attention Score matrix $S$. For the three-token sequence <code>&quot;i&quot;</code>, <code>&quot;woke&quot;</code>, <code>&quot;up&quot;</code>, scaled dot-product attention produces a $3 \times 3$ matrix of raw logits:</p>
 <p>$$
-\text{Raw Scores} = \begin{bmatrix}
+S = \begin{bmatrix}
 1.2 & 0.5 & 0.1 \\
 0.4 & 1.5 & -0.2 \\
 0.8 & -0.1 & 1.1
 \end{bmatrix}
 $$</p>
-<p>The first row represents how much attention the word &quot;i&quot; is allocating to &quot;i&quot;, &quot;woke&quot;, and &quot;up&quot;. Notice that &quot;i&quot; is assigning a score of $0.5$ to &quot;woke&quot;. The model is effectively looking into the future.</p>
-<p>Before these scores are converted into final probabilities using the Softmax function, the Causal Mask is applied. This mask holds zeros on and below the diagonal and negative infinity above it:</p>
+<p>The first row represents the attention scores that the query token <code>&quot;i&quot;</code> assigns to the key tokens <code>&quot;i&quot;</code>, <code>&quot;woke&quot;</code>, and <code>&quot;up&quot;</code>. Notice that <code>&quot;i&quot;</code> assigns a positive score of $0.5$ to <code>&quot;woke&quot;</code> and $0.1$ to <code>&quot;up&quot;</code>, meaning position $1$ is reading information from future positions $2$ and $3$.</p>
+<h3>Upper-Triangular Masking</h3>
+<p>The attention layer adds the Causal Mask matrix $M$ to the raw scores $S$ before applying the Softmax function. This mask holds $0$ on and below the main diagonal and $-\infty$ strictly above the diagonal:</p>
 <p>$$
-\text{Mask} = \begin{bmatrix}
+M = \begin{bmatrix}
 0 & -\infty & -\infty \\
 0 & 0 & -\infty \\
 0 & 0 & 0
 \end{bmatrix}
 $$</p>
-<p>Adding this mask to the raw scores turns every future score into negative infinity, because any finite number added to negative infinity becomes negative infinity:</p>
+<p>Adding $M$ to the raw score matrix $S$ converts every upper-triangular future entry into $-\infty$, because any finite real number added to $-\infty$ yields $-\infty$:</p>
 <p>$$
-\text{Masked Scores} = \begin{bmatrix}
+S + M = \begin{bmatrix}
 1.2 & -\infty & -\infty \\
 0.4 & 1.5 & -\infty \\
 0.8 & -0.1 & 1.1
 \end{bmatrix}
 $$</p>
-<p>The rationale for using negative infinity lies in the subsequent step. The network passes these values through the Softmax function, which utilizes exponentiation, or $e^x$, to convert raw scores into probabilities between 0 and 1, and $e^{-\infty}$ evaluates to exactly zero.</p>
+<h3>Softmax Probability Normalization</h3>
+<p>The rationale for using negative infinity lies in the subsequent normalization step. The network passes each row of masked scores through the Softmax function, which applies the exponential function $e^x$ to convert raw logits into normalized probabilities between $0$ and $1$, where $e^{-\infty} = 0$:</p>
 <p>$$
-\text{Softmax}(x_i) = \frac{e^{x_i}}{\sum e^{x_j}}
+\text{Softmax}(x_i) = \frac{e^{x_i}}{\sum_{j=1}^{L} e^{x_j}}
 $$</p>
-<p>The causal mask changed the future scores to negative infinity, so the Softmax function turns those future scores into exactly zero. This forces the probabilities to distribute entirely among the past and present words. Applying Softmax transforms the matrix into a strict probability distribution, shown here rounded to two decimal places:</p>
+<p>Setting upper-triangular entries to $-\infty$ prior to exponentiation drives their Softmax outputs to $0$. Zeroing out those future positions restricts each row&#39;s probability mass exclusively to past and present tokens. Applying Softmax row by row transforms the masked logits into the attention probability matrix $P$, shown below rounded to two decimal places:</p>
 <p>$$
-\text{Probabilities} = \begin{bmatrix}
+P = \begin{bmatrix}
 1.00 & 0.00 & 0.00 \\
 0.25 & 0.75 & 0.00 \\
 0.36 & 0.15 & 0.49
 \end{bmatrix}
 $$</p>
-<p>In the top row, the word &quot;i&quot; now possesses a 100 percent probability of attending to itself, and exactly 0 percent probability of attending to the future words &quot;woke&quot; or &quot;up&quot;. The causal mask mathematically blinds the model to the future. This ensures it predicts the next word using only past and present context, fully solving the lookahead flaw.</p>
+<p>In the top row, the token <code>&quot;i&quot;</code> assigns $100\%$ of its attention probability to itself and $0\%$ to the future tokens <code>&quot;woke&quot;</code> and <code>&quot;up&quot;</code>. The causal mask mathematically blinds each query position to subsequent tokens, restricting next-token predictions to past and present context.</p>
 <h2>Shifted Targets and Parallel Loss</h2>
-<p>Thanks to the causal mask, the model is now generating three independent, non-cheating predictions simultaneously. The single forward pass produces one matrix containing vocabulary predictions for all three positions at once.</p>
-<p>To evaluate the model&#39;s accuracy, the error is calculated by comparing these predictions against a shifted version of the target sequence.</p>
-<ul>
-<li>Input Sequence: <code>[&quot;i&quot;, &quot;woke&quot;, &quot;up&quot;]</code></li>
-<li>Target Sequence: <code>[&quot;woke&quot;, &quot;up&quot;, &quot;late&quot;]</code></li>
-</ul>
-<p>At position 1, the model was restricted to seeing only &quot;i&quot;, and it is penalized based on how accurately it predicted &quot;woke&quot;. At position 2, it saw &quot;i woke&quot;, and is penalized for its prediction of &quot;up&quot;. At position 3, it saw &quot;i woke up&quot;, and is penalized for &quot;late&quot;.</p>
-<p>The Cross-Entropy Loss is calculated for all three positions simultaneously:</p>
+<p>With the causal mask enforced, a single forward pass generates three causal predictions in parallel, producing a $3 \times V$ matrix of vocabulary logits across all three sequence positions simultaneously.</p>
+<h3>Position-Shifted Target Alignment</h3>
+<p>Evaluating prediction accuracy across all three positions requires comparing the output probabilities against a target sequence shifted left by one token position (<code>[&quot;woke&quot;, &quot;up&quot;, &quot;late&quot;]</code> for the input <code>[&quot;i&quot;, &quot;woke&quot;, &quot;up&quot;]</code>):</p>
+<table>
+<thead>
+<tr>
+<th align="left">Position</th>
+<th align="left">Input Token</th>
+<th align="left">Unmasked Context</th>
+<th align="left">Shifted Target</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Step 1</td>
+<td align="left"><code>&quot;i&quot;</code></td>
+<td align="left"><code>&quot;i&quot;</code></td>
+<td align="left"><code>&quot;woke&quot;</code></td>
+</tr>
+<tr>
+<td align="left">Step 2</td>
+<td align="left"><code>&quot;woke&quot;</code></td>
+<td align="left"><code>&quot;i woke&quot;</code></td>
+<td align="left"><code>&quot;up&quot;</code></td>
+</tr>
+<tr>
+<td align="left">Step 3</td>
+<td align="left"><code>&quot;up&quot;</code></td>
+<td align="left"><code>&quot;i woke up&quot;</code></td>
+<td align="left"><code>&quot;late&quot;</code></td>
+</tr>
+</tbody></table>
+<h3>Parallel Cross-Entropy Loss</h3>
+<p>The training objective computes Cross-Entropy Loss across all three positions simultaneously:</p>
 <p>$$
 \mathcal{L} = - \frac{1}{L} \sum_{t=1}^{L} \sum_{v=1}^{V} y_{t,v} \log(\hat{y}_{t,v})
 $$</p>
-<p>To demystify this equation, every variable maps directly to our physical matrix dimensions:</p>
+<p>Every variable in the Cross-Entropy Loss objective maps directly to a dimension of the forward-pass tensors:</p>
 <ul>
-<li>$L$ represents the sequence length, which is 3 in our toy example.</li>
-<li>$t$ indexes the current time step along that sequence, moving iteratively from position 1 to position 3.</li>
-<li>$V$ represents the total size of our vocabulary.</li>
-<li>$v$ iterates through every possible word index in that vocabulary.</li>
-<li>$y$ denotes the ground truth target. This is represented as a binary one-hot vector where the correct target word is a 1 and all incorrect words are 0.</li>
-<li>$\hat{y}$ represents the model&#39;s predicted probability for that specific word, such as 0.12.</li>
+<li><strong>Sequence Length ($L$):</strong> Specifies the total number of token positions evaluated in parallel, which equals $3$ in this toy sequence.</li>
+<li><strong>Time Step Index ($t$):</strong> Indexes the sequence position from $t = 1$ to $t = 3$.</li>
+<li><strong>Vocabulary Size ($V$):</strong> Defines the total number of unique tokens in the model vocabulary.</li>
+<li><strong>Vocabulary Index ($v$):</strong> Iterates across every candidate token index $v \in \{1, \dots, V\}$ in the vocabulary.</li>
+<li><strong>Ground-Truth Target ($y_{t,v}$):</strong> Encodes the true target at position $t$ as a binary one-hot indicator that equals $1$ for the ground-truth next token and $0$ for all other $V - 1$ vocabulary entries.</li>
+<li><strong>Predicted Probability ($\hat{y}_{t,v}$):</strong> Denotes the model&#39;s Softmax probability assigned at position $t$ to vocabulary token $v$, such as $0.12$.</li>
 </ul>
-<p>Multiplying the true binary value by the logarithm of the predicted probability at every time step $t$ and every vocabulary word $v$ calculates the error across the entire sequence. Averaging this error across all $L$ positions produces a single scalar loss. One backward pass then computes the gradients for all three positions at once, so three separate examples of context update the model&#39;s weights in a single step.</p>
+<p>Multiplying the binary target indicator $y_{t,v}$ by the natural logarithm of the predicted probability $\hat{y}_{t,v}$ at every time step $t$ and vocabulary index $v$ extracts the negative log-likelihood of the true target token at each position. Averaging this loss across all $L$ positions produces a single scalar objective $\mathcal{L}$. A single backward pass then computes gradients for all three sequence positions simultaneously, updating the model weights from three distinct context windows in one optimization step.</p>
 <h2>Conclusion</h2>
-<p>This mechanism is the core innovation of Teacher Forcing. Formatting the input as a full sequence, shifting the target answers by one position, and applying a negative infinity causal mask transforms what would have been three slow, sequential steps into one large, parallel matrix multiplication. This linear algebra is what makes training models on trillions of tokens computationally feasible, even as inference remains bound by the auto-regressive bottleneck.</p>
+<p>This parallel formulation is the core computational mechanism of Teacher Forcing. Packing the full token sequence into a single input tensor, shifting the ground-truth target labels by one position, and applying an upper-triangular $-\infty$ causal mask converts $L$ sequential forward passes into one parallelized matrix multiplication pipeline. That linear algebra structure makes pre-training Transformer models on trillions of tokens computationally tractable, even though deployment inference remains bound by the sequential auto-regressive bottleneck.</p>
 
 <div class="blog-pagination">
       <a href="ai-for-code-vs-documentation.html" class="pagination-link prev">
         <span class="pagination-label">Previous</span>
-        <span class="pagination-title">AI for Code vs Documentation</span>
+        <span class="pagination-title">AI for Code vs. Documentation</span>
       </a><div style="flex: 1;"></div></div>
         </article>
     </div>

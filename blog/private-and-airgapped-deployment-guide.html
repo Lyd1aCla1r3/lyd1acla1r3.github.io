@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -118,73 +159,100 @@
     <li><a href="index.html">Blog</a></li><li><a href="guide-private-and-airgapped-deployment.html">Guides: Private and Airgapped Deployment</a></li><li aria-current="page">Private and Airgapped Deployment: Setup Guide</li></ol></nav>
         <article class="blog-post ">
 <h1>Private and Airgapped Deployment: Setup Guide</h1>
-<!-- SUMMARY: A step-by-step installation and configuration guide for assembling the Private and Airgapped Deployment stack, covering air-gap transfer procedures, LlamaIndex and LangGraph setup, LiteLLM gateway configuration for internal-only routing, vLLM and SGLang model serving, Qdrant vector database provisioning, Docling document parsing, Arize Phoenix observability, and Unsloth fine-tuning, with integration wiring and end-to-end verification steps. --><p>The <a href="guide-private-and-airgapped-deployment.html">Private and Airgapped Deployment</a> architecture chapter explains the rationale behind each component selection, the network boundary constraint, and the substitutions required to eliminate all external dependencies. This guide provides the concrete installation commands, configuration snippets, and wiring steps needed to bring that architecture to a working state on isolated infrastructure. All installation steps assume that dependencies have been pre-staged through the air-gap transfer process described in the prerequisites.</p>
+<!-- SUMMARY: A step-by-step installation and configuration guide for assembling the Private and Airgapped Deployment stack, covering air-gap transfer procedures, LlamaIndex and LangGraph setup, LiteLLM gateway configuration for internal-only routing, vLLM and SGLang model serving, Qdrant vector database provisioning, Docling document parsing, Arize Phoenix observability, and Unsloth fine-tuning, with integration wiring and end-to-end verification steps. --><p>The <a href="private-and-airgapped-deployment-configuration.html">Architecture and Configuration</a> chapter explains the rationale behind each component selection, the sealed network boundary constraint, and the substitutions required to eliminate all external cloud dependencies. This setup guide provides the offline staging commands, installation steps, configuration files, and Python wiring scripts needed to bring that architecture to a working state on isolated infrastructure. Every installation command inside the enclave operates exclusively against pre-staged local wheel archives, binaries, and model checkpoints transferred across the physical air gap.</p>
 <h2>Prerequisites</h2>
-<ul>
-<li><strong>Operating system</strong>: Linux with systemd or a container runtime. All components run on Linux; macOS and Windows are not supported for production airgapped deployments.</li>
-<li><strong>Python</strong>: Version 3.11 or later, with <code>pip</code> available. All Python packages must be pre-downloaded as wheel files and transferred to the airgapped network.</li>
-<li><strong>Node.js</strong>: Version 18 or later, with <code>npx</code> available. Required for MCP server execution.</li>
-<li><strong>GPU hardware</strong>: At least one NVIDIA GPU with 24GB+ VRAM for vLLM and SGLang serving. Multi-GPU configurations enable serving larger models. A separate GPU or shared GPU time is needed for Unsloth fine-tuning.</li>
-<li><strong>Network</strong>: Internal network access between all components. No outbound internet connectivity exists by design.</li>
-<li><strong>Pre-staged artifacts</strong>: All model weights, Python packages, Docker images, and Node.js packages must be downloaded on an internet-connected system, transferred to approved physical media, scanned according to organizational security policy, and installed on the airgapped network before proceeding.</li>
-</ul>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Operating system</td>
+<td>Linux host with <code>systemd</code> across all serving, storage, and agent nodes</td>
+</tr>
+<tr>
+<td>Python runtime</td>
+<td>Python 3.11 or later with <code>pip</code> and offline wheel directories pre-staged</td>
+</tr>
+<tr>
+<td>Node.js runtime</td>
+<td>Node.js 18 or later with local <code>node_modules</code> pre-staged for MCP servers</td>
+</tr>
+<tr>
+<td>GPU hardware</td>
+<td>Minimum one 24 GB NVIDIA GPU; four 48 GB GPUs for 70B BF16 serving</td>
+</tr>
+<tr>
+<td>Network topology</td>
+<td>Internal TCP access across enclave hosts with zero outbound internet routes</td>
+</tr>
+<tr>
+<td>Staging media</td>
+<td>Accredited physical transfer media scanned per organizational security policy</td>
+</tr>
+</tbody></table>
 <h3>Air-Gap Transfer Procedure</h3>
-<p>On an internet-connected staging machine, download all required artifacts:</p>
-<pre><code class="language-bash"># Python packages: download wheels for offline installation
+<p>Before entering the isolated network, run the following staging script on an internet-connected Linux workstation matching the target enclave architecture (CPU instruction set, glibc version, and CUDA runtime) to download all Python wheels, model checkpoints, Docling vision weights, and the Qdrant binary:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">stage_airgap_artifacts.sh</span><span class="code-drop__meta">Bash · 27 lines</span></summary><pre><code class="language-bash"># 1. Core framework, gateway, parser, observability, and training wheels
 pip download -d ./offline_packages \
   llama-index llama-index-core llama-index-vector-stores-qdrant \
   llama-index-llms-openai-like llama-index-embeddings-huggingface \
   langgraph langgraph-checkpoint-sqlite langgraph-checkpoint-postgres \
-  &quot;litellm[proxy]&quot; qdrant-client docling arize-phoenix \
+  &quot;litellm[proxy]&quot; qdrant-client docling \
+  arize-phoenix arize-phoenix-otel openinference-instrumentation-llama-index \
   opentelemetry-api opentelemetry-sdk opentelemetry-exporter-otlp \
   unsloth trl peft transformers datasets accelerate bitsandbytes \
   uvicorn fastapi mcp-server-git
 
-# Serving engines: resolved separately because vLLM and SGLang pin conflicting dependency versions
-pip download -d ./offline_packages vllm
-pip download -d ./offline_packages sglang
+# 2. Serving engines (separate folders to avoid FlashInfer version conflicts)
+pip download -d ./offline_vllm vllm
+pip download -d ./offline_sglang sglang
 
-# Model weights: download from Hugging Face
-# The meta-llama repositories are gated: accept the license on Hugging Face and run `hf auth login` first
+# 3. Gated Llama 3.1 checkpoints, BGE embeddings, and Docling vision models
 hf download meta-llama/Llama-3.1-70B-Instruct --local-dir ./models/llama-70b
 hf download meta-llama/Llama-3.1-8B-Instruct --local-dir ./models/llama-8b
 hf download BAAI/bge-large-en-v1.5 --local-dir ./models/bge-large
+docling-tools models download --output-dir ./models/docling
 
-# Qdrant binary
+# 4. Qdrant single binary and MCP filesystem server
 curl -L --create-dirs -o ./binaries/qdrant.tar.gz \
   https://github.com/qdrant/qdrant/releases/latest/download/qdrant-x86_64-unknown-linux-gnu.tar.gz
-
-# MCP filesystem server, installed with its npm dependencies
-# (the Git MCP server is the Python package mcp-server-git, downloaded above)
 npm install --prefix ./mcp_servers @modelcontextprotocol/server-filesystem
 </code></pre>
-<p>Transfer the <code>offline_packages/</code>, <code>models/</code>, <code>binaries/</code>, and <code>mcp_servers/</code> directories to approved media and follow the organizational transfer and scanning procedures.</p>
+</details><p>Copy the six staged directories (<code>offline_packages/</code>, <code>offline_vllm/</code>, <code>offline_sglang/</code>, <code>models/</code>, <code>binaries/</code>, and <code>mcp_servers/</code>) onto accredited transfer media, complete cryptographic hash verification and malware scanning at the security boundary, and mount the verified directories on the target enclave hosts. Keeping the vLLM and SGLang wheel caches in separate folders prevents binary wheel collisions during offline installation.</p>
 <h2>Step 1: LlamaIndex and LangGraph</h2>
-<p>LlamaIndex provides the RAG-focused agent framework, and LangGraph provides the orchestration layer. Install from pre-staged wheel files:</p>
-<pre><code class="language-bash">pip install --no-index --find-links ./offline_packages \
+<p>LlamaIndex provides the retrieval-first agent framework, and LangGraph provides stateful multi-agent orchestration. Install both libraries and their Qdrant, local Hugging Face embedding, and OpenAI-compatible LLM adapters from the pre-staged wheel directory using <code>--no-index</code> and <code>--find-links</code>:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">install-frameworks.sh</span><span class="code-drop__meta">Bash · 5 lines</span></summary><pre><code class="language-bash">pip install --no-index --find-links ./offline_packages \
   llama-index llama-index-core llama-index-vector-stores-qdrant \
   llama-index-llms-openai-like llama-index-embeddings-huggingface \
-  langgraph langgraph-checkpoint-sqlite
+  langgraph langgraph-checkpoint-sqlite langgraph-checkpoint-postgres
 </code></pre>
-<p>Production deployments should add the PostgreSQL checkpointer for multi-process state access:</p>
-<pre><code class="language-bash">pip install --no-index --find-links ./offline_packages \
-  langgraph-checkpoint-postgres
-</code></pre>
+</details><p>The <code>--no-index</code> flag prevents pip from attempting any connection to the public Python Package Index, which would time out or trigger intrusion-detection alerts inside a sealed subnet. Including both the SQLite and PostgreSQL checkpointer wheels allows developers to test workflows locally against a single file before switching the connection string to an internal PostgreSQL cluster.</p>
 <p><strong>Verification</strong>:</p>
-<pre><code class="language-python">from importlib.metadata import version
+<p>Save and run <code>verify_frameworks.py</code> to confirm that both LlamaIndex and LangGraph load cleanly from the offline environment:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">verify_frameworks.py</span><span class="code-drop__meta">Python · 5 lines</span></summary><pre><code class="language-python">from importlib.metadata import version
 import llama_index.core
-import langgraph
+
 print(f&quot;LlamaIndex Core: {llama_index.core.__version__}&quot;)
 print(f&quot;LangGraph: {version(&#39;langgraph&#39;)}&quot;)
 </code></pre>
-<p>A successful installation prints both version numbers without import errors.</p>
-<h2>Step 2: Qdrant</h2>
-<p>Qdrant provides the vector database as a single binary with no external dependencies. Extract the pre-staged binary:</p>
-<pre><code class="language-bash">mkdir -p /opt/qdrant
-tar -xzf ./binaries/qdrant.tar.gz -C /opt/qdrant
+</details><pre><code class="language-bash">python verify_frameworks.py
 </code></pre>
-<p>Create a configuration file at <code>/opt/qdrant/config.yaml</code>:</p>
-<pre><code class="language-yaml">storage:
+<p>The script prints both semantic version strings and exits with status code zero.</p>
+<h2>Step 2: Qdrant</h2>
+<p>Qdrant runs as a single compiled Rust binary with zero container or external database dependencies, simplifying security accreditation on locked-down Linux servers. Extract the pre-staged archive into <code>/opt/qdrant</code>:</p>
+<pre><code class="language-bash">mkdir -p /opt/qdrant
+tar -xzf qdrant.tgz \
+  -C /opt/qdrant
+</code></pre>
+<p>Create <code>/opt/qdrant/config.yaml</code> to store vector payloads on disk, bind HTTP port 6333 and gRPC port 6334, and disable outbound telemetry:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">/opt/qdrant/config.yaml</span><span class="code-drop__meta">YAML · 12 lines</span></summary><pre><code class="language-yaml">storage:
   storage_path: /opt/qdrant/storage
   on_disk_payload: true
 
@@ -197,11 +265,9 @@ cluster:
 
 telemetry_disabled: true
 </code></pre>
-<p>Start the Qdrant server:</p>
-<pre><code class="language-bash">/opt/qdrant/qdrant --config-path /opt/qdrant/config.yaml
-</code></pre>
-<p>For production deployments, create a systemd service:</p>
-<pre><code class="language-ini">[Unit]
+</details><p>For production operation, register <code>qdrant.service</code> under <code>/etc/systemd/system/</code> so the service manager supervises the binary and restarts it automatically across host reboots:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">/etc/systemd/system/qdrant.service</span><span class="code-drop__meta">INI · 13 lines</span></summary><pre><code class="language-ini">[Unit]
 Description=Qdrant Vector Database
 After=network.target
 
@@ -214,56 +280,58 @@ User=qdrant
 [Install]
 WantedBy=multi-user.target
 </code></pre>
-<p>Initialize a collection using the Python client:</p>
-<pre><code class="language-bash">pip install --no-index --find-links ./offline_packages qdrant-client
-</code></pre>
-<pre><code class="language-python">from qdrant_client import QdrantClient
+</details><p>Install the offline <code>qdrant-client</code> wheel and run <code>scripts/init_qdrant.py</code> to create the <code>internal_documents</code> collection configured for 1,024-dimensional BGE-Large vectors and cosine similarity scoring:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">scripts/init_qdrant.py</span><span class="code-drop__meta">Python · 13 lines</span></summary><pre><code class="language-python">from qdrant_client import QdrantClient
 from qdrant_client.models import VectorParams, Distance
 
 client = QdrantClient(host=&quot;localhost&quot;, port=6333)
-
-client.create_collection(
+client.recreate_collection(
     collection_name=&quot;internal_documents&quot;,
-    vectors_config=VectorParams(
-        size=1024,
-        distance=Distance.COSINE
-    )
+    vectors_config=VectorParams(size=1024, distance=Distance.COSINE),
 )
-
 info = client.get_collection(&quot;internal_documents&quot;)
-print(f&quot;Collection &#39;internal_documents&#39; created: {info.points_count} points.&quot;)
+print(f&quot;Collection ready: {info.points_count} points.&quot;)
 </code></pre>
-<p>The <code>size=1024</code> parameter matches the embedding dimension of the BGE-Large model used in this configuration. Adjust if using a different embedding model.</p>
+</details><pre><code class="language-bash">python \
+  scripts/init_qdrant.py
+</code></pre>
+<p>Matching the collection vector dimension (1,024) to the locally staged BGE-Large checkpoint prevents dimension-mismatch exceptions when LlamaIndex and the batch ingestion pipeline write points into Qdrant.</p>
 <p><strong>Verification</strong>:</p>
-<pre><code class="language-bash">curl http://localhost:6333/collections
+<pre><code class="language-bash">curl -s \
+  localhost:6333/readyz
 </code></pre>
-<p>A successful deployment returns a JSON response listing the created collection.</p>
+<p>The HTTP response confirms that the Qdrant storage engine is ready to accept collection queries.</p>
 <h2>Step 3: vLLM</h2>
-<p>vLLM provides high-throughput inference for general-purpose model requests. Install from pre-staged packages:</p>
-<pre><code class="language-bash">pip install --no-index --find-links ./offline_packages vllm
+<p>vLLM handles high-concurrency chat generation and pooled BGE embedding inference against local safetensors weights. Install <code>vllm</code> inside a dedicated virtual environment from <code>./offline_vllm</code>:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">install-vllm-airgapped.sh</span><span class="code-drop__meta">Bash · 2 lines</span></summary><pre><code class="language-bash">pip install --no-index \
+  --find-links ./offline_vllm vllm
 </code></pre>
-<p>Start the vLLM server using the pre-staged model weights:</p>
-<pre><code class="language-bash">vllm serve /path/to/models/llama-70b \
+</details><p>Launch the primary 70B reasoning server on port 8000 across four GPUs and a second pooled embedding server on port 8003 pointed directly at the local filesystem paths:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">start-vllm-airgapped.sh</span><span class="code-drop__meta">Bash · 15 lines</span></summary><pre><code class="language-bash">vllm serve /path/to/models/llama-70b \
   --host 0.0.0.0 \
   --port 8000 \
   --tensor-parallel-size 4 \
   --max-model-len 8192 \
   --enable-prefix-caching \
-  --served-model-name llama-70b-instruct
-</code></pre>
-<p>The <code>--served-model-name</code> flag sets the model name that appears in the API response, which LiteLLM references in its routing table. Using a local path instead of a Hugging Face model ID bypasses any network download attempt.</p>
-<p>Each vLLM process serves one base model. Start a second vLLM process for the BGE-Large embedding model referenced in the LiteLLM configuration, on a GPU that is not already allocated to the 70B deployment:</p>
-<pre><code class="language-bash">vllm serve /path/to/models/bge-large \
+  --served-model-name llama-70b-instruct &amp;
+
+vllm serve /path/to/models/bge-large \
   --host 0.0.0.0 \
   --port 8003 \
   --runner pooling \
-  --served-model-name bge-large-en-v1.5
+  --served-model-name bge-large-en-v1.5 &amp;
 </code></pre>
+</details><p>Passing a local directory path (<code>/path/to/models/llama-70b</code>) instead of a Hugging Face Hub repository identifier instructs vLLM to load weights, tokenizer vocabularies, and generation configs directly from disk without attempting outbound Hub metadata calls. The <code>--served-model-name</code> flag assigns a clean alias that LiteLLM references in its routing table.</p>
 <p><strong>Verification</strong>:</p>
-<pre><code class="language-bash">curl http://localhost:8000/v1/models
+<pre><code class="language-bash">curl -s \
+  localhost:8000/v1/models
 </code></pre>
-<p>A successful deployment returns a JSON list containing <code>llama-70b-instruct</code>.</p>
-<pre><code class="language-bash">curl http://localhost:8000/v1/chat/completions \
+<p>Test a chat completion turn against the local vLLM endpoint to confirm that all tensor-parallel GPU workers respond:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">verify-vllm-airgapped.sh</span><span class="code-drop__meta">Bash · 8 lines</span></summary><pre><code class="language-bash">curl -s http://localhost:8000/v1/chat/completions \
   -H &quot;Content-Type: application/json&quot; \
   -d &#39;{
     &quot;model&quot;: &quot;llama-70b-instruct&quot;,
@@ -271,29 +339,27 @@ print(f&quot;Collection &#39;internal_documents&#39; created: {info.points_count
     &quot;max_tokens&quot;: 50
   }&#39;
 </code></pre>
-<p>A successful test returns a chat completion response.</p>
-<h2>Step 4: SGLang</h2>
-<p>SGLang provides structured output generation for tasks requiring constrained decoding. SGLang pins different versions of shared dependencies such as <code>flashinfer-python</code> than vLLM does, so install it in a separate virtual environment or on the dedicated SGLang host. Install from pre-staged packages:</p>
-<pre><code class="language-bash">pip install --no-index --find-links ./offline_packages sglang
-</code></pre>
-<p>Start the SGLang server using the pre-staged model weights:</p>
-<pre><code class="language-bash">python -m sglang.launch_server \
+</details><h2>Step 4: SGLang</h2>
+<p>SGLang serves the 8-billion-parameter model on port 8001 for low-latency structured JSON decoding and branching agent prompts. SGLang and vLLM pin different CUDA and FlashInfer package versions, so install SGLang in a separate Python virtual environment from <code>./offline_sglang</code> and launch the server against the pre-staged <code>/path/to/models/llama-8b</code> directory:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">start-sglang-airgapped.sh</span><span class="code-drop__meta">Bash · 8 lines</span></summary><pre><code class="language-bash">pip install --no-index --find-links ./offline_sglang sglang
+
+python -m sglang.launch_server \
   --model-path /path/to/models/llama-8b \
   --host 0.0.0.0 \
   --port 8001 \
   --served-model-name llama-8b-structured
 </code></pre>
-<p>The SGLang server runs on a separate port from vLLM, allowing both engines to operate concurrently. A smaller model is typical for the SGLang deployment, because structured output tasks involve shorter sequences and benefit from lower latency rather than maximum model capability.</p>
+</details><p>Binding port 8001 lets SGLang run alongside vLLM without port collisions while LiteLLM routes requests between the two engines transparently. Routing schema-constrained extraction tasks to this smaller 8B model keeps the 70B vLLM cluster free for deep multi-document synthesis.</p>
 <p><strong>Verification</strong>:</p>
-<pre><code class="language-bash">curl http://localhost:8001/v1/models
+<pre><code class="language-bash">curl -s \
+  localhost:8001/v1/models
 </code></pre>
-<p>A successful deployment returns a JSON list containing <code>llama-8b-structured</code>.</p>
+<p>The endpoint returns a JSON catalog listing <code>llama-8b-structured</code>.</p>
 <h2>Step 5: LiteLLM Gateway</h2>
-<p>LiteLLM provides the unified gateway between LlamaIndex agents and the local serving engines. Install from pre-staged packages:</p>
-<pre><code class="language-bash">pip install --no-index --find-links ./offline_packages &quot;litellm[proxy]&quot; uvicorn
-</code></pre>
-<p>Create <code>litellm_config.yaml</code> with internal-only routing:</p>
-<pre><code class="language-yaml">model_list:
+<p>LiteLLM unifies the internal vLLM and SGLang servers behind a single OpenAI-compatible gateway on port 4000 so agent code never hardcodes GPU hostnames or engine ports. Create <code>litellm_config.yaml</code> with internal-only <code>api_base</code> endpoints and the <code>arize_phoenix</code> telemetry callback:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">litellm_config.yaml</span><span class="code-drop__meta">YAML · 25 lines</span></summary><pre><code class="language-yaml">model_list:
   - model_name: llama-70b
     litellm_params:
       model: openai/llama-70b-instruct
@@ -318,55 +384,68 @@ litellm_settings:
 general_settings:
   master_key: sk-internal-master-key
 </code></pre>
-<p>Replace <code>vllm-server</code> and <code>sglang-server</code> with the actual hostnames or IP addresses of the serving machines. Every <code>api_base</code> entry points to an internal address; no external URLs appear in the configuration.</p>
-<p>Start the LiteLLM proxy:</p>
-<pre><code class="language-bash">litellm --config litellm_config.yaml --host 0.0.0.0 --port 4000
+</details><p>Install the proxy package from <code>./offline_packages</code>, replace <code>vllm-server</code> and <code>sglang-server</code> with the internal IP addresses or enclave DNS hostnames of the GPU nodes, and start the proxy on port 4000:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">start-litellm-airgapped.sh</span><span class="code-drop__meta">Bash · 6 lines</span></summary><pre><code class="language-bash">pip install --no-index --find-links ./offline_packages &quot;litellm[proxy]&quot; uvicorn
+
+litellm \
+  --config litellm_config.yaml \
+  --host 0.0.0.0 \
+  --port 4000
 </code></pre>
-<p><strong>Verification</strong>:</p>
-<pre><code class="language-bash">curl http://localhost:4000/v1/models \
+</details><p><strong>Verification</strong>:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">verify-litellm-airgapped.sh</span><span class="code-drop__meta">Bash · 2 lines</span></summary><pre><code class="language-bash">curl -s http://localhost:4000/v1/models \
   -H &quot;Authorization: Bearer sk-internal-master-key&quot;
 </code></pre>
-<p>A successful deployment returns a JSON list of the three configured models.</p>
+</details><p>The proxy returns a JSON model list containing <code>llama-70b</code>, <code>llama-8b-structured</code>, and <code>bge-large-embedding</code>.</p>
 <h2>Step 6: Docling</h2>
-<p>Docling provides local document parsing. Install from pre-staged packages:</p>
-<pre><code class="language-bash">pip install --no-index --find-links ./offline_packages docling
+<p>Docling converts PDFs and DOCX specifications into structured Markdown using pre-staged local vision models. Install <code>docling</code> from <code>./offline_packages</code> and point <code>DOCLING_ARTIFACTS_PATH</code> at the transferred model weights directory:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">docling_env.sh</span><span class="code-drop__meta">Bash · 3 lines</span></summary><pre><code class="language-bash">pip install --no-index --find-links ./offline_packages docling
+export DOCLING_ARTIFACTS_PATH=&quot;/path/to/models/docling&quot;
+export HF_HUB_OFFLINE=1
 </code></pre>
-<p>Docling&#39;s compact vision models must be pre-staged along with the Python packages. On the internet-connected staging machine, run <code>docling-tools models download</code>, which stores the models in <code>~/.cache/docling/models</code>. Copy that directory to the airgapped system and point Docling at it with the <code>DOCLING_ARTIFACTS_PATH</code> environment variable:</p>
-<pre><code class="language-bash">export DOCLING_ARTIFACTS_PATH=&quot;/path/to/docling/models&quot;
-</code></pre>
+</details><p>Setting <code>DOCLING_ARTIFACTS_PATH</code> and <code>HF_HUB_OFFLINE=1</code> ensures that <code>DocumentConverter</code> loads layout detection and TableFormer weights strictly from local storage without querying Hugging Face on first execution.</p>
 <p><strong>Verification</strong>:</p>
-<pre><code class="language-python">from docling.document_converter import DocumentConverter
-print(&quot;Docling imported successfully.&quot;)
+<details class="code-drop">
+<summary><span class="code-drop__name">verify_docling.py</span><span class="code-drop__meta">Python · 5 lines</span></summary><pre><code class="language-python">from docling.document_converter import DocumentConverter
+
+conv = DocumentConverter()
+res = conv.convert(&quot;test_document.pdf&quot;)
+print(f&quot;Extracted {len(res.document.texts)} text elements.&quot;)
 </code></pre>
-<p>A successful installation prints the confirmation message. Full verification requires converting a test document:</p>
-<pre><code class="language-python">converter = DocumentConverter()
-result = converter.convert(&quot;test_document.pdf&quot;)
-print(f&quot;Extracted {len(result.document.texts)} text elements.&quot;)
+</details><pre><code class="language-bash">python verify_docling.py
 </code></pre>
+<p>The script parses the test PDF against the offline vision artifacts and prints the extracted text element count.</p>
 <h2>Step 7: Arize Phoenix</h2>
-<p>Arize Phoenix provides self-hosted observability and tracing. Install from pre-staged packages:</p>
-<pre><code class="language-bash">pip install --no-index --find-links ./offline_packages \
-  arize-phoenix opentelemetry-api opentelemetry-sdk opentelemetry-exporter-otlp
+<p>Arize Phoenix provides self-hosted OpenTelemetry trace storage, retrieval span inspection, and embedding drift diagnostics on port 6006. Install Phoenix and the OpenInference LlamaIndex instrumentor from <code>./offline_packages</code>:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">install-phoenix.sh</span><span class="code-drop__meta">Bash · 4 lines</span></summary><pre><code class="language-bash">pip install --no-index --find-links ./offline_packages \
+  arize-phoenix arize-phoenix-otel \
+  openinference-instrumentation-llama-index \
+  opentelemetry-api opentelemetry-sdk opentelemetry-exporter-otlp
 </code></pre>
-<p>Start the Phoenix server:</p>
-<pre><code class="language-bash">phoenix serve --host 0.0.0.0 --port 6006
-</code></pre>
-<p>Set the environment variables that instrumented components use to export traces:</p>
-<pre><code class="language-bash">export PHOENIX_COLLECTOR_ENDPOINT=&quot;http://phoenix-server:6006/v1/traces&quot;
+</details><p>Launch the Phoenix server and export the collector endpoint variables in the shell environments running LiteLLM and the agent scripts:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">start-phoenix.sh</span><span class="code-drop__meta">Bash · 4 lines</span></summary><pre><code class="language-bash">phoenix serve --host 0.0.0.0 --port 6006 &amp;
+export PHOENIX_COLLECTOR_ENDPOINT=&quot;http://phoenix-server:6006/v1/traces&quot;
 export OTEL_EXPORTER_OTLP_ENDPOINT=&quot;http://phoenix-server:6006&quot;
 </code></pre>
-<p>Replace <code>phoenix-server</code> with the actual hostname or IP address. Restart the LiteLLM proxy from a shell where these variables are set so that its <code>arize_phoenix</code> callback exports to this endpoint.</p>
-<p><strong>Verification</strong>:</p>
-<pre><code class="language-bash">curl http://localhost:6006/healthz
+</details><p><strong>Verification</strong>:</p>
+<pre><code class="language-bash">curl -s \
+  localhost:6006/healthz
 </code></pre>
-<p>A successful deployment returns a health status response. Access the Phoenix dashboard at <code>http://phoenix-server:6006</code> from any machine within the internal network.</p>
+<p>The health check returns an HTTP 200 status response, and the web UI is reachable inside the enclave at <code>http://phoenix-server:6006</code>.</p>
 <h2>Step 8: Unsloth</h2>
-<p>Unsloth provides memory-efficient fine-tuning. Install from pre-staged packages:</p>
-<pre><code class="language-bash">pip install --no-index --find-links ./offline_packages \
+<p>Unsloth fine-tunes QLoRA adapters on single-GPU hardware using curated Phoenix trace exports so base open-weight models learn internal domain terminology and report formats. Install Unsloth and its training dependencies from <code>./offline_packages</code>:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">install-unsloth.sh</span><span class="code-drop__meta">Bash · 3 lines</span></summary><pre><code class="language-bash">pip install --no-index --find-links ./offline_packages \
   unsloth trl peft transformers datasets accelerate bitsandbytes
 </code></pre>
-<p>A minimal supervised fine-tuning script for the airgapped environment. Save as <code>scripts/finetune_airgapped.py</code>:</p>
-<pre><code class="language-python">from unsloth import FastLanguageModel
+</details><p>Save <code>finetune_airgapped.py</code> in <code>scripts/</code> to train a rank-16 LoRA adapter against the locally staged <code>/path/to/models/llama-8b</code> checkpoint:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">scripts/finetune_airgapped.py</span><span class="code-drop__meta">Python · 34 lines</span></summary><pre><code class="language-python">from unsloth import FastLanguageModel
 from trl import SFTTrainer, SFTConfig
 from datasets import load_dataset
 
@@ -374,164 +453,105 @@ MODEL_PATH = &quot;/path/to/models/llama-8b&quot;
 OUTPUT_DIR = &quot;./fine-tuned-airgapped&quot;
 
 model, tokenizer = FastLanguageModel.from_pretrained(
-    model_name=MODEL_PATH,
-    max_seq_length=2048,
-    load_in_4bit=True,
+    model_name=MODEL_PATH, max_seq_length=2048, load_in_4bit=True,
 )
-
 model = FastLanguageModel.get_peft_model(
-    model,
-    r=16,
-    lora_alpha=32,
-    target_modules=[&quot;q_proj&quot;, &quot;k_proj&quot;, &quot;v_proj&quot;, &quot;o_proj&quot;],
-    lora_dropout=0,
-    bias=&quot;none&quot;,
+    model, r=16, lora_alpha=32, lora_dropout=0,
+    target_modules=[&quot;q_proj&quot;, &quot;k_proj&quot;, &quot;v_proj&quot;, &quot;o_proj&quot;], bias=&quot;none&quot;,
 )
-
-dataset = load_dataset(
-    &quot;json&quot;,
-    data_files=&quot;/path/to/training_data.jsonl&quot;,
-    split=&quot;train&quot;
+dataset = load_dataset(&quot;json&quot;, data_files=&quot;/path/to/training_data.jsonl&quot;, split=&quot;train&quot;)
+sft_cfg = SFTConfig(
+    output_dir=OUTPUT_DIR, num_train_epochs=3,
+    per_device_train_batch_size=4, gradient_accumulation_steps=4,
+    learning_rate=2e-4, logging_steps=10, save_steps=100,
 )
-
-training_config = SFTConfig(
-    output_dir=OUTPUT_DIR,
-    num_train_epochs=3,
-    per_device_train_batch_size=4,
-    gradient_accumulation_steps=4,
-    learning_rate=2e-4,
-    logging_steps=10,
-    save_steps=100,
-)
-
 trainer = SFTTrainer(
-    model=model,
-    train_dataset=dataset,
-    args=training_config,
-    processing_class=tokenizer,
+    model=model, train_dataset=dataset,
+    args=sft_cfg, processing_class=tokenizer,
 )
-
 trainer.train()
 model.save_pretrained(OUTPUT_DIR)
 tokenizer.save_pretrained(OUTPUT_DIR)
-print(f&quot;Fine-tuned model saved to {OUTPUT_DIR}&quot;)
+print(f&quot;Saved airgapped LoRA adapter to {OUTPUT_DIR}&quot;)
 </code></pre>
-<p>The training data file <code>training_data.jsonl</code> contains instruction-response pairs curated from Arize Phoenix production traces:</p>
-<pre><code class="language-json">{&quot;text&quot;: &quot;&lt;|begin_of_text|&gt;&lt;|start_header_id|&gt;user&lt;|end_header_id|&gt;\n\nSummarize the findings from document SEC-2024-0847.&lt;|eot_id|&gt;&lt;|start_header_id|&gt;assistant&lt;|end_header_id|&gt;\n\nThe document identifies three compliance gaps in the Q3 audit...&lt;|eot_id|&gt;&quot;}
-</code></pre>
-<p>The script saves LoRA adapter weights rather than a full model. Deploy the trained adapter to vLLM on top of the base model:</p>
-<pre><code class="language-bash">vllm serve /path/to/models/llama-8b \
+</details><p>Serve the resulting LoRA adapter through vLLM on port 8002 and register <code>llama-8b-finetuned</code> in <code>litellm_config.yaml</code>:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">serve-lora-airgapped.sh</span><span class="code-drop__meta">Bash · 6 lines</span></summary><pre><code class="language-bash">vllm serve /path/to/models/llama-8b \
   --host 0.0.0.0 \
   --port 8002 \
   --enable-lora \
-  --lora-modules llama-8b-finetuned=/path/to/fine-tuned-airgapped
+  --lora-modules llama-8b-finetuned=./fine-tuned-airgapped
 </code></pre>
-<p>Add the fine-tuned model to the LiteLLM configuration:</p>
-<pre><code class="language-yaml">- model_name: llama-8b-finetuned
-  litellm_params:
-    model: openai/llama-8b-finetuned
-    api_base: http://vllm-server:8002/v1
-    api_key: token-not-used
+</details><p><strong>Verification</strong>:</p>
+<pre><code class="language-bash">python -c &quot;import unsloth&quot;
 </code></pre>
-<p><strong>Verification</strong>:</p>
-<pre><code class="language-python">import unsloth
-import peft
-print(f&quot;Unsloth: {unsloth.__version__}&quot;)
-print(f&quot;PEFT: {peft.__version__}&quot;)
-</code></pre>
-<p>A successful installation prints both version numbers. Full fine-tuning verification requires running the training script with a sample dataset and confirming that the output directory contains adapter weights and tokenizer files.</p>
+<p>The command verifies that Unsloth&#39;s custom Triton kernels and PEFT bindings load cleanly without outbound network checks.</p>
 <h2>Wiring the Components</h2>
-<p>With all components installed individually, the final step connects them into the integrated pipeline described in the architecture chapter.</p>
-<h3>LlamaIndex Agent with LiteLLM and Qdrant</h3>
-<p>Save the following script as <code>scripts/airgapped_agent.py</code>. It configures a LlamaIndex agent to perform retrieval-augmented generation over the local Qdrant collection, routing all inference through LiteLLM:</p>
-<pre><code class="language-python">from llama_index.core import VectorStoreIndex, Settings
+<p>Three integration scripts connect Docling, Qdrant, LlamaIndex, LangGraph, LiteLLM, and Arize Phoenix into a completely offline retrieval and analysis pipeline.</p>
+<h3>LlamaIndex Agent with LiteLLM, Qdrant, and Phoenix</h3>
+<p>Save <code>airgapped_agent.py</code> in <code>scripts/</code> to register OpenInference telemetry with the local Phoenix collector, load local BGE embeddings, query Qdrant, and synthesize answers through LiteLLM:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">scripts/airgapped_agent.py</span><span class="code-drop__meta">Python · 30 lines</span></summary><pre><code class="language-python">from phoenix.otel import register
+from openinference.instrumentation.llama_index import LlamaIndexInstrumentor
+from llama_index.core import VectorStoreIndex, Settings
 from llama_index.vector_stores.qdrant import QdrantVectorStore
 from llama_index.llms.openai_like import OpenAILike
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from qdrant_client import QdrantClient
 
-llm = OpenAILike(
-    model=&quot;llama-70b&quot;,
-    api_base=&quot;http://localhost:4000/v1&quot;,
-    api_key=&quot;sk-internal-master-key&quot;,
-    is_chat_model=True,
-    temperature=0,
+tracer_provider = register(endpoint=&quot;http://localhost:6006/v1/traces&quot;)
+LlamaIndexInstrumentor().instrument(tracer_provider=tracer_provider)
+
+Settings.llm = OpenAILike(
+    model=&quot;llama-70b&quot;, api_base=&quot;http://localhost:4000/v1&quot;,
+    api_key=&quot;sk-internal-master-key&quot;, is_chat_model=True, temperature=0,
 )
-
-embed_model = HuggingFaceEmbedding(
-    model_name=&quot;/path/to/models/bge-large&quot;,
-    trust_remote_code=False,
+Settings.embed_model = HuggingFaceEmbedding(
+    model_name=&quot;/path/to/models/bge-large&quot;, trust_remote_code=False,
 )
+qdrant = QdrantClient(host=&quot;localhost&quot;, port=6333)
+store = QdrantVectorStore(client=qdrant, collection_name=&quot;internal_documents&quot;)
+engine = VectorStoreIndex.from_vector_store(store).as_query_engine(similarity_top_k=5)
 
-Settings.llm = llm
-Settings.embed_model = embed_model
-
-qdrant_client = QdrantClient(host=&quot;localhost&quot;, port=6333)
-vector_store = QdrantVectorStore(
-    client=qdrant_client,
-    collection_name=&quot;internal_documents&quot;,
-)
-
-index = VectorStoreIndex.from_vector_store(vector_store=vector_store)
-query_engine = index.as_query_engine(similarity_top_k=5)
-
-response = query_engine.query(
-    &quot;What are the key findings from the latest security audit?&quot;
-)
-
-print(&quot;Response:&quot;)
-print(response)
-print(f&quot;\nSources: {len(response.source_nodes)} chunks retrieved.&quot;)
+res = engine.query(&quot;What are the key findings from the latest security audit?&quot;)
+print(res)
+print(f&quot;Retrieved {len(res.source_nodes)} source chunks.&quot;)
 </code></pre>
+</details><details class="code-drop">
+<summary><span class="code-drop__name">run-airgapped-agent.sh</span><span class="code-drop__meta">Bash · 1 line</span></summary><pre><code class="language-bash">python scripts/airgapped_agent.py
+</code></pre>
+</details><p>Calling <code>register</code> and <code>LlamaIndexInstrumentor</code> before executing the query guarantees that both the Qdrant vector lookup and the LiteLLM chat completion appear as linked child spans inside the local Arize Phoenix UI.</p>
 <h3>LangGraph Orchestrated Analysis Workflow</h3>
-<p>Save the following script as <code>scripts/airgapped_workflow.py</code>. It defines a LangGraph workflow with two LlamaIndex agents coordinating a multi-step analysis:</p>
-<pre><code class="language-python">from langgraph.graph import StateGraph, START, END
+<p>Save <code>airgapped_workflow.py</code> in <code>scripts/</code> to coordinate a LlamaIndex retrieval node and a synthesis node inside a checkpointed LangGraph state machine:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">scripts/airgapped_workflow.py</span><span class="code-drop__meta">Python · 39 lines</span></summary><pre><code class="language-python">from typing import TypedDict
+from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.sqlite import SqliteSaver
 from llama_index.core import VectorStoreIndex, Settings
 from llama_index.vector_stores.qdrant import QdrantVectorStore
 from llama_index.llms.openai_like import OpenAILike
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from qdrant_client import QdrantClient
-from typing import TypedDict
 
-llm = OpenAILike(
-    model=&quot;llama-70b&quot;,
-    api_base=&quot;http://localhost:4000/v1&quot;,
-    api_key=&quot;sk-internal-master-key&quot;,
-    is_chat_model=True,
-)
-
-embed_model = HuggingFaceEmbedding(
-    model_name=&quot;/path/to/models/bge-large&quot;,
-    trust_remote_code=False,
-)
-
+llm = OpenAILike(model=&quot;llama-70b&quot;, api_base=&quot;http://localhost:4000/v1&quot;, api_key=&quot;sk-internal-master-key&quot;, is_chat_model=True)
 Settings.llm = llm
-Settings.embed_model = embed_model
+Settings.embed_model = HuggingFaceEmbedding(model_name=&quot;/path/to/models/bge-large&quot;, trust_remote_code=False)
 
-qdrant_client = QdrantClient(host=&quot;localhost&quot;, port=6333)
-vector_store = QdrantVectorStore(
-    client=qdrant_client,
-    collection_name=&quot;internal_documents&quot;,
-)
-index = VectorStoreIndex.from_vector_store(vector_store=vector_store)
+store = QdrantVectorStore(client=QdrantClient(host=&quot;localhost&quot;, port=6333), collection_name=&quot;internal_documents&quot;)
+index = VectorStoreIndex.from_vector_store(vector_store=store)
 
 class AnalysisState(TypedDict):
     query: str
     retrieved_context: str
     analysis_result: str
 
-def research_agent(state: AnalysisState) -&gt; AnalysisState:
-    query_engine = index.as_query_engine(similarity_top_k=10)
-    response = query_engine.query(state[&quot;query&quot;])
-    context = &quot;\n\n&quot;.join([n.text for n in response.source_nodes])
-    return {&quot;retrieved_context&quot;: context}
+def research_agent(state: AnalysisState) -&gt; dict:
+    res = index.as_query_engine(similarity_top_k=10).query(state[&quot;query&quot;])
+    return {&quot;retrieved_context&quot;: &quot;\n\n&quot;.join(n.text for n in res.source_nodes)}
 
-def analysis_agent(state: AnalysisState) -&gt; AnalysisState:
-    query_engine = index.as_query_engine(similarity_top_k=3)
-    prompt = f&quot;Based on the following context, provide a detailed analysis:\n\n{state[&#39;retrieved_context&#39;]}\n\nQuestion: {state[&#39;query&#39;]}&quot;
-    response = query_engine.query(prompt)
-    return {&quot;analysis_result&quot;: str(response)}
+def analysis_agent(state: AnalysisState) -&gt; dict:
+    prompt = f&quot;Context:\n{state[&#39;retrieved_context&#39;]}\n\nAnalyze: {state[&#39;query&#39;]}&quot;
+    return {&quot;analysis_result&quot;: str(llm.complete(prompt))}
 
 graph = StateGraph(AnalysisState)
 graph.add_node(&quot;research&quot;, research_agent)
@@ -540,98 +560,64 @@ graph.add_edge(START, &quot;research&quot;)
 graph.add_edge(&quot;research&quot;, &quot;analysis&quot;)
 graph.add_edge(&quot;analysis&quot;, END)
 
-with SqliteSaver.from_conn_string(&quot;airgapped_workflow.db&quot;) as checkpointer:
-    app = graph.compile(checkpointer=checkpointer)
-
-    result = app.invoke(
-        {&quot;query&quot;: &quot;Identify compliance gaps from recent audit documents&quot;},
-        config={&quot;configurable&quot;: {&quot;thread_id&quot;: &quot;analysis-001&quot;}}
-    )
-
-print(&quot;Analysis result:&quot;)
-print(result[&quot;analysis_result&quot;])
+with SqliteSaver.from_conn_string(&quot;airgapped_workflow.db&quot;) as saver:
+    out = graph.compile(checkpointer=saver).invoke({&quot;query&quot;: &quot;Identify compliance gaps&quot;}, config={&quot;configurable&quot;: {&quot;thread_id&quot;: &quot;analysis-001&quot;}})
+    print(out[&quot;analysis_result&quot;])
 </code></pre>
+</details><details class="code-drop">
+<summary><span class="code-drop__name">run-airgapped-workflow.sh</span><span class="code-drop__meta">Bash · 1 line</span></summary><pre><code class="language-bash">python scripts/airgapped_workflow.py
+</code></pre>
+</details><p>The <code>research_agent</code> node queries Qdrant for the top ten relevant chunks and persists them into the <code>retrieved_context</code> key of <code>AnalysisState</code>, and <code>analysis_agent</code> invokes <code>llm.complete(prompt)</code> directly over that persisted context rather than re-querying the vector index.</p>
 <h3>Docling-to-Qdrant Ingestion Pipeline</h3>
-<p>Save the following script as <code>scripts/ingest_airgapped_docs.py</code>:</p>
-<pre><code class="language-python">import os
+<p>Save <code>ingest_airgapped_docs.py</code> in <code>scripts/</code> to convert accredited documents through Docling, chunk the Markdown along paragraph boundaries, compute local BGE embeddings, and upsert deterministic point IDs into Qdrant:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">scripts/ingest_airgapped_docs.py</span><span class="code-drop__meta">Python · 38 lines</span></summary><pre><code class="language-python">import os
+import uuid
 from docling.document_converter import DocumentConverter
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from qdrant_client import QdrantClient
 from qdrant_client.models import PointStruct
-import uuid
 
-DOCS_DIR = &quot;./classified_docs&quot;
-COLLECTION_NAME = &quot;internal_documents&quot;
-CHUNK_SIZE = 500
+DOCS_DIR, COLL = &quot;./classified_docs&quot;, &quot;internal_documents&quot;
+EXTS = (&quot;.pdf&quot;, &quot;.docx&quot;, &quot;.md&quot;, &quot;.txt&quot;)
+embed_model = HuggingFaceEmbedding(model_name=&quot;/path/to/models/bge-large&quot;, trust_remote_code=False)
 
-embed_model = HuggingFaceEmbedding(
-    model_name=&quot;/path/to/models/bge-large&quot;,
-    trust_remote_code=False,
-)
-
-def chunk_text(text, chunk_size=CHUNK_SIZE):
-    &quot;&quot;&quot;Split text into chunks at sentence boundaries.&quot;&quot;&quot;
-    sentences = text.replace(&quot;\n&quot;, &quot; &quot;).split(&quot;. &quot;)
-    chunks = []
-    current = []
-    current_len = 0
-    for sentence in sentences:
-        if current_len + len(sentence) &gt; chunk_size and current:
-            chunks.append(&quot;. &quot;.join(current) + &quot;.&quot;)
-            current = []
-            current_len = 0
-        current.append(sentence)
-        current_len += len(sentence)
-    if current:
-        chunks.append(&quot;. &quot;.join(current))
-    return chunks
+def chunk_md(text, max_chars=600):
+    chunks, cur = [], &quot;&quot;
+    for block in text.split(&quot;\n\n&quot;):
+        if len(cur) + len(block) &gt; max_chars and cur:
+            chunks.append(cur.strip())
+            cur = &quot;&quot;
+        cur = f&quot;{cur}\n\n{block}&quot; if cur else block
+    return chunks + ([cur.strip()] if cur.strip() else [])
 
 def main():
-    converter = DocumentConverter()
-    client = QdrantClient(host=&quot;localhost&quot;, port=6333)
-
-    doc_files = []
-    for root, dirs, files in os.walk(DOCS_DIR):
-        for f in files:
-            if f.endswith((&quot;.pdf&quot;, &quot;.docx&quot;, &quot;.md&quot;, &quot;.txt&quot;)):
-                doc_files.append(os.path.join(root, f))
-
-    print(f&quot;Found {len(doc_files)} documents to process.&quot;)
-
-    for filepath in doc_files:
-        print(f&quot;Processing: {filepath}&quot;)
-        result = converter.convert(filepath)
-        text = result.document.export_to_markdown()
-        chunks = chunk_text(text)
-
-        points = []
-        for i, chunk in enumerate(chunks):
-            embedding = embed_model.get_text_embedding(chunk)
-            points.append(PointStruct(
-                id=str(uuid.uuid4()),
-                vector=embedding,
-                payload={
-                    &quot;text&quot;: chunk,
-                    &quot;source&quot;: filepath,
-                    &quot;doc_type&quot;: os.path.splitext(filepath)[1],
-                    &quot;chunk_index&quot;: i,
-                }
-            ))
-
-        client.upsert(
-            collection_name=COLLECTION_NAME,
-            points=points,
-        )
-        print(f&quot;  Stored {len(chunks)} chunks.&quot;)
-
-    info = client.get_collection(COLLECTION_NAME)
-    print(f&quot;\nTotal points in collection: {info.points_count}&quot;)
+    conv, client = DocumentConverter(), QdrantClient(host=&quot;localhost&quot;, port=6333)
+    for root, _, files in os.walk(DOCS_DIR):
+        for name in [f for f in files if f.endswith(EXTS)]:
+            path = os.path.join(root, name)
+            chunks = chunk_md(conv.convert(path).document.export_to_markdown())
+            points = [
+                PointStruct(
+                    id=str(uuid.uuid5(uuid.NAMESPACE_DNS, f&quot;{path}_{i}&quot;)),
+                    vector=embed_model.get_text_embedding(c),
+                    payload={&quot;text&quot;: c, &quot;source&quot;: path, &quot;chunk_index&quot;: i},
+                )
+                for i, c in enumerate(chunks)
+            ]
+            if points:
+                client.upsert(collection_name=COLL, points=points)
+                print(f&quot;Indexed {path}: {len(points)} chunks.&quot;)
 
 if __name__ == &quot;__main__&quot;:
     main()
 </code></pre>
+</details><details class="code-drop">
+<summary><span class="code-drop__name">run-airgapped-ingest.sh</span><span class="code-drop__meta">Bash · 2 lines</span></summary><pre><code class="language-bash">mkdir -p classified_docs
+python scripts/ingest_airgapped_docs.py
+</code></pre>
+</details><p>Generating point identifiers with <code>uuid.uuid5</code> from the document path and chunk index ensures that re-running the ingestion script after a physical media drop overwrites updated chunks in place instead of creating duplicate vectors.</p>
 <h2>Verification</h2>
-<p>The following end-to-end checks confirm that all components are installed, wired, and operational.</p>
 <table>
 <thead>
 <tr>
@@ -641,62 +627,91 @@ if __name__ == &quot;__main__&quot;:
 </tr>
 </thead>
 <tbody><tr>
-<td>LlamaIndex/LangGraph</td>
-<td><code>python -c &quot;import llama_index.core, langgraph; print(&#39;OK&#39;)&quot;</code></td>
-<td>Prints &quot;OK&quot;</td>
+<td>Agent frameworks</td>
+<td><code>python verify_frameworks.py</code></td>
+<td>Prints installed framework and orchestrator versions</td>
 </tr>
 <tr>
-<td>Qdrant</td>
-<td><code>curl http://localhost:6333/collections</code></td>
-<td>Returns collection list</td>
+<td>Qdrant binary</td>
+<td><code>curl -s localhost:6333/readyz</code></td>
+<td>Confirms Qdrant storage engine is ready</td>
 </tr>
 <tr>
-<td>vLLM</td>
-<td><code>curl http://localhost:8000/v1/models</code></td>
-<td>Returns loaded model list</td>
+<td>vLLM server</td>
+<td><code>curl -s localhost:8000/v1/models</code></td>
+<td>Lists 70B reasoning model alias</td>
 </tr>
 <tr>
-<td>SGLang</td>
-<td><code>curl http://localhost:8001/v1/models</code></td>
-<td>Returns loaded model list</td>
+<td>SGLang server</td>
+<td><code>curl -s localhost:8001/v1/models</code></td>
+<td>Lists 8B structured model alias</td>
 </tr>
 <tr>
 <td>LiteLLM proxy</td>
-<td><code>curl http://localhost:4000/v1/models -H &quot;Authorization: Bearer sk-internal-master-key&quot;</code></td>
-<td>Returns JSON model list</td>
+<td><code>curl -s localhost:4000/v1/models</code></td>
+<td>Lists all three internal model routes</td>
 </tr>
 <tr>
-<td>Docling</td>
-<td><code>python -c &quot;from docling.document_converter import DocumentConverter; print(&#39;OK&#39;)&quot;</code></td>
-<td>Prints &quot;OK&quot;</td>
+<td>Docling parser</td>
+<td><code>python verify_docling.py</code></td>
+<td>Extracts text elements without outbound network calls</td>
 </tr>
 <tr>
-<td>Arize Phoenix</td>
-<td><code>curl http://localhost:6006/healthz</code></td>
-<td>Returns health status</td>
+<td>Phoenix collector</td>
+<td><code>curl -s localhost:6006/healthz</code></td>
+<td>Returns healthy HTTP status</td>
 </tr>
 <tr>
-<td>Unsloth</td>
-<td><code>python -c &quot;import unsloth, peft; print(&#39;OK&#39;)&quot;</code></td>
-<td>Prints &quot;OK&quot;</td>
+<td>Unsloth kernels</td>
+<td><code>python -c &quot;import unsloth&quot;</code></td>
+<td>Exits with code zero and no import errors</td>
 </tr>
 <tr>
-<td>RAG agent</td>
-<td><code>python scripts/airgapped_agent.py</code></td>
-<td>Prints response with retrieved sources</td>
+<td>Traced RAG agent</td>
+<td><code>bash run-airgapped-agent.sh</code></td>
+<td>Prints grounded answer and records span in Phoenix</td>
 </tr>
 <tr>
-<td>Orchestrated workflow</td>
-<td><code>python scripts/airgapped_workflow.py</code></td>
-<td>Prints analysis result from two-agent pipeline</td>
+<td>Agent workflow</td>
+<td><code>bash run-airgapped-workflow.sh</code></td>
+<td>Runs two-node analysis and saves SQLite state</td>
 </tr>
 <tr>
-<td>Document ingestion</td>
-<td>Place test documents in <code>classified_docs/</code>, run <code>python scripts/ingest_airgapped_docs.py</code></td>
-<td>Reports chunks stored per document</td>
+<td>Batch ingestion</td>
+<td><code>bash run-airgapped-ingest.sh</code></td>
+<td>Upserts deterministic BGE vectors into Qdrant</td>
 </tr>
 </tbody></table>
-<p>The <a href="guide-private-and-airgapped-deployment.html">Private and Airgapped Deployment</a> stack is operational once all eleven checks pass. The architecture chapter provides the rationale behind each component selection, the network boundary constraint, and the design decisions governing how the layers interact within a sealed perimeter.</p>
+<h2>Troubleshooting</h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>pip install</code> hangs on external connection</td>
+<td>Pass <code>--no-index</code> and <code>--find-links</code> on every offline install command</td>
+</tr>
+<tr>
+<td>Docling downloads weights at runtime</td>
+<td>Export <code>DOCLING_ARTIFACTS_PATH</code> and <code>HF_HUB_OFFLINE=1</code> before running</td>
+</tr>
+<tr>
+<td>vLLM and SGLang conflict on CUDA wheels</td>
+<td>Install <code>vllm</code> and <code>sglang</code> inside separate virtual environments</td>
+</tr>
+<tr>
+<td>Spans do not appear in Arize Phoenix</td>
+<td>Call <code>phoenix.otel.register</code> and instrument LlamaIndex at startup</td>
+</tr>
+<tr>
+<td>Embedding loader queries Hugging Face Hub</td>
+<td>Pass the local <code>./models/bge-large</code> path and <code>trust_remote_code=False</code></td>
+</tr>
+</tbody></table>
+<p>The <a href="private-and-airgapped-deployment-configuration.html">Private and Airgapped Deployment</a> stack is operational once all eleven verification checks pass. That companion architecture chapter details the sealed perimeter design, component tradeoffs, and layer substitution options.</p>
 <h2>References</h2>
 <ol>
 <li>LlamaIndex Installation Guide, LlamaIndex Inc.</li>

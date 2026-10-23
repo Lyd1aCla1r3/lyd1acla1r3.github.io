@@ -1,39 +1,44 @@
 # Part 20: The Beautiful Cancellation
 
-<!-- SUMMARY: Chaining the derivatives of the cross-entropy loss and the softmax function reveals a mathematical cancellation that simplifies the gradient. This interpretation establishes the primary error signal as the precise difference between the predicted probabilities and the ground truth. -->
+<!-- SUMMARY: Chaining the derivatives of the cross-entropy loss and the softmax function reveals an algebraic cancellation that simplifies the output gradient. This derivation establishes the primary error signal as the direct difference between the predicted probabilities and the ground-truth one-hot targets. -->
 
-The previous phase established the geometry of the cross-entropy loss function by calculating exactly how far the predicted probability distribution strayed from the ground truth one-hot vector. That resulting scalar loss value represents the total error of the entire network. Assigning blame for that accumulated error initiates the backpropagation phase. The very first step requires calculating the gradient of the loss with respect to the final unnormalized scores, known as the logits.
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>
+
+Part 19 established the geometry of the cross-entropy loss function by measuring how far the predicted probability distribution strayed from the ground-truth one-hot vector. That scalar loss value quantifies the total prediction error of the network. Assigning credit and blame for that accumulated error initiates backpropagation, starting with the gradient of the loss with respect to the final unnormalized scores, known as the logits.
 
 ## The Calculus Problem
 
-Backpropagation relies entirely on the chain rule of calculus. Finding how a specific weight deep inside the network contributed to the final error requires multiplying the gradients of every operation situated between that weight and the final loss. The journey backward begins at the very end of the network architecture, tracing from the scalar cross-entropy loss, through the softmax function, and directly into the logits.
+Backpropagation relies on the chain rule of calculus. Determining how a specific weight inside the network contributed to the final error requires multiplying the local derivatives of every operation situated between that weight and the scalar loss. The backward traversal begins at the output boundary of the architecture, moving from the cross-entropy loss, through the Softmax normalization, and into the vocabulary logits.
 
-Taking the derivative of these two final operations individually reveals significant complexity. The softmax function is not an element-wise operation. Modifying the unnormalized logit for a single word inherently changes the output probability of every other word in the vocabulary to maintain a total sum of one. The derivative of softmax is therefore not a simple vector, but rather a full Jacobian matrix tracking the interaction of every single output with every single input. The derivative of the cross-entropy loss introduces further complexity by requiring the derivative of a logarithm, which yields fractional terms.
+Differentiating these two output operations in isolation introduces substantial algebraic complexity. Softmax is a coupled normalization rather than an element-wise function: perturbing the unnormalized logit for a single token alters the denominator sum and shifts the output probability of every token in the vocabulary. The derivative of a Softmax vector with respect to its logit vector forms a dense Jacobian matrix tracking all pairwise output-input interactions:
 
-Multiplying a fractional gradient by a complex Jacobian matrix typically results in a computational bottleneck. A profound mathematical elegance emerges when combining these two specific functions.
+- **Diagonal Entries ($i = j$):** Evaluate to $P_i(1 - P_i)$, measuring how a logit change affects its own token probability.
+- **Off-Diagonal Entries ($i \neq j$):** Evaluate to $-P_i P_j$, capturing how increasing one logit suppresses the probabilities of competing tokens.
+
+The derivative of the cross-entropy loss $-\log(P_{\text{target}})$ introduces an inverse probability factor $-1 / P_{\text{target}}$. Multiplying that fractional gradient through the full Softmax Jacobian appears computationally expensive until the terms are combined algebraically.
 
 ## The Mathematical Elegance
 
-Applying the chain rule to calculate the gradient of the cross-entropy loss $L$ with respect to the pre-softmax logits $z$ causes the complex terms of the Jacobian matrix and the logarithmic derivatives to perfectly cancel each other out. The mathematical proof of this cancellation is a foundational concept in vector calculus, yielding a final derivative that is stunningly simple.
+Applying the chain rule to combine the cross-entropy derivative with the Softmax Jacobian causes the nonlinear fractional terms and coupling products to cancel out. For a single sequence position (or summing positional losses $L = \sum_{t=1}^S L_t$ across the sequence), the gradient of the cross-entropy loss $L$ with respect to the pre-Softmax logit tensor $z$ reduces to a linear subtraction:
 
 $$
 \frac{\partial L}{\partial z} = P - Y
 $$
 
-In this equation, $P$ represents the predicted probability distribution, and $Y$ represents the ground truth one-hot encoded target vector. The gradient of the loss with respect to the logits is strictly the difference between the predicted model probabilities and the actual target states.
+In this expression, $P$ denotes the $4 \times 12$ predicted probability matrix from the Softmax layer, and $Y$ denotes the $4 \times 12$ ground-truth one-hot target matrix. Averaging the loss over $S = 4$ positions scales this matrix by a constant factor of $1/4$, which is absorbed into the optimizer learning rate during parameter updates.
 
 ## Applying the Cancellation
 
-This beautiful cancellation translates directly into the concrete matrices of the toy example. The forward pass generated a sequence of predicted probabilities for the four time steps, which must now be compared against the correct target tokens.
+This algebraic cancellation maps directly onto the concrete matrices of the four-token sequence. Each row compares the forward-pass probability distribution against the one-hot target token for that time step:
 
-| Time Step | Input Token | Target Token | Target Index |
-| :--- | :--- | :--- | :--- |
-| 1 | `<BOS>` | `i` | 3 |
-| 2 | `i` | `woke` | 5 |
-| 3 | `woke` | `up` | 7 |
-| 4 | `up` | `late` | 8 |
+| Time Step | Input Token | Target Token | Target Index | Target Logit Gradient (`P_target - 1`) |
+| :--- | :--- | :--- | :--- | :--- |
+| **Step 1** | `<BOS>` | `i` | `3` | `-0.9157` (`0.0843 - 1.0`) |
+| **Step 2** | `i` | `woke` | `5` | `-0.9169` (`0.0831 - 1.0`) |
+| **Step 3** | `woke` | `up` | `7` | `-0.9167` (`0.0833 - 1.0`) |
+| **Step 4** | `up` | `late` | `8` | `-0.9167` (`0.0833 - 1.0`) |
 
-These target tokens form a matrix of one-hot vectors designated as $Y$. Each row corresponds to a discrete time step, and the column of the correct target token contains a value of exactly `1.0`.
+Stacking the four one-hot target vectors forms the $4 \times 12$ ground-truth matrix $Y$, where each row places a `1.0` at the target vocabulary index and `0` at the remaining eleven indices:
 
 $$
 Y = \begin{bmatrix}
@@ -44,7 +49,7 @@ Y = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-The gradient calculation extracts the predicted probability tensor $P$ generated during the softmax phase. Finding the exact gradient requires subtracting the target matrix $Y$ from the prediction matrix $P$.
+Subtracting the one-hot target matrix $Y$ from the Part 18 probability matrix $P$ produces the $4 \times 12$ logit gradient matrix $\frac{\partial L}{\partial z}$:
 
 $$
 \frac{\partial L}{\partial z} = \begin{bmatrix}
@@ -57,10 +62,13 @@ $$
 
 ## The Physical Intuition
 
-This resulting matrix represents the precise direction and magnitude of the necessary corrections for the unnormalized logits. This gradient acts physically as a set of forces pulling upon the network outputs.
+The matrix $\frac{\partial L}{\partial z}$ encodes both the direction and magnitude of the required correction for every vocabulary logit at every position.
 
-Gradient descent minimizes the total error by subtracting the computed gradient from the active parameters. For the correct token in each sequence, the model predicted a small probability near `0.084` when the ideal value was `1.0`. The subtraction yields a negative gradient of roughly `-0.916`. When the optimizer subtracts this negative value during the update step, it mathematically forces an increase in the unnormalized logit for the correct token.
+Gradient descent reduces loss by subtracting a scaled multiple of the gradient from the parameters. That subtraction induces opposite corrective forces on target and non-target columns:
 
-For all incorrect tokens, the target value was `0.0`. The subtraction yields a positive gradient exactly equal to the mistakenly predicted probability. The optimizer subtracts this positive value, which aggressively decreases the unnormalized logits for all incorrect tokens.
+- **Target Token Columns ($Y_{t,j} = 1.0$):** The forward pass assigned a probability near `0.083` where the target value is `1.0`, producing a large negative gradient near `-0.917`. Subtracting this negative gradient during optimization increases the unnormalized logit for the ground-truth token.
+- **Non-Target Token Columns ($Y_{t,j} = 0.0$):** The subtraction $P_{t,j} - 0.0$ yields a positive gradient equal to the predicted probability mass near `+0.083`. Subtracting this positive gradient pushes down the logits of all eleven incorrect vocabulary candidates in proportion to how much probability mass the model mistakenly allocated to them.
 
-The mathematical cancellation of the softmax and cross-entropy operations produces an exceedingly pure learning signal. This signal gently suppresses the logits of wrong answers proportionally to how strongly the model believed them, while simultaneously pulling up the logit of the correct answer with immense force. Establishing this pristine gradient vector at the output allows the architecture to propagate this learning signal backward through the unembedding matrix and directly into the deepest attention layers of the system.
+Combining cross-entropy loss with Softmax normalization produces a self-balancing error signal at the output boundary. The next stage propagates this $4 \times 12$ gradient matrix backward through the unembedding projection $W_U$ and into the Layer 2 residual stream.
+
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>

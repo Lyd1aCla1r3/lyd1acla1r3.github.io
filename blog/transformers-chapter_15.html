@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -118,21 +159,23 @@
     <li><a href="index.html">Blog</a></li><li><a href="series-transformers.html">Series: Transformers</a></li><li aria-current="page">Part 15: Layer 2 Self-Attention</li></ol></nav>
         <article class="blog-post series-transformers">
 <h1>Part 15: Layer 2 Self-Attention</h1>
-<!-- SUMMARY: The progression into the second layer marks a shift as the self-attention mechanism now operates on contextualized representations rather than static embeddings. By projecting these enriched vectors into new query, key, and value spaces, the mechanism computes relationships between complex semantic clusters. Causality is enforced through lower-triangular masking and the scores are normalized into a strict probability distribution via the softmax function, with the resulting attention probabilities blended against the value matrix to extract refined contextual features. --><p>The progression into the second layer of the Transformer architecture marks a profound shift in how the network processes information. The initial layer operated on relatively static embeddings that primarily encoded isolated vocabulary identity and positional data. The output of that first layer represents something entirely different. The vectors entering Layer 2 are deeply contextualized amalgamations of semantic meaning, local grammar, and specific conceptual features extracted by the Multilayer Perceptron. </p>
-<p>This evolution of the input vectors enables the network to perform hierarchical abstraction. The self-attention mechanism in the first layer essentially resolved basic grammatical relationships and immediate context. The self-attention mechanism in the second layer computes similarities between high-level concepts and complex semantic structures. The architecture is no longer asking how a verb relates to a noun. It is asking how a localized cluster of meaning relates to the broader thematic trajectory of the sequence.</p>
-<p>The foundation for this advanced analysis is the normalized output from the first layer. This matrix serves as the direct input for Layer 2.</p>
+<!-- SUMMARY: The progression into the second layer marks a shift as the self-attention mechanism now operates on contextualized representations rather than static embeddings. By projecting these enriched vectors into new query, key, and value spaces, the mechanism computes relationships between complex semantic clusters. Causality is enforced through lower-triangular masking and the scores are normalized into a strict probability distribution via the softmax function, with the resulting attention probabilities blended against the value matrix to extract refined contextual features. --><p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p><p>Advancing into the second layer of the Transformer architecture shifts how the network routes sequence information. Layer 1 operated on static token embeddings combined with sinusoidal positional encodings. The vectors entering Layer 2 are contextualized amalgamations of lexical identity, local syntax, and conceptual features extracted by the Layer 1 Multi-Layer Perceptron.</p>
+<p>This evolution of the input representations supports hierarchical abstraction. Layer 1 self-attention resolved immediate lexical pairings across the prompt, whereas Layer 2 self-attention computes similarities between composite phrase structures. Rather than testing how an isolated verb relates to a pronoun, Layer 2 evaluates how a contextualized action cluster aligns with the sequence anchors.</p>
+<h2>Subspace Tensors Entering the Masking Stage</h2>
+<p>To keep the complete Layer 2 Head 1 forward trace self-contained for causal masking and Value extraction, this section consolidates the normalized Layer 2 input $X_2$ and the three subspace projections ($Q_2, K_2, V_2$) derived in Part 13.</p>
+<p>The normalized output from Layer 1 serves as the $4 \times 6$ input matrix for Layer 2:</p>
 <p>$$
-\text{Layer 2 Input} = \begin{bmatrix}
+\text{Layer 2 Input } (X_2) = \begin{bmatrix}
 -2.00 &  1.22 &  0.50 &  0.19 & -0.28 &  0.37 \\
 -1.91 &  1.28 &  0.52 & -0.49 &  0.21 &  0.39 \\
  0.04 & -1.55 &  0.18 & -0.82 &  0.52 &  1.62 \\
  0.20 & -1.72 &  0.01 & -0.55 &  0.49 &  1.57
 \end{bmatrix}
 $$</p>
-<p>The mathematical mechanics of self-attention remain identical to the previous layer. The network utilizes unique weight matrices to project these contextualized vectors into distinct Query, Key, and Value subspaces. The difference lies entirely in the nature of the information being projected.</p>
-<p>The Query matrix projects the enriched token vectors into a subspace designed to ask complex, context-aware questions. A token is no longer seeking basic grammatical pairings. It is seeking broader thematic relevance based on the features extracted in the prior layer.</p>
+<p>The self-attention mechanics match Layer 1: three head-specific weight matrices project $X_2$ into 2-dimensional Query, Key, and Value subspaces.</p>
+<p>The Query weight matrix $W_Q^{(2)}$ maps the enriched token vectors into a target-seeking subspace:</p>
 <p>$$
-\text{Layer 2 Head 1 Query Weights} = \begin{bmatrix}
+\text{Layer 2 Head 1 Query Weights } (W_Q^{(2)}) = \begin{bmatrix}
  0.10 & -0.20 \\
 -0.30 &  0.40 \\
  0.50 & -0.10 \\
@@ -141,18 +184,18 @@ $$</p>
 -0.10 & -0.50
 \end{bmatrix}
 $$</p>
-<p>Multiplying the Layer 2 input by this weight matrix yields the specific Query vectors for the first attention head.</p>
+<p>Multiplying $X_2$ by $W_Q^{(2)}$ produces the $4 \times 2$ Query vectors for Head 1:</p>
 <p>$$
-\text{Query Vectors} = \begin{bmatrix}
+\text{Query Vectors } (Q_2) = \begin{bmatrix}
 -0.50 &  0.66 \\
 -0.17 &  0.54 \\
  0.77 & -1.60 \\
  0.69 & -1.58
 \end{bmatrix}
 $$</p>
-<p>The Key matrix performs a complementary operation. It projects the input vectors into a subspace where they broadcast their complex, contextualized identities. These vectors represent the nuanced semantic roles each token now plays within the specific sequence.</p>
+<p>The Key weight matrix $W_K^{(2)}$ projects $X_2$ into a complementary indexing subspace where each token broadcasts its composite syntactic role:</p>
 <p>$$
-\text{Layer 2 Head 1 Key Weights} = \begin{bmatrix}
+\text{Layer 2 Head 1 Key Weights } (W_K^{(2)}) = \begin{bmatrix}
 -0.20 &  0.30 \\
  0.40 & -0.10 \\
 -0.30 &  0.50 \\
@@ -161,18 +204,18 @@ $$</p>
 -0.50 &  0.10
 \end{bmatrix}
 $$</p>
-<p>The resulting Key vectors establish the targets that the Query vectors attempt to match during the dot product calculation.</p>
+<p>The resulting $4 \times 2$ Key vectors establish the indexing targets matched against $Q_2$ in Part 14:</p>
 <p>$$
-\text{Key Vectors} = \begin{bmatrix}
+\text{Key Vectors } (K_2) = \begin{bmatrix}
  0.52 & -0.57 \\
  0.53 & -0.16 \\
 -1.47 &  0.85 \\
 -1.47 &  0.71
 \end{bmatrix}
 $$</p>
-<p>The Value matrix isolates the specific contextual information that is transmitted across the network once the attention scores are finalized. These vectors contain the deeply processed features that other tokens might need to update internal representations.</p>
+<p>The Value weight matrix $W_V^{(2)}$ isolates the contextual payload that will be blended once the attention probabilities are finalized:</p>
 <p>$$
-\text{Layer 2 Head 1 Value Weights} = \begin{bmatrix}
+\text{Layer 2 Head 1 Value Weights } (W_V^{(2)}) = \begin{bmatrix}
  0.30 & -0.10 \\
 -0.20 &  0.40 \\
  0.10 & -0.30 \\
@@ -181,21 +224,20 @@ $$</p>
 -0.10 &  0.50
 \end{bmatrix}
 $$</p>
-<p>The projection generates the final Value vectors for this attention head.</p>
+<p>Multiplying $X_2$ by $W_V^{(2)}$ generates the $4 \times 2$ Value vectors for Head 1:</p>
 <p>$$
-\text{Value Vectors} = \begin{bmatrix}
+\text{Value Vectors } (V_2) = \begin{bmatrix}
 -1.05 &  0.82 \\
 -0.51 &  0.60 \\
  0.77 & -0.13 \\
  0.71 & -0.13
 \end{bmatrix}
 $$</p>
-<p>The stage is now set for the next critical operation. The network has successfully transformed its highly contextualized input into the necessary Query, Key, and Value representations. The subsequent step involves calculating the dot products between these new Queries and Keys to determine the complex attention patterns that define Layer 2.</p>
-<p>By taking the dot product of the Query and Key matrices and applying the scaling factor, the model computes the scaled attention scores. Projecting deeply contextualized tokens into new Query and Key spaces allows them to evaluate their semantic relevance to one another. The resulting matrix of scores indicates exactly how much attention every token attempts to allocate to every other token. The model is now ready to finalize this attention mechanism by applying the causal mask, normalizing the scores into strict probabilities, and extracting the final contextualized features from the Value matrix.</p>
+<p>In Part 14, taking the inner product $Q_2 K_2^T$ and dividing by $\sqrt{d_k} = \sqrt{2}$ produced the $4 \times 4$ scaled attention score matrix. The model now completes Layer 2 Head 1 attention by applying the causal mask, normalizing each row via Softmax, and multiplying by $V_2$.</p>
 <h2>The Causal Mask</h2>
-<p>The model is trained to predict the next token in a sequence in a parallel fashion. To accomplish this, the architecture must strictly enforce the arrow of time. If a token is allowed to look ahead at future tokens, information leaks backward, ruining the capacity of the network to learn predictive dynamics.</p>
-<p>To prevent this information leakage, a lower-triangular causal mask is applied to the scaled attention scores. All positions above the main diagonal are set to negative infinity, $-\infty$. When the Softmax function is applied in the subsequent step, any score of $-\infty$ is driven to exactly zero.</p>
-<p>The scaled attention scores computed from the Query and Key vectors are as follows:</p>
+<p>Autoregressive training predicts the next token at all sequence positions in parallel, requiring the attention graph to respect the arrow of time. Allowing a token position to attend to future tokens leaks target information backward and invalidates autoregressive training.</p>
+<p>Applying a lower-triangular causal mask to the scaled attention scores prevents this look-ahead leakage by setting all entries above the main diagonal to negative infinity ($-\infty$). Exponentiating $-\infty$ during the subsequent Softmax step drives every masked future weight to zero ($e^{-\infty} = 0$).</p>
+<p>The scaled attention scores computed in Part 14 are:</p>
 <p>$$
 \text{Scores} = \begin{bmatrix}
 -0.45 & -0.27 & 0.92 & 0.86 \\
@@ -204,7 +246,7 @@ $$</p>
 0.89 & 0.44 & -1.66 & -1.51
 \end{bmatrix}
 $$</p>
-<p>Applying the causal mask yields strictly historical scores:</p>
+<p>Applying the lower-triangular causal mask yields the causally constrained score matrix:</p>
 <p>$$
 \text{Masked} = \begin{bmatrix}
 -0.45 & -\infty & -\infty & -\infty \\
@@ -214,8 +256,8 @@ $$</p>
 \end{bmatrix}
 $$</p>
 <h2>Normalizing with Softmax</h2>
-<p>The masked scores are unbounded real numbers. To use them as a weighting system, they must be converted into a valid probability distribution where each row sums exactly to one. The Softmax function achieves this by exponentiating each score and dividing by the sum of all exponentiated scores in that row.</p>
-<p>This non-linear operation amplifies larger scores and suppresses smaller ones. Applying Softmax row by row to the masked matrix provides the final Attention Probabilities:</p>
+<p>The unmasked entries in each row remain unbounded real numbers. Converting these unbounded real numbers into normalized attention weights requires mapping each row to a probability distribution that sums to $1.0$. The Softmax function exponentiates each score in a row and divides by the row sum of exponentiated scores.</p>
+<p>This non-linear normalization amplifies higher alignment scores while suppressing negative scores. Applying Softmax row by row to the masked matrix produces the Layer 2 Head 1 Attention Probabilities:</p>
 <p>$$
 \text{Attention Probabilities} = \begin{bmatrix}
 1.00 & 0.00 & 0.00 & 0.00 \\
@@ -224,11 +266,10 @@ $$</p>
 0.55 & 0.35 & 0.04 & 0.05
 \end{bmatrix}
 $$</p>
-<p>An analysis of these probabilities reveals important structural behaviors. The token <code>&lt;BOS&gt;</code> in row 1 is forced to attend entirely to itself since the rest of the sequence is masked. At the final token, &quot;up&quot; in row 4, the attention is heavily distributed back toward the beginning of the sequence, allocating 55% of its focus to <code>&lt;BOS&gt;</code> and 35% to &quot;i&quot;. The deep layers of the Transformer often exhibit this behavior where late tokens rely heavily on early anchoring tokens to ground foundational context.</p>
+<p>Inspecting these probability rows highlights two structural patterns (note that Row 4 sums to $0.99$ at two-decimal display precision, corresponding to $0.5536 + 0.3530 + 0.0432 + 0.0502 = 1.0000$ at four decimal places). In Row 1, the causal mask restricts <code>&lt;BOS&gt;</code> to attend $100\%$ to itself. In Row 4, the final token <code>up</code> concentrates its attention near the start of the sequence, allocating $55\%$ of its weight to <code>&lt;BOS&gt;</code> and $35\%$ to <code>i</code>. Deeper Transformer layers frequently route attention back toward initial boundary and subject tokens to anchor phrase-level representations.</p>
 <h2>Extracting the Value</h2>
-<p>The attention probabilities dictate exactly where each token should look. The final step is to determine what information is actually retrieved. This is the purpose of the Value matrix, $V$.</p>
-<p>The input embeddings were projected into the Value space to define the specific features each token offers to the rest of the sequence. To compute the output of this attention head, the Attention Probabilities matrix is multiplied by the Value matrix. This operation acts as a weighted sum, blending the features of the sequence according to the calculated probabilities.</p>
-<p>Using the Value vectors calculated earlier, the final output for this head is generated through matrix multiplication:</p>
+<p>The attention probability matrix specifies how much weight each token assigns to preceding positions, and the Value matrix $V_2$ defines the feature vectors retrieved from those positions.</p>
+<p>Multiplying the $4 \times 4$ Attention Probabilities matrix by the $4 \times 2$ Value matrix $V_2$ computes a convex combination of Value rows for each sequence position:</p>
 <p>$$
 \text{Head Output} = \begin{bmatrix}
 1.00 & 0.00 & 0.00 & 0.00 \\
@@ -249,7 +290,7 @@ $$</p>
 -0.69 & 0.65
 \end{bmatrix}
 $$</p>
-<p>This mathematical flow is visualized as a sequence of transformations:</p>
+<p>This dataflow executes as a four-stage sequence of matrix operations:</p>
 <pre><code class="language-mermaid">graph TD
     Scores[Scaled Scores] --&gt; Mask[Apply Causal Mask]
     Mask --&gt; Softmax[Apply Softmax]
@@ -258,8 +299,9 @@ $$</p>
     Probs --&gt; Multiply
     Multiply --&gt; Output[Head Output]
 </code></pre>
-<p>This resulting matrix represents an incredibly sophisticated conceptual mixture. The representation for the token &quot;up&quot; in row 4 is no longer just the isolated concept of the word &quot;up&quot;. It has absorbed the physical features of the token &quot;i&quot; and the structural anchor of <code>&lt;BOS&gt;</code>, modulated through two complete layers of Multi-Head Attention and Multi-Layer Perceptrons. </p>
-<p>In the next step of the sequence, these highly refined vectors pass through the final components of Layer 2 to complete the forward pass of the Transformer architecture.</p>
+<p>This $4 \times 2$ output matrix encodes a multi-token feature mixture for Head 1. Row 4, corresponding to <code>up</code>, combines the contextual Value representations of <code>&lt;BOS&gt;</code>, <code>i</code>, <code>woke</code>, and <code>up</code> after two rounds of self-attention and the Layer 1 Multi-Layer Perceptron.</p>
+<p>In Part 16, the projected Layer 2 attention updates merge into the residual stream and pass through the Layer 2 Multi-Layer Perceptron to complete the deep processing stack.</p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="transformers-chapter_14.html" class="pagination-link prev">

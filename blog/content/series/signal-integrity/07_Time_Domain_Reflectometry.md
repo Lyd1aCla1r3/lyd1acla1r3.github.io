@@ -1,14 +1,14 @@
 # Time Domain Reflectometry
 
-<!-- SUMMARY: Time domain reflectometry (TDR) launches a fast step into a transmission line to record impedance mismatches. This guide derives the spatial resolution limit of the incident edge, the masking effect of multiple reflections, and the exact extraction of series inductance and shunt capacitance. -->
+<!-- SUMMARY: Time domain reflectometry (TDR) launches a fast step into a transmission line to record impedance mismatches. The analysis derives the spatial resolution limit of the incident edge, the masking effect of multiple reflections, and the closed-form area extraction of series inductance and shunt capacitance. -->
 
-<p><em>Prefer to read offline? <a href="../../../assets/docs/signal-integrity-ebook-v2.0.pdf" target="_blank" rel="noopener">Download the complete Signal Integrity (Advanced Edition) ebook.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
 
 [Chapter 3](03_Impedance_Reflections_and_Termination.md) derived the reflection coefficient $\Gamma$ and its inversion to impedance, and [Chapter 6](06_Return_Path_Dynamics_and_Parasitic_Effects.md) derived how the capacitance and inductance of a via reflect a fast edge. A time domain reflectometer (TDR) measures those reflections in the laboratory. The instrument launches a voltage step with a short rise time onto a transmission line, records the voltage at its own connector as a function of time, and interprets every deviation from the launched level as a reflection from an impedance change somewhere along the path.
 
 The measurement rests on the wave propagation of [Chapter 1](01_Wave_Propagation_and_Transmission_Lines.md). The step travels through the dielectric between the trace and the reference plane at the velocity $v_p = c/\sqrt{\epsilon_r}$, a reflection returns at the same velocity, and the delay between the launch and the return of a reflection therefore locates the impedance change along the line. The amplitude of the reflection identifies the size of the change, and its polarity identifies whether the structure is predominantly capacitive or inductive. A single measurement thus produces an impedance profile of the whole channel, with distance replaced by time along the horizontal axis.
 
-This chapter is the single home of the TDR measurement. It covers the instrument architecture, the conversion of a measured voltage to impedance, the display signatures of the structures of Chapter 6, the resolution limit set by the rise time, the extraction of a capacitance or inductance from the area of its reflection, and the masking and spreading effects that limit what a TDR can report about features far from the connector.
+The sections below establish the complete TDR measurement framework: the instrument architecture, the conversion from measured port voltage to characteristic impedance, and the time-domain signatures of the reactive structures from [Chapter 6](06_Return_Path_Dynamics_and_Parasitic_Effects.md). Subsequent sections derive the spatial resolution limit set by the step rise time, the closed-form extraction of capacitance and inductance from reflection area, and the masking and dispersion effects that obscure features far from the launch connector.
 
 ## Core Concepts
 
@@ -38,15 +38,17 @@ $$d = \frac{v_p\,\Delta t}{2}$$
 
 The instrument does not know the dielectric constant of the board. The user supplies a velocity factor $V_f = v_p/c$ or a dielectric constant $D_k$, and the instrument uses it to convert time to distance. An incorrect value changes the horizontal scale only. The vertical scale depends on the ratio of two voltages, which the instrument measures directly, so the impedance readings stay correct. A board of known length provides a calibration: the measured delay of a trace of known physical length gives $v_p$, and from it $\epsilon_r$, for that board.
 
-The velocity changes along a path that crosses different materials. A wave that leaves an FR4 trace ($D_k = 4.0$) and enters a Teflon coaxial connector ($D_k = 2.1$) travels faster by the factor $\sqrt{4.0/2.1} = 1.38$. An instrument configured for FR4 therefore reports a connector region that is 1.38 times shorter than its true length, so a 20 mm section appears as 14.5 mm, and every feature beyond it is displaced by the same error. The error is of the order of picoseconds for a via or a connector pad, and it is acceptable there. A long cable with a different dielectric constant displaces all later features by a larger amount, and the instrument must then be configured for the cable and the board separately.
+The propagation velocity changes along a path that crosses different materials. A wave that leaves an FR4 trace ($D_k = 4.0$) and enters a PTFE coaxial connector ($D_k = 2.1$) travels faster by the factor $\sqrt{4.0/2.1} = 1.38$. An instrument configured for FR4 reports a connector region that is 1.38 times shorter than its physical length, so a 20 mm coaxial section appears as 14.5 mm, and every feature beyond it shifts earlier on the distance axis by the same offset.
+
+For a short via or connector pad, the round-trip delay is on the order of picoseconds and the resulting distance offset is negligible. A long test cable with a different dielectric constant displaces all downstream board features by a large offset, requiring the instrument to de-embed or configure the cable and board velocity factors separately.
 
 ### The Reflection Coefficient on the TDR Display
 
 [Chapter 3](03_Impedance_Reflections_and_Termination.md) derived $\Gamma = (Z_L - Z_0)/(Z_L + Z_0)$ and the three terminations that bound its range. The display shows each of them as a level of the total voltage, which is the sum of the incident wave and the reflected wave that has returned to the connector:
 
-- **Matched load ($\Gamma = 0$):** the display stays at 0.5 V indefinitely, because nothing returns.
-- **Open circuit ($\Gamma = +1$):** the reflected wave has the amplitude and polarity of the incident wave. The display rises from 0.5 V to 1.0 V at the round-trip time, and the returning wave is absorbed by $R_S$. The final level is the full source voltage $V_S$, which is the level of a line that carries no current.
-- **Short circuit ($\Gamma = -1$):** the reflected wave cancels the incident wave, and the display falls from 0.5 V to 0 V at the round-trip time, the level of a line that holds no voltage.
+- **Matched load (`Γ = 0`):** The display stays at 0.5 V indefinitely because no reflected wave returns to the port.
+- **Open circuit (`Γ = +1`):** The reflected wave matches the amplitude and polarity of the incident wave. The display steps from 0.5 V to 1.0 V at the round-trip time, and the source resistor $R_S$ absorbs the returning wave, leaving the line at the open-circuit voltage $V_S$ with zero current.
+- **Short circuit (`Γ = -1`):** The reflected wave cancels the incident wave, and the display drops from 0.5 V to 0 V at the round-trip time, matching the zero-voltage boundary of the short.
 
 A connector with nothing attached is an open circuit at zero distance. No current flows through $R_S$, the voltage across it is zero, and the display shows the full 1 V immediately, with no intermediate level at 0.5 V, because the round-trip time is zero.
 
@@ -94,7 +96,9 @@ A structure with a small reactive impedance reflects only the part of the edge t
 
 $$v_r \approx -\tau_C\,\dot u \ \ \text{(shunt capacitance, } \tau_C = Z_0 C/2\text{)}, \qquad v_r \approx +\tau_L\,\dot u \ \ \text{(series inductance, } \tau_L = L/(2Z_0)\text{)}$$
 
-A shunt capacitance reflects a negative pulse and the display shows a dip, which corresponds to a local impedance below $Z_0$. The uncharged capacitor draws current from the edge as if it were a short circuit, and the current it takes is proportional to the rate of change of the voltage. A series inductance reflects a positive pulse and the display shows a bump, which corresponds to a local impedance above $Z_0$. The inductance opposes the change of current in the line with a voltage $L\,di/dt$, which the instrument sees as a positive reflection. Both reflections are proportional to the slope of the edge. A step with a long rise time has a small slope and reflects weakly, and a fast edge reflects strongly, as the $\Gamma(f)$ of [Chapter 3](03_Impedance_Reflections_and_Termination.md) predicts for a structure that reflects more at higher frequency.
+A shunt capacitance reflects a negative pulse and produces a downward dip on the display, corresponding to a local impedance below $Z_0$. The uncharged capacitor draws current from the arriving transition as a transient short circuit, with a current magnitude proportional to the voltage slew rate $du/dt$.
+
+A series inductance reflects a positive pulse and produces an upward bump on the display, corresponding to a local impedance above $Z_0$. The inductance opposes the change in line current with a back-EMF of $L\,di/dt$, which returns toward the source as a positive voltage reflection. Both reflection amplitudes scale directly with the slope of the incident edge: a slow step with a long rise time produces a small reflection, whereas a fast step produces a large peak, matching the high-frequency reflection behavior $\Gamma(f)$ derived in [Chapter 3](03_Impedance_Reflections_and_Termination.md).
 
 The numbers of Chapter 6 give the size of each feature on the display. The 0.37 pF anti-pad of a 62 mil via, probed by a 30 ps edge, produces a dip of $-0.30$, which is an impedance of 27 Ω at the minimum. Its 1.33 nH barrel produces a bump of $+0.40$, an impedance of 116 Ω at the maximum. The 0.21 nH neck of [Chapter 4](04_Inductance_Magnetic_Coupling_and_Crosstalk.md), probed by a 15 ps edge, has $\tau_L = 0.21\ \text{nH}/100\ \Omega = 2.1$ ps and produces a bump of $(2.1/15)(1 - e^{-15/2.1}) = +0.14$, an impedance of 66 Ω. The neck also removes capacitance, so the measured bump is smaller than this inductance-only estimate.
 
@@ -144,9 +148,9 @@ Assume a 1 V source and a 50 Ω source resistor, so that $V_{inc} = 0.5$ V, and 
 
 $$\Gamma_1 = \frac{75 - 50}{75 + 50} = 0.2$$
 
-The reflected wave at the entry is $0.2 \cdot 0.5 = 0.1$ V, and the display shows $0.5 + 0.1 = 0.6$ V for a long section. The inversion of the earlier section gives $Z = 50 \cdot 0.6/(1 - 0.6) = 75\ \Omega$. A wave of amplitude $\tau V_{inc} = 1.2 \cdot 0.5 = 0.6$ V continues into the section. At the exit the reflection coefficient is $-0.2$, so a wave of $-0.12$ V starts back, and it crosses the entry into the 50 Ω line with the transmission coefficient $1 + (-0.2) = 0.8$. The wave that reaches the connector at $2T_d$ after the first plateau has amplitude $-0.12 \cdot 0.8 = -0.096$ V, and the display falls to $0.6 - 0.096 = 0.504$ V.
+The reflected wave at the entry is $0.2 \cdot 0.5 = 0.1$ V, so the display steps to $0.5 + 0.1 = 0.6$ V across a long section, corresponding to $Z = 50 \cdot 0.6/(1 - 0.6) = 75\ \Omega$. Meanwhile, a transmitted wave of amplitude $\tau V_{inc} = 1.2 \cdot 0.5 = 0.6$ V continues into the 75 Ω section. At the exit boundary back to 50 Ω, the reflection coefficient is $-0.2$, launching a $-0.12$ V wave backward toward the entry.
 
-The display does not return to 0.5 V, because the wave inside the section also reflects from the entry from the inside and bounces. Each further round trip inside the section multiplies the leaving wave by $(-0.2)^2 = 0.04$, and the display reads 0.504, 0.50016, and 0.500006 V at successive round trips, approaching 0.5 V. The apparent impedance of the matched 50 Ω line beyond the section is $50 \cdot 0.504/(1 - 0.504) = 50.8\ \Omega$ immediately after the section, which is a small error that the section itself introduced. This error is the masking effect of the Edge Cases section.
+Crossing the entry boundary from the 75 Ω side into the 50 Ω line multiplies that wave by the transmission coefficient $1 + (-0.2) = 0.8$, delivering $-0.12 \cdot 0.8 = -0.096$ V to the connector at time $2T_d$ after the first step. The display drops to $0.6 - 0.096 = 0.504$ V rather than returning all the way to 0.5 V, because a portion of the backward wave reflects off the entry boundary from the inside and reverberates within the 75 Ω section. Each subsequent internal round trip scales the escaping wave by $(-0.2)^2 = 0.04$, stepping the display through 0.504 V, 0.50016 V, and 0.500006 V toward 0.5 V. Immediately after the 75 Ω section, the matched 50 Ω line reads an apparent impedance of $50 \cdot 0.504/(1 - 0.504) = 50.8\ \Omega$, illustrating the upstream masking effect analyzed in the Edge Cases section.
 
 A section shorter than the edge behaves differently. To first order in $\Gamma$, the reflected voltage is the incident edge, scaled by $\Gamma_1$, minus a copy of the same edge delayed by $2T_d$, scaled by $\Gamma_1$ as well:
 
@@ -176,24 +180,26 @@ The area is taken on the $\Gamma(t)$ axis, in seconds, and not on the impedance 
 
 The area does not depend on the rise time of the edge, because the edge entered the integral only through its total change $V_{inc}$. A faster edge produces a taller and narrower reflection, and a slower edge produces a lower and wider one with the same area. For the 0.37 pF anti-pad, $\tau_C = 9.25$ ps, and the ramp solution of Chapter 6 gives the peak of the dip for three edges:
 
-| Edge $t_r$ | Peak of $\Gamma$ | Impedance at the minimum |
+| Edge Rise Time (`t_r`) | Peak Reflection (`Γ`) | Minimum Impedance |
 |---|---|---|
-| 15 ps | $-0.49$ | 17 Ω |
-| 30 ps | $-0.30$ | 27 Ω |
-| 100 ps | $-0.09$ | 42 Ω |
+| `15 ps` | `-0.49` | `17 Ω` |
+| `30 ps` | `-0.30` | `27 Ω` |
+| `100 ps` | `-0.09` | `42 Ω` |
 
-The three dips look different, and each has the area $\tau_C = 9.25$ ps, which returns $C = 2 \cdot 9.25\ \text{ps}/50\ \Omega = 0.37$ pF. The physical capacitance did not change between the three measurements, and the slower edge only reduced the ability of the instrument to show the true depth of the dip, so the peak impedance is not a reliable measure of a lumped parasitic unless the rise time is stated. A low-pass filter in the instrument, a cable, or the line itself preserves the area as long as its gain at DC is one, because the area of a convolution is the product of the two areas. The area method therefore remains valid when the display is slower than the incident edge, which is the practical reason to prefer it to the peak.
+The three dips exhibit markedly different peak depths, yet each encloses the identical area $\tau_C = 9.25$ ps, yielding $C = 2 \cdot 9.25\ \text{ps}/50\ \Omega = 0.37$ pF. The physical capacitance does not change between the three measurements; a slower edge reduces only the peak depth on the display, making peak impedance an unreliable metric for a lumped parasitic unless the test rise time is specified alongside it.
 
-The measurement works in reverse for the neck of Chapter 4. A measured bump with area 2.1 ps on the $\Gamma(t)$ axis gives $L = 2 \cdot 50 \cdot 2.1\ \text{ps} = 0.21$ nH.
+Any low-pass filter in the instrument, test cable, or trace preserves the integrated area as long as its DC gain equals unity, because the integral of a convolution equals the product of the individual integrals. Area extraction therefore remains accurate even when the measurement path slows the displayed reflection below the launched rise time.
+
+The measurement works in reverse for the neck of [Chapter 4](04_Inductance_Magnetic_Coupling_and_Crosstalk.md). A measured bump with area 2.1 ps on the $\Gamma(t)$ axis gives $L = 2 \cdot 50 \cdot 2.1\ \text{ps} = 0.21$ nH.
 
 ### The Order of a Bump and a Dip
 
 The display shows the features in the order the edge meets them. Consider a series inductance $L = 1.33$ nH and a shunt capacitance $C = 0.37$ pF placed next to each other on a 50 Ω line, probed by a 30 ps linear ramp. The equations of both elements, solved numerically for the two orders, give the following display:
 
-| Order along the line | First feature | Second feature |
+| Order Along the Line | First Feature | Second Feature |
 |---|---|---|
-| Inductance first | bump of $+0.29$ at 22 ps | dip of $-0.12$ at 58 ps |
-| Capacitance first | dip of $-0.20$ at 14 ps | bump of $+0.25$ at 50 ps |
+| **Inductance first** | Bump of `+0.29` at `22 ps` | Dip of `-0.12` at `58 ps` |
+| **Capacitance first** | Dip of `-0.20` at `14 ps` | Bump of `+0.25` at `50 ps` |
 
 The times are measured from the instant the edge begins to arrive at the structure. The peaks differ from the isolated values of the previous example ($+0.40$ and $-0.30$), because the edge reaching the second element has already been modified by the first, and because the two reflections overlap in time. The net area is the same for both orders and equals $\tau_L - \tau_C = 13.3 - 9.25 = 4.05$ ps, which the numerical integral confirms. The area of a pair that overlaps in time is the difference of the two time constants, and it vanishes for $L = Z_0^2 C$, the cancellation condition of Chapter 3.
 
@@ -215,13 +221,15 @@ $$v_{2} = V_{inc}\,\Gamma_2\,(1 + \Gamma_1)(1 - \Gamma_1) = V_{inc}\,\Gamma_2\,(
 
 The factor $1 - \Gamma_1^2$ scales every reflection from beyond the mismatch:
 
-| Upstream $\Gamma_1$ | Factor $1 - \Gamma_1^2$ |
-|---|---|
-| 0.2 | 0.96 |
-| 0.5 | 0.75 |
-| 0.9 | 0.19 |
+| Upstream Reflection (`Γ_1`) | Transmission Factor (`1 - Γ_1^2`) | Apparent Reflection of `+0.20` Feature | Apparent Impedance |
+|---|---|---|---|
+| `0.2` | `0.96` | `0.192` | `73.8 Ω` |
+| `0.5` | `0.75` | `0.150` | `67.6 Ω` |
+| `0.9` | `0.19` | `0.038` | `54.0 Ω` |
 
-The instrument computes the impedance of each feature as if the wave had the full launched amplitude. A feature that would read a reflection coefficient of 0.20, an impedance of 75 Ω, at the connector reads $0.2 \cdot 0.75 = 0.15$ behind an upstream mismatch of 0.5, which is an apparent impedance of 68 Ω. A near-open or near-short upstream, with $\Gamma_1 = 0.9$, reduces the same reading to $0.2 \cdot 0.19 = 0.038$, an apparent impedance of 54 Ω, which hides the feature. The practical rule is to find and understand the first large mismatch before trusting the readings that follow it. Distributed loss has the same effect as the mismatch, because it attenuates both the incident and the returning wave.
+The instrument computes the impedance of every downstream feature under the assumption that the incident wave arrives with the full launched amplitude $V_{inc}$. A downstream 75 Ω discontinuity ($\Gamma_2 = 0.20$) preceded by an upstream mismatch of $\Gamma_1 = 0.5$ returns an attenuated reflection of $0.20 \cdot 0.75 = 0.15$, which the instrument displays as an apparent impedance of 68 Ω. Behind a severe upstream mismatch of $\Gamma_1 = 0.9$, the same 75 Ω feature returns only $0.20 \cdot 0.19 = 0.038$, reading as 54 Ω and disappearing into the baseline.
+
+Accurate TDR diagnosis therefore requires identifying and accounting for the first large mismatch before interpreting any readings beyond it. Distributed series and shunt losses along the trace produce a similar compression by attenuating both the forward step and the returning echo.
 
 ### Spreading: Loss and Reactive Discontinuities Slow the Edge
 
@@ -229,16 +237,16 @@ The edge that reaches a downstream feature is slower than the launched edge, so 
 
 The line itself slows the edge through the frequency-dependent loss of [Chapter 5](05_Skin_Effect_and_Dielectric_Loss.md). The loss constants of that chapter for FR4 (conductor 0.20 dB per inch and dielectric 0.47 dB per inch at 5 GHz, scaling as $\sqrt f$ and $f$) define a transfer function, and a causal (minimum-phase) response with that magnitude applied to a 20 ps edge gives the following rise times, computed numerically:
 
-| Distance traveled | 10 to 90 percent rise time |
+| Path Distance Traveled | 10% to 90% Rise Time (`t_r`) |
 |---|---|
-| 0 in | 20 ps |
-| 1 in | 29 ps |
-| 3 in | 69 ps |
-| 6 in | 149 ps |
-| 12 in | 342 ps |
-| 24 in | 768 ps |
+| `0 in` | `20 ps` |
+| `1 in` | `29 ps` |
+| `3 in` | `69 ps` |
+| `6 in` | `149 ps` |
+| `12 in` | `342 ps` |
+| `24 in` | `768 ps` |
 
-The numbers use $\tan\delta = 0.02$ and smooth copper, and they are the single magnitude used in this book for the degradation of an edge on FR4. The distance in the table is the total path of the edge, so a feature 3 in downstream is observed after the edge has traveled 6 in, out and back, and its echo has the 149 ps rise time of the 6 in row. The resolution of that echo is $0.147\ \text{mm/ps} \cdot 149\ \text{ps}/2 = 11$ mm, about ten times coarser than the 1.1 mm resolution at the connector.
+The numbers use $\tan\delta = 0.02$ and smooth copper, and they provide the reference benchmark across this series for the degradation of an edge on FR4. The distance in the table is the total path of the edge, so a feature 3 in downstream is observed after the edge has traveled 6 in, out and back, and its echo has the 149 ps rise time of the 6 in row. The resolution of that echo is $0.147\ \text{mm/ps} \cdot 149\ \text{ps}/2 = 11$ mm, about ten times coarser than the 1.1 mm resolution at the connector.
 
 The same inductance appears different when probed by different edges. A 1 nH inductance has $\tau_L = 10$ ps. A 30 ps edge reflects a peak of $(10/30)(1 - e^{-3}) = +0.32$, and a 100 ps edge reflects $(10/100)(1 - e^{-10}) = +0.10$. The area of both reflections is the same $\tau_L = 10$ ps, which is the reason the extraction of the previous section stays valid, as long as the slower edge is accounted for by integrating the whole reflection and not by reading its peak.
 
@@ -262,4 +270,8 @@ The TDR identifies $Z_0$ from the longest flat region of the display. On that re
 
 The extraction of a discrete $L$ and $C$ is limited by the resolution of the instrument. A dip and a bump that are separated in time by more than the resolution show two areas, one for $C$ and one for $L$. A pair that overlaps within the resolution, as in the previous example, reports only the net area $\tau_L - \tau_C$, from which the individual values cannot be recovered, and a pair with $L = Z_0^2 C$ shows no area at all. The time domain measures the net signature of a cluster of structures within the resolution of the edge and does not separate their parts in space.
 
-The frequency domain resolves this ambiguity, because a complex reflection coefficient measured as a function of frequency distinguishes a series inductance from a shunt capacitance. [Chapter 8](08_S_Parameters_and_VNA.md) defines the measurement of $S_{11} = \Gamma(f)$ with a vector network analyzer and shows how the reflection of a TDR step becomes $S_{11}$: the instrument displays the step response, so the response is differentiated to give the impulse response and then Fourier transformed, a calculation that a TDR does not perform on its own. [Chapter 9](09_Smith_Charts.md) shows how the Smith chart separates inductive and capacitive reflections by hemisphere. The question that the next chapters answer is how to measure the same reflection directly as a function of frequency, without the limit that the rise time of a step places on the resolution.
+The frequency domain resolves this overlap ambiguity because a complex reflection coefficient measured across frequency distinguishes series inductance from shunt capacitance by phase angle. [Chapter 8](08_S_Parameters_and_VNA.md) defines the vector network analyzer measurement of $S_{11} = \Gamma(f)$ and derives the mathematical transformation from a TDR step response to $S_{11}$: differentiating the step response yields the impulse response, and the Fourier transform of that impulse response produces $S_{11}(f)$.
+
+[Chapter 9](09_Smith_Charts.md) then maps $S_{11}(f)$ onto the Smith chart, separating inductive and capacitive reflections into opposite hemispheres. Together, those two chapters show how measuring reflection directly in the frequency domain overcomes the spatial resolution ceiling of a time-domain step.
+
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>

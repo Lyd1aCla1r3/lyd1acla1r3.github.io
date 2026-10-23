@@ -1,18 +1,16 @@
 # Part 24: Updating the Embeddings and Conclusion
 
-<!-- SUMMARY: The accumulated gradient ultimately reaches the initial embedding matrix via the residual stream, encapsulating how token representations must shift to minimize prediction error. The completion of the backward pass finalizes the mathematical traversal of the machinery driving the architecture. -->
+<!-- SUMMARY: The accumulated gradient reaches the initial embedding matrix via the residual stream, encapsulating how token representations must shift to minimize prediction error. Completing the backward pass finalizes the mathematical traversal of the Transformer architecture. -->
 
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>
 
-The backward journey finally reaches its terminus. The error signal cascaded from the Cross-Entropy loss, navigated the Unembedding matrix, split through the Layer 2 MLP, and distributed itself across the complex geometry of the self-attention Query, Key, and Value matrices. Now, this accumulated signal arrives at the very beginning of the network. It is time to update the foundational representations of the tokens: the Embedding matrix itself.
+The backward pass now reaches the input boundary of the architecture. The error signal originated at the cross-entropy loss, traversed the unembedding projection $W_U$, branched across the Layer 2 MLP and attention blocks, and propagated through Layer 1. That accumulated gradient now arrives at the foundational token representation table: the embedding matrix $W_E$ (denoted here as $E$).
 
 ## The Residual Highway
 
-During the forward pass, the residual stream operated as a central memory bus. The initial token embeddings traveled along this bus, with each attention and MLP block adding new contextual information. 
+During the forward pass, the residual stream operated as a shared memory bus. Initial token embeddings entered this highway, and each attention and MLP sub-layer added contextual updates back into the stream.
 
-In the backward pass, the residual stream serves an equally critical role as a gradient highway. When operations add together during the forward pass, the backward pass simply passes the gradient equally to both paths. The gradient arriving at any point in the residual stream equals the sum of all gradients from the blocks that read from it later in the network. Therefore, the final gradient vector arriving at the initial input matrix $X$ represents a comprehensive sum. It contains the feedback from every downstream decision, perfectly encapsulating how the initial token vectors need to shift in $d_{model}$ space to decrease the final prediction error.
-
-Let $d\_X$ represent this accumulated gradient for the sequence `<BOS>` `i` `woke` `up`. It forms a matrix of size $4 \times 6$:
+In the backward pass, the residual stream functions as a direct gradient highway. Differentiating each element-wise residual addition routes the upstream gradient equally to both the skip path and the sub-layer branch. The gradient arriving at the base of the residual stream therefore equals the sum of the direct skip-connection gradient and the gradients emerging from every attention and MLP block across both layers. This $4 \times 6$ matrix $d\_X$ encapsulates how each of the four input token vectors (`<BOS>`, `i`, `woke`, and `up`) must shift in $\mathbb{R}^{d_{\text{model}}}$ to reduce the sequence prediction loss:
 
 $$
 d\_X = \begin{bmatrix}
@@ -25,15 +23,23 @@ $$
 
 ## Routing Gradients to the Vocabulary Space
 
-The input matrix $X$ was constructed by selecting specific rows from the global Embedding matrix $E$. The matrix $E$ has a shape of $12 \times 6$, representing the entire vocabulary of 12 words in a 6-dimensional space. 
+During the forward pass (Part 1), the $4 \times 6$ input matrix $X$ was constructed by multiplying the $4 \times 12$ one-hot token matrix $X_{\text{one-hot}}$ by the $12 \times 6$ embedding matrix $E$:
 
-By the rules of calculus, if a row in $E$ copies forward to form a row in $X$, the gradient for that row in $X$ routes directly back to the original row in $E$. The operation of selecting a row is mathematically equivalent to multiplying a one-hot encoded vector by the matrix $E$. The derivative of this operation simply passes the gradient back to the active index.
+$$
+X = X_{\text{one-hot}} E
+$$
 
-If the sequence `<BOS>` `i` `woke` `up` corresponds to indices 0, 3, 5, and 7 in the vocabulary, the process constructs a gradient matrix $d\_E$ of the same size as $E$, initialized to all zeros. The network then adds the respective rows of $d\_X$ to rows 0, 3, 5, and 7 of $d\_E$. The gradients for tokens not present in the current sequence remain strictly zero.
+Differentiating this lookup with respect to $E$ multiplies the transposed one-hot matrix $X_{\text{one-hot}}^T$ ($12 \times 4$) by the $4 \times 6$ gradient matrix $d\_X$:
+
+$$
+d\_E = X_{\text{one-hot}}^T d\_X
+$$
+
+Multiplying by $X_{\text{one-hot}}^T$ scatters each row of $d\_X$ back into the vocabulary row index that was selected during the forward pass. Mapping the prompt `<BOS>` `i` `woke` `up` to vocabulary indices `[0, 3, 5, 7]` causes the $12 \times 6$ embedding gradient matrix $d\_E$ to accumulate rows `0, 1, 2, 3` of $d\_X$ into vocabulary rows `0, 3, 5, 7`, while the eight unused vocabulary rows receive a gradient of zero:
 
 ```mermaid
 flowchart TD
-    A(Gradient d_X) --> B(Route to Index 0: BOS)
+    A(Gradient d_X) --> B(Route to Index 0: &lt;BOS&gt;)
     A --> C(Route to Index 3: i)
     A --> D(Route to Index 5: woke)
     A --> E(Route to Index 7: up)
@@ -45,36 +51,38 @@ flowchart TD
 
 ## The Optimizer Update
 
-With $d\_E$ fully assembled alongside the gradients for all intermediate weight matrices, the network can finally execute the core mechanism of machine learning: the weight update. 
+With $d\_E$ assembled alongside the weight gradients for every attention and MLP projection matrix across the network, the optimizer executes the parameter update step.
 
-An optimizer applies these gradients to shift the weights in the direction opposite to the error. While modern architectures use sophisticated optimizers like Adam which track momentum and variance, the fundamental principle is best illustrated by Stochastic Gradient Descent. A defined learning rate $\alpha$ controls the size of the step.
-
-$$
-E_{new} = E_{old} - \alpha \cdot d\_E
-$$
-
-For example, observing the shift for the `<BOS>` token at Row 0 with a learning rate of $0.01$, the process subtracts the scaled gradient:
+Production training pipelines typically apply adaptive optimizers such as AdamW, which normalize parameter updates using running estimates of first and second gradient moments alongside decoupled weight decay. Stochastic Gradient Descent (SGD) illustrates the core geometric update rule using a scalar learning rate $\alpha$:
 
 $$
-E_{old}[0] = \begin{bmatrix}
+E_{\text{new}} = E_{\text{old}} - \alpha \cdot d\_E
+$$
+
+Applying a learning rate of $\alpha = 0.01$ to Row 0 (`<BOS>`, where $d\_E[0] = d\_X[0]$ equals `[-0.0036, 0.1565, -0.2620, 0.0822, 0.0087, -0.0299]`) subtracts $0.01 \cdot d\_X[0]$ from the initial embedding coordinates. Starting from a four-decimal Gaussian initialization $E_{\text{old}}[0]$ (or equivalently from Part 1's hand-crafted row $W_E[0]$ of `[0.1000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000]`, which updates to `[0.1000, -0.0016, 0.0026, -0.0008, -0.0001, 0.0003]`), the update shifts the six coordinates in the direction that lowers cross-entropy loss:
+
+$$
+E_{\text{old}}[0] = \begin{bmatrix}
 0.4967 & -0.1383 & 0.6477 & 1.5230 & -0.2342 & -0.2341
 \end{bmatrix}
 $$
 
 $$
-E_{new}[0] = \begin{bmatrix}
-0.4967 & -0.1398 & 0.6503 & 1.5222 & -0.2342 & -0.2338
+E_{\text{new}}[0] = \begin{bmatrix}
+0.4967 & -0.1399 & 0.6503 & 1.5222 & -0.2343 & -0.2338
 \end{bmatrix}
 $$
 
-By subtracting the scaled gradient, the coordinates of the original words adjust within the $d_{model}$ space. The next time the network encounters the token "woke", its starting vector will sit in a slightly better position to help the attention mechanism predict "late". 
+*(Evaluating the subtraction on unrounded floating-point draws before four-decimal rounding yields `-0.1398` in column 2 and `-0.2342` in column 5.)*
+
+Subtracting $\alpha \cdot d\_E$ translates the active token vectors (`<BOS>`, `i`, `woke`, and `up`) within the $d_{\text{model}} = 6$ embedding space. On the next forward pass, the updated coordinates for `woke` and `up` enter the residual stream pre-aligned with the attention and MLP subspaces that increase the output probability of the target token `late`.
 
 ## Conclusion
 
-This completes the rigorous traversal of the Transformer architecture. The journey began with simple integers representing text, projected them into a continuous geometric space, and demonstrated how attention matrices sculpt those vectors into context-aware representations. The mathematical proofs established why scaling by the square root of the head dimension prevents gradient starvation and how the causal mask ensures temporal discipline. 
+This parameter update completes a full forward and backward training cycle of the Decoder-only Transformer. The forward pass mapped discrete vocabulary indices into continuous vectors in $\mathbb{R}^{d_{\text{model}}}$, injected sinusoidal positional signatures, routed asymmetric context across three parallel attention heads per layer, stabilized activations via Layer Normalization, and extracted higher-order features through two Key-Value MLP blocks before projecting back to vocabulary logits.
 
-Crucially, the backward pass stands demystified. The simple difference between the prediction and the target label blossoms into a cascade of derivatives, flowing backward through projection matrices and softmax distributions to assign credit and blame to every single weight in the network. 
+The backward pass reversed every stage of that computational graph via the chain rule. Starting from the linear cancellation $P - Y$ at the cross-entropy output boundary, gradients flowed backward through the unembedding matrix, split across residual additions, traversed the MLP projections and ReLU gates, navigated the coupled Softmax Jacobian and causal mask, and updated every projection weight down to the initial embedding lookup table.
 
-The Transformer is not an inscrutable black box. It operates as a massive, elegant bilinear engine, moving text through latent space with pristine mathematical precision. By following the numbers from the first embedding to the final gradient step, the physical machinery of modern artificial intelligence becomes visible.
+Viewed through explicit matrix arithmetic, the Transformer is not an opaque black box. Every forward prediction and backward weight update reduces to deterministic linear projections, dot-product alignments, and coordinate translations in vector space.
 
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>

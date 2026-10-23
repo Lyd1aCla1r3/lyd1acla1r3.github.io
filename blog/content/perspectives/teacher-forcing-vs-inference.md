@@ -2,113 +2,123 @@
 
 <!-- SUMMARY: A step-by-step mathematical walkthrough contrasting the parallel nature of Transformer training with the sequential bottleneck of inference. A concrete toy example traces the tensor algebra of causal masking and cross-entropy loss, which makes the mechanics of Teacher Forcing explicit without relying on abstraction. -->
 
-A fascinating divergence exists between how large language models are trained and how they operate upon deployment. Training a model takes months of processing trillions of tokens, yet the finished model generates a response in seconds. This discrepancy stems from a fundamental difference in how the two phases use the architecture. Training is highly parallelized, whereas deployment, commonly referred to as inference, is strictly sequential.
+A fundamental operational divergence exists between how large language models are trained and how they execute upon deployment. Training a model requires months of processing trillions of tokens, yet the deployed model generates a response in seconds. This discrepancy stems from how the two phases utilize the Transformer architecture. Training is massively parallelized across entire token sequences, whereas deployment, commonly referred to as inference, is strictly sequential.
 
-During inference, a model generates text one token at a time. A model writing a paragraph cannot write the third sentence without first writing the second. Training at modern model sizes would be computationally impossible with this same sequential process. Researchers avoid the problem with a mathematical technique called Teacher Forcing.
+During inference, a model generates text one token at a time. A model generating a paragraph cannot produce the third token without first generating the second. Training at modern parameter scales would be computationally intractable under that sequential dependency. Transformer training bypasses this bottleneck through a mathematical technique called Teacher Forcing.
 
-Rather than discussing these concepts abstractly, this article will construct a small toy example. Tracing the exact matrix operations makes it explicitly clear how Teacher Forcing allows a neural network to process an entire sequence simultaneously.
+A concrete numerical walkthrough makes this architectural divide explicit. Tracing the step-by-step matrix operations demonstrates how Teacher Forcing enables a neural network to process an entire token sequence simultaneously.
 
 ## The Auto-Regressive Bottleneck of Inference
 
-Consider a scenario where the model must complete the simple sequence "i woke up", with the goal of predicting the word "late".
+Consider a scenario where the model must complete the three-token sequence `"i woke up"` with the goal of predicting the next token, `"late"`.
 
-During inference, the model begins with the first word, "i". It performs a series of matrix multiplications to predict the next word, "woke". Next, it appends this new word to its context, creating the input "i woke", and performs all the calculations again to predict "up".
+During inference, the model begins with the first token, `"i"`. It executes a full forward pass of matrix multiplications to predict the next token, `"woke"`. Next, it appends that predicted token to its running context, forming the two-token input `"i woke"`, and repeats the entire forward pass to predict `"up"`.
 
-This dependency is the auto-regressive bottleneck: predicting step three mathematically requires the result from step two, so the model has no way to skip ahead.
+This serial dependency defines the auto-regressive bottleneck: predicting step three mathematically requires the output generated at step two, leaving no way to skip ahead during generation.
 
-Assume the model utilizes an embedding dimension of $d_{model} = 4$, meaning every word is translated into a vector of four numbers. The input tensor for the word "i" at time step $t=1$ then has a shape of $1 \times 1 \times 4$. The final output is a single probability distribution predicting one word.
+Assume the model uses an embedding dimension of $d_{\text{model}} = 4$, mapping every token to a four-element vector. The input tensor for the single token `"i"` at time step $t=1$ has a shape of $1 \times 1 \times 4$, representing a batch size of $1$, a sequence length of $1$, and an embedding dimension of $4$. The forward pass yields a single probability distribution predicting one next token.
 
 ## Bypassing the Bottleneck: Teacher Forcing
 
-Training avoids this sequential trap entirely, because the ground truth sequence "i woke up late" is known in advance and the architecture does not need to guess one word at a time.
+Training avoids this sequential trap because the complete ground-truth sequence `"i woke up late"` is already available in the training corpus, so the architecture does not need to wait for its own prior predictions before advancing to subsequent positions.
 
-Instead, Teacher Forcing feeds the entire sequence into the model simultaneously. The input tensor $X$ now represents the three starting words, "i woke up", all at once. Its shape expands to $1 \times 3 \times 4$, representing one sequence, three words, and four dimensions.
+Instead, Teacher Forcing feeds the entire input sequence into the model simultaneously. The input tensor $X$ encapsulates all three starting tokens, `"i woke up"`, in a single batch. Its shape expands to $1 \times 3 \times 4$, representing one sequence, three tokens, and four embedding dimensions.
 
-However, presenting the entire sequence at once introduces a critical flaw. Processing the words "i woke up" simultaneously could allow the attention mechanism to let the word "i" look ahead at "woke" to figure out the context. A model that can see the future during training circumvents the learning process entirely.
+Presenting the entire sequence at once introduces a structural flaw: information leakage from future positions. Processing the sequence `"i woke up"` simultaneously allows an unmasked attention mechanism to let the token `"i"` attend to `"woke"` and `"up"` before predicting them. A model that observes future tokens during training circumvents the next-token learning objective entirely.
 
 ## The Solution: The Causal Mask
 
-To prevent the model from looking ahead, the architecture employs a mathematical tool known as a Causal Mask.
+To prevent future tokens from leaking backward in time, the self-attention layer applies an upper-triangular additive matrix called a Causal Mask.
 
-The model calculates how much each word should pay attention to the others by generating an Attention Score matrix. For the three-word sequence "i", "woke", "up", this results in a $3 \times 3$ matrix.
+### Unmasked Attention Scores
 
-Assume the raw, unmasked attention scores look like this:
+The self-attention mechanism measures pairwise token affinities by computing an Attention Score matrix $S$. For the three-token sequence `"i"`, `"woke"`, `"up"`, scaled dot-product attention produces a $3 \times 3$ matrix of raw logits:
 
 $$
-\text{Raw Scores} = \begin{bmatrix}
+S = \begin{bmatrix}
 1.2 & 0.5 & 0.1 \\
 0.4 & 1.5 & -0.2 \\
 0.8 & -0.1 & 1.1
 \end{bmatrix}
 $$
 
-The first row represents how much attention the word "i" is allocating to "i", "woke", and "up". Notice that "i" is assigning a score of $0.5$ to "woke". The model is effectively looking into the future.
+The first row represents the attention scores that the query token `"i"` assigns to the key tokens `"i"`, `"woke"`, and `"up"`. Notice that `"i"` assigns a positive score of $0.5$ to `"woke"` and $0.1$ to `"up"`, meaning position $1$ is reading information from future positions $2$ and $3$.
 
-Before these scores are converted into final probabilities using the Softmax function, the Causal Mask is applied. This mask holds zeros on and below the diagonal and negative infinity above it:
+### Upper-Triangular Masking
+
+The attention layer adds the Causal Mask matrix $M$ to the raw scores $S$ before applying the Softmax function. This mask holds $0$ on and below the main diagonal and $-\infty$ strictly above the diagonal:
 
 $$
-\text{Mask} = \begin{bmatrix}
+M = \begin{bmatrix}
 0 & -\infty & -\infty \\
 0 & 0 & -\infty \\
 0 & 0 & 0
 \end{bmatrix}
 $$
 
-Adding this mask to the raw scores turns every future score into negative infinity, because any finite number added to negative infinity becomes negative infinity:
+Adding $M$ to the raw score matrix $S$ converts every upper-triangular future entry into $-\infty$, because any finite real number added to $-\infty$ yields $-\infty$:
 
 $$
-\text{Masked Scores} = \begin{bmatrix}
+S + M = \begin{bmatrix}
 1.2 & -\infty & -\infty \\
 0.4 & 1.5 & -\infty \\
 0.8 & -0.1 & 1.1
 \end{bmatrix}
 $$
 
-The rationale for using negative infinity lies in the subsequent step. The network passes these values through the Softmax function, which utilizes exponentiation, or $e^x$, to convert raw scores into probabilities between 0 and 1, and $e^{-\infty}$ evaluates to exactly zero.
+### Softmax Probability Normalization
+
+The rationale for using negative infinity lies in the subsequent normalization step. The network passes each row of masked scores through the Softmax function, which applies the exponential function $e^x$ to convert raw logits into normalized probabilities between $0$ and $1$, where $e^{-\infty} = 0$:
 
 $$
-\text{Softmax}(x_i) = \frac{e^{x_i}}{\sum e^{x_j}}
+\text{Softmax}(x_i) = \frac{e^{x_i}}{\sum_{j=1}^{L} e^{x_j}}
 $$
 
-The causal mask changed the future scores to negative infinity, so the Softmax function turns those future scores into exactly zero. This forces the probabilities to distribute entirely among the past and present words. Applying Softmax transforms the matrix into a strict probability distribution, shown here rounded to two decimal places:
+Setting upper-triangular entries to $-\infty$ prior to exponentiation drives their Softmax outputs to $0$. Zeroing out those future positions restricts each row's probability mass exclusively to past and present tokens. Applying Softmax row by row transforms the masked logits into the attention probability matrix $P$, shown below rounded to two decimal places:
 
 $$
-\text{Probabilities} = \begin{bmatrix}
+P = \begin{bmatrix}
 1.00 & 0.00 & 0.00 \\
 0.25 & 0.75 & 0.00 \\
 0.36 & 0.15 & 0.49
 \end{bmatrix}
 $$
 
-In the top row, the word "i" now possesses a 100 percent probability of attending to itself, and exactly 0 percent probability of attending to the future words "woke" or "up". The causal mask mathematically blinds the model to the future. This ensures it predicts the next word using only past and present context, fully solving the lookahead flaw.
+In the top row, the token `"i"` assigns $100\%$ of its attention probability to itself and $0\%$ to the future tokens `"woke"` and `"up"`. The causal mask mathematically blinds each query position to subsequent tokens, restricting next-token predictions to past and present context.
 
 ## Shifted Targets and Parallel Loss
 
-Thanks to the causal mask, the model is now generating three independent, non-cheating predictions simultaneously. The single forward pass produces one matrix containing vocabulary predictions for all three positions at once.
+With the causal mask enforced, a single forward pass generates three causal predictions in parallel, producing a $3 \times V$ matrix of vocabulary logits across all three sequence positions simultaneously.
 
-To evaluate the model's accuracy, the error is calculated by comparing these predictions against a shifted version of the target sequence.
+### Position-Shifted Target Alignment
 
-*   Input Sequence: `["i", "woke", "up"]`
-*   Target Sequence: `["woke", "up", "late"]`
+Evaluating prediction accuracy across all three positions requires comparing the output probabilities against a target sequence shifted left by one token position (`["woke", "up", "late"]` for the input `["i", "woke", "up"]`):
 
-At position 1, the model was restricted to seeing only "i", and it is penalized based on how accurately it predicted "woke". At position 2, it saw "i woke", and is penalized for its prediction of "up". At position 3, it saw "i woke up", and is penalized for "late".
+| Position | Input Token | Unmasked Context | Shifted Target |
+| :--- | :--- | :--- | :--- |
+| Step 1 | `"i"` | `"i"` | `"woke"` |
+| Step 2 | `"woke"` | `"i woke"` | `"up"` |
+| Step 3 | `"up"` | `"i woke up"` | `"late"` |
 
-The Cross-Entropy Loss is calculated for all three positions simultaneously:
+### Parallel Cross-Entropy Loss
+
+The training objective computes Cross-Entropy Loss across all three positions simultaneously:
 
 $$
 \mathcal{L} = - \frac{1}{L} \sum_{t=1}^{L} \sum_{v=1}^{V} y_{t,v} \log(\hat{y}_{t,v})
 $$
 
-To demystify this equation, every variable maps directly to our physical matrix dimensions:
-*   $L$ represents the sequence length, which is 3 in our toy example.
-*   $t$ indexes the current time step along that sequence, moving iteratively from position 1 to position 3.
-*   $V$ represents the total size of our vocabulary.
-*   $v$ iterates through every possible word index in that vocabulary.
-*   $y$ denotes the ground truth target. This is represented as a binary one-hot vector where the correct target word is a 1 and all incorrect words are 0.
-*   $\hat{y}$ represents the model's predicted probability for that specific word, such as 0.12.
+Every variable in the Cross-Entropy Loss objective maps directly to a dimension of the forward-pass tensors:
 
-Multiplying the true binary value by the logarithm of the predicted probability at every time step $t$ and every vocabulary word $v$ calculates the error across the entire sequence. Averaging this error across all $L$ positions produces a single scalar loss. One backward pass then computes the gradients for all three positions at once, so three separate examples of context update the model's weights in a single step.
+*   **Sequence Length ($L$):** Specifies the total number of token positions evaluated in parallel, which equals $3$ in this toy sequence.
+*   **Time Step Index ($t$):** Indexes the sequence position from $t = 1$ to $t = 3$.
+*   **Vocabulary Size ($V$):** Defines the total number of unique tokens in the model vocabulary.
+*   **Vocabulary Index ($v$):** Iterates across every candidate token index $v \in \{1, \dots, V\}$ in the vocabulary.
+*   **Ground-Truth Target ($y_{t,v}$):** Encodes the true target at position $t$ as a binary one-hot indicator that equals $1$ for the ground-truth next token and $0$ for all other $V - 1$ vocabulary entries.
+*   **Predicted Probability ($\hat{y}_{t,v}$):** Denotes the model's Softmax probability assigned at position $t$ to vocabulary token $v$, such as $0.12$.
+
+Multiplying the binary target indicator $y_{t,v}$ by the natural logarithm of the predicted probability $\hat{y}_{t,v}$ at every time step $t$ and vocabulary index $v$ extracts the negative log-likelihood of the true target token at each position. Averaging this loss across all $L$ positions produces a single scalar objective $\mathcal{L}$. A single backward pass then computes gradients for all three sequence positions simultaneously, updating the model weights from three distinct context windows in one optimization step.
 
 ## Conclusion
 
-This mechanism is the core innovation of Teacher Forcing. Formatting the input as a full sequence, shifting the target answers by one position, and applying a negative infinity causal mask transforms what would have been three slow, sequential steps into one large, parallel matrix multiplication. This linear algebra is what makes training models on trillions of tokens computationally feasible, even as inference remains bound by the auto-regressive bottleneck.
+This parallel formulation is the core computational mechanism of Teacher Forcing. Packing the full token sequence into a single input tensor, shifting the ground-truth target labels by one position, and applying an upper-triangular $-\infty$ causal mask converts $L$ sequential forward passes into one parallelized matrix multiplication pipeline. That linear algebra structure makes pre-training Transformer models on trillions of tokens computationally tractable, even though deployment inference remains bound by the sequential auto-regressive bottleneck.

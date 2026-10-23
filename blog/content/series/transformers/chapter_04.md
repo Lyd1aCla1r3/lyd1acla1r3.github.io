@@ -25,7 +25,7 @@
 
 <!-- SUMMARY: Calculating raw attention scores via the dot product exposes a scaling problem in high-dimensional vector spaces. To prevent softmax saturation and the resulting gradient decay, the variance is mathematically stabilized by dividing the scores by the square root of the head dimension. -->
 
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>
 
 The previous section established why the Transformer does not calculate attention directly from the input embeddings. The sequence is projected into two distinct semantic subspaces, yielding a matrix of Queries ($Q$) and a matrix of Keys ($K$). This asymmetric projection allows the network to match concepts that belong together even if their base embeddings are geometrically distant.
 
@@ -34,11 +34,12 @@ The sequence currently consists of four tokens:
 <div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2; text-align: left;">
 <span style="font-size: 0.9em;"><b><code>&lt;BOS&gt;</code></b> <b><code>i</code></b> <b><code>woke</code></b> <b><code>up</code></b></span>
 </div>
-The actual attention scores must now be calculated. This step quantifies how strongly each token in the sequence should attend to every other token. This is achieved by computing the dot product of every Query vector with every Key vector. 
+
+Computing the pairwise attention scores quantifies how strongly each token in the sequence attends to every other token. Taking the dot product between every Query vector and every Key vector produces this alignment matrix.
 
 ## The Dot Product as a Metric of Similarity
 
-The dot product measures alignment. When two vectors point in similar directions, their dot product is large and positive. When they are orthogonal, it is zero. When they point in opposite directions, it is negative. 
+The dot product measures geometric alignment between two vectors. Vectors pointing in similar directions yield a large positive product, orthogonal vectors yield zero, and vectors pointing in opposite directions yield a negative product.
 
 Multiplying the Query matrix by the transpose of the Key matrix ($Q \times K^T$) computes the dot product for every possible pair of tokens in a single operation. 
 
@@ -71,15 +72,15 @@ Q \times K^T = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-Each row in this result corresponds to a Query token, and each column corresponds to a Key token. The value at row 3 and column 2, which is $-0.29$, represents the raw alignment score between the Query for "woke" and the Key for "i". 
+Each row in this matrix corresponds to a Query token, and each column corresponds to a Key token. The entry at row 3, column 2 ($-0.29$) represents the unscaled alignment score between the Query vector for `woke` and the Key vector for `i`.
 
 ## The Problem of Dimensionality
 
-These raw scores are mathematically correct, yet they cannot be used in their current form. The Transformer architecture relies on converting these raw scores into a strict probability distribution using the Softmax function. Softmax forces the scores in each row to sum to $1.0$, allowing them to act as percentage weights.
+These raw scores are mathematically valid, yet they cannot be passed directly into normalization without rescaling. The Transformer architecture converts raw alignment scores into a probability distribution using the Softmax function, which forces the entries in each row to sum to $1.0$.
 
-A subtle mathematical trap is hidden in the dot product. As the dimensionality of the vectors increases, the variance of their dot product grows proportionally. 
+Dot products carry a dimensional scaling hazard. Increasing the vector dimension $d_k$ causes the variance of the inner product to grow proportionally with $d_k$.
 
-Taking two random independent vectors of dimension $d$ with a mean of 0 and a variance of 1 yields a dot product with a mean of 0 and a variance of $d$. The current toy model uses a tiny head dimension of $d_k = 2$, rendering this effect invisible. In a production model like GPT-3, the head dimension is typically $d_k = 128$. The variance of the raw dot products becomes massive.
+Two independent random vectors of dimension $d_k$ with zero mean and unit variance produce a dot product with zero mean and variance $d_k$. The toy architecture uses a narrow head dimension of $d_k = 2$, keeping this variance growth small. Large-scale Transformer architectures commonly configure head dimensions of $d_k = 64$ or $d_k = 128$, inflating the variance of unscaled dot products by two orders of magnitude.
 
 ## Softmax Saturation and Gradient Death
 
@@ -89,19 +90,19 @@ A scenario involving a head dimension of $512$ causes the variance of the dot pr
 
 `[ 11.24, -3.13, 14.66, 34.46 ]`
 
-Applying the Softmax function to these numbers heavily amplifies the largest value through exponentiation. The resulting probability distribution becomes extremely sharp:
+Applying the Softmax function to these numbers heavily amplifies the largest value through exponentiation. The resulting probability distribution becomes sharply peaked:
 
 `[ 0.00, 0.00, 0.00, 1.00 ]`
 
-The network places 100% of its attention on the final token. This might seem like a decisive and confident prediction. It is actually a catastrophic failure for the learning process.
+The network places 100% of its attention on the final token. This one-hot concentration appears decisive at inference time, yet it causes a severe failure mode during optimization.
 
-Neural networks learn via backpropagation, which relies on calculating gradients. The gradient represents the slope of the function. When a Softmax distribution becomes this sharply peaked, it operates in the absolute flattest regions of its curve. The slope approaches zero. If the gradient is zero, the network cannot update its weights. The learning process halts completely. This phenomenon is known as Softmax saturation.
+Neural networks update parameters via backpropagation, which scales weight updates by the local gradient of each operation. A sharply peaked Softmax distribution pushes the function into its asymptotic flat regions where the local derivative approaches zero. Vanishing gradients prevent weight updates from propagating backward through the attention projections, halting training through a failure mode known as Softmax saturation.
 
 ## The Mathematical Solution: Scaling by $\sqrt{d_k}$
 
-The variance of the dot products must be prevented from growing with the dimensionality of the network. This is accomplished by dividing the raw attention scores by the square root of the head dimension ($\sqrt{d_k}$). 
+Stabilizing the attention logits across arbitrary head dimensions requires dividing the unscaled dot products by the square root of the head dimension ($\sqrt{d_k}$).
 
-Dividing a random variable by a constant scales its variance by the square of that constant. Dividing the scores by $\sqrt{d_k}$ scales the variance of the dot product by $d_k$. Since the original variance was $d_k$, the new variance becomes $1$. This operation perfectly stabilizes the distribution regardless of how large the network grows.
+Dividing a random variable by a scalar constant $c$ divides its variance by $c^2$. Scaling the dot products by $1 / \sqrt{d_k}$ divides the raw variance $d_k$ by $(\sqrt{d_k})^2 = d_k$, restoring a unit variance of $1$ regardless of subspace width.
 
 This scaling factor can be applied to the synthetic large-dimension example. Dividing the raw values by $\sqrt{512}$ yields a much tighter range:
 
@@ -115,7 +116,7 @@ The gradients can flow freely through this distribution. The network can continu
 
 ## Scaling the Toy Model
 
-This mandatory scaling must now be applied to the toy model. The head dimension is $d_k = 2$, making the scaling factor $\sqrt{2}$, which is approximately $1.414$.
+This mandatory scaling must now be applied to the toy model. The head dimension is $d_k = 2$, making the scaling factor $\sqrt{2} \approx 1.4142$.
 
 ```mermaid
 graph TD
@@ -125,7 +126,7 @@ graph TD
     Div --> Scaled("Scaled Scores")
 ```
 
-Every element in the raw score matrix is divided by $1.414$:
+Dividing the unrounded $Q K^T$ dot products by $\sqrt{2} \approx 1.4142$ and rounding to two decimal places yields the scaled score matrix:
 
 $$
 \text{Scaled Scores} = \begin{bmatrix}
@@ -140,4 +141,4 @@ These values are now safely bounded and ready to be converted into probabilities
 
 The Softmax function cannot be applied immediately. The model is currently observing the entire sequence simultaneously. The first token (`<BOS>`) has a score of `0.63` connecting it to the future token `up`. In a language modeling task, allowing a token to attend to words that have not been generated yet is invalid. The future must be hidden before the probabilities are finalized. This requirement introduces the mathematics of Causal Masking.
 
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>

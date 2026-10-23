@@ -2,20 +2,24 @@
 
 <!-- SUMMARY: The second layer attention updates are integrated into the residual stream and geometrically stabilized using layer normalization. The normalized vectors then flow into a multi-layer perceptron acting as a deep contextual memory bank, enabling the injection of learned knowledge into the sequence representation. -->
 
-The forward pass for the second Transformer layer reaches its final stages after the attention probabilities are computed and combined with the Value matrix to create contextualized updates. The calculation of self-attention concludes by taking the dot products of the Queries and Keys, masking the results to maintain sequence causality, and applying the Softmax function. These normalized attention probabilities weight the Value matrix to extract the deeply contextualized features identified by the attention heads. A final projection matrix mixes these independent insights back into the primary model dimension. The resulting matrix represents the complete output of the second layer attention block. These updates must now be integrated into the central nervous system of the model, which is the residual stream, and passed through the final multilayer perceptron memory bank.
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>
+
+Computing the attention probabilities and multiplying by the Value matrix in Part 15 completed the single-head retrieval stage of Layer 2. In a full three-head pass, concatenating the three $4 \times 2$ head outputs and multiplying by the Layer 2 output projection matrix $W_O^{(2)}$ ($6 \times 6$) maps the combined updates back into the $d_{\text{model}} = 6$ coordinate space.
+
+To keep the downstream unembedding, Softmax, cross-entropy loss, and backpropagation arithmetic verifiable by hand without repeating the three-head concatenation from Parts 6 and 7, this walkthrough adopts canonicalized $4 \times 6$ tensors for the Layer 2 residual merge. Rows 1 and 2 (`<BOS>` and `i`) follow opposite-sign linear ramps across the six embedding dimensions, whereas Rows 3 and 4 (`woke` and `up`) form zero-sum step vectors whose entries cancel across the first and second halves of the embedding dimension:
 
 $$
 \text{Layer 2 Attention Output} = \begin{bmatrix}
-  0.05 & -0.10 &  0.15 & -0.20 &  0.25 & -0.30 \\
- -0.05 &  0.10 & -0.15 &  0.20 & -0.25 &  0.30 \\
-  0.25 &  0.25 &  0.25 & -0.25 & -0.25 & -0.25 \\
- -0.25 & -0.25 & -0.25 &  0.25 &  0.25 &  0.25
+  0.03 & -0.06 &  0.09 & -0.12 &  0.15 & -0.18 \\
+ -0.03 &  0.06 & -0.09 &  0.12 & -0.15 &  0.18 \\
+  0.15 &  0.15 &  0.15 & -0.15 & -0.15 & -0.15 \\
+ -0.15 & -0.15 & -0.15 &  0.15 &  0.15 &  0.15
 \end{bmatrix}
 $$
 
 ## The First Residual Connection
 
-The residual stream acts as the central information highway of the Transformer architecture, bypassing the attention block entirely. The attention mechanism does not replace the representations in the stream; it computes an update to be added to them. The output of the first layer flows directly forward and acts as the foundational state.
+The residual stream acts as the central information highway of the Transformer architecture, bypassing the attention block so that self-attention computes an additive update rather than overwriting the prior state. In this canonicalized Layer 2 trace, the foundational stream state entering the merge is:
 
 $$
 \text{Layer 1 Final Output} = \begin{bmatrix}
@@ -26,16 +30,78 @@ $$
 \end{bmatrix}
 $$
 
-The network adds the newly computed attention output directly to this pristine first layer output point-wise. This addition operation writes the latest structural discoveries into the shared memory bus without erasing the fundamental syntactic properties established earlier in the network. The addition allows the model to preserve all previous contextual information while overlaying the new insights gained from the attention heads of the second layer.
+The network adds the Layer 2 attention output directly to this incoming stream element by element. This addition writes the newly routed structural relationships into the shared memory bus without erasing the syntactic features established earlier in the network:
 
 $$
 \text{Residual}_1 = \text{Stream}_{\text{in}} + \text{Attention}_{\text{out}}
 $$
 
-For a sequence containing the words "woke" and "up", the representation for the word "woke" now fundamentally intertwines with the word "up", deeply embedding the semantic concept of waking up rather than just the individual words. Using the established mathematical values, the first residual output is calculated as follows.
+Within the prompt `<BOS>` `i` `woke` `up`, the representation for `woke` merges with `up` to encode the unified phrasal concept of waking up rather than two unrelated lexical items. Adding `Layer 2 Attention Output` to `Layer 1 Final Output` element by element yields the first Layer 2 residual state:
 
 $$
-\text{After First Residual} = \begin{bmatrix}
+\text{After First Residual } (\text{Residual}_1) = \begin{bmatrix}
+  0.13 & -0.26 &  0.39 & -0.52 &  0.65 & -0.78 \\
+ -0.13 &  0.26 & -0.39 &  0.52 & -0.65 &  0.78 \\
+  0.65 &  0.65 &  0.65 & -0.65 & -0.65 & -0.65 \\
+ -0.65 & -0.65 & -0.65 &  0.65 &  0.65 &  0.65
+\end{bmatrix}
+$$
+
+## Layer Normalization
+
+Following the first residual addition, the vectors undergo Layer Normalization to standardize their coordinate scale, recentering each row to a mean of zero and a variance of one:
+
+$$
+\text{Norm}_1 = \text{LayerNorm}(\text{Residual}_1)
+$$
+
+This normalization ensures that the subsequent Multi-Layer Perceptron block receives standardized inputs, preventing any single dimension from dominating the feed-forward activations.
+
+## The Multilayer Perceptron: A Deep Contextual Memory
+
+The normalized vectors next enter the Layer 2 Multi-Layer Perceptron (MLP). Self-attention routes information horizontally across sequence positions, whereas the MLP transforms features vertically within each individual token vector. This second feed-forward block operates as a Key-Value memory bank over phrase-level abstractions rather than isolated word embeddings. The network projects the normalized vectors through an expansion layer, applies the Rectified Linear Unit (ReLU) activation function, and contracts the active features back to $d_{\text{model}} = 6$.
+
+### The Key Expansion
+
+The first linear transformation, parameterized by $W_1^{(2)}$ ($6 \times 24$) and bias $b_1^{(2)}$, expands the 6-dimensional vectors into the 24-dimensional intermediate space to test whether specific multi-token patterns are present:
+
+$$
+\text{Hidden} = \text{ReLU}(\text{Norm}_1 W_1^{(2)} + b_1^{(2)})
+$$
+
+The Rectified Linear Unit (ReLU) activation serves as a non-linear firing threshold. Positive alignment scores, such as a token vector matching the combined `woke` + `up` phrasal pattern, pass through the gate unchanged, whereas negative scores are clamped to zero.
+
+### The Value Contraction
+
+Active neurons in the hidden layer trigger the second linear transformation, parameterized by $W_2^{(2)}$ ($24 \times 6$) and bias $b_2^{(2)}$, which projects the 24-dimensional state back down to $d_{\text{model}} = 6$:
+
+$$
+\text{MLP}_{\text{out}} = \text{Hidden} W_2^{(2)} + b_2^{(2)}
+$$
+
+Active neurons scale their corresponding rows in $W_2^{(2)}$, writing learned semantic updates back into the 6-dimensional subspace. This memory retrieval step injects phrase-level updates into each token representation, yielding the canonicalized Layer 2 MLP output:
+
+$$
+\text{Layer 2 MLP Output} = \begin{bmatrix}
+  0.02 & -0.04 &  0.06 & -0.08 &  0.10 & -0.12 \\
+ -0.02 &  0.04 & -0.06 &  0.08 & -0.10 &  0.12 \\
+  0.10 &  0.10 &  0.10 & -0.10 & -0.10 & -0.10 \\
+ -0.10 & -0.10 & -0.10 &  0.10 &  0.10 &  0.10
+\end{bmatrix}
+$$
+
+## The Final Integration
+
+The architecture concludes Layer 2 with a final residual connection, adding the output of the Multi-Layer Perceptron back to $\text{Residual}_1$ to form the definitive output tensor $X_{\text{final}}$ of the second layer. This additive skip connection preserves an unimpeded gradient highway during backpropagation while retaining the accumulated structural context from both layers:
+
+$$
+\text{Output}_{\text{Layer 2}} = \text{Residual}_1 + \text{MLP}_{\text{out}}
+$$
+
+Adding `Layer 2 MLP Output` to `After First Residual` produces the final $4 \times 6$ representation $X_{\text{final}}$ exiting the Transformer blocks:
+
+$$
+\text{Layer 2 Final Output } (X_{\text{final}}) = \begin{bmatrix}
   0.15 & -0.30 &  0.45 & -0.60 &  0.75 & -0.90 \\
  -0.15 &  0.30 & -0.45 &  0.60 & -0.75 &  0.90 \\
   0.75 &  0.75 &  0.75 & -0.75 & -0.75 & -0.75 \\
@@ -43,68 +109,8 @@ $$
 \end{bmatrix}
 $$
 
-## Layer Normalization
+*(Note: Adding `0.05/-0.05` and `0.03/0.02` in an uncalibrated variant would shift Row 3 away from zero-sum symmetry; maintaining strict zero-sum step symmetry `0.75/-0.75` on Rows 3 and 4 guarantees that the unembedding projection in Part 17 maps `woke` and `up` to uniform `-0.0675` and `+0.0675` logits.)*
 
-Following the addition step, the vectors undergo layer normalization to stabilize their variance. This step recenters and scales the vectors so that their mean is zero and their variance is one.
+The initial token embeddings have now been transformed twice by multi-head attention blocks and twice by feed-forward memory banks. The discrete vocabulary indices that entered Layer 1 have evolved into continuous geometric coordinates that encapsulate grammar, context, and phrasal meaning tailored to the input sequence. In Part 17, the unembedding matrix $W_U$ projects this $4 \times 6$ tensor back into the 12-token vocabulary space to score the next-word candidates.
 
-$$
-\text{Norm}_1 = \text{LayerNorm}(\text{Residual}_1)
-$$
-
-This normalization guarantees that the subsequent multilayer perceptron block receives inputs that are geometrically well-behaved, preventing any single feature from disproportionately dominating the activations.
-
-## The Multilayer Perceptron: A Deep Contextual Memory
-
-The normalized vectors now flow into the second layer's multilayer perceptron. While the attention mechanism moves information between tokens, the multilayer perceptron processes information within each token. This block functions as a sophisticated key-value memory bank, similar to the first layer, but now operating on highly abstract and contextualized representations. For the purpose of mathematical clarity in this conceptual stage, the second layer operations are represented within a condensed constant dimensional space. The network projects the normalized vectors through a dense linear layer, applies the Rectified Linear Unit activation function, and projects the results back out. This final feature extraction isolates the most abstract token representations.
-
-### The Key Expansion
-
-The first linear transformation, denoted as $W_1$, projects the vectors into a higher-dimensional space. In the toy model, the dimension expands from 6 to 24. This projection acts as a set of keys checking if specific complex patterns exist within the token representations.
-
-$$
-\text{Hidden} = \text{ReLU}(\text{Norm}_1 W_1 + b_1)
-$$
-
-The Rectified Linear Unit activation function serves as the firing threshold. If a pattern is detected, for instance if the vector now strongly represents the combined waking up concept, the corresponding neurons fire. If not, they remain silent with a value of zero.
-
-### The Value Contraction
-
-The active neurons then trigger the second linear transformation, denoted as $W_2$, which acts as the values. This step projects the data back down to the original model dimension.
-
-$$
-\text{MLP}_{\text{out}} = \text{Hidden} W_2 + b_2
-$$
-
-When a specific neuron fires in the hidden layer, it causes the second weight matrix to write a corresponding conceptual vector into the output. This allows the network to inject learned knowledge about the world into the sequence representations. The simulated output yields the following highly refined semantic combinations.
-
-$$
-\text{Layer 2 MLP Output} = \begin{bmatrix}
-  0.03 &  0.02 &  0.04 &  0.02 &  0.05 &  0.02 \\
-  0.02 &  0.03 &  0.02 &  0.04 &  0.02 &  0.05 \\
-  0.04 &  0.04 &  0.04 &  0.02 &  0.02 &  0.02 \\
-  0.02 &  0.02 &  0.02 &  0.04 &  0.04 &  0.04
-\end{bmatrix}
-$$
-
-## The Final Integration
-
-The architecture concludes the second layer with one final residual connection. The output of the multilayer perceptron is added back to the main residual stream to form the definitive output of the second layer. This ensures the gradients flow unobstructed during backpropagation and guarantees the network retains all prior structural information.
-
-$$
-\text{Output}_{\text{Layer 2}} = \text{Residual}_1 + \text{MLP}_{\text{out}}
-$$
-
-The sequence representation has now evolved significantly.
-
-$$
-\text{Layer 2 Final Output} = \begin{bmatrix}
-  0.18 & -0.28 &  0.49 & -0.58 &  0.80 & -0.88 \\
- -0.13 &  0.33 & -0.43 &  0.64 & -0.73 &  0.95 \\
-  0.79 &  0.79 &  0.79 & -0.73 & -0.73 & -0.73 \\
- -0.73 & -0.73 & -0.73 &  0.79 &  0.79 &  0.79
-\end{bmatrix}
-$$
-
-The initial embeddings have now been transformed twice by attention blocks and twice by multilayer perceptrons. The vectors residing in the residual stream are profoundly rich. This matrix represents the culmination of the forward pass through the deep processing layers. The simple vocabulary IDs that entered the network have been transformed into complex geometric coordinates that encapsulate grammar, context, and abstract meaning tailored precisely to the specific sequence. The network is now fully prepared to map these internal representations back into the vocabulary space to generate the prediction for the next word.
-
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>

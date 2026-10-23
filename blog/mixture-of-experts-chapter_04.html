@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -118,12 +159,18 @@
     <li><a href="index.html">Blog</a></li><li><a href="series-mixture-of-experts.html">Series: Mixture Of Experts</a></li><li aria-current="page">Part 4: Expert Collapse</li></ol></nav>
         <article class="blog-post series-mixture-of-experts">
 <h1>Part 4: Expert Collapse</h1>
-<!-- SUMMARY: The gating network's reliance on backpropagation introduces a severe positive feedback loop that systematically starves under-utilized pathways. Without intervention, this dynamic degenerates the sparse architecture into a heavily imbalanced network, severely wasting parameter capacity. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p><p>The completed forward pass processes tokens through independent network branches and recombines them into a unified residual stream. This dynamic routing mechanism introduces a catastrophic failure mode during training.</p>
+<!-- SUMMARY: The gating network's reliance on backpropagation introduces a severe positive feedback loop that systematically starves under-utilized pathways. Without intervention, this dynamic degenerates the sparse architecture into a heavily imbalanced network, severely wasting parameter capacity. --><p><em>Prefer to read this offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p><p>The completed forward pass processes tokens through independent network branches and recombines them into a unified residual stream. This dynamic routing mechanism introduces a catastrophic failure mode during training.</p>
 <h2>The Positive Feedback Loop</h2>
-<p>At initialization, the gating weights in the router matrix are random noise. In theory, this random state distributes tokens evenly across all experts. In practice, perfect balance never occurs. Even under a perfectly random distribution, standard variance guarantees that some experts will receive slightly more tokens than others. Natural language makes the problem worse: it is heavily clustered rather than uniformly distributed. If an expert&#39;s random initialization happens to align with a frequent token cluster, such as common punctuation, it receives an immediate, disproportionate share of assignments.</p>
-<p>This microscopic initial imbalance creates a severe positive feedback loop. An expert that randomly processes a slightly larger share of tokens during the first training step participates in more forward passes, thereby receiving a higher volume of gradient updates. As the optimization algorithm minimizes the prediction error, backpropagation adjusts the shared router matrix to assign even higher routing probabilities to this active expert.</p>
-<p>The mechanism driving this collapse is rooted in the chain rule of calculus. The router computes an affinity score by taking the dot product between the input token vector and an expert&#39;s column in the router matrix. The token vector possesses $d_{model}$ dimensions, and the router matrix possesses dimensions of $d_{model} \times E$. Consequently, each expert&#39;s column acts as a vector perfectly dimensioned to share the exact same geometric space as the tokens. This forward operation is a purely linear matrix multiplication containing no activation functions. The local derivative of this operation therefore evaluates strictly to the input token vector itself. The chain rule dictates that the final gradient applied to the router matrix is the upstream loss derivative multiplied by this local derivative. Consequently, the gradient update mathematically adds a scaled copy of the processed token vector directly into the active expert&#39;s column. In linear algebra, adding one vector to another inherently rotates the receiving vector to point more in the direction of the added vector. This geometric update alters the active expert&#39;s column in two permanent ways: it aligns the column&#39;s direction with the token, and it increases the column&#39;s overall numerical magnitude.</p>
-<p>When a completely unrelated token from a new training batch passes through the layer, the router computes new dot products against all available experts independently. An expert that was never selected during initialization remains completely frozen. Its column in the router matrix consists entirely of tiny, randomly initialized noise, yielding a correspondingly small dot product. The active expert, having accumulated multiple gradient updates, possesses a numerically larger column vector. The dot product between the new token and this enlarged column produces a mathematically higher score strictly because the underlying vector magnitude is greater. While a single gradient update is small, this magnitude advantage initiates a compounding statistical effect. By possessing a marginally larger vector, the active expert is mathematically guaranteed to capture a slightly higher percentage of tokens in the next training batch. This increased token volume delivers a correspondingly larger sum of gradient updates during the subsequent backward pass, accelerating the vector&#39;s growth. This compounding imbalance guarantees that the active expert will absorb an increasingly wider variety of tokens over thousands of iterations, ultimately driving the complete starvation of the frozen pathways.</p>
+<p>At initialization, the gating weights in the router matrix consist of small random values. In theory, a random initialization distributes tokens evenly across all experts. In practice, finite-batch variance guarantees that some experts receive slightly more tokens than others. Natural language amplifies this variance because token embeddings cluster tightly by syntax and semantics rather than distributing uniformly across $\mathbb{R}^{d_{model}}$. An expert whose random centroid happens to align with a frequent token cluster, such as common punctuation, captures an immediate, disproportionate share of assignments.</p>
+<p>This initial asymmetry triggers a self-reinforcing positive feedback loop. An expert that processes a larger share of tokens during the first training step participates in more forward passes and accumulates a higher volume of gradient updates. Backpropagation then adjusts the shared router matrix during loss minimization to assign even higher routing probabilities to that already active expert.</p>
+<h3>The Chain-Rule Centroid Collapse</h3>
+<p>The mathematical driver of this collapse lies in the chain rule of calculus applied to the linear router projection. The router computes each affinity logit $h(x)_i = x \cdot w_g^{(i)}$ as the dot product between the input token vector $x \in \mathbb{R}^{d_{model}}$ and the $i$-th expert column $w_g^{(i)} \in \mathbb{R}^{d_{model}}$ of the gating matrix $W_g$. Linear projection without an intermediate nonlinearity causes the local partial derivative of the logit with respect to the expert column to evaluate directly to the input token vector itself ($\frac{\partial h(x)_i}{\partial w_g^{(i)}} = x$).</p>
+<p>By the chain rule, the gradient update applied to an active expert column adds a scaled copy of the processed token vector directly into $w_g^{(i)}$. Adding a scaled vector into an existing column alters the expert centroid in two permanent geometric ways:</p>
+<ul>
+<li><strong>Directional Alignment:</strong> Vector addition rotates the active expert column $w_g^{(i)}$ toward the processed token vector $x$, increasing cosine similarity for future tokens from the same semantic cluster.</li>
+<li><strong>Magnitude Inflation:</strong> Repeated vector additions increase the Euclidean norm $\|w_g^{(i)}\|$ of the active expert column relative to unselected columns, which remain frozen at their small random initialization norms.</li>
+</ul>
+<p>This norm asymmetry corrupts routing on subsequent batches. Unselected experts receive zero gradient updates through the Top-$K$ mask, leaving their columns in $W_g$ as low-magnitude random noise that yields small dot products. An active expert that has accumulated multiple gradient updates possesses a larger column norm, producing a higher dot product $x_{\text{new}} \cdot w_g^{(i)} = \|x_{\text{new}}\|\,\|w_g^{(i)}\|\cos\theta$ even for unrelated tokens from new training batches. That marginal norm advantage captures a larger fraction of tokens in the next batch, which in turn delivers a larger sum of gradient updates during the backward pass. Over thousands of iterations, this compounding feedback loop concentrates all routing traffic into a single dominant expert and starves the frozen pathways.</p>
 <h2>Simulating Progressive Starvation</h2>
 <p>A numerical simulation demonstrates this starvation dynamic over a simplified training loop. To measure the underlying preference of the network, the simulation tracks the soft routing distribution. This is the raw softmax probability calculated before the discrete top-k mask forces the unselected experts to zero.</p>
 <p>Retrieving the raw router logits computed in Chapter 2 prior to the masking operation yields the following scores for the four tokens:</p>
@@ -144,32 +191,79 @@ P = \begin{bmatrix}
 0.3200 & 0.2742 & 0.1919 & 0.2139 
 \end{bmatrix}
 $$</p>
-<p>Averaging these probabilities across the four tokens establishes the network&#39;s initial routing distribution across the batch. As expected from a randomly initialized matrix, the distribution begins in a nearly balanced state.</p>
+<p>Averaging these probabilities column-wise across the four tokens establishes the network&#39;s initial soft routing distribution across the batch. Random weight initialization places this starting distribution in a nearly balanced state:</p>
 <p>$$
 \text{Routing Distribution (Step 0)} = \begin{bmatrix} 0.3072 & 0.2256 & 0.2332 & 0.2340 \end{bmatrix}
 $$</p>
-<p>The top-k masking operation applied to these same logits in Chapter 2 forced all four tokens to the first expert, distributed two tokens each to the second and third experts, and assigned zero tokens to the fourth expert. The subsequent training steps are executed algorithmically via a numerical simulation script. The simulation calculates gradient updates identically to the dense baseline architecture detailed in the <a href="series-transformers.html">Transformer series</a>, updating the active experts proportionally to the tokens they process. The fourth expert, having processed zero tokens, receives zero updates and remains completely frozen at its initialized state.</p>
-<p>As the simulation progresses, the probability mass shifts violently toward the heavily utilized first expert.</p>
-<p>$$
-\text{Routing Distribution (Step 1)} = \begin{bmatrix} 0.5141 & 0.1964 & 0.2026 & 0.0869 \end{bmatrix}
-$$</p>
-<p>$$
-\text{Routing Distribution (Step 2)} = \begin{bmatrix} 0.7751 & 0.1075 & 0.1098 & 0.0076 \end{bmatrix}
-$$</p>
-<p>By the third step, the first expert absorbs over ninety percent of the total probability mass. The unfavored experts rapidly lose relevance as the positive feedback loop accelerates.</p>
-<p>$$
-\text{Routing Distribution (Step 3)} = \begin{bmatrix} 0.9173 & 0.0409 & 0.0416 & 0.0002 \end{bmatrix}
-$$</p>
-<p>$$
-\text{Routing Distribution (Step 4)} = \begin{bmatrix} 0.9755 & 0.0123 & 0.0122 & 0.0000 \end{bmatrix}
-$$</p>
-<p>The routing distribution achieves total collapse at the fifth step. The first expert completely dominates the layer, while the remaining probability mass approaches mathematical zero.</p>
+<p>The Top-2 masking operation applied to these same logits in Chapter 2 routed all four tokens to Expert 0, distributed two tokens each to Expert 1 and Expert 2, and assigned zero tokens to Expert 3. Executing five consecutive training steps via a numerical simulation illustrates how unconstrained gradient updates amplify this initial gap. At each step, active experts and their corresponding router columns update proportionally to the tokens they process, whereas Expert 3 processes zero tokens and remains frozen at its initialized weights.</p>
+<p>Successive training steps shift the probability mass rapidly toward Expert 0 across the five-step trajectory:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Training Step</th>
+<th align="left">Expert 0 (<code>P_0</code>)</th>
+<th align="left">Expert 1 (<code>P_1</code>)</th>
+<th align="left">Expert 2 (<code>P_2</code>)</th>
+<th align="left">Expert 3 (<code>P_3</code>)</th>
+<th align="left">Routing Regime</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Step 0</strong></td>
+<td align="left"><code>0.3072</code></td>
+<td align="left"><code>0.2256</code></td>
+<td align="left"><code>0.2332</code></td>
+<td align="left"><code>0.2340</code></td>
+<td align="left">Near-uniform random initialization</td>
+</tr>
+<tr>
+<td align="left"><strong>Step 1</strong></td>
+<td align="left"><code>0.5141</code></td>
+<td align="left"><code>0.1964</code></td>
+<td align="left"><code>0.2026</code></td>
+<td align="left"><code>0.0869</code></td>
+<td align="left">Expert 0 exceeds half of batch probability mass</td>
+</tr>
+<tr>
+<td align="left"><strong>Step 2</strong></td>
+<td align="left"><code>0.7751</code></td>
+<td align="left"><code>0.1075</code></td>
+<td align="left"><code>0.1098</code></td>
+<td align="left"><code>0.0076</code></td>
+<td align="left">Expert 3 approaches starvation (<code>&lt; 1%</code> mass)</td>
+</tr>
+<tr>
+<td align="left"><strong>Step 3</strong></td>
+<td align="left"><code>0.9173</code></td>
+<td align="left"><code>0.0409</code></td>
+<td align="left"><code>0.0416</code></td>
+<td align="left"><code>0.0002</code></td>
+<td align="left">Expert 0 absorbs over <code>90%</code> of routing probability</td>
+</tr>
+<tr>
+<td align="left"><strong>Step 4</strong></td>
+<td align="left"><code>0.9755</code></td>
+<td align="left"><code>0.0123</code></td>
+<td align="left"><code>0.0122</code></td>
+<td align="left"><code>0.0000</code></td>
+<td align="left">Secondary pathways decay below <code>1.5%</code></td>
+</tr>
+<tr>
+<td align="left"><strong>Step 5</strong></td>
+<td align="left"><code>0.9944</code></td>
+<td align="left"><code>0.0029</code></td>
+<td align="left"><code>0.0027</code></td>
+<td align="left"><code>0.0000</code></td>
+<td align="left">Complete single-expert monopoly</td>
+</tr>
+</tbody></table>
+<p>By the fifth step, the routing distribution reaches total collapse, with Expert 0 monopolizing the layer while the remaining probability mass approaches zero:</p>
 <p>$$
 \text{Routing Distribution (Step 5)} = \begin{bmatrix} 0.9944 & 0.0029 & 0.0027 & 0.0000 \end{bmatrix}
 $$</p>
-<p>The consequence is a massive waste of parameters. The entire point of sparse routing is to decouple total parameter count from computational cost. When the router collapses to a single expert, the architecture degenerates into a constrained dense model. The system dedicates enormous memory to storing the inactive experts while processing every token through a single narrow pathway. The effective capacity of the network is divided by the number of experts, rendering the architectural expansion useless.</p>
+<p>The consequence is severe parameter waste. Sparse routing is designed to decouple total parameter capacity from per-token computational cost. Collapsing the router to a single dominant expert degenerates the sparse layer into a narrow dense model. The hardware still allocates memory to store the dormant experts while routing every token through the same overloaded pathway, dividing the effective representational capacity of the layer by the number of experts.</p>
 <p>Preventing this collapse requires direct intervention. An auxiliary loss function that penalizes unbalanced routing and forces the network to use all available experts is detailed in the next chapter.</p>
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="mixture-of-experts-chapter_03.html" class="pagination-link prev">

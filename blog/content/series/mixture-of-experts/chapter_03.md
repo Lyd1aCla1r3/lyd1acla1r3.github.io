@@ -1,13 +1,13 @@
 # Part 3: The MoE Forward Pass
 <!-- SUMMARY: The routing mechanism determines which specific computational pathways activate for each token vector in the sequence. Executing the selected expert networks and dynamically blending their outputs produces the final contextual transformation, completing the transition from a dense feed-forward architecture to a sparse conditional formulation. -->
 
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p>
 
 The gating network narrows the full pool of experts down to two for each token, producing both the discrete assignments and their continuous blending weights. Translating these routing decisions into a final token representation requires executing the selected feed-forward networks and combining their outputs. This step completes the replacement of the dense bottleneck with a dynamically routed architecture.
 
 ## Independent Expert Computation
 
-The dense feed-forward block explored in the [Transformer series](series-transformers.html) relied on a single monolithic expansion and contraction matrix pair. The sparse formulation fractures this structure into $E = 4$ separate sub-networks. Every individual expert $i$ maintains an independent set of weights $W_1^{(i)} \in \mathbb{R}^{6 \times 4}$ and $W_2^{(i)} \in \mathbb{R}^{4 \times 6}$. These matrices are not derived from prior structures; they are uniquely instantiated learned parameters that update via backpropagation, exactly like their dense counterparts. The internal dimensionality $d_{ff} = 4$ creates a deliberate parameter bottleneck relative to the dense baseline, enforcing specialization within each expert pathway.
+The dense feed-forward block explored in the [Transformer series](series-transformers.html) relied on a single monolithic expansion and contraction matrix pair. The sparse formulation fractures this structure into $E = 4$ separate sub-networks. Every individual expert $i$ maintains an independent set of weights $W_1^{(i)} \in \mathbb{R}^{6 \times 4}$ and $W_2^{(i)} \in \mathbb{R}^{4 \times 6}$. These matrices are not derived from prior structures; they are uniquely instantiated learned parameters that update via backpropagation through the same optimization rules as their dense counterparts. The internal dimensionality $d_{ff} = 4$ creates a deliberate parameter bottleneck relative to the dense baseline, enforcing specialization within each expert pathway.
 
 The forward pass for any given expert perfectly mirrors the standard sequence of affine transformations and nonlinearities:
 
@@ -56,11 +56,11 @@ graph TD
 
 ## Numerical Execution
 
-Tracing the exact geometric transformations for the four-token sequence solidifies the abstract routing theory into concrete linear algebra.
+Tracing the step-by-step geometric transformations for the four-token sequence grounds the routing equations in concrete linear algebra.
 
 ### First Token Pathway
 
-The first token vector $x_0$ arrives from the residual stream:
+The first token vector (indexed using 0-based row notation as $x_0$, corresponding to Token 1 of the batch) arrives from the residual stream:
 
 $$
 x_0 = \begin{bmatrix}
@@ -133,7 +133,7 @@ $$
 
 ### Second Token Pathway
 
-The second token routes to the identical expert pairing but with a subtly shifted probability distribution: $0.5345$ for Expert 0 and $0.4655$ for Expert 2. The pre-ReLU projection for Expert 2 evaluates entirely to negative values, resulting in a zeroed output vector after activation:
+The second token ($x_1$, or Token 2) routes to the identical expert pairing but with a subtly shifted probability distribution: $0.5345$ for Expert 0 and $0.4655$ for Expert 2. The pre-ReLU projection for Expert 2 evaluates entirely to negative values, resulting in a zeroed output vector after activation:
 
 $$
 \text{FFN}_0(x_1) = \begin{bmatrix}
@@ -157,7 +157,7 @@ $$
 
 ### Third Token Pathway
 
-The third token shifts to a new computational pathway, activating Expert 0 with a weight of $0.5575$ and Expert 1 with a weight of $0.4425$. For this specific input geometry, Expert 0 collapses entirely to zero post-activation, while Expert 1 supplies the mathematical structure:
+The third token ($x_2$, or Token 3) shifts to a new computational pathway, activating Expert 0 with a weight of $0.5575$ and Expert 1 with a weight of $0.4425$. For this specific input geometry, Expert 0 collapses entirely to zero post-activation, while Expert 1 supplies the mathematical structure:
 
 $$
 \text{FFN}_0(x_2) = \begin{bmatrix}
@@ -181,7 +181,7 @@ $$
 
 ### Fourth Token Pathway
 
-The fourth token utilizes the same pathway, relying on Expert 0 with a weight of $0.5386$ and Expert 1 with a weight of $0.4614$. Both experts successfully activate and contribute to the blended output:
+The fourth token ($x_3$, or Token 4) utilizes the same pathway, relying on Expert 0 with a weight of $0.5386$ and Expert 1 with a weight of $0.4614$. Both experts successfully activate and contribute to the blended output:
 
 $$
 \text{FFN}_0(x_3) = \begin{bmatrix}
@@ -208,17 +208,17 @@ The combined outputs across all four tokens form a $4 \times 6$ matrix represent
 $$
 \begin{aligned}
 X + y_{MoE} &= \begin{bmatrix}
-0.0200 &  1.2900 & \dots &  0.6700 \\
-0.7400 &  1.7600 & \dots &  1.2300 \\
-0.8800 & -0.3100 & \dots &  0.9100 \\
-0.1900 & -1.0300 & \dots &  0.6900
+0.0200 &  1.2900 &  0.1800 &  1.3500 &  0.0000 &  0.6700 \\
+0.7400 &  1.7600 &  0.4500 &  1.5200 &  0.2000 &  1.2300 \\
+0.8800 & -0.3100 &  1.7800 &  0.9900 &  0.0900 &  0.9100 \\
+0.1900 & -1.0300 &  1.5600 &  1.2100 &  0.5800 &  0.6900
 \end{bmatrix} \\
 &+
 \begin{bmatrix}
- 0.0174 & -0.0258 & \dots &  0.0075 \\
- 0.0197 & -0.0298 & \dots &  0.0045 \\
- 0.0073 & -0.0051 & \dots &  0.0119 \\
- 0.0043 & -0.0034 & \dots &  0.0078
+ 0.0174 & -0.0258 & -0.0027 &  0.0248 & -0.0283 &  0.0075 \\
+ 0.0197 & -0.0298 &  0.0055 &  0.0316 & -0.0389 &  0.0045 \\
+ 0.0073 & -0.0051 &  0.0060 &  0.0026 &  0.0051 &  0.0119 \\
+ 0.0043 & -0.0034 &  0.0042 &  0.0001 &  0.0031 &  0.0078
 \end{bmatrix}
 \end{aligned}
 $$
@@ -232,6 +232,6 @@ $$
 \end{bmatrix}
 $$
 
-The forward pass successfully updates the token representations while using only a fraction of the total parameter volume. This efficiency, however, introduces a dangerous training instability. The positive feedback loops inherent to conditional routing cause severe load imbalances that, left unchecked, collapse the entire expert pool into a single dominant pathway.
+The forward pass updates the token representations while activating only a fraction of the total parameter volume. This efficiency, however, introduces a dangerous training instability. The positive feedback loops inherent to conditional routing cause severe load imbalances that, left unchecked, collapse the entire expert pool into a single dominant pathway.
 
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p>

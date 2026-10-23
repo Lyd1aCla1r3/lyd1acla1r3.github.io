@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -118,76 +159,109 @@
     <li><a href="index.html">Blog</a></li><li><a href="guide-rag-first-knowledge-system.html">Guides: RAG First Knowledge System</a></li><li aria-current="page">RAG-First Knowledge System: Setup Guide</li></ol></nav>
         <article class="blog-post ">
 <h1>RAG-First Knowledge System: Setup Guide</h1>
-<!-- SUMMARY: A step-by-step installation and configuration guide for assembling the RAG-First Knowledge System, covering LlamaIndex setup with Pinecone integration, LiteLLM gateway configuration for embedding and generation routing, Pinecone index provisioning, LlamaParse document parsing, Firecrawl web crawling, and Braintrust evaluation scoring, with integration wiring scripts and end-to-end verification steps. --><p>The RAG-First Knowledge System architecture chapter explains the rationale behind each component selection, the dual-pipeline design, and the principle that retrieval quality dominates answer quality in knowledge-heavy applications. This guide provides the concrete installation commands, configuration snippets, and wiring steps needed to bring that architecture to a working state.</p>
+<!-- SUMMARY: A step-by-step installation and configuration guide for assembling the RAG-First Knowledge System, covering LlamaIndex setup with Pinecone integration, LiteLLM gateway configuration for embedding and generation routing, Pinecone index provisioning, LlamaParse document parsing, Firecrawl web crawling, and Braintrust evaluation scoring, with integration wiring scripts and end-to-end verification steps. --><p>The <a href="rag-first-knowledge-system-configuration.html">Architecture and Configuration</a> chapter explains the rationale behind each component selection, the dual-pipeline ingestion and query design, and why upstream retrieval precision governs downstream answer quality. This setup guide provides the installation commands, gateway configuration files, Python ingestion and query scripts, and Braintrust evaluation checks needed to bring that architecture to a working state. Each step installs and verifies one layer in isolation before the wiring section connects the tools into an evaluated retrieval pipeline over both static files and live web properties.</p>
 <h2>Prerequisites</h2>
-<ul>
-<li><strong>Operating system</strong>: macOS, Linux, or Windows with Python support</li>
-<li><strong>Python</strong>: Version 3.10 or later, with <code>pip</code> available</li>
-<li><strong>Node.js</strong>: Version 18 or later, with <code>npx</code> available for MCP server execution</li>
-<li><strong>API keys</strong>: The following service accounts are required before proceeding:<ul>
-<li><strong>Pinecone</strong>: API key from the Pinecone console</li>
-<li><strong>LlamaParse</strong>: API key from LlamaCloud</li>
-<li><strong>Firecrawl</strong>: API key from the Firecrawl dashboard</li>
-<li><strong>Braintrust</strong>: API key from the Braintrust console</li>
-<li><strong>LLM provider</strong>: At least one commercial model provider API key for generation and embedding</li>
-</ul>
-</li>
-<li><strong>Network</strong>: Outbound internet access for API calls to Pinecone, LlamaParse, Firecrawl, and model providers</li>
-</ul>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Operating system</td>
+<td>macOS, Linux, or Windows workstation with Python and network access</td>
+</tr>
+<tr>
+<td>Python runtime</td>
+<td>Python 3.10 or later with <code>pip</code> and virtual environment support</td>
+</tr>
+<tr>
+<td>Node.js runtime</td>
+<td>Node.js 18 or later with <code>npx</code> available for MCP servers</td>
+</tr>
+<tr>
+<td>Pinecone account</td>
+<td>Active <code>PINECONE_API_KEY</code> from the Pinecone console for serverless vector storage</td>
+</tr>
+<tr>
+<td>LlamaCloud account</td>
+<td>Active <code>LLAMA_CLOUD_API_KEY</code> from LlamaCloud for agentic PDF and DOCX parsing</td>
+</tr>
+<tr>
+<td>Firecrawl account</td>
+<td>Active <code>FIRECRAWL_API_KEY</code> from the Firecrawl dashboard for headless web crawling</td>
+</tr>
+<tr>
+<td>Braintrust account</td>
+<td>Active <code>BRAINTRUST_API_KEY</code> from the Braintrust console for evaluation datasets</td>
+</tr>
+<tr>
+<td>LLM provider keys</td>
+<td>Commercial provider keys (<code>OPENAI_API_KEY</code> and <code>ANTHROPIC_API_KEY</code>) for LiteLLM routing</td>
+</tr>
+</tbody></table>
 <h2>Step 1: LlamaIndex</h2>
-<p>LlamaIndex provides the retrieval framework with native index abstractions and query engines. Install the core package and integrations:</p>
-<pre><code class="language-bash">pip install llama-index llama-index-core \
+<p>LlamaIndex provides the index abstractions, node splitters, query engines, and response synthesizers that drive both offline ingestion and online retrieval. Install the core framework alongside its Pinecone vector store, OpenAI model and embedding, and web reader integrations inside a dedicated virtual environment:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">install-llamaindex.sh</span><span class="code-drop__meta">Bash · 7 lines</span></summary><pre><code class="language-bash">pip install llama-index llama-index-core \
   llama-index-vector-stores-pinecone \
   llama-index-llms-openai \
   llama-index-embeddings-openai \
+  llama-index-embeddings-openai-like \
   llama-index-readers-web
 </code></pre>
-<p>For alternative embedding providers routed through LiteLLM, add the OpenAI-like adapter:</p>
-<pre><code class="language-bash">pip install llama-index-embeddings-openai-like
-</code></pre>
+</details><p>Installing both <code>llama-index-embeddings-openai</code> and <code>llama-index-embeddings-openai-like</code> allows the pipeline to route OpenAI embedding models or third-party OpenAI-compatible encoders through the LiteLLM proxy without changing framework code. Keeping these namespace packages aligned inside a single virtual environment prevents version drift between the core <code>VectorStoreIndex</code> class and the Pinecone storage adapter.</p>
 <p><strong>Verification</strong>:</p>
-<pre><code class="language-python">import llama_index.core
-print(f&quot;LlamaIndex Core: {llama_index.core.__version__}&quot;)
+<pre><code class="language-bash">python -c \
+  &quot;import llama_index&quot;
 </code></pre>
-<p>A successful installation prints the version number without import errors.</p>
+<p>The command imports <code>llama_index</code> cleanly without import errors.</p>
 <h2>Step 2: Pinecone</h2>
-<p>Pinecone provides the managed vector database. Install the Python client:</p>
+<p>Pinecone provides managed serverless vector storage with namespace isolation and single-stage metadata filtering. Install the official Pinecone Python SDK and export the project API key into the shell environment so both the index provisioning script and the downstream ingestion jobs can authenticate:</p>
 <pre><code class="language-bash">pip install pinecone
+export \
+  PINECONE_API_KEY=&quot;pcsk..&quot;
 </code></pre>
-<p>Set the Pinecone API key, which the index creation code and the wiring scripts read from the environment:</p>
-<pre><code class="language-bash">export PINECONE_API_KEY=&quot;pcsk_...&quot;
-</code></pre>
-<p>Create an index in the Pinecone console or programmatically:</p>
-<pre><code class="language-python">import os
+<p>Save and run <code>scripts/init_pinecone.py</code> to provision a serverless <code>knowledge-base</code> index configured for 1,536-dimensional embeddings and cosine similarity scoring:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">scripts/init_pinecone.py</span><span class="code-drop__meta">Python · 16 lines</span></summary><pre><code class="language-python">import os
 from pinecone import Pinecone, ServerlessSpec
 
 pc = Pinecone(api_key=os.environ[&quot;PINECONE_API_KEY&quot;])
-
 pc.create_index(
     name=&quot;knowledge-base&quot;,
     dimension=1536,
     metric=&quot;cosine&quot;,
-    spec=ServerlessSpec(
-        cloud=&quot;aws&quot;,
-        region=&quot;us-east-1&quot;
-    )
+    spec=ServerlessSpec(cloud=&quot;aws&quot;, region=&quot;us-east-1&quot;),
 )
-
-index = pc.Index(&quot;knowledge-base&quot;)
-stats = index.describe_index_stats()
-print(f&quot;Index &#39;knowledge-base&#39; created: {stats.total_vector_count} vectors.&quot;)
+idx = pc.Index(&quot;knowledge-base&quot;)
+stats = idx.describe_index_stats()
+print(f&quot;Index &#39;knowledge-base&#39; ready: {stats.total_vector_count} vectors.&quot;)
 </code></pre>
-<p>The <code>dimension=1536</code> parameter matches the output dimension of OpenAI&#39;s <code>text-embedding-3-small</code> model. Adjust if using a different embedding model. The metric should match the embedding model&#39;s recommended similarity function.</p>
+</details><pre><code class="language-bash">python \
+  scripts/init_pinecone.py
+</code></pre>
+<p>The 1,536 vector dimension matches OpenAI&#39;s <code>text-embedding-3-small</code> encoder routed through LiteLLM. Switching later to a 3,072-dimensional encoder (<code>text-embedding-3-large</code>) or a 1,024-dimensional encoder requires creating a new Pinecone index with the corresponding dimension parameter. Pinecone Serverless allocates storage and compute elastically inside the selected cloud region (<code>us-east-1</code>), so newly created indexes become ready for vector upserts within a few seconds without manual pod sizing.</p>
 <p><strong>Verification</strong>:</p>
-<pre><code class="language-bash">python -c &quot;import os; from pinecone import Pinecone; pc = Pinecone(api_key=os.environ[&#39;PINECONE_API_KEY&#39;]); print(pc.list_indexes())&quot;
+<details class="code-drop">
+<summary><span class="code-drop__name">verify_pinecone.py</span><span class="code-drop__meta">Python · 4 lines</span></summary><pre><code class="language-python">import os
+from pinecone import Pinecone
+
+pc = Pinecone(api_key=os.environ[&quot;PINECONE_API_KEY&quot;])
+print([idx.name for idx in pc.list_indexes()])
 </code></pre>
-<p>A successful deployment prints the list of available indexes including <code>knowledge-base</code>.</p>
+</details><pre><code class="language-bash">python verify_pinecone.py
+</code></pre>
+<p>The output list contains <code>knowledge-base</code>, confirming that the serverless control plane provisioned the index and accepted the API key.</p>
 <h2>Step 3: LiteLLM Gateway</h2>
-<p>LiteLLM provides unified routing for both generation and embedding model calls. Install the proxy:</p>
-<pre><code class="language-bash">pip install &#39;litellm[proxy]&#39;
+<p>LiteLLM routes both batch embedding requests during document ingestion and chat completion requests during answer synthesis through a single local proxy on port 4000. Centralizing both model types behind one gateway ensures that ingestion scripts and query engines never embed raw vendor keys and that Braintrust receives unified latency and cost telemetry. Install the proxy extras from PyPI:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">install-litellm.sh</span><span class="code-drop__meta">Bash · 1 line</span></summary><pre><code class="language-bash">pip install &quot;litellm[proxy]&quot;
 </code></pre>
-<p>Create <code>litellm_config.yaml</code> with generation and embedding model entries:</p>
-<pre><code class="language-yaml">model_list:
+</details><p>Create <code>litellm_config.yaml</code> with routes for <code>gpt-4o</code>, <code>claude-sonnet</code>, and <code>text-embedding-3-small</code>, plus the Braintrust telemetry callback and a monthly spend ceiling:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">litellm_config.yaml</span><span class="code-drop__meta">YAML · 24 lines</span></summary><pre><code class="language-yaml">model_list:
   - model_name: gpt-4o
     litellm_params:
       model: openai/gpt-4o
@@ -195,7 +269,7 @@ print(f&quot;Index &#39;knowledge-base&#39; created: {stats.total_vector_count} 
 
   - model_name: claude-sonnet
     litellm_params:
-      model: anthropic/claude-sonnet-5-5
+      model: anthropic/claude-sonnet-latest
       api_key: os.environ/ANTHROPIC_API_KEY
 
   - model_name: text-embedding-3-small
@@ -211,396 +285,265 @@ litellm_settings:
 general_settings:
   master_key: sk-rag-master-key
 </code></pre>
-<p>LiteLLM enforces <code>max_budget</code> against spend recorded in its Postgres database, so the budget cap takes effect only after <code>DATABASE_URL</code> points the proxy at a Postgres instance. A proxy started without a database skips the global budget check and keeps serving requests past the limit.</p>
-<p>Set environment variables:</p>
-<pre><code class="language-bash">export OPENAI_API_KEY=&quot;sk-...&quot;
+</details><p>Export the upstream provider keys and start the LiteLLM proxy server on port 4000. Enforcing <code>max_budget</code> across restarts requires pointing <code>DATABASE_URL</code> at a PostgreSQL instance; running without a database still routes traffic and logs callbacks cleanly during local development:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">start-litellm-rag.sh</span><span class="code-drop__meta">Bash · 6 lines</span></summary><pre><code class="language-bash">export OPENAI_API_KEY=&quot;sk-...&quot;
 export ANTHROPIC_API_KEY=&quot;sk-ant-...&quot;
 export BRAINTRUST_API_KEY=&quot;sk-...&quot;
+litellm --config litellm_config.yaml --host 0.0.0.0 --port 4000
 </code></pre>
-<p>Start the LiteLLM proxy:</p>
-<pre><code class="language-bash">litellm --config litellm_config.yaml --host 0.0.0.0 --port 4000
-</code></pre>
-<p><strong>Verification</strong>:</p>
-<pre><code class="language-bash">curl http://localhost:4000/v1/models \
+</details><p><strong>Verification</strong>:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">verify-litellm-rag.sh</span><span class="code-drop__meta">Bash · 2 lines</span></summary><pre><code class="language-bash">curl -s http://localhost:4000/v1/models \
   -H &quot;Authorization: Bearer sk-rag-master-key&quot;
 </code></pre>
-<p>A successful deployment returns a JSON list of the configured models.</p>
+</details><p>The proxy returns a JSON catalog containing <code>gpt-4o</code>, <code>claude-sonnet</code>, and <code>text-embedding-3-small</code>.</p>
 <h2>Step 4: LlamaParse</h2>
-<p>LlamaParse provides cloud-based document parsing for PDFs and structured documents. The standalone <code>llama-parse</code> package is deprecated, and LlamaIndex directs Python users to the <code>llama-cloud</code> SDK, which exposes LlamaParse through its parsing API. Install the client:</p>
-<pre><code class="language-bash">pip install &quot;llama-cloud&gt;=1.0&quot;
+<p>LlamaParse extracts structured Markdown, nested tables, and section hierarchies from complex PDFs and Word documents through the <code>llama-cloud</code> SDK. The older standalone <code>llama-parse</code> package has been superseded by the unified <code>llama-cloud</code> client, which exposes agentic vision parsing directly on <code>client.parsing.parse</code>. Install the client package and export the LlamaCloud API key:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">install-llamaparse.sh</span><span class="code-drop__meta">Bash · 2 lines</span></summary><pre><code class="language-bash">pip install &quot;llama-cloud&gt;=1.0&quot;
+export LLAMA_CLOUD_API_KEY=&quot;llx-...&quot;
 </code></pre>
-<p>Set the LlamaCloud API key:</p>
-<pre><code class="language-bash">export LLAMA_CLOUD_API_KEY=&quot;llx-...&quot;
-</code></pre>
-<p>Test parsing with a sample document:</p>
-<pre><code class="language-python">from llama_cloud import LlamaCloud
+</details><p>Save and run <code>verify_llamaparse.py</code> against a sample PDF to confirm that the <code>agentic</code> parsing tier returns page-level Markdown:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">verify_llamaparse.py</span><span class="code-drop__meta">Python · 13 lines</span></summary><pre><code class="language-python">from llama_cloud import LlamaCloud
 
-client = LlamaCloud()  # reads LLAMA_CLOUD_API_KEY from the environment
-
+client = LlamaCloud()
 result = client.parsing.parse(
     upload_file=&quot;sample_document.pdf&quot;,
     tier=&quot;agentic&quot;,
     version=&quot;latest&quot;,
     expand=[&quot;markdown&quot;],
 )
-
-pages = [page.markdown for page in result.markdown.pages if page.success]
+pages = [p.markdown for p in result.markdown.pages if p.success]
 print(f&quot;Parsed {len(pages)} pages.&quot;)
-print(f&quot;First page preview: {pages[0][:200]}&quot;)
+print(f&quot;Preview: {pages[0][:160]}&quot;)
 </code></pre>
-<p>LlamaParse returns parsed content as per-page Markdown, which the ingestion script below wraps in LlamaIndex <code>Document</code> objects so that it flows directly into the LlamaIndex indexing pipeline.</p>
+</details><pre><code class="language-bash">python verify_llamaparse.py
+</code></pre>
+<p>Requesting <code>tier=&quot;agentic&quot;</code> and <code>expand=[&quot;markdown&quot;]</code> instructs LlamaParse to run vision layout analysis on multi-column pages and tables and return each page&#39;s reconstructed Markdown string ready for LlamaIndex node splitting.</p>
 <p><strong>Verification</strong>:</p>
-<pre><code class="language-python">from llama_cloud import LlamaCloud
-print(&quot;LlamaCloud SDK imported successfully.&quot;)
+<pre><code class="language-bash">python -c \
+  &quot;import llama_cloud&quot;
 </code></pre>
-<p>A successful installation prints the confirmation message. Full verification requires parsing a test PDF and confirming structured Markdown output.</p>
+<p>The command verifies that the <code>llama_cloud</code> package imports without errors, and <code>verify_llamaparse.py</code> confirms live API authentication and Markdown table extraction. Inspecting the printed page preview confirms that multi-column headers and table rows converted into clean Markdown syntax before indexing.</p>
 <h2>Step 5: Firecrawl</h2>
-<p>Firecrawl provides web crawling with JavaScript rendering. Install the Python SDK:</p>
-<pre><code class="language-bash">pip install firecrawl-py
+<p>Firecrawl crawls JavaScript-rendered documentation portals, knowledge bases, and changelogs in a headless browser and converts each page into clean Markdown with navigation chrome removed. Install the Python SDK and export the Firecrawl API key:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">install-firecrawl.sh</span><span class="code-drop__meta">Bash · 2 lines</span></summary><pre><code class="language-bash">pip install firecrawl-py
+export FIRECRAWL_API_KEY=&quot;fc-...&quot;
 </code></pre>
-<p>Set the Firecrawl API key:</p>
-<pre><code class="language-bash">export FIRECRAWL_API_KEY=&quot;fc-...&quot;
-</code></pre>
-<p>Test crawling with a documentation site:</p>
-<pre><code class="language-python">from firecrawl import Firecrawl
+</details><p>Save <code>verify_firecrawl.py</code> to test both single-page scraping (<code>app.scrape</code>) and multi-page domain crawling (<code>app.crawl</code>) with <code>ScrapeOptions</code>:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">verify_firecrawl.py</span><span class="code-drop__meta">Python · 16 lines</span></summary><pre><code class="language-python">import os
+from firecrawl import Firecrawl
+from firecrawl.types import ScrapeOptions
 
-app = Firecrawl(api_key=&quot;fc-...&quot;)
+app = Firecrawl(api_key=os.environ[&quot;FIRECRAWL_API_KEY&quot;])
+single = app.scrape(&quot;https://docs.example.com/getting-started&quot;, formats=[&quot;markdown&quot;])
+print(f&quot;Scraped {len(single.markdown or &#39;&#39;)} chars.&quot;)
 
-result = app.scrape(
-    &quot;https://docs.example.com/getting-started&quot;,
-    formats=[&quot;markdown&quot;],
-)
-
-print(f&quot;Title: {result.metadata.title if result.metadata else &#39;N/A&#39;}&quot;)
-print(f&quot;Content length: {len(result.markdown or &#39;&#39;)} characters&quot;)
-</code></pre>
-<p>For crawling an entire documentation site:</p>
-<pre><code class="language-python">from firecrawl.types import ScrapeOptions
-
-crawl_result = app.crawl(
+crawl = app.crawl(
     &quot;https://docs.example.com&quot;,
-    limit=100,
+    limit=25,
     scrape_options=ScrapeOptions(formats=[&quot;markdown&quot;]),
     poll_interval=5,
 )
-
-print(f&quot;Crawled {crawl_result.total} pages.&quot;)
+print(f&quot;Crawled {crawl.total} pages.&quot;)
 </code></pre>
+</details><p>Setting <code>limit=25</code> and <code>poll_interval=5</code> bounds the crawl breadth during initial testing and polls the asynchronous crawl job every five seconds until all discovered documentation pages finish rendering.</p>
 <p><strong>Verification</strong>:</p>
-<pre><code class="language-python">from firecrawl import Firecrawl
-print(&quot;Firecrawl imported successfully.&quot;)
+<pre><code class="language-bash">python -c \
+  &quot;import firecrawl&quot;
 </code></pre>
-<p>A successful installation prints the confirmation message. Full verification requires scraping a test URL and confirming Markdown output.</p>
+<p>The import check confirms that the SDK is installed, and running <code>python verify_firecrawl.py</code> against a target documentation URL confirms headless browser rendering and Markdown conversion.</p>
 <h2>Step 6: Braintrust</h2>
-<p>Braintrust provides evaluation scoring and experiment management. Install the SDK:</p>
-<pre><code class="language-bash">pip install braintrust
+<p>Braintrust manages versioned evaluation datasets, executes retrieval and faithfulness scoring functions, and compares pipeline experiments side by side across chunking and embedding revisions. Install the SDK and export the Braintrust API key:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">install-braintrust.sh</span><span class="code-drop__meta">Bash · 2 lines</span></summary><pre><code class="language-bash">pip install braintrust
+export BRAINTRUST_API_KEY=&quot;sk-...&quot;
 </code></pre>
-<p>Set the API key:</p>
-<pre><code class="language-bash">export BRAINTRUST_API_KEY=&quot;sk-...&quot;
-</code></pre>
-<p>Create a project and an initial evaluation dataset:</p>
-<pre><code class="language-python">import braintrust
+</details><p>Save and run <code>scripts/init_braintrust.py</code> to create the <code>rag-knowledge-system</code> project and seed the <code>rag-eval-v1</code> benchmark dataset with ground-truth question-answer-source records:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">scripts/init_braintrust.py</span><span class="code-drop__meta">Python · 22 lines</span></summary><pre><code class="language-python">import braintrust
 
 dataset = braintrust.init_dataset(
     project=&quot;rag-knowledge-system&quot;,
     name=&quot;rag-eval-v1&quot;,
-    description=&quot;Evaluation dataset for RAG pipeline quality measurement&quot;
+    description=&quot;Golden benchmark for RAG retrieval and faithfulness scoring&quot;,
 )
-
 dataset.insert(
     input=&quot;What are the system requirements for deploying vLLM?&quot;,
-    expected=&quot;vLLM requires Linux with NVIDIA GPU drivers and CUDA toolkit. &quot;
-             &quot;At least one GPU with 24GB+ VRAM is needed.&quot;,
-    metadata={&quot;category&quot;: &quot;infrastructure&quot;, &quot;source&quot;: &quot;chapter_06.md&quot;}
+    expected=&quot;vLLM requires Linux with NVIDIA GPU drivers, CUDA, and 24GB+ VRAM.&quot;,
+    metadata={&quot;category&quot;: &quot;infrastructure&quot;, &quot;source&quot;: &quot;chapter_06.md&quot;},
 )
-
 dataset.insert(
     input=&quot;How does LiteLLM handle cost governance?&quot;,
-    expected=&quot;LiteLLM generates virtual API keys for each team with &quot;
-             &quot;per-team budget caps, spend tracking, and usage analytics.&quot;,
-    metadata={&quot;category&quot;: &quot;routing&quot;, &quot;source&quot;: &quot;chapter_04.md&quot;}
+    expected=&quot;LiteLLM issues per-team virtual keys with monthly budget caps and spend tracking.&quot;,
+    metadata={&quot;category&quot;: &quot;routing&quot;, &quot;source&quot;: &quot;chapter_04.md&quot;},
 )
-
 dataset.flush()
-print(f&quot;Dataset &#39;{dataset.name}&#39; created with 2 records.&quot;)
+print(f&quot;Dataset &#39;{dataset.name}&#39; initialized with 2 benchmark records.&quot;)
 </code></pre>
+</details><details class="code-drop">
+<summary><span class="code-drop__name">run-init-braintrust.sh</span><span class="code-drop__meta">Bash · 1 line</span></summary><pre><code class="language-bash">python scripts/init_braintrust.py
+</code></pre>
+</details><p>Storing the expected source filename (<code>chapter_06.md</code>, <code>chapter_04.md</code>) inside each record&#39;s <code>metadata</code> dictionary allows evaluation scripts to score both whether the retriever found the right document and whether the language model synthesized a faithful answer.</p>
 <p><strong>Verification</strong>:</p>
-<pre><code class="language-python">import braintrust
-print(&quot;Braintrust imported successfully.&quot;)
+<pre><code class="language-bash">python -c \
+  &quot;import braintrust&quot;
 </code></pre>
-<p>A successful installation prints the confirmation message. Full verification requires creating a project and inserting evaluation records through the SDK.</p>
 <h2>Wiring the Components</h2>
-<p>With all components installed individually, the final step connects them into the integrated pipeline described in the architecture chapter.</p>
+<p>Four integration scripts connect LlamaParse, Firecrawl, LiteLLM, Pinecone, LlamaIndex, and Braintrust into a complete ingestion, retrieval, and evaluation workflow. Running the static and web ingestion scripts populates two isolated namespaces inside the same Pinecone index, and the query and evaluation scripts then measure how accurately the retriever surfaces those indexed passages.</p>
 <h3>LlamaParse-to-Pinecone Ingestion Pipeline</h3>
-<p>Save the following script as <code>scripts/ingest_documents.py</code>. It parses documents with LlamaParse, chunks the output, generates embeddings, and loads vectors into Pinecone:</p>
-<pre><code class="language-python">import os
+<p>Save <code>scripts/ingest_documents.py</code> to parse static files in <code>./knowledge_docs</code> through LlamaParse, split the returned Markdown into 512-token chunks with 50-token overlap, generate embeddings through LiteLLM, and upsert the vectors into Pinecone&#39;s <code>product-docs</code> namespace:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">scripts/ingest_documents.py</span><span class="code-drop__meta">Python · 38 lines</span></summary><pre><code class="language-python">import os
 from llama_cloud import LlamaCloud
 from llama_index.core import Document
 from llama_index.core.node_parser import SentenceSplitter
 from llama_index.embeddings.openai import OpenAIEmbedding
 from pinecone import Pinecone
 
-DOCS_DIR = &quot;./knowledge_docs&quot;
-INDEX_NAME = &quot;knowledge-base&quot;
-NAMESPACE = &quot;product-docs&quot;
+DOCS_DIR, INDEX_NAME, NS = &quot;./knowledge_docs&quot;, &quot;knowledge-base&quot;, &quot;product-docs&quot;
+EXTS = (&quot;.pdf&quot;, &quot;.docx&quot;, &quot;.md&quot;, &quot;.txt&quot;)
 
 parser = LlamaCloud(api_key=os.environ[&quot;LLAMA_CLOUD_API_KEY&quot;])
-embed_model = OpenAIEmbedding(
-    model_name=&quot;text-embedding-3-small&quot;,
-    api_base=&quot;http://localhost:4000/v1&quot;,
-    api_key=&quot;sk-rag-master-key&quot;,
-)
+embed = OpenAIEmbedding(model_name=&quot;text-embedding-3-small&quot;, api_base=&quot;http://localhost:4000/v1&quot;, api_key=&quot;sk-rag-master-key&quot;)
 splitter = SentenceSplitter(chunk_size=512, chunk_overlap=50)
+index = Pinecone(api_key=os.environ[&quot;PINECONE_API_KEY&quot;]).Index(INDEX_NAME)
 
-pc = Pinecone(api_key=os.environ[&quot;PINECONE_API_KEY&quot;])
-index = pc.Index(INDEX_NAME)
-
-doc_files = []
-for root, dirs, files in os.walk(DOCS_DIR):
-    for f in files:
-        if f.endswith((&quot;.pdf&quot;, &quot;.docx&quot;, &quot;.md&quot;, &quot;.txt&quot;)):
-            doc_files.append(os.path.join(root, f))
-
-print(f&quot;Found {len(doc_files)} documents to process.&quot;)
-
-for filepath in doc_files:
-    print(f&quot;Processing: {filepath}&quot;)
-    result = parser.parsing.parse(
-        upload_file=filepath,
-        tier=&quot;agentic&quot;,
-        version=&quot;latest&quot;,
-        expand=[&quot;markdown&quot;],
-    )
-    documents = [
-        Document(text=page.markdown)
-        for page in result.markdown.pages
-        if page.success
-    ]
-
-    nodes = splitter.get_nodes_from_documents(documents)
-    print(f&quot;  Split into {len(nodes)} chunks.&quot;)
-
-    vectors = []
-    for i, node in enumerate(nodes):
-        embedding = embed_model.get_text_embedding(node.text)
-        vectors.append({
-            &quot;id&quot;: f&quot;{os.path.basename(filepath)}-{i}&quot;,
-            &quot;values&quot;: embedding,
-            &quot;metadata&quot;: {
-                &quot;content&quot;: node.text,
-                &quot;source&quot;: filepath,
-                &quot;doc_type&quot;: os.path.splitext(filepath)[1],
-                &quot;chunk_index&quot;: i,
+for root, _, files in os.walk(DOCS_DIR):
+    for name in [f for f in files if f.endswith(EXTS)]:
+        path = os.path.join(root, name)
+        res = parser.parsing.parse(upload_file=path, tier=&quot;agentic&quot;, version=&quot;latest&quot;, expand=[&quot;markdown&quot;])
+        docs = [Document(text=p.markdown) for p in res.markdown.pages if p.success]
+        nodes = splitter.get_nodes_from_documents(docs)
+        vecs = [
+            {
+                &quot;id&quot;: f&quot;{name}-{i}&quot;,
+                &quot;values&quot;: embed.get_text_embedding(n.text),
+                &quot;metadata&quot;: {&quot;content&quot;: n.text, &quot;source&quot;: path, &quot;doc_type&quot;: os.path.splitext(name)[1], &quot;chunk_index&quot;: i},
             }
-        })
-
-    for batch_start in range(0, len(vectors), 100):
-        batch = vectors[batch_start:batch_start + 100]
-        index.upsert(vectors=batch, namespace=NAMESPACE)
-
-    print(f&quot;  Stored {len(vectors)} vectors in namespace &#39;{NAMESPACE}&#39;.&quot;)
-
-stats = index.describe_index_stats()
-print(f&quot;\nTotal vectors in index: {stats.total_vector_count}&quot;)
+            for i, n in enumerate(nodes)
+        ]
+        for start in range(0, len(vecs), 100):
+            index.upsert(vectors=vecs[start:start + 100], namespace=NS)
+        print(f&quot;Indexed {path}: {len(vecs)} chunks into &#39;{NS}&#39;.&quot;)
 </code></pre>
+</details><details class="code-drop">
+<summary><span class="code-drop__name">run-ingest-docs.sh</span><span class="code-drop__meta">Bash · 2 lines</span></summary><pre><code class="language-bash">mkdir -p knowledge_docs
+python scripts/ingest_documents.py
+</code></pre>
+</details><p>Routing <code>OpenAIEmbedding</code> through <code>http://localhost:4000/v1</code> ensures that batch indexing token spend is tracked in LiteLLM alongside interactive query traffic. Upserting vectors in batches of 100 keeps request payloads well within Pinecone&#39;s gRPC and HTTP message size limits while storing the raw chunk text under the <code>content</code> metadata key for downstream synthesis.</p>
 <h3>Firecrawl-to-Pinecone Web Ingestion Pipeline</h3>
-<p>Save the following script as <code>scripts/ingest_web_content.py</code>. It crawls a documentation site with Firecrawl and indexes the content into Pinecone:</p>
-<pre><code class="language-python">import os
+<p>Save <code>ingest_web_content.py</code> in <code>scripts/</code> to crawl a live documentation domain with Firecrawl, split each rendered Markdown page into chunks, and upsert the resulting vectors into Pinecone&#39;s <code>web-docs</code> namespace:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">scripts/ingest_web_content.py</span><span class="code-drop__meta">Python · 38 lines</span></summary><pre><code class="language-python">import os
 from firecrawl import Firecrawl
 from firecrawl.types import ScrapeOptions
+from llama_index.core import Document
 from llama_index.core.node_parser import SentenceSplitter
 from llama_index.embeddings.openai import OpenAIEmbedding
 from pinecone import Pinecone
 
-CRAWL_URL = &quot;https://docs.example.com&quot;
-CRAWL_LIMIT = 100
-INDEX_NAME = &quot;knowledge-base&quot;
-NAMESPACE = &quot;web-docs&quot;
+CRAWL_URL, INDEX_NAME, NS = &quot;https://docs.example.com&quot;, &quot;knowledge-base&quot;, &quot;web-docs&quot;
 
-firecrawl = Firecrawl(api_key=os.environ[&quot;FIRECRAWL_API_KEY&quot;])
-embed_model = OpenAIEmbedding(
-    model_name=&quot;text-embedding-3-small&quot;,
-    api_base=&quot;http://localhost:4000/v1&quot;,
-    api_key=&quot;sk-rag-master-key&quot;,
-)
+fc = Firecrawl(api_key=os.environ[&quot;FIRECRAWL_API_KEY&quot;])
+embed = OpenAIEmbedding(model_name=&quot;text-embedding-3-small&quot;, api_base=&quot;http://localhost:4000/v1&quot;, api_key=&quot;sk-rag-master-key&quot;)
 splitter = SentenceSplitter(chunk_size=512, chunk_overlap=50)
+index = Pinecone(api_key=os.environ[&quot;PINECONE_API_KEY&quot;]).Index(INDEX_NAME)
 
-pc = Pinecone(api_key=os.environ[&quot;PINECONE_API_KEY&quot;])
-index = pc.Index(INDEX_NAME)
-
-print(f&quot;Crawling {CRAWL_URL} with limit {CRAWL_LIMIT}...&quot;)
-crawl_result = firecrawl.crawl(
-    CRAWL_URL,
-    limit=CRAWL_LIMIT,
-    scrape_options=ScrapeOptions(formats=[&quot;markdown&quot;]),
-    poll_interval=5,
-)
-
-pages = crawl_result.data or []
-print(f&quot;Crawled {len(pages)} pages.&quot;)
-
-from llama_index.core import Document
-
-for page_idx, page in enumerate(pages):
-    markdown = page.markdown or &quot;&quot;
-    source_url = (page.metadata and page.metadata.source_url) or f&quot;page-{page_idx}&quot;
-
-    if not markdown.strip():
+crawl = fc.crawl(CRAWL_URL, limit=100, scrape_options=ScrapeOptions(formats=[&quot;markdown&quot;]), poll_interval=5)
+for p_idx, page in enumerate(crawl.data or []):
+    md = (page.markdown or &quot;&quot;).strip()
+    if not md:
         continue
-
-    doc = Document(text=markdown)
-    nodes = splitter.get_nodes_from_documents([doc])
-
-    vectors = []
-    for i, node in enumerate(nodes):
-        embedding = embed_model.get_text_embedding(node.text)
-        vectors.append({
-            &quot;id&quot;: f&quot;web-{page_idx}-{i}&quot;,
-            &quot;values&quot;: embedding,
-            &quot;metadata&quot;: {
-                &quot;content&quot;: node.text,
-                &quot;source&quot;: source_url,
-                &quot;doc_type&quot;: &quot;web&quot;,
-                &quot;chunk_index&quot;: i,
-            }
-        })
-
-    for batch_start in range(0, len(vectors), 100):
-        batch = vectors[batch_start:batch_start + 100]
-        index.upsert(vectors=batch, namespace=NAMESPACE)
-
-    print(f&quot;  [{page_idx + 1}/{len(pages)}] {source_url}: {len(vectors)} vectors.&quot;)
-
-stats = index.describe_index_stats()
-print(f&quot;\nTotal vectors in index: {stats.total_vector_count}&quot;)
+    url = (page.metadata and page.metadata.source_url) or f&quot;page-{p_idx}&quot;
+    nodes = splitter.get_nodes_from_documents([Document(text=md)])
+    vecs = [
+        {
+            &quot;id&quot;: f&quot;web-{p_idx}-{i}&quot;,
+            &quot;values&quot;: embed.get_text_embedding(n.text),
+            &quot;metadata&quot;: {&quot;content&quot;: n.text, &quot;source&quot;: url, &quot;doc_type&quot;: &quot;web&quot;, &quot;chunk_index&quot;: i},
+        }
+        for i, n in enumerate(nodes)
+    ]
+    for start in range(0, len(vecs), 100):
+        index.upsert(vectors=vecs[start:start + 100], namespace=NS)
+    print(f&quot;Indexed {url}: {len(vecs)} chunks into &#39;{NS}&#39;.&quot;)
 </code></pre>
+</details><details class="code-drop">
+<summary><span class="code-drop__name">run-ingest-web.sh</span><span class="code-drop__meta">Bash · 1 line</span></summary><pre><code class="language-bash">python scripts/ingest_web_content.py
+</code></pre>
+</details><p>Separating <code>web-docs</code> from <code>product-docs</code> via Pinecone namespaces allows scheduled cron jobs to refresh crawled web pages daily without touching static PDF vectors. Both ingestion pipelines use the identical <code>SentenceSplitter</code> (<code>chunk_size=512</code>, <code>chunk_overlap=50</code>) and <code>text-embedding-3-small</code> configuration so vector similarity scores remain calibrated across namespaces.</p>
 <h3>RAG Query Pipeline</h3>
-<p>Save the following script as <code>scripts/rag_query.py</code>. It configures a LlamaIndex query engine to retrieve from Pinecone and generate answers through LiteLLM:</p>
-<pre><code class="language-python">from llama_index.core import VectorStoreIndex, Settings
-from llama_index.vector_stores.pinecone import PineconeVectorStore
-from llama_index.llms.openai import OpenAI
-from llama_index.embeddings.openai import OpenAIEmbedding
-from pinecone import Pinecone
-import os
-
-llm = OpenAI(
-    model=&quot;gpt-4o&quot;,
-    api_base=&quot;http://localhost:4000/v1&quot;,
-    api_key=&quot;sk-rag-master-key&quot;,
-    temperature=0,
-)
-
-embed_model = OpenAIEmbedding(
-    model_name=&quot;text-embedding-3-small&quot;,
-    api_base=&quot;http://localhost:4000/v1&quot;,
-    api_key=&quot;sk-rag-master-key&quot;,
-)
-
-Settings.llm = llm
-Settings.embed_model = embed_model
-
-pc = Pinecone(api_key=os.environ[&quot;PINECONE_API_KEY&quot;])
-pinecone_index = pc.Index(&quot;knowledge-base&quot;)
-
-vector_store = PineconeVectorStore(
-    pinecone_index=pinecone_index,
-    namespace=&quot;product-docs&quot;,
-    text_key=&quot;content&quot;,
-)
-
-index = VectorStoreIndex.from_vector_store(vector_store=vector_store)
-query_engine = index.as_query_engine(
-    similarity_top_k=5,
-    response_mode=&quot;tree_summarize&quot;,
-)
-
-response = query_engine.query(
-    &quot;What are the tradeoffs between self-hosted and managed vector databases?&quot;
-)
-
-print(&quot;Answer:&quot;)
-print(response)
-print(f&quot;\nSources: {len(response.source_nodes)} chunks retrieved.&quot;)
-for i, node in enumerate(response.source_nodes):
-    print(f&quot;  [{i + 1}] {node.metadata.get(&#39;source&#39;, &#39;unknown&#39;)} &quot;
-          f&quot;(score: {node.score:.4f})&quot;)
-</code></pre>
-<h3>Braintrust RAG Evaluation Pipeline</h3>
-<p>Save the following script as <code>scripts/evaluate_rag.py</code>. It runs the RAG query pipeline against a Braintrust evaluation dataset and scores retrieval quality:</p>
-<pre><code class="language-python">import braintrust
+<p>Save <code>scripts/rag_query.py</code> to bind LlamaIndex&#39;s <code>PineconeVectorStore</code> to the indexed namespace, retrieve the top five matching chunks, and synthesize a cited answer through LiteLLM:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">scripts/rag_query.py</span><span class="code-drop__meta">Python · 31 lines</span></summary><pre><code class="language-python">import os
 from llama_index.core import VectorStoreIndex, Settings
 from llama_index.vector_stores.pinecone import PineconeVectorStore
 from llama_index.llms.openai import OpenAI
 from llama_index.embeddings.openai import OpenAIEmbedding
 from pinecone import Pinecone
-import os
 
-llm = OpenAI(
-    model=&quot;gpt-4o&quot;,
-    api_base=&quot;http://localhost:4000/v1&quot;,
-    api_key=&quot;sk-rag-master-key&quot;,
-    temperature=0,
-)
-
-embed_model = OpenAIEmbedding(
-    model_name=&quot;text-embedding-3-small&quot;,
-    api_base=&quot;http://localhost:4000/v1&quot;,
-    api_key=&quot;sk-rag-master-key&quot;,
-)
-
-Settings.llm = llm
-Settings.embed_model = embed_model
+Settings.llm = OpenAI(model=&quot;gpt-4o&quot;, api_base=&quot;http://localhost:4000/v1&quot;, api_key=&quot;sk-rag-master-key&quot;, temperature=0)
+Settings.embed_model = OpenAIEmbedding(model_name=&quot;text-embedding-3-small&quot;, api_base=&quot;http://localhost:4000/v1&quot;, api_key=&quot;sk-rag-master-key&quot;)
 
 pc = Pinecone(api_key=os.environ[&quot;PINECONE_API_KEY&quot;])
-pinecone_index = pc.Index(&quot;knowledge-base&quot;)
-vector_store = PineconeVectorStore(
-    pinecone_index=pinecone_index,
-    namespace=&quot;product-docs&quot;,
-    text_key=&quot;content&quot;,
-)
-index = VectorStoreIndex.from_vector_store(vector_store=vector_store)
-query_engine = index.as_query_engine(similarity_top_k=5)
+store = PineconeVectorStore(pinecone_index=pc.Index(&quot;knowledge-base&quot;), namespace=&quot;product-docs&quot;, text_key=&quot;content&quot;)
+engine = VectorStoreIndex.from_vector_store(store).as_query_engine(similarity_top_k=5, response_mode=&quot;tree_summarize&quot;)
 
+res = engine.query(&quot;What are the tradeoffs between self-hosted and managed vector databases?&quot;)
+print(f&quot;Answer:\n{res}\n\nSources ({len(res.source_nodes)} chunks):&quot;)
+for idx, node in enumerate(res.source_nodes):
+    print(f&quot;  [{idx + 1}] {node.metadata.get(&#39;source&#39;, &#39;unknown&#39;)} (score: {node.score:.4f})&quot;)
+</code></pre>
+</details><pre><code class="language-bash">python scripts/rag_query.py
+</code></pre>
+<p>Passing <code>text_key=&quot;content&quot;</code> tells <code>PineconeVectorStore</code> which metadata field holds the chunk text upserted by the ingestion scripts, and <code>tree_summarize</code> response mode hierarchical-summarizes the top five retrieved chunks at temperature zero before printing each source path and cosine similarity score.</p>
+<h3>Braintrust RAG Evaluation Pipeline</h3>
+<p>Save <code>scripts/evaluate_rag.py</code> to benchmark the live LlamaIndex query engine against the golden dataset in Braintrust and compute quantitative faithfulness and source-retrieval scores:</p>
+<details class="code-drop">
+<summary><span class="code-drop__name">scripts/evaluate_rag.py</span><span class="code-drop__meta">Python · 39 lines</span></summary><pre><code class="language-python">import os
+import braintrust
+from llama_index.core import VectorStoreIndex, Settings
+from llama_index.vector_stores.pinecone import PineconeVectorStore
+from llama_index.llms.openai import OpenAI
+from llama_index.embeddings.openai import OpenAIEmbedding
+from pinecone import Pinecone
 
-def rag_task(input_text):
-    response = query_engine.query(input_text)
+Settings.llm = OpenAI(model=&quot;gpt-4o&quot;, api_base=&quot;http://localhost:4000/v1&quot;, api_key=&quot;sk-rag-master-key&quot;, temperature=0)
+Settings.embed_model = OpenAIEmbedding(model_name=&quot;text-embedding-3-small&quot;, api_base=&quot;http://localhost:4000/v1&quot;, api_key=&quot;sk-rag-master-key&quot;)
+
+pc = Pinecone(api_key=os.environ[&quot;PINECONE_API_KEY&quot;])
+store = PineconeVectorStore(pinecone_index=pc.Index(&quot;knowledge-base&quot;), namespace=&quot;product-docs&quot;, text_key=&quot;content&quot;)
+engine = VectorStoreIndex.from_vector_store(store).as_query_engine(similarity_top_k=5)
+
+def rag_task(question):
+    res = engine.query(question)
     return {
-        &quot;answer&quot;: str(response),
-        &quot;sources&quot;: [n.metadata.get(&quot;source&quot;, &quot;&quot;) for n in response.source_nodes],
-        &quot;scores&quot;: [n.score for n in response.source_nodes],
+        &quot;answer&quot;: str(res),
+        &quot;sources&quot;: [n.metadata.get(&quot;source&quot;, &quot;&quot;) for n in res.source_nodes],
     }
 
-
 def faithfulness_scorer(output, expected):
-    expected_lower = expected.lower()
-    answer_lower = output[&quot;answer&quot;].lower()
-    key_phrases = [p.strip() for p in expected_lower.split(&quot;.&quot;) if p.strip()]
-    matches = sum(1 for p in key_phrases if p in answer_lower)
-    return matches / max(len(key_phrases), 1)
+    phrases = [p.strip() for p in expected.lower().split(&quot;.&quot;) if p.strip()]
+    hits = sum(1 for p in phrases if p in output[&quot;answer&quot;].lower())
+    return hits / max(len(phrases), 1)
 
-
-eval_result = braintrust.Eval(
+braintrust.Eval(
     &quot;rag-knowledge-system&quot;,
-    data=lambda: [
-        {
-            &quot;input&quot;: &quot;What are the system requirements for deploying vLLM?&quot;,
-            &quot;expected&quot;: &quot;vLLM requires Linux with NVIDIA GPU drivers and CUDA toolkit. &quot;
-                        &quot;At least one GPU with 24GB+ VRAM is needed.&quot;,
-        },
-        {
-            &quot;input&quot;: &quot;How does LiteLLM handle cost governance?&quot;,
-            &quot;expected&quot;: &quot;LiteLLM generates virtual API keys for each team with &quot;
-                        &quot;per-team budget caps, spend tracking, and usage analytics.&quot;,
-        },
-    ],
-    task=lambda input: rag_task(input),
+    data=braintrust.init_dataset(project=&quot;rag-knowledge-system&quot;, name=&quot;rag-eval-v1&quot;),
+    task=rag_task,
     scores=[faithfulness_scorer],
 )
-
-print(&quot;Evaluation complete. View results in the Braintrust dashboard.&quot;)
 </code></pre>
+</details><pre><code class="language-bash">python \
+  scripts/evaluate_rag.py
+</code></pre>
+<p>Passing <code>braintrust.init_dataset</code> directly to <code>braintrust.Eval</code> pulls the versioned benchmark records seeded in Step 6 rather than duplicating hardcoded test strings across scripts. Each run logs a new experiment comparison link to the terminal so engineers can verify whether a chunk-size, top-K, or encoder adjustment improved retrieval precision.</p>
 <h2>Verification</h2>
-<p>The following end-to-end checks confirm that all components are installed, wired, and operational.</p>
 <table>
 <thead>
 <tr>
@@ -610,65 +553,94 @@ print(&quot;Evaluation complete. View results in the Braintrust dashboard.&quot;
 </tr>
 </thead>
 <tbody><tr>
-<td>LlamaIndex</td>
-<td><code>python -c &quot;import llama_index.core; print(&#39;OK&#39;)&quot;</code></td>
-<td>Prints &quot;OK&quot;</td>
+<td>LlamaIndex core</td>
+<td><code>python -c &quot;import llama_index&quot;</code></td>
+<td>Exits with code zero and no import errors</td>
 </tr>
 <tr>
-<td>Pinecone</td>
-<td><code>python -c &quot;from pinecone import Pinecone; print(&#39;OK&#39;)&quot;</code></td>
-<td>Prints &quot;OK&quot;</td>
+<td>Pinecone index</td>
+<td><code>python verify_pinecone.py</code></td>
+<td>Lists knowledge-base in active indexes</td>
 </tr>
 <tr>
-<td>LiteLLM proxy</td>
-<td><code>curl http://localhost:4000/v1/models -H &quot;Authorization: Bearer sk-rag-master-key&quot;</code></td>
-<td>Returns JSON model list</td>
+<td>LiteLLM gateway</td>
+<td><code>curl -s localhost:4000/v1/models</code></td>
+<td>Returns JSON catalog of generation and embedding models</td>
 </tr>
 <tr>
-<td>LlamaParse</td>
-<td><code>python -c &quot;from llama_cloud import LlamaCloud; print(&#39;OK&#39;)&quot;</code></td>
-<td>Prints &quot;OK&quot;</td>
+<td>LlamaParse client</td>
+<td><code>python verify_llamaparse.py</code></td>
+<td>Prints parsed page count and Markdown preview</td>
 </tr>
 <tr>
-<td>Firecrawl</td>
-<td><code>python -c &quot;from firecrawl import Firecrawl; print(&#39;OK&#39;)&quot;</code></td>
-<td>Prints &quot;OK&quot;</td>
+<td>Firecrawl crawler</td>
+<td><code>python verify_firecrawl.py</code></td>
+<td>Scrapes and crawls target URL into Markdown</td>
 </tr>
 <tr>
-<td>Braintrust</td>
-<td><code>python -c &quot;import braintrust; print(&#39;OK&#39;)&quot;</code></td>
-<td>Prints &quot;OK&quot;</td>
+<td>Braintrust dataset</td>
+<td><code>bash run-init-braintrust.sh</code></td>
+<td>Creates benchmark dataset with two records</td>
 </tr>
 <tr>
-<td>Document ingestion</td>
-<td>Place test PDFs in <code>knowledge_docs/</code>, run <code>python scripts/ingest_documents.py</code></td>
-<td>Reports vectors stored per document</td>
+<td>Doc ingestion</td>
+<td><code>bash run-ingest-docs.sh</code></td>
+<td>Upserts chunk vectors into product-docs namespace</td>
 </tr>
 <tr>
 <td>Web ingestion</td>
-<td>Set <code>CRAWL_URL</code> in <code>scripts/ingest_web_content.py</code>, run <code>python scripts/ingest_web_content.py</code></td>
-<td>Reports vectors stored per crawled page</td>
+<td><code>bash run-ingest-web.sh</code></td>
+<td>Upserts crawled vectors into web-docs namespace</td>
 </tr>
 <tr>
-<td>RAG query</td>
+<td>Cited RAG query</td>
 <td><code>python scripts/rag_query.py</code></td>
-<td>Prints answer with retrieved source citations</td>
+<td>Prints synthesized answer with source paths and scores</td>
 </tr>
 <tr>
-<td>Evaluation</td>
+<td>Evaluation suite</td>
 <td><code>python scripts/evaluate_rag.py</code></td>
-<td>Prints evaluation scores and directs to Braintrust dashboard</td>
+<td>Runs benchmark and logs experiment URL in Braintrust</td>
 </tr>
 </tbody></table>
-<p>The RAG-First Knowledge System is operational once all ten checks pass. The architecture chapter provides the rationale behind each component selection, the dual-pipeline design, and the retrieval quality optimization principles governing how the layers interact.</p>
+<h2>Troubleshooting</h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Pinecone upsert raises dimension mismatch error</td>
+<td>Confirm the index dimension (1,536) matches the output size of <code>text-embedding-3-small</code></td>
+</tr>
+<tr>
+<td><code>PineconeVectorStore</code> returns empty node text</td>
+<td>Pass <code>text_key=&quot;content&quot;</code> when initializing <code>PineconeVectorStore</code> to match the ingested metadata key</td>
+</tr>
+<tr>
+<td>LlamaParse returns empty pages on scanned PDFs</td>
+<td>Set <code>tier=&quot;agentic&quot;</code> in <code>client.parsing.parse</code> so vision layout and OCR models execute</td>
+</tr>
+<tr>
+<td>LiteLLM global budget cap does not block spend</td>
+<td>Configure <code>DATABASE_URL</code> with a PostgreSQL instance before starting the LiteLLM proxy</td>
+</tr>
+<tr>
+<td>Braintrust evaluation run logs zero dataset rows</td>
+<td>Run <code>init_braintrust.py</code> first and verify <code>dataset.flush()</code> completed without error</td>
+</tr>
+</tbody></table>
+<p>The <a href="rag-first-knowledge-system-configuration.html">RAG-First Knowledge System</a> is operational once all ten verification checks pass. That companion architecture chapter details the dual-ingestion design, retrieval quality tradeoffs, and layer substitution options. Teams iterating on production corpora should re-run the Braintrust evaluation script after every chunking, metadata filter, or encoder change so retrieval precision and citation faithfulness are verified quantitatively before deployment.</p>
 <h2>References</h2>
 <ol>
 <li>LlamaIndex Installation Guide, LlamaIndex Inc.</li>
 <li>Pinecone Getting Started Guide, Pinecone Systems Inc.</li>
 <li>LiteLLM Proxy Documentation, BerriAI.</li>
-<li>LlamaParse Documentation, LlamaIndex Inc.</li>
-<li>Firecrawl Documentation, Mendable Inc.</li>
-<li>Braintrust Documentation, Braintrust Data Inc.</li>
+<li>LlamaParse and LlamaCloud SDK Documentation, LlamaIndex Inc.</li>
+<li>Firecrawl Python SDK Documentation, Mendable Inc.</li>
+<li>Braintrust Evaluation Documentation, Braintrust Data Inc.</li>
 <li>OpenAI Embeddings Guide, OpenAI.</li>
 </ol>
 

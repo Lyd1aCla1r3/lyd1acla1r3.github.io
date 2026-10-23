@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -118,14 +159,14 @@
     <li><a href="index.html">Blog</a></li><li><a href="series-transformers.html">Series: Transformers</a></li><li aria-current="page">Part 7: The Projection Matrix and The Cross-Head Mixer</li></ol></nav>
         <article class="blog-post series-transformers">
 <h1>Part 7: The Projection Matrix and The Cross-Head Mixer</h1>
-<!-- SUMMARY: The isolated outputs of multiple attention heads are concatenated into a unified matrix to preserve structural integrity without destructive interference. These discrete features are synthesized into higher-order contextual representations by projecting them through a learned cross-head mixing matrix, preparing the vectors to rejoin the residual stream. --><p>The computations detailed in Parts 5 and 6 successfully resolve the core attention mechanism, yielding isolated outputs from the network&#39;s multiple attention heads. These discrete insights must now be synthesized into a unified structure before projecting the contextual representations forward.</p>
+<!-- SUMMARY: The isolated outputs of multiple attention heads are concatenated into a unified matrix to preserve structural integrity without destructive interference. These discrete features are synthesized into higher-order contextual representations by projecting them through a learned cross-head mixing matrix, preparing the vectors to rejoin the residual stream. --><p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p><p>The computations detailed in Parts 5 and 6 resolve the core attention mechanism, yielding isolated outputs from the parallel attention heads of the network. These discrete features must now combine into a unified structure before projecting the contextual representations forward.</p>
 <h2>The Concatenation Step</h2>
 <p>The previous phase completed the journey of a single attention head. The mechanism calculated its masked attention scores, converted those scores into strict probability distributions via the Softmax function, and finally computed a weighted sum over the Value matrix $V$.</p>
 <p>That process yields a contextually enriched vector for each token in the sequence. These vectors only possess a dimension of $d_v = 2$, whereas the overall model dimension is $d_{model} = 6$. The architecture deliberately splits into three parallel attention heads so the network can simultaneously look for different types of semantic relationships. Head 1 might attend to subject-verb pairings, while Head 2 looks for temporal markers, and Head 3 focuses on pronoun antecedents.</p>
-<p>The system now faces a critical architectural challenge. Three isolated sets of findings exist. The model must unify these independent insights back into a single cohesive representation for each token, and this representation must seamlessly reintegrate with the overarching $d_{model} = 6$ architecture.</p>
-<p>The most straightforward way to combine the outputs of the three heads might seem to be addition. The system could simply sum the three matrices together. Summation destroys the distinct structural information each head worked tirelessly to extract. If Head 1 finds a strong positive signal for a specific feature and Head 2 finds a strong negative signal, adding them together cancels out the values, effectively erasing the evidence gathered by both heads.</p>
-<p>Instead of summing, the architecture concatenates the outputs along the feature dimension. Placing the three $4 \times 2$ matrices side-by-side preserves every piece of information. The resulting matrix has a sequence length of 4 and a new feature dimension of $3 \times 2 = 6$.</p>
-<p>The actual output of the three heads illustrates this process. The exact Head 1 output calculated previously sits alongside simulated outputs for Head 2 and Head 3.</p>
+<p>The system now faces a structural challenge. Three isolated sets of findings exist. The model must unify these independent representations back into a single cohesive vector for each token that matches the overarching $d_{model} = 6$ dimension.</p>
+<p>The most direct way to combine the outputs of the three heads might appear to be element-wise addition. Summing the three $4 \times 2$ matrices destroys the distinct subspace features extracted by each head. A strong positive activation in Head 1 paired with a strong negative activation in Head 2 cancels out under addition, erasing the directional evidence gathered by both heads.</p>
+<p>Instead of summing, the architecture concatenates the outputs along the feature dimension. Placing the three $4 \times 2$ matrices side by side preserves every subspace coordinate. The resulting matrix has a sequence length of 4 and a combined feature dimension of $3 \times 2 = 6$.</p>
+<p>The numerical outputs of the three heads illustrate this concatenation step. The Head 1 matrix calculated in Part 6 sits alongside the corresponding outputs from Head 2 and Head 3:</p>
 <p>$$
 \text{Head 1} = \begin{bmatrix}
  0.83 &  0.69 \\
@@ -150,7 +191,7 @@ $$</p>
  0.25 &  0.10
 \end{bmatrix}
 $$</p>
-<p>Concatenating these three matrices horizontally achieves the target width of 6.</p>
+<p>Concatenating these three matrices horizontally achieves the target width of 6:</p>
 <p>$$
 \text{Concatenated} = \begin{bmatrix}
  0.83 &  0.69 & -0.50 &  0.10 &  0.20 & -0.30 \\
@@ -160,8 +201,54 @@ $$</p>
 \end{bmatrix}
 $$</p>
 <h2>The Projection Matrix</h2>
-<p>Concatenation perfectly resolves the sizing issue. The dimensions return to a $4 \times 6$ matrix. However, a geometric problem remains. The features are entirely segregated. The first two columns belong exclusively to Head 1, the middle two to Head 2, and the final two to Head 3. The insights exist in the same mathematical structure, yet they do not interact.</p>
-<p>A neural network derives its power from synthesizing discrete pieces of evidence into higher-order concepts. To facilitate this synthesis, the architecture introduces the final learned parameter of the attention mechanism, the Projection Matrix, denoted as $W_O$.</p>
+<p>Concatenation restores the required $4 \times 6$ matrix dimensions, yet a geometric isolation problem remains. The features stay partitioned by head: columns 1 and 2 belong exclusively to Head 1, columns 3 and 4 to Head 2, and columns 5 and 6 to Head 3. The extracted features occupy the same matrix without interacting.</p>
+<p>Synthesizing discrete subspace features into higher-order concepts requires cross-head interaction. The architecture achieves this synthesis through the final learned parameter of the attention block: the output projection matrix $W_O$.</p>
+<table>
+<thead>
+<tr>
+<th align="left">Tensor</th>
+<th align="left">Symbol</th>
+<th align="left">Shape</th>
+<th align="left">Architectural Role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Head 1 Output</strong></td>
+<td align="left"><code>Head 1</code></td>
+<td align="left"><code>4 x 2</code></td>
+<td align="left">Captures subspace 1 contextual payload (<code>Columns 1-2</code>)</td>
+</tr>
+<tr>
+<td align="left"><strong>Head 2 Output</strong></td>
+<td align="left"><code>Head 2</code></td>
+<td align="left"><code>4 x 2</code></td>
+<td align="left">Captures subspace 2 contextual payload (<code>Columns 3-4</code>)</td>
+</tr>
+<tr>
+<td align="left"><strong>Head 3 Output</strong></td>
+<td align="left"><code>Head 3</code></td>
+<td align="left"><code>4 x 2</code></td>
+<td align="left">Captures subspace 3 contextual payload (<code>Columns 5-6</code>)</td>
+</tr>
+<tr>
+<td align="left"><strong>Concatenated Heads</strong></td>
+<td align="left"><code>Concatenated</code></td>
+<td align="left"><code>4 x 6</code></td>
+<td align="left">Aligns all three <code>4 x 2</code> head outputs side by side</td>
+</tr>
+<tr>
+<td align="left"><strong>Output Projection</strong></td>
+<td align="left"><code>W_O</code></td>
+<td align="left"><code>6 x 6</code></td>
+<td align="left">Mixes features across all heads via learned linear weights</td>
+</tr>
+<tr>
+<td align="left"><strong>Attention Block Output</strong></td>
+<td align="left"><code>Output</code></td>
+<td align="left"><code>4 x 6</code></td>
+<td align="left">Produces unified contextual update for the residual stream</td>
+</tr>
+</tbody></table>
 <pre><code class="language-mermaid">graph TD
     H1[&quot;Head 1 Output&lt;br&gt;4x2&quot;] --&gt; C
     H2[&quot;Head 2 Output&lt;br&gt;4x2&quot;] --&gt; C
@@ -170,8 +257,8 @@ $$</p>
     W[&quot;Projection Matrix W_O&lt;br&gt;6x6&quot;] --&gt; M
     M[&quot;Final Attention Output&lt;br&gt;4x6&quot;]
 </code></pre>
-<p>The matrix $W_O$ has dimensions of $d_{model} \times d_{model}$, which in this case is $6 \times 6$. It acts as a cross-head mixer. Multiplying the concatenated matrix by $W_O$ produces a resulting matrix that is a linear combination of all the features from all the heads. The network can learn that a high value in column 1 from Head 1, when combined with a low value in column 5 from Head 3, implies a specific semantic meaning that should be passed forward to the rest of the architecture.</p>
-<p>The randomly initialized projection matrix $W_O$ for the toy model appears as follows.</p>
+<p>The matrix $W_O$ has dimensions of $d_{model} \times d_{model}$, which in this configuration is $6 \times 6$. It acts as a cross-head mixer. Multiplying the concatenated matrix by $W_O$ produces a resulting matrix that is a linear combination of all features across all heads. The network can learn that a high value in column 1 from Head 1 combined with a low value in column 5 from Head 3 encodes a composite syntactic signal that should pass forward to the rest of the architecture.</p>
+<p>The initialized projection matrix $W_O$ for the toy model takes the following form:</p>
 <p>$$
 W_O = \begin{bmatrix}
  0.10 &  0.20 & -0.10 &  0.30 &  0.00 & -0.20 \\
@@ -182,7 +269,7 @@ W_O = \begin{bmatrix}
 -0.30 &  0.10 & -0.10 &  0.20 & -0.20 &  0.40
 \end{bmatrix}
 $$</p>
-<p>Taking the dot product of the concatenated outputs and $W_O$ applies the final transformation.</p>
+<p>Multiplying the concatenated outputs by $W_O$ applies the cross-head linear transformation:</p>
 <p>$$
 \text{Output} = \text{Concatenated} \cdot W_O
 $$</p>
@@ -195,8 +282,9 @@ $$</p>
 \end{bmatrix}
 $$</p>
 <h2>Rejoining the Stream</h2>
-<p>This final calculation successfully completes the Multi-Head Self-Attention block. The process began with basic token embeddings representing the sequence <code>&lt;BOS&gt;</code> <code>i</code> <code>woke</code> <code>up</code>. The architecture split those representations, allowed them to search for context across the sequence, gathered their findings, and fused those findings back into a unified $4 \times 6$ matrix.</p>
-<p>Every vector in this output matrix now contains rich, contextualized information about its surrounding tokens. These advanced representations are ready to merge back into the main residual stream of the Transformer.</p>
+<p>This calculation completes the Multi-Head Self-Attention block. The process began with token embeddings representing the sequence <code>&lt;BOS&gt;</code> <code>i</code> <code>woke</code> <code>up</code>. The architecture projected those representations into three subspaces, gathered causal context across the sequence, and fused the resulting head outputs into a unified $4 \times 6$ matrix.</p>
+<p>Every row vector in this output matrix now encodes contextualized information drawn from its preceding tokens. These updates are ready to merge back into the main residual stream of the Transformer.</p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="transformers-chapter_06.html" class="pagination-link prev">

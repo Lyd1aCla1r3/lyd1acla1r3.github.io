@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -118,35 +159,78 @@
     <li><a href="index.html">Blog</a></li><li><a href="series-embeddings.html">Series: Embeddings</a></li><li aria-current="page">Part 2: The Continuous Vector Space</li></ol></nav>
         <article class="blog-post series-embeddings">
 <h1>Part 2: The Continuous Vector Space</h1>
-<!-- SUMMARY: Projecting discrete tokens into a high-dimensional vector space provides the differentiable manifold required for gradient-based optimization. At initialization, these vectors are drawn from a random distribution, creating an isotropic expanse where all tokens are geometrically orthogonal and devoid of semantic relationships. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p><p>The linear projection of a one-hot vector through the embedding matrix $W_E$ fundamentally alters the mathematical domain of the tokens. The gap from a discrete, categorical space ($\mathbb{Z}$) into a dense, continuous vector space ($\mathbb{R}^{d_{model}}$) has been bridged. </p>
-<p>This transition is a structural prerequisite for deep learning. </p>
+<!-- SUMMARY: Projecting discrete tokens into a high-dimensional vector space provides the differentiable manifold required for gradient-based optimization. At initialization, these vectors are drawn from a random distribution, creating an isotropic expanse where all tokens are geometrically orthogonal and devoid of semantic relationships. --><p><em>Prefer to read this offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p><p>The linear projection of a one-hot vector through the embedding matrix $W_E$ alters the mathematical domain of the tokens, bridging the gap from a discrete categorical set ($\mathbb{Z}$) into a dense, continuous vector space ($\mathbb{R}^{d_{\text{model}}}$).</p>
+<p>This domain transition is a structural prerequisite for deep learning.</p>
 <h2>The Differentiable Manifold</h2>
-<p>Neural networks learn through calculus—specifically, by calculating gradients and traversing a loss landscape via backpropagation. Calculus requires a continuous, differentiable manifold. The gradient of a discrete integer ID cannot be calculated, nor can a microscopic mathematical adjustment be made to a categorical label.</p>
-<p>By projecting tokens into a dense, continuous space, each token becomes parameterized by a vector of floating-point numbers. If the architecture dictates a dimension size of $d_{model} = 512$, the token <code>walk</code> is now defined by 512 independent, tunable parameters:</p>
+<p>Neural networks learn through calculus by computing partial derivatives and traversing a continuous loss landscape via backpropagation. Differential calculus requires a continuous manifold: a discrete integer ID admits no derivative, and a categorical label cannot absorb a microscopic numerical perturbation.</p>
+<p>Projecting tokens into $\mathbb{R}^{d_{\text{model}}}$ parameterizes each vocabulary entry as a vector of floating-point coordinates. Scaling the hidden dimension from the 3-dimensional whiteboard model ($d_{\text{model}} = 3$) to a production dimensionality of $d_{\text{model}} = 512$ represents a token such as <code>brown</code> with 512 independent, tunable parameters:</p>
 <p>$$
-\mathbf{v}_{walk} = [0.124, -0.841, 0.339, \dots, -0.052] \in \mathbb{R}^{512}
+\mathbf{v}_{\text{brown}} = \begin{bmatrix} 0.124 & -0.841 & 0.339 & \dots & -0.052 \end{bmatrix} \in \mathbb{R}^{512}
 $$</p>
-<p>Because these parameters are continuous, they are entirely unconstrained. A gradient descent step can apply an arbitrarily small perturbation to $\mathbf{v}_{walk}$ (e.g., subtracting $0.001$ from its first dimension) to incrementally improve the model&#39;s objective function. This continuous adjustment mechanism is what allows the network to gradually map semantic relationships into geometric proximity.</p>
+<p>Continuous coordinates impose no discrete grid constraints on parameter updates. A single gradient descent step can apply an arbitrarily small perturbation to $\mathbf{v}_{\text{brown}}$ (such as subtracting $0.001$ from its first coordinate) to reduce the training loss incrementally. Repeated continuous perturbations allow the optimization process to translate statistical co-occurrence patterns into geometric proximity.</p>
 <h2>The Isotropic Expanse</h2>
-<p>These initial 512 dimensions do not correspond to latent human concepts. At initialization, one dimension does not encode &quot;plurality,&quot; while another encodes &quot;sentiment.&quot;</p>
-<p>When a model is instantiated, the weights of $W_E$ are populated by sampling from a random probability distribution, such as a standard normal distribution $\mathcal{N}(0, \sigma^2)$. Because every dimension is drawn independently from the exact same symmetric distribution, the resulting vector space is <strong>isotropic</strong>—meaning it looks completely uniform in every direction.</p>
-<p>High-dimensional geometry invalidates the intuition of a 3D cloud of points with varied clustering. In 512 dimensions, a mathematical phenomenon called the <em>concentration of measure</em> dominates. Calculating the length of a vector requires summing its 512 squared dimensions. Due to the massive sample size, the Law of Large Numbers dictates that the final lengths of all the randomized vectors will average out to be virtually identical. Instead of a solid, uneven blob of points, the random initialization creates a perfectly uniform, hollow shell. Every single token sits on the exact same surface of a high-dimensional hypersphere, devoid of any structural bias.</p>
-<p>Consider the vastness of a high-dimensional space. In a standard 2D plane, there are exactly 4 geometric quadrants. Randomly scattering a vocabulary of 50,000 tokens across a 2D plane inevitably creates dense clusters due to spatial constraints.</p>
-<p>However, a 512-dimensional space contains $2^{512}$ distinct quadrants (mathematically known as orthants). To put that scale into perspective, $2^{512}$ is approximately $1.3 \times 10^{154}$. When a token is initialized, it is dropped onto the hypersphere in one of these $1.3 \times 10^{154}$ orthants. The mathematical surface area dictates that every single token in the vocabulary lands in profound isolation. Accidental clustering is mathematically improbable.</p>
+<p>These initial 512 dimensions do not correspond to latent human concepts. At initialization, one dimension does not encode plurality while another encodes sentiment.</p>
+<p>Model initialization populates the entries of $W_E$ by sampling independently from a zero-mean probability distribution, such as a Gaussian distribution $\mathcal{N}(0, \sigma^2)$ with mean $0$ and variance $\sigma^2$. Independent sampling from an identical symmetric distribution across all coordinates produces an <strong>isotropic</strong> vector space, meaning its statistical properties remain uniform in every direction.</p>
+<p>High-dimensional geometry invalidates low-dimensional intuition about random point clouds. In a 512-dimensional space, a statistical phenomenon known as <strong>concentration of measure</strong> governs vector magnitudes. Computing the Euclidean length (norm) of a vector $\mathbf{v} \in \mathbb{R}^{d}$ requires summing its $d = 512$ squared coordinates and taking the square root:</p>
+<p>$$
+\|\mathbf{v}\| = \sqrt{\sum_{m=1}^{d} v_m^2}
+$$</p>
+<p>Summing 512 independent random variables invokes the Law of Large Numbers, causing the Euclidean norms of all randomly initialized token vectors to concentrate tightly around $\sqrt{d \cdot \sigma^2}$. Rather than forming an uneven solid cloud, random initialization places every token vector onto a thin spherical shell of radius $\sqrt{d}\sigma$, devoid of directional bias.</p>
+<p>The exponential growth of volume across dimensions reinforces this isolation. A two-dimensional plane contains $2^2 = 4$ quadrants, so scattering a 50,000-token vocabulary across $\mathbb{R}^2$ forces thousands of tokens into the same quadrant.</p>
+<p>A 512-dimensional space partitions into $2^{512}$ distinct sign regions, known mathematically as <strong>orthants</strong>. That exponent evaluates to $2^{512} \approx 1.34 \times 10^{154}$ orthants. Random sign assignment across 512 coordinates drops each initialized token into one of those $1.34 \times 10^{154}$ orthants, ensuring that every vocabulary entry begins in extreme spatial isolation with negligible probability of accidental clustering.</p>
 <h2>The Geometry of Orthogonality</h2>
-<p>Within this vast, isolated expanse, a geometric phenomenon occurs: random initial vectors for <code>walk</code> and <code>ing</code> are mathematically guaranteed to be virtually <strong>orthogonal</strong> (perpendicular) to one another. </p>
-<p>The relationship between two vectors is measured to understand this. In the context of neural networks, <strong>cosine similarity</strong> is predominantly used. </p>
-<p>The geometric formula for the dot product is $A \cdot B = ||A|| \times ||B|| \times \cos(\theta)$. By dividing the dot product of two vectors by their lengths ($||A|| \times ||B||$), $\cos(\theta)$ is isolated, yielding the cosine similarity. This formula reveals that the cosine of the angle between two vectors is directly proportional to their <strong>dot product</strong>—the mathematical operation of pairing up corresponding dimensions, multiplying them together, and summing the results.</p>
-<p>When two dimensions randomly drawn from a distribution centered at zero are multiplied, the product is equally likely to be positive (if the signs agree) or negative (if the signs disagree). </p>
-<p>In a simple 3D space, the dot product only sums 3 of these randomized terms. Due to the small sample size, variance dominates. It is highly probable that all 3 terms will randomly agree, resulting in a large positive sum. Consequently, in low dimensions, random vectors frequently point in roughly the same direction.</p>
-<p>But in a 512-dimensional space, the dot product sums 512 independent terms. At this massive scale, variance shrinks and the Law of Large Numbers strictly takes over. Probability dictates that the outcomes must forcefully regress to the mean. An almost perfect balance is mathematically guaranteed: roughly 256 products will be positive, and the exact other half will be negative. </p>
-<p>Furthermore, because the underlying probability distribution is symmetrical, there is no mathematical bias skewing the absolute size of these numbers. The 256 positive terms are, on average, exactly as large as the 256 negative terms. </p>
-<p>When summed together, the positive and negative halves perfectly cancel each other out, collapsing the entire dot product to exactly zero. Because the cosine of the angle is proportional to this dot product, a value of zero results in a cosine of $0.0$. In trigonometry, the angle whose cosine is exactly zero is a 90-degree angle. Therefore, any two random tokens—whether they are <code>walk</code> and <code>ing</code>, or <code>walk</code> and <code>dog</code>—begin their existence geometrically orthogonal to one another.</p>
+<p>Within this isotropic expanse, a second high-dimensional invariant emerges: any two independently initialized token vectors (such as <code>brown</code> and <code>fox</code>) are nearly <strong>orthogonal</strong> (perpendicular) to one another.</p>
+<p>Quantifying the directional alignment between two vectors $\mathbf{a}, \mathbf{b} \in \mathbb{R}^{d}$ requires computing their <strong>cosine similarity</strong>, defined as the cosine of the angle $\theta$ between them. The geometric dot product relates the two vectors through the identity $\mathbf{a} \cdot \mathbf{b} = \|\mathbf{a}\| \|\mathbf{b}\| \cos(\theta)$, where $\|\mathbf{a}\|$ and $\|\mathbf{b}\|$ denote the Euclidean norms of $\mathbf{a}$ and $\mathbf{b}$. Dividing both sides by the product of the norms isolates $\cos(\theta)$:</p>
+<p>$$
+\cos(\theta) = \frac{\mathbf{a} \cdot \mathbf{b}}{\|\mathbf{a}\| \|\mathbf{b}\|} = \frac{\sum_{m=1}^{d} a_m b_m}{\|\mathbf{a}\| \|\mathbf{b}\|}
+$$</p>
+<p>This identity demonstrates that the cosine of the angle $\theta$ is directly proportional to the algebraic <strong>dot product</strong>: the sum of the element-wise products $a_m b_m$ across all $d$ coordinates.</p>
+<p>Multiplying two coordinates $a_m$ and $b_m$ drawn independently from a symmetric distribution centered at zero produces a positive product when their signs match and a negative product with equal probability ($p = 0.5$) when their signs oppose.</p>
+<p>In a 3-dimensional toy space ($d = 3$), the dot product sums only three random products. Small sample sizes exhibit high variance: all three terms share the same sign with probability $2 \times (0.5)^3 = 0.25$, producing wide fluctuations in $\cos(\theta)$ that frequently align random vectors in similar directions.</p>
+<p>In a 512-dimensional space ($d = 512$), the dot product sums 512 independent zero-mean products. Law of Large Numbers convergence shrinks the relative variance of the normalized dot product at a rate of $1/\sqrt{d}$:</p>
+<ul>
+<li><strong>Sign Balance:</strong> Expected sign symmetry yields roughly 256 positive products ($a_m b_m > 0$) and 256 negative products ($a_m b_m < 0$).</li>
+<li><strong>Magnitude Symmetry:</strong> Symmetric sampling around zero ensures that the positive terms and negative terms share the same expected magnitude.</li>
+<li><strong>Mutual Cancellation:</strong> Summing all 512 terms cancels the positive half against the negative half, driving the expected dot product $\mathbf{a} \cdot \mathbf{b}$ and the resulting cosine similarity $\cos(\theta)$ toward $0.0$ (with standard deviation $1/\sqrt{512} \approx 0.044$).</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">Spatial Regime</th>
+<th align="left">Dimensionality (<code>d</code>)</th>
+<th align="left">Distinct Orthants (<code>2^d</code>)</th>
+<th align="left">Dot-Product Terms</th>
+<th align="left">Pairwise Cosine Similarity</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>2D Plane</strong></td>
+<td align="left"><code>2</code></td>
+<td align="left"><code>4</code></td>
+<td align="left"><code>2</code></td>
+<td align="left">High variance (<code>0.71</code> std dev); severe crowding</td>
+</tr>
+<tr>
+<td align="left"><strong>3D Whiteboard Model</strong></td>
+<td align="left"><code>3</code></td>
+<td align="left"><code>8</code></td>
+<td align="left"><code>3</code></td>
+<td align="left">Moderate variance (<code>0.58</code> std dev); frequent alignment</td>
+</tr>
+<tr>
+<td align="left"><strong>Production Space</strong></td>
+<td align="left"><code>512</code></td>
+<td align="left"><code>2^512</code> (<code>~1.34e154</code>)</td>
+<td align="left"><code>512</code></td>
+<td align="left">Tight concentration near <code>0.0</code> (<code>0.044</code> std dev); near-orthogonal</td>
+</tr>
+</tbody></table>
+<p>An angle whose cosine equals $0.0$ measures $90^\circ$. Every pair of randomly initialized tokens in a high-dimensional embedding matrix begins geometrically orthogonal to one another.</p>
 <h2>A Feature, Not a Bug</h2>
-<p>This natural propensity toward orthogonality is a structurally advantageous property. </p>
-<p>Orthogonality provides a mathematically clean, unentangled starting point. If the vectors started out randomly clustered, the network would have to spend significant computational effort separating those accidental correlations. Because every token begins maximally uncorrelated and non-committal, a true blank slate is presented. The architecture possesses the maximal bandwidth to selectively pull related tokens together and push unrelated tokens apart, driven purely by the objective truth of the training data.</p>
-<p>The embedding matrix begins as an orthogonal coordinate system. The tokens possess no semantic clustering and no grammatical hierarchy. The imposition of structural meaning upon this isotropic expanse—by evaluating predictions and continuously adjusting these free parameters—is the core mechanism of end-to-end learning explored next.</p>
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p>
+<p>Near-orthogonality at initialization provides a foundational structural advantage for gradient-based optimization.</p>
+<p>Orthogonal vectors establish an unentangled coordinate baseline. Random initial clustering would force early training steps to expend gradient updates untangling spurious correlations between unrelated words. Initializing every token at roughly $90^\circ$ from every other token presents the optimizer with an uncorrelated geometric slate, allowing backpropagation to pull co-occurring tokens together and push unrelated tokens apart purely in response to corpus statistics.</p>
+<p>The initialized embedding matrix $W_E$ thus begins as a nearly orthogonal set of points on a hypersphere, encoding neither semantic clusters nor grammatical hierarchy. Imposing linguistic structure onto this isotropic expanse requires evaluating predictions and updating the weights of $W_E$ through the forward and backward passes derived in the next three chapters.</p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="embeddings-chapter_01.html" class="pagination-link prev">

@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -118,10 +159,10 @@
     <li><a href="index.html">Blog</a></li><li><a href="series-transformers.html">Series: Transformers</a></li><li aria-current="page">Part 8: The Residual Stream and the Central Memory Bus</li></ol></nav>
         <article class="blog-post series-transformers">
 <h1>Part 8: The Residual Stream and the Central Memory Bus</h1>
-<!-- SUMMARY: The central memory bus of the architecture processes contextual updates from the attention blocks via element-wise addition to the residual stream. Geometrically, this operation acts as a vector translation in high-dimensional space, shifting token representations to incorporate context while preserving their foundational identities. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p><p>The multi-head attention output has been successfully calculated. Treating this output as the sole input to the next layer is a common instinct in traditional feed-forward networks. The Transformer architecture abandons this sequential pipeline. It instead relies on a central shared memory backbone known as the residual stream.</p>
+<!-- SUMMARY: The central memory bus of the architecture processes contextual updates from the attention blocks via element-wise addition to the residual stream. Geometrically, this operation acts as a vector translation in high-dimensional space, shifting token representations to incorporate context while preserving their foundational identities. --><p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p><p>The multi-head attention output has been calculated. Treating this output as the sole input to the next layer is a common instinct in traditional feed-forward networks. The Transformer architecture abandons this sequential pipeline. It instead relies on a central shared memory backbone known as the residual stream.</p>
 <h2>Reframing the Architecture: The Information Highway</h2>
-<p>In a standard deep neural network, each layer transforms the data completely. The input to layer two is exclusively the output of layer one. This creates a bottleneck. If a layer destroys information during its transformation, that information is lost forever. Furthermore, during backpropagation, gradients must multiply through the weight matrix of every layer. If those weights are small, the gradients vanish, halting the learning process for early layers.</p>
-<p>The Transformer solves both problems by treating the network as a continuous highway of information rather than a sequence of transformations. The original positionally encoded input embeddings travel straight through the entire network, from the first block to the final output. The attention mechanisms and feed-forward networks sit alongside this highway. They read from the stream, perform their specialized computations, and write their results back into the stream via addition.</p>
+<p>In a traditional sequential neural network, each layer overwrites the representation completely because the input to layer two is exclusively the output of layer one. This sequential overwrite creates an information bottleneck: any feature destroyed during an intermediate transformation is lost permanently. Backpropagation through a strictly sequential chain also forces gradients to multiply through the weight matrix of every layer. Small singular values across those weight matrices cause the backpropagated gradients to vanish exponentially, halting weight updates in early layers.</p>
+<p>The Transformer solves both problems by treating the network as a continuous highway of information rather than a sequence of overwrites. The positionally encoded input embeddings travel straight through the entire network, from the first block to the final output. The attention mechanisms and feed-forward networks sit alongside this highway. They read from the stream, perform their specialized computations, and write their results back into the stream via addition.</p>
 <pre><code class="language-mermaid">graph TD
     In(&quot;Input Stream X&quot;) --&gt; Add(&quot;Vector Addition&quot;)
     In --&gt; Attn(&quot;Multi-Head Attention&quot;)
@@ -131,12 +172,12 @@
 </code></pre>
 <p>The token vectors do not lose their original identity. The attention block acts as an additive update, mixing contextual information into the base meaning of the token.</p>
 <h2>The Mathematics of the Residual Connection</h2>
-<p>This additive update is formalized with a simple equation:</p>
+<p>This additive update is formalized with a direct equation:</p>
 <p>$$
 X_{\text{out}} = X_{\text{in}} + \text{Attention}(X_{\text{in}})
 $$</p>
-<p>Here, $X_{\text{in}}$ is the state of the residual stream before the attention block. Currently, this is the positionally encoded input matrix. $\text{Attention}(X_{\text{in}})$ represents the output calculated in the previous step using the final projection matrix. </p>
-<p>The exact matrices are as follows. The original positionally encoded input $X_{\text{in}}$ is:</p>
+<p>Here, $X_{\text{in}}$ is the state of the residual stream entering the attention block, and $\text{Attention}(X_{\text{in}})$ is the $4 \times 6$ output calculated in Part 7 using the output projection matrix $W_O$.</p>
+<p>To match the two-decimal precision of $\text{Attention}(X_{\text{in}})$, the residual stream matrix $X_{\text{in}}$ retains the two-decimal sinusoidal evaluation of $X + W_{PE}$ from Part 2:</p>
 <p>$$
 X_{\text{in}} = \begin{bmatrix}
  0.10 &  1.00 &  0.00 &  1.00 &  0.00 &  1.00 \\
@@ -148,13 +189,13 @@ $$</p>
 <p>The output from the multi-head attention block $\text{Attention}(X_{\text{in}})$ is:</p>
 <p>$$
 \text{Attention}(X_{\text{in}}) = \begin{bmatrix}
--0.08 &  0.29 &  0.18 &  0.35 & -0.00 & -0.33 \\
+-0.08 &  0.29 &  0.18 &  0.35 &  0.00 & -0.33 \\
 -0.10 &  0.42 &  0.10 &  0.43 & -0.01 & -0.25 \\
 -0.03 &  0.31 &  0.08 &  0.29 &  0.07 & -0.10 \\
  0.05 &  0.06 &  0.18 &  0.13 &  0.18 & -0.11
 \end{bmatrix}
 $$</p>
-<p>These two matrices are added together element by element. This operation literally writes the newly discovered contextual relationships into the original vector representations.</p>
+<p>These two matrices are added together element by element, writing the newly discovered contextual relationships directly into the original vector representations:</p>
 <p>$$
 X_{\text{out}} = \begin{bmatrix}
  0.02 &  1.29 &  0.18 &  1.35 &  0.00 &  0.67 \\
@@ -164,10 +205,10 @@ X_{\text{out}} = \begin{bmatrix}
 \end{bmatrix}
 $$</p>
 <h2>The Geometric Implications of Addition</h2>
-<p>Adding the attention output to the original embedding performs vector translation. The attention block calculates a directional shift based on the surrounding context. Adding this shift vector to the original token vector moves the token to a new location in the $d_{model}$ dimensional space. </p>
-<p>For instance, the vector for the word &quot;woke&quot; originally represented the abstract concept of waking. After adding the attention output, the vector has been translated in a direction that incorporates its relationship with &quot;i&quot; and &quot;up&quot;. The base identity remains intact, while the new coordinate location reflects its specific role in the sentence.</p>
+<p>Adding the attention output to the original embedding performs vector translation. The attention block calculates a directional shift based on the surrounding context. Adding this shift vector to the original token vector moves the token to a new location in the $d_{model}$-dimensional space.</p>
+<p>The vector for the token <code>woke</code> originally represented the static embedding of waking at position <code>2</code>. Adding the attention output translates that vector along a direction that incorporates its syntactic relationship with <code>i</code> and <code>up</code>. The foundational token identity remains intact, and the shifted coordinate reflects its contextual role in the sequence.</p>
 <h2>Gradient Flow and the Residual Highway</h2>
-<p>Deep neural networks learn by calculating the gradient of the loss function and propagating that error signal backward through the layers. In a strictly sequential architecture, the gradient multiplies by the derivative of each layer. A sub-layer operation frequently yields a derivative matrix containing small values. An idealized sub-layer Jacobian matrix containing values of 0.1 perfectly illustrates the danger.</p>
+<p>Deep neural networks learn by calculating the gradient of the loss function and propagating that error signal backward through the layers. In a strictly sequential architecture, the gradient multiplies by the derivative of each layer. A sub-layer operation frequently yields a derivative matrix containing small values. An idealized sub-layer Jacobian matrix containing diagonal values of <code>0.10</code> illustrates this decay:</p>
 <p>$$
 \text{Jacobian} = \begin{bmatrix}
  0.10 &  0.00 &  0.00 &  0.00 &  0.00 &  0.00 \\
@@ -178,7 +219,7 @@ $$</p>
  0.00 &  0.00 &  0.00 &  0.00 &  0.00 &  0.10
 \end{bmatrix}
 $$</p>
-<p>Backpropagating an error signal through four consecutive layers of this type requires multiplying the Jacobian matrix by itself four times. This exponentiation causes the gradient to decay exponentially. The resulting matrix demonstrates complete signal loss, rendering the earliest layers entirely incapable of learning.</p>
+<p>Backpropagating an error signal through four consecutive layers of this type requires multiplying the Jacobian matrix by itself four times ($0.10^4 = 0.0001 \approx 0.00$). This exponentiation causes the gradient to decay exponentially. The resulting matrix demonstrates signal loss at two-decimal precision, leaving the earliest layers unable to update their parameters:</p>
 <p>$$
 \text{Sequential Gradient Multiplier} = \begin{bmatrix}
  0.00 &  0.00 &  0.00 &  0.00 &  0.00 &  0.00 \\
@@ -189,11 +230,11 @@ $$</p>
  0.00 &  0.00 &  0.00 &  0.00 &  0.00 &  0.00
 \end{bmatrix}
 $$</p>
-<p>The residual addition elegantly neutralizes this vanishing gradient problem. The mathematical derivative of an addition operation distributes the gradient equally to both inputs. When calculating the derivative of the residual equation with respect to the input stream, the original input receives a strict derivative of one. This transforms the gradient multiplier for a single layer from the Jacobian matrix alone into the Jacobian matrix added to the Identity matrix.</p>
+<p>The residual addition neutralizes this vanishing gradient problem. Differentiating an addition operation distributes the upstream gradient equally to both branches. Differentiating the residual equation $X_{\text{out}} = X_{\text{in}} + \text{Attention}(X_{\text{in}})$ with respect to $X_{\text{in}}$ assigns an identity derivative $I$ to the skip path. This additive identity term shifts the single-layer gradient multiplier from the sub-layer Jacobian alone to the sum of the identity matrix and the Jacobian:</p>
 <p>$$
 \text{Residual Multiplier} = I + \text{Jacobian}
 $$</p>
-<p>Backpropagating through four layers utilizing residual connections multiplies this updated term by itself four times. The addition of the Identity matrix ensures the gradient mathematically survives the journey backward.</p>
+<p>Backpropagating through four layers utilizing residual connections multiplies this updated term by itself four times ($1.10^4 = 1.4641 \approx 1.46$). The addition of the Identity matrix ensures the gradient survives the backward pass:</p>
 <p>$$
 \text{Residual Gradient Multiplier} = \begin{bmatrix}
  1.46 &  0.00 &  0.00 &  0.00 &  0.00 &  0.00 \\
@@ -204,9 +245,9 @@ $$</p>
  0.00 &  0.00 &  0.00 &  0.00 &  0.00 &  1.46
 \end{bmatrix}
 $$</p>
-<p>The error signal reaches the initial embedding matrices effectively intact. The residual stream functions exactly as a gradient highway. Information flows forward to build deep semantic context, and error signals flow backward unimpeded to meticulously adjust the foundational weights. </p>
-<p>This central memory bus ensures that every subsequent layer has unimpeded access to both the raw original embeddings and the accumulated contextual updates from all previous layers. Stabilizing these shifting vectors requires layer normalization, which is examined next.</p>
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p>The error signal reaches the initial embedding matrices intact. The residual stream functions as an unimpeded gradient highway: contextual information accumulates forward across layers, and loss gradients propagate backward to update early parameters.</p>
+<p>This central memory bus ensures that every subsequent layer has direct access to both the initial embeddings and the accumulated contextual updates from all previous layers. Stabilizing these shifted vectors requires layer normalization, which is examined next.</p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="transformers-chapter_07.html" class="pagination-link prev">

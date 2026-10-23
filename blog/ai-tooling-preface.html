@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -124,7 +165,7 @@
 <h2>Functional Zones</h2>
 <p>In network engineering, the term &quot;layer&quot; carries specific structural implications: strict encapsulation, where each layer communicates only with adjacent layers, and universal presence, where all layers must exist in every system. The AI tooling ecosystem does not follow these rules. An application can call a language model directly without any orchestration. Observability tools monitor the entire system, not just one adjacent component. A solo developer setup may have no orchestrator at all.</p>
 <p>To avoid these misleading associations, this series organizes the ecosystem into <strong>functional zones</strong>: groupings of tools by the concern they address. Each zone is independently adoptable. A given system uses only the zones its use case requires. The zones are not ordered from &quot;top&quot; to &quot;bottom,&quot; and there is no implication that one zone encapsulates another.</p>
-<p>The distinction matters because it affects how systems are designed. If these were true abstraction layers, such as the OSI model, skipping a layer would be architecturally invalid. Functional zones carry no such constraint. A simple chatbot uses only the Interface and Intelligence zones, which is a UI calling a language model directly. A complex enterprise pipeline uses all seven. The zones describe what is available, not what is required.</p>
+<p>The distinction matters because it affects how systems are designed. True abstraction layers, such as the OSI model, treat skipping a layer as architecturally invalid. Functional zones carry no such constraint. A simple chatbot uses only the Interface and Intelligence zones, which is a UI calling a language model directly. A complex enterprise pipeline uses all seven. The zones describe what is available, not what is required.</p>
 <p>The diagram below shows the seven zones and how they connect. Solid arrows show primary data and control flow. Dotted arrows show observation. Select any zone to see its description.</p>
 <style>
 .mermaid .node rect {
@@ -477,12 +518,12 @@ document.addEventListener('DOMContentLoaded', function() {
 <p>Writing code involves repetitive tasks: renaming variables across files, running test suites after changes, searching through unfamiliar codebases for relevant logic. Coding agents automate these workflows by giving a language model direct access to the development environment. The agent reads the codebase, proposes multi-file edits, runs terminal commands, and iterates based on build or test results. Unlike basic autocomplete, which suggests the next few tokens of code, a coding agent operates at the task level: &quot;add input validation to all API endpoints&quot; or &quot;refactor this module to use dependency injection.&quot;</p>
 <h3>Coordination</h3>
 <p><strong>Agent Orchestrators</strong></p>
-<p>When a system involves multiple AI agents, or one agent running a complex, multi-step workflow, execution becomes fragile. An agent frequently completes three steps of a ten-step process before hitting a rate limit, an ambiguous decision requiring human review, or an outright crash. Without coordination infrastructure, all progress is lost. Orchestrators manage who does what, in what order, and what happens when things go wrong. They persist workflow state so that a process can resume after interruption, route tasks between specialized agents, and enforce control flow logic, such as sequential steps, parallel branches, conditional routing, and human approval gates.</p>
+<p>Multi-agent systems and complex, multi-step workflows introduce execution fragility. An agent frequently completes three steps of a ten-step process before hitting a rate limit, an ambiguous decision requiring human review, or an outright crash. Without coordination infrastructure, all progress is lost. Orchestrators manage who does what, in what order, and what happens when things go wrong. They persist workflow state so that a process can resume after interruption, route tasks between specialized agents, and enforce control flow logic, such as sequential steps, parallel branches, conditional routing, and human approval gates.</p>
 <h3>Execution</h3>
 <p><strong>Agent Frameworks</strong></p>
-<p>When an application needs to go beyond a single API call to a language model, the developer must build infrastructure for tool use, memory, retrieval, and structured outputs. Without a framework, this means writing custom code for prompt management, response parsing, tool execution, error handling, and context window management. Agent frameworks provide these building blocks as reusable components, reducing the boilerplate required to build a capable agent. The boundary between &quot;framework&quot; and &quot;orchestrator&quot; is not always clean; some frameworks include orchestration primitives, and some orchestrators bundle framework-level building blocks.</p>
+<p>Applications that move beyond a single language model API call require infrastructure for tool use, memory, retrieval, and structured outputs. Operating without a framework requires custom code for prompt management, response parsing, tool execution, error handling, and context window management. Agent frameworks provide these building blocks as reusable components, reducing the boilerplate required to build a capable agent. The boundary between &quot;framework&quot; and &quot;orchestrator&quot; is not always clean; some frameworks include orchestration primitives, and some orchestrators bundle framework-level building blocks.</p>
 <p><strong>Agent Harnesses</strong></p>
-<p>When an agent executes code or calls external tools, it operates in an environment where failures can have real consequences: a malformed API call charges money, a buggy script deletes files, a hallucinated command modifies production data. An agent harness wraps a single agent with state management for persisting progress across retries, tool execution sandboxing for isolating side effects, and safety guardrails for blocking or flagging risky actions. Most production-grade frameworks include harness-like capabilities. Coding agents ship with their own built-in harness, so a developer using a coding agent does not need to configure one separately.</p>
+<p>Agents that execute code or call external tools operate in environments where failures carry real consequences: a malformed API call incurs financial charges, a buggy script deletes files, and a hallucinated command modifies production data. An agent harness wraps a single agent with state management for persisting progress across retries, tool execution sandboxing for isolating side effects, and safety guardrails for blocking or flagging risky actions. Most production-grade frameworks include harness-like capabilities. Coding agents ship with their own built-in harness, so a developer using a coding agent does not need to configure one separately.</p>
 <h3>Connectivity</h3>
 <p><strong>MCP Servers</strong></p>
 <p>Before the Model Context Protocol (MCP), connecting an AI tool to an external service, such as a database, an API, or a file system, required a custom integration for each pair of tool and service. Supporting N tools and M services required N times M integrations, and each tool vendor had its own plugin format. MCP standardizes this interface. An MCP server exposes a set of tools and data sources through a common protocol, and any MCP-compliant client can connect to any MCP server without custom integration code. The analogy is USB: one plug standard, many devices [1].</p>
@@ -493,12 +534,12 @@ document.addEventListener('DOMContentLoaded', function() {
 <p>Running open-weight models, models whose weights are publicly available such as Llama or Qwen, locally or in a private cloud requires specialized runtime infrastructure. The model must be loaded into GPU memory, requests must be batched for throughput, multiple users need concurrent access, and the serving endpoint must expose a standard API. Serving infrastructure, such as vLLM or Ollama, provides this runtime engine, handling the low-level mechanics of hosting a model and exposing it through a clean interface.</p>
 <h3>Memory</h3>
 <p><strong>Vector Databases</strong></p>
-<p>Language models have limited context windows, the amount of text they can process in a single request, and no persistent memory across conversations. A model lacks persistent access to an entire corporate knowledge base or documentation set. Vector databases solve this by storing text as numerical representations called embeddings, where similar text maps to nearby points in a high-dimensional space. When a user asks a question, the system converts the question to an embedding, finds the most similar stored embeddings, and injects the corresponding text chunks into the prompt as context.</p>
+<p>Language models have limited context windows, the amount of text they can process in a single request, and no persistent memory across conversations. A model lacks persistent access to an entire corporate knowledge base or documentation set. Vector databases solve this by storing text as numerical representations called embeddings, where similar text maps to nearby points in a high-dimensional space. At query time, the system converts the incoming question into an embedding, retrieves the most similar stored embeddings, and injects the corresponding text chunks into the prompt as context.</p>
 <p><strong>Knowledge Management Pipelines</strong></p>
-<p>Vector databases require clean, well-structured text chunks to function effectively, while real-world data exists in messy formats: scanned PDFs with complex layouts, HTML pages with navigation boilerplate, proprietary database schemas, spreadsheets with merged cells. Knowledge management pipelines handle the transformation from raw data to retrievable knowledge. This includes document parsing for extracting text from PDFs while preserving structure, chunking for splitting documents into semantically meaningful segments, embedding for converting text chunks to vectors, and loading for inserting the results into the vector database. The quality of retrieval depends heavily on the quality of this preparation.</p>
+<p>Vector databases require clean, well-structured text chunks to function effectively, while real-world data exists in messy formats: scanned PDFs with complex layouts, HTML pages with navigation boilerplate, proprietary database schemas, spreadsheets with merged cells. Knowledge management pipelines handle the transformation from raw data to retrievable knowledge. The preparation pipeline covers document parsing for extracting text from PDFs while preserving structure, chunking for splitting documents into semantically meaningful segments, embedding for converting text chunks to vectors, and loading for inserting the results into the vector database. The quality of retrieval depends heavily on the quality of this preparation.</p>
 <h3>Operations</h3>
 <p><strong>Observability and Evaluation Tools</strong></p>
-<p>Language models produce non-deterministic outputs. The same prompt can yield different responses on different runs. Standard debugging techniques, such as breakpoints, stack traces, and unit tests with exact expected values, do not apply directly. Observability tools trace the exact prompts, responses, latency, token counts, and costs of every step in an agent execution chain. Evaluation tools go further by programmatically scoring outputs against reference answers, rubrics, or human judgments. Together, these tools make it possible to detect regressions, such as a model update that degrades answer quality, identify bottlenecks, such as a retrieval step that takes too long, and compare the effectiveness of different prompt strategies.</p>
+<p>Language models produce non-deterministic outputs. The same prompt can yield different responses on different runs. Standard debugging techniques, such as breakpoints, stack traces, and unit tests with deterministic expected values, do not apply directly. Observability tools trace the full prompts, responses, latency, token counts, and costs of every step in an agent execution chain. Evaluation tools go further by programmatically scoring outputs against reference answers, rubrics, or human judgments. Together, these tools make it possible to detect regressions, such as a model update that degrades answer quality, identify bottlenecks, such as a retrieval step that takes too long, and compare the effectiveness of different prompt strategies.</p>
 <p><strong>Fine-Tuning Platforms</strong></p>
 <p>Generic foundation models are trained on broad datasets and perform well across many tasks, while they often fail at domain-specific requirements: medical terminology, legal citation formats, company-specific coding conventions, or a particular communication style. Fine-tuning adapts a base model to a specialized dataset so that it performs better on a narrow set of tasks. Fine-tuning platforms manage the data formatting to convert examples into the training format the model expects, compute provisioning to allocate GPUs for the training run, training loop execution, and model evaluation. The result is a specialized model variant that maintains the general capabilities of the base model while improving on the targeted tasks.</p>
 <h2>How the Pieces Connect</h2>
@@ -512,7 +553,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </code></pre>
 <p>A framework provides the building blocks, such as tool definitions, prompt templates, and memory interfaces, used to construct an agent. A harness wraps that agent with production-grade reliability: state persistence, sandboxed tool execution, and guardrails that prevent unsafe actions. An orchestrator sits above, coordinating multiple agents or managing complex workflows with branching, parallelism, and failure recovery. A coding agent, such as Cursor or Claude Code, is a complete, packaged product that already includes its own built-in harness, represented by the dashed arrow. It does not require separate framework or harness setup.</p>
 <h3>The Data and Intelligence Pipeline</h3>
-<p>When an agent needs to answer a question or complete a task, data flows through several components between the raw source material and the final response.</p>
+<p>Answering a question or completing an agentic task routes data through several components between the raw source material and the final response.</p>
 <pre><code class="language-mermaid">graph LR
     DATA[&quot;Raw Data&quot;] --&gt; KM[&quot;Knowledge&lt;br/&gt;Management&quot;]
     KM --&gt; VDB[&quot;Vector DB&quot;]
@@ -532,67 +573,71 @@ document.addEventListener('DOMContentLoaded', function() {
     FT --&gt; MODEL[&quot;Model&quot;]
     MODEL --&gt; AG
 </code></pre>
-<p>Observability tools trace every step of agent execution, capturing prompts, responses, latency, and token usage. Evaluation tools score the quality of outputs against reference answers or rubrics. When evaluation reveals consistent weaknesses, such as the model failing at a specific type of task or its outputs not matching the required format, fine-tuning platforms adapt the model using domain-specific training data. The improved model then powers the next round of agent execution, completing the cycle.</p>
+<p>Observability tools trace every step of agent execution, capturing prompts, responses, latency, and token usage. Evaluation tools score the quality of outputs against reference answers or rubrics. Consistent weaknesses surfaced during evaluation, such as task-specific failures or schema formatting errors, trigger fine-tuning pipelines that adapt the model using domain-specific training data. The improved model then powers the next round of agent execution, completing the cycle.</p>
 <h2>Key Distinctions</h2>
-<p>The boundaries between categories are often blurred. Three distinctions cause the most confusion.</p>
-<p><strong>Framework vs. Orchestrator</strong></p>
-<p>A framework provides the building blocks that define what an agent is and can do. An orchestrator handles the coordination of when and how multiple agents interact. A developer constructs a researcher agent and a writer agent using a framework, then uses an orchestrator to manage the handoff between them. Some tools, such as Microsoft Agent Framework, span both categories, providing framework primitives and orchestration coordination in a single package.</p>
-<p><strong>Harness vs. Orchestrator</strong></p>
-<p>A harness is a reliability wrapper for a single agent: it manages that agent&#39;s state, safely executes its tool calls, and enforces guardrails. An orchestrator manages the coordination between multiple agents or across complex multi-step workflows. The distinction is scope: one agent for a harness versus many agents or workflows for an orchestrator.</p>
-<p><strong>Coding Agent vs. Framework</strong></p>
-<p>A coding agent is an end-product application, similar to a text editor with built-in AI capabilities. A framework is a library used by developers to build their own applications. A developer does not need to write framework integration code to use a coding agent; it is already a packaged, self-contained product that ships with its own agent, harness, and tool integrations.</p>
+<p>The boundaries between categories often blur in vendor documentation. Three structural distinctions separate the core execution and coordination layers.</p>
+<h3>Framework vs. Orchestrator</h3>
+<p>A framework provides the building blocks that define what a single agent is and can do. An orchestrator manages when and how multiple agents interact across stateful workflows. A developer constructs a researcher agent and a writer agent using a framework, then uses an orchestrator to manage the handoff between them. Unified toolkits, such as Microsoft Agent Framework, span both categories by packaging agent primitives alongside orchestration runtimes.</p>
+<h3>Harness vs. Orchestrator</h3>
+<p>A harness is a reliability wrapper for a single agent: it manages that agent&#39;s state, isolates its tool calls inside a sandbox, and enforces safety guardrails. An orchestrator coordinates multiple agents or complex multi-step workflows across checkpoints. The boundary is scope: a harness governs a single agent&#39;s execution loop, whereas an orchestrator governs multi-agent topology and workflow recovery.</p>
+<h3>Coding Agent vs. Framework</h3>
+<p>A coding agent is a packaged end-user application with built-in AI capabilities, similar to an integrated development environment or command-line assistant. A framework is a software library used by developers to assemble custom applications. Using a coding agent requires no framework integration code because the product ships with its own agent loop, execution harness, and tool connectors.</p>
 <h2>Decision Rules</h2>
-<p>Selecting the right tools depends on the complexity and requirements of the system being built.</p>
+<p>Selecting the right tool categories depends on the architectural requirements and failure boundaries of the target system.</p>
 <table>
 <thead>
 <tr>
-<th>Use Case</th>
-<th>Tool</th>
+<th align="left">System Requirement</th>
+<th align="left">Primary Category</th>
+<th align="left">Architectural Rationale</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>Writing or editing code</td>
-<td><strong>Coding agent</strong> handles this directly without additional infrastructure</td>
+<td align="left">Interactive code generation or repository refactoring</td>
+<td align="left"><strong>Coding Agent</strong></td>
+<td align="left">Ships with a built-in execution harness, file system access, and terminal integration.</td>
 </tr>
 <tr>
-<td>Going beyond a single API call (tool use, memory, structured outputs)</td>
-<td><strong>Framework</strong> provides the building blocks</td>
+<td align="left">Single-agent tool calling, memory, and schema extraction</td>
+<td align="left"><strong>Agent Framework</strong></td>
+<td align="left">Provides composable building blocks for the host application layer.</td>
 </tr>
 <tr>
-<td>Single agent needs reliable tool execution with guardrails</td>
-<td><strong>Harness</strong> provides that safety (most frameworks include harness-like capabilities)</td>
+<td align="left">Sandboxed tool execution and runtime safety guardrails</td>
+<td align="left"><strong>Agent Harness</strong></td>
+<td align="left">Isolates side effects and persists single-agent retry state without separate orchestration.</td>
 </tr>
 <tr>
-<td>Multiple agents, multi-step workflows, or crash recovery</td>
-<td><strong>Orchestrator</strong> manages coordination and state persistence</td>
+<td align="left">Multi-agent delegation, cyclic loops, or crash recovery</td>
+<td align="left"><strong>Agent Orchestrator</strong></td>
+<td align="left">Enforces control flow topology and persists workflow state across failures.</td>
 </tr>
 <tr>
-<td>Multiple language model providers (cost, fallback, compliance)</td>
-<td><strong>Gateway</strong> provides unified routing across providers</td>
+<td align="left">Multi-provider routing, cost tracking, and automatic failover</td>
+<td align="left"><strong>AI Gateway</strong></td>
+<td align="left">Exposes a unified API endpoint with load balancing and provider fallback policies.</td>
 </tr>
 <tr>
-<td>Answering questions from a large knowledge base</td>
-<td><strong>Vector database + knowledge management pipeline</strong> handle storage and retrieval</td>
+<td align="left">Grounding responses in a large private document corpus</td>
+<td align="left"><strong>Vector DB + Knowledge Pipeline</strong></td>
+<td align="left">Parses, chunks, embeds, and indexes external documents for semantic retrieval.</td>
 </tr>
 <tr>
-<td>Monitoring execution quality, tracing errors, comparing prompt strategies</td>
-<td><strong>Observability and evaluation tools</strong> provide this visibility</td>
-</tr>
-<tr>
-<td>Already using a coding agent</td>
-<td>A separate <strong>harness</strong> is unnecessary; coding agents ship with one built in</td>
+<td align="left">Tracing execution chains and scoring output quality</td>
+<td align="left"><strong>Observability &amp; Evaluation</strong></td>
+<td align="left">Captures per-step telemetry and runs automated regression rubrics against baselines.</td>
 </tr>
 </tbody></table>
 <h2>Series Roadmap</h2>
-<p>The subsequent posts in this series cover each part of the ecosystem in depth:</p>
+<p>The six chapters in this series examine each functional zone in depth, followed by end-to-end implementation guides:</p>
 <ul>
-<li><strong>Coding Agents Compared</strong>: Detailed profiles and comparison tables for Cursor, GitHub Copilot, Windsurf, Cline, Claude Code, and Antigravity.</li>
-<li><strong>Agent Frameworks Compared</strong>: Analysis of LangChain, LlamaIndex, Microsoft Agent Framework, Pydantic AI, and DSPy.</li>
-<li><strong>Agent Orchestrators Compared</strong>: Review of LangGraph, CrewAI, Microsoft Agent Framework, OpenAI Agents SDK, and Temporal.</li>
-<li><strong>Connectivity and Routing</strong>: Coverage of the Model Context Protocol for standardized tool and data access, and AI gateways and routers for unified multi-provider traffic management.</li>
-<li><strong>Data Infrastructure</strong>: Coverage of vector databases for semantic search and retrieval, and knowledge management pipelines for parsing and structuring raw documents.</li>
-<li><strong>Runtime Infrastructure</strong>: Coverage of model serving engines, fine-tuning platforms, observability and evaluation tools, and a capstone section mapping how all supporting ecosystem components interconnect.</li>
-<li><strong>Configuration Walkthroughs</strong>: Five end-to-end system configurations, each with a companion setup guide covering a solo developer stack, an enterprise pipeline, an airgapped deployment, a RAG knowledge system, and an evaluation-driven development loop.</li>
+<li><strong><a href="ai-tooling-chapter_01.html">Chapter 1: Coding Agents Compared</a>:</strong> Compares AI-native IDEs, editor extensions, terminal agents, and multi-agent orchestration platforms across workspace indexing, execution boundaries, and MCP integration.</li>
+<li><strong><a href="ai-tooling-chapter_02.html">Chapter 2: Agent Frameworks Compared</a>:</strong> Analyzes chain composition libraries, data-centric retrieval frameworks, enterprise SDKs, type-safe validation layers, and declarative prompt compilers.</li>
+<li><strong><a href="ai-tooling-chapter_03.html">Chapter 3: Agent Orchestrators Compared</a>:</strong> Evaluates cyclic graph state machines, role-based crews, distributed actor runtimes, lightweight handoff loops, and durable event-sourcing engines.</li>
+<li><strong><a href="ai-tooling-chapter_04.html">Chapter 4: Connectivity and Routing</a>:</strong> Examines the Model Context Protocol (MCP) for standardized tool access alongside AI gateways and routers for multi-provider traffic management.</li>
+<li><strong><a href="ai-tooling-chapter_05.html">Chapter 5: Data Infrastructure</a>:</strong> Covers vector database indexing architectures for semantic search and knowledge management pipelines for document parsing and chunking.</li>
+<li><strong><a href="ai-tooling-chapter_06.html">Chapter 6: Runtime Infrastructure</a>:</strong> Examines open-weight model serving engines, fine-tuning platforms, and observability and evaluation systems, concluding with a full-ecosystem integration map.</li>
+<li><strong><a href="index.html#tab-guides">System Architecture and Setup Guides</a>:</strong> Pairs architectural blueprints with reproducible setup guides across solo developer stacks, enterprise pipelines, airgapped deployments, RAG knowledge systems, evaluation loops, and coding-agent repository templates.</li>
 </ul>
 <h2>References</h2>
 <ol>

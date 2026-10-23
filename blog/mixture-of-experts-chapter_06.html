@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -118,64 +159,64 @@
     <li><a href="index.html">Blog</a></li><li><a href="series-mixture-of-experts.html">Series: Mixture Of Experts</a></li><li aria-current="page">Part 6: Capacity, Token Dropping, and the Switch Transformer</li></ol></nav>
         <article class="blog-post series-mixture-of-experts">
 <h1>Part 6: Capacity, Token Dropping, and the Switch Transformer</h1>
-<!-- SUMMARY: While the auxiliary loss stabilizes the mathematical probability of routing, physical hardware demands static tensor dimensions that cannot dynamically resize to accommodate unbalanced loads. Imposing a hard capacity limit on each expert resolves this physical constraint but introduces token dropping, where excess routing assignments are discarded and tokens pass through the residual stream unmodified, motivating architectural shifts toward Top-1 routing and block-sparse computation. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p><p>The auxiliary loss and router z-loss provide the mathematical guardrails to prevent expert collapse, generating gradients that push routing probability toward a balanced state. A balanced probability distribution over a large training corpus, however, does not guarantee uniform routing within any single batch. A localized sequence of text may legitimately require heavy use of a single expert. This creates a collision between the theoretical flexibility of the router and the rigid requirements of physical accelerator hardware.</p>
+<!-- SUMMARY: The auxiliary loss stabilizes the mathematical probability of routing, yet physical hardware demands static tensor dimensions that cannot dynamically resize to accommodate unbalanced loads. Imposing a hard capacity limit on each expert resolves this physical constraint but introduces token dropping, where excess routing assignments are discarded and tokens pass through the residual stream unmodified, motivating architectural shifts toward Top-1 routing and block-sparse computation. --><p><em>Prefer to read this offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p><p>The auxiliary loss and router z-loss provide the mathematical guardrails to prevent expert collapse, generating gradients that push routing probability toward a balanced state. A balanced probability distribution over a large training corpus, however, does not guarantee uniform routing within any single batch. A localized sequence of text may legitimately require heavy use of a single expert. That spike creates a collision between the theoretical flexibility of the router and the rigid requirements of physical accelerator hardware.</p>
 <h2>The Hardware Constraint and Expert Capacity</h2>
-<p>Graphics Processing Units and Tensor Processing Units achieve massive computational throughput by executing operations on fixed-size memory blocks. To compile a neural network into efficient hardware instructions, the shapes of all matrices must be declared in advance. The router acts as a dynamic traffic controller, defying these static requirements. If a batch contains $T = 4$ tokens, the router frequently sends all four tokens to Expert 0 on step one, and perfectly divides them among all four experts on step two.</p>
-<p>If the hardware dynamically resized the input matrix for Expert 0 from $4 \times d_{model}$ to $1 \times d_{model}$ between steps, the computational graph would require continuous recompilation, destroying training throughput. The architecture must instead provision a fixed-size physical buffer for each expert before any routing decisions are made. This static allocation is defined as the expert capacity $C$, representing the maximum number of tokens an expert can accept in a single forward pass.</p>
+<p>Graphics Processing Units and Tensor Processing Units achieve massive computational throughput by executing operations on fixed-size memory blocks. To compile a neural network into efficient hardware instructions, the shapes of all matrices must be declared in advance. The router acts as a dynamic traffic controller, defying these static requirements. For a batch of $T = 4$ tokens, the router may send all four tokens to Expert 0 on step one and distribute them evenly across all four experts on step two.</p>
+<p>Dynamically resizing the input matrix for Expert 0 from $4 \times d_{model}$ to $1 \times d_{model}$ between steps would force continuous graph recompilation, destroying training throughput. The architecture must instead provision a fixed-size physical buffer for each expert before any routing decisions are made. This static allocation is defined as the expert capacity $C$, representing the maximum number of tokens an expert can accept in a single forward pass.</p>
 <p>The baseline capacity assumes perfectly balanced routing. The total number of token assignments generated by the router equals the number of tokens $T$ multiplied by the number of selected experts $k$. Distributing these assignments equally among all $E$ experts yields the baseline capacity of $\frac{T \times k}{E}$. To provide a safety margin for natural fluctuations in the routing distribution, this baseline is multiplied by a hyperparameter called the Capacity Factor $CF$, and the final result is rounded to the nearest whole integer because hardware buffers can only hold discrete amounts of tokens:</p>
 <p>$$
 C = \text{round}\left( \frac{T \times k}{E} \times CF \right)
 $$</p>
 <p>The Capacity Factor explicitly trades memory and compute efficiency for routing fidelity. A larger $CF$ wastes hardware cycles on empty padding vectors but ensures more tokens successfully reach their assigned experts.</p>
 <h2>The Token Assignment Matrix</h2>
-<p>Applying this capacity formula to the established toy batch, where $T=4$, $k=2$, and $E=4$, with a strict Capacity Factor of $CF = 1.0$ yields a maximum capacity of exactly $2$ tokens per expert.</p>
+<p>Applying this capacity formula to the established toy batch, where $T=4$, $k=2$, and $E=4$, with a strict Capacity Factor of $CF = 1.0$ yields a maximum capacity of $2$ tokens per expert.</p>
 <p>The Top-2 masking from Chapter 2 dictates the requested assignments. Token 1 and Token 2 request Experts 0 and 2. Token 3 and Token 4 request Experts 0 and 1.</p>
 <table>
 <thead>
 <tr>
-<th></th>
-<th></th>
-<th></th>
+<th>Expert Queue</th>
+<th>Accepted Tokens (<code>C = 2</code>)</th>
+<th>Dropped Tokens</th>
 </tr>
 </thead>
 <tbody><tr>
 <td><strong>Expert 0 Queue</strong></td>
 <td>Token 1, Token 2</td>
-<td>Token 3 and Token 4 dropped</td>
+<td>Token 3, Token 4</td>
 </tr>
 <tr>
 <td><strong>Expert 1 Queue</strong></td>
 <td>Token 3, Token 4</td>
-<td>None dropped</td>
+<td>None</td>
 </tr>
 <tr>
 <td><strong>Expert 2 Queue</strong></td>
 <td>Token 1, Token 2</td>
-<td>None dropped</td>
+<td>None</td>
 </tr>
 <tr>
 <td><strong>Expert 3 Queue</strong></td>
-<td>Empty</td>
-<td>None dropped</td>
+<td>Empty (zero-padded)</td>
+<td>None</td>
 </tr>
 </tbody></table>
-<p>The capacity limit of $C=2$ dictates that Expert 0 fills its buffer entirely with the first two tokens in the sequence. When Token 3 and Token 4 attempt to enter Expert 0, they are physically blocked and dropped from the queue. Expert 1 and Expert 2 receive exactly two tokens, perfectly filling their capacity. Expert 3 remains completely empty, forcing the hardware to execute its matrix multiplications on padding vectors containing pure zeros.</p>
+<p>The capacity limit of $C=2$ dictates that Expert 0 fills its buffer entirely with the first two tokens in the sequence. Token 3 and Token 4 arriving at Expert 0 after those two slots fill are blocked and dropped from the queue. Expert 1 and Expert 2 receive two tokens each, filling their capacity. Expert 3 remains completely empty, forcing the hardware to execute its matrix multiplications on padding vectors containing pure zeros.</p>
 <p>Increasing the Capacity Factor to $CF = 1.5$ raises the capacity limit to $C=3$. Under this expanded allocation, Expert 0 successfully accepts Token 1, Token 2, and Token 3, dropping only Token 4. Raising the hyperparameter to $CF = 2.0$ increases the capacity to $C=4$, allowing all tokens to process through their requested experts with zero drops, but forcing every expert to allocate a buffer large enough to process the entire batch.</p>
 <h2>The Mechanics of Token Dropping</h2>
-<p>When a token assignment is dropped due to capacity limits, the mathematical representation of the token is not destroyed. The Top-2 router attempts to process each token through two distinct experts, adding their weighted outputs together.</p>
-<p>Token 3 successfully passed through Expert 1 but was dropped from Expert 0. The output computation simply substitutes a zero vector for the dropped expert&#39;s contribution:</p>
+<p>Dropping a token assignment due to capacity limits does not destroy the mathematical representation of the token. The Top-2 router attempts to process each token through two distinct experts, adding their weighted outputs together.</p>
+<p>Token 3 successfully passed through Expert 1 but was dropped from Expert 0. The output computation substitutes a zero vector for the dropped expert&#39;s contribution:</p>
 <p>$$
 y_{Token 3} = g_0 \cdot \mathbf{0} + g_1 \cdot \text{FFN}_1(x_3)
 $$</p>
-<p>If a token is dropped from all of its requested experts, the MoE layer outputs a pure zero vector. The residual connection, established in the core Transformer architecture, guarantees that the token&#39;s original hidden state is preserved. The output mathematically collapses to the unmodified input vector:</p>
+<p>Dropping a token from all of its requested experts causes the MoE layer to output a pure zero vector. The residual connection, established in the core Transformer architecture, guarantees that the token&#39;s original hidden state is preserved. The output mathematically collapses to the unmodified input vector:</p>
 <p>$$
 \text{output} = x + 0 = x
 $$</p>
 <p>The token survives the layer, losing only the opportunity to extract knowledge or refine its representation. High drop rates severely degrade the predictive power of the model, forcing practitioners to meticulously tune the Capacity Factor and the auxiliary loss weight $\alpha$ to keep the fraction of dropped tokens below $0.1\%$.</p>
 <h2>The Switch Transformer and Top-1 Routing</h2>
-<p>The static capacity constraint motivated a radical simplification. If buffering and balancing assignments across multiple experts costs so much in both computation and complexity, restricting the router to select only the single best expert, where $k=1$, maximizes efficiency. This Top-1 routing paradigm is the defining innovation of the Switch Transformer, introduced by Fedus and colleagues in 2022.</p>
+<p>The static capacity constraint motivated a radical simplification. Eliminating multi-expert buffering and balancing overhead by restricting the router to select only the single highest-scoring expert ($k=1$) maximizes throughput. This Top-1 routing paradigm is the defining innovation of the Switch Transformer, introduced by Fedus and colleagues in 2022.</p>
 <p>By discarding the second expert choice, the Switch Transformer dramatically reduces the computational overhead per token. The capacity formula simplifies to $C = \text{round}\left( \frac{T}{E} \times CF \right)$, cutting the required buffer sizes in half compared to Top-2 routing. The auxiliary loss formulation remains identical, utilizing the same dot product between the hard fraction $f_i$ and the differentiable probability mean $P_i$. This architectural streamlining allowed the researchers to train models up to 1.6 trillion parameters, achieving a 4x to 7x training speedup over dense baseline models operating at equivalent computational budgets.</p>
-<p>Top-1 routing introduces a severe mathematical vulnerability known as discontinuity. In Top-2 routing, the gating weights create a continuous blending surface. As the router preference shifts from Expert A to Expert B over successive training steps, the probability assigned to Expert A smoothly decreases while Expert B smoothly increases, allowing gradient descent to navigate a gradual slope. In Top-1 routing, the output is a hard, discrete jump. If an infinitesimal change in the router weights causes Expert B&#39;s logit to exceed Expert A&#39;s logit by even a fraction of a decimal, the entire token representation switches tracks instantaneously:</p>
+<p>Top-1 routing introduces a severe mathematical vulnerability known as discontinuity. In Top-2 routing, the gating weights create a continuous blending surface. Shifting router preference from Expert A to Expert B over successive training steps smoothly decreases the probability assigned to Expert A while increasing the probability assigned to Expert B, allowing gradient descent to navigate a gradual slope. In Top-1 routing, the output is a hard, discrete jump. An infinitesimal change in the router weights that pushes Expert B&#39;s logit above Expert A&#39;s logit by even a fraction of a decimal switches the entire token representation instantaneously:</p>
 <p>$$
 y_{before} = 1.0 \cdot \text{FFN}_A(x)
 $$
@@ -187,7 +228,7 @@ $$</p>
 <p>The tension between static hardware shapes and dynamic routing defined the early generations of sparse architecture. A high Capacity Factor eliminated dropped tokens but wasted resources on zero-padding. A low Capacity Factor optimized hardware use but degraded model quality through dropped tokens.</p>
 <p>The modern solution abandons static capacity limits entirely. Rather than forcing the router to fit fixed hardware buffers, the MegaBlocks architecture, developed by Gale and colleagues in 2023, rewrote the core matrix multiplication kernels to handle variable-sized tensors natively. Using block-sparse Generalized Matrix Multiplication operations, the hardware processes variable-length token queues without padding or static bounds.</p>
 <p>In a dropless framework, Expert 0 can process three thousand tokens in the same forward pass that Expert 1 processes thirty. The router dictates the assignments, and the block-sparse kernels map them directly onto physical compute units. This innovation eliminated the Capacity Factor, prevented tokens from ever being dropped, and achieved near-perfect hardware utilization. The removal of this final structural bottleneck opened the path to the hyper-granular expert designs driving current frontier models.</p>
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Mixture of Experts Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="mixture-of-experts-chapter_05.html" class="pagination-link prev">

@@ -1,12 +1,12 @@
 # S-Parameters and Vector Network Analysis
 
-<!-- SUMMARY: S-parameters describe linear networks via ratios of normalized voltage waves. This guide defines scattering matrices, decibel arithmetic, and the $\theta = -360^\circ f \tau$ phase rule, and explores vector network analyzer (VNA) architecture, dynamic range, and the extraction of $S_{11}$ from a TDR step. -->
+<!-- SUMMARY: S-parameters describe linear networks via ratios of normalized voltage waves. The analysis defines scattering matrices, decibel arithmetic, and the θ = -360° f τ phase rule, and examines vector network analyzer (VNA) architecture, dynamic range, calibration, and the extraction of S11 from a TDR step. -->
 
-<p><em>Prefer to read offline? <a href="../../../assets/docs/signal-integrity-ebook-v2.0.pdf" target="_blank" rel="noopener">Download the complete Signal Integrity (Advanced Edition) ebook.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
 
 [Chapter 7](07_Time_Domain_Reflectometry.md) ended at the limit of the time domain: a TDR displays the reflection as a function of time, and the rise time of its step restricts how finely it separates nearby structures and how much it reveals about their frequency dependence. A vector network analyzer (VNA) measures the same reflection directly as a function of frequency, one sine wave at a time, and it also measures what the network transmits. The results are organized as scattering parameters (S-parameters), which are the common language of channel specifications. The compliance documents for PCIe, USB, HDMI, and Ethernet define their pass and fail limits as masks on S-parameters plotted against frequency.
 
-This chapter is the single home of S-parameters. It defines the normalized waves at a port and the scattering matrix, derives the decibel and the dBm arithmetic that every limit is written in, derives the relationship between phase and delay, and describes the architecture of the VNA together with the IF bandwidth that sets its dynamic range and the calibration that makes its numbers trustworthy. The chapter also contains the only full account of how a TDR step reflection becomes $S_{11}$ (the conversion promised in [Chapter 2](02_Frequency_Content_of_Digital_Signals.md) and [Chapter 7](07_Time_Domain_Reflectometry.md)), and it ends with the multiport measurements that quantify differential behavior and crosstalk.
+The sections below establish the complete S-parameter and VNA framework: normalized power waves at a port, the scattering matrix, decibel and dBm arithmetic, and the linear relationship between phase slope and propagation delay. The architecture sections then cover the VNA signal path, the intermediate-frequency bandwidth (IFBW) tradeoff that governs dynamic range, one-port and two-port error calibration, the mathematical extraction of $S_{11}(f)$ from a TDR step response, and four-port mixed-mode and crosstalk measurements.
 
 ## Core Concepts
 
@@ -44,10 +44,10 @@ The condition $a_k = 0$ means that no wave enters any port other than $j$. A ter
 
 The subscript convention places the measurement port first and the stimulus port second, so $S_{21}$ is read from right to left as the wave that leaves port 2 per wave that enters port 1. The words entering and leaving refer to the network under test and not to the instrument: a wave that enters port 1 travels from the instrument into the device under test (DUT). The four parameters of a two-port have the following meanings:
 
-- **$S_{11}$** is the ratio of the wave that leaves port 1 to the wave that enters port 1 with port 2 terminated. At a port driven by a line of impedance $Z_0$ the ratio $b_1/a_1$ equals $V^-/V^+$, which is the reflection coefficient of Chapter 3. The parameter $S_{11}$ is therefore the reflection coefficient $\Gamma$ at port 1, measured as a function of frequency.
-- **$S_{21}$** is the ratio of the wave that leaves port 2 to the wave that enters port 1, which is the forward transmission and plays the role of the transfer function $H(f)$ of [Chapter 2](02_Frequency_Content_of_Digital_Signals.md).
-- **$S_{12}$** is the reverse transmission, from port 2 to port 1.
-- **$S_{22}$** is the reflection coefficient at port 2 with port 1 terminated.
+- **Input reflection coefficient (`S_11`):** Represents the ratio $b_1/a_1$ of the wave leaving port 1 to the wave entering port 1 when port 2 is terminated in $Z_0$, matching the frequency-dependent reflection coefficient $\Gamma(f)$ of [Chapter 3](03_Impedance_Reflections_and_Termination.md).
+- **Forward transmission coefficient (`S_21`):** Represents the ratio $b_2/a_1$ of the wave leaving port 2 to the wave entering port 1 when port 2 is terminated in $Z_0$, acting as the channel transfer function $H(f)$ of [Chapter 2](02_Frequency_Content_of_Digital_Signals.md).
+- **Reverse transmission coefficient (`S_12`):** Represents the ratio $b_1/a_2$ of the wave transmitted backward from port 2 to port 1 when port 1 is terminated in $Z_0$.
+- **Output reflection coefficient (`S_22`):** Represents the ratio $b_2/a_2$ of the wave reflected at port 2 when port 1 is terminated in $Z_0$.
 
 Each S-parameter is a ratio of wave amplitudes with the same units in numerator and denominator, so it is dimensionless and complex, with a magnitude and a phase. The common statement that S-parameters are energy ratios is inaccurate. The ratio of amplitudes is the S-parameter, and the ratio of powers is its squared magnitude $|S_{ij}|^2$. A complete S-parameter result is an array of complex numbers with one entry at each measured frequency, and a single value written as $r\angle\theta$ describes the network at one frequency only.
 
@@ -65,7 +65,9 @@ $$|a_1|^2 - |b_1|^2 - |b_2|^2 \ge 0 \quad\Rightarrow\quad |S_{11}|^2 + |S_{21}|^
 
 The inequality is the generalization of the power fractions $\Gamma^2$ and $1 - \Gamma^2$ of Chapter 3. Equality holds for a lossless network, and the difference $1 - |S_{11}|^2 - |S_{21}|^2$ is the fraction of the incident power that the network dissipates. A measured file that violates the inequality at any frequency is not physical and indicates a calibration or measurement error.
 
-Reciprocity is a property of the materials. A network that contains only linear, passive, isotropic materials (copper, dielectric, and vias) satisfies $S_{21} = S_{12}$, which means that the transmission from port 1 to port 2 equals the transmission from port 2 to port 1 ([Chapter 4](04_Inductance_Magnetic_Coupling_and_Crosstalk.md) uses the same symmetry for the mutual inductance). Reciprocity does not imply $S_{11} = S_{22}$, because the two reflection coefficients are equal only when the network looks the same from both ends, which requires a physical symmetry such as a uniform trace with identical connectors. A structure that is wider at one end or that has a via near one port has $S_{11} \ne S_{22}$ and still satisfies $S_{21} = S_{12}$, as the first worked example of this chapter shows.
+Reciprocity is a property of the materials. A network that contains only linear, passive, isotropic materials (copper, dielectric, and vias) satisfies $S_{21} = S_{12}$, which means that the transmission from port 1 to port 2 equals the transmission from port 2 to port 1 ([Chapter 4](04_Inductance_Magnetic_Coupling_and_Crosstalk.md) uses the same symmetry for the mutual inductance).
+
+Reciprocity does not imply $S_{11} = S_{22}$, because the two reflection coefficients are equal only when the network looks the same from both ends, which requires a physical symmetry such as a uniform trace with identical connectors. A structure that is wider at one end or that has a via near one port has $S_{11} \ne S_{22}$ and still satisfies $S_{21} = S_{12}$, as the first worked example of this chapter shows.
 
 ### The Decibel
 
@@ -83,16 +85,16 @@ $$\text{dB} = 10\log_{10}\!\left(\frac{V_2}{V_1}\right)^2 = 20\log_{10}\!\left(\
 
 The factor 20 is the factor 10 doubled by the square, and it applies whenever the two voltages are measured in the same impedance. The normalized waves of this chapter satisfy that condition by construction, because $|a|^2$ and $|b|^2$ are powers, so $|S_{ij}|^2$ is a power ratio and $20\log_{10}|S_{ij}| = 10\log_{10}|S_{ij}|^2$ with no ambiguity. The logarithm of a product is the sum of the logarithms, so the decibel values of cascaded networks add.
 
-| $\lvert S\rvert$ (linear) | Power ratio | dB | Meaning |
+| Magnitude (`∣S∣`) | Power Ratio (`∣S∣^2`) | Value (dB) | Physical Interpretation |
 |---|---|---|---|
-| 1.0 | 1 | 0 | no loss and no gain |
-| 0.707 | 0.5 | $-3.01$ | half power, the bandwidth point of [Chapter 2](02_Frequency_Content_of_Digital_Signals.md) |
-| 0.316 | 0.1 | $-10$ | 10% of the power |
-| 0.1 | 0.01 | $-20$ | 1% of the power |
-| 0.01 | $10^{-4}$ | $-40$ | 0.01% of the power |
-| 0.001 | $10^{-6}$ | $-60$ | one millionth of the power |
+| `1.000` | `1` | `0 dB` | Unity transmission or total reflection (zero loss) |
+| `0.707` | `0.5` | `-3.01 dB` | Half-power point (`-3 dB` bandwidth limit of [Chapter 2](02_Frequency_Content_of_Digital_Signals.md)) |
+| `0.316` | `0.1` | `-10 dB` | Ten percent of incident power |
+| `0.100` | `0.01` | `-20 dB` | One percent of incident power |
+| `0.010` | `10^-4` | `-40 dB` | One ten-thousandth (`0.01%`) of incident power |
+| `0.001` | `10^-6` | `-60 dB` | One millionth (`0.0001%`) of incident power |
 
-The half-power entry confirms the notation of Chapter 2: an amplitude of $1/\sqrt{2} = 0.7071$ gives $20\log_{10}(0.7071) = -3.01$ dB, and a power ratio of one half gives $10\log_{10}(0.5) = -3.01$ dB. The conversion between nepers and decibels used in [Chapter 5](05_Skin_Effect_and_Dielectric_Loss.md) follows from the same definition. A wave attenuated as $e^{-\alpha\ell}$ has a voltage ratio of $e^{-\alpha\ell}$, so the loss in decibels is $20\log_{10}(e)\,\alpha\ell = 8.686\,\alpha\ell$, where $20\log_{10}(e) = 8.686$.
+The half-power entry confirms the notation of [Chapter 2](02_Frequency_Content_of_Digital_Signals.md): an amplitude of $1/\sqrt{2} = 0.7071$ gives $20\log_{10}(0.7071) = -3.01$ dB, and a power ratio of one half gives $10\log_{10}(0.5) = -3.01$ dB. The conversion between nepers and decibels used in [Chapter 5](05_Skin_Effect_and_Dielectric_Loss.md) follows from the same definition. A wave attenuated as $e^{-\alpha\ell}$ has a voltage ratio of $e^{-\alpha\ell}$, so the loss in decibels is $20\log_{10}(e)\,\alpha\ell = 8.686\,\alpha\ell$, where $20\log_{10}(e) = 8.686$.
 
 ### Absolute Power: dBm
 
@@ -106,7 +108,9 @@ The result of the addition depends on the relationship between the two signals. 
 
 $$\langle (v_1 + v_2)^2\rangle = \langle v_1^2\rangle + \langle v_2^2\rangle + 2\langle v_1 v_2\rangle$$
 
-The cross term averages to zero for uncorrelated signals, so the powers add: $10 + 10 = 20$ mW, which is $10\log_{10}(20) = 13.01$ dBm. For two identical signals that are in phase, $v_1 = v_2$ and the cross term equals $2\langle v_1^2\rangle$, so the voltage doubles and the power increases fourfold: 40 mW, or 16.02 dBm. Antiphase signals cancel each other, and the rule for $N$ uncorrelated signals of equal power is a rise of $10\log_{10} N$ dB over a single signal. The same principle sums independent random jitter in quadrature ([Chapter 12](12_Test_Patterns_and_Jitter_Isolation.md)) and sums the crosstalk from several aggressors with independent data, as the multiport section of this chapter shows. A passive two-way power combiner also introduces its own loss, which this arithmetic does not include.
+The cross term averages to zero for uncorrelated signals, so the powers add: $10 + 10 = 20$ mW, which is $10\log_{10}(20) = 13.01$ dBm. For two identical signals that are in phase, $v_1 = v_2$ and the cross term equals $2\langle v_1^2\rangle$, so the voltage doubles and the power increases fourfold: 40 mW, or 16.02 dBm. Antiphase signals cancel each other, and the rule for $N$ uncorrelated signals of equal power is a rise of $10\log_{10} N$ dB over a single signal.
+
+The same principle sums independent random jitter in quadrature ([Chapter 12](12_Test_Patterns_and_Jitter_Isolation.md)) and sums the crosstalk from several aggressors with independent data, as the multiport section of this chapter shows. A passive two-way power combiner also introduces its own loss, which this arithmetic does not include.
 
 ### Phase, Delay, and Group Delay
 
@@ -130,18 +134,20 @@ The derivative of the phase with frequency measures how much the delay varies ac
 
 $$\tau_g = -\frac{1}{360^\circ}\,\frac{d\theta}{df}$$
 
-For the constant delay above, $d\theta/df = -360^\circ\tau$ and $\tau_g = \tau$. A real channel has a group delay that changes with frequency, which means that its frequency components arrive at slightly different times and the pulse shape distorts (the linear time-invariant channel of Chapter 2). The phase of a VNA trace is plotted wrapped to the range $-180^\circ$ to $+180^\circ$, and the display jumps by 360° at each wrap. Unwrapping adds back the multiples of 360° and is unambiguous only when the phase changes by less than 180° between adjacent frequency points, which requires $360^\circ\,\Delta f\,\tau < 180^\circ$, that is $\Delta f < 1/(2\tau)$. The measurement of a 2 ns channel needs a frequency step below 250 MHz for this reason.
+For the constant delay above, $d\theta/df = -360^\circ\tau$ and $\tau_g = \tau$. A real channel has a group delay that changes with frequency, which means that its frequency components arrive at slightly different times and the pulse shape distorts (the linear time-invariant channel of [Chapter 2](02_Frequency_Content_of_Digital_Signals.md)).
+
+The phase of a VNA trace is plotted wrapped to the range $-180^\circ$ to $+180^\circ$, and the display jumps by 360° at each wrap. Unwrapping adds back the multiples of 360° and is unambiguous only when the phase changes by less than 180° between adjacent frequency points, which requires $360^\circ\,\Delta f\,\tau < 180^\circ$, that is $\Delta f < 1/(2\tau)$. The measurement of a 2 ns channel needs a frequency step below 250 MHz for this reason.
 
 ## Architecture
 
 ### The VNA: Source, Couplers, and Receivers
 
-A VNA measures wave amplitudes with the following signal flow, described in the order that the signal travels.
+A VNA measures wave amplitudes with the following signal flow, described in the order that the signal travels:
 
-1. **Source:** a synthesizer generates a single sine wave at the frequency $f$ of the current measurement point. A switch routes the source to port 1 for the forward measurement and to port 2 for the reverse measurement.
-2. **Directional couplers:** a coupler at each port separates the wave that travels toward the DUT from the wave that travels away from it. A small, known fraction of the forward wave is sent to a reference receiver ($R_1$ at port 1, $R_2$ at port 2), and a small fraction of the backward wave is sent to a test receiver ($A$ at port 1, $B$ at port 2). The receivers therefore measure $a_1$, $a_2$, $b_1$, and $b_2$ up to known scale factors.
-3. **Receivers:** each receiver mixes its input with a local oscillator that tracks the source and shifts the frequency to a fixed low intermediate frequency (IF). A filter at the IF selects a narrow band around the measurement frequency, and an analog-to-digital converter records the amplitude and phase of the result.
-4. **Ratio:** the instrument divides the test receiver value by the reference receiver value. In the forward direction the raw ratios are $A/R_1$ for $S_{11}$ and $B/R_1$ for $S_{21}$, and in the reverse direction $B/R_2$ for $S_{22}$ and $A/R_2$ for $S_{12}$.
+1. **Synthesized source:** A frequency synthesizer generates a continuous-wave sinusoid at the current measurement frequency $f$, and a port switch routes that stimulus to port 1 for forward measurements or to port 2 for reverse measurements.
+2. **Directional couplers:** A directional coupler at each port separates the incident wave traveling toward the DUT from the scattered wave returning from it. Known fractions of the incident waves feed the reference receivers ($R_1$ at port 1, $R_2$ at port 2), and known fractions of the scattered waves feed the test receivers ($A$ at port 1, $B$ at port 2), measuring $a_1, a_2, b_1,$ and $b_2$ up to calibration scale factors.
+3. **Tuned IF receivers:** Each receiver mixes its radio-frequency input with a tracking local oscillator to downconvert the signal to a fixed intermediate frequency (IF). A narrow bandpass IF filter rejects out-of-band energy, and an analog-to-digital converter extracts the complex phasor amplitude and phase.
+4. **Complex ratio engine:** The processor divides each test-receiver phasor by the active reference-receiver phasor, forming the raw forward ratios $A/R_1$ ($S_{11}$) and $B/R_1$ ($S_{21}$) and the raw reverse ratios $B/R_2$ ($S_{22}$) and $A/R_2$ ($S_{12}$).
 
 The ratio is the central design choice. The reference and test receivers share the same source and the same local oscillator, so drift in the source amplitude and phase appears in both measurements and cancels in the division. The phase of $S_{ij}$ is the phase difference between two receivers and does not require a fixed time reference.
 
@@ -159,7 +165,9 @@ The tradeoff determines how the instrument is used. A wide IFBW gives a fast swe
 
 ### Calibration and De-embedding
 
-The raw ratios of the receivers are not the S-parameters of the DUT, because the cables, connectors, couplers, and switches add reflections and loss that the DUT does not have. Calibration measures these errors with standards whose responses are known and removes them. The error model has a simple structure that can be derived for one port. The raw reflection $\Gamma_m$ measured at the instrument is related to the true reflection $\Gamma$ of the DUT by three error terms: the directivity $e_{00}$ (the leakage of the forward wave into the reflection path), the source match $e_{11}$ (the reflection of the instrument port that re-reflects the wave returning from the DUT), and the tracking product $\Delta = e_{01}e_{10}$ (the combined transmission through the error network and back):
+The raw receiver ratios do not equal the true S-parameters of the DUT, because the test cables, adapters, directional couplers, and internal switches introduce reflections and attenuation ahead of the reference plane. Vector calibration characterizes these systematic errors using physical standards with known electrical responses and removes them mathematically.
+
+For a one-port reflection measurement, three complex error terms relate the raw measured reflection $\Gamma_m$ to the true DUT reflection $\Gamma$: the directivity error $e_{00}$ (forward wave leakage into the test receiver), the port match $e_{11}$ (re-reflection of the returning wave off the instrument port), and the reflection tracking product $\Delta = e_{01}e_{10}$ (round-trip complex gain through the test path):
 
 $$\Gamma_m = e_{00} + \frac{\Delta\,\Gamma}{1 - e_{11}\,\Gamma}$$
 
@@ -175,31 +183,39 @@ The correction of any later measurement follows from the first equation. With $y
 
 $$\Gamma = \frac{y}{\Delta + e_{11}\,y}$$
 
-The three standards of this one-port calibration (short, open, load) are the origin of the name SOLT for the two-port procedure, which adds a known through connection (the T) and extends the model to the 12 error terms of a two-port: six for the forward direction (directivity, source match, reflection tracking, load match, transmission tracking, and isolation) and six for the reverse direction. The solution of the 12-term model is a larger version of the algebra above and is stated here without derivation (Tier 2). The alternative TRL procedure uses a through, a reflect (a high-reflection standard that needs to be identical at both ports but whose value does not have to be known), and a line whose electrical length differs from the through by between about 20° and 160°. The line standard defines the reference impedance, and TRL is the standard choice on a printed circuit board, where open, short, and load standards of known quality cannot be fabricated.
+### Two-Port Calibration (SOLT and TRL) and Fixture De-embedding
 
-Calibration moves the measurement reference plane to the end of the cables or probes, which is rarely the DUT itself. A DUT mounted behind a connector and a launch structure is measured together with that fixture. De-embedding removes the fixture mathematically from the measured result. The S-matrix of a cascade cannot be obtained by multiplying S-matrices, because each element relates waves leaving a network to waves entering it. The transfer matrix (T-matrix) relates the waves at port 1 to the waves at port 2 and does multiply: $T_{meas} = T_A\,T_{DUT}\,T_B$ for fixtures $A$ and $B$ on either side, so that $T_{DUT} = T_A^{-1}\,T_{meas}\,T_B^{-1}$ (Tier 2: the conversion between S and T is a rearrangement of the two defining equations and is omitted). The fixture matrices come from a separate structure, such as a through line built with the same launch, or from a measurement of the fixture alone.
+The three standards of the one-port calibration (short, open, load) give rise to the name SOLT for the two-port procedure, which adds a known through connection (the T) and extends the error model to 12 terms: six for the forward direction (directivity, source match, reflection tracking, load match, transmission tracking, and crosstalk isolation) and six for the reverse direction.
+
+An alternative procedure, Thru-Reflect-Line (TRL), uses a zero-length or known through connection, a high-reflection standard that must be symmetric across both ports without requiring a known phase, and a transmission-line standard whose electrical length differs from the through by between 20° and 160°. The characteristic impedance of the line standard defines the reference impedance of the calibrated measurement, making TRL the preferred method directly on printed circuit boards where coaxial open, short, and load standards cannot be attached at the DUT boundary.
+
+Calibration moves the measurement reference plane to the tips of the coaxial cables or wafer probes. A DUT mounted behind a board launch connector and lead-in trace requires mathematical de-embedding to remove that test fixture. Each S-parameter relates scattered waves to incident waves at all ports simultaneously, so the S-matrix of a cascade does not equal the product of the individual S-matrices.
+
+Instead, the scattering equations are rearranged into the chain scattering or transfer matrix (T-matrix), which relates the waves at port 1 directly to the waves at port 2 so that cascaded sections multiply in sequence: $T_{meas} = T_A\,T_{DUT}\,T_B$ for fixtures $A$ and $B$ flanking the DUT. Inverting the fixture matrices recovers the isolated device response as $T_{DUT} = T_A^{-1}\,T_{meas}\,T_B^{-1}$, where $T_A$ and $T_B$ are characterized using a replica $2\times$ through calibration trace or time-domain gating.
 
 ### From the TDR Step to $S_{11}$
 
-The reflection of a network at a port is a linear, time-invariant system with the impulse response $h(t)$ of Chapter 2, and its frequency response is the reflection coefficient. The reflected wave is the convolution of the incident wave with $h(t)$, and in the frequency domain the convolution becomes a product:
+The reflection of a network at a port is a linear, time-invariant system with the impulse response $h(t)$ of [Chapter 2](02_Frequency_Content_of_Digital_Signals.md), and its frequency response is the reflection coefficient. The reflected wave is the convolution of the incident wave with $h(t)$, and in the frequency domain the convolution becomes a product:
 
 $$b(t) = (h * a)(t) \quad\Longleftrightarrow\quad B(f) = S_{11}(f)\,A(f), \qquad S_{11}(f) = \frac{B(f)}{A(f)}$$
 
-The TDR of Chapter 7 launches a step $a(t) = V_{inc}\,u(t)$ and records the reflected waveform, which is $V_{inc}$ times the step response $s(t)$ of the reflection (the quantity normalized as $\Gamma(t)$ in Chapter 7). The step response is the running integral of the impulse response:
+The TDR of [Chapter 7](07_Time_Domain_Reflectometry.md) launches a step $a(t) = V_{inc}\,u(t)$ and records the reflected waveform, which is $V_{inc}$ times the step response $s(t)$ of the reflection (the quantity normalized as $\Gamma(t)$ in [Chapter 7](07_Time_Domain_Reflectometry.md)). The step response is the running integral of the impulse response:
 
 $$s(t) = \int_{-\infty}^{t} h(\tau)\,d\tau \quad\Longrightarrow\quad h(t) = \frac{ds}{dt}$$
 
-The TDR displays $s(t)$, so the impulse response is obtained by differentiating the trace. The differentiation has a mathematical reason as well as a practical one. The Fourier transform of a derivative is $j\omega$ times the transform of the function, so $\mathcal{F}\{ds/dt\} = j\omega\,\mathcal{F}\{s\}$. A direct transform of the step response contains the factor $1/(j\omega)$ that the spectrum of a step carries (Chapter 2) and a singular term at zero frequency, and neither describes the reflection of the network. The recipe is therefore to differentiate the measured step response to obtain $h(t)$ and then to Fourier transform it:
+The TDR displays $s(t)$, so the impulse response is obtained by differentiating the trace. The differentiation has a mathematical reason as well as a practical one. The Fourier transform of a derivative is $j\omega$ times the transform of the function, so $\mathcal{F}\{ds/dt\} = j\omega\,\mathcal{F}\{s\}$. A direct transform of the step response contains the factor $1/(j\omega)$ that the spectrum of a step carries ([Chapter 2](02_Frequency_Content_of_Digital_Signals.md)) and a singular term at zero frequency, and neither describes the reflection of the network. The recipe is therefore to differentiate the measured step response to obtain $h(t)$ and then to Fourier transform it:
 
 $$S_{11}(f) = \mathcal{F}\!\left\{\frac{ds}{dt}\right\}$$
 
-A TDR does not perform this calculation on its own, and a statement that the FFT of the step gives $S_{11}$ omits the differentiation. A real step has a finite rise time and a shape that is not exactly known, so the incident waveform is recorded as well (for example, by measuring a short or an open at the reference plane) and the division $S_{11} = B/A$ is carried out frequency by frequency. The derivative of each waveform carries the same factor $j\omega$, which cancels in the ratio:
+A TDR does not perform this calculation on its own, and a statement that the FFT of the step gives $S_{11}$ omits the differentiation. A physical step generator has a finite rise time and an imperfectly known transition shape, so the instrument records the incident reference waveform as well (by measuring a short or an open standard at the calibration plane) and computes the complex ratio $S_{11}(f) = B(f)/A(f)$ at each frequency point. The derivative of each waveform carries the same factor $j\omega$, which cancels in the ratio:
 
 $$S_{11}(f) = \frac{\mathcal{F}\{b'(t)\}}{\mathcal{F}\{a'(t)\}} = \frac{j\omega B(f)}{j\omega A(f)}$$
 
-The division limits the useful bandwidth, because the spectrum of the incident step falls with frequency (the envelope of Chapter 2, with the 0.35/$t_r$ corner), and above the frequency where it falls to the noise of the sampler, the ratio is dominated by noise. A 20 ps edge has a corner at $0.35/t_r = 17.5$ GHz, and the usable range is of that order. The lowest frequency is set by the record length $T$, which gives a frequency spacing of $1/T$, and a TDR-derived S-parameter typically has a dynamic range of tens of decibels, compared with more than 100 dB for a VNA.
+The division limits the useful bandwidth, because the spectrum of the incident step falls with frequency (the envelope of [Chapter 2](02_Frequency_Content_of_Digital_Signals.md), with the $0.35/t_r$ corner), and above the frequency where it falls to the noise of the sampler, the ratio is dominated by noise. A 20 ps edge has a corner at $0.35/t_r = 17.5$ GHz, and the usable range is of that order. The lowest frequency is set by the record length $T$, which gives a frequency spacing of $1/T$, and a TDR-derived S-parameter typically has a dynamic range of tens of decibels, compared with more than 100 dB for a VNA.
 
-The inverse conversion is how a VNA presents time-domain data. The measured $S_{11}(f)$ on a uniform frequency grid with spacing $\Delta f$, extended to negative frequencies as its complex conjugate (so that the result is real) and extrapolated to zero frequency, is inverse Fourier transformed to give $h(t)$, and a running integral gives the step response that a TDR would display. The result is periodic in time with a period of $1/\Delta f$, which is the time range before the response aliases, and the spatial resolution is set by the highest frequency in the same way as the rise time of a step (about $0.45/f_{max}$ for the sharp cutoff of the data, [Chapter 2](02_Frequency_Content_of_Digital_Signals.md)). A window that tapers the data reduces the ringing of the sharp cutoff at the cost of resolution.
+The inverse conversion is how a VNA synthesizes time-domain reflectometry data. The measured $S_{11}(f)$ on a uniform frequency grid with spacing $\Delta f$ is extended to negative frequencies via conjugate symmetry $S_{11}(-f) = S_{11}^*(f)$ (ensuring a real time-domain waveform) and extrapolated to DC, then inverse Fourier transformed to yield the impulse response $h(t)$ and integrated over time to produce the synthetic TDR step response.
+
+Sampling the frequency domain at intervals of $\Delta f$ makes the synthesized time-domain response periodic with an alias-free range of $1/\Delta f$, while the maximum sweep frequency $f_{max}$ sets the spatial resolution ($t_r \approx 0.45/f_{max}$ for an unwindowed rectangular truncation, as derived in [Chapter 2](02_Frequency_Content_of_Digital_Signals.md)). Applying a spectral window function tapers the high-frequency cutoff to suppress Gibbs ringing at the expense of a slightly broader step transition.
 
 ## Worked Examples
 
@@ -217,7 +233,7 @@ From port 2, the reflection coefficient is $S_{22} = (50 - 75)/(75 + 50) = -0.2$
 
 $$S_{12} = 0.8\,\sqrt{\frac{75}{50}} = 0.9798$$
 
-The two transmissions are equal ($S_{21} = S_{12}$, reciprocity), and the two reflections are not ($S_{11} = 0.2$ and $S_{22} = -0.2$), because the junction looks different from the two sides. The power check closes the example: $|S_{11}|^2 + |S_{21}|^2 = 0.04 + 0.96 = 1$, so the lossless junction conserves power exactly. The return loss at port 1 is $-20\log_{10}(0.2) = 13.98$ dB, and the insertion loss of 0.177 dB is the power that the 20% voltage reflection (4% of the power) removes from the transmitted wave.
+The two transmissions are equal ($S_{21} = S_{12}$, reciprocity), and the two reflections are not ($S_{11} = 0.2$ and $S_{22} = -0.2$), because the junction looks different from the two sides. The power balance closes the calculation: $|S_{11}|^2 + |S_{21}|^2 = 0.04 + 0.96 = 1$, confirming that the lossless junction conserves all incident power. The return loss at port 1 is $-20\log_{10}(0.2) = 13.98$ dB, and the insertion loss of 0.177 dB is the power that the 20% voltage reflection (4% of the power) removes from the transmitted wave.
 
 ### Reading a Channel Plot
 
@@ -249,13 +265,13 @@ $$S_{11}(f) = -1 + \frac{1}{1 + j\omega\tau_C} = \frac{-j\omega\tau_C}{1 + j\ome
 
 Substituting $\tau_C = Z_0C/2$ and $x = \omega C Z_0$ gives $S_{11} = -jx/(2 + jx)$, the reflection coefficient that Chapter 3 derived directly from the impedance of the parallel combination, so the two routes agree. The magnitude for small $x$ is $|S_{11}| \approx \omega\tau_C = x/2 = \pi f C Z_0$, which rises in proportion to frequency (it does not show a $1/(2\pi f C)$ roll-off, because the reflection of a small capacitance grows as its admittance grows). The values are:
 
-| $f$ | $x = \omega C Z_0$ | $\lvert S_{11}\rvert$ | Return loss | Phase of $S_{11}$ | Reflected power |
+| Frequency (`f`) | Normalized Susceptance (`x = ω C Z_0`) | Magnitude (`∣S_11∣`) | Return Loss | Phase (`∠S_11`) | Reflected Power |
 |---|---|---|---|---|---|
-| 1 GHz | 0.157 | 0.078 | 22.1 dB | $-94.5^\circ$ | 0.6% |
-| 5 GHz | 0.785 | 0.366 | 8.7 dB | $-111.4^\circ$ | 13% |
-| 10 GHz | 1.571 | 0.618 | 4.2 dB | $-128.1^\circ$ | 38% |
+| `1 GHz` | `0.157` | `0.078` | `22.1 dB` | `-94.5°` | `0.6%` |
+| `5 GHz` | `0.785` | `0.366` | `8.7 dB` | `-111.4°` | `13.4%` |
+| `10 GHz` | `1.571` | `0.618` | `4.2 dB` | `-128.1°` | `38.2%` |
 
-At 1 GHz the approximation $\pi f C Z_0 = 0.0785$ matches the exact value of 0.0783 within 0.3%. At 10 GHz the approximation gives 0.785 against the exact value of 0.618, which shows that the linear rise saturates as $x$ approaches 1.
+At 1 GHz, the first-order estimate $\pi f C Z_0 = 0.0785$ agrees with the full expression value of 0.0783 to within 0.3%. At 10 GHz, the linear estimate predicts 0.785 against the true magnitude of 0.618, showing how the reflection magnitude saturates as $x$ approaches and exceeds unity.
 
 ### A One-Port Calibration with Numbers
 
@@ -287,13 +303,17 @@ For a skew of 5 ps at 10 GHz, $\omega\Delta\tau = 0.314$ rad, so $\sin(0.157) = 
 
 ### NEXT, FEXT, and Their Frequency Dependence
 
-The crosstalk of [Chapter 4](04_Inductance_Magnetic_Coupling_and_Crosstalk.md) is measured with a four-port arrangement for two adjacent lanes. Assume ports 1 and 2 at the near and far ends of the aggressor, ports 3 and 4 at the near and far ends of the victim, and a stimulus at port 1. The near end of the victim is the end co-located with the aggressor transmitter, which is the end of port 1, and the far end of the victim is the end at the aggressor receiver, which is the end of port 2. Near-end crosstalk is therefore $S_{31}$, the response at the victim port on the same end as the stimulus, and far-end crosstalk is $S_{41}$. Both are quoted in dB as negative numbers. The names describe fixed board positions, and the direction of the victim's own data does not enter the definition.
+The crosstalk mechanisms of [Chapter 4](04_Inductance_Magnetic_Coupling_and_Crosstalk.md) are characterized in the frequency domain by connecting a four-port VNA across two adjacent lanes. Assign ports 1 and 2 to the near and far ends of the aggressor trace, assign ports 3 and 4 to the near and far ends of the victim trace, and drive the stimulus at port 1. The victim near end is the port co-located with the aggressor transmitter (port 3), and the victim far end is the port co-located with the aggressor receiver (port 4).
 
-Chapter 4 derived the backward coefficient $K_b = \tfrac{1}{4}(C_m/C + L_m/L)$ and the near-end waveform $V_{NEXT}(t) = K_b[V_a(t) - V_a(t - 2T_c)]$ for a coupled length with a one-way delay $T_c$. The delay $2T_c$ becomes a factor $e^{-j2\omega T_c}$ in the frequency response, so:
+Near-end crosstalk (NEXT) is therefore the complex ratio $S_{31}$, and far-end crosstalk (FEXT) is the complex ratio $S_{41}$, both plotted as negative decibel curves across frequency. These port assignments refer to fixed geometric ends on the board; the signaling direction of the victim lane itself does not alter the S-parameter definitions.
 
-$$S_{31}(f) = K_b\left(1 - e^{-j2\omega T_c}\right), \qquad |S_{31}| = 2K_b\left|\sin(\omega T_c)\right|$$
+[Chapter 4](04_Inductance_Magnetic_Coupling_and_Crosstalk.md) derived the backward coupling coefficient $K_b = \tfrac{1}{4}(C_m/C + L_m/L)$ and the time-domain near-end response $V_{NEXT}(t) = K_b[V_a(t) - V_a(t - 2T_c)]$ for a coupled section with one-way delay $T_c$. In the frequency domain, the round-trip delay $2T_c$ multiplies the delayed term by $e^{-j2\omega T_c}$:
 
-Assume the microstrip of Chapter 4 with $K_b = 0.03$ and $T_c = 174$ ps. The NEXT is $-43.7$ dB at 100 MHz, rises with frequency to a maximum of $2K_b = 0.06$ ($-24.4$ dB) at $f = 1/(4T_c) = 1.44$ GHz, and falls to a null at $1/(2T_c) = 2.87$ GHz, where the round-trip delay $2T_c$ equals one period, so that the delayed term of the bracket equals the undelayed term and the difference vanishes, and the pattern repeats at higher frequencies. The forward coefficient follows in the same way. For $C_m/C = 0.04$ and $L_m/L = 0.08$, the magnitude is $|S_{41}| \approx \tfrac{1}{2}\,|C_m/C - L_m/L|\,\omega T_c$, which is $-33.2$ dB at 1 GHz and $-19.2$ dB at 5 GHz, and it grows in proportion to frequency because far-end crosstalk depends on the derivative of the aggressor edge.
+$$S_{31}(f) = K_b\left(1 - e^{-j2\omega T_c}\right), \qquad |S_{31}(f)| = 2K_b\left|\sin(\omega T_c)\right|$$
+
+For the coupled microstrip of [Chapter 4](04_Inductance_Magnetic_Coupling_and_Crosstalk.md) with $K_b = 0.03$ and $T_c = 174$ ps, $|S_{31}|$ starts at $-43.7$ dB at 100 MHz, climbs to its first peak of $2K_b = 0.06$ ($-24.4$ dB) at the quarter-wave frequency $f = 1/(4T_c) = 1.44$ GHz, and drops to a deep null at $f = 1/(2T_c) = 2.87$ GHz where the round-trip delay equals a full period and the two reflections cancel. Above 2.87 GHz, the sinusoidal lobes repeat periodically.
+
+Far-end coupling follows from the forward difference coefficient. With $C_m/C = 0.04$ and $L_m/L = 0.08$, the forward magnitude $|S_{41}(f)| \approx \tfrac{1}{2}\,|C_m/C - L_m/L|\,\omega T_c$ equals $-33.2$ dB at 1 GHz and $-19.2$ dB at 5 GHz, rising linearly with frequency because FEXT is proportional to the time derivative of the aggressor transition.
 
 The total crosstalk into one victim from several independent aggressors is summed in power with the rule of the decibel section. Compliance limits are written as the power sum of NEXT (PSNEXT) and of FEXT (PSFEXT), defined as $-10\log_{10}\sum_k |S_{k1}|^2$ in positive decibels, with the sum taken over the near-end terms or over the far-end terms, which carries the same $10\log_{10}N$ penalty that four equal aggressors incur in the preceding example.
 
@@ -313,8 +333,12 @@ A measured file of a passive network should satisfy $|S_{11}|^2 + |S_{21}|^2 \le
 
 ### The Limits of the Frequency Domain
 
-A VNA measures the net frequency signature of the network and does not locate each element in space. Two nearby discontinuities that produce one combined reflection cannot be separated by the VNA more finely than the time resolution of its own bandwidth, which is the same $0.45/f_{max}$ limit that applies to a transform of the data. What the frequency domain adds is a different kind of information: a model of two lumped elements can be fitted to the measured $S_{11}(f)$ across many frequencies, because inductance and capacitance have different frequency dependence and different signs of reactance. [Chapter 9](09_Smith_Charts.md) describes how the Smith chart displays this distinction and why the magnitude of $S_{11}$ alone cannot separate a series inductance from a shunt capacitance.
+A VNA measures the net frequency signature of the network and does not locate each element in space. Two nearby discontinuities that produce one combined reflection cannot be separated by the VNA more finely than the time resolution of its own bandwidth, which is the same $0.45/f_{max}$ limit that applies to a transform of the data.
+
+Frequency-domain phase measurements supply a complementary constraint: a circuit model of two lumped elements can be fitted to the measured complex $S_{11}(f)$ across frequency, because inductance and capacitance have opposite reactance signs and distinct frequency trajectories. [Chapter 9](09_Smith_Charts.md) describes how the Smith chart displays this distinction and why the scalar magnitude $|S_{11}|$ alone cannot separate a series inductance from a shunt capacitance.
 
 ### What S-Parameters Cannot Capture
 
-S-parameters describe the linear, time-invariant behavior of a network. They do not describe phenomena that depend on the signal amplitude, such as compression in active devices and dielectric nonlinearity at extreme voltages, nor phenomena that change with time, such as thermal drift during a long sweep or the aging of connector contacts. Systems that show any of these behaviors need large-signal measurement techniques or repeated, time-stamped sweeps. The measurement of the channel in the time domain (the eye of [Chapter 10](10_Jitter_Decomposition_and_Measurement.md)) is the complement for the effects that the linear model does not contain, and Chapter 9 turns to the display that makes the complex $S_{11}(f)$ readable at a glance.
+S-parameters describe the linear, time-invariant behavior of a network. They do not describe phenomena that depend on the signal amplitude, such as compression in active devices and dielectric nonlinearity at extreme voltages, nor phenomena that change with time, such as thermal drift during a long sweep or the aging of connector contacts. Systems that show any of these behaviors need large-signal measurement techniques or repeated, time-stamped sweeps. The measurement of the channel in the time domain (the eye diagram of [Chapter 10](10_Jitter_Decomposition_and_Measurement.md)) is the complement for the effects that the linear model does not contain, and [Chapter 9](09_Smith_Charts.md) turns to the conformal coordinate chart that makes the complex reflection $S_{11}(f)$ readable at a glance.
+
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>

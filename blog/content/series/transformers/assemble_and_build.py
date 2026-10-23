@@ -1,28 +1,32 @@
 #!/usr/bin/env python3
 """
-Two-pass ebook assembly and build pipeline.
+Two-pass ebook assembly and build pipeline for the Transformers series.
 1. Reads all chapter files and applies transforms.
 2. Writes frontmatter.md (title, copyright, TOC) and body.md (preface + chapters) separately.
 3. Generates frontmatter.pdf (no page numbers) and body.pdf (page numbers starting at 1).
-4. Merges them into transformer_ebook_final.pdf using pypdf.
+4. Merges them into transformers-ebook-v1.0.pdf using pypdf.
 """
 import os
 import re
+import sys
 import subprocess
+import base64
 
-directory = '/Users/lydia/Desktop/personal/career/resumes/portfolio/blog/content/series/transformers'
-scripts_dir = '/Users/lydia/enablement/.agents/skills/pdf_generator/scripts'
+directory = os.path.dirname(os.path.abspath(__file__))
+portfolio_root = os.path.abspath(os.path.join(directory, '..', '..', '..', '..'))
+if not os.path.exists(os.path.join(portfolio_root, 'assets', 'images', 'transformer_decoder_cover.jpg')):
+    portfolio_root = os.path.abspath(os.path.join(directory, '..', '..', '..'))
+scripts_dir = os.path.expanduser('~/.gemini/config/skills/pdf_generator/scripts')
 frontmatter_file = os.path.join(directory, 'frontmatter.md')
 body_file = os.path.join(directory, 'body.md')
 frontmatter_pdf = os.path.join(directory, 'frontmatter.pdf')
 body_pdf = os.path.join(directory, 'body.pdf')
-final_pdf = '/Users/lydia/Desktop/personal/career/resumes/portfolio/assets/docs/transformers-ebook-v1.0.pdf'
+final_pdf = os.path.join(portfolio_root, 'assets', 'docs', 'transformers-ebook-v1.0.pdf')
+cover_image_path = os.path.join(portfolio_root, 'assets', 'images', 'transformer_decoder_cover.jpg')
 
 files = ['preface.md'] + [f'chapter_{i:02d}.md' for i in range(1, 25)]
 
-import base64
-
-with open("/Users/lydia/Desktop/personal/career/resumes/portfolio/assets/images/transformer_decoder_cover.jpg", "rb") as image_file:
+with open(cover_image_path, "rb") as image_file:
     encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
 
 title_page = f"""<style>
@@ -66,7 +70,10 @@ for filename in files:
         content = f.read()
     
     # Remove download CTA links from the ebook build
-    content = re.sub(r'<p><em>Prefer to read this seamlessly offline\?.*?</em></p>\n*', '', content, flags=re.IGNORECASE)
+    content = re.sub(r'<p><em>Prefer to read this(?:\s+seamlessly)? offline\?.*?</em></p>\n*', '', content, flags=re.IGNORECASE)
+    
+    # Strip web-only relative .html links to plain text
+    content = re.sub(r'\[([^\]]+)\]\([^)#]+\.html\)', r'\1', content)
     
     # Part -> Chapter renaming
     content = re.sub(r'# Part (\d+):', r'# Chapter \1:', content)
@@ -86,7 +93,7 @@ for filename in files:
         
     # Colon-context sticking (prevent page breaks between intro text and math/code)
     content = re.sub(r'(:)\n+(\s*```)', r'\1\n<div style="page-break-after: avoid;"></div>\n\n\2', content)
-    content = re.sub(r'(:)\n+(\s*\$\$)', r'\1\n<div style="page-break-after: avoid;"></div>\n\n\2', content)
+    content = re.sub(r'(:)\n+(\s*[$]{2})', r'\1\n<div style="page-break-after: avoid;"></div>\n\n\2', content)
     
     # Convert vocab tables to inline spaced text
     table_pattern = r'\|\s+\|\s+\|\s+\|\s+\|\n\|---\|---\|---\|---\|\n((?:\|.*\|\n?)+)'
@@ -125,11 +132,15 @@ for i, body in enumerate(content_bodies):
         body_content += '\n\n<div style="page-break-before: always;"></div>\n\n'
     body_content += body
 
-# Inject CSS for math font size
+# Inject CSS for math sizing and overflow containment
 body_content += """
 <style>
 .katex-display {
   font-size: 0.9em !important;
+}
+mjx-container[display="true"] {
+  font-size: 95% !important;
+  overflow-x: hidden !important;
 }
 </style>
 """
@@ -156,7 +167,8 @@ print("Generating body.pdf (with page numbers starting at 1)...")
 result = subprocess.run(
     ['node', generate_pdf, body_file, body_pdf, 'true'],
     cwd=scripts_dir,
-    capture_output=True, text=True
+    capture_output=True, text=True,
+    timeout=300
 )
 if result.returncode != 0:
     print(f"ERROR generating body.pdf: {result.stderr}")
@@ -164,11 +176,15 @@ if result.returncode != 0:
 print("  Done.")
 
 # --- Merge PDFs ---
-print("Merging frontmatter.pdf + body.pdf -> transformer_ebook_final.pdf...")
+print("Merging frontmatter.pdf + body.pdf -> transformers-ebook-v1.0.pdf...")
 from pypdf import PdfWriter
 merger = PdfWriter()
 merger.append(frontmatter_pdf)
 merger.append(body_pdf)
 merger.write(final_pdf)
 merger.close()
+if '--keep-temp' not in sys.argv:
+    for temp_path in (frontmatter_file, body_file, frontmatter_pdf, body_pdf):
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
 print(f"  Done. Final ebook: {final_pdf}")

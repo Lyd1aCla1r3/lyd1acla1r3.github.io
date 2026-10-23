@@ -1,12 +1,14 @@
 # Smith Charts
 
-<!-- SUMMARY: The Smith chart is the conformal map $\Gamma = (z - 1)/(z + 1)$ that places passive impedances inside a unit circle. This guide derives its constant-resistance circles and constant-reactance arcs, demonstrating how the $S_{11}$ reflection plane visually separates inductive and capacitive components. -->
+<!-- SUMMARY: The Smith chart is the conformal map Γ = (z - 1)/(z + 1) that maps all passive impedances inside the unit circle. The analysis derives the constant-resistance circles and constant-reactance arcs, showing how the complex S11 reflection plane separates inductive and capacitive reactances by hemisphere. -->
 
-<p><em>Prefer to read offline? <a href="../../../assets/docs/signal-integrity-ebook-v2.0.pdf" target="_blank" rel="noopener">Download the complete Signal Integrity (Advanced Edition) ebook.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
 
 [Chapter 8](08_S_Parameters_and_VNA.md) established that $S_{11}$ measured at one frequency is the reflection coefficient $\Gamma$ of [Chapter 3](03_Impedance_Reflections_and_Termination.md), and that a VNA reports it as a complex number at every point of a frequency sweep. A complex number needs two coordinates, so a plot of magnitude in decibels or of phase in degrees against frequency shows only half of the information at a time. The complex plane of $\Gamma$ shows both halves together, with the real part on the horizontal axis and the imaginary part on the vertical axis, and the Smith chart is the same plane with a grid of impedance values printed on top of it.
 
-The chart solves a problem of scale. The impedance that produces a given reflection ranges from zero (a short circuit) to infinity (an open circuit), and a Cartesian plot of impedance cannot place infinity on a finite sheet. The reflection coefficient of any passive impedance has a magnitude of at most 1, so the $\Gamma$ plane is bounded by the unit circle, and the Smith chart is the map from the unbounded impedance plane into that circle. This chapter derives the map and its two families of curves, explains the landmarks of the chart and the motion of a trace along a line and across frequency, introduces the admittance chart for shunt elements, and ends by completing the story that [Chapter 7](07_Time_Domain_Reflectometry.md) left open: how the complex $S_{11}$ separates an inductance from a capacitance that the time domain cannot separate.
+The chart solves a problem of scale. The impedance that produces a given reflection ranges from zero (a short circuit) to infinity (an open circuit), and a Cartesian plot of impedance cannot place infinity on a finite sheet. The reflection coefficient of any passive impedance has a magnitude of at most 1, so the $\Gamma$ plane is bounded by the unit circle, and the Smith chart is the map from the unbounded impedance plane into that circle.
+
+The sections below derive the map and its two families of curves, explain the landmarks of the chart and the motion of a trace along a line and across frequency, and introduce the admittance chart for shunt elements. The final section completes the problem that [Chapter 7](07_Time_Domain_Reflectometry.md) left open: how the complex $S_{11}$ separates an inductance from a capacitance that the time domain cannot separate.
 
 ## Core Concepts
 
@@ -48,7 +50,7 @@ The first term has no factor $j$ and is the real part, and the second is the ima
 
 $$u = \frac{r^2 - 1 + x^2}{(r + 1)^2 + x^2}, \qquad v = \frac{2x}{(r + 1)^2 + x^2}$$
 
-Every impedance $z = r + jx$ therefore maps to exactly one point $(u, v)$. The denominator of $v$ is positive, so the imaginary part of $\Gamma$ has the same sign as the reactance $x$: a positive reactance (inductive) lies above the horizontal axis and a negative reactance (capacitive) lies below it. This sign rule is the basis of the hemisphere reading at the end of the chapter.
+Every normalized impedance $z = r + jx$ therefore maps to a unique coordinate pair $(u, v)$. The denominator $(r + 1)^2 + x^2$ is strictly positive, so the imaginary part $v$ always shares the sign of the normalized reactance $x$: an inductive reactance ($x > 0$) maps to the upper half-plane ($v > 0$), and a capacitive reactance ($x < 0$) maps to the lower half-plane ($v < 0$). That sign relationship governs how the chart separates inductive and capacitive discontinuities across frequency.
 
 ### Passive Impedances Lie Inside the Unit Circle
 
@@ -56,7 +58,7 @@ The squared magnitude of $\Gamma$ follows from the magnitudes of its numerator a
 
 $$|\Gamma|^2 = \frac{|z - 1|^2}{|z + 1|^2} = \frac{(r - 1)^2 + x^2}{(r + 1)^2 + x^2}$$
 
-The difference between the denominator and the numerator is $(r + 1)^2 - (r - 1)^2 = 4r$. A passive load has $r \ge 0$, so the denominator is at least as large as the numerator and $|\Gamma| \le 1$. The equality $|\Gamma| = 1$ holds only for $r = 0$, a purely reactive load that absorbs no power. This is the energy conservation of Chapter 3 (the load absorbs the portion $1 - |\Gamma|^2$ of the incident power) shown in the algebra: the numerator and denominator differ by $4r$, which is proportional to the resistive part that dissipates the power.
+The difference between the denominator and the numerator is $(r + 1)^2 - (r - 1)^2 = 4r$. A passive load has $r \ge 0$, so the denominator is at least as large as the numerator and $|\Gamma| \le 1$. The equality $|\Gamma| = 1$ holds only for $r = 0$, a purely reactive load that absorbs no power. That algebraic identity reflects the power conservation law of [Chapter 3](03_Impedance_Reflections_and_Termination.md) (the load absorbs the portion $1 - |\Gamma|^2$ of the incident power): the numerator and denominator differ by $4r$, which is proportional to the resistive part that dissipates the power.
 
 ### The Conformal Mapping
 
@@ -64,7 +66,9 @@ The map $\Gamma(z) = (z - 1)/(z + 1)$ is an analytic function of the complex var
 
 $$\frac{d\Gamma}{dz} = \frac{(z + 1) - (z - 1)}{(z + 1)^2} = \frac{2}{(z + 1)^2}$$
 
-The derivative is nonzero everywhere except at $z = -1$, which is not a passive impedance. An analytic map with a nonzero derivative preserves angles between curves (a standard result of complex analysis, stated here without proof), and a map with this property is called conformal. The rectangular grid of vertical lines of constant $r$ and horizontal lines of constant $x$ in the impedance plane meets at right angles, and the images of those lines meet at right angles on the $\Gamma$ plane. The lines do not remain straight, because a map of this form (a Möbius transformation) turns lines into circles, and the next section derives the circles. The right half of the impedance plane ($r \ge 0$) is the set of passive impedances, and it fills the disc $|\Gamma| \le 1$.
+The derivative is nonzero everywhere except at $z = -1$, which is not a passive impedance. An analytic map with a nonzero derivative preserves angles between curves (a standard result of complex analysis, stated here without proof), and a map with that property is called conformal.
+
+The rectangular grid of vertical lines of constant $r$ and horizontal lines of constant $x$ in the impedance plane meets at right angles, and the images of those lines meet at right angles on the $\Gamma$ plane. The lines do not remain straight, because a map of this form (a Möbius transformation) turns lines into circles, and the next section derives the circles. The right half of the impedance plane ($r \ge 0$) is the set of passive impedances, and it fills the disc $|\Gamma| \le 1$.
 
 ## Worked Examples
 
@@ -106,7 +110,7 @@ The right side over the common denominator $(r + 1)^2$ is $\frac{(1 - r)(r + 1) 
 
 $$\left(u - \frac{r}{r+1}\right)^2 + v^2 = \left(\frac{1}{r+1}\right)^2$$
 
-This is a circle with center $\left(\frac{r}{r+1},\, 0\right)$ and radius $\frac{1}{r+1}$. Every constant-resistance circle is centered on the horizontal axis. For $r = 0$ the center is the origin and the radius is 1, which is the outer boundary of the chart. For $r = 1$ the center is $(0.5, 0)$ and the radius is 0.5, so the circle passes through the center of the chart. For $r \to \infty$ the center approaches $(1, 0)$ and the radius approaches zero, so every circle passes through the point $(1, 0)$ and the family shrinks onto it.
+The locus of constant normalized resistance $r$ is a circle with center $\left(\frac{r}{r+1},\, 0\right)$ and radius $\frac{1}{r+1}$. Every constant-resistance circle is centered on the horizontal axis. For $r = 0$ the center is the origin and the radius is 1, which is the outer boundary of the chart. For $r = 1$ the center is $(0.5, 0)$ and the radius is 0.5, so the circle passes through the center of the chart. For $r \to \infty$ the center approaches $(1, 0)$ and the radius approaches zero, so every circle passes through the point $(1, 0)$ and the family shrinks onto it.
 
 ### Deriving the Constant Reactance Arcs
 
@@ -126,7 +130,9 @@ Completing the square adds 1 for $u$ and $1/x^2$ for $v$ to both sides:
 
 $$(u - 1)^2 + \left(v - \frac{1}{x}\right)^2 = \frac{1}{x^2}$$
 
-This circle has center $\left(1,\, \frac{1}{x}\right)$ and radius $\frac{1}{|x|}$. Every center lies on the vertical line $u = 1$, and every circle passes through the point $(1, 0)$, because the distance from the center to that point is $1/|x|$. Only the part of each circle that lies inside the unit circle corresponds to passive impedances, so the reactance curves appear as arcs. Larger values of $|x|$ move the center toward the horizontal axis and tighten the arc, and in the limit $|x| \to 0$ the radius grows without limit and the arc flattens into the horizontal axis. The sign rule of the previous section places the arcs for $x > 0$ in the upper half of the chart and the arcs for $x < 0$ in the lower half.
+The constant-reactance locus is a circle with center $\left(1,\, \frac{1}{x}\right)$ and radius $\frac{1}{|x|}$. Every center lies on the vertical line $u = 1$, and every circle passes through the point $(1, 0)$, because the distance from the center to that point is $1/|x|$. Only the part of each circle that lies inside the unit circle corresponds to passive impedances, so the reactance curves appear as arcs.
+
+Larger values of $|x|$ move the center toward the horizontal axis and tighten the arc, and in the limit $|x| \to 0$ the radius grows without limit and the arc flattens into the horizontal axis. The sign rule of the previous section places the arcs for $x > 0$ in the upper half of the chart and the arcs for $x < 0$ in the lower half.
 
 ### Reading a Point on the Chart
 
@@ -140,19 +146,18 @@ The distance from the center is $|\Gamma| = \sqrt{0.0769^2 + 0.6154^2} = 0.620$ 
 
 ### Landmarks and Navigation
 
-The two families of curves form a coordinate system inside the unit circle, and each point on it corresponds to one normalized impedance.
+The two families of curves form an orthogonal coordinate system inside the unit circle, where each point maps to a unique normalized impedance and reflection coefficient:
 
-The **center** of the chart, at $(u, v) = (0, 0)$, is the intersection of the $r = 1$ circle and the $x = 0$ axis. It represents $\Gamma = 0$, a load equal to the reference impedance with no reflection, and the aim of impedance matching is to bring a trace to this point.
+| Chart Landmark | Complex Coordinate `(u, v)` | Normalized Impedance (`z`) | Reflection (`∣Γ∣ ∠ θ`) | Physical Meaning |
+|---|---|---|---|---|
+| **Chart center** | `(0, 0)` | `z = 1 + j0` (`Z_L = Z_0`) | `0` | Matched reference termination with zero reflection |
+| **Left horizontal edge** | `(-1, 0)` | `z = 0` (`Z_L = 0`) | `1 ∠ 180°` | Ideal short circuit reflecting the full wave with inverted voltage |
+| **Right horizontal edge** | `(+1, 0)` | `z → ∞` (`Z_L → ∞`) | `1 ∠ 0°` | Ideal open circuit where all resistance circles and reactance arcs meet |
+| **Horizontal real axis** | `(u, 0)` | `z = r + j0` (`x = 0`) | `∣(r-1)/(r+1)∣` | Purely resistive loads ranging from `0` at the left to `∞` at the right |
+| **Upper hemisphere** | `v > 0` | `z = r + jx` (`x > 0`) | `0° < θ < 180°` | Inductive impedances with positive reactance |
+| **Lower hemisphere** | `v < 0` | `z = r + jx` (`x < 0`) | `-180° < θ < 0°` | Capacitive impedances with negative reactance |
 
-The **left edge** of the horizontal axis, at $(-1, 0)$, is the short circuit ($z = 0$). The magnitude is 1 and the phase is 180°, so the load reflects the full wave with inverted voltage.
-
-The **right edge** of the horizontal axis, at $(+1, 0)$, is the open circuit ($z \to \infty$). The magnitude is 1 and the phase is 0°. All the resistance circles and all the reactance arcs meet at this point.
-
-The **horizontal axis** is the line of zero reactance, so every point on it is a pure resistance. The printed values rise from 0 at the left edge through 1 at the center to infinity at the right edge.
-
-The **upper half** of the chart contains the impedances with positive reactance (inductive), and the **lower half** contains those with negative reactance (capacitive). The **outer circle** is the $r = 0$ circle, which holds the purely reactive loads.
-
-The magnitude and the angle of a point are the polar reading of the same chart: the distance from the center is $|\Gamma|$, and the angle measured from the positive horizontal axis is the phase of the reflection. A VNA measures these two quantities directly, and the printed grid converts them into resistance and reactance.
+The outer boundary circle (`r = 0`, `|Γ| = 1`) holds purely reactive loads that dissipate no power. The polar coordinates of any point (`|Γ|` as the radial distance from the center and `θ` as the counterclockwise angle from the positive real axis) are the quantities a VNA measures directly, while the printed grid converts them into normalized resistance and reactance.
 
 ### Rotation with Line Length and Frequency
 
@@ -162,7 +167,9 @@ $$\Gamma(d) = \Gamma_L\,e^{-2\gamma d} = \Gamma_L\,e^{-2\alpha d}\,e^{-j2\beta d
 
 On a lossless line ($\alpha = 0$) the magnitude is unchanged and the phase decreases by $2\beta d$, so the point rotates clockwise around the center on a circle of constant $|\Gamma|$. The phase $2\beta d = 2\omega d/v_p$ equals $360^\circ f\,(2\tau_d)$ for the delay $\tau_d = d/v_p$ of the line, which is the rule $\theta = -360^\circ f\tau$ of Chapter 8 applied to the round-trip delay. A half wavelength of line ($\beta d = 180^\circ$) turns the point through a full circle. Increasing the frequency at fixed length rotates the point clockwise by the same rule, so a trace of $S_{11}(f)$ for any structure with delay moves clockwise as the sweep proceeds.
 
-Assume an open stub of 1 inch of FR4 line, which has a delay of 170 ps ([Chapter 1](01_Wave_Propagation_and_Transmission_Lines.md)) and a round-trip delay of 340 ps. The open circuit starts at $\Gamma = 1$ (phase 0°). At 1 GHz the phase is $-360^\circ \times 10^9 \times 0.34\times10^{-9} = -122.4^\circ$, which places the point in the lower left of the chart, and the impedance is $z = -j\cot(2\pi f\tau_d) = -j0.550$, a capacitive reactance in the lower half. At $f = 1/(4\tau_d) = 1.47$ GHz the phase is $-180^\circ$ and the stub, a quarter wavelength long, appears as a short circuit at the left edge. At 2 GHz the phase is $-244.8^\circ$ (equivalent to $+115.2^\circ$), and the impedance is $z = +j0.635$, which is inductive and lies in the upper half. A single open stub is therefore capacitive below the quarter-wave frequency and inductive above it, and the trace passes from the lower to the upper half of the chart through the short-circuit point.
+Assume an open stub of 1 inch of FR4 line, which has a delay of 170 ps ([Chapter 1](01_Wave_Propagation_and_Transmission_Lines.md)) and a round-trip delay of 340 ps. The open circuit starts at $\Gamma = 1$ (phase 0°). At 1 GHz the phase is $-360^\circ \times 10^9 \times 0.34\times10^{-9} = -122.4^\circ$, which places the point in the lower left of the chart, and the impedance is $z = -j\cot(2\pi f\tau_d) = -j0.550$, a capacitive reactance in the lower half.
+
+At $f = 1/(4\tau_d) = 1.47$ GHz the phase is $-180^\circ$ and the stub, a quarter wavelength long, appears as a short circuit at the left edge. At 2 GHz the phase is $-244.8^\circ$ (equivalent to $+115.2^\circ$), and the impedance is $z = +j0.635$, which is inductive and lies in the upper half. A single open stub is therefore capacitive below the quarter-wave frequency and inductive above it, and the trace passes from the lower to the upper half of the chart through the short-circuit point.
 
 ### The Admittance Chart
 
@@ -174,19 +181,19 @@ The expression equals the earlier map with $y$ in place of $z$ and a change of s
 
 The two elements of Chapter 3 take a simple form in the two variables. A shunt capacitance on a matched line adds a susceptance $b = \omega C Z_0 = x$ (the dimensionless quantity of Chapter 3) to the matched admittance $y = 1$. A series inductance adds a reactance $x_L = \omega L/Z_0$ to the matched impedance $z = 1$. Assume $f = 5$ GHz and $Z_0 = 50$ Ω:
 
-- A shunt capacitance of 0.5 pF gives $y = 1 + j0.785$ and $z = 1/y = 0.618 - j0.486$, and the equations for $u$ and $v$ place the point at $\Gamma = -0.134 - j0.340$ ($|\Gamma| = 0.366$, angle $-111.4^\circ$), in the lower half.
-- A series inductance of 1 nH gives $z = 1 + j0.628$, and the point is at $\Gamma = 0.090 + j0.286$ ($|\Gamma| = 0.300$, angle $72.6^\circ$), in the upper half.
+- **Shunt capacitance (`C = 0.5 pF`):** Adds a normalized susceptance yielding $y = 1 + j0.785$ and $z = 1/y = 0.618 - j0.486$, which places the reflection coefficient at $\Gamma = -0.134 - j0.340$ ($|\Gamma| = 0.366$, angle $-111.4^\circ$) in the lower half of the chart.
+- **Series inductance (`L = 1 nH`):** Adds a normalized reactance yielding $z = 1 + j0.628$, which places the reflection coefficient at $\Gamma = 0.090 + j0.286$ ($|\Gamma| = 0.300$, angle $+72.6^\circ$) in the upper half of the chart.
 
 These magnitudes agree with the values of Chapter 3 (0.366 and 0.300), and the chart adds the information of the position: the capacitance lies below the horizontal axis and the inductance lies above it.
 
 ### Reading S11 Traces Across Frequency
 
-A VNA plots $S_{11}(f)$ on the chart as a trajectory of points, one for each measured frequency. The position and the direction of the trajectory carry the following information.
+A VNA plots $S_{11}(f)$ on the chart as a trajectory of points, one for each measured frequency. Four geometric features of the trajectory reveal the physical behavior of the interconnect:
 
-- A trace that stays near the center has a small reflection at all frequencies, and the distance from the center is $|S_{11}|$, from which the return loss follows.
-- A trace in the upper half has a net inductive reactance and a trace in the lower half has a net capacitive reactance, by the sign rule derived above.
-- A trace rotates clockwise as the frequency rises, because the electrical length of the structure grows in proportion to frequency.
-- A trace that spirals inward as it rotates indicates loss. The magnitude of $\Gamma(d)$ decays as $e^{-2\alpha d}$, and $\alpha$ grows with frequency ([Chapter 5](05_Skin_Effect_and_Dielectric_Loss.md)), so a poorly terminated lossy line spirals toward the center even though the termination itself has not improved. A spiral into the center is not evidence of a better match.
+- **Proximity to the center:** Indicates a small reflection across frequency, where the radial distance from the origin equals $|S_{11}|$ and determines the return loss directly.
+- **Hemisphere position:** Identifies the sign of the net reactance, with trajectories in the upper half exhibiting net inductive reactance and trajectories in the lower half exhibiting net capacitive reactance.
+- **Clockwise rotation with frequency:** Reflects the electrical delay of the structure, because the round-trip phase shift $2\beta d$ increases in proportion to frequency.
+- **Inward spiral from attenuation:** Signals transmission-line loss rather than improved termination matching, because the reflection magnitude decays as $e^{-2\alpha d}$ as the attenuation constant $\alpha(f)$ rises with frequency ([Chapter 5](05_Skin_Effect_and_Dielectric_Loss.md)).
 
 The chart is the display for the quantity that both instruments measure. A TDR presents it as a real voltage along the length of the trace, and a VNA presents it as a complex trajectory along frequency, and [Chapter 8](08_S_Parameters_and_VNA.md) gives the conversion between the two.
 
@@ -206,23 +213,35 @@ The mapping preserves angles and does not preserve distances. The sensitivity of
 
 $$\frac{dz}{d\Gamma} = \frac{(1 - \Gamma) + (1 + \Gamma)}{(1 - \Gamma)^2} = \frac{2}{(1 - \Gamma)^2}$$
 
-Near the center ($\Gamma \approx 0$) the derivative is 2, so an uncertainty of 0.01 in $\Gamma$ corresponds to 0.02 in the normalized impedance, which is 1 Ω in a 50 Ω system. Near the open circuit, with $\Gamma = 0.9$, the derivative is $2/0.01 = 200$, and the same uncertainty of 0.01 corresponds to 2 in normalized impedance, which is 100 Ω. The region near the center is expanded, so a small mismatch occupies a large area on the chart and is read with good resolution. The regions near the short and open circuits are compressed into the narrow rim of the chart. A measurement of a nearly total reflection is therefore sensitive to noise and calibration error, and the result is large changes in the computed impedance for small changes in the measured $\Gamma$.
+Near the center ($\Gamma \approx 0$) the derivative is 2, so an uncertainty of 0.01 in $\Gamma$ corresponds to 0.02 in the normalized impedance, which is 1 Ω in a 50 Ω system. Near the open circuit, with $\Gamma = 0.9$, the derivative is $2/0.01 = 200$, and the same uncertainty of 0.01 corresponds to 2 in normalized impedance, which is 100 Ω.
+
+The region near the center is expanded, so a small mismatch occupies a large area on the chart and is read with good resolution. The regions near the short and open circuits are compressed into the narrow rim of the chart. A measurement of a nearly total reflection is therefore sensitive to noise and calibration error, and the result is large changes in the computed impedance for small changes in the measured $\Gamma$.
 
 ### Reading Reactance from S11: Separating Inductance and Capacitance
 
-[Chapter 7](07_Time_Domain_Reflectometry.md) ended with a limit: a TDR reports only the net area $\tau_L - \tau_C$ of an inductance and a capacitance that overlap within the resolution of the edge, and it cannot recover the two values. The complex $S_{11}$ carries more information, and this section shows what the information is and what it does not include.
+[Chapter 7](07_Time_Domain_Reflectometry.md) ended with a limit: a TDR reports only the net area $\tau_L - \tau_C$ of an inductance and a capacitance that overlap within the resolution of the edge, and it cannot recover the two values. The complex $S_{11}$ carries more information, and the subsections below show what the information is and what it does not include.
 
-**The magnitude alone does not separate them.** The shunt capacitance and the series inductance of Chapter 3 have the reflection coefficients $\Gamma_C = -jx/(2 + jx)$ with $x = \omega C Z_0$, and $\Gamma_L = jy/(2 + jy)$ with $y = \omega L/Z_0$. The two expressions have the same form, so they have equal magnitudes whenever $y = x$, which requires $L/Z_0 = C Z_0$, that is $L = Z_0^2 C$ (the compensation condition of Chapter 3). For $C = 0.5$ pF the matching inductance is $L = 1.25$ nH, and the two reflections satisfy $\Gamma_L = -\Gamma_C$ at every frequency. At 5 GHz both have $|S_{11}| = 0.366$, which is $-8.7$ dB, and a plot of $|S_{11}|$ in decibels cannot tell the two elements apart, because both rise in proportion to frequency while they are small ($\pi f C Z_0$ for the capacitance and $\pi f L/Z_0$ for the inductance). The phase differs by 180°: $\Gamma_C$ has an angle of $-111.4^\circ$ and $\Gamma_L$ has an angle of $+68.6^\circ$.
+#### Why Magnitude Alone Cannot Separate L and C
 
-**The hemisphere of the point separates the two elements in the complex plane.** The two points lie on opposite sides of the center of the chart, and the sign rule of the imaginary part identifies them: the capacitance is in the lower half and the inductance is in the upper half. A magnitude plot discards the sign of the reactance, and the complex plot retains it.
+The shunt capacitance and the series inductance of Chapter 3 have the reflection coefficients $\Gamma_C = -jx/(2 + jx)$ with $x = \omega C Z_0$, and $\Gamma_L = jy/(2 + jy)$ with $y = \omega L/Z_0$. The two expressions have the same form, so they have equal magnitudes whenever $y = x$, which requires $L/Z_0 = C Z_0$, or $L = Z_0^2 C$ (the compensation condition of Chapter 3).
 
-**The impedance plot gives the values of the elements.** The software converts $S_{11}$ to impedance with $Z = Z_0(1 + S_{11})/(1 - S_{11})$ (Chapter 3) and plots the real and imaginary parts against frequency, and the plot differs between two physical situations.
+For $C = 0.5$ pF the matching inductance is $L = 1.25$ nH, and the two reflections satisfy $\Gamma_L = -\Gamma_C$ at every frequency. At 5 GHz both have $|S_{11}| = 0.366$, which is $-8.7$ dB, and a plot of $|S_{11}|$ in decibels cannot tell the two elements apart, because both rise in proportion to frequency while they are small ($\pi f C Z_0$ for the capacitance and $\pi f L/Z_0$ for the inductance). The phase differs by 180°: $\Gamma_C$ has an angle of $-111.4^\circ$ and $\Gamma_L$ has an angle of $+68.6^\circ$.
 
-For a component that is measured as a one-port, with the component as the termination of the cable, the impedance is the reactance of the element itself. An inductor has $X_L = \omega L$, a straight line that rises in proportion to frequency (6.3, 31.4, and 62.8 Ω at 1, 5, and 10 GHz for 1 nH). A capacitor has $X_C = -1/(\omega C)$, a curve whose magnitude falls as $1/f$ (−318, −63.7, and −31.8 Ω for 0.5 pF). A lossless element reflects all of the power, so $|S_{11}| = 1$ at every frequency and the decibel plot is a flat line at 0 dB, and all of the information is in the phase. The capacitor has the angles $-17.9^\circ$, $-76.3^\circ$, and $-115.0^\circ$ at the three frequencies, and the inductor has $165.7^\circ$, $115.7^\circ$, and $77.0^\circ$. Both trajectories move clockwise along the rim of the chart as the frequency rises, the inductor from near the short circuit toward the open circuit and the capacitor from near the open circuit toward the short circuit.
+The hemisphere of the point separates the two elements in the complex plane. The two points lie on opposite sides of the center of the chart, and the sign rule of the imaginary part identifies them: the capacitance is in the lower half and the inductance is in the upper half. A magnitude plot discards the sign of the reactance, and the complex plot retains it.
 
-For a small discontinuity that is embedded in a line terminated by $Z_0$, as in Chapters 3, 6, and 7, the magnitude $|S_{11}|$ rises with frequency, and the roll-off $1/(2\pi f C)$ does not appear in $S_{11}$ itself. A shunt capacitance gives the input impedance $Z_{in} = Z_0/(1 + jx)$, whose magnitude falls with frequency, and this fall appears only after the conversion from $S_{11}$ to impedance. The admittance $Y_{in} = 1/Z_{in} = (1 + jx)/Z_0$ shows the capacitance directly, because its imaginary part $\omega C$ is a straight line that rises with frequency. A series inductance gives $Z_{in} - Z_0 = j\omega L$, which is also a straight line. The slopes of these lines are the values of $C$ and $L$.
+#### Extracting Element Values from One-Port and Embedded Measurements
 
-**A cluster of both is read from one complex measurement.** Assume the via of Chapter 6 with $L = 1.33$ nH in series and $C = 0.37$ pF to ground, seen from the line with a $Z_0$ load behind it. The input impedance is:
+The instrument software converts $S_{11}$ to impedance with $Z = Z_0(1 + S_{11})/(1 - S_{11})$ (Chapter 3) and plots the real and imaginary parts against frequency, and the plot differs between two physical situations.
+
+For a component that is measured as a one-port, with the component as the termination of the cable, the impedance is the reactance of the element itself. An inductor has $X_L = \omega L$, a straight line that rises in proportion to frequency (6.3, 31.4, and 62.8 Ω at 1, 5, and 10 GHz for 1 nH). A capacitor has $X_C = -1/(\omega C)$, a curve whose magnitude falls as $1/f$ (−318, −63.7, and −31.8 Ω for 0.5 pF).
+
+A lossless element reflects all of the power, so $|S_{11}| = 1$ at every frequency and the decibel plot is a flat line at 0 dB, placing all of the information in the phase. The capacitor has the angles $-17.9^\circ$, $-76.3^\circ$, and $-115.0^\circ$ at the three frequencies, and the inductor has $165.7^\circ$, $115.7^\circ$, and $77.0^\circ$. Both trajectories move clockwise along the rim of the chart as the frequency rises, the inductor from near the short circuit toward the open circuit and the capacitor from near the open circuit toward the short circuit.
+
+For a small discontinuity that is embedded in a line terminated by $Z_0$, as in Chapters 3, 6, and 7, the magnitude $|S_{11}|$ rises with frequency, and the roll-off $1/(2\pi f C)$ does not appear in $S_{11}$ itself. A shunt capacitance gives the input impedance $Z_{in} = Z_0/(1 + jx)$, whose magnitude falls with frequency, and that fall appears only after the conversion from $S_{11}$ to impedance. The admittance $Y_{in} = 1/Z_{in} = (1 + jx)/Z_0$ shows the capacitance directly, because its imaginary part $\omega C$ is a straight line that rises with frequency. A series inductance gives $Z_{in} - Z_0 = j\omega L$, which is also a straight line. The slopes of those lines are the values of $C$ and $L$.
+
+#### Resolving an Overlapping L-C Via Cluster
+
+Assume the via of Chapter 6 with $L = 1.33$ nH in series and $C = 0.37$ pF to ground, seen from the line with a $Z_0$ load behind it. The input impedance is:
 
 $$Z_{in} = j\omega L + \frac{Z_0}{1 + jx}, \qquad x = \omega C Z_0$$
 
@@ -230,8 +249,16 @@ At low frequency the expansion of the second term, $Z_0(1 - jx - x^2 + \cdots)$,
 
 $$Z_{in} - Z_0 \approx j\omega\left(L - Z_0^2 C\right) - Z_0 x^2, \qquad S_{11} \approx \frac{j\omega\,(L - Z_0^2 C)}{2Z_0} = j\omega\,(\tau_L - \tau_C)$$
 
-The first-order term is the net quantity $L - Z_0^2 C = 0.405$ nH, which is the same net area $\tau_L - \tau_C$ that Chapter 7 measures from the TDR display, so the two instruments agree at low frequency and carry the same limit there. The second-order term is real, equals $-Z_0 x^2$, and depends on the capacitance alone. At 1 GHz the exact impedance is $Z_{in} = 49.33 + j2.62$ Ω. The real part gives $x^2 = Z_0/\operatorname{Re}(Z_{in}) - 1 = 0.0135$, so $x = 0.116$ and $C = x/(\omega Z_0) = 0.370$ pF. The imaginary part then gives $\omega L = \operatorname{Im}(Z_{in}) + Z_0 x/(1 + x^2) = 2.62 + 5.74 = 8.36$ Ω, so $L = 1.33$ nH. One complex number at one frequency therefore determines both elements, where the time domain with an overlapping pair determines only their difference. The real part differs from $Z_0$ by only 0.67 Ω at 1 GHz, and the difference grows as $x^2$ (it is 12.6 Ω at 5 GHz), so the accuracy of the calibration of Chapter 8 and the use of many frequency points determine the quality of the result.
+The first-order term is the net quantity $L - Z_0^2 C = 0.405$ nH, which is the same net area $\tau_L - \tau_C$ that Chapter 7 measures from the TDR display, so the two instruments agree at low frequency and carry the same limit there. The second-order term is real, equals $-Z_0 x^2$, and depends on the capacitance alone.
 
-**The limits of the extracted values come from the assumed model.** The extraction assumes a model of the structure, here an inductance followed by a capacitance, and it returns the values of that model. Reversing the order of the two elements changes the phase of $S_{11}$ and leaves the magnitude unchanged (at 1 GHz the angle is $102.8^\circ$ for the series inductance first and $61.0^\circ$ for the shunt capacitance first, and the magnitude is 0.0272 for both), because reversing the order is looking into the network from the other port, and a lossless network has $|S_{22}| = |S_{11}|$. The measurement identifies the net frequency signature of the cluster and permits a lumped model to be fitted to it. It does not locate the individual elements along the line more finely than the time resolution set by its own bandwidth, which is $d > v_p\,(0.45/f_{max})/2 = 1.6$ mm for a 20 GHz sweep on FR4 (the same limit as in Chapter 7), and two elements that are closer than this appear as one cluster. The frequency domain removes the ambiguity between the signs of the reactances and supplies the data for a fit of both elements, and the choice of model must come from knowledge of the physical structure.
+At 1 GHz the full input impedance is $Z_{in} = 49.33 + j2.62$ Ω. The real part gives $x^2 = Z_0/\operatorname{Re}(Z_{in}) - 1 = 0.0135$, so $x = 0.116$ and $C = x/(\omega Z_0) = 0.370$ pF. The imaginary part then gives $\omega L = \operatorname{Im}(Z_{in}) + Z_0 x/(1 + x^2) = 2.62 + 5.74 = 8.36$ Ω, so $L = 1.33$ nH. One complex number at one frequency therefore determines both elements, where the time domain with an overlapping pair determines only their difference. The real part differs from $Z_0$ by only 0.67 Ω at 1 GHz, and the difference grows as $x^2$ (it is 12.6 Ω at 5 GHz), so the accuracy of the calibration of Chapter 8 and the use of many frequency points determine the quality of the result.
+
+#### Model Dependence and Spatial Resolution Limits
+
+The extraction assumes a model of the structure, here an inductance followed by a capacitance, and it returns the values of that model. Reversing the order of the two elements changes the phase of $S_{11}$ and leaves the magnitude unchanged (at 1 GHz the angle is $102.8^\circ$ for the series inductance first and $61.0^\circ$ for the shunt capacitance first, and the magnitude is 0.0272 for both), because reversing the order is looking into the network from the other port, and a lossless network has $|S_{22}| = |S_{11}|$.
+
+The measurement identifies the net frequency signature of the cluster and permits a lumped model to be fitted to it. It does not locate the individual elements along the line more finely than the time resolution set by its own bandwidth, which is $d > v_p\,(0.45/f_{max})/2 = 1.6$ mm for a 20 GHz sweep on FR4 (the same limit as in Chapter 7), and two elements that are closer than that limit appear as one cluster. The frequency domain removes the ambiguity between the signs of the reactances and supplies the data for a fit of both elements, and the choice of model must come from knowledge of the physical structure.
 
 The channel that this chapter and the previous three chapters characterize is a frequency-dependent filter, and its effect on the timing of a digital signal is a separate question. [Chapter 10](10_Jitter_Decomposition_and_Measurement.md) begins Part 3 with that question and decomposes the timing error of a received signal into its sources.
+
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>

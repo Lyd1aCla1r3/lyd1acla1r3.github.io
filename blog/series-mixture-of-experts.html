@@ -200,18 +200,18 @@
                       <a href="mixture-of-experts-chapter_06.html">
                           <article class="blog-item series-item">
                               <h2>Part 6: Capacity, Token Dropping, and the Switch Transformer</h2>
-                              <p>While the auxiliary loss stabilizes the mathematical probability of routing, physical hardware demands static tensor dimensions that cannot dynamically resize to accommodate unbalanced loads. Imposing a hard capacity limit on each expert resolves this physical constraint but introduces token dropping, where excess routing assignments are discarded and tokens pass through the residual stream unmodified, motivating architectural shifts toward Top-1 routing and block-sparse computation.</p>
+                              <p>The auxiliary loss stabilizes the mathematical probability of routing, yet physical hardware demands static tensor dimensions that cannot dynamically resize to accommodate unbalanced loads. Imposing a hard capacity limit on each expert resolves this physical constraint but introduces token dropping, where excess routing assignments are discarded and tokens pass through the residual stream unmodified, motivating architectural shifts toward Top-1 routing and block-sparse computation.</p>
                           </article>
                       </a>
                       <a href="mixture-of-experts-chapter_07.html">
                           <article class="blog-item series-item">
                               <h2>Part 7: Fine-Grained Experts and Shared Expert Isolation</h2>
-                              <p>The elimination of static hardware capacity constraints enables a radical restructuring of the expert layer into a highly granular federation of specialized networks. Isolating a subset of these networks as universal shared experts guarantees the application of foundational linguistic patterns, allowing the remaining routed experts to achieve unprecedented expressive power through combinatorial activation without increasing the computational budget per token.</p>
+                              <p>The elimination of static hardware capacity constraints enables a radical restructuring of the expert layer into a fine-grained federation of specialized networks. Isolating a subset of these networks as universal shared experts guarantees the application of foundational linguistic patterns, allowing the remaining routed experts to achieve combinatorial expressive power without increasing the computational budget per token.</p>
                           </article>
                       </a>
                       <a href="mixture-of-experts-chapter_08.html">
                           <article class="blog-item series-item">
-                              <h2>Part 8: The Frontier</h2>
+                              <h2>Part 8: The Frontier: Auxiliary-Loss-Free Routing</h2>
                               <p>The traditional auxiliary loss forces a direct trade-off between routing quality and load balance, degrading language modeling performance as expert counts increase. DeepSeek-V3 eliminates this conflict by introducing a dynamic bias mechanism that operates entirely outside of gradient computation, achieving hardware-balanced routing without distorting the mathematical integrity of the learned expert affinities.</p>
                           </article>
                       </a>

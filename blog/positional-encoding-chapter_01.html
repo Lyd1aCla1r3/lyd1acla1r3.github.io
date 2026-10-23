@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -124,7 +165,7 @@ X = \begin{bmatrix} \phantom{-}0.1 & -0.4 & \phantom{-}0.2 \\ \phantom{-}0.5 & \
 $$</p>
 <p>Row 0 is the embedding vector for <code>The</code>, row 1 is <code>quick</code>, row 2 is <code>brown</code>, and row 3 is <code>fox</code>. Each row was extracted from the embedding matrix $W_E$ by a one-hot lookup that depends only on the token&#39;s vocabulary index, not on its position in the sequence. This chapter formalizes a consequence of that independence: the embedding tensor carries no information about word order.</p>
 <h2>Permutation Matrices</h2>
-<p>A <strong>permutation matrix</strong> $P \in \mathbb{R}^{T \times T}$ is a square matrix in which every row and every column contains exactly one entry equal to 1, with all other entries equal to 0. Multiplying $P$ by a matrix $X$ on the left rearranges the rows of $X$ according to the permutation encoded in $P$, without altering the row vectors themselves.</p>
+<p>A <strong>permutation matrix</strong> $P \in \mathbb{R}^{T \times T}$ is a square matrix in which every row and every column contains a single entry equal to 1, with all other entries equal to 0. Multiplying $P$ by a matrix $X$ on the left rearranges the rows of $X$ according to the permutation encoded in $P$, without altering the row vectors themselves.</p>
 <p>A $2 \times 2$ permutation matrix that swaps two rows:</p>
 <p>$$
 P_{swap} = \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix}
@@ -133,28 +174,28 @@ $$</p>
 <p>$$
 I_4 = \begin{bmatrix} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \end{bmatrix}
 $$</p>
-<p>The operation $PX$ does not modify the embedding vectors. It rearranges which vector appears at which row index. If $P$ encodes a reversal, then $PX$ places the last row of $X$ first, the second-to-last row second, and so on. The vectors themselves (the three-dimensional embedding coordinates) are unchanged.</p>
+<p>The operation $PX$ does not modify the embedding vectors. It rearranges which vector appears at which row index. A reversal matrix $P$ causes the product $PX$ to place the last row of $X$ first, the second-to-last row second, and so on. The vectors themselves (the three-dimensional embedding coordinates) are unchanged.</p>
 <p>$$
 \begin{bmatrix} 0 & 0 & 0 & 1 \\ 0 & 0 & 1 & 0 \\ 0 & 1 & 0 & 0 \\ 1 & 0 & 0 & 0 \end{bmatrix} \begin{bmatrix} \text{row } 0 \\ \text{row } 1 \\ \text{row } 2 \\ \text{row } 3 \end{bmatrix} = \begin{bmatrix} \text{row } 3 \\ \text{row } 2 \\ \text{row } 1 \\ \text{row } 0 \end{bmatrix}
 $$</p>
 <h2>The Pairwise Dot-Product Similarity Matrix</h2>
 <p>The dot product between two embedding vectors measures their geometric similarity: the extent to which the two vectors point in the same direction in $\mathbb{R}^{d_{model}}$. The <strong>pairwise dot-product similarity matrix</strong> $S = X X^\top \in \mathbb{R}^{T \times T}$ contains the dot product between every pair of rows in $X$. </p>
-<p>In a Transformer architecture, the core mechanism for processing a sequence is self-attention, which computes relevance scores via dot products between token representations. The matrix $S$ represents the raw geometric relationship between every token in the sequence before any learned projections are applied. Computing this matrix isolates the baseline semantic relationships within the embedding tensor. If this matrix remains fundamentally unchanged when the input sequence is reordered, it proves that the self-attention mechanism cannot distinguish word order without external positional injection.</p>
+<p>In a Transformer architecture, the core mechanism for processing a sequence is self-attention, which computes relevance scores via dot products between token representations. The matrix $S$ represents the raw geometric relationship between every token in the sequence before any learned projections are applied. Computing this matrix isolates the baseline semantic relationships within the embedding tensor. Invariance of this matrix under input sequence reordering proves that the self-attention mechanism cannot distinguish word order without external positional injection.</p>
 <p>The notation $\in \mathbb{R}^{T \times T}$ is read as &quot;is an element of the set of all $T \times T$ matrices of real numbers&quot;. The symbol $\in$ denotes set membership, and $\mathbb{R}$ denotes the set of real numbers. The matrix $S$ is generated by multiplying the $T \times d_{model}$ matrix $X$ by its $d_{model} \times T$ transpose $X^\top$. For the toy sequence ($T= 4$ and $d_{model}= 3$), this operation takes the form:</p>
 <p>$$
 S = \begin{bmatrix} X_{00} & X_{01} & X_{02} \\ X_{10} & X_{11} & X_{12} \\ X_{20} & X_{21} & X_{22} \\ X_{30} & X_{31} & X_{32} \end{bmatrix} \begin{bmatrix} X_{00} & X_{10} & X_{20} & X_{30} \\ X_{01} & X_{11} & X_{21} & X_{31} \\ X_{02} & X_{12} & X_{22} & X_{32} \end{bmatrix}
 $$</p>
-<p>To isolate a single entry $S_{ij}$ in the resulting matrix, row $i$ of the first matrix ($X$) is multiplied by column $j$ of the second matrix ($X^\top$). Because the columns of $X^\top$ are identical to the rows of $X$, this operation is equivalent to the dot product of row $i$ and row $j$. </p>
-<p>By standard mathematical convention, all standalone vectors are defined as column vectors (dimensions $d_{model} \times 1$). Because the embedding matrix $X$ has dimensions $T \times d_{model}$, its individual rows are $1 \times d_{model}$ row vectors. Therefore, if the individual token embeddings are the column vectors $\mathbf{x}_0, \mathbf{x}_1, \mathbf{x}_2, \mathbf{x}_3$, then row $i$ of the matrix $X$ is written as the transposed vector $\mathbf{x}_i^\top$. </p>
-<p>This convention prevents dimensional mismatches. To compute a scalar dot product via matrix multiplication, a $1 \times d_{model}$ row vector must be multiplied by a $d_{model} \times 1$ column vector. If $\mathbf{x}_i$ and $\mathbf{x}_j$ were defined as row vectors, their dot product would be written as $\mathbf{x}_i \mathbf{x}_j^\top$. Because they are defined as column vectors, the entry $S_{ij}$ is expressed as the dot product $\mathbf{x}_i^\top \mathbf{x}_j$:</p>
+<p>To isolate a single entry $S_{ij}$ in the resulting matrix, row $i$ of the first matrix ($X$) is multiplied by column $j$ of the second matrix ($X^\top$). The columns of $X^\top$ are identical to the rows of $X$, making this operation equivalent to the dot product of row $i$ and row $j$. </p>
+<p>By standard mathematical convention, all standalone vectors are defined as column vectors (dimensions $d_{model} \times 1$). The embedding matrix $X$ has dimensions $T \times d_{model}$, so its individual rows are $1 \times d_{model}$ row vectors. Defining the individual token embeddings as the column vectors $\mathbf{x}_0, \mathbf{x}_1, \mathbf{x}_2, \mathbf{x}_3$ means row $i$ of the matrix $X$ is written as the transposed vector $\mathbf{x}_i^\top$. </p>
+<p>This convention prevents dimensional mismatches. To compute a scalar dot product via matrix multiplication, a $1 \times d_{model}$ row vector must be multiplied by a $d_{model} \times 1$ column vector. Defining $\mathbf{x}_i$ and $\mathbf{x}_j$ as row vectors would require writing their dot product as $\mathbf{x}_i \mathbf{x}_j^\top$. Defining them as column vectors expresses the entry $S_{ij}$ as the dot product $\mathbf{x}_i^\top \mathbf{x}_j$:</p>
 <p>$$
 S_{ij} = \mathbf{x}_i^\top \mathbf{x}_j = \begin{bmatrix} X_{i0} & X_{i1} & X_{i2} \end{bmatrix} \begin{bmatrix} X_{j0} \\ X_{j1} \\ X_{j2} \end{bmatrix}
 $$</p>
-<p>The dot product is executed by multiplying the corresponding elements of the two vectors and summing the results across all dimensions. This mathematical operation produces the summation formula:</p>
+<p>The dot product is executed by multiplying the corresponding elements of the two vectors and summing the results across all dimensions. This inner-product operation produces the summation formula:</p>
 <p>$$
 S_{ij} = \sum_{k=0}^{d_{model}-1} X_{ik} \cdot X_{jk}
 $$</p>
-<p>The resulting matrix $S$ has 16 total positions ($4 \times 4$). However, the dot product is commutative ($\mathbf{x}_i^\top \mathbf{x}_j = \mathbf{x}_j^\top \mathbf{x}_i$), which guarantees that $S_{ij} = S_{ji}$. The matrix is symmetric across its main diagonal. It contains 4 diagonal entries (representing self-similarity) and 12 off-diagonal entries that form identical pairs across the diagonal. Consequently, there are only 10 unique elements (4 diagonal entries plus 6 unique off-diagonal pairs) that require computation:</p>
+<p>The resulting matrix $S$ has 16 total positions ($4 \times 4$). Commutativity of the dot product ($\mathbf{x}_i^\top \mathbf{x}_j = \mathbf{x}_j^\top \mathbf{x}_i$) guarantees that $S_{ij} = S_{ji}$, making the matrix symmetric across its main diagonal. Four diagonal entries represent self-similarity, and 12 off-diagonal entries form identical pairs across the diagonal. Only 10 unique elements (4 diagonal entries plus 6 unique off-diagonal pairs) require computation:</p>
 <p>$$
 S = \begin{bmatrix} \mathbf{x}_0^\top \mathbf{x}_0 & \mathbf{x}_0^\top \mathbf{x}_1 & \mathbf{x}_0^\top \mathbf{x}_2 & \mathbf{x}_0^\top \mathbf{x}_3 \\ \mathbf{x}_1^\top \mathbf{x}_0 & \mathbf{x}_1^\top \mathbf{x}_1 & \mathbf{x}_1^\top \mathbf{x}_2 & \mathbf{x}_1^\top \mathbf{x}_3 \\ \mathbf{x}_2^\top \mathbf{x}_0 & \mathbf{x}_2^\top \mathbf{x}_1 & \mathbf{x}_2^\top \mathbf{x}_2 & \mathbf{x}_2^\top \mathbf{x}_3 \\ \mathbf{x}_3^\top \mathbf{x}_0 & \mathbf{x}_3^\top \mathbf{x}_1 & \mathbf{x}_3^\top \mathbf{x}_2 & \mathbf{x}_3^\top \mathbf{x}_3 \end{bmatrix}
 $$</p>
@@ -195,7 +236,7 @@ $$</p>
 <p>$$
 S = X X^\top = \begin{bmatrix} \phantom{-}0.21 & -0.15 & -0.31 & \phantom{-}0.12 \\ -0.15 & \phantom{-}0.90 & -0.38 & \phantom{-}0.00 \\ -0.31 & -0.38 & \phantom{-}1.06 & -0.20 \\ \phantom{-}0.12 & \phantom{-}0.00 & -0.20 & \phantom{-}0.09 \end{bmatrix}
 $$</p>
-<p>The matrix is symmetric ($S_{ij} = S_{ji}$) because the dot product is commutative. Each entry is a scalar that quantifies the geometric relationship between two embedding vectors. For instance, $S_{12} = -0.38$ indicates that the embeddings for <code>quick</code> and <code>brown</code> point in roughly opposite directions, while $S_{03} = 0.12$ indicates a mild positive alignment between <code>The</code> and <code>fox</code>.</p>
+<p>The matrix is symmetric ($S_{ij} = S_{ji}$) because the dot product is commutative. Each entry is a scalar that quantifies the geometric relationship between two embedding vectors. The entry $S_{12} = -0.38$ indicates that the embeddings for <code>quick</code> and <code>brown</code> point in roughly opposite directions, whereas $S_{03} = 0.12$ indicates a mild positive alignment between <code>The</code> and <code>fox</code>.</p>
 <h2>The Reversal Permutation</h2>
 <p>Consider the reversed sequence <code>fox</code> <code>brown</code> <code>quick</code> <code>The</code>. The permutation matrix that maps the original ordering to this reversal is:</p>
 <p>$$
@@ -203,10 +244,10 @@ P = \begin{bmatrix} 0 & 0 & 0 & 1 \\ 0 & 0 & 1 & 0 \\ 0 & 1 & 0 & 0 \\ 1 & 0 & 0
 $$</p>
 <p>Each row of $P$ contains a single 1 that specifies which row of $X$ is pulled into that position:</p>
 <ul>
-<li>$P_{03} = 1$: row 0 of $PX$ receives row 3 of $X$ (the embedding for <code>fox</code>)</li>
-<li>$P_{12} = 1$: row 1 of $PX$ receives row 2 of $X$ (the embedding for <code>brown</code>)</li>
-<li>$P_{21} = 1$: row 2 of $PX$ receives row 1 of $X$ (the embedding for <code>quick</code>)</li>
-<li>$P_{30} = 1$: row 3 of $PX$ receives row 0 of $X$ (the embedding for <code>The</code>)</li>
+<li><strong>Row 0 ($P_{03} = 1$):</strong> Places row 3 of $X$ (the embedding for <code>fox</code>) into the first sequence position.</li>
+<li><strong>Row 1 ($P_{12} = 1$):</strong> Places row 2 of $X$ (the embedding for <code>brown</code>) into the second sequence position.</li>
+<li><strong>Row 2 ($P_{21} = 1$):</strong> Places row 1 of $X$ (the embedding for <code>quick</code>) into the third sequence position.</li>
+<li><strong>Row 3 ($P_{30} = 1$):</strong> Places row 0 of $X$ (the embedding for <code>The</code>) into the fourth sequence position.</li>
 </ul>
 <p>The permuted embedding tensor:</p>
 <p>$$
@@ -222,8 +263,8 @@ $$</p>
 <p>$$
 S' = (PX)(PX)^\top = (PX)(X^\top P^\top) = P (X X^\top) P^\top = P S P^\top
 $$</p>
-<p>This algebraic identity ($S' = P S P^\top$) holds for any permutation matrix $P$ and any embedding tensor $X$. In linear algebra, the operation $P S P^{-1}$ is known as matrix conjugation. For any permutation matrix, its inverse is equal to its transpose ($P^{-1} = P^\top$). This means that if $P$ applies a permutation, $P^\top$ precisely reverses it.</p>
-<p>Conjugating a matrix by a permutation matrix produces a highly specific structural effect. Multiplying by $P$ on the left rearranges the rows of $S$, and multiplying by $P^\top$ on the right rearranges the columns of $S$ in the exact same order. </p>
+<p>This algebraic identity ($S' = P S P^\top$) holds for any permutation matrix $P$ and any embedding tensor $X$. In linear algebra, the operation $P S P^{-1}$ is known as matrix conjugation. For any permutation matrix, its inverse is equal to its transpose ($P^{-1} = P^\top$). That orthogonality guarantees that whenever $P$ applies a permutation, $P^\top$ reverses it completely.</p>
+<p>Conjugating a matrix by a permutation matrix produces a specific structural effect. Multiplying by $P$ on the left rearranges the rows of $S$, and multiplying by $P^\top$ on the right rearranges the columns of $S$ in the identical order. </p>
 <p>To visualize this dual rearrangement, consider a $2 \times 2$ similarity matrix $S$ and the $2 \times 2$ swap permutation $P$:</p>
 <p>$$
 S = \begin{bmatrix} A & B \\ C & D \end{bmatrix}, \qquad P = \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix} = P^\top
@@ -232,12 +273,12 @@ $$</p>
 <p>$$
 P S = \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix} \begin{bmatrix} A & B \\ C & D \end{bmatrix} = \begin{bmatrix} C & D \\ A & B \end{bmatrix}
 $$</p>
-<p>Multiplying that result on the right by $P^\top$ applies the exact same swap to the columns:</p>
+<p>Multiplying that result on the right by $P^\top$ applies the identical swap to the columns:</p>
 <p>$$
 (P S) P^\top = \begin{bmatrix} C & D \\ A & B \end{bmatrix} \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix} = \begin{bmatrix} D & C \\ B & A \end{bmatrix}
 $$</p>
 <p>The pairwise similarity matrix of the permuted sequence is therefore not a newly computed set of relationships. It is the original matrix $S$ with its grid coordinates symmetrically shuffled. </p>
-<p>The significance of this property is that conjugation does not create, destroy, or modify a single similarity score. Every scalar value in the original matrix survives intact in the new matrix. Because a Transformer&#39;s self-attention mechanism relies entirely on these dot products to determine how tokens relate to one another, it calculates the exact same semantic relationships between words regardless of the input order. This mathematically proves that computing dot products between static embeddings is a permutation-invariant operation: it extracts semantic similarity but remains completely blind to sequence position.</p>
+<p>The significance of this property is that conjugation does not create, destroy, or modify a single similarity score. Every scalar value in the original matrix survives intact in the new matrix. A Transformer&#39;s self-attention mechanism relies entirely on these dot products to determine how tokens relate to one another, so it calculates the identical semantic relationships between words regardless of the input order. Matrix conjugation proves that computing dot products between static embeddings is a permutation-invariant operation: it extracts semantic similarity but remains completely blind to sequence position.</p>
 <h3>Numerical Verification</h3>
 <p>Computing $S' = (PX)(PX)^\top$ directly from the permuted tensor:</p>
 <p>$$
@@ -247,67 +288,67 @@ $$</p>
 <table>
 <thead>
 <tr>
-<th>Token Pair</th>
-<th>Position in $S$</th>
-<th>Value in $S$</th>
-<th>Position in $S'$</th>
-<th>Value in $S'$</th>
+<th align="left">Token Pair</th>
+<th align="left">Position in <code>S</code></th>
+<th align="left">Value in <code>S</code></th>
+<th align="left">Position in <code>S&#39;</code></th>
+<th align="left">Value in <code>S&#39;</code></th>
 </tr>
 </thead>
 <tbody><tr>
-<td>(<code>The</code>, <code>quick</code>)</td>
-<td>$S_{01}$</td>
-<td>$-0.15$</td>
-<td>$S'_{32}$</td>
-<td>$-0.15$</td>
+<td align="left">(<code>The</code>, <code>quick</code>)</td>
+<td align="left"><code>S[0, 1]</code></td>
+<td align="left"><code>-0.15</code></td>
+<td align="left"><code>S&#39;[3, 2]</code></td>
+<td align="left"><code>-0.15</code></td>
 </tr>
 <tr>
-<td>(<code>The</code>, <code>brown</code>)</td>
-<td>$S_{02}$</td>
-<td>$-0.31$</td>
-<td>$S'_{31}$</td>
-<td>$-0.31$</td>
+<td align="left">(<code>The</code>, <code>brown</code>)</td>
+<td align="left"><code>S[0, 2]</code></td>
+<td align="left"><code>-0.31</code></td>
+<td align="left"><code>S&#39;[3, 1]</code></td>
+<td align="left"><code>-0.31</code></td>
 </tr>
 <tr>
-<td>(<code>The</code>, <code>fox</code>)</td>
-<td>$S_{03}$</td>
-<td>$\phantom{-}0.12$</td>
-<td>$S'_{30}$</td>
-<td>$\phantom{-}0.12$</td>
+<td align="left">(<code>The</code>, <code>fox</code>)</td>
+<td align="left"><code>S[0, 3]</code></td>
+<td align="left"><code>+0.12</code></td>
+<td align="left"><code>S&#39;[3, 0]</code></td>
+<td align="left"><code>+0.12</code></td>
 </tr>
 <tr>
-<td>(<code>quick</code>, <code>brown</code>)</td>
-<td>$S_{12}$</td>
-<td>$-0.38$</td>
-<td>$S'_{21}$</td>
-<td>$-0.38$</td>
+<td align="left">(<code>quick</code>, <code>brown</code>)</td>
+<td align="left"><code>S[1, 2]</code></td>
+<td align="left"><code>-0.38</code></td>
+<td align="left"><code>S&#39;[2, 1]</code></td>
+<td align="left"><code>-0.38</code></td>
 </tr>
 <tr>
-<td>(<code>quick</code>, <code>fox</code>)</td>
-<td>$S_{13}$</td>
-<td>$\phantom{-}0.00$</td>
-<td>$S'_{20}$</td>
-<td>$\phantom{-}0.00$</td>
+<td align="left">(<code>quick</code>, <code>fox</code>)</td>
+<td align="left"><code>S[1, 3]</code></td>
+<td align="left"><code>0.00</code></td>
+<td align="left"><code>S&#39;[2, 0]</code></td>
+<td align="left"><code>0.00</code></td>
 </tr>
 <tr>
-<td>(<code>brown</code>, <code>fox</code>)</td>
-<td>$S_{23}$</td>
-<td>$-0.20$</td>
-<td>$S'_{10}$</td>
-<td>$-0.20$</td>
+<td align="left">(<code>brown</code>, <code>fox</code>)</td>
+<td align="left"><code>S[2, 3]</code></td>
+<td align="left"><code>-0.20</code></td>
+<td align="left"><code>S&#39;[1, 0]</code></td>
+<td align="left"><code>-0.20</code></td>
 </tr>
 </tbody></table>
 <p>The relocation follows the permutation: <code>The</code> moved from row 0 to row 3, <code>quick</code> from row 1 to row 2, <code>brown</code> from row 2 to row 1, and <code>fox</code> from row 3 to row 0. The similarity between <code>The</code> and <code>quick</code>, originally at $S_{01}$ (rows 0 and 1), appears at $S'_{32}$ (rows 3 and 2) because those are the new positions of <code>The</code> and <code>quick</code>. The numerical value $-0.15$ is unchanged.</p>
 <h2>The Consequence</h2>
-<p>The computation of the raw similarity matrix $S = X X^\top$ serves as a diagnostic tool to expose a structural limitation in the embedding tensor itself. While a full self-attention mechanism applies learned query and key projections before computing dot products, those projections operate on the input embeddings. The raw similarity matrix demonstrates the geometric baseline that self-attention inherits.</p>
-<p>Because the embeddings are static (the vector for <code>brown</code> is identical regardless of where it appears in the sequence), the sequences <code>The</code> <code>quick</code> <code>brown</code> <code>fox</code> and <code>fox</code> <code>brown</code> <code>quick</code> <code>The</code> produce the exact same set of pairwise similarity scores. The algebraic identity $S' = P S P^\top$ guarantees this: reordering the sequence merely shuffles the coordinates of the scores without altering their values.</p>
+<p>The computation of the raw similarity matrix $S = X X^\top$ serves as a diagnostic tool to expose a structural limitation in the embedding tensor itself. A full self-attention mechanism applies learned query and key projections before computing dot products, yet those projections still operate on the static input embeddings. The raw similarity matrix demonstrates the geometric baseline that self-attention inherits.</p>
+<p>Static embeddings assign the identical vector to <code>brown</code> regardless of where it appears in the sequence, so <code>The</code> <code>quick</code> <code>brown</code> <code>fox</code> and <code>fox</code> <code>brown</code> <code>quick</code> <code>The</code> produce the same set of pairwise similarity scores. The algebraic identity $S' = P S P^\top$ guarantees this: reordering the sequence merely shuffles the coordinates of the scores without altering their values.</p>
 <p>This invariance is not an artifact of the toy model&#39;s small dimensions. It holds for any sequence length, any embedding dimension, and any set of embedding values. It is a structural property of the representation: the embedding tensor $X$ encodes which words are present and what their distributional signatures are, but it encodes absolutely zero information about sequence order.</p>
-<p>For a language model, this is a fundamental deficiency. The sentence <code>dog</code> <code>bites</code> <code>man</code> and the sentence <code>man</code> <code>bites</code> <code>dog</code> contain the same three tokens. Because their underlying embedding vectors are identical, their similarity matrices are permutations of each other. A self-attention mechanism processing these vectors cannot mathematically distinguish between the two sentences, rendering it incapable of processing sequential language.</p>
+<p>For a language model, this is a fundamental deficiency. The sentence <code>dog</code> <code>bites</code> <code>man</code> and the sentence <code>man</code> <code>bites</code> <code>dog</code> contain the same three tokens. Their underlying embedding vectors are identical, making their similarity matrices permutations of each other. A self-attention mechanism processing these vectors cannot mathematically distinguish between the two sentences, rendering it incapable of processing sequential language.</p>
 <h2>The Requirement</h2>
 <p>To resolve this deficiency, the embedding tensor must be augmented with information that explicitly depends on sequence position, not just token identity. </p>
-<p>Mathematically, the identity $(PM)(PM)^\top = P (M M^\top) P^\top$ is an immutable rule of linear algebra. If a permutation $P$ is applied to any arbitrary tensor $M$, its similarity matrix is always conjugated by $P$. The goal of positional encoding is to ensure that reordering the input sequence does <em>not</em> equate to simply applying $P$ to the final tensor.</p>
-<p>For raw static embeddings, the tensor for the reversed sequence is exactly $PX$. But if a position-dependent signal is injected, the vector for <code>brown</code> at position 2 is distinct from the vector for <code>brown</code> at position 1. Reordering the input words produces an entirely new set of vectors, not a rearrangement of the original set. Because the tensor for the reversed sequence is not merely $P X_{pos}$, its similarity matrix $S_{reversed}$ is no longer equal to $P S P^\top$. The conjugation relationship between the two sequences is broken, allowing the self-attention mechanism to compute unique relevance scores for different word orderings.</p>
-<p>The mechanism that injects this position-dependent information is the subject of the remaining chapters. Chapter 3 explicitly verifies this claim by injecting positional data into the toy tensor and proving that $S_{reversed} \neq P S P^\top$. First, however, the next chapter enumerates the mathematical constraints such a mechanism must satisfy and derives the sinusoidal formula that served as the historical solution.</p>
+<p>Mathematically, the identity $(PM)(PM)^\top = P (M M^\top) P^\top$ is an immutable rule of linear algebra. Applying a permutation $P$ to any arbitrary tensor $M$ always conjugates its similarity matrix by $P$. The goal of positional encoding is to ensure that reordering the input sequence does <em>not</em> equate to merely applying $P$ to the final tensor.</p>
+<p>For raw static embeddings, the tensor for the reversed sequence is $PX$. Injecting a position-dependent signal makes the vector for <code>brown</code> at position 2 distinct from the vector for <code>brown</code> at position 1. Reordering the input words produces an entirely new set of vectors, not a rearrangement of the original set. The enriched tensor for the reversed sequence is not merely $P X_{pos}$, so its similarity matrix $S_{pos}^{rev}$ is no longer equal to $P S_{pos} P^\top$. The conjugation relationship between the two sequences is broken, allowing the self-attention mechanism to compute unique relevance scores for different word orderings.</p>
+<p>The mechanism that injects this position-dependent information is the subject of the remaining chapters. Chapter 3 verifies this claim numerically by injecting positional data into the toy tensor and proving that $S_{pos}^{rev} \neq P S_{pos} P^\top$. The next chapter first enumerates the mathematical constraints such a mechanism must satisfy and derives the sinusoidal formula that served as the historical solution.</p>
 <p><em>Prefer to read this offline? <a href="../assets/docs/positional-encoding-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Positional Encoding Ebook here.</a></em></p>
 
 <div class="blog-pagination">

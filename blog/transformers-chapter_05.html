@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -118,11 +159,11 @@
     <li><a href="index.html">Blog</a></li><li><a href="series-transformers.html">Series: Transformers</a></li><li aria-current="page">Part 5: Causal Masking</li></ol></nav>
         <article class="blog-post series-transformers">
 <h1>Part 5: Causal Masking</h1>
-<!-- SUMMARY: Parallel training introduces a structural vulnerability by allowing past tokens computational access to future context. Causality is preserved by applying a lower-triangular mask of negative infinity, establishing a mathematical barrier that neutralizes future information when passed through the softmax function. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p><p>The scaled attention scores have now been successfully derived. The dot product between the Query and Key matrices was calculated to measure how intensely each token seeks information from every other token, and the result was scaled by $\sqrt{d_k}$ to prevent gradient saturation. </p>
-<p>Before converting these scores into a final probability distribution, a critical structural flaw in how the matrix currently operates during training must be addressed. </p>
+<!-- SUMMARY: Parallel training introduces a structural vulnerability by allowing past tokens computational access to future context. Causality is preserved by applying a lower-triangular mask of negative infinity, establishing a mathematical barrier that neutralizes future information when passed through the softmax function. --><p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p><p>The scaled attention scores have now been derived. The dot product between the Query and Key matrices was calculated to measure how strongly each token seeks information from every other token, and the result was scaled by $\sqrt{d_k}$ to prevent gradient saturation. </p>
+<p>Before converting these scores into a final probability distribution, a structural constraint governing parallel training must be enforced.</p>
 <h2>The Problem of Parallel Training</h2>
-<p>During Transformer training, tokens are not fed in sequentially. The process optimizes for speed by passing the entire sequence through the network simultaneously. This technique is known as teacher forcing. The matrix operations compute the attention scores for <code>&lt;BOS&gt;</code>, <code>i</code>, <code>woke</code>, and <code>up</code> at the exact same time.</p>
-<p>Examining the scaled attention scores from the previous calculation provides further clarity. The rows represent the Queries looking for information, and the columns represent the Keys offering information.</p>
+<p>During Transformer training, tokens are not processed sequentially one step at a time. Parallel training passes the entire target sequence through the network simultaneously using a technique known as teacher forcing. Matrix multiplications compute the attention scores for <code>&lt;BOS&gt;</code>, <code>i</code>, <code>woke</code>, and <code>up</code> concurrently in a single forward pass.</p>
+<p>Examining the scaled attention scores from the previous calculation illustrates this behavior. The rows represent the Queries seeking information, and the columns represent the Keys offering information:</p>
 <p>$$
 \text{Scaled Scores} = \begin{bmatrix}
 0.45 & 0.68 & 0.73 & 0.63 \\
@@ -131,11 +172,11 @@
 -0.18 & -0.33 & -0.39 & -0.39
 \end{bmatrix}
 $$</p>
-<p>The first row represents the <code>&lt;BOS&gt;</code> token acting as a Query. It generates attention scores against all available Keys. The second column of the first row holds a score of 0.68, representing the <code>&lt;BOS&gt;</code> token attending to the <code>i</code> token.</p>
-<p>This reveals a profound issue. If the model processes the <code>&lt;BOS&gt;</code> token to predict the next logical word in the sequence, it should only have access to information from the <code>&lt;BOS&gt;</code> token itself. In the current matrix, the <code>&lt;BOS&gt;</code> token has full visibility into the future tokens <code>i</code>, <code>woke</code>, and <code>up</code>. The model effectively views the answer key while taking the test. The network will perfectly learn to copy the next token rather than learning the underlying linguistic patterns.</p>
+<p>The first row represents the <code>&lt;BOS&gt;</code> token acting as a Query. It generates attention scores against all available Keys. The second column of the first row holds a score of <code>0.68</code>, representing the <code>&lt;BOS&gt;</code> token attending to the <code>i</code> token.</p>
+<p>That non-zero weight exposes a causality violation during parallel training. Predicting the token immediately following <code>&lt;BOS&gt;</code> permits the model to condition only on <code>&lt;BOS&gt;</code> itself. In the unmasked score matrix, the first row grants <code>&lt;BOS&gt;</code> direct visibility into the future tokens <code>i</code>, <code>woke</code>, and <code>up</code>. Allowing past positions to read future positions leaks the target labels into the forward pass, teaching the network to copy upcoming tokens rather than modeling causal structure.</p>
 <h2>The Causal Mask</h2>
-<p>The flow of information from future tokens into past tokens must be physically blocked. This is achieved by applying a lower-triangular mask to the attention scores. </p>
-<p>A mask is defined where any position representing a Query attending to a future Key is marked for obstruction.</p>
+<p>Preserving autoregressive causality requires blocking information flow from future tokens into past positions. Applying a lower-triangular causal mask to the scaled score matrix enforces this directional boundary.</p>
+<p>A mask is defined where any position representing a Query attending to a future Key is marked for obstruction:</p>
 <p>$$
 \text{Mask} = \begin{bmatrix}
 1 & 0 & 0 & 0 \\
@@ -144,7 +185,7 @@ $$</p>
 1 & 1 & 1 & 1
 \end{bmatrix}
 $$</p>
-<p>Where the mask holds a 1, the original scaled score is retained. Where the mask holds a 0, the score is overwritten with negative infinity ($-\infty$). Applying this operation yields the masked attention scores.</p>
+<p>Where the mask holds a <code>1</code>, the original scaled score is retained. Where the mask holds a <code>0</code>, the score is overwritten with negative infinity ($-\infty$). Applying this operation yields the masked attention scores:</p>
 <p>$$
 \text{Masked Scores} = \begin{bmatrix}
 0.45 & -\infty & -\infty & -\infty \\
@@ -153,12 +194,12 @@ $$</p>
 -0.18 & -0.33 & -0.39 & -0.39
 \end{bmatrix}
 $$</p>
-<p>Inspecting the second row reveals the Query for the token <code>i</code> can only attend to the Key for <code>&lt;BOS&gt;</code> and the Key for <code>i</code>. The scores for <code>woke</code> and <code>up</code> have been obliterated. Causality is preserved.</p>
+<p>Inspecting the second row confirms that the Query for the token <code>i</code> can attend only to the Key for <code>&lt;BOS&gt;</code> and the Key for <code>i</code>. The upper-triangular scores for <code>woke</code> and <code>up</code> are masked out, preserving temporal causality.</p>
 <h2>The Mathematical Role of Negative Infinity</h2>
-<p>The value $-\infty$ is used rather than zero due to the mathematical properties of the next operation in the architecture. The Softmax function will soon convert these scores into a valid probability distribution. The Softmax function exponentiates each value using $e^x$.</p>
-<p>As $x$ approaches $-\infty$, the value of $e^x$ converges exactly to 0. When the final attention weights are calculated in the next step, any connection blocked by the causal mask will receive a probability weight of precisely 0%. Future tokens will contribute nothing to the mathematical representation of past tokens.</p>
-<p>With the causal mask firmly in place, the masked scores can safely pass through the Softmax function to extract the final Value matrices.</p>
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p>The value $-\infty$ is used rather than zero due to the algebraic properties of the Softmax normalization step that follows. The Softmax function converts each row of scores into a probability distribution by exponentiating every entry via $e^x$.</p>
+<p>In the limit $x \to -\infty$, the exponential $e^x$ evaluates to $0$. Normalizing the masked rows through the Softmax function assigns a probability weight of $0.00$ to every upper-triangular entry, ensuring that future tokens contribute zero weight to the representation of past tokens.</p>
+<p>With the causal mask in place, the masked scores can pass through the Softmax function to weight the Value vectors.</p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="transformers-chapter_04.html" class="pagination-link prev">

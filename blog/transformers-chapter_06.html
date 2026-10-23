@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -118,10 +159,10 @@
     <li><a href="index.html">Blog</a></li><li><a href="series-transformers.html">Series: Transformers</a></li><li aria-current="page">Part 6: From Scores to Synthesis: Softmax and The Value Matrix</li></ol></nav>
         <article class="blog-post series-transformers">
 <h1>Part 6: From Scores to Synthesis: Softmax and The Value Matrix</h1>
-<!-- SUMMARY: The single-head attention mechanism is finalized by leveraging the softmax function to convert unbounded routing scores into a strict probability distribution. A weighted sum against the value matrix is then computed to dynamically synthesize a contextualized geometric representation for each token. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p><p>The previously calculated masked attention scores provide a strict mathematical barrier that prevents information from flowing backward in time through the application of a lower triangular matrix of negative infinity values. The resulting matrix represents the raw geometric alignment between Queries and Keys across all valid time steps.</p>
+<!-- SUMMARY: The single-head attention mechanism applies the row-wise Softmax function to convert masked routing scores into a normalized probability distribution. Multiplying these attention weights by the Value projection matrix synthesizes a context-aware geometric representation for each token. --><p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p><p>The previously calculated masked attention scores provide a strict mathematical barrier that prevents information from flowing backward in time through the application of a lower-triangular matrix of negative infinity values. The resulting matrix represents the raw geometric alignment between Queries and Keys across all valid time steps.</p>
 <p>These scalar values are mathematically unbounded. Converting them into a stable format capable of driving the core synthesis step of the attention mechanism requires the Softmax function and the introduction of a third fundamental learned matrix: the Value matrix.</p>
 <h2>The Softmax Function: Converting Alignment to Probability</h2>
-<p>The attention scores function as a set of weights to perform a weighted sum. Using the raw unbounded scores directly would cause the magnitude of vectors to compound uncontrollably as information flows deeper into the network. Maintaining mathematical stability requires weights to be strictly positive and to sum exactly to 1 across each row. This is achieved by applying the Softmax function.</p>
+<p>The attention scores function as routing weights for a weighted sum across token vectors. Using raw unbounded scores directly would cause vector magnitudes to compound uncontrollably as signals propagate through deeper layers. Maintaining numerical stability requires weights that are non-negative and sum to $1.0$ across each row. Applying the row-wise Softmax function enforces both constraints.</p>
 <p>The Softmax function operates by taking the exponential of each input value and dividing it by the sum of all exponentials in that row. Exponentiation maps any real number to a positive value. Dividing by the total sum normalizes these positive values into a strict probability distribution.</p>
 <p>The masked scaled scores from the preceding step are:</p>
 <p>$$
@@ -141,11 +182,11 @@ A = \text{Softmax}(\text{Scores}_{masked}) = \begin{bmatrix}
  0.29 &  0.25 &  0.23 &  0.23
 \end{bmatrix}
 $$</p>
-<p>The causal mask functions such that the exponential of negative infinity approaches exactly zero. Masked positions are flawlessly converted into zero-valued weights. The model is now mathematically incapable of extracting information from future tokens. Every row sums precisely to 1, providing a clean probability distribution over all preceding context.</p>
+<p>Under the causal mask, exponentiating $-\infty$ yields zero for every upper-triangular position, converting masked future connections into zero-valued weights. The network cannot extract information from future tokens, and each row sums to $1.00$ before two-decimal rounding (in Row 3, $[0.3654, 0.3258, 0.3088, 0.0000]$ rounds to $[0.37, 0.33, 0.31, 0.00]$), forming a valid probability distribution over all preceding context.</p>
 <h2>The Value Matrix: The Content Payload</h2>
-<p>Computations thus far have focused entirely on routing. The Query and Key matrices exist solely to dictate where information should flow. They measure semantic relevance. They do not represent the information payload itself.</p>
-<p>If the attention weights are the map, the Value matrix is the cargo. The semantic features required to determine relevance are fundamentally different from the semantic features required to predict the next word. The original positional embeddings $X$ are therefore projected into a third distinct subspace using the Value weight matrix $W_V$.</p>
-<p>The embedding dimension $d_{model}$ is 6. This is projected down into a head dimension $d_v$ of 2. The learned weights $W_V$ are defined as:</p>
+<p>Computations thus far have focused on routing. The Query and Key matrices determine where information flows by scoring pairwise relevance, whereas the Value matrix carries the content payload.</p>
+<p>Scoring pairwise alignment and updating token representations require distinct semantic features, so the architecture projects the positionally encoded embeddings $X_{pos}$ into a third subspace using the learned Value weight matrix $W_V$.</p>
+<p>The Value projection maps the model dimension $d_{model} = 6$ down to the head value dimension $d_v = 2$ via the $6 \times 2$ weight matrix $W_V$:</p>
 <p>$$
 W_V = \begin{bmatrix}
  0.3 & -0.1 \\
@@ -156,9 +197,9 @@ W_V = \begin{bmatrix}
  0.5 & -0.4
 \end{bmatrix}
 $$</p>
-<p>The Value matrix $V$ is calculated by taking the dot product of the positional embeddings $X$ and $W_V$:</p>
+<p>Multiplying the positionally encoded input matrix $X_{pos}$ by $W_V$ produces the $4 \times 2$ Value matrix $V$:</p>
 <p>$$
-V = X \cdot W_V = \begin{bmatrix}
+V = X_{pos} \cdot W_V = \begin{bmatrix}
  0.83 &  0.69 \\
  1.18 &  0.70 \\
  0.04 & -0.20 \\
@@ -167,14 +208,14 @@ V = X \cdot W_V = \begin{bmatrix}
 $$</p>
 <p>The matrix $V$ contains the actual conceptual representations that will be broadcast across the sequence. Each row holds the information payload for a single token in the <code>&lt;BOS&gt;</code> <code>i</code> <code>woke</code> <code>up</code> sequence.</p>
 <h2>The Weighted Sum: Synthesizing Context</h2>
-<p>The culmination of the single head attention mechanism relies on a matrix of routing instructions $A$ and a matrix of information payloads $V$. New contextualized representations are synthesized by computing the dot product of $A$ and $V$.</p>
-<p>This operation physically executes a weighted sum. Every token constructs a new representation of itself by blending together the Value vectors of all preceding tokens according to the probabilities in the attention matrix.</p>
+<p>The culmination of the single-head attention mechanism relies on a matrix of routing instructions $A$ and a matrix of information payloads $V$. New contextualized representations are synthesized by computing the matrix product of $A$ and $V$.</p>
+<p>This operation executes a weighted sum across rows. Every token constructs an updated representation by blending the Value vectors of all preceding tokens according to the probabilities in the attention matrix.</p>
 <pre><code class="language-mermaid">graph TD
     A(&quot;Attention Weights Matrix A&quot;) --&gt; C(&quot;Weighted Sum Matrix Multiplication&quot;)
     B(&quot;Value Matrix V&quot;) --&gt; C
     C --&gt; D(&quot;Contextualized Output H&quot;)
 </code></pre>
-<p>The final head output $H$ is computed as:</p>
+<p>Multiplying the unrounded Softmax attention weights $A$ by $V$ and rounding to two decimal places yields the contextualized head output $H$:</p>
 <p>$$
 H = A \cdot V = \begin{bmatrix}
  1.00 &  0.00 &  0.00 &  0.00 \\
@@ -193,9 +234,9 @@ H = A \cdot V = \begin{bmatrix}
  0.46 &  0.32
 \end{bmatrix}
 $$</p>
-<p>The final row corresponding to the token <code>up</code> has a new representation of <code>[0.46, 0.32]</code>. This vector is no longer a static dictionary definition. It is a dynamic, context-aware representation explicitly shaped by the presence of <code>woke</code> and <code>i</code> occurring earlier in the sequence.</p>
+<p>The final row corresponding to the token <code>up</code> has a new representation of <code>[0.46, 0.32]</code>. This vector is no longer a static dictionary definition. It is a dynamic, context-aware representation shaped by the presence of <code>woke</code> and <code>i</code> occurring earlier in the sequence.</p>
 <p>The attention mechanism for a single head is complete. The model operates with three independent attention heads running in parallel. The architecture then reconciles these independent perspectives by projecting them back into the original embedding dimension.</p>
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="transformers-chapter_05.html" class="pagination-link prev">

@@ -24,17 +24,17 @@
 
 <!-- SUMMARY: Neural networks fundamentally operate on numerical tensors, establishing a strict requirement to translate raw text into structured integer sequences. Byte Pair Encoding satisfies this mathematical constraint by statistically discovering subword units, serving as the critical bridge to the initial embedding matrix. -->
 
-<p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/tokenization-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/tokenization-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p>
 
-The Transformer architecture relies entirely on continuous vector spaces and linear transformations to process information. Neural networks compute by calculating dot products and multiplying matrices. This strict mathematical reality dictates that raw text cannot be fed directly into the initial embedding matrix. A rigorous translation layer must exist to convert discrete character strings into vectors within an $n$-dimensional space before any neural computation can occur.
+The Transformer architecture relies entirely on continuous vector spaces and linear transformations to process information. Neural networks compute by calculating dot products and multiplying matrices. This strict mathematical reality dictates that raw text cannot be fed directly into the initial embedding matrix. A rigorous translation layer must exist to convert discrete character strings into vectors within a $d_{\text{model}}$-dimensional space before any neural computation can occur.
 
 ## The Numerical Constraint
 
 Deep learning models require structured mathematical inputs. The attention mechanisms and feed-forward layers detailed throughout the [Transformer series](series-transformers.html) execute pure linear algebra. These mathematical operations mandate numerical tensors, which are defined as multi-dimensional arrays of numbers. Tokenization satisfies this requirement by segmenting raw strings into discrete units called tokens. 
 
-Once isolated, each token is assigned a random integer ID. This ID functions solely as a lookup mechanism and possesses no mathematical meaning itself. The true semantic content of a token exists entirely within its corresponding vector in the embedding matrix $W_E$. When a token ID is passed into the architecture, it retrieves a dense vector spanning $n$ dimensions. Every dimension within this vector represents an identifying feature of the character string. The numerical values populating these dimensions are rigorously refined and updated throughout the training process to capture semantic relationships.
+Each isolated token receives a deterministic integer ID. This ID functions solely as an ordinal lookup index and possesses no inherent mathematical magnitude. The semantic content of a token resides entirely within its corresponding row vector in the embedding matrix $W_E$. Passing a token ID into the architecture retrieves a dense vector spanning $d_{\text{model}}$ dimensions. Every dimension within this vector represents a learned feature of the character string. The numerical weights populating these dimensions are refined and updated throughout the training process to capture semantic relationships.
 
-The quality of the initial string segmentation dictates the foundation upon which all subsequent layers build. If the tokenization strategy is flawed, the resulting geometric vectors will be inherently limited, regardless of how effectively the network trains.
+The quality of the initial string segmentation dictates the foundation upon which all subsequent layers build. A flawed tokenization strategy constrains the resulting geometric vectors, regardless of how effectively the network trains.
 
 ## The Tokenization Landscape
 
@@ -47,6 +47,6 @@ This series explores the mechanics of Byte Pair Encoding from the ground up. To 
 </div>
 
 
-This vocabulary provides the structural variation necessary to demonstrate how Byte Pair Encoding organically extracts shared stems and suffixes. The corpus groups three distinct root verbs alongside their present, past, and agent noun variations. The shared linguistic suffixes like "ing", "ed", and "er" guarantee that the algorithm will mathematically discover these recurring semantic structures through statistical frequency alone. The subsequent section examines the fundamental tension between character-level and word-level tokenization, mathematically proving why the subword compromise is necessary.
+This vocabulary provides the structural variation necessary to demonstrate how Byte Pair Encoding organically extracts shared stems and suffixes. The corpus groups nine inflected word forms across three verb families spanning present-participle, past-tense, past-participle, and agent-noun variations. Shared linguistic suffixes such as `ing`, `ed`, and `er` guarantee that the algorithm will mathematically discover these recurring morphological structures through statistical frequency alone. The subsequent chapter examines the fundamental tension between character-level and word-level tokenization, proving why the subword compromise is necessary.
 
-<p><em>Prefer to read this seamlessly offline? <a href="/assets/docs/tokenization-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/tokenization-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Tokenization Ebook here.</a></em></p>

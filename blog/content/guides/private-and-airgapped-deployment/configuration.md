@@ -2,163 +2,169 @@
 
 <!-- SUMMARY: A complete configuration walkthrough assembling LlamaIndex, LangGraph, MCP servers, LiteLLM, vLLM, SGLang, Qdrant, Docling, Arize Phoenix, and Unsloth into a self-contained AI system that operates entirely within a network perimeter with zero external connectivity. The architecture replaces every commercial API dependency from the enterprise pipeline with self-hosted alternatives, addresses offline model acquisition, and closes the fine-tuning loop entirely on-premises. -->
 
-Enterprise AI pipelines that route traffic through commercial APIs and cloud-hosted services assume reliable internet connectivity for model access, embedding APIs, and dependency downloads during deployment. Organizations operating in regulated environments, including government, defense, healthcare, and financial services, face a constraint that invalidates this assumption: no data leaves the network perimeter, and no external service receives inbound connections. Every component in the stack must run on-premises, every model must be acquired and transferred offline, and the system must operate indefinitely without internet access.
+Enterprise AI architectures such as the [Enterprise Agentic Pipeline](enterprise-agentic-pipeline-configuration.html) assume outbound internet connectivity for commercial frontier APIs, cloud embedding endpoints, and live package registries during deployment. Organizations operating in classified or heavily regulated environments across defense, intelligence, healthcare, and critical infrastructure face a boundary condition that invalidates that assumption: zero bytes may leave the network perimeter, and no external service may receive inbound connections. Every component in this configuration from the [Guides collection](index.html#tab-guides) runs on-premises, every model weight and wheel archive arrives via physical media transfer, and the complete stack operates indefinitely without internet access.
 
 ## The Problem
 
-An organization operating in a regulated or classified environment must deploy AI capabilities entirely within an isolated network. The requirements span the same nine ecosystem layers as the enterprise pipeline, but with an additional constraint at every layer: zero external connectivity.
+An organization operating inside a sealed or classified network must deploy multi-agent retrieval, reasoning, and model adaptation entirely on isolated infrastructure. The architecture spans the same nine ecosystem layers as the standard enterprise pipeline, with one non-negotiable constraint applied at every boundary: zero external network connectivity.
 
-The system must coordinate multi-step workflows through an orchestrator with persistent state, because classified analysis tasks involve long-running pipelines that span hours or days and must survive component restarts. A framework must provide retrieval-augmented generation over internal document collections, because the organization's primary use case is answering questions from classified or proprietary knowledge bases. Model inference must run on local GPU hardware, with the gateway routing between multiple internal model deployments rather than between internal and commercial endpoints. The vector database must deploy as a self-contained binary or container with no cloud dependencies. Document parsing must run locally without sending any content to external services. Observability must trace every interaction for audit compliance, with the tracing platform itself running on internal infrastructure. Fine-tuning must operate entirely on-premises, using locally stored training data to produce specialized models that deploy to the local serving infrastructure.
+### Nine-Layer Airgapped Requirements
 
-The enterprise pipeline used commercial APIs as the primary inference path, with self-hosted models as a secondary option. This configuration inverts that relationship: self-hosted models are the only inference path, and the entire system must be deployable from pre-staged artifacts without network access.
+Operating a production multi-agent system inside an airgapped enclave imposes seven technical requirements across the stack:
+
+- **Persistent workflow orchestration**: Classified research and compliance investigations span hours or days across human review checkpoints, requiring a state machine that checkpoints progress to local storage and survives node restarts.
+- **Deep retrieval-augmented generation**: Internal analysts primarily query proprietary technical manuals, intelligence reports, and regulatory filings, so the application framework must prioritize index composition, multi-step query decomposition, and grounded citation synthesis.
+- **Dual-engine local GPU serving**: On-premises GPU servers must handle both high-throughput batch inference and schema-constrained JSON generation without falling back to external cloud APIs.
+- **Single-binary vector storage**: Security accreditation and air-gap media transfer rules favor a compiled, zero-dependency vector database binary over multi-container storage clusters that pull external runtime plugins.
+- **Offline vision-based document parsing**: Raw PDFs and Word specifications must convert into structured Markdown using pre-staged local layout and table-structure models with outbound telemetry disabled.
+- **On-premises retrieval observability**: Trace collection, latency profiling, embedding cluster visualization, and corpus drift detection must run on an internal server with zero SaaS dependencies.
+- **Memory-efficient local fine-tuning**: Base open-weight models must adapt to internal domain acronyms, classification markings, and report templates on constrained on-premises GPUs using locally curated trace datasets.
+
+### Inverting the Inference Path
+
+Where a cloud-connected enterprise pipeline treats commercial APIs as the default reasoning path and self-hosted models as a cost-saving or privacy fallback, an airgapped deployment inverts that relationship completely. Self-hosted open-weight checkpoints serve 100 percent of traffic, internal routing separates general reasoning from constrained structured decoding, and every Python wheel, binary executable, and safetensors checkpoint must install cleanly from an offline staging directory.
 
 ## Architecture Overview
 
 ```mermaid
-graph LR
-    subgraph NB["Network Boundary"]
-        App("Internal Application") --> LG("LangGraph Orchestrator")
-        LG --> Agent1("LlamaIndex Agent: Analysis")
-        LG --> Agent2("LlamaIndex Agent: Research")
-        Agent1 --> MCP("MCP Servers: Internal Only")
-        Agent2 --> MCP
-        Agent1 --> LiteLLM("LiteLLM Gateway")
-        Agent2 --> LiteLLM
-        LiteLLM --> vLLM("vLLM: Batch Inference")
-        LiteLLM --> SGLang("SGLang: Structured Generation")
-        Docling("Docling Parser") --> Qdrant("Qdrant Vector Store")
-        Agent1 --> Qdrant
-        Agent2 --> Qdrant
-        Unsloth("Unsloth Fine-Tuning") --> vLLM
-        Phoenix("Arize Phoenix") -. traces .-> LG
-        Phoenix -. traces .-> LiteLLM
-        Phoenix -. traces .-> Agent1
-        Phoenix -. traces .-> Agent2
-    end
+graph TD
+    LG("LangGraph Orchestrator") --> Agents("LlamaIndex Specialist Agents")
+    Agents --> MCP("MCP Servers: Internal Only")
+    Agents --> LiteLLM("LiteLLM Internal Gateway")
+    LiteLLM --> vLLM("vLLM: Batch Inference")
+    LiteLLM --> SGLang("SGLang: Structured Decoding")
+    Docling("Docling Local Parser") --> Qdrant("Qdrant Vector Store")
+    Agents --> Qdrant
+    Unsloth("Unsloth Fine-Tuning") --> vLLM
+    Phoenix("Arize Phoenix Observability") -. traces .-> LG
+    Phoenix -. traces .-> LiteLLM
+    Phoenix -. traces .-> Agents
 ```
 
-Every component in the diagram sits inside the network boundary annotation. There are no outbound arrows crossing the perimeter, and no external service appears in the architecture. This is the defining constraint: the diagram is the proof that the system operates in complete isolation.
+Every node and edge in the architecture diagram executes inside the sealed enclave perimeter. No outbound arrows cross the firewall boundary, and no external SaaS endpoint participates in inference, embedding generation, document parsing, or trace storage.
 
-The architecture maps to the same four functional zones as the enterprise pipeline, with substitutions at each layer to eliminate external dependencies. The orchestration zone uses LangGraph for workflow coordination and LlamaIndex agents instead of LangChain agents, optimizing for the retrieval-heavy workloads common in classified environments. The connectivity zone replaces the enterprise pipeline's mix of internal and external MCP servers with strictly internal servers, and LiteLLM routes exclusively between on-premises model deployments. The knowledge zone replaces Unstructured with Docling for local-only document parsing, and Qdrant replaces Weaviate for single-binary vector storage. The model lifecycle zone replaces HF TRL with Unsloth for memory-efficient fine-tuning on limited GPU hardware, and adds SGLang alongside vLLM to provide structured output generation for tasks requiring constrained decoding.
+### Four Isolated Functional Zones
 
-Arize Phoenix replaces Langfuse as the observability platform. Phoenix provides open-source tracing and evaluation with a focus on retrieval diagnostics, including embedding visualization and drift detection, that are particularly relevant for RAG-heavy deployments.
+The internal topology divides into four cooperating functional zones that replace cloud-dependent components from the standard enterprise stack with self-contained equivalents:
+
+- **Orchestration zone**: LangGraph coordinates stateful multi-step workflows and human classification review gates, while LlamaIndex replaces LangChain inside each graph node to optimize for deep multi-document retrieval and synthesis.
+- **Connectivity and routing zone**: MCP servers connect strictly to internal SQL databases, approved document shares, and classification metadata services, while LiteLLM routes OpenAI-compatible requests exclusively between internal vLLM and SGLang endpoints.
+- **Knowledge zone**: Docling parses PDFs and DOCX files against pre-staged local vision weights, a local BGE-Large checkpoint generates 1,024-dimensional embeddings, and Qdrant stores the vectors inside a single compiled Rust binary.
+- **Model lifecycle zone**: Unsloth fine-tunes LoRA adapters on single-node GPU hardware using custom Triton kernels, and vLLM mounts the resulting adapter weights alongside base Llama checkpoints.
+
+### Retrieval-Focused Observability
+
+Arize Phoenix replaces Langfuse as the self-hosted observability plane across all four zones. Both platforms ingest OpenTelemetry traces on-premises, and Phoenix adds UMAP embedding projection and vector drift diagnostics that help operators spot unindexed knowledge gaps or distribution shifts after bulk air-gap document transfers.
 
 ## Component Selection
 
 ### Framework Layer: LlamaIndex
 
-LlamaIndex, profiled in the Agent Frameworks Compared post, provides a framework architecture built around index abstractions and retrieval pipelines. Where LangChain optimizes for breadth of integration, LlamaIndex optimizes for depth of retrieval: native support for multiple index types, query engines that handle multi-step retrieval strategies, and response synthesizers that combine retrieved context with generated answers.
+Retrieval-centric agent construction uses LlamaIndex, profiled in [Agent Frameworks Compared](ai-tooling-chapter_02.html), which organizes application logic around index data structures, retrievers, and response synthesizers. Where LangChain optimizes for broad third-party tool integration, LlamaIndex optimizes for retrieval depth across complex internal document corpora.
 
-In an airgapped environment, the primary workload is answering questions from internal knowledge bases. Analysts query classified document collections, engineers search internal technical documentation, and compliance teams retrieve regulatory references. LlamaIndex's retrieval-first architecture maps directly to this pattern. Its `VectorStoreIndex`, `TreeIndex`, and `KeywordTableIndex` abstractions allow the system to select the optimal retrieval strategy for each document collection, and its query engine handles the full pipeline from query parsing through retrieval to response generation without requiring custom orchestration code.
-
-LlamaIndex's integration with Qdrant through the `llama-index-vector-stores-qdrant` package provides a direct connection between the framework's retrieval abstractions and the local vector database, keeping the entire retrieval path on-premises.
+In a classified or regulated enclave, the dominant engineering workload is answering multi-part analytical questions from internal repositories. Analysts cross-reference security audits, systems engineers trace hardware revision histories, and legal reviewers inspect contract clauses. LlamaIndex's `VectorStoreIndex`, `SummaryIndex`, and sub-question query engines decompose complex prompts into targeted retrieval passes and synthesize grounded answers with explicit source node references. Connecting LlamaIndex to Qdrant through `llama-index-vector-stores-qdrant` and to local BGE weights through `llama-index-embeddings-huggingface` keeps the entire embedding and retrieval pipeline inside the enclave.
 
 ### Orchestrator Layer: LangGraph
 
-LangGraph, profiled in the Agent Orchestrators Compared post, provides the same persistent-state orchestration used in the enterprise pipeline. The airgapped environment does not change the orchestration requirements: classified analysis workflows span multiple steps, require human approval gates at classification boundaries, and must survive component restarts without losing intermediate results.
+Multi-agent workflow state management runs on LangGraph, profiled in [Agent Orchestrators Compared](ai-tooling-chapter_03.html). Operating inside an airgapped perimeter does not relax orchestration requirements; classified analytical workflows routinely span multiple specialist passes, require mandatory human sign-off at security classification boundaries, and must recover cleanly from hardware or process restarts.
 
-LangGraph's checkpointing mechanism stores workflow state in a local database, and its graph-based execution model supports conditional branching based on classification labels, document sensitivity levels, or analyst approval decisions. A multi-step intelligence analysis workflow can pause at a classification review gate, wait for an authorized reviewer's approval, and resume from the exact checkpoint without re-executing prior steps.
-
-The combination of LlamaIndex agents within LangGraph nodes provides the retrieval depth of LlamaIndex with the orchestration control of LangGraph. Each LangGraph node wraps a LlamaIndex agent specialized for a specific retrieval or analysis task, and the graph coordinates the handoff of results between agents.
+LangGraph checkpoints the typed workflow state dictionary to a local SQLite or PostgreSQL database after every node transition and evaluates conditional edges against document sensitivity labels or reviewer decisions. Embedding LlamaIndex query engines inside LangGraph nodes combines LlamaIndex's retrieval precision with LangGraph's cyclic state control: a research node retrieves and condenses top-ranked chunks from Qdrant, checkpoints the extracted context, and hands control to an analysis node that synthesizes the structured compliance assessment.
 
 ### Connectivity Layer: MCP Servers, Local Only
 
-MCP servers in this configuration connect agents exclusively to internal resources. The enterprise pipeline's MCP servers accessed both internal and external services; this deployment restricts servers to resources within the network perimeter.
+Standardized tool access inside the enclave relies on the Model Context Protocol, profiled in [Connectivity and Routing](ai-tooling-chapter_04.html), restricted strictly to internal network resources. Four local MCP server types cover typical airgapped operational needs:
 
-Typical internal MCP servers for an airgapped deployment include a filesystem server scoped to approved document repositories, a database connector for internal SQL and NoSQL databases, an API server wrapping internal REST services, and a metadata server providing access to classification labels, document provenance records, and audit metadata. No MCP server in this configuration makes outbound network requests.
+- **Scoped filesystem server**: Grants read-only or directory-restricted read-write access to accredited document staging shares and repository trees.
+- **Internal database server**: Exposes parameterized read queries against on-premises PostgreSQL, SQLite, or relational data warehouses without exposing raw connection strings in prompts.
+- **Internal REST service wrapper**: Connects specialist agents to intranet ticketing, inventory, and configuration management APIs hosted inside the perimeter.
+- **Classification and provenance server**: Returns document security markings, handling caveats, and ingestion lineage metadata so agents can enforce access-control rules before synthesizing answers.
 
-The restriction is enforced at the network level through firewall rules and at the application level through MCP server configuration. Each server's configuration explicitly lists the internal resources it can access, and network policy prevents any MCP server process from establishing outbound connections.
+Isolation is enforced at two independent layers: MCP server manifests declare explicit internal directory paths and hostnames, and host firewall rules in nftables or iptables block MCP subprocesses from opening outbound sockets outside the enclave subnet.
 
 ### Gateway Layer: LiteLLM, Self-Hosted
 
-LiteLLM, profiled in the Connectivity and Routing post, provides the same gateway functionality as in the enterprise pipeline, but its routing table contains exclusively internal endpoints. The configuration removes all commercial provider entries and replaces them with entries pointing to the local vLLM and SGLang deployments.
+Traffic routing across on-premises GPU servers runs through a self-hosted LiteLLM proxy, profiled in [Connectivity and Routing](ai-tooling-chapter_04.html), configured with an internal-only model catalog. Removing all commercial cloud providers shifts the gateway's role from external spend governance to three internal operational functions:
 
-The gateway serves three functions in the airgapped context. First, it abstracts the serving engine from the application layer: LlamaIndex agents call the standard OpenAI-compatible API provided by LiteLLM, and LiteLLM routes to vLLM or SGLang based on the model name in the request. Second, it enables routing by task type: general-purpose inference routes to vLLM for maximum throughput, while structured generation tasks route to SGLang for constrained decoding. Third, it provides a single point of observability integration: LiteLLM's callback system exports trace data to Arize Phoenix for every model call across the system.
-
-Cost governance, the primary enterprise motivation for LiteLLM, is less relevant in an airgapped deployment where model inference runs on owned hardware. The gateway's value shifts toward operational routing and monitoring.
+- **Serving engine abstraction**: LlamaIndex agents target a single OpenAI-compatible gateway URL on port 4000 at `http://localhost:4000/v1` without hardcoding whether a model runs on vLLM, SGLang, or a LoRA adapter port.
+- **Task-specific engine routing**: LiteLLM directs long-context synthesis and high-concurrency batch queries under the `llama-70b` alias to vLLM while routing schema-constrained extraction and inter-agent JSON payloads under `llama-8b-structured` to SGLang.
+- **Unified telemetry export**: LiteLLM's callback pipeline emits request latency, token volume, and model routing spans to the internal Arize Phoenix collector automatically.
 
 ### Serving Layer: vLLM and SGLang
 
-vLLM and SGLang, both profiled in the Runtime Infrastructure post, provide complementary inference capabilities on local GPU hardware.
+On-premises GPU inference pairs vLLM and SGLang, both profiled in [Runtime Infrastructure](ai-tooling-chapter_06.html), to cover two distinct workload profiles on local hardware:
 
-vLLM serves as the primary inference engine for general-purpose requests. Its PagedAttention memory management and continuous batching enable high-throughput serving across concurrent requests. Tensor parallelism distributes inference across multiple GPUs within a server, enabling the deployment of models that exceed the memory capacity of a single GPU. In an airgapped deployment, vLLM serves both base open-weight models and fine-tuned variants produced by the Unsloth pipeline.
+- **vLLM for high-throughput batch and general reasoning**: PagedAttention memory management, continuous batching, and multi-GPU tensor parallelism via `--tensor-parallel-size 4` allow vLLM to serve 70-billion-parameter Llama 3.1 checkpoints, pooled BGE-Large embedding models, and dynamically mounted Unsloth LoRA adapters across concurrent analyst sessions.
+- **SGLang for low-latency structured decoding**: RadixAttention prefix caching and fast finite-state-machine constrained decoding allow SGLang to serve an 8-billion-parameter Llama 3.1 checkpoint that guarantees valid JSON schema or regex-constrained outputs during agent-to-agent handoffs inside LangGraph.
 
-SGLang serves as the secondary inference engine for tasks requiring structured output generation. Its RadixAttention mechanism provides efficient KV cache reuse across branching conversation trees, and its constrained decoding support ensures that generated output conforms to specified JSON schemas, XML structures, or other format requirements. Agent-to-agent communication in LangGraph workflows benefits from structured output: when one agent produces a result that another agent must parse, constraining the output to a defined schema eliminates parsing failures and reduces the error surface of multi-agent pipelines.
-
-Both engines expose OpenAI-compatible API endpoints, allowing LiteLLM to route between them transparently. The application layer is unaware of which engine handles a given request.
+Running vLLM and SGLang in separate virtual environments or on dedicated GPU ports 8000, 8001, 8002, and 8003 avoids dependency version conflicts between their CUDA and FlashInfer kernels while presenting a single OpenAI-compatible surface through LiteLLM.
 
 ### Memory Layer: Qdrant, Self-Hosted
 
-Qdrant, profiled in the Data Infrastructure post, provides the vector database layer. Its Rust-native architecture compiles to a single binary that runs without external dependencies, container runtimes, or package managers. In restricted environments where software installation is governed by approval processes and air-gap transfer procedures, a single-binary deployment model eliminates an entire category of deployment friction.
+Vector indexing and similarity search run on Qdrant, profiled in [Data Infrastructure](ai-tooling-chapter_05.html). In an accredited airgapped environment where every software artifact must clear media scanning and change-control review, Qdrant's systems architecture provides three operational advantages:
 
-Qdrant supports both in-memory and on-disk storage modes. For deployments where the document corpus fits in available RAM, in-memory mode provides the lowest query latency. For larger corpora, on-disk mode with memory-mapped files provides scalable storage without requiring all vectors to reside in RAM simultaneously. The quantization options, including scalar and product quantization, reduce memory consumption per vector while maintaining retrieval accuracy within configurable thresholds.
-
-The enterprise pipeline used Weaviate for its multi-tenancy and hybrid search capabilities. In the airgapped deployment, Qdrant's single-binary simplicity and lower operational overhead outweigh Weaviate's feature advantages. Multi-tenancy is achievable through Qdrant's collection-level isolation: each organizational unit receives its own collection with independent vector indices and access controls.
+- **Zero-dependency single binary**: Qdrant compiles from Rust into a single native Linux executable archive that launches directly under systemd without requiring a Docker daemon, Java virtual machine, or external relational database engine.
+- **Configurable memory-mapped storage**: Collections fit entirely in RAM for sub-millisecond search latency or spill to disk via memory-mapped files with `on_disk_payload: true` alongside scalar or product quantization when corpora scale to millions of chunks.
+- **Built-in telemetry disablement**: Setting `telemetry_disabled: true` in `/opt/qdrant/config.yaml` guarantees that the binary never attempts outbound phone-home connections inside the isolated network.
 
 ### Knowledge Management Layer: Docling
 
-Docling, profiled in the Data Infrastructure post, handles document parsing with the same local-only execution model used in the solo developer configuration. In the airgapped context, Docling's value extends beyond convenience: it is a hard requirement. Cloud-based parsers like LlamaParse and Unstructured's managed API are categorically unavailable in an airgapped environment. The enterprise pipeline's use of Unstructured relied on the open-source library rather than the managed service, making it a viable alternative here. Docling is selected for this configuration because its compact vision models download once during pre-deployment staging and run without any network access, and its parsing quality for PDF and DOCX formats matches the requirements of a typical internal document collection.
+Offline document parsing relies on Docling, profiled in [Data Infrastructure](ai-tooling-chapter_05.html). Cloud parsing APIs such as LlamaParse are unreachable inside an airgapped enclave, and general-purpose OCR pipelines require complex multi-package system dependencies. Docling bridges that gap by running compact layout-detection and TableFormer vision models entirely on local CPU or GPU hardware.
 
-The Docling-to-Qdrant pipeline follows the same pattern as the Docling-to-ChromaDB pipeline from the solo developer configuration: Docling parses raw documents into clean Markdown, a chunking step splits the output into retrieval-sized segments, an embedding model loaded from locally stored weights converts chunks to vectors, and the vectors load into Qdrant with metadata tags for document provenance, classification level, and ingestion timestamp.
+During pre-deployment staging on an internet-connected machine, operators run `docling-tools models download` to fetch the layout and table checkpoints into a local directory, transfer that directory across the air gap, and point the production environment at the staged weights via `DOCLING_ARTIFACTS_PATH`. Docling then converts internal PDFs and DOCX files into structured Markdown with zero network calls, preserving multi-column reading order and technical specification tables for downstream vector indexing.
 
 ### Observability Layer: Arize Phoenix
 
-Arize Phoenix, profiled in the Runtime Infrastructure post, provides open-source tracing and evaluation. Phoenix runs as a self-hosted application with a local storage backend, making it deployable within the airgapped perimeter without modification.
+Self-hosted tracing and retrieval diagnostics run on Arize Phoenix, profiled in [Runtime Infrastructure](ai-tooling-chapter_06.html). Phoenix deploys as a single local Python service on port 6006 backed by local SQLite or PostgreSQL storage, providing three diagnostic capabilities tailored to airgapped RAG systems:
 
-Phoenix's distinctive capability in this configuration is its retrieval-focused diagnostics. Embedding visualization projects vector clusters into two-dimensional space, allowing operators to identify gaps in the knowledge base where documents are sparse and retrieval quality degrades. Embedding drift detection alerts operators when newly ingested documents shift the embedding distribution in ways that degrade retrieval accuracy for existing queries. These diagnostics are particularly valuable in an airgapped deployment where the knowledge base evolves through periodic bulk ingestion of new documents rather than continuous streaming updates.
-
-For audit compliance, Phoenix captures trace data for every model call, tool invocation, and retrieval operation. The trace store runs on internal infrastructure, and export formats allow integration with the organization's existing security information and event management systems.
+- **Embedding space visualization**: Phoenix projects high-dimensional query and document vectors into interactive 2D clusters, allowing operators to spot unindexed topic clusters where analyst queries land far from any stored document chunk.
+- **Bulk-ingestion drift detection**: Airgapped knowledge bases update through periodic physical media drops rather than continuous web crawls, and Phoenix tracks embedding distribution shifts between ingestion batches to catch retrieval regressions early.
+- **Compliance trace archiving**: OpenInference instrumentation captures every LlamaIndex retrieval span, prompt template, model completion, and LangGraph state step locally, with Parquet and JSON export for internal security information and event management ingestion.
 
 ### Fine-Tuning Layer: Unsloth
 
-Unsloth, profiled in the Runtime Infrastructure post, provides memory-efficient fine-tuning for open-weight models. Unsloth's custom Triton kernels reduce GPU memory consumption during training, enabling fine-tuning of models with tens of billions of parameters on hardware that would otherwise require model parallelism or cloud GPU rental.
+On-premises model adaptation uses Unsloth, profiled in [Runtime Infrastructure](ai-tooling-chapter_06.html), whose hand-written Triton kernels cut VRAM consumption by more than half during backpropagation. Inside an airgapped facility where teams cannot burst to cloud GPU clusters, Unsloth enables QLoRA fine-tuning of 8B to 70B models on a single workstation or server GPU across a four-stage closed loop:
 
-In an airgapped deployment, fine-tuning serves a specific purpose: adapting base open-weight models to the organization's domain vocabulary, document formats, and task patterns using training data that cannot leave the premises. Unsloth's LoRA and QLoRA support produces lightweight adapter weights rather than full model copies, reducing storage requirements and enabling rapid iteration on specialized model variants.
-
-The airgapped fine-tuning loop operates as follows. Arize Phoenix captures production traces from deployed agents. Operators review traces and identify high-quality and low-quality interactions. High-quality traces export as instruction-response pairs for supervised fine-tuning. Unsloth trains a LoRA adapter on the curated dataset using local GPU hardware. The adapter merges with the base model or loads as a separate endpoint in vLLM. LiteLLM routes a percentage of traffic to the fine-tuned variant. Phoenix traces from both base and fine-tuned models feed back into the evaluation cycle, enabling data-driven comparison without any data leaving the network.
+1. **Offline trace harvesting**: Operators review captured retrieval and synthesis traces in the local Arize Phoenix dashboard, filtering for domain queries where the base model misinterpreted internal acronyms or formatting rules.
+2. **Instruction dataset export**: High-performing traces and analyst-corrected responses export from Phoenix into a local JSONL training file formatted with Llama chat templates.
+3. **Single-GPU QLoRA training**: Unsloth loads the pre-staged base checkpoint from local disk in 4-bit quantization, attaches rank-16 LoRA adapters across attention projections, and runs supervised fine-tuning without external Hub calls.
+4. **Local LoRA serving and evaluation**: vLLM mounts the saved adapter directory via `--enable-lora` and `--lora-modules`, LiteLLM exposes the new `llama-8b-finetuned` alias, and Phoenix compares retrieval-grounded answer quality against the base checkpoint.
 
 ## Integration Walkthrough
 
-The components wire together through five integration paths, each operating entirely within the network perimeter.
+All runtime interactions and batch pipelines execute across five internal integration paths inside the enclave perimeter:
 
-**LangGraph to LlamaIndex agents**: LangGraph defines a directed graph where each node contains a LlamaIndex agent configured with a specific query engine and retrieval strategy. The orchestrator initializes workflow state, dispatches analysis tasks to the appropriate agent nodes, and collects results at merge points. LlamaIndex's query engine abstraction handles the retrieval-generation loop within each node, and LangGraph manages the cross-agent coordination and state persistence.
-
-**LlamaIndex agents to LiteLLM**: Each LlamaIndex agent is configured with a LiteLLM-backed LLM client pointing to the local LiteLLM proxy endpoint. The agent code contains no model-specific imports; all inference requests pass through LiteLLM's OpenAI-compatible API. LiteLLM selects the target serving engine based on the model name: general-purpose models route to vLLM, and structured-output models route to SGLang. The response returns through LiteLLM to the agent.
-
-**LlamaIndex agents to Qdrant**: LlamaIndex's `QdrantVectorStore` integration connects retrieval pipelines directly to the local Qdrant instance. For each incoming query, the agent's query engine generates an embedding through the locally served embedding model, searches the appropriate Qdrant collection, retrieves the top-ranked document chunks, and passes them to the LLM as context for answer generation. The entire retrieval path runs on local infrastructure.
-
-**Docling to Qdrant**: The knowledge pipeline runs as a batch process triggered during document ingestion windows. Docling parses raw documents from the approved document repository, a chunking module splits parsed output into segments sized for retrieval, an embedding model loaded from locally stored weights converts chunks to vectors, and the vectors load into Qdrant with provenance metadata. New document batches arrive through the air-gap transfer process, typically via approved physical media, and the ingestion pipeline processes them on the internal network.
-
-**Arize Phoenix across all layers**: Phoenix's tracing integration collects spans from LlamaIndex agents, LangGraph orchestration decisions, and LiteLLM gateway operations. The configuration requires setting Phoenix environment variables at application startup, after which all instrumented components emit traces automatically. Phoenix stores traces in its local backend, provides a web dashboard accessible within the internal network, and supports export to external monitoring systems through standard formats.
+1. **LangGraph orchestrator to LlamaIndex specialist nodes**: The internal application invokes a compiled LangGraph workflow backed by `SqliteSaver` or `PostgresSaver`. The research node executes a LlamaIndex `VectorStoreIndex` query engine to gather the top ten relevant source nodes, stores the concatenated context in the shared workflow state, and passes control to the analysis node, which invokes the language model over the retrieved context to synthesize the final compliance report.
+2. **LlamaIndex nodes to the internal LiteLLM proxy**: Both LlamaIndex nodes configure `OpenAILike` pointed at `http://localhost:4000/v1` with the internal master key. LiteLLM inspects the requested model alias, forwards general synthesis prompts for `llama-70b` to vLLM on port 8000, forwards structured extraction prompts for `llama-8b-structured` to SGLang on port 8001, and forwards embedding requests to the pooled vLLM instance on port 8003.
+3. **LlamaIndex query engines to Qdrant**: `QdrantVectorStore` connects over localhost port 6333 for HTTP or port 6334 for gRPC to the `internal_documents` collection. Incoming analyst questions convert into 1,024-dimensional vectors using the locally staged BGE-Large weights with remote code execution disabled and retrieve the highest-scoring cosine-similarity chunks.
+4. **Docling air-gap batch ingestion into Qdrant**: Whenever new accredited documents arrive across the air gap into the classified documents folder, `ingest_airgapped_docs.py` loads Docling from `DOCLING_ARTIFACTS_PATH`, exports each PDF or DOCX file to Markdown, splits the text along paragraph boundaries, computes local BGE embeddings, and upserts vector payloads with provenance metadata into Qdrant.
+5. **OpenInference telemetry into Arize Phoenix**: At process startup, agent scripts register the local Phoenix OpenTelemetry tracer via `phoenix.otel.register` and activate `LlamaIndexInstrumentor`, while LiteLLM enables its `arize_phoenix` callback. Every orchestration step, vector lookup, and model completion streams over the internal network to the Phoenix collector on port 6006.
 
 ## Tradeoffs and Alternatives
 
-This configuration optimizes for data sovereignty and regulatory compliance. Every byte of data, including prompts, responses, embeddings, training data, and traces, remains within the network perimeter. The system operates independently of external services, surviving internet outages, provider deprecations, and supply chain disruptions.
+This architecture guarantees complete data sovereignty, zero external network exposure, and deterministic operation independent of internet availability or cloud vendor lifecycle changes. Enforcing a sealed network boundary introduces three primary engineering costs:
 
-The primary cost is model capability. Commercial models from OpenAI, Anthropic, and Google receive continuous updates and generally outperform open-weight models of comparable size on broad benchmarks. An airgapped deployment is limited to open-weight models that were available at the time of the last air-gap transfer. The fine-tuning pipeline partially compensates for this gap by specializing models for the organization's specific tasks, but the base capability ceiling remains lower than commercial alternatives.
-
-The second cost is operational burden for model acquisition. Every model, dependency, and software update must pass through the air-gap transfer process: download on an internet-connected system, transfer to approved media, scan the media, and install on the airgapped network. This process adds days or weeks of latency to any update cycle and requires dedicated personnel who manage the transfer pipeline.
-
-The third cost is reduced framework ecosystem coverage. LlamaIndex's integration library is smaller than LangChain's, and some third-party tools lack LlamaIndex-native bindings. For workloads that extend beyond retrieval-augmented generation, the narrower ecosystem requires more custom integration code.
+- **Open-weight capability ceiling**: An airgapped enclave cannot call frontier commercial models from Anthropic, OpenAI, or Google. Reasoning quality is bounded by the largest open-weight checkpoint that fits on local GPU hardware at the time of the most recent media transfer, making Unsloth domain fine-tuning essential for closing task-specific accuracy gaps.
+- **Air-gap media transfer latency**: Every Python wheel update, security patch, base model checkpoint, and Docling vision artifact must download on an external staging host, pass antivirus and supply-chain verification on physical transfer media, and install via `--no-index --find-links`. Routine dependency upgrades take days rather than minutes.
+- **Multi-process GPU VRAM partitioning**: Running a 70B vLLM server, an 8B SGLang structured-decoding server, a BGE embedding runner, and periodic Unsloth training jobs requires careful GPU allocation across nodes so concurrent processes do not contend for CUDA memory.
 
 **Alternative substitutions at each layer**:
 
-- **Framework**: LangChain can replace LlamaIndex if the workload mix extends beyond retrieval-heavy tasks to general-purpose agent tooling. The tradeoff is a less optimized retrieval pipeline in exchange for a broader integration ecosystem.
-- **Orchestrator**: CrewAI can replace LangGraph if role-based agent configuration is preferred over graph-based workflow definition. CrewAI provides simpler agent setup at the cost of less granular state persistence and conditional branching.
-- **Serving**: Running a single engine, either vLLM-only or SGLang-only, simplifies operations at the cost of losing the throughput/structured-output specialization split. For deployments without structured output requirements, vLLM alone covers all inference needs.
-- **Memory**: Weaviate in self-hosted mode can replace Qdrant if hybrid search combining dense vectors and BM25 keyword matching is a priority. The tradeoff is a more complex deployment requiring Docker and additional configuration.
-- **Knowledge Management**: Unstructured's open-source library can replace Docling if the document corpus includes formats beyond PDF and DOCX, such as PowerPoint, HTML archives, and email threads. The tradeoff is a larger dependency footprint and more complex installation.
-- **Observability**: Langfuse can replace Arize Phoenix if the organization prioritizes production trace capture and cost attribution over embedding diagnostics. Both run self-hosted; the choice depends on which diagnostic capabilities match the deployment's primary needs.
-- **Fine-Tuning**: HF TRL can replace Unsloth if GPU memory is not a constraint and the team prefers the broader Hugging Face training ecosystem. Axolotl can replace Unsloth if YAML-driven training configuration is preferred over Python scripts.
+- **Framework layer**: Replace LlamaIndex with LangChain when internal workflows emphasize multi-tool REST and database automation over deep multi-document retrieval and citation synthesis.
+- **Orchestrator layer**: Replace LangGraph with CrewAI when teams prefer declarative role-based agent definitions over explicit state-graph checkpointing and conditional classification branches.
+- **Serving layer**: Consolidate onto vLLM alone when workloads do not require SGLang's RadixAttention prefix caching or high-speed constrained JSON decoding, eliminating a second serving virtual environment.
+- **Memory layer**: Replace Qdrant with self-hosted Weaviate when native BM25-plus-vector hybrid search and storage-level multi-tenancy outweigh single-binary deployment simplicity.
+- **Knowledge management layer**: Replace Docling with Unstructured's open-source local library when airgapped repositories include legacy PowerPoint decks, HTML archives, and email exports alongside PDFs and Word documents.
+- **Observability layer**: Replace Arize Phoenix with self-hosted Langfuse when prompt version management and SQL-backed audit warehousing take priority over UMAP embedding drift visualization; note that Langfuse v3 requires a multi-container Docker stack with PostgreSQL, ClickHouse, Redis, and MinIO rather than Phoenix's single-process deployment.
+- **Fine-tuning layer**: Replace Unsloth with Hugging Face TRL when multi-GPU distributed training via Accelerate or DeepSpeed is available, or with Axolotl when operators prefer declarative YAML training manifests.
 
-This configuration demonstrates that the complete AI application stack, from document ingestion through agent orchestration to fine-tuned model deployment, operates within a sealed network perimeter. The companion setup guide provides step-by-step installation and wiring instructions for each component, including the air-gap transfer procedures for pre-staging models and dependencies.
+This architecture proves that a full nine-layer agentic RAG and fine-tuning stack can operate inside a completely disconnected network enclave. The companion [Setup Guide](private-and-airgapped-deployment-guide.html) provides the offline staging commands, `systemd` and YAML manifests, Python wiring scripts, and verification checks required for deployment.
 
 ## References
 
 1. LlamaIndex Documentation, LlamaIndex Inc.
 2. LangGraph Documentation, LangChain Inc.
-3. Model Context Protocol Specification, Anthropic.
-4. LiteLLM Documentation, BerriAI.
+3. Model Context Protocol Specification, Anthropic and MCP Steering Group.
+4. LiteLLM Proxy Documentation, BerriAI.
 5. vLLM Documentation, vLLM Project.
 6. SGLang Documentation, SGLang Project.
 7. Qdrant Documentation, Qdrant Solutions GmbH.

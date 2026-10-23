@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -118,112 +159,117 @@
     <li><a href="index.html">Blog</a></li><li><a href="series-embeddings.html">Series: Embeddings</a></li><li aria-current="page">Part 3: The Forward Pass, Softmax, and Cross-Entropy Loss</li></ol></nav>
         <article class="blog-post series-embeddings">
 <h1>Part 3: The Forward Pass, Softmax, and Cross-Entropy Loss</h1>
-<!-- SUMMARY: Understanding how vector embeddings are learned requires examining the shallow neural network designed to train them. A step-by-step concrete mathematical example demonstrates how a two-layer architecture extracts a dense vector, projects it into raw logits, and uses Softmax and Cross-Entropy Loss to quantify the network's error against the ground truth. The fundamental limitations of static embeddings are also explored, setting the stage for Transformers. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p><p>To transform a randomly initialized embedding matrix ($W_E$) into a mathematically rigorous semantic space, a mechanism must be built to evaluate its current state. This is achieved by constructing a simple neural network <em>around</em> $W_E$. Its sole objective is <strong>Next-Token Prediction</strong>: observing a sequence of tokens and predicting the most probable subsequent token in the corpus.</p>
+<!-- SUMMARY: Understanding how vector embeddings are learned requires examining the shallow neural network designed to train them. A step-by-step concrete mathematical example demonstrates how a two-layer architecture extracts a dense vector, projects it into raw logits, and uses Softmax and Cross-Entropy Loss to quantify the network's error against the ground truth. The fundamental limitations of static embeddings are also explored, setting the stage for Transformers. --><p><em>Prefer to read this offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p><p>Transforming a randomly initialized embedding matrix ($W_E$) into a structured semantic space requires an objective function that evaluates vector positions on every training step. A shallow neural network constructed around $W_E$ provides this evaluation mechanism through <strong>Next-Token Prediction</strong>: observing a context token and predicting the most probable subsequent token in the corpus.</p>
 <h2>The Proxy of Prediction</h2>
-<p>The choice of next-token prediction requires justification. The ultimate goal is to capture the semantic meaning of a word, but there is no database of &quot;semantic features&quot; (e.g., <code>is_animal</code> = <code>1.0</code>) to supervise the network. </p>
-<p>Instead, the system relies on <strong>Distributional Semantics</strong>, famously summarized by linguist J.R. Firth: <em>&quot;You shall know a word by the company it keeps.&quot;</em> If the network observes that the words <code>fox</code>, <code>wolf</code>, and <code>dog</code> are all frequently followed by words like <code>hunts</code>, <code>sleeps</code>, or <code>runs</code>, the calculus of the network is mathematically forced to push their vectors closer together in the geometric space. Semantic meaning is not explicitly programmed; it is an <em>emergent byproduct</em> of the next-token prediction objective.</p>
+<p>The choice of next-token prediction requires justification. The training objective aims to capture semantic relationships across words, yet no supervised database of hand-labeled semantic attributes (such as <code>is_animal = 1.0</code>) exists to guide the updates.</p>
+<p>The architecture relies instead on <strong>Distributional Semantics</strong>, formulated by linguist J.R. Firth as the principle that a word is characterized by the company it keeps. Observing that the nouns <code>fox</code>, <code>wolf</code>, and <code>dog</code> frequently precede the same verbs (<code>hunts</code>, <code>sleeps</code>, <code>runs</code>) forces gradient descent to push their embedding vectors toward the same region of the coordinate space. Semantic structure is never programmed directly; it emerges as a geometric byproduct of optimizing the next-token prediction objective.</p>
 <h2>The 2-Layer Embedding Network</h2>
-<p>When training static embeddings from scratch, the architecture is astonishingly simple. It is a shallow neural network consisting of exactly two layers:</p>
+<p>Static embedding models train through a shallow neural network comprising two linear projection layers:</p>
 <ol>
-<li><strong>Layer 1: The Embedding Projection ($W_E$)</strong>. The $W_E$ matrix <em>is</em> the first layer of the network. It projects the one-hot encoded vocabulary vector (which represents the current context word) into the dense, continuous vector space (dimension $d_{model}$) to extract its currently learned semantic meaning.</li>
-<li><strong>Layer 2: The Un-embedding Projection ($W_U$)</strong>. The $W_U$ matrix has a shape of $d_{model} \times V$. Just like $W_E$, its internal values are completely random at initialization and are learned during training. This layer projects the dense continuous vector (which now contains the contextual semantic features extracted by Layer 1) back out into the vocabulary space (dimension $V$), producing a raw score for every possible word in the vocabulary. This score represents the unnormalized likelihood that each specific word is the correct next token in the sequence.</li>
+<li><strong>Layer 1 (<code>W_E</code>, The Embedding Projection):</strong> Multiplies the one-hot encoded input vector $\mathbf{x} \in \{0, 1\}^{1 \times V}$ (representing the current context token) by $W_E \in \mathbb{R}^{V \times d_{\text{model}}}$ to extract a dense, continuous hidden vector $\mathbf{h} \in \mathbb{R}^{1 \times d_{\text{model}}}$.</li>
+<li><strong>Layer 2 (<code>W_U</code>, The Un-embedding Projection):</strong> Multiplies the dense hidden vector $\mathbf{h}$ by a second learnable weight matrix $W_U \in \mathbb{R}^{d_{\text{model}} \times V}$ to project the representation back into the $V$-dimensional vocabulary space, producing an unnormalized score (logit) for every candidate next token.</li>
 </ol>
 <h3>The Hidden Layer</h3>
-<p>In this architecture, the <strong>hidden layer</strong> is simply the state of the network between these two projections. It is the dense $d_{model}$-dimensional vector itself. The network&#39;s only true purpose is to optimize the weights of Layer 1 ($W_E$). Once training is complete, Layer 2 ($W_U$) is entirely discarded, and the hidden layer outputs (the vectors) are saved as the final embeddings.</p>
+<p>The <strong>hidden layer</strong> of this network consists of the intermediate state $\mathbf{h} \in \mathbb{R}^{1 \times d_{\text{model}}}$ between the two projections. The training loop exists solely to optimize the rows of Layer 1 ($W_E$). Completing the training run allows the system to discard Layer 2 ($W_U$) and export the rows of $W_E$ as the static token embeddings.</p>
 <h3>The Activation Function</h3>
-<p>Crucially, <strong>there are no non-linear activation functions</strong> (like ReLU or GELU) between Layer 1 and Layer 2. </p>
-<p>This is the fundamental architectural difference between an Embedding Network and the Feed-Forward Networks (FFN) found in Transformers. A Transformer uses non-linear activations to learn complex, non-linear logic. The Embedding Network intentionally omits them because its goal is to construct a pure, linear geometric space (where concepts like cosine similarity are mathematically sound). </p>
-<p>If two linear matrices ($W_E$ and $W_U$) are stacked without a non-linearity, they mathematically collapse into a single operation ($W_E \times W_U = W_{combined}$). The <em>only</em> reason they are kept separated is because the data must be intercepted in the middle—at the hidden layer—to extract the embeddings.</p>
+<p>The architecture omits non-linear activation functions (such as ReLU or GELU) between Layer 1 and Layer 2.</p>
+<p>That omission distinguishes a static Embedding Network from the Feed-Forward Networks (FFNs) inside a Transformer. A Transformer applies non-linear activations to model complex feature interactions, whereas an Embedding Network preserves a pure linear projection so that directional and additive relationships (such as cosine similarity and vector offsets) remain linear across the coordinate space.</p>
+<p>Stacking two linear matrices ($W_E$ and $W_U$) without an intervening non-linearity allows their product to collapse algebraically into a single matrix ($W_E \times W_U = W_{\text{combined}} \in \mathbb{R}^{V \times V}$). The architecture maintains $W_E$ and $W_U$ as separate factors so that the $d_{\text{model}}$-dimensional bottleneck state $\mathbf{h}$ can be intercepted between them as the compressed token embedding.</p>
 <h2>A Toy Mathematical Walkthrough</h2>
-<p>The following toy model demonstrates the forward pass through explicit calculation:</p>
+<p>The 8-word toy configuration demonstrates the complete forward pass through explicit numerical calculation:</p>
 <ul>
-<li><strong>Vocabulary ($V = 8$):</strong> <code>The</code> <code>quick</code> <code>brown</code> <code>fox</code> <code>jumps</code> <code>over</code> <code>lazy</code> <code>dog</code></li>
-<li><strong>Embedding Dimension ($d_{model}$):</strong> 3 dimensions.</li>
+<li><strong>Vocabulary ($V = 8$):</strong> <code>The</code> (<code>0</code>), <code>quick</code> (<code>1</code>), <code>brown</code> (<code>2</code>), <code>fox</code> (<code>3</code>), <code>jumps</code> (<code>4</code>), <code>over</code> (<code>5</code>), <code>lazy</code> (<code>6</code>), <code>dog</code> (<code>7</code>).</li>
+<li><strong>Embedding Dimension ($d_{\text{model}} = 3$):</strong> Three continuous coordinates per token.</li>
 </ul>
-<p>The sequence is <code>The</code> <code>quick</code> <code>brown</code>. The network&#39;s task is to predict the next token: <code>fox</code>.</p>
-<p><em>(Note: If the sequence is at the end of a sentence, the target is the End of Sequence <code>&lt;EOS&gt;</code> token. <code>&lt;EOS&gt;</code> is treated exactly like any other word; it receives a row in $W_E$ and its vector&#39;s geometry is learned purely through observing sentence-ending patterns.)</em></p>
+<p>The input sequence is <code>The</code> <code>quick</code> <code>brown</code>, and the prediction target is the subsequent token <code>fox</code> (index <code>3</code>).</p>
+<p><em>(Note: Reaching the end of a sentence sets the prediction target to a dedicated End-of-Sequence <code>&lt;EOS&gt;</code> control token. The vocabulary allocates a standard row in $W_E$ for <code>&lt;EOS&gt;</code>, learning its geometric coordinates by observing sentence-termination patterns across the corpus.)</em></p>
 <h3>Step 1: The Input</h3>
-<p>The final word of the context, <code>brown</code>, is represented as a one-hot vector. The word <code>brown</code> is at index 2 in the vocabulary.
-$$
-\mathbf{x} = \begin{bmatrix} 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \end{bmatrix}
+<p>The active context token, <code>brown</code> (vocabulary index <code>2</code>), is encoded as a $1 \times 8$ one-hot row vector $\mathbf{x}$:</p>
+<p>$$
+\mathbf{x} = \begin{bmatrix} 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \end{bmatrix}_{1 \times 8}
 $$</p>
 <h3>Step 2: Layer 1 (The Embedding Lookup)</h3>
-<p>The one-hot vector $\mathbf{x}$ is multiplied by the randomly initialized $8 \times 3$ embedding matrix, $W_E$.</p>
+<p>The forward pass multiplies the one-hot input vector $\mathbf{x}$ by the randomly initialized $8 \times 3$ embedding matrix $W_E$:</p>
 <p>$$
 W_E = \begin{bmatrix}
 0.1 & -0.4 & 0.2 \\
 0.5 & 0.1 & -0.8 \\
 \mathbf{-0.3} & \mathbf{0.9} & \mathbf{0.4} \\
 0.2 & -0.2 & 0.1 \\
-\dots & \dots & \dots \\
-\end{bmatrix}
+\vdots & \vdots & \vdots
+\end{bmatrix}_{8 \times 3}
 $$</p>
-<p>Because all values in $\mathbf{x}$ are $0$ except at index 2, the dot product $\mathbf{x} \times W_E$ simply extracts row 2. </p>
+<p>Zero entries at every position of $\mathbf{x}$ except index <code>2</code> cause the vector-matrix product $\mathbf{h} = \mathbf{x} \times W_E$ to isolate row <code>2</code>:</p>
 <p>$$
-\mathbf{h} = \begin{bmatrix} -0.3 & 0.9 & 0.4 \end{bmatrix}
+\mathbf{h} = \begin{bmatrix} -0.3 & 0.9 & 0.4 \end{bmatrix}_{1 \times 3}
 $$</p>
-<p>This $3$-dimensional vector is the <strong>hidden layer</strong> state. It is the current, untrained embedding for <code>brown</code>.</p>
+<p>This 3-dimensional row vector $\mathbf{h}$ forms the <strong>hidden layer</strong> state, representing the current untrained embedding for <code>brown</code>.</p>
 <h3>Step 3: Layer 2 (The Un-embedding Projection)</h3>
-<p>This hidden state is then projected back into the 8-word vocabulary space using the un-embedding matrix, $W_U$ (a $3 \times 8$ matrix). </p>
+<p>The second layer projects the hidden state $\mathbf{h} \in \mathbb{R}^{1 \times 3}$ back into the 8-word vocabulary space via the un-embedding matrix $W_U \in \mathbb{R}^{3 \times 8}$:</p>
 <p>$$
-\mathbf{z} = \mathbf{h} \times W_U 
+\mathbf{z} = \mathbf{h} \times W_U
 $$</p>
-<p>Assume the resulting vector $\mathbf{z}$ evaluates to:
-$$
-\mathbf{z} = \begin{bmatrix} 1.2 & -0.5 & 0.3 & 2.1 & -1.8 & 0.7 & 0.0 & 0.4 \end{bmatrix}
+<p>Evaluating this product against the current weights of $W_U$ yields the $1 \times 8$ logit vector $\mathbf{z}$:</p>
+<p>$$
+\mathbf{z} = \begin{bmatrix} 1.2 & -0.5 & 0.3 & 2.1 & -1.8 & 0.7 & 0.0 & 0.4 \end{bmatrix}_{1 \times 8}
 $$</p>
-<p>This vector $\mathbf{z}$ contains the <strong>logits</strong>. These raw, unbounded geometric scores indicate how strongly the network believes each vocabulary word is the next token.</p>
+<p>The vector $\mathbf{z}$ contains the raw <strong>logits</strong> ($z_0$ through $z_7$), which are unbounded real-valued scores measuring how strongly the network favors each vocabulary word as the next token.</p>
 <h3>Step 4: The Softmax Function</h3>
-<p>To evaluate the network&#39;s performance, these arbitrary logits must be converted into a valid probability distribution where all values are strictly positive and sum to $1.0$. This is achieved mathematically via the <strong>Softmax</strong> function:</p>
+<p>Evaluating prediction accuracy requires converting the unbounded logits $\mathbf{z}$ into a valid probability distribution $\hat{\mathbf{y}}$ whose components are strictly positive and sum to $1.0$. The <strong>Softmax</strong> function performs this normalization across the 0-indexed vocabulary ($j \in \{0, \dots, V-1\}$):</p>
 <p>$$
-\hat{y}_i = \frac{e^{z_i}}{\sum_{j=1}^{V} e^{z_j}}
+\hat{y}_i = \frac{e^{z_i}}{\sum_{j=0}^{V-1} e^{z_j}}
 $$</p>
-<p>The Softmax for index 3 (<code>fox</code>) is calculated as follows:</p>
+<p>Here $\hat{y}_i$ denotes the predicted probability assigned to token $i$, $z_i$ denotes that token&#39;s logit, $e \approx 2.718$ is the base of the natural exponential function, and the denominator sums the exponentiated logits $e^{z_j}$ across all $V = 8$ tokens in the vocabulary.</p>
+<p>Computing the Softmax probability for the target token <code>fox</code> (index <code>3</code>, where $z_3 = 2.1$) proceeds in three steps:</p>
 <ol>
-<li><strong>Exponentiate $z_3$:</strong> 
+<li><strong>Exponentiate the target logit $z_3$:</strong>
 $$ e^{2.1} \approx 8.16 $$</li>
-<li><strong>Exponentiate all logits and sum them:</strong> 
-$$ e^{1.2} + e^{-0.5} + e^{0.3} + e^{2.1} + e^{-1.8} + e^{0.7} + e^{0.0} + e^{0.4} \approx 3.32 + 0.60 + 1.35 + 8.16 + 0.16 + 2.01 + 1.0 + 1.49 = 18.09 $$</li>
-<li><strong>Divide:</strong> 
-$$ \frac{8.16}{18.09} \approx 0.45 $$</li>
-</ol>
-<p>The network predicts a $45\%$ probability that <code>fox</code> is the next word. Applying this operation across all 8 indices yields our predicted probability distribution, $\mathbf{\hat{y}}$.</p>
-<h3>Step 5: The Cross-Entropy Loss</h3>
-<p>Because the embeddings are randomly initialized, a $45\%$ prediction is the result of chance. To mathematically force the network to learn, the exact divergence of this prediction from reality must be quantified.</p>
-<p>The ground truth, $\mathbf{y}$, is that <code>fox</code> (index 3) is definitely the next word. The true probability distribution is a one-hot vector where index 3 is $1.0$, and all other indices are $0$.</p>
-<p>The <strong>Cross-Entropy Loss</strong> calculates the divergence between the predicted distribution ($\mathbf{\hat{y}}$) and the true distribution ($\mathbf{y}$). </p>
-<p>The choice of this specific operation stems from information theory, where its purpose is to mathematically measure &quot;surprise.&quot; The mechanics of the equation break into two parts:</p>
-<ol>
-<li><strong>The Logarithm as Surprise</strong>: Taking the logarithm of the predicted probability ($\log(\hat{y}_i)$) converts a raw percentage into a continuous measurement of surprise. If the network predicts a $99\%$ probability for a word, its surprise is near zero ($\log(0.99) \approx -0.01$). If it predicts a $1\%$ probability, its surprise is massive ($\log(0.01) \approx -4.6$). </li>
-<li><strong>The Summation as Expected Value</strong>: In statistics, the &quot;expected value&quot; of a system is calculated by taking every possible outcome, multiplying it by its true probability, and summing them together. By multiplying the true probability ($y_i$) by the network&#39;s surprise ($\log(\hat{y}_i)$) and summing across the entire vocabulary, the equation calculates the <em>expected surprise</em> of the network.</li>
-</ol>
-<p>By computing this expected surprise across the entire vocabulary space, the total mathematical distance between the network&#39;s holistic belief and reality is measured:</p>
-<p>$$
-L = -\sum_{i=1}^{V} y_i \log(\hat{y}_i)
-$$</p>
-<p>Because the true distribution $\mathbf{y}$ is one-hot, a simplification occurs. For every incorrect word, the true probability $y_i$ is $0$. This causes every single term in the summation to mathematically vanish, except for the one correct word where $y_i = 1.0$.</p>
-<p>Consequently, the massive summation radically collapses into a single term evaluating only the correct answer. This reduced form is known as <strong>Negative Log-Likelihood</strong>:</p>
-<p>$$
-L = -\log(\hat{y}_{true})
-$$</p>
-<p>The conceptual interpretation is straightforward: </p>
-<ul>
-<li><strong>Likelihood</strong>: This is the model&#39;s predicted probability for the correct word (in this case, $0.45$ for <code>fox</code>). The objective is to maximize this value.</li>
-<li><strong>Log</strong>: Taking the natural logarithm of a decimal between $0$ and $1$ yields a negative number (e.g., $\log(0.45) \approx -0.79$). </li>
-<li><strong>Negative</strong>: Multiplication by $-1$ flips this into a positive &quot;loss&quot; scalar. Higher confidence yields lower loss; lower confidence yields higher loss.</li>
-</ul>
-<p>Plugging in our prediction for <code>fox</code>:
+<li><strong>Exponentiate all eight logits and sum the results across the vocabulary:</strong>
 $$
+\begin{aligned}
+\sum_{j=0}^{7} e^{z_j} &= e^{1.2} + e^{-0.5} + e^{0.3} + e^{2.1} + e^{-1.8} + e^{0.7} + e^{0.0} + e^{0.4} \\
+&\approx 3.32 + 0.60 + 1.35 + 8.16 + 0.16 + 2.01 + 1.0 + 1.49 = 18.09
+\end{aligned}
+$$</li>
+<li><strong>Divide the target exponential by the normalization sum:</strong>
+$$ \hat{y}_3 = \frac{8.16}{18.09} \approx 0.45 $$</li>
+</ol>
+<p>The network assigns a $45\%$ probability ($\hat{y}_3 = 0.45$) to <code>fox</code> appearing as the next word. Evaluating this ratio across all eight indices produces the full predicted probability vector $\hat{\mathbf{y}} \in \mathbb{R}^{1 \times 8}$.</p>
+<h3>Step 5: The Cross-Entropy Loss</h3>
+<p>Random weight initialization means this $45\%$ prediction reflects untrained parameter values rather than learned linguistic structure. Driving gradient updates requires a scalar objective function that quantifies the divergence between the predicted distribution $\hat{\mathbf{y}}$ and the ground-truth distribution $\mathbf{y}$.</p>
+<p>The ground-truth label $\mathbf{y} \in \{0, 1\}^{1 \times 8}$ specifies that <code>fox</code> (index <code>3</code>) is the observed next token, forming a one-hot vector with $y_3 = 1.0$ and $y_i = 0$ at every other index.</p>
+<p><strong>Cross-Entropy Loss</strong> measures the divergence between the predicted distribution $\hat{\mathbf{y}}$ and the target distribution $\mathbf{y}$ using two foundational constructs from information theory:</p>
+<ol>
+<li><strong>The Natural Logarithm as Surprise ($\log(\hat{y}_i)$):</strong> Applying the natural logarithm (base $e$) to a predicted probability $\hat{y}_i \in (0, 1]$ maps a raw probability into a continuous measure of surprisal. Assigning a $99\%$ probability to the observed token yields near-zero surprise ($\log(0.99) \approx -0.01$), whereas assigning a $1\%$ probability produces a steep penalty ($\log(0.01) \approx -4.61$).</li>
+<li><strong>The Weighted Summation as Expected Value:</strong> Multiplying each token&#39;s true probability $y_i$ by its log-probability $\log(\hat{y}_i)$ and negating the sum across all $V$ vocabulary entries computes the expected surprisal of the model under the ground-truth distribution:</li>
+</ol>
+<p>$$
+L = -\sum_{i=0}^{V-1} y_i \log(\hat{y}_i)
+$$</p>
+<p>Here $L$ denotes the scalar Cross-Entropy Loss, $y_i \in \{0, 1\}$ denotes the ground-truth probability for token $i$, and $\log(\hat{y}_i)$ denotes the natural logarithm of the model&#39;s predicted probability for token $i$.</p>
+<p>The one-hot structure of the target distribution $\mathbf{y}$ simplifies this summation algebraically. Every incorrect vocabulary entry carries a ground-truth weight of $y_i = 0$, annihilating seven of the eight terms in the sum and leaving only the target index where $y_{\text{true}} = 1.0$.</p>
+<p>Dropping the seven zeroed terms reduces the full summation to a single expression known as <strong>Negative Log-Likelihood</strong>:</p>
+<p>$$
+L = -\log(\hat{y}_{\text{true}})
+$$</p>
+<p>Each component of the Negative Log-Likelihood expression performs a distinct role:</p>
+<ul>
+<li><strong>Likelihood ($\hat{y}_{\text{true}}$):</strong> Extracts the predicted probability assigned to the ground-truth token ($0.45$ for <code>fox</code>), which the training objective seeks to maximize toward $1.0$.</li>
+<li><strong>Natural Logarithm ($\log$):</strong> Maps a probability on $(0, 1)$ to a negative real number ($\log(0.45) \approx -0.79$), penalizing low-confidence predictions non-linearly.</li>
+<li><strong>Negation ($-$):</strong> Multiplies the negative log-probability by $-1$ to produce a positive loss scalar $L \ge 0$ that approaches $0$ as confidence approaches $1.0$.</li>
+</ul>
+<p>Substituting the predicted probability $\hat{y}_3 = 0.45$ for <code>fox</code> yields the loss for this forward pass:</p>
+<p>$$
 L = -\log(0.45) \approx 0.79
 $$</p>
-<p>This scalar $L = 0.79$ represents the absolute error of the forward pass. If the network had predicted a $99\%$ probability ($-\log(0.99)$), the loss would be exponentially near zero. If it had predicted $1\%$ ($-\log(0.01)$), the loss would be massive ($4.6$). </p>
+<p>This scalar $L = 0.79$ quantifies the total prediction error of the forward pass, providing the starting point for the backward pass derived in Chapter 4.</p>
 <h2>The Limit of Static Embeddings: Superposition</h2>
-<p>The fundamental limitation of this architecture is <strong>polysemy</strong> (words with multiple meanings).</p>
-<p>Because $W_E$ is a static matrix, there is exactly one row allocated for the word <code>apple</code>. During training, sentences like <em>&quot;I ate an apple&quot;</em> will mathematically pull this vector toward the fruit cluster. Conversely, sentences like <em>&quot;Apple released a phone&quot;</em> will pull the exact same vector toward the tech cluster. </p>
-<p>Over billions of words, the single vector for <code>apple</code> settles into a state of <strong>superposition</strong>—the mathematical center of mass between its usages. It becomes a noisy, blurred average. </p>
-<p>This static limitation is the exact reason the <strong>Self-Attention</strong> mechanism was invented. In a Transformer, Self-Attention allows the static <code>apple</code> vector to look at the surrounding words in the sequence and dynamically morph itself purely into a tech vector or purely into a fruit vector before the prediction is made. </p>
-<p>The physical adjustment of the vector space via gradient descent, which produces these static baseline vectors in the first place, is the subject of the next chapter.</p>
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p>
+<p>A structural limitation of a static embedding table is <strong>polysemy</strong>: a single word form carrying multiple distinct meanings.</p>
+<p>The static lookup matrix $W_E$ allocates only one row vector for the token <code>apple</code>. Corpus contexts such as <em>&quot;The orchard harvested a ripe apple&quot;</em> pull that single row vector toward agricultural and fruit coordinates, whereas technology contexts such as <em>&quot;Apple released a new laptop&quot;</em> pull the same row vector toward consumer electronics coordinates.</p>
+<p>Across billions of training updates, the single vector for <code>apple</code> converges to a state of <strong>superposition</strong>, resting at the frequency-weighted center of mass between its competing senses.</p>
+<p>Resolving that contextual ambiguity motivates the <strong>Self-Attention</strong> mechanism in the <a href="series-transformers.html">Transformer architecture</a>. Self-Attention enables the static <code>apple</code> vector to attend to surrounding tokens in the active sequence and dynamically shift its representation toward either the fruit subspace or the technology subspace before the final prediction layer.</p>
+<p>Before examining sequence-level contextualization in Chapter 7, Chapters 4 and 5 derive the backpropagation equations that physically adjust the weights of $W_U$ and $W_E$ via gradient descent.</p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/embeddings-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Vector Embeddings Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="embeddings-chapter_02.html" class="pagination-link prev">

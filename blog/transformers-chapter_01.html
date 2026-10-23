@@ -74,6 +74,47 @@
     @media (max-width: 768px) {
       .blog-post table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     }
+
+    /* code-drop: collapsible code block. Markup: details.code-drop > summary > span.code-drop__name + span.code-drop__meta, then a fenced block. */
+    .blog-post details.code-drop { margin: var(--space-lg) 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post details.code-drop > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm); padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; user-select: none; transition: background-color 0.2s ease; }
+    .blog-post details.code-drop[open] > summary { background: var(--rose-gold-glow); }
+    .blog-post details.code-drop > summary::-webkit-details-marker { display: none; }
+    .blog-post details.code-drop > summary::marker { content: ""; }
+    .blog-post details.code-drop > summary::before { content: ""; flex: none; width: 0.45em; height: 0.45em; margin: 0 var(--space-xs); border-right: 2px solid var(--rose-gold); border-bottom: 2px solid var(--rose-gold); transform: rotate(-45deg); transition: transform 0.2s ease; }
+    .blog-post details.code-drop[open] > summary::before { transform: rotate(45deg); }
+    .blog-post details.code-drop > summary:hover { background: var(--rose-gold-subtle); }
+    .blog-post details.code-drop > summary:focus-visible { outline: 2px solid var(--text-accent); outline-offset: -2px; border-radius: var(--radius-md); }
+    .blog-post details.code-drop .code-drop__name { flex: 1 1 16ch; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-primary); }
+    .blog-post details.code-drop .code-drop__meta { margin-left: auto; white-space: nowrap; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-muted); }
+    .blog-post > pre, .blog-post details.code-drop > pre { padding: var(--space-md) var(--space-lg); background: var(--bg-secondary); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .blog-post > pre { margin: var(--space-md) 0 var(--space-lg); border: 1px solid var(--border-medium); border-left: 3px solid var(--rose-gold); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .blog-post details.code-drop > pre { margin: 0; border-top: 1px solid var(--border-medium); }
+    .blog-post > pre > code, .blog-post details.code-drop > pre > code { display: block; padding: 0; background: none; border-radius: 0; font-family: var(--font-mono); font-size: var(--fs-sm); line-height: 1.65; color: var(--text-primary); white-space: pre; }
+    .blog-post ul { list-style: disc; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post ol { list-style: decimal; padding-left: 1.5rem; margin: var(--space-md) 0 var(--space-lg); }
+    .blog-post li { margin-bottom: var(--space-sm); color: var(--text-secondary); line-height: 1.75; }
+    .blog-post li::marker { color: var(--rose-gold); font-weight: var(--fw-semibold); }
+    .blog-post li > strong:first-child { color: var(--text-primary); }
+    @media (prefers-reduced-motion: reduce) {
+      .blog-post details.code-drop > summary, .blog-post details.code-drop > summary::before { transition: none; }
+    }
+    /* table: bordered card with horizontal row dividers and alternating palette shades (excluding borderless .trace-container tables). */
+    .blog-post table:not(.trace-container table) { width: 100%; margin: var(--space-lg) 0; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .blog-post table:not(.trace-container table) thead tr { background: var(--rose-gold-glow); }
+    .blog-post table:not(.trace-container table) th { padding: var(--space-sm) var(--space-md); font-weight: var(--fw-semibold); color: var(--rose-gold-dark); border-bottom: 2px solid var(--border-medium); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+    .blog-post table:not(.trace-container table) tbody tr:nth-child(even) { background: var(--blush-glow); }
+    .blog-post table:not(.trace-container table) td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-medium); color: var(--text-secondary); }
+    .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
+    .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
+    @media (min-width: 769px) {
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .blog-post table:not(.trace-container table) { overflow-x: auto; }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -138,26 +179,32 @@
       border-radius: 0.4em !important;
     }
   }
-</style><!-- SUMMARY: Translating raw text into a rigorous geometric representation requires mapping discrete tokens into orthogonal one-hot vectors. This process mathematically motivates the necessity of the embedding matrix to compress these isolated dimensions into a dense semantic space, enabling the natural inference of conceptual relationships. --><p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p><p>The Preface established that every operation in the Transformer reads from and writes to a central $4 \times 6$ matrix. Bridging the gap between raw text and that geometric representation is the next requirement. Text is inherently abstract. Computers cannot multiply words. Computers multiply numbers. A rigorous mechanical process is needed to translate human language into a mathematical format that a neural network can manipulate.</p>
-<p>This translation happens in three distinct stages. First, the sentence is broken down into discrete pieces called tokens. Second, each token is mapped to a strict geometric location using a one-hot vector. Third, those isolated vectors are projected into a shared, continuous space using an Embedding Matrix. </p>
+</style><!-- SUMMARY: Translating raw text into a rigorous geometric representation requires mapping discrete tokens into orthogonal one-hot vectors. This process mathematically motivates the necessity of the embedding matrix to compress these isolated dimensions into a dense semantic space, enabling the natural inference of conceptual relationships. --><p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p><p>The Preface established that every operation in the Transformer reads from and writes to a central $4 \times 6$ matrix. Bridging the gap between raw text and that geometric representation is the next requirement. Text is inherently abstract. Computers cannot multiply words. Computers multiply numbers. A rigorous mechanical process is needed to translate human language into a mathematical format that a neural network can manipulate.</p>
+<p>This translation executes in three sequential stages:</p>
+<ol>
+<li><strong>Tokenization:</strong> Segment the input string into discrete vocabulary symbols and map each symbol to its integer index.</li>
+<li><strong>One-Hot Encoding:</strong> Convert each integer index into an orthogonal unit vector in $\mathbb{R}^V$ to remove arbitrary index magnitude.</li>
+<li><strong>Embedding Projection:</strong> Multiply the one-hot matrix by a learned embedding matrix $W_E$ to project the isolated basis vectors into a continuous semantic subspace $\mathbb{R}^{d_{\text{model}}}$.</li>
+</ol>
 <h2>The Vocabulary Space and Tokenization</h2>
-<p>The objective is to process the sequence <code>&lt;BOS&gt;</code> <code>i</code> <code>woke</code> <code>up</code>. </p>
-<p>Before processing this sequence, the model needs a predefined universe of concepts to draw from. This universe is the vocabulary. In this example, the vocabulary is restricted to exactly twelve words. </p>
+<p>The objective is to process the sequence <code>&lt;BOS&gt;</code> <code>i</code> <code>woke</code> <code>up</code>.</p>
+<p>Before processing this sequence, the model requires a predefined universe of discrete symbols known as the vocabulary. In this configuration, the vocabulary consists of twelve tokens indexed from <code>0</code> to <code>11</code>:</p>
 <div class="trace-container" style="margin-bottom: 2rem; line-height: 2.2; text-align: left;">
 <span style="font-size: 0.9em;"><b><code>&lt;BOS&gt;</code></b> <b><code>&lt;EOS&gt;</code></b> <b><code>&lt;PAD&gt;</code></b> <b><code>i</code></b> <b><code>we</code></b> <b><code>woke</code></b> <b><code>stayed</code></b> <b><code>up</code></b> <b><code>late</code></b> <b><code>early</code></b> <b><code>today</code></b> <b><code>yesterday</code></b></span>
-</div>
-Tokenization maps raw text to the corresponding integer indices in this vocabulary list. The index acts as a unique identifier for the concept. <p>For this sequence, the mapping is straightforward. 
-The <code>&lt;BOS&gt;</code> token maps to index 0. 
-The word <code>i</code> maps to index 3. 
-The word <code>woke</code> maps to index 5. 
-The word <code>up</code> maps to index 7.</p>
-<p>This yields an array of integers representing the sequence. </p>
+</div><p>Tokenization maps each raw token in the prompt to its integer index in the vocabulary table:</p>
+<ul>
+<li><strong><code>&lt;BOS&gt;</code>:</strong> Maps to vocabulary index <code>0</code>.</li>
+<li><strong><code>i</code>:</strong> Maps to vocabulary index <code>3</code>.</li>
+<li><strong><code>woke</code>:</strong> Maps to vocabulary index <code>5</code>.</li>
+<li><strong><code>up</code>:</strong> Maps to vocabulary index <code>7</code>.</li>
+</ul>
+<p>Collecting these four lookups in sequence order produces the integer index array:</p>
 <p>$$ \text{Sequence Indices} = [0, 3, 5, 7] $$</p>
 <h2>The Geometry of One-Hot Encodings</h2>
-<p>While integers are numbers, their direct use is mathematically problematic in a neural network context. If the integer 5 is fed into the model to represent &quot;woke&quot; and the integer 10 to represent &quot;today&quot;, the model will naturally interpret &quot;today&quot; as being twice as large or twice as important as &quot;woke&quot;. This numerical relationship is entirely arbitrary. The word &quot;today&quot; is not the mathematical double of &quot;woke&quot;. </p>
-<p>This false magnitude must be removed. This is accomplished by translating the integers into one-hot encoded vectors.</p>
-<p>A one-hot vector isolates a concept geometrically. For a vocabulary of size 12, each word becomes a 12-dimensional vector filled with zeros, with a single 1 placed at the vocabulary index. </p>
-<p>Converting the four tokens into one-hot vectors creates a $4 \times 12$ matrix. </p>
+<p>Feeding raw integer indices directly into a neural network introduces an artificial numerical hierarchy. Assigning the integer <code>5</code> to <code>woke</code> and the integer <code>10</code> to <code>today</code> causes linear layers to treat <code>today</code> as twice the scalar magnitude of <code>woke</code>. That numerical ratio is an arbitrary artifact of vocabulary ordering rather than a linguistic property.</p>
+<p>Translating the integer indices into one-hot encoded vectors eliminates this false scalar ordering.</p>
+<p>A one-hot vector isolates a concept geometrically. For a vocabulary of size 12, each word becomes a 12-dimensional vector filled with zeros, with a single <code>1.0</code> placed at the vocabulary index.</p>
+<p>Converting the four tokens into one-hot vectors creates a $4 \times 12$ matrix:</p>
 <p>$$
 X_{\text{one-hot}} = \begin{bmatrix}
 1.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & \dots & 0.0 \\
@@ -166,15 +213,15 @@ X_{\text{one-hot}} = \begin{bmatrix}
 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 1.0 & 0.0 & 0.0 & \dots & 0.0
 \end{bmatrix}
 $$</p>
-<p>By treating each word as an independent axis in a 12-dimensional space, every word remains exactly the same distance from every other word. The vectors are perfectly orthogonal. The word &quot;i&quot; has no mathematical relationship to the word &quot;woke&quot;. The false magnitude problem is eliminated and replaced with perfect neutrality.</p>
+<p>Treating each vocabulary entry as an independent coordinate axis in $\mathbb{R}^{12}$ places every distinct token pair at an identical Euclidean distance of $\sqrt{2}$. The resulting vectors are mutually orthogonal. The token <code>i</code> shares zero inner-product similarity with the token <code>woke</code>, replacing arbitrary index magnitude with geometric neutrality.</p>
 <h2>The Problem with Neutrality</h2>
-<p>Perfect neutrality creates a new problem. The word &quot;i&quot; is highly related to the word &quot;we&quot;, and the word &quot;late&quot; is highly related to the word &quot;early&quot;. If the vectors remain orthogonal, the model cannot infer that these concepts are similar. It is forced to learn the rules of grammar independently for every single word. </p>
-<p>Furthermore, these one-hot vectors are 12 dimensions wide. In a production model like GPT-4, the vocabulary size frequently exceeds 100,000. Maintaining a matrix of that width at every stage of the network is computationally infeasible. </p>
-<p>The perfectly isolated 12-dimensional vectors must be compressed into a denser, richer space where words with similar meanings are physically grouped together. This dense space represents the $d_{model}$ dimension. In this architecture, this width is 6. </p>
+<p>Complete orthogonality introduces a severe representational bottleneck. The pronoun <code>i</code> shares grammatical structure with <code>we</code>, and the temporal modifier <code>late</code> shares semantic structure with <code>early</code>. Orthogonal one-hot vectors erase all pairwise similarity, forcing the network to learn syntactic rules independently for every vocabulary item.</p>
+<p>One-hot representations also scale poorly with vocabulary size. Production language models routinely operate over vocabularies exceeding 100,000 subword tokens, making a matrix of that width computationally intractable across deep layers.</p>
+<p>The isolated 12-dimensional vectors must be projected into a denser, lower-dimensional subspace where tokens with related meanings occupy neighboring coordinates. This dense subspace corresponds to the model dimension $d_{\text{model}} = 6$.</p>
 <h2>The Embedding Matrix</h2>
-<p>This compression is achieved using the Embedding Matrix, denoted as $W_E$. This matrix serves as a lookup table. It maps every 12-dimensional word to a specific 6-dimensional location. The shape of $W_E$ must therefore be $12 \times 6$. </p>
-<p>When a neural network is initialized, this matrix is filled with random numbers. Over thousands of training iterations, the model slowly adjusts these numbers via backpropagation. It physically moves the coordinates of similar words closer together to minimize prediction error.</p>
-<p>To demonstrate these calculations manually, the training phase is bypassed and a $12 \times 6$ embedding matrix is explicitly designed to show these semantic clusters. </p>
+<p>This compression is achieved using the Embedding Matrix, denoted as $W_E$. This matrix serves as a learnable lookup table that maps every 12-dimensional one-hot vector to a 6-dimensional coordinate vector, giving $W_E$ a shape of $12 \times 6$.</p>
+<p>Network initialization populates $W_E$ with small random values. Over thousands of training iterations, backpropagation updates these coordinates and pulls semantically related tokens into neighboring regions of the vector space to minimize prediction error.</p>
+<p>To demonstrate these calculations manually, the training phase is bypassed and a $12 \times 6$ embedding matrix is explicitly designed to show these semantic clusters:</p>
 <p>$$
 W_E = \begin{bmatrix}
  0.1 &  0.0 &  0.0 &  0.0 &  0.0 &  0.0 \\
@@ -191,17 +238,17 @@ W_E = \begin{bmatrix}
  0.0 &  0.0 & -0.2 & -0.2 &  0.7 & -0.4
 \end{bmatrix}
 $$</p>
-<p>The rows for the pronouns, found at indices 3 and 4 representing &quot;i&quot; and &quot;we&quot;, share high positive values in the second column. The rows for the temporal adverbs, found at indices 8, 9, 10, and 11 representing &quot;late&quot;, &quot;early&quot;, &quot;today&quot;, and &quot;yesterday&quot;, share high positive values in the fifth column. </p>
-<p>The Embedding Matrix acts as a coordinate map of meaning rather than just a list of numbers. By pushing related concepts into similar numerical spaces, the model learns abstract rules. If a rule is learned regarding the word &quot;i&quot;, that rule automatically applies to the word &quot;we&quot;, simply because their vectors are positioned next to each other.</p>
+<p>The pronoun rows at indices 3 and 4 (<code>i</code> and <code>we</code>) share large positive values in the second column. The temporal modifier rows at indices 8, 9, 10, and 11 (<code>late</code>, <code>early</code>, <code>today</code>, and <code>yesterday</code>) share large positive values in the fifth column.</p>
+<p>The Embedding Matrix functions as a continuous coordinate map of meaning. Positioning related concepts in neighboring regions of the subspace allows downstream linear layers to generalize across clusters. A grammatical transformation learned for the coordinate region containing <code>i</code> transfers directly to <code>we</code> because both vectors occupy adjacent coordinates.</p>
 <h2>Generating the Central Tensor</h2>
-<p>To transform the neutral one-hot vectors into this rich geometric space, a standard matrix multiplication is performed. The $4 \times 12$ input matrix is multiplied by the $12 \times 6$ embedding matrix. </p>
+<p>To transform the neutral one-hot vectors into this rich geometric space, a standard matrix multiplication is performed. The $4 \times 12$ input matrix is multiplied by the $12 \times 6$ embedding matrix:</p>
 <p>$$ X = X_{\text{one-hot}} \times W_E $$</p>
 <pre><code class="language-mermaid">graph LR
     A(&quot;X_one-hot (4 x 12)&quot;) --&gt;|Matrix Multiplication| B(&quot;W_E (12 x 6)&quot;)
     B --&gt; C(&quot;X (4 x 6)&quot;)
 </code></pre>
-<p>Due to the nature of matrix multiplication, multiplying by a one-hot vector simply extracts the corresponding row from the embedding matrix. </p>
-<p>The final tensor $X$ takes the following form.</p>
+<p>Multiplying a one-hot row vector by $W_E$ selects the single row of the embedding matrix corresponding to the active token index.</p>
+<p>The resulting $4 \times 6$ embedding matrix $X$ takes the following form:</p>
 <p>$$
 X = \begin{bmatrix}
  0.1 &  0.0 &  0.0 &  0.0 &  0.0 &  0.0 \\
@@ -210,12 +257,14 @@ X = \begin{bmatrix}
  0.0 & -0.1 &  0.4 &  0.9 & -0.2 &  0.0
 \end{bmatrix}
 $$</p>
-<p>Row 1 is the coordinate vector for <code>&lt;BOS&gt;</code>.
-Row 2 is the coordinate vector for <code>i</code>.
-Row 3 is the coordinate vector for <code>woke</code>.
-Row 4 is the coordinate vector for <code>up</code>.</p>
-<p>The text is now successfully translated into the central $4 \times 6$ tensor that moves along the residual stream. The subsequent section examines a critical flaw in this representation and mathematically proves why Transformers require positional encoding to understand sequential order.</p>
-<p><em>Prefer to read this seamlessly offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized 100-page Transformer Ebook here.</a></em></p>
+<ul>
+<li><strong>Row 1 (<code>[0.1, 0.0, 0.0, 0.0, 0.0, 0.0]</code>):</strong> Coordinate vector for <code>&lt;BOS&gt;</code> (vocabulary index <code>0</code>).</li>
+<li><strong>Row 2 (<code>[0.0, 0.8, -0.1, 0.2, 0.0, 0.5]</code>):</strong> Coordinate vector for <code>i</code> (vocabulary index <code>3</code>).</li>
+<li><strong>Row 3 (<code>[0.0, -0.2, 0.9, 0.1, -0.4, 0.1]</code>):</strong> Coordinate vector for <code>woke</code> (vocabulary index <code>5</code>).</li>
+<li><strong>Row 4 (<code>[0.0, -0.1, 0.4, 0.9, -0.2, 0.0]</code>):</strong> Coordinate vector for <code>up</code> (vocabulary index <code>7</code>).</li>
+</ul>
+<p>The text is now translated into the central $4 \times 6$ tensor that moves along the residual stream. The subsequent section examines a structural limitation in this representation and demonstrates why Transformers require positional encoding to represent sequential order.</p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/transformers-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Transformer Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="transformers-preface.html" class="pagination-link prev">
