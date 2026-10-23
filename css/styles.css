@@ -27,10 +27,10 @@
   --peach-light: #f5dece;
   --peach-glow: rgba(232, 184, 150, 0.14);
 
-  /* Backgrounds */
-  --bg-primary: rgba(253, 248, 244, 0.25);
-  --bg-secondary: rgba(248, 241, 234, 0.45);
-  --bg-tertiary: rgba(245, 235, 227, 0.25);
+  /* Backgrounds — pale rose-blush palette complementing the GPU chip graphic */
+  --bg-primary: rgba(253, 245, 247, 0.25);
+  --bg-secondary: rgba(232, 180, 184, 0.08);
+  --bg-tertiary: rgba(245, 223, 224, 0.25);
   --bg-card: rgba(255, 255, 255, 0.35);
 
   /* Text — dark metallic rose gold */
@@ -181,7 +181,7 @@ body {
   font-weight: var(--fw-regular);
   line-height: var(--lh-normal);
   color: var(--text-primary);
-  background-color: rgba(253, 248, 244, 0.15);
+  background-color: rgba(253, 245, 247, 0.15);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -273,7 +273,7 @@ ul, ol { list-style: none; }
 }
 
 .nav.scrolled {
-  background: rgba(253, 248, 244, 0.65);
+  background: rgba(253, 245, 247, 0.65);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   box-shadow: 0 1px 0 var(--border-subtle);
@@ -397,21 +397,21 @@ main, .nav, .footer {
   inset: 0;
   z-index: 0;
   background:
-    radial-gradient(ellipse 50% 55% at 70% 20%, rgba(201, 169, 110, 0.12), transparent),
+    radial-gradient(ellipse 50% 55% at 70% 20%, rgba(183, 110, 121, 0.10), transparent),
     radial-gradient(ellipse 55% 50% at 30% 75%, rgba(232, 180, 184, 0.12), transparent),
-    rgba(253, 248, 244, 0.18);
+    rgba(253, 245, 247, 0.18);
 }
 
 .samples, .skills {
-  background: rgba(248, 241, 234, 0.35);
+  background: rgba(232, 180, 184, 0.08);
 }
 
 .about, .case-studies, .contact {
-  background: rgba(253, 248, 244, 0.18);
+  background: rgba(253, 245, 247, 0.18);
 }
 
 .footer {
-  background: rgba(253, 248, 244, 0.30);
+  background: rgba(253, 245, 247, 0.30);
 }
 
 /* Cards & all bg-card elements: frosted glass */

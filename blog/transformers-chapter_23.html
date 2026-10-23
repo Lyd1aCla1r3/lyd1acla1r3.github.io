@@ -62,7 +62,7 @@
     .blog-post p { line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1.05rem; }
     .blog-post ul, .blog-post ol { margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem; }
     .blog-post li { margin-bottom: 0.5rem; }
-    .blog-post blockquote { border-left: 4px solid var(--gold); margin: 2rem 0; padding: 1rem 1.5rem; background: rgba(201, 169, 110, 0.05); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+    .blog-post blockquote { border-left: 4px solid var(--rose-gold); margin: 2rem 0; padding: 1rem 1.5rem; background: var(--bg-secondary); font-style: italic; color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
     .blog-post code { background: rgba(0,0,0,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 0.9em; color: var(--rose-gold-dark); }
     .blog-post table { width: auto; margin: var(--space-2xl) 0; border-collapse: collapse; text-align: left; }
     .blog-post th, .blog-post td { padding: 8px 16px; border: none; }
@@ -109,8 +109,10 @@
     .blog-post table:not(.trace-container table) td:first-child { font-weight: var(--fw-medium); color: var(--text-primary); }
     .blog-post table:not(.trace-container table) tbody tr:last-child td { border-bottom: none; }
     @media (min-width: 769px) {
-      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child,
-      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child { white-space: nowrap; }
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child:nth-last-child(2),
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child:nth-last-child(2) { width: 32%; max-width: 240px; }
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) th:first-child:not(:nth-last-child(2)),
+      .blog-post:not([class*="series-"]) table:not(.trace-container table) td:first-child:not(:nth-last-child(2)) { max-width: 220px; }
     }
     @media (max-width: 768px) {
       .blog-post table:not(.trace-container table) { overflow-x: auto; }
