@@ -174,7 +174,7 @@ postsData.sort((a, b) => {
     if (a.seriesName !== b.seriesName) {
         if (!a.seriesName) return 1;
         if (!b.seriesName) return -1;
-        const seriesOrder = { tokenization: 0, embeddings: 1, 'positional-encoding': 2, transformers: 3, 'ai-tooling': 4, 'mixture-of-experts': 5, 'signal-integrity': 6 };
+        const seriesOrder = { 'signal-integrity': 0, tokenization: 1, embeddings: 2, 'positional-encoding': 3, transformers: 4, 'mixture-of-experts': 5, 'ai-tooling': 6 };
         const aOrder = seriesOrder[a.seriesName] ?? 99;
         const bOrder = seriesOrder[b.seriesName] ?? 99;
         return aOrder - bOrder;
@@ -291,21 +291,25 @@ if (posts.length > 0) {
        seriesHtml = '<p style="text-align: center; color: var(--text-muted); font-style: italic;">No series available yet.</p>';
     } else {
        for (const [sName, sPosts] of Object.entries(seriesGroups)) {
-          const seriesTitle = sName.split('-').map(word => word.toLowerCase() === 'ai' ? 'AI' : word.charAt(0).toUpperCase() + word.slice(1)).join(' ') + (sName === 'signal-integrity' ? ' (Advanced Edition)' : '');
+          const seriesTitle = sName.split('-').map(word => {
+              if (word.toLowerCase() === 'ai') return 'AI';
+              if (word.toLowerCase() === 'of') return 'of';
+              return word.charAt(0).toUpperCase() + word.slice(1);
+          }).join(' ') + (sName === 'signal-integrity' ? ' (Advanced Edition)' : '');
           
           let seriesDesc = `A sequential exploration of ${seriesTitle}.`;
           if (sName === 'transformers') {
-              seriesDesc = "A geometric deconstruction of the Decoder-only Transformer architecture. This complete series builds the model from the ground up, moving from the vocabulary embedding matrix through the multi-head attention mechanism and residual streams, terminating in the mathematically precise calculation of the cross-entropy loss function.";
+              seriesDesc = "A geometric deconstruction of the Decoder-only Transformer architecture. This complete series builds the model from the ground up, moving from the vocabulary embedding matrix through the multi-head attention mechanism and residual streams, terminating in the mathematical calculation of the cross-entropy loss function.";
           } else if (sName === 'tokenization') {
-              seriesDesc = "A step-by-step unrolling of the Byte Pair Encoding algorithm. This collection traces the deterministic compression of character-level data into semantic subword units, proving mathematically how the statistical distribution of language inherently generates structural linguistic features before reaching the neural network.";
+              seriesDesc = "A step-by-step unrolling of the Byte Pair Encoding algorithm. This collection traces the deterministic compression of character-level data into semantic subword units, proving mathematically how the statistical distribution of language generates structural linguistic features before reaching the neural network.";
           } else if (sName === 'embeddings') {
-              seriesDesc = "A complete derivation of end-to-end learned embeddings. This series traces the mathematical journey from discrete token IDs through one-hot encoding, random initialization in high-dimensional space, the forward pass and cross-entropy loss, full backpropagation through both weight matrices, and the emergent semantic geometry that arises from gradient descent at scale.";
+              seriesDesc = "A complete derivation of end-to-end learned embeddings. This series traces the mathematical progression from discrete token IDs through one-hot encoding, random initialization in high-dimensional space, the forward pass and cross-entropy loss, full backpropagation through both weight matrices, and the emergent semantic geometry that arises from gradient descent at scale.";
           } else if (sName === 'positional-encoding') {
-              seriesDesc = "A first-principles derivation of positional encoding mechanisms for sequence-aware neural architectures. This series traces the mathematical journey from the order-agnostic embedding tensor through the historical sinusoidal formula, element-wise injection, the query-key dot-product framework, and the full derivation of Rotary Position Embeddings (RoPE), the mechanism used in every frontier language model.";
+              seriesDesc = "A first-principles derivation of positional encoding mechanisms for sequence-aware neural architectures. This series traces the mathematical progression from the order-agnostic embedding tensor through the historical sinusoidal formula, element-wise injection, the query-key dot-product framework, and the full derivation of Rotary Position Embeddings (RoPE), the mechanism used in modern language models.";
           } else if (sName === 'ai-tooling') {
               seriesDesc = "A structural mapping of the agentic AI ecosystem. This series categorizes infrastructure components from model routers and vector databases through orchestration frameworks and evaluation platforms, tracing how each layer connects to the coding agents that drive AI-augmented development workflows.";
           } else if (sName === 'mixture-of-experts') {
-              seriesDesc = "A first-principles deconstruction of sparse Mixture of Experts architectures. This series bridges from the dense feed-forward network to dynamic top-k routing, exploring expert collapse, load balancing, capacity limits, and the parameter-compute decoupling that defines frontier models like Mixtral and DeepSeek-V3.";
+              seriesDesc = "A first-principles deconstruction of sparse Mixture of Experts architectures. This series bridges from the dense feed-forward network to dynamic top-k routing, examining expert collapse, load balancing, capacity limits, and the parameter-compute decoupling that defines sparse frontier models.";
           } else if (sName === 'signal-integrity') {
               seriesDesc = "A first-principles exploration of high-speed digital systems, tracing the physics of electromagnetic wave propagation through frequency-dependent loss mechanisms, jitter decomposition, equalization architectures (CTLE/DFE/FFE), the complete SerDes link budget, and coherent optical transmission physics.";
           }
@@ -498,30 +502,30 @@ if (posts.length > 0) {
 
     const blogListHtml = `
         <div class="blog-tabs">
-            <input type="radio" id="tab-perspectives" name="blog-tabs" checked>
-            <label for="tab-perspectives" class="tab-label">Perspectives</label>
-            
-            <input type="radio" id="tab-series" name="blog-tabs">
+            <input type="radio" id="tab-series" name="blog-tabs" checked>
             <label for="tab-series" class="tab-label">Series</label>
-            
-            <input type="radio" id="tab-methodology" name="blog-tabs">
-            <label for="tab-methodology" class="tab-label">Validation & Benchmarks</label>
-            
+
             <input type="radio" id="tab-guides" name="blog-tabs">
             <label for="tab-guides" class="tab-label">Guides</label>
+
+            <input type="radio" id="tab-methodology" name="blog-tabs">
+            <label for="tab-methodology" class="tab-label">Validation & Benchmarks</label>
+
+            <input type="radio" id="tab-perspectives" name="blog-tabs">
+            <label for="tab-perspectives" class="tab-label">Perspectives</label>
             
             <div class="tab-content" id="content-perspectives">
-                <p class="tab-desc">Observations on the evolving landscape of technical enablement, exploring how architectural shifts and emerging tools influence the craft of documentation.</p>
+                <p class="tab-desc">Architectural analyses and mathematical walkthroughs examining how computational workloads, training mechanics, and automation patterns shape modern engineering workflows.</p>
                 ${perspectivesHtml}
             </div>
             
             <div class="tab-content" id="content-series">
-                <p class="tab-desc">Sequential explorations born from personal curiosity. These collections document my process of deconstructing complex systems and sharing the resulting insights.</p>
+                <p class="tab-desc">Sequential explorations born from personal curiosity. These collections document my process of deconstructing complex systems from first principles and sharing the resulting insights.</p>
                 ${seriesHtml}
             </div>
             
             <div class="tab-content" id="content-methodology">
-                <p class="tab-desc">Empirical investigations designed to resolve complex architectural questions through rigorous data analysis. Every benchmark is supported by a public repository so you can clone the infrastructure, run the tests, and independently reproduce the findings.</p>
+                <p class="tab-desc">Empirical investigations designed to resolve complex architectural questions through rigorous data analysis. Every benchmark is supported by a public repository so engineers can clone the infrastructure, run the tests, and independently reproduce the findings.</p>
                 ${methodologyHtml}
             </div>
             

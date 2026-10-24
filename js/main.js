@@ -1,5 +1,5 @@
 /* ==========================================================================
-   LYDIA PEDERSEN — Portfolio
+   LYDIA PEDERSEN: Portfolio
    Chip (bottom-right, facing upper-left)
      → dense cloud of 1s/0s (big→small, no lines)
        → 3D hex node (isometric, same plane as chip)
@@ -102,10 +102,10 @@
   window.addEventListener('resize', calcDiag);
 
   /* ==================================================================
-     TOKENS — pre-split sentence into ~3-4 char chunks
+     TOKENS: pre-split sentence into ~3-4 char chunks
      ================================================================== */
 
-  var sentence = 'using agentic AI to transform raw code into polished developer documentation and fully automate the developer experience';
+  var sentence = 'aligning emerging compute workloads with physical layer validation signal integrity and deterministic systems architecture';
   var tokens = [];
   (function buildTokens() {
     var ws = sentence.split(' ');
@@ -283,18 +283,18 @@
     ctx.textBaseline = 'middle';
     ctx.shadowColor = 'rgba(185, 115, 130, 0.2)';
     ctx.shadowBlur = 5;
-    ctx.fillText('PIPELINE', nx, ny - 6);
+    ctx.fillText('SYSTEMS', nx, ny - 6);
     ctx.font = '500 10px "JetBrains Mono", monospace';
     ctx.fillStyle = GD + (0.4 * pulse) + ')';
-    ctx.fillText('ORCHESTRATOR', nx, ny + 11);
+    ctx.fillText('ARCHITECTURE', nx, ny + 11);
     ctx.shadowBlur = 0;
 
     // Stage nodes
     var stages = [
-      { label: 'DOC WRITER', angle: -2.4 },
-      { label: 'QA ENGINE',  angle: -0.8 },
-      { label: 'LINK GOV',   angle: 0.7 },
-      { label: 'ANALYTICS',  angle: 2.2 }
+      { label: 'SIGNAL INTEGRITY', angle: -2.4 },
+      { label: 'SERDES / PAM4',    angle: -0.8 },
+      { label: 'AI PIPELINES',     angle: 0.7 },
+      { label: 'COMPLIANCE',       angle: 2.2 }
     ];
     for (var i = 0; i < stages.length; i++) {
       var st = stages[i];

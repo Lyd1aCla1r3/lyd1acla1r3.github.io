@@ -1,6 +1,6 @@
 # AI for Code vs. Documentation
 
-<!-- SUMMARY: AI-assisted software development accelerates code throughput far faster than documentation tooling can scale. Elevating documentation to a first-class engineering artifact requires governed agentic workflows paired with human-in-the-loop editorial judgment. -->
+<!-- SUMMARY: AI-assisted software development accelerates code throughput far faster than documentation tooling can scale. Governed agentic workflows paired with human-in-the-loop editorial judgment elevate documentation to a first-class engineering artifact. -->
 
 Engineering organizations that recognize the operational value of clear documentation hold a distinct structural advantage. Industry expectations increasingly assume that engineering capacity scales in direct proportion to the sophistication of coding agents, yet documentation tooling and editorial workflows were never designed to scale at that rate.
 
