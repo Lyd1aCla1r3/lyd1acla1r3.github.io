@@ -105,7 +105,7 @@
      TOKENS: pre-split sentence into ~3-4 char chunks
      ================================================================== */
 
-  var sentence = 'aligning emerging compute workloads with physical layer validation signal integrity and deterministic systems architecture';
+  var sentence = 'aligning compute workloads with physical layer validation signal integrity and deterministic systems architecture';
   var tokens = [];
   (function buildTokens() {
     var ws = sentence.split(' ');
