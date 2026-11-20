@@ -310,10 +310,6 @@ def build_volume(vol):
                 flags=re.MULTILINE,
             )
 
-            # Colon-context sticking (prevent page breaks between intro text and math/code)
-            content = re.sub(r'(:)\n+(\s*```)', r'\1\n<div style="page-break-after: avoid;"></div>\n\n\2', content)
-            content = re.sub(r'(:)\n+(\s*[$]{2})', r'\1\n<div style="page-break-after: avoid;"></div>\n\n\2', content)
-
             # Inline math + punctuation sticking
             content = re.sub(
                 r'(\x24[^\x24\n]+?\x24)([.,;:)\]])',
@@ -321,14 +317,60 @@ def build_volume(vol):
                 content,
             )
 
-            # Diagram orphan prevention
+            # Prevent orphaned ##/###/#### headings, orphaned colon-intro lines before equations/code,
+            # and orphaned intro paragraphs before Mermaid diagrams using atomic break-inside wrappers
             blocks = content.split('\n\n')
-            for i in range(len(blocks)):
-                if '```mermaid' in blocks[i] and i > 0:
-                    if not blocks[i - 1].strip().startswith(('<', '#', '```')):
-                        blocks[i - 1] = '<div style="page-break-inside: avoid;">\n\n' + blocks[i - 1]
-                        blocks[i] = blocks[i] + '\n\n</div>'
-            content = '\n\n'.join(blocks)
+            grouped_blocks = []
+            idx = 0
+            while idx < len(blocks):
+                stripped = blocks[idx].strip()
+                if re.match(r'^#{2,4}\s+', stripped):
+                    end = idx + 1
+                    while end < len(blocks) and re.match(r'^#{2,4}\s+', blocks[end].strip()):
+                        end += 1
+                    group_end = end
+                    if group_end < len(blocks) and not blocks[group_end].strip().startswith('<div style="page-break-before:'):
+                        first_body = blocks[group_end].strip()
+                        group_end += 1
+                        if group_end < len(blocks):
+                            next_blk = blocks[group_end].strip()
+                            if '```mermaid' in next_blk or (
+                                first_body.endswith(':')
+                                and (next_blk.startswith('$$') or (next_blk.startswith('```') and len(next_blk.splitlines()) <= 20))
+                            ):
+                                group_end += 1
+                    grouped_blocks.append(
+                        '<div class="heading-keep">\n\n'
+                        + '\n\n'.join(blocks[idx:group_end])
+                        + '\n\n</div>'
+                    )
+                    idx = group_end
+                elif (
+                    idx + 1 < len(blocks)
+                    and not stripped.startswith(('<', '#', '```', '$$', '|'))
+                    and (
+                        '```mermaid' in blocks[idx + 1]
+                        or (
+                            stripped.endswith(':')
+                            and (
+                                blocks[idx + 1].strip().startswith('$$')
+                                or (blocks[idx + 1].strip().startswith('```') and len(blocks[idx + 1].splitlines()) <= 20)
+                            )
+                        )
+                    )
+                ):
+                    grouped_blocks.append(
+                        '<div class="heading-keep">\n\n'
+                        + blocks[idx]
+                        + '\n\n'
+                        + blocks[idx + 1]
+                        + '\n\n</div>'
+                    )
+                    idx += 2
+                else:
+                    grouped_blocks.append(blocks[idx])
+                    idx += 1
+            content = '\n\n'.join(grouped_blocks)
 
             content_bodies.append(content)
 
@@ -345,12 +387,35 @@ def build_volume(vol):
 
         style_tail = """
 <style>
+h4 {
+  color: var(--secondary-color);
+  font-size: 1.05em;
+  font-weight: 600;
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+.heading-keep {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
 .katex-display {
   font-size: 0.9em !important;
 }
 mjx-container[display="true"] {
   font-size: 95% !important;
   overflow-x: hidden !important;
+}
+@media print {
+  h1, h2, h3, h4 {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+  .heading-keep {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
 }
 </style>
 """
@@ -379,6 +444,19 @@ mjx-container[display="true"] {
         if cur_slice:
             slices.append(cur_slice)
 
+        with open(audit_widths, 'r', encoding='utf-8') as af:
+            audit_widths_esm = (
+                af.read()
+                .replace(
+                    "puppeteer.launch({ headless: 'new' })",
+                    "puppeteer.launch({ headless: 'new', protocolTimeout: 600000 })",
+                )
+                .replace(
+                    "{ waitUntil: 'networkidle0' }",
+                    "{ waitUntil: 'load', timeout: 0 }",
+                )
+            )
+
         for s_idx, s_blocks in enumerate(slices, 1):
             slice_content = '\n\n'.join(s_blocks) + style_tail
             with open(body_audit_file, 'w', encoding='utf-8') as f:
@@ -386,11 +464,12 @@ mjx-container[display="true"] {
             label = f"{vol['key']} slice {s_idx}/{len(slices)}"
             print(f"  Running audit_widths.mjs on {label}...")
             audit_res = subprocess.run(
-                ['node', audit_widths, body_audit_file],
+                ['node', '--input-type=module', '-', body_audit_file],
+                input=audit_widths_esm,
                 cwd=scripts_dir,
                 capture_output=True,
                 text=True,
-                timeout=180,
+                timeout=300,
             )
             last_line = audit_res.stdout.strip().splitlines()[-1] if audit_res.stdout.strip() else ''
             print(f"    -> {last_line}")
