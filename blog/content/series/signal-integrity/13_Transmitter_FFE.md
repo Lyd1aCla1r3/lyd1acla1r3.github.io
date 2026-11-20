@@ -2,7 +2,7 @@
 
 <!-- SUMMARY: Channel dispersion spreads each transmitted pulse into neighboring unit intervals. A three-tap finite impulse response (FIR) transmitter filter shapes the launched spectrum by attenuating low-frequency runs relative to high-frequency transitions, cancelling pre-cursor and post-cursor intersymbol interference within a fixed peak-voltage swing. -->
 
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>
 
 [Chapter 10: Jitter Decomposition and Measurement](10_Jitter_Decomposition_and_Measurement.md) ends with a condition for failure: the eye is lost once the interfering cursors together are as large as the main cursor, and the same cursor sum sets the timing shift of every edge. Those cursors originate in the causal low-pass dispersion of the channel, which [Chapter 5: Skin Effect and Dielectric Loss](05_Skin_Effect_and_Dielectric_Loss.md) derives, and the size of that loss is the insertion loss that [Chapter 8: S-Parameters and Vector Network Analysis](08_S_Parameters_and_VNA.md) defines. This chapter describes the first remedy, which is applied at the transmitter before the signal enters the channel.
 
@@ -50,11 +50,17 @@ Equalization of a low-pass channel requires the filter to have a lower gain at D
 
 ### Normalization and the Peak Swing
 
-A transmitter has a fixed maximum output swing, set by its supply and its output stage, and the filter output must not exceed it. The largest possible output of the filter occurs when each tap multiplies a bit of the same sign as the tap, which gives $\max |x_n| = |c_{-1}| + |c_0| + |c_1|$. A filter with $c_{-1} = c_1 = -0.25$ and $c_0 = 1.0$ would reach $1.5$ times the amplitude of a single bit, and the output stage cannot supply it. The taps are therefore normalized so that
+A transmitter has a fixed maximum output swing, set by its supply and its output stage, and the filter output must not exceed it. The largest possible output of the filter occurs when each tap multiplies a bit of the same sign as the tap, yielding $\max |x_n| = |c_{-1}| + |c_0| + |c_1|$. An unnormalized symmetric filter exceeds the single-bit swing limit:
+
+$$c_{-1} = c_1 = -0.25, \qquad c_0 = 1.0 \quad\Longrightarrow\quad \max |x_n| = 1.5$$
+
+The output stage cannot supply 1.5 times the full-scale amplitude, so the taps are normalized to unit peak magnitude:
 
 $$|c_{-1}| + |c_0| + |c_1| = 1$$
 
-which makes the largest output equal to the peak swing. With the neighbor taps negative and the main tap positive, the Nyquist gain becomes $H_{Nyq} = c_0 + |c_{-1}| + |c_1| = 1$ and the DC gain becomes $H_{DC} = c_0 - |c_{-1}| - |c_1| = 1 - 2\left(|c_{-1}| + |c_1|\right)$.
+That constraint sets the largest output equal to the peak swing. With negative neighbor taps and a positive main tap, the Nyquist gain and the DC gain evaluate to:
+
+$$H_{Nyq} = c_0 + |c_{-1}| + |c_1| = 1, \qquad H_{DC} = c_0 - |c_{-1}| - |c_1| = 1 - 2\left(|c_{-1}| + |c_1|\right)$$
 
 The normalization shows what the filter does. The alternating pattern, which has the highest amplitude demand, is transmitted at the full peak swing, and the long runs are transmitted at the lower level $H_{DC}$. The equalization consists of reducing the low-frequency content relative to the high-frequency content, and the high-frequency content is not increased: it is at the maximum already.
 
@@ -62,7 +68,11 @@ Terms such as pre-emphasis (a boost of the transitions) and de-emphasis (a reduc
 
 ### Time-Domain View: Neighbors Set the Level
 
-The transfer function describes the same behavior as a set of rules about neighbors. Take the symmetric filter $c_{-1} = c_1 = -1/6$ and $c_0 = 2/3$, which is the filter $(-0.25, 1.0, -0.25)$ normalized by the sum of the magnitudes, 1.5. Evaluate the output of the middle bit for the four patterns of its neighbors, with the middle bit equal to $+1$:
+The transfer function describes the same behavior as a set of rules about neighbors. Normalizing the $(-0.25, 1.0, -0.25)$ filter by its magnitude sum of 1.5 gives the symmetric tap weights:
+
+$$c_{-1} = c_1 = -\frac{1}{6}, \qquad c_0 = \frac{2}{3}$$
+
+Evaluate the output of the middle bit for the four patterns of its neighbors, with the middle bit equal to $+1$:
 
 | Neighbor Pattern (`b_{n-1}, b_n, b_{n+1}`) | Normalized Output (`x_n`) | Role of the Bit |
 |:---:|:---:|:---|
@@ -122,7 +132,11 @@ The pre-cursor and post-cursor taps have different sizes in nearly every channel
 
 The pre-cursor consists only of the part of the leading edge that falls in the previous unit interval, and the post-cursors collect the tail, so the first post-cursor is several times larger than the pre-cursor and the tap that cancels it is correspondingly larger. The explanation is the shape of a causal low-pass response, and it needs no mechanism that favors one polarity of the transition.
 
-An asymmetric filter has a phase term. With $c_{-1} \neq c_1$ the imaginary part of $H(e^{j\theta})$ is $(c_{-1} - c_1)\sin\theta$, which is nonzero between DC and the Nyquist frequency, so the filter also delays different frequencies by different amounts. The filter in the example has $H_{DC} = 0.6 - 0.1 - 0.3 = 0.2$ and $H_{Nyq} = 0.6 + 0.1 + 0.3 = 1.0$, a de-emphasis of $20\log_{10}(0.2) = -13.98$ dB, and at half the Nyquist frequency ($\theta = \pi/2$) it has $H = 0.6 + 0.2j$ with magnitude 0.632.
+An asymmetric filter has a phase term. With $c_{-1} \neq c_1$ the imaginary part of $H(e^{j\theta})$ is $(c_{-1} - c_1)\sin\theta$, which is nonzero between DC and the Nyquist frequency, so the filter also delays different frequencies by different amounts. For the $(c_{-1}, c_0, c_1) = (-0.1, 0.6, -0.3)$ example, the endpoint gains evaluate to:
+
+$$H_{DC} = 0.6 - 0.1 - 0.3 = 0.2, \qquad H_{Nyq} = 0.6 + 0.1 + 0.3 = 1.0$$
+
+That ratio corresponds to $20\log_{10}(0.2) = -13.98$ dB of de-emphasis, and at half the Nyquist frequency ($\theta = \pi/2$) the transfer function evaluates to $H = 0.6 + 0.2j$ with magnitude 0.632.
 
 The output levels for the four neighbor patterns of the middle bit $+1$ are 0.2 (a run), 0.4 (the last bit before a falling transition), 0.8 (the first bit after a rising transition), and 1.0 (an isolated bit). The bit after a transition has the largest amplitude next to the isolated bit because the post-cursor tap carries the most weight, and this is the waveform that cancels a long tail.
 
@@ -140,7 +154,11 @@ The transmitter applies the change within the limits of its normalization. The t
 
 Take the channel of [Chapter 5](05_Skin_Effect_and_Dielectric_Loss.md) (conductor loss only, 10 Gbps) together with the receiver assumptions of [Chapter 10](10_Jitter_Decomposition_and_Measurement.md), a main-cursor amplitude of $A = 200$ mV and a slope of 5 mV/ps. The normalized post-cursors are $h_1 = 0.0418$, $h_2 = 0.0186$, $h_3 = 0.0111$, $h_4 = 0.0076$, $h_5 = 0.0056$, $h_6 = 0.0044$, and $h_7 = 0.0035$, with a sum of 9.26 percent, and the pre-cursor is zero.
 
-A filter with a post-cursor tap only, chosen to cancel $h_1$ and normalized, has $c_0 = 1/(1 + h_1) = 0.9598$ and $c_1 = -h_1/(1 + h_1) = -0.0402$. The equalized cursors relative to the equalized main cursor are $q_m/q_0 = h_m - h_1 h_{m-1}$ for $m \ge 2$, which gives 0.0169, 0.0103, 0.0071, 0.0053, 0.0041, and 0.0033 for $m = 2$ to $7$, and $q_1 = 0$ by construction. The sum of the cursors falls from 9.26 to 4.70 percent, about half of the original value.
+Choosing a post-cursor-only filter to cancel $h_1$ under unit-swing normalization fixes the two nonzero taps:
+
+$$c_0 = \frac{1}{1 + h_1} = 0.9598, \qquad c_1 = -\frac{h_1}{1 + h_1} = -0.0402$$
+
+The equalized cursors relative to the equalized main cursor are $q_m/q_0 = h_m - h_1 h_{m-1}$ for $m \ge 2$, which gives 0.0169, 0.0103, 0.0071, 0.0053, 0.0041, and 0.0033 for $m = 2$ to $7$, and $q_1 = 0$ by construction. The sum of the cursors falls from 9.26 to 4.70 percent, about half of the original value.
 
 The consequences follow from [Chapter 10](10_Jitter_Decomposition_and_Measurement.md). The main cursor at the receiver is reduced by the factor $c_0 = 0.9598$ (the signal amplitude is 192 mV in place of 200 mV), and the slope is reduced by the same factor, so the ratio $A/S = 40$ ps is unchanged. The seven-cursor peak-to-peak ISI jitter is $2 \times 40 \times 0.0470 = 3.8$ ps, in place of $2 \times 40 \times 0.0926 = 7.4$ ps (the 7.2 ps of that chapter uses the rounded 9 percent).
 
@@ -148,11 +166,19 @@ The seven-cursor eye height is $2 \times 192 \times (1 - 0.0470) = 366$ mV in pl
 
 ### The Filter Gains at DC and at the Nyquist Frequency
 
-For the three-tap filter $(c_{-1}, c_0, c_1) = (-1/6, 2/3, -1/6)$ the transfer function gives $H_{DC} = 2/3 - 1/6 - 1/6 = 1/3$ and $H_{Nyq} = 2/3 + 1/6 + 1/6 = 1$. The response is real for the symmetric taps, $H(e^{j\theta}) = 2/3 - (1/3)\cos\theta$, which is $1/3$ at $\theta = 0$, $2/3$ at $\theta = \pi/2$, and $1$ at $\theta = \pi$. The unnormalized filter $(-0.25, 1.0, -0.25)$ has $0.5$ at DC and $1.5$ at the Nyquist frequency and the same ratio of 3. The direct evaluation of $H(z)$ at the two frequencies reproduces the level ratio of the neighbor table above without enumerating any pattern.
+For the symmetric three-tap filter $(c_{-1}, c_0, c_1) = (-1/6, 2/3, -1/6)$, the transfer function yields the endpoint gains:
+
+$$H_{DC} = \frac{2}{3} - \frac{1}{6} - \frac{1}{6} = \frac{1}{3}, \qquad H_{Nyq} = \frac{2}{3} + \frac{1}{6} + \frac{1}{6} = 1$$
+
+The response is real for the symmetric taps, $H(e^{j\theta}) = 2/3 - (1/3)\cos\theta$, which is $1/3$ at $\theta = 0$, $2/3$ at $\theta = \pi/2$, and $1$ at $\theta = \pi$. The unnormalized filter $(-0.25, 1.0, -0.25)$ has $0.5$ at DC and $1.5$ at the Nyquist frequency and the same ratio of 3. Direct evaluation of $H(z)$ at the two frequencies reproduces the level ratio of the neighbor table above without enumerating any pattern.
 
 ### Equalizing 8.1 dB at the Nyquist Frequency
 
-Take the channel with conductor and dielectric loss, $IL = 8.1$ dB at 5 GHz, and a filter with a post-cursor tap only. The required tap is $|c_1| = (1 - 10^{-8.1/20})/2 = 0.303$, so $c_0 = 0.697$. The DC gain of the filter is $1 - 2 \times 0.303 = 0.394$, and the Nyquist gain is 1. A run is transmitted at 39.4 percent of the peak swing and the alternating pattern at 100 percent.
+Take the channel with conductor and dielectric loss, $IL = 8.1$ dB at 5 GHz, and a filter with a post-cursor tap only. Matching the Nyquist channel loss fixes the tap weights:
+
+$$|c_1| = \frac{1 - 10^{-8.1/20}}{2} = 0.303, \qquad c_0 = 1 - |c_1| = 0.697$$
+
+The DC gain of the filter is $1 - 2 \times 0.303 = 0.394$, and the Nyquist gain is 1. A run is transmitted at 39.4 percent of the peak swing and the alternating pattern at 100 percent.
 
 The channel passes the run at its full gain and the alternating pattern at 0.394, so both reach the receiver at 39.4 percent of the peak swing. Without the filter the run reaches the receiver at 100 percent and the alternating pattern at 39.4 percent, and the receiver decision threshold sees a difference of 2.5 to 1 in the amplitudes of the two patterns.
 
@@ -162,7 +188,11 @@ The cost of the filter is the received amplitude: a transmitter with a peak swin
 
 ### Over-Equalization
 
-A filter that is too strong for the channel overshoots: it cancels more than the channel adds. Apply the 8.1 dB filter above ($c_0 = 0.697$, $c_1 = -0.303$) to the conductor-only line, whose loss is 2.4 dB. The first equalized post-cursor relative to the main cursor is $q_1/q_0 = h_1 - |c_1|/c_0 = 0.0418 - 0.435 = -0.393$, an interference of 39 percent of the opposite sign, and the sum of the magnitudes of the remaining cursors is 40.5 percent in place of the 9.26 percent of the unequalized line.
+A filter that is too strong for the channel overshoots: it cancels more than the channel adds. Apply the 8.1 dB filter above ($c_0 = 0.697$, $c_1 = -0.303$) to the conductor-only line, whose loss is 2.4 dB. Evaluating the first equalized post-cursor relative to the main cursor reveals a large inverted residual:
+
+$$\frac{q_1}{q_0} = h_1 - \frac{|c_1|}{c_0} = 0.0418 - 0.435 = -0.393$$
+
+That overshoot introduces an interference of 39 percent of the opposite sign, raising the sum of the remaining cursor magnitudes to 40.5 percent in place of the 9.26 percent of the unequalized line.
 
 The eye height drops to $2 \times (0.697 \times 200) \times (1 - 0.405) = 166$ mV, compared with 363 mV without any filter, and the peak-to-peak ISI jitter becomes $2 \times 40 \times 0.405 = 32$ ps. A filter that is too strong on a short, low-loss channel closes the eye as the lack of equalization does on a long channel, and the taps must be matched to the loss.
 
@@ -182,4 +212,4 @@ The decision feedback equalizer of [Chapter 14](14_CTLE_and_DFE.md) has the oppo
 
 The transmitter filter does not amplify the receiver noise either, because the noise enters after the channel, and the price of the filter is the reduction of the signal amplitude shown above. The continuous-time linear equalizer at the receiver does amplify the high-frequency noise along with the signal, and [Chapter 14](14_CTLE_and_DFE.md) quantifies that. The three equalizers divide the work according to these properties: the transmitter filter and the receiver linear equalizer shape the smooth part of the loss and handle the pre-cursor, and the decision feedback equalizer removes the post-cursors that remain.
 
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>

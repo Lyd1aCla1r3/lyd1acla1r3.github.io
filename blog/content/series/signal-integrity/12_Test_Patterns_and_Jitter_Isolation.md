@@ -1,8 +1,8 @@
 # Test Patterns and Jitter Isolation
 
-<!-- SUMMARY: Separating jitter components requires a repeating test pattern and ordered edge records. Synchronous averaging suppresses random jitter in proportion to the square root of the repetition count, isolates data-dependent interference, and leaves an uncorrelated residual whose Fourier spectrum separates periodic spurs from the random noise floor. -->
+<!-- SUMMARY: Jitter isolation requires a repeating test pattern and ordered edge records. Synchronous averaging suppresses random jitter in proportion to the square root of the repetition count, isolates data-dependent interference, and leaves an uncorrelated residual whose Fourier spectrum separates periodic spurs from the random noise floor. -->
 
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>
 
 [Chapter 10: Jitter Decomposition and Measurement](10_Jitter_Decomposition_and_Measurement.md) separates total jitter into random jitter and the bounded deterministic components, and [Chapter 11: Dual-Dirac Model and BER Extrapolation](11_Dual_Dirac_Model_and_BER_Extrapolation.md) converts the fitted parameters $RJ_{\text{rms}}$ and $DJ_{\delta\delta}$ into a total jitter at a target bit error ratio. Both chapters work with the measured distribution. A histogram records how many edges landed at each time error and discards when they landed, so it cannot tell a data-dependent shift from a random one, and it cannot find the source of a periodic disturbance.
 
@@ -57,7 +57,11 @@ The maximum run length sets the worst intersymbol interference that the pattern 
 
 The sum reaches its largest magnitude when all contributing earlier bits share the same sign, which defines a continuous run. A run of $L_r$ identical bits followed by a transition contributes $\sum_{j=1}^{L_r} h_j$ to the offset (with the cursors normalized to the main cursor, as in [Chapter 10](10_Jitter_Decomposition_and_Measurement.md)), and the longer the run, the more cursors add in the same direction.
 
-With the first four post-cursors of the 12 inch FR4 line of [Chapter 5](05_Skin_Effect_and_Dielectric_Loss.md) (4.2, 1.9, 1.1, and 0.8 percent of the main cursor, with all seven cursors summing to 0.09) and the reference receiver of [Chapter 10](10_Jitter_Decomposition_and_Measurement.md) ($A/S = 200\ \text{mV}/5\ \text{mV/ps} = 40$ ps), the timing shift of the edge that follows a run is:
+Combine the first four post-cursors of the 12 inch FR4 line of [Chapter 5](05_Skin_Effect_and_Dielectric_Loss.md) (4.2, 1.9, 1.1, and 0.8 percent of the main cursor, with all seven cursors summing to 0.09) with the amplitude-to-slope conversion scale of the [Chapter 10](10_Jitter_Decomposition_and_Measurement.md) reference receiver:
+
+$$\frac{A}{S} = \frac{200\ \text{mV}}{5\ \text{mV/ps}} = 40\ \text{ps}$$
+
+Multiplying each cumulative cursor sum by 40 ps gives the timing shift of the edge that follows a run:
 
 | Run Length Before Edge | Normalized Cursor Sum | Timing Shift (ps) |
 |:---:|:---:|:---:|
@@ -216,8 +220,12 @@ An instrument that reads the floor as random jitter reports 2.94 ps, almost doub
 
 Two independent techniques remove this crosstalk bias from the random jitter estimate:
 
-- **Active-versus-quiet aggressor subtraction:** Comparing the spectral floor with the aggressor active against the floor with the aggressor held quiet isolates $BUJ_{\text{rms}} = \sqrt{\sigma_{active}^2 - \sigma_{quiet}^2} = \sqrt{2.938^2 - 1.5^2} = 2.526$ ps by the quadrature rule, leaving the quiet floor as the true $RJ_{\text{rms}}$.
+- **Active-versus-quiet aggressor subtraction:** Comparing the spectral floor with the aggressor active against the floor with the aggressor held quiet isolates $BUJ_{\text{rms}}$ by the quadrature rule, leaving the quiet floor as the true $RJ_{\text{rms}}$.
 - **Tail-fit versus spectral-floor comparison:** Comparing step 3 against step 7 reveals the discrepancy directly, because the tail fit returns $RJ_{\text{rms}} \approx 1.5$ ps (absorbing the bounded crosstalk into $DJ_{\delta\delta}$) while the spectral floor returns 2.94 ps.
+
+Applying the active-versus-quiet quadrature subtraction to the two measured spectral floors recovers the bounded uncorrelated rms amplitude:
+
+$$BUJ_{\text{rms}} = \sqrt{\sigma_{active}^2 - \sigma_{quiet}^2} = \sqrt{2.938^2 - 1.5^2}\ \text{ps} = 2.526\ \text{ps}$$
 
 The peak-to-peak value of the BUJ cannot be read from the rms value alone, because it depends on the distribution: the uniform assumption gives $2\sqrt{3} \times 2.526 = 8.75$ ps, and another shape gives another ratio.
 
@@ -247,4 +255,4 @@ $$|1 - T(f)| = \frac{f/f_c}{\sqrt{1 + (f/f_c)^2}}$$
 
 A sinusoidal component of 3 ps at 1 MHz measured with $f_c = 4$ MHz appears with a factor of $0.25/\sqrt{1.0625} = 0.243$, so the reported amplitude is 0.73 ps (or 0.60 ps for the second-order loop of [Chapter 17](17_CDR_and_PLL_Loop_Dynamics.md)). The same component measured with a much lower corner shows almost its full 3 ps. A narrow loop bandwidth therefore exposes more of the jitter, a wide loop bandwidth hides low-frequency periodic jitter and low-frequency flicker noise, and the bandwidth must be the one that the standard specifies for the result to be comparable with its limit.
 
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>

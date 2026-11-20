@@ -117,6 +117,37 @@
     @media (max-width: 768px) {
       .blog-post table:not(.trace-container table) { overflow-x: auto; }
     }
+    /* Signal Integrity series tables: clean KaTeX math rendering, no pill-badge wrapping, and hidden MathML node */
+    .blog-post.series-signal-integrity table:not(.trace-container table) {
+      table-layout: auto;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) th,
+    .blog-post.series-signal-integrity table:not(.trace-container table) td {
+      padding: 10px 14px;
+      vertical-align: middle;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      word-break: normal;
+      overflow-wrap: normal;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) .katex {
+      font-size: 1em;
+      white-space: nowrap;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) .katex-mathml {
+      display: none !important;
+    }
+    @media (min-width: 769px) {
+      .blog-post.series-signal-integrity table:not(.trace-container table) th:first-child:nth-last-child(2),
+      .blog-post.series-signal-integrity table:not(.trace-container table) td:first-child:nth-last-child(2) {
+        width: 32%;
+        max-width: 240px;
+      }
+      .blog-post.series-signal-integrity table:not(.trace-container table) th:first-child:not(:nth-last-child(2)),
+      .blog-post.series-signal-integrity table:not(.trace-container table) td:first-child:not(:nth-last-child(2)) {
+        max-width: 220px;
+      }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -161,7 +192,7 @@
     <li><a href="index.html">Blog</a></li><li><a href="guide-enterprise-agentic-pipeline.html">Guides: Enterprise Agentic Pipeline</a></li><li aria-current="page">Enterprise Agentic Pipeline</li></ol></nav>
         <article class="blog-post ">
 <h1>Enterprise Agentic Pipeline</h1>
-<!-- SUMMARY: A complete configuration walkthrough assembling LangChain, LangGraph, MCP servers, LiteLLM, Weaviate, Unstructured, Langfuse, vLLM, and HF TRL into a governed multi-agent system for enterprise engineering organizations. The architecture introduces orchestrated agent coordination, gateway-enforced cost and compliance controls, production observability, and a closed-loop fine-tuning pipeline that the solo developer configuration intentionally omitted. --><p>A local-first stack such as the <a href="solo-developer-stack-configuration.html">Solo Developer Stack</a> works because one engineer generates a bounded request volume, inspects agent behavior directly in the terminal, and carries no multi-tenant audit obligations. An engineering organization operating at team scale faces a different class of operational constraints: multiple departments share model infrastructure, finance teams require per-project cost attribution, compliance policies mandate immutable logs of every prompt and response, long-running workflows must survive transient node failures, and specialized agents must coordinate on tasks that exceed any single agent&#39;s scope. This configuration from the <a href="index.html#tab-guides">Guides collection</a> assembles a nine-layer architecture that satisfies those enterprise requirements.</p>
+<!-- SUMMARY: A complete configuration walkthrough for a governed multi-agent platform serving enterprise engineering organizations. LangChain, LangGraph, MCP servers, and LiteLLM enforce stateful agent coordination alongside gateway cost and compliance controls. Weaviate and Unstructured support hybrid document retrieval, while Langfuse, vLLM, and HF TRL provide production observability and closed-loop fine-tuning. --><p>A local-first stack such as the <a href="solo-developer-stack-configuration.html">Solo Developer Stack</a> works because one engineer generates a bounded request volume, inspects agent behavior directly in the terminal, and carries no multi-tenant audit obligations. An engineering organization operating at team scale faces a different class of operational constraints: multiple departments share model infrastructure, finance teams require per-project cost attribution, compliance policies mandate immutable logs of every prompt and response, long-running workflows must survive transient node failures, and specialized agents must coordinate on tasks that exceed any single agent&#39;s scope. This configuration from the <a href="index.html#tab-guides">Guides collection</a> assembles a nine-layer architecture that satisfies those enterprise requirements.</p>
 <h2>The Problem</h2>
 <p>An engineering organization needs a governed, multi-agent platform that routes requests across commercial and self-hosted model providers, enforces team budget and data-residency rules, records complete audit trails, and recovers cleanly from mid-workflow failures.</p>
 <h3>Nine-Layer Enterprise Requirements</h3>

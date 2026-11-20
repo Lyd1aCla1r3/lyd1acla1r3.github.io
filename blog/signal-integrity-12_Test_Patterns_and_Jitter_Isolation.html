@@ -117,6 +117,37 @@
     @media (max-width: 768px) {
       .blog-post table:not(.trace-container table) { overflow-x: auto; }
     }
+    /* Signal Integrity series tables: clean KaTeX math rendering, no pill-badge wrapping, and hidden MathML node */
+    .blog-post.series-signal-integrity table:not(.trace-container table) {
+      table-layout: auto;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) th,
+    .blog-post.series-signal-integrity table:not(.trace-container table) td {
+      padding: 10px 14px;
+      vertical-align: middle;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      word-break: normal;
+      overflow-wrap: normal;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) .katex {
+      font-size: 1em;
+      white-space: nowrap;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) .katex-mathml {
+      display: none !important;
+    }
+    @media (min-width: 769px) {
+      .blog-post.series-signal-integrity table:not(.trace-container table) th:first-child:nth-last-child(2),
+      .blog-post.series-signal-integrity table:not(.trace-container table) td:first-child:nth-last-child(2) {
+        width: 32%;
+        max-width: 240px;
+      }
+      .blog-post.series-signal-integrity table:not(.trace-container table) th:first-child:not(:nth-last-child(2)),
+      .blog-post.series-signal-integrity table:not(.trace-container table) td:first-child:not(:nth-last-child(2)) {
+        max-width: 220px;
+      }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -161,7 +192,7 @@
     <li><a href="index.html">Blog</a></li><li><a href="series-signal-integrity.html">Series: Signal Integrity</a></li><li><a href="signal-integrity-part-03.html">Part 3: Jitter Analysis</a></li><li aria-current="page">Test Patterns and Jitter Isolation</li></ol></nav>
         <article class="blog-post series-signal-integrity">
 <h1>Test Patterns and Jitter Isolation</h1>
-<!-- SUMMARY: Separating jitter components requires a repeating test pattern and ordered edge records. Synchronous averaging suppresses random jitter in proportion to the square root of the repetition count, isolates data-dependent interference, and leaves an uncorrelated residual whose Fourier spectrum separates periodic spurs from the random noise floor. --><p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p><p><a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html">Chapter 10: Jitter Decomposition and Measurement</a> separates total jitter into random jitter and the bounded deterministic components, and <a href="signal-integrity-11_Dual_Dirac_Model_and_BER_Extrapolation.html">Chapter 11: Dual-Dirac Model and BER Extrapolation</a> converts the fitted parameters $RJ_{\text{rms}}$ and $DJ_{\delta\delta}$ into a total jitter at a target bit error ratio. Both chapters work with the measured distribution. A histogram records how many edges landed at each time error and discards when they landed, so it cannot tell a data-dependent shift from a random one, and it cannot find the source of a periodic disturbance.</p>
+<!-- SUMMARY: Jitter isolation requires a repeating test pattern and ordered edge records. Synchronous averaging suppresses random jitter in proportion to the square root of the repetition count, isolates data-dependent interference, and leaves an uncorrelated residual whose Fourier spectrum separates periodic spurs from the random noise floor. --><p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p><p><a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html">Chapter 10: Jitter Decomposition and Measurement</a> separates total jitter into random jitter and the bounded deterministic components, and <a href="signal-integrity-11_Dual_Dirac_Model_and_BER_Extrapolation.html">Chapter 11: Dual-Dirac Model and BER Extrapolation</a> converts the fitted parameters $RJ_{\text{rms}}$ and $DJ_{\delta\delta}$ into a total jitter at a target bit error ratio. Both chapters work with the measured distribution. A histogram records how many edges landed at each time error and discards when they landed, so it cannot tell a data-dependent shift from a random one, and it cannot find the source of a periodic disturbance.</p>
 <p>This chapter supplies the other half of the measurement: the stimulus and the processing that make each component visible. A test pattern that repeats allows the timing errors of the same bit position to be averaged. A record kept in time order allows the Fourier transform of <a href="signal-integrity-02_Frequency_Content_of_Digital_Signals.html">Chapter 2: Frequency Content of Digital Signals</a> to be applied to the timing error itself. The techniques correspond to steps 4 through 7 of the seven-step flow in <a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html">Chapter 10</a>, and this chapter refers to those steps by number and does not list them again.</p>
 <p>The chapter first derives the properties of the pseudo-random pattern and the two statistical facts that the processing relies on, the $1/\sqrt{M}$ suppression of averaging and the quadrature sum of independent random jitter. It then applies steps 4 to 7, works through numerical examples (including what the residual contains when crosstalk is present), and closes with the limits of each technique.</p>
 <h2>Core Concepts</h2>
@@ -223,7 +254,9 @@
 <h3>Run Length and Intersymbol Interference</h3>
 <p>The maximum run length sets the worst intersymbol interference that the pattern can produce. The origin of the interference is the causal low-pass tail of the channel derived in <a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">Chapter 5: Skin Effect and Dielectric Loss</a>, which leaves a post-cursor $h_j$ of each earlier bit at the sampling instant of the present bit. <a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html">Chapter 10</a> shows that the crossing shifts by $\Delta t_n = -(A/S)\sum_{j \ne 0} h_j\, b_{n-j}$, with $A$ the main-cursor amplitude and $S$ the slope at the crossing.</p>
 <p>The sum reaches its largest magnitude when all contributing earlier bits share the same sign, which defines a continuous run. A run of $L_r$ identical bits followed by a transition contributes $\sum_{j=1}^{L_r} h_j$ to the offset (with the cursors normalized to the main cursor, as in <a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html">Chapter 10</a>), and the longer the run, the more cursors add in the same direction.</p>
-<p>With the first four post-cursors of the 12 inch FR4 line of <a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">Chapter 5</a> (4.2, 1.9, 1.1, and 0.8 percent of the main cursor, with all seven cursors summing to 0.09) and the reference receiver of <a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html">Chapter 10</a> ($A/S = 200\ \text{mV}/5\ \text{mV/ps} = 40$ ps), the timing shift of the edge that follows a run is:</p>
+<p>Combine the first four post-cursors of the 12 inch FR4 line of <a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">Chapter 5</a> (4.2, 1.9, 1.1, and 0.8 percent of the main cursor, with all seven cursors summing to 0.09) with the amplitude-to-slope conversion scale of the <a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html">Chapter 10</a> reference receiver:</p>
+<p>$$\frac{A}{S} = \frac{200\ \text{mV}}{5\ \text{mV/ps}} = 40\ \text{ps}$$</p>
+<p>Multiplying each cumulative cursor sum by 40 ps gives the timing shift of the edge that follows a run:</p>
 <table>
 <thead>
 <tr>
@@ -340,9 +373,11 @@
 <p>An instrument that reads the floor as random jitter reports 2.94 ps, almost double the true 1.5 ps. At a bit error ratio of $10^{-12}$ ($Q = 7.034$) the random term of the total jitter becomes $2 \times 7.034 \times 2.938 = 41.33$ ps in place of 21.10 ps, an overstatement of 20.2 ps, which is more than a fifth of the unit interval at 10 Gbps.</p>
 <p>Two independent techniques remove this crosstalk bias from the random jitter estimate:</p>
 <ul>
-<li><strong>Active-versus-quiet aggressor subtraction:</strong> Comparing the spectral floor with the aggressor active against the floor with the aggressor held quiet isolates $BUJ_{\text{rms}} = \sqrt{\sigma_{active}^2 - \sigma_{quiet}^2} = \sqrt{2.938^2 - 1.5^2} = 2.526$ ps by the quadrature rule, leaving the quiet floor as the true $RJ_{\text{rms}}$.</li>
+<li><strong>Active-versus-quiet aggressor subtraction:</strong> Comparing the spectral floor with the aggressor active against the floor with the aggressor held quiet isolates $BUJ_{\text{rms}}$ by the quadrature rule, leaving the quiet floor as the true $RJ_{\text{rms}}$.</li>
 <li><strong>Tail-fit versus spectral-floor comparison:</strong> Comparing step 3 against step 7 reveals the discrepancy directly, because the tail fit returns $RJ_{\text{rms}} \approx 1.5$ ps (absorbing the bounded crosstalk into $DJ_{\delta\delta}$) while the spectral floor returns 2.94 ps.</li>
 </ul>
+<p>Applying the active-versus-quiet quadrature subtraction to the two measured spectral floors recovers the bounded uncorrelated rms amplitude:</p>
+<p>$$BUJ_{\text{rms}} = \sqrt{\sigma_{active}^2 - \sigma_{quiet}^2} = \sqrt{2.938^2 - 1.5^2}\ \text{ps} = 2.526\ \text{ps}$$</p>
 <p>The peak-to-peak value of the BUJ cannot be read from the rms value alone, because it depends on the distribution: the uniform assumption gives $2\sqrt{3} \times 2.526 = 8.75$ ps, and another shape gives another ratio.</p>
 <h2>Edge Cases</h2>
 <h3>Pattern Length and Averaging Depth</h3>
@@ -357,7 +392,7 @@
 <p>A first-order model gives the size of the effect. Let the loop have a corner frequency $f_c$ and let it follow the data timing with the transfer $T(f) = 1/(1 + jf/f_c)$. The TIE of a component at frequency $f$ is multiplied by</p>
 <p>$$|1 - T(f)| = \frac{f/f_c}{\sqrt{1 + (f/f_c)^2}}$$</p>
 <p>A sinusoidal component of 3 ps at 1 MHz measured with $f_c = 4$ MHz appears with a factor of $0.25/\sqrt{1.0625} = 0.243$, so the reported amplitude is 0.73 ps (or 0.60 ps for the second-order loop of <a href="signal-integrity-17_CDR_and_PLL_Loop_Dynamics.html">Chapter 17</a>). The same component measured with a much lower corner shows almost its full 3 ps. A narrow loop bandwidth therefore exposes more of the jitter, a wide loop bandwidth hides low-frequency periodic jitter and low-frequency flicker noise, and the bandwidth must be the one that the standard specifies for the result to be comparable with its limit.</p>
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="signal-integrity-11_Dual_Dirac_Model_and_BER_Extrapolation.html" class="pagination-link prev">

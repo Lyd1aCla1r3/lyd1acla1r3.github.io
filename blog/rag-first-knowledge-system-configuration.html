@@ -117,6 +117,37 @@
     @media (max-width: 768px) {
       .blog-post table:not(.trace-container table) { overflow-x: auto; }
     }
+    /* Signal Integrity series tables: clean KaTeX math rendering, no pill-badge wrapping, and hidden MathML node */
+    .blog-post.series-signal-integrity table:not(.trace-container table) {
+      table-layout: auto;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) th,
+    .blog-post.series-signal-integrity table:not(.trace-container table) td {
+      padding: 10px 14px;
+      vertical-align: middle;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      word-break: normal;
+      overflow-wrap: normal;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) .katex {
+      font-size: 1em;
+      white-space: nowrap;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) .katex-mathml {
+      display: none !important;
+    }
+    @media (min-width: 769px) {
+      .blog-post.series-signal-integrity table:not(.trace-container table) th:first-child:nth-last-child(2),
+      .blog-post.series-signal-integrity table:not(.trace-container table) td:first-child:nth-last-child(2) {
+        width: 32%;
+        max-width: 240px;
+      }
+      .blog-post.series-signal-integrity table:not(.trace-container table) th:first-child:not(:nth-last-child(2)),
+      .blog-post.series-signal-integrity table:not(.trace-container table) td:first-child:not(:nth-last-child(2)) {
+        max-width: 220px;
+      }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -158,10 +189,10 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="guide-rag-first-knowledge-system.html">Guides: RAG First Knowledge System</a></li><li aria-current="page">RAG-First Knowledge System</li></ol></nav>
+    <li><a href="index.html">Blog</a></li><li><a href="guide-rag-first-knowledge-system.html">Guides: RAG-First Knowledge System</a></li><li aria-current="page">RAG-First Knowledge System</li></ol></nav>
         <article class="blog-post ">
 <h1>RAG-First Knowledge System</h1>
-<!-- SUMMARY: A complete configuration walkthrough assembling LlamaIndex, MCP servers, LiteLLM, Pinecone, LlamaParse, Firecrawl, and Braintrust into a retrieval-augmented generation system optimized for answer quality over a large, continuously evolving document corpus. The architecture prioritizes ingestion pipeline design, chunking strategy selection, and retrieval evaluation rather than model serving infrastructure, reflecting the principle that retrieval quality dominates answer quality in knowledge-heavy applications. --><p>Retrieved context fidelity governs generated answer accuracy far more than frontier model selection does when an organization answers natural-language questions from a large, heterogeneous knowledge base. A flagship reasoning model fed irrelevant or badly fragmented text produces fluent, well-structured hallucinations, whereas a mid-tier model fed complete, accurately retrieved passages produces grounded, verifiable answers. This configuration from the <a href="index.html#tab-guides">Guides collection</a> applies the ecosystem map from the <a href="series-ai-tooling.html">AI Tooling series</a> to optimize every stage of the retrieval pipeline before inference begins.</p>
+<!-- SUMMARY: A complete configuration walkthrough for a retrieval-augmented generation system optimized for answer accuracy across a large, evolving document corpus. LlamaParse, Firecrawl, and Pinecone handle layout-aware document ingestion and hybrid vector indexing. LlamaIndex, MCP servers, LiteLLM, and Braintrust orchestrate query routing and retrieval evaluation so context fidelity governs answer quality. --><p>Retrieved context fidelity governs generated answer accuracy far more than frontier model selection does when an organization answers natural-language questions from a large, heterogeneous knowledge base. A flagship reasoning model fed irrelevant or badly fragmented text produces fluent, well-structured hallucinations, whereas a mid-tier model fed complete, accurately retrieved passages produces grounded, verifiable answers. This configuration from the <a href="index.html#tab-guides">Guides collection</a> applies the ecosystem map from the <a href="series-ai-tooling.html">AI Tooling series</a> to optimize every stage of the retrieval pipeline before inference begins.</p>
 <h2>The Problem</h2>
 <p>An organization maintains an internal knowledge corpus spanning tens of thousands of documents across incompatible formats: engineering PDFs with multi-column tables and schematic captions, internal wikis with dense cross-links, live documentation portals that update daily, and regulatory reports with deep section hierarchies. Engineers, analysts, and support specialists need to ask natural-language questions and receive accurate answers with verifiable source citations.</p>
 <h3>Dual Acquisition Patterns</h3>

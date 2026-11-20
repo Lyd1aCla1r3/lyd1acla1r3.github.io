@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blog | Lydia Pedersen</title>
+  <title>Part 2: Discontinuities and Signal Integrity Measurement | Signal Integrity Series | Lydia Pedersen</title>
+  <meta name="description" content="Physical discontinuities reshape traveling waves, and measurement instruments capture the resulting channel behavior. Part 2 covers return-path dynamics and via parasitics, time-domain reflectometry, S-parameter matrix formalism with vector network analysis, and the Smith chart, which maps reflection data onto the impedance plane.">
   <link rel="stylesheet" href="../css/styles.css?v=1.2">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
   <style>
@@ -23,7 +24,7 @@
         transform: translateY(-2px);
         box-shadow: 0 12px 24px var(--rose-gold-subtle);
     }
-    .blog-item h2 { font-family: var(--font-display); color: var(--text-primary); margin-top: 0; }
+    .blog-item h2, .blog-item h3 { font-family: var(--font-display); font-size: var(--fs-xl); color: var(--text-primary); margin-top: 0; }
     .blog-item a { text-decoration: none; color: inherit; }
     .blog-item p { color: var(--text-secondary); line-height: var(--lh-relaxed); margin-bottom: 0; }
     
@@ -36,7 +37,15 @@
         justify-content: center;
     }
     .blog-tabs input[type="radio"] {
-        display: none;
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+        pointer-events: none;
+    }
+    .blog-tabs input[type="radio"]:focus-visible + .tab-label {
+        outline: 2px solid var(--rose-gold);
+        outline-offset: 2px;
     }
     .tab-label {
         padding: var(--space-sm) var(--space-lg);
@@ -124,6 +133,13 @@
     .series-item {
         margin-bottom: 0; /* Reset margin inside series-items flex container */
     }
+
+    @media (max-width: 480px) {
+        .blog-list { padding: var(--space-2xl) var(--space-md); }
+        .series-group { padding: var(--space-md); }
+        .blog-item { padding: var(--space-lg); }
+        .tab-desc { padding: 0; }
+    }
   </style>
 </head>
 <body>
@@ -131,6 +147,9 @@
   <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
   <!-- Full-screen overlay canvas for the diagonal binary->agent->text animation -->
   <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Skip Navigation -->
+  <a href="#main-content" class="sr-only">Skip to main content</a>
 
   <!-- Navigation -->
   <nav class="nav" id="navbar" aria-label="Main navigation">
@@ -153,30 +172,36 @@
 
   <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-2xl));">
     <div class="container blog-list">
-        <nav aria-label="breadcrumb" class="breadcrumbs"><ol><li><a href="../index.html">Home</a></li><li><a href="index.html#tab-series">Blog</a></li><li><a href="series-signal-integrity.html">Signal Integrity Series</a></li><li aria-current="page">Part 2: Signal Integrity Measurement</li></ol></nav>
-        <h1 class="hero__name" style="text-align: center; margin-bottom: 0;">Blog</h1>
-          <h2 class="metallic-text" style="text-align: center; font-size: clamp(2rem, 4vw, 2.5rem); margin-top: 10px; margin-bottom: var(--space-2xl); font-family: var(--font-display);">Part 2: Signal Integrity Measurement</h2>
+        <nav aria-label="breadcrumb" class="breadcrumbs"><ol><li><a href="../index.html">Home</a></li><li><a href="index.html#tab-series">Blog</a></li><li><a href="series-signal-integrity.html">Signal Integrity Series</a></li><li aria-current="page">Part 2: Discontinuities and Signal Integrity Measurement</li></ol></nav>
+        <span class="section-label" style="justify-content: center; margin-bottom: var(--space-xs);">Signal Integrity Series</span>
+          <h1 class="hero__name" style="text-align: center; font-size: clamp(2rem, 4vw, 3rem); margin-bottom: var(--space-2xl);">Part 2: Discontinuities and Signal Integrity Measurement</h1>
         <!-- BLOG_LIST_START -->
 
                   <div class="series-group" style="margin-top: var(--space-2xl);">
                       <div class="series-items">
                           
+                          <a href="signal-integrity-06_Return_Path_Dynamics_and_Parasitic_Effects.html">
+                              <article class="blog-item series-item">
+                                  <h2>Return Path Dynamics and Parasitic Effects</h2>
+                                  <p>Every signal requires a closed return current path that governs the loop inductance of the circuit. Electromagnetic field boundary conditions dictate how high-frequency return current concentrates beneath a trace, how vias and split planes introduce reactive discontinuities, and how series AC-coupling capacitors cause baseline wander.</p>
+                              </article>
+                          </a>
                           <a href="signal-integrity-07_Time_Domain_Reflectometry.html">
                               <article class="blog-item series-item">
                                   <h2>Time Domain Reflectometry</h2>
-                                  <p>Time domain reflectometry (TDR) launches a fast step into a transmission line to record impedance mismatches. The analysis derives the spatial resolution limit of the incident edge, the masking effect of multiple reflections, and the closed-form area extraction of series inductance and shunt capacitance.</p>
+                                  <p>Time-domain reflectometry (TDR) launches a fast voltage step into a transmission line to locate and quantify impedance mismatches along the channel. Incident rise time sets spatial resolution limits while closed-form reflection area integrals extract parasitic series inductance and shunt capacitance ahead of multi-reflection masking.</p>
                               </article>
                           </a>
                           <a href="signal-integrity-08_S_Parameters_and_VNA.html">
                               <article class="blog-item series-item">
                                   <h2>S-Parameters and Vector Network Analysis</h2>
-                                  <p>S-parameters describe linear networks via ratios of normalized voltage waves. The analysis defines scattering matrices, decibel arithmetic, and the θ = -360° f τ phase rule, and examines vector network analyzer (VNA) architecture, dynamic range, calibration, and the extraction of S11 from a TDR step.</p>
+                                  <p>S-parameters characterize linear multi-port networks through ratios of incident and reflected normalized power waves. Multi-port wave matrices, decibel arithmetic, and linear transmission phase establish the frequency-domain framework. Vector network analyzer (VNA) architecture, error calibration, and time-to-frequency reflection conversion complete the laboratory measurement chain.</p>
                               </article>
                           </a>
                           <a href="signal-integrity-09_Smith_Charts.html">
                               <article class="blog-item series-item">
                                   <h2>Smith Charts</h2>
-                                  <p>The Smith chart is the conformal map Γ = (z - 1)/(z + 1) that maps all passive impedances inside the unit circle. The analysis derives the constant-resistance circles and constant-reactance arcs, showing how the complex S11 reflection plane separates inductive and capacitive reactances by hemisphere.</p>
+                                  <p>Passive impedances span zero to infinity, yet passive reflection coefficients remain bounded inside the complex unit circle. Conformal bilinear mapping projects constant-resistance circles and constant-reactance arcs onto that unit disk, separating inductive and capacitive reactances into upper and lower hemispheres across frequency sweeps.</p>
                               </article>
                           </a>
                       </div>
@@ -185,6 +210,13 @@
 
     </div>
   </main>
+  <footer class="footer">
+    <div class="container">
+      <p class="footer__text">
+        Designed and built by Lydia Pedersen. This portfolio is <a href="https://github.com/Lyd1aCla1r3/lyd1acla1r3.github.io" target="_blank" rel="noopener">open source</a>.
+      </p>
+    </div>
+  </footer>
   <script src="../js/main.js?v=1.2"></script>
 
   <!-- KaTeX for Math Rendering -->

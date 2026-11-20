@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ebooks | Lydia Pedersen</title>
+  <meta name="description" content="First-principles engineering ebooks by Lydia Pedersen spanning high-speed physical-layer signal integrity, SerDes, coherent optics, and Transformer and Mixture of Experts mathematics.">
   <link rel="stylesheet" href="../css/styles.css?v=1.2">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
   <style>
@@ -40,12 +41,19 @@
     .blog-item a.download-link:hover {
         border-bottom-color: var(--text-accent);
     }
+    @media (max-width: 480px) {
+        .blog-list { padding: var(--space-2xl) var(--space-md); }
+        .blog-item { padding: var(--space-lg); }
+    }
   </style>
 </head>
 <body>
   <!-- Fixed chip visual -->
   <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
   <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Skip Navigation -->
+  <a href="#main-content" class="sr-only">Skip to main content</a>
 
   <!-- Navigation -->
   <nav class="nav" id="navbar" aria-label="Main navigation">
@@ -79,22 +87,22 @@
 
         <article class="blog-item">
             <h2>Signal Integrity: From Waves to SerDes</h2>
-            <p>A first-principles exploration of high-speed digital systems, tracing the physics of electromagnetic wave propagation through frequency-dependent loss mechanisms, jitter decomposition, equalization architectures (CTLE/DFE/FFE), the complete SerDes link budget, and coherent optical transmission physics.</p>
+            <p>A first-principles exploration of high-speed digital systems across 6 parts and 21 chapters, published in two standalone ebook editions. This series traces electromagnetic wave propagation, S-parameter and jitter measurement, CTLE/DFE/FFE and PAM4 equalization, and SerDes clocking with coherent optics. Volume 1 (Wave and Loss Foundations, Expanded Second Edition) pairs accessible beginner intuition with complete derivations for Chapters 1 to 5. Volume 2 (Measurement, SerDes, and Coherent Optics, Concise First Edition) delivers the concise advanced reference for Chapters 6 to 21.</p>
             <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: var(--space-md);">
-                <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" class="download-link" target="_blank" rel="noopener" style="margin-top: 0;">
+                <a href="../assets/docs/signal-integrity-vol1-ebook-v2.0.pdf" class="download-link" target="_blank" rel="noopener" style="margin-top: 0;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    Download Beginner Edition
+                    Download Volume 1 PDF (Ch 1-5)
                 </a>
-                <a href="../assets/docs/signal-integrity-ebook-v2.0.pdf" class="download-link" target="_blank" rel="noopener" style="margin-top: 0;">
+                <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" class="download-link" target="_blank" rel="noopener" style="margin-top: 0;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    Download Advanced Edition
+                    Download Volume 2 PDF (Ch 6-21)
                 </a>
             </div>
         </article>
 
         <article class="blog-item">
             <h2>Tokenization: Byte Pair Encoding</h2>
-            <p>A step-by-step unrolling of the Byte Pair Encoding algorithm. This collection traces the deterministic compression of character-level data into semantic subword units, proving mathematically how the statistical distribution of language generates structural linguistic features before reaching the neural network.</p>
+            <p>A step-by-step unrolling of the Byte Pair Encoding algorithm. This collection traces the deterministic compression of character-level data into semantic subword units, proving mathematically how the statistical distribution of language generates structural linguistic features before reaching the neural network. <strong>(6 chapters)</strong></p>
             <a href="../assets/docs/tokenization-ebook-v1.0.pdf" class="download-link" target="_blank" rel="noopener">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                 Download PDF
@@ -103,7 +111,7 @@
 
         <article class="blog-item">
             <h2>Vector Embeddings: From Scratch</h2>
-            <p>A complete derivation of end-to-end learned embeddings. This series traces the mathematical progression from discrete token IDs through one-hot encoding, random initialization in high-dimensional space, the forward pass and cross-entropy loss, full backpropagation through both weight matrices, and the emergent semantic geometry that arises from gradient descent at scale.</p>
+            <p>A complete derivation of end-to-end learned embeddings. This series traces the mathematical progression from discrete token IDs through one-hot encoding, random initialization in high-dimensional space, the forward pass and cross-entropy loss, full backpropagation through both weight matrices, and the emergent semantic geometry that arises from gradient descent at scale. <strong>(8 chapters)</strong></p>
             <a href="../assets/docs/embeddings-ebook-v1.0.pdf" class="download-link" target="_blank" rel="noopener">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                 Download PDF
@@ -112,7 +120,7 @@
 
         <article class="blog-item">
             <h2>Positional Encoding: From Sinusoidal Formulas to Rotary Position Embeddings</h2>
-            <p>A first-principles derivation of positional encoding mechanisms for sequence-aware neural architectures. This series traces the mathematical progression from the order-agnostic embedding tensor through the historical sinusoidal formula, element-wise injection, the query-key dot-product framework, and the full derivation of Rotary Position Embeddings (RoPE), the mechanism used in modern language models.</p>
+            <p>A first-principles derivation of positional encoding mechanisms for sequence-aware neural architectures. This series traces the mathematical progression from the order-agnostic embedding tensor through the historical sinusoidal formula, element-wise injection, the query-key dot-product framework, and the full derivation of Rotary Position Embeddings (RoPE), the mechanism used in modern language models. <strong>(9 chapters)</strong></p>
             <a href="../assets/docs/positional-encoding-ebook-v1.0.pdf" class="download-link" target="_blank" rel="noopener">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                 Download PDF
@@ -121,7 +129,7 @@
 
         <article class="blog-item">
             <h2>Transformers: From Scratch</h2>
-            <p>A geometric deconstruction of the Decoder-only Transformer architecture. This complete series builds the model from the ground up, moving from the vocabulary embedding matrix through the multi-head attention mechanism and residual streams, terminating in the mathematical calculation of the cross-entropy loss function.</p>
+            <p>A geometric deconstruction of the decoder-only Transformer architecture. This complete series builds the model from the ground up, tracing the forward and backward pass from the vocabulary embedding matrix through multi-head attention and residual streams to the cross-entropy loss function. <strong>(25 chapters)</strong></p>
             <a href="../assets/docs/transformers-ebook-v1.0.pdf" class="download-link" target="_blank" rel="noopener">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                 Download PDF
@@ -129,8 +137,8 @@
         </article>
 
         <article class="blog-item">
-            <h2>Mixture of Experts</h2>
-            <p>A first-principles deconstruction of sparse Mixture of Experts architectures. This series bridges from the dense feed-forward network to dynamic top-k routing, examining expert collapse, load balancing, capacity limits, and the parameter-compute decoupling that defines sparse frontier models.</p>
+            <h2>Mixture of Experts: Sparse Routing From Scratch</h2>
+            <p>A first-principles deconstruction of sparse Mixture of Experts architectures. This series bridges from the dense feed-forward network to dynamic top-k routing, examining expert collapse, load balancing, capacity limits, and the parameter-compute decoupling that defines sparse frontier models. <strong>(10 chapters)</strong></p>
             <a href="../assets/docs/mixture-of-experts-ebook-v1.0.pdf" class="download-link" target="_blank" rel="noopener">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                 Download PDF
@@ -138,6 +146,13 @@
         </article>
     </div>
   </main>
+  <footer class="footer">
+    <div class="container">
+      <p class="footer__text">
+        Designed and built by Lydia Pedersen. This portfolio is <a href="https://github.com/Lyd1aCla1r3/lyd1acla1r3.github.io" target="_blank" rel="noopener">open source</a>.
+      </p>
+    </div>
+  </footer>
   <script src="../js/main.js?v=1.2"></script>
 </body>
 </html>

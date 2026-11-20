@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blog | Lydia Pedersen</title>
+  <title>Part 1: Wave and Loss Foundations | Signal Integrity Series | Lydia Pedersen</title>
+  <meta name="description" content="The electromagnetic wave is the carrier of all digital information. Part 1 traces the physics of wave propagation on PCB transmission lines, the frequency content of digital signals, characteristic impedance and reflection coefficients, magnetic coupling and crosstalk, and the frequency-dependent conductor and dielectric losses that attenuate high-speed channels.">
   <link rel="stylesheet" href="../css/styles.css?v=1.2">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
   <style>
@@ -23,7 +24,7 @@
         transform: translateY(-2px);
         box-shadow: 0 12px 24px var(--rose-gold-subtle);
     }
-    .blog-item h2 { font-family: var(--font-display); color: var(--text-primary); margin-top: 0; }
+    .blog-item h2, .blog-item h3 { font-family: var(--font-display); font-size: var(--fs-xl); color: var(--text-primary); margin-top: 0; }
     .blog-item a { text-decoration: none; color: inherit; }
     .blog-item p { color: var(--text-secondary); line-height: var(--lh-relaxed); margin-bottom: 0; }
     
@@ -36,7 +37,15 @@
         justify-content: center;
     }
     .blog-tabs input[type="radio"] {
-        display: none;
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+        pointer-events: none;
+    }
+    .blog-tabs input[type="radio"]:focus-visible + .tab-label {
+        outline: 2px solid var(--rose-gold);
+        outline-offset: 2px;
     }
     .tab-label {
         padding: var(--space-sm) var(--space-lg);
@@ -124,6 +133,13 @@
     .series-item {
         margin-bottom: 0; /* Reset margin inside series-items flex container */
     }
+
+    @media (max-width: 480px) {
+        .blog-list { padding: var(--space-2xl) var(--space-md); }
+        .series-group { padding: var(--space-md); }
+        .blog-item { padding: var(--space-lg); }
+        .tab-desc { padding: 0; }
+    }
   </style>
 </head>
 <body>
@@ -131,6 +147,9 @@
   <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
   <!-- Full-screen overlay canvas for the diagonal binary->agent->text animation -->
   <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Skip Navigation -->
+  <a href="#main-content" class="sr-only">Skip to main content</a>
 
   <!-- Navigation -->
   <nav class="nav" id="navbar" aria-label="Main navigation">
@@ -153,9 +172,9 @@
 
   <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-2xl));">
     <div class="container blog-list">
-        <nav aria-label="breadcrumb" class="breadcrumbs"><ol><li><a href="../index.html">Home</a></li><li><a href="index.html#tab-series">Blog</a></li><li><a href="series-signal-integrity.html">Signal Integrity Series</a></li><li aria-current="page">Part 1: Electromagnetic and Signal Foundations</li></ol></nav>
-        <h1 class="hero__name" style="text-align: center; margin-bottom: 0;">Blog</h1>
-          <h2 class="metallic-text" style="text-align: center; font-size: clamp(2rem, 4vw, 2.5rem); margin-top: 10px; margin-bottom: var(--space-2xl); font-family: var(--font-display);">Part 1: Electromagnetic and Signal Foundations</h2>
+        <nav aria-label="breadcrumb" class="breadcrumbs"><ol><li><a href="../index.html">Home</a></li><li><a href="index.html#tab-series">Blog</a></li><li><a href="series-signal-integrity.html">Signal Integrity Series</a></li><li aria-current="page">Part 1: Wave and Loss Foundations</li></ol></nav>
+        <span class="section-label" style="justify-content: center; margin-bottom: var(--space-xs);">Signal Integrity Series</span>
+          <h1 class="hero__name" style="text-align: center; font-size: clamp(2rem, 4vw, 3rem); margin-bottom: var(--space-2xl);">Part 1: Wave and Loss Foundations</h1>
         <!-- BLOG_LIST_START -->
 
                   <div class="series-group" style="margin-top: var(--space-2xl);">
@@ -164,19 +183,19 @@
                           <a href="signal-integrity-01_Wave_Propagation_and_Transmission_Lines.html">
                               <article class="blog-item series-item">
                                   <h2>Wave Propagation and Transmission Lines</h2>
-                                  <p>Information in high-speed digital systems travels as electromagnetic waves, not as drifting electrons. The physical mechanism of transmission lines governs how characteristic impedance and propagation velocity emerge from the Telegrapher's Equations and why a steady current flows behind every propagating wavefront.</p>
+                                  <p>Information in high-speed digital systems travels as electromagnetic waves through the PCB dielectric rather than as drifting electrons in copper. Trace geometry and Maxwell's coupled field loops feed the lossless and lossy Telegrapher's Equations to govern characteristic impedance, propagation velocity, and wave attenuation.</p>
                               </article>
                           </a>
                           <a href="signal-integrity-02_Frequency_Content_of_Digital_Signals.html">
                               <article class="blog-item series-item">
                                   <h2>Frequency Content of Digital Signals</h2>
-                                  <p>A digital edge is simultaneously a time-domain transition and a frequency-domain spectrum. Fourier series and step integrals establish the 0.35/t_r bandwidth relationship, the Nyquist frequency, linear channel filtering, aliasing, and the Gibbs phenomenon.</p>
+                                  <p>A digital edge is simultaneously a time-domain transition and a frequency-domain spectrum. Fourier series and step integrals establish the inverse relationship between rise time and knee bandwidth alongside the Nyquist limit, linear channel filtering, aliasing, and the Gibbs phenomenon.</p>
                               </article>
                           </a>
                           <a href="signal-integrity-03_Impedance_Reflections_and_Termination.html">
                               <article class="blog-item series-item">
                                   <h2>Impedance, Reflections, and Termination</h2>
-                                  <p>A wavefront meeting an impedance change splits into reflected and transmitted waves. Kirchhoff's laws govern the reflection and transmission coefficients, the reflected and transmitted power fractions, and the multi-bounce settling of series- and parallel-terminated links to the steady-state DC divider voltage.</p>
+                                  <p>A wavefront meeting an impedance discontinuity splits into reflected and transmitted waves to satisfy Kirchhoff's continuity laws and conservation of energy. Complex reactance, reflection and transmission coefficients, and multi-bounce lattices govern how high-speed interconnects ring and settle to their DC steady state.</p>
                               </article>
                           </a>
                           <a href="signal-integrity-04_Inductance_Magnetic_Coupling_and_Crosstalk.html">
@@ -188,13 +207,7 @@
                           <a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">
                               <article class="blog-item series-item">
                                   <h2>Skin Effect and Dielectric Loss</h2>
-                                  <p>Real transmission lines dissipate signal energy through frequency-dependent conductor and dielectric mechanisms. The square-root attenuation of the skin effect and the linear attenuation of dielectric polarization disperse fast edge transitions, generate long post-cursor tails, and close the received data eye.</p>
-                              </article>
-                          </a>
-                          <a href="signal-integrity-06_Return_Path_Dynamics_and_Parasitic_Effects.html">
-                              <article class="blog-item series-item">
-                                  <h2>Return Path Dynamics and Parasitic Effects</h2>
-                                  <p>Every signal requires a closed return current path that governs the loop inductance of the circuit. Electromagnetic field boundary conditions dictate how high-frequency return current concentrates beneath a trace, how vias and split planes introduce reactive discontinuities, and how series AC-coupling capacitors cause baseline wander.</p>
+                                  <p>Real transmission lines dissipate wave energy into heat through frequency-dependent conductor and dielectric mechanisms. Magnetic current crowding in copper scales attenuation with the square root of frequency, whereas polar molecular friction in the laminate scales attenuation linearly with frequency, rounding fast edges and stretching pulses into long post-cursor tails.</p>
                               </article>
                           </a>
                       </div>
@@ -203,6 +216,13 @@
 
     </div>
   </main>
+  <footer class="footer">
+    <div class="container">
+      <p class="footer__text">
+        Designed and built by Lydia Pedersen. This portfolio is <a href="https://github.com/Lyd1aCla1r3/lyd1acla1r3.github.io" target="_blank" rel="noopener">open source</a>.
+      </p>
+    </div>
+  </footer>
   <script src="../js/main.js?v=1.2"></script>
 
   <!-- KaTeX for Math Rendering -->

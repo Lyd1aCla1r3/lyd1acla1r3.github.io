@@ -2,7 +2,7 @@
 
 <!-- SUMMARY: Every signal requires a closed return current path that governs the loop inductance of the circuit. Electromagnetic field boundary conditions dictate how high-frequency return current concentrates beneath a trace, how vias and split planes introduce reactive discontinuities, and how series AC-coupling capacitors cause baseline wander. -->
 
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>
 
 [Chapter 5](05_Skin_Effect_and_Dielectric_Loss.md) showed that at high frequency the current in the ground plane flows in a layer one skin depth thick on the surface that faces the trace, and left open where along that surface the current flows. [Chapter 4](04_Inductance_Magnetic_Coupling_and_Crosstalk.md) defined loop inductance as a property of the whole circuit, which includes the return conductor, and stated that the high-frequency return current gathers beneath the trace. Electromagnetic boundary conditions determine that surface distribution, explain why it depends on frequency, and govern the structures that interrupt the return current or add unintended capacitance and inductance to the signal path.
 
@@ -99,7 +99,11 @@ The division of current at a via follows from a short calculation. Consider a st
 
 $$\tau_C = \frac{Z_0\, C}{2}$$
 
-The node voltage is $v_j(t) = V_+\left(1 - e^{-t/\tau_C}\right)$ and the capacitor current is $i_C = C\,dv_j/dt = (2V_+/Z_0)\,e^{-t/\tau_C}$. At $t = 0$ the capacitor is uncharged and acts as a short circuit, so it takes twice the incident current $I_+ = V_+/Z_0$. The current falls to zero as the capacitor charges, and the total charge drawn is $\int i_C\,dt = CV_+$, which is the charge of the fully charged capacitor.
+The node voltage and resulting capacitor current follow exponential trajectories:
+
+$$v_j(t) = V_+\left(1 - e^{-t/\tau_C}\right), \qquad i_C(t) = C\,\frac{dv_j}{dt} = \frac{2V_+}{Z_0}\,e^{-t/\tau_C}$$
+
+At $t = 0$ the capacitor is uncharged and acts as a short circuit, so it takes twice the incident current $I_+ = V_+/Z_0$. The current falls to zero as the capacitor charges, and the total charge drawn is $\int i_C\,dt = CV_+$, which is the charge of the fully charged capacitor.
 
 Kirchhoff's current law at the node fixes the split. The reflected wave $v_r$ travels back toward the source, so the net current arriving from the source side is $(V_+ - v_r)/Z_0$. The node voltage is $v_j = V_+ + v_r$, and the current continuing forward is $v_j/Z_0$. The remainder flows into the capacitor:
 
@@ -135,7 +139,11 @@ The opposite signs of the two reflections allow them to cancel, which is the com
 
 $$\frac{L}{2Z_0} = \frac{Z_0 C}{2} \quad \Rightarrow \quad L = Z_0^2\, C$$
 
-This equality reproduces the lumped matching condition of [Chapter 3](03_Impedance_Reflections_and_Termination.md) directly in the time domain. A barrel with $L = 1.33$ nH is matched in a 50 Ω line when its capacitance equals $C = L/Z_0^2 = 0.53$ pF, and the empirical capacitance formula yields the required anti-pad clearance diameter: $D_2 = D_1\left(1 + 1.41\,\varepsilon_r T/C\right) = 34$ mil for $D_1 = 20$ mil and $T = 0.062$ in. Enlarging the anti-pad beyond 34 mil lowers the capacitance below the matched target and leaves the via net inductive, whereas shrinking the anti-pad leaves the via net capacitive. Board designers adjust anti-pad diameters during stackup optimization to balance these two reactances.
+This equality reproduces the lumped matching condition of [Chapter 3](03_Impedance_Reflections_and_Termination.md) directly in the time domain. For a barrel with $L = 1.33$ nH on a 50 Ω line with $D_1 = 20$ mil, $T = 0.062$ in, and $\varepsilon_r = 4.2$, the matched capacitance and required anti-pad clearance diameter follow from the empirical relation:
+
+$$C = \frac{L}{Z_0^2} = 0.53\ \text{pF}, \qquad D_2 = D_1\left(1 + \frac{1.41\,\varepsilon_r T}{C}\right) = 34\ \text{mil}$$
+
+Enlarging the anti-pad beyond 34 mil lowers the capacitance below the matched target and leaves the via net inductive, whereas shrinking the anti-pad leaves the via net capacitive. Board designers adjust anti-pad diameters during stackup optimization to balance these two reactances.
 
 The cancellation has limits that depend on the size of the structure. The lumped treatment holds only for structures shorter than about one sixth of the spatial length of the edge, which is 0.73 mm for a 30 ps edge on FR4 (the critical length of Chapter 1). A 1.57 mm barrel is longer than this guideline, so the lumped values are a first estimate, and a field solver or a measurement with the techniques of [Chapter 7](07_Time_Domain_Reflectometry.md) and [Chapter 8](08_S_Parameters_and_VNA.md) gives the final answer. A time domain reflectometer displays a capacitive parasitic as a dip in impedance and an inductive parasitic as a bump, and Chapter 7 treats the signatures in detail.
 
@@ -143,7 +151,11 @@ The cancellation has limits that depend on the size of the structure. The lumped
 
 An intentionally placed series capacitor, the AC coupling capacitor of a high-speed serial link, uses the same capacitor physics in a controlled way. It blocks the DC level so that the transmitter and the receiver can use different common-mode voltages. Together with the termination resistance $R$ at the receiver it forms a high-pass filter with the time constant $\tau = RC$.
 
-Let $v_C$ denote the voltage across the capacitor and $v_{in}$ the signal applied to the series combination. The current through the capacitor and the resistor is $i = C\,dv_C/dt$, and the receiver sees $v_{out} = v_{in} - v_C = iR$. Eliminating $i$ gives:
+Let $v_C$ denote the voltage across the capacitor and $v_{in}$ the signal applied to the series combination. The current through the series branch and the resulting voltage across the receiver termination satisfy:
+
+$$i = C\,\frac{dv_C}{dt}, \qquad v_{out} = v_{in} - v_C = iR$$
+
+Eliminating $i$ gives the first-order differential equation for the capacitor voltage:
 
 $$\frac{dv_C}{dt} = \frac{v_{in} - v_C}{\tau}$$
 
@@ -165,17 +177,27 @@ A DC current in the same board spreads across the width of the plane. Assume tha
 
 ### A Via with 0.37 pF and 1.3 nH
 
-Assume a 62 mil via with $C = 0.37$ pF and $L = 1.33$ nH on a 50 Ω line, driven by a 1 V edge that ramps linearly over 30 ps. The incident current is therefore $I_+ = 1/50 = 20$ mA.
+Assume a 62 mil via with $C = 0.37$ pF and $L = 1.33$ nH on a 50 Ω line, driven by a 1 V edge that ramps linearly over 30 ps. The incident wave current and the capacitive time constant evaluate to:
 
-The capacitive reflection has the time constant $\tau_C = Z_0 C/2 = 9.25$ ps, and the ramp solution of the previous section gives a peak at $t = t_r$:
+$$I_+ = \frac{V_+}{Z_0} = \frac{1\ \text{V}}{50\ \Omega} = 20\ \text{mA}, \qquad \tau_C = \frac{Z_0 C}{2} = 9.25\ \text{ps}$$
+
+Evaluating the ramp reflection solution at the end of the transition ($t = t_r$) gives the negative peak:
 
 $$v_r = -\frac{9.25}{30}\,(1 - e^{-30/9.25})\,\text{V} = -0.296\ \text{V}$$
 
-The reflection is 30 percent of the edge amplitude, and the impedance at the minimum of the dip is $Z_0(1 + \Gamma)/(1 - \Gamma) = 27\ \Omega$, using the inversion of [Chapter 3](03_Impedance_Reflections_and_Termination.md) with $\Gamma = -0.296$. The capacitor current at the peak is $i_C = -2v_r/Z_0 = 11.9$ mA, which is 59 percent of the incident current, and the current that continues forward is 14.1 mA at that instant.
+The reflection is 30 percent of the edge amplitude, corresponding to a minimum impedance of $Z_0(1 + \Gamma)/(1 - \Gamma) = 27\ \Omega$ from the [Chapter 3](03_Impedance_Reflections_and_Termination.md) inversion with $\Gamma = -0.296$. At the reflection peak, the current diverted into the capacitor is:
+
+$$i_C = -\frac{2v_r}{Z_0} = 11.9\ \text{mA}$$
+
+That peak displacement current equals 59 percent of the incident current, leaving 14.1 mA continuing forward at that instant.
 
 The diversion is large during the edge, because 30 ps is short compared with the 100 ps unit interval of a 10 Gbps signal and the capacitor changes its charge during that time. The capacitor then holds $CV_+ = 0.37$ pC and stops conducting, and the forward current recovers to the steady $V/Z_0$. The 50 percent point of an ideal step emerges delayed by about $0.69\,\tau_C = 6.4$ ps, and its 10 to 90 percent rise time becomes $2.2\,\tau_C = 20$ ps.
 
-The inductive reflection has $\tau_L = L/(2Z_0) = 13.3$ ps and a peak of $+(13.3/30)(1 - e^{-30/13.3}) = +0.40$, which corresponds to an impedance of 116 Ω at the maximum of the bump. The two time constants differ, 13.3 ps against 9.25 ps, so the cancellation is incomplete, and the via shows a bump of +0.40 and a dip of -0.30 that are separated in time by the delay between the two structures. Raising the capacitance to the matched value of 0.53 pF equalizes the two time constants and the two peaks.
+For the barrel inductance, the time constant and peak positive reflection evaluate to:
+
+$$\tau_L = \frac{L}{2Z_0} = 13.3\ \text{ps}, \qquad v_{r,L} = +\frac{13.3}{30}\left(1 - e^{-30/13.3}\right)\text{V} = +0.40\ \text{V}$$
+
+That positive reflection corresponds to an impedance of 116 Ω at the maximum of the bump. The two time constants differ, 13.3 ps against 9.25 ps, so the cancellation is incomplete, and the via shows a bump of +0.40 and a dip of -0.30 that are separated in time by the delay between the two structures. Raising the capacitance to the matched value of 0.53 pF equalizes the two time constants and the two peaks.
 
 ### Baseline Wander with a 100 nF Capacitor
 
@@ -185,9 +207,15 @@ Consider an uncoded data pattern that contains 60 percent ones ($p = 0.6$). The 
 
 ### Return Path Detour at a Slot
 
-Assume a trace crosses a slot in its reference plane that forces the return current to detour over a length of 2 mm, with the return path displaced to a distance $D = 1$ mm from the trace. Modeling a flat strip of width $w = 0.18$ mm as an equivalent cylindrical wire of radius $a = w/4 = 0.045$ mm allows direct comparison between two classical transmission-line geometries: a wire at height $h$ over a solid plane, which has $L' = (\mu_0/2\pi)\ln(2h/a)$ by the method of images, and two parallel wires separated by center-to-center distance $D$, which have $L' = (\mu_0/\pi)\ln(D/a)$.
+Assume a trace crosses a slot in its reference plane that forces the return current to detour over a length of 2 mm, with the return path displaced to a distance $D = 1$ mm from the trace. A flat strip of width $w = 0.18$ mm is modeled as an equivalent cylindrical wire with radius:
 
-Over the intact plane ($h = 0.1$ mm), the cylindrical approximation gives $L' = (\mu_0/2\pi)\ln(2h/a) = 298$ nH/m, close to the 342 nH/m full-strip value of [Chapter 4](04_Inductance_Magnetic_Coupling_and_Crosstalk.md). Across the slot, where the plane is absent and the return current detours at $D = 1$ mm, the two-wire loop inductance jumps to $L' = (\mu_0/\pi)\ln(D/a) = 1240$ nH/m, roughly four times larger.
+$$a = \frac{w}{4} = 0.045\ \text{mm}$$
+
+That cylindrical approximation compares two classical transmission-line geometries directly: a wire at height $h = 0.1$ mm over a solid plane (by the method of images) and two parallel wires separated by center-to-center distance $D = 1$ mm across the slot:
+
+$$L'_{\text{plane}} = \frac{\mu_0}{2\pi}\ln\!\left(\frac{2h}{a}\right) = 298\ \text{nH/m}, \qquad L'_{\text{slot}} = \frac{\mu_0}{\pi}\ln\!\left(\frac{D}{a}\right) = 1240\ \text{nH/m}$$
+
+Over the intact plane, the 298 nH/m cylindrical estimate lies close to the 342 nH/m full-strip value of [Chapter 4](04_Inductance_Magnetic_Coupling_and_Crosstalk.md). Across the slot, where the plane is absent and the return current detours at $D = 1$ mm, the loop inductance jumps roughly fourfold to 1240 nH/m.
 
 Over the 2 mm detour, the slot adds an excess series inductance of $(1240 - 342)\ \text{nH/m} \times 2\ \text{mm} \approx 1.8$ nH. That lumped discontinuity exceeds the barrel inductance of a typical through-hole via, and the series-inductor formula of [Chapter 3](03_Impedance_Reflections_and_Termination.md) quantifies the resulting reflection: $|\Gamma| = \omega L/|2Z_0 + j\omega L|$ reaches 0.11 at 1 GHz, 0.49 at 5 GHz, and 0.75 at 10 GHz. Even a narrow gap in the reference plane reflects a large fraction of a multi-gigahertz edge. The cylindrical model provides a rapid order-of-magnitude estimate, and a three-dimensional field solver computes the full inductance for arbitrary slot geometries.
 
@@ -219,4 +247,4 @@ The lumped treatment of a via in this chapter assumes a barrel shorter than one 
 
 [Chapter 7](07_Time_Domain_Reflectometry.md) shows how to locate and measure such parasitics in the time domain, using the reflection of a fast edge from each feature of the board.
 
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>

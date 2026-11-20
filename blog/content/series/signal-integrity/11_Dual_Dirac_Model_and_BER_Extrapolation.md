@@ -2,7 +2,7 @@
 
 <!-- SUMMARY: Compliance targets like 10^-12 describe edges too rare to capture directly in an oscilloscope record. The analysis derives how the Dual-Dirac model extrapolates total jitter from the visible Gaussian tails (TJ = DJ + 2Q · RJ) and constructs the bathtub curve to project bit error ratios beyond the measured histogram. -->
 
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>
 
 [Chapter 10](10_Jitter_Decomposition_and_Measurement.md) decomposed the timing error of a received signal into random and deterministic components and ended with a histogram of time interval error values that is the convolution of the two. A specification does not ask for that histogram. It asks how wide a window of time around the ideal edge contains all but one edge in a trillion, and the answer lies in a part of the distribution that a measurement of a few hundred thousand edges never reaches.
 
@@ -76,7 +76,11 @@ The two are related by the substitution $s = \sqrt{2}\,u$, which gives $ds = \sq
 
 $$Q(z) = \frac{1}{\sqrt{2\pi}}\cdot\sqrt{2}\int_{z/\sqrt{2}}^{\infty} e^{-u^2}du = \frac{1}{\sqrt{\pi}}\int_{z/\sqrt{2}}^{\infty} e^{-u^2}du = \frac{1}{2}\operatorname{erfc}\!\left(\frac{z}{\sqrt{2}}\right)$$
 
-Rearranged, $\operatorname{erfc}(x) = 2\,Q(x\sqrt{2}) = 2\,P(Z > x\sqrt{2})$, which is the correct statement of the definition: erfc counts the tail beyond $x\sqrt{2}$ standard deviations, doubled, and not the tail beyond $x$ standard deviations. The bit error ratio for a Gaussian edge distribution whose mean is $Q$ standard deviations from the sampling instant is
+Inverting that scaling expresses the complementary error function in terms of the standard Gaussian tail probability:
+
+$$\operatorname{erfc}(x) = 2\,Q(x\sqrt{2}) = 2\,P(Z > x\sqrt{2})$$
+
+That relation clarifies the argument scaling: $\operatorname{erfc}(x)$ counts the tail beyond $x\sqrt{2}$ standard deviations, doubled, and not the tail beyond $x$ standard deviations. The bit error ratio for a Gaussian edge distribution whose mean is $Q_{\text{factor}}$ standard deviations from the sampling instant is
 
 $$\text{BER} = Q(Q_{\text{factor}}) = \frac{1}{2}\operatorname{erfc}\!\left(\frac{Q_{\text{factor}}}{\sqrt{2}}\right)$$
 
@@ -98,7 +102,11 @@ The Q-factor grows slowly with the number of decades of error ratio, and a short
 
 $$Q(z) = \int_z^{\infty}\varphi(s)\,ds < \int_z^{\infty}\frac{s}{z}\,\varphi(s)\,ds = \frac{\varphi(z)}{z}, \qquad \varphi(s) = \frac{e^{-s^2/2}}{\sqrt{2\pi}}$$
 
-where the last step uses the fact that $s\,\varphi(s)$ is the derivative of $-\varphi(s)$. At $z = 7.034$ the bound is $1.02 \times 10^{-12}$ against the full integral value of $1.00 \times 10^{-12}$, so it is accurate to 2 percent there. The logarithm of the bound has the slope $-z$ with respect to $z$, so each factor of ten in the ratio requires an increase of about $\ln 10/z = 2.303/7 = 0.33$ in the Q-factor, in agreement with the table (from $10^{-9}$ to $10^{-12}$ the increase is 1.04 over three decades, or 0.35 per decade). The extrapolation to a much lower ratio therefore adds little distance.
+where the last step uses the fact that $s\,\varphi(s)$ is the derivative of $-\varphi(s)$. At $z = 7.034$ the bound is $1.02 \times 10^{-12}$ against the full integral value of $1.00 \times 10^{-12}$, so it is accurate to 2 percent there. Taking the natural logarithm of the bound yields a local slope of $-z$ with respect to $z$, so each decade reduction in bit error ratio requires a Q-factor increment near $z = 7$ of:
+
+$$\Delta Q_{\text{decade}} \approx \frac{\ln 10}{z} \approx \frac{2.303}{7} = 0.33$$
+
+That increment agrees with the table above, where moving from $10^{-9}$ to $10^{-12}$ adds 1.04 over three decades, or 0.35 per decade. Extrapolating to a much lower error ratio therefore adds little horizontal distance.
 
 [Chapter 15](15_PAM4_Signaling_and_Gray_Coding.md) uses the same mapping between a ratio and a Q-factor for amplitude noise.
 
@@ -191,7 +199,9 @@ A ratio of $10^{-12}$ can therefore be verified directly with a bit error ratio 
 
 ### PCIe Gen 4 Jitter Budget
 
-Consider a PCIe Gen 4 link operating at 16 GT/s NRZ (16 Gbps raw wire rate, 15.754 Gbps payload after 128b/130b coding), so that $UI = 1/(16 \times 10^9) = 62.5$ ps. Assume that the tail fit returns $DJ_{\delta\delta} = 12.0$ ps and $RJ_{\text{rms}} = 1.5$ ps. For a target ratio of $10^{-12}$ the Q-factor is 7.034, and the calculation proceeds in four steps:
+Consider a PCIe Gen 4 link operating at 16 GT/s NRZ (16 Gbps raw wire rate, 15.754 Gbps payload after 128b/130b coding). Assume that the tail fit returns $DJ_{\delta\delta} = 12.0$ ps and $RJ_{\text{rms}} = 1.5$ ps. For a target ratio of $10^{-12}$ the Q-factor is 7.034, and the calculation proceeds in four steps:
+
+$$UI = \frac{1}{16 \times 10^9\ \text{s}^{-1}} = 62.5\ \text{ps}$$
 
 $$RJ_{\text{p-p}} = 2 \times 7.034 \times 1.5\ \text{ps} = 21.10\ \text{ps}$$
 
@@ -219,7 +229,15 @@ Use the model of the previous example, with the right impulse at $\mu_R = +6.0$ 
 | 12.0 | `3.167 × 10⁻⁵` | 4.0 |
 | 13.5 | `2.867 × 10⁻⁷` | 5.0 |
 
-The points lie on a straight line with slope $1/\sigma = 1/1.5 = 0.667$ per ps, which crosses zero at 6.0 ps. The regression therefore returns $\mu_R = 6.0$ ps and $\sigma = 1.5$ ps, and the mirrored left tail returns $\mu_L = -6.0$ ps, so $DJ_{\delta\delta} = 12.0$ ps. Extending the line to $Q^{-1} = 7.034$ gives $x_R = 6.0 + 7.034 \times 1.5 = 16.55$ ps and $TJ = 2 \times 16.55 = 33.10$ ps, the same total as before.
+The points lie on a straight line that crosses zero at 6.0 ps with reciprocal-sigma slope:
+
+$$\frac{1}{\sigma} = \frac{1}{1.5\ \text{ps}} = 0.667\ \text{ps}^{-1}$$
+
+The regression therefore returns $\mu_R = 6.0$ ps and $\sigma = 1.5$ ps, and the mirrored left tail returns $\mu_L = -6.0$ ps, so $DJ_{\delta\delta} = 12.0$ ps. Extending the fitted line to $Q^{-1} = 7.034$ gives the right compliance boundary and the symmetric total jitter:
+
+$$x_R = 6.0 + 7.034 \times 1.5 = 16.55\ \text{ps}, \qquad TJ = 2 \times 16.55\ \text{ps} = 33.10\ \text{ps}$$
+
+That Q-scale extrapolation reproduces the 33.10 ps budget total directly from the tail points.
 
 ### The Bathtub of the Example
 
@@ -282,4 +300,4 @@ The central limit theorem explains why a sum of many small independent noise con
 
 The projection tells the designer how much timing margin remains at the target ratio, and it needs the random and deterministic components to be known separately and accurately. [Chapter 12](12_Test_Patterns_and_Jitter_Isolation.md) shows how pattern averaging and spectral analysis separate the data-dependent, periodic, and random contributions that this chapter treated as two parameters.
 
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>

@@ -1,8 +1,8 @@
 # Mach-Zehnder and IQ Modulators
 
-<!-- SUMMARY: Nested Mach-Zehnder interferometers modulate both the amplitude and phase of an optical carrier. Driving dual push-pull child modulators in quadrature synthesizes arbitrary QPSK and 16QAM constellations, while a 90-degree optical hybrid and balanced photodiode pairs beat the signal against a local oscillator for coherent reception. -->
+<!-- SUMMARY: Nested Mach-Zehnder interferometers modulate both the amplitude and phase of an optical carrier. Quadrature excitation of dual push-pull child modulators synthesizes QPSK and 16QAM constellations, while a 90-degree optical hybrid and balanced photodiode pairs beat the signal against a local oscillator for coherent reception. -->
 
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>
 
 [Chapter 19: Light as an Electromagnetic Wave and the Electro-Optic Effect](19_Light_and_the_Electro_Optic_Effect.md) ended with a phase modulator, a crystal section that adds the phase $\Delta\phi = \pi V/V_\pi$ to the wave that passes through it. A phase modulator alone moves the phase and leaves the amplitude unchanged, and a transmitter that must place a symbol anywhere on the plane of amplitude and phase needs more.
 
@@ -48,7 +48,11 @@ $$I\cos\omega t + Q\sin\omega t = A\cos(\omega t - \varphi), \qquad A = \sqrt{I^
 
 where $\operatorname{atan2}$ chooses the quadrant of the angle (the plain arctangent $\operatorname{atan}(Q/I)$ cannot distinguish $(I, Q)$ from $(-I, -Q)$). This trigonometric identity is the same relation that [Chapter 17: CDR and PLL Loop Dynamics](17_CDR_and_PLL_Loop_Dynamics.md) uses for a phase interpolator: a sum of a weighted cosine and a weighted sine of one frequency is one sinusoid of that frequency, with amplitude $\sqrt{w_1^2 + w_2^2}$ and phase $\operatorname{atan}(w_2/w_1)$.
 
-Two numbers $(I, Q)$ and the two numbers $(A, \varphi)$ are two descriptions of one point, and the point is written as the complex number $s = I + jQ = A e^{j\varphi}$, the complex envelope of the carrier, with $E(t) = \operatorname{Re}\{s\,e^{-j\omega t}\}$. The sign of the exponent is a convention of optics that differs from the $e^{j\omega t}$ of [Chapter 3: Impedance, Reflections, and Termination](03_Impedance_Reflections_and_Termination.md), and the constellation point $(I, Q)$ is the same in both.
+The Cartesian pair $(I, Q)$ and the polar pair $(A, \varphi)$ describe the same point on the plane through the complex envelope of the carrier:
+
+$$s = I + jQ = A\,e^{j\varphi}, \qquad E(t) = \operatorname{Re}\bigl\{s\,e^{-j\omega t}\bigr\}$$
+
+The sign of the exponent is a convention of optics that differs from the $e^{j\omega t}$ of [Chapter 3: Impedance, Reflections, and Termination](03_Impedance_Reflections_and_Termination.md), and the constellation point $(I, Q)$ is the same in both.
 
 The weights can be recovered from the sum. Average the product of the sum with $\cos\omega t$ over one period, using $\langle\cos^2\rangle = \tfrac12$ and $\langle\sin\cos\rangle = 0$:
 
@@ -77,7 +81,11 @@ $$E_{out} = \frac{E_{in}}{2}\left(m_I + j\,m_Q\right)$$
 
 with $m_I$ and $m_Q$ set by the two data drives.
 
-The combination of the two orthogonal waves produces one wave with amplitude $A = \tfrac12\sqrt{m_I^2 + m_Q^2}\,|E_{in}|$ and phase $\operatorname{atan2}(m_Q, m_I)$, as the identity above states, so the complex number $m_I + j m_Q$ sets the constellation point. The factor $1/2$ in this field costs optical power. At a corner of the constellation ($m_I = m_Q = 1$) the output power is $\tfrac14(1 + 1) = \tfrac12$ of the input (3.01 dB loss), and on an axis ($m_I = 1$, $m_Q = 0$) it is $\tfrac14$ (6.02 dB loss), because the output combiner passes the factor $1/\sqrt2$ of each arm field and the remaining power leaves through the unused port or radiates into the substrate.
+The combination of the two orthogonal waves produces one wave with amplitude $A = \tfrac12\sqrt{m_I^2 + m_Q^2}\,|E_{in}|$ and phase $\operatorname{atan2}(m_Q, m_I)$, as the identity above states, so the complex number $m_I + j m_Q$ sets the constellation point. The factor $1/2$ in this field costs optical power. At a corner of the constellation, the drive levels and normalized output power are
+
+$$m_I = m_Q = 1, \qquad \frac{P_{out}}{P_{in}} = \frac{1}{4}(1 + 1) = \frac{1}{2}\ (-3.01\ \text{dB})$$
+
+On an axis ($m_I = 1$, $m_Q = 0$) the output power is $\tfrac14$ of the input (6.02 dB loss), because the output combiner passes the factor $1/\sqrt2$ of each arm field and the remaining power leaves through the unused port or radiates into the substrate.
 
 ### Dual-Polarization Transmitter
 
@@ -123,11 +131,19 @@ The second consequence is that the angle $\theta$ is not constant. The two laser
 
 ### Mach-Zehnder Transfer Numbers
 
-Take $V_\pi = 3$ V and push-pull drive, which gives the transmission $\cos^2 0 = 1$ at $v = 0$. At $v = V_\pi/2 = 1.5$ V the phase difference is $\pi/2$, and the power transmission is $\cos^2(\pi/4) = 0.5$ (3.01 dB). At $v = V_\pi = 3$ V the transmission is zero. With the null bias, a drive of $\pm1.5$ V gives the field $\mp\sin(\pi/4) = \mp0.707$ (power $0.5$), and $\pm3$ V gives $\mp1$. A splitting error of $\varepsilon = 0.03$ leaves the field $0.03\,E_{in}$ at the null, a power of $9\times10^{-4}$ and an extinction ratio of 30.5 dB.
+Take $V_\pi = 3$ V and push-pull drive, which gives the transmission $\cos^2 0 = 1$ at $v = 0$. The quadrature point and the null point occur at the drive voltages
+
+$$v = \frac{V_\pi}{2} = 1.5\ \text{V}, \qquad v = V_\pi = 3\ \text{V}$$
+
+At $1.5$ V the phase difference is $\pi/2$ and the power transmission is $\cos^2(\pi/4) = 0.5$ (3.01 dB loss), whereas at $3$ V the transmission reaches zero. With the null bias, a drive of $\pm1.5$ V gives the field $\mp\sin(\pi/4) = \mp0.707$ (power $0.5$), and $\pm3$ V gives $\mp1$. A splitting error of $\varepsilon = 0.03$ leaves the field $0.03\,E_{in}$ at the null, a power of $9\times10^{-4}$ and an extinction ratio of 30.5 dB.
 
 ### Synthesizing a Constellation Point
 
-The 16QAM point with $I = 3$ and $Q = 1$ has the amplitude $A = \sqrt{10} = 3.162$ and the phase $\varphi = \operatorname{atan2}(1, 3) = 18.43^\circ$. The wave $3\cos\omega t + 1\sin\omega t$ and the wave $3.162\cos(\omega t - 18.43^\circ)$ agree at every instant: at $\omega t = 0$ both equal 3.000, and at $\omega t = 90^\circ$ both equal 1.000. The receiver averages with the cosine and the sine and finds $I/2 = 1.5$ and $Q/2 = 0.5$, which restores the point after the factor 2 is applied.
+The 16QAM point with $I = 3$ and $Q = 1$ has the polar amplitude and phase
+
+$$A = \sqrt{3^2 + 1^2} = \sqrt{10} = 3.162, \qquad \varphi = \operatorname{atan2}(1, 3) = 18.43^\circ$$
+
+The wave $3\cos\omega t + 1\sin\omega t$ and the wave $3.162\cos(\omega t - 18.43^\circ)$ agree at every instant: at $\omega t = 0$ both equal 3.000, and at $\omega t = 90^\circ$ both equal 1.000. The receiver averages with the cosine and the sine and finds $I/2 = 1.5$ and $Q/2 = 0.5$, which restores the point after the factor 2 is applied.
 
 ### Arcsine Drive and the Penalty of a Linear Drive
 
@@ -168,4 +184,4 @@ Differential encoding of the phase transitions removes the ambiguity, because th
 The fiber does not preserve the orientation of the polarization. The two components that leave the transmitter as XI/XQ and YI/YQ arrive as mixtures of each other, with a mixing that changes with temperature and with mechanical disturbance. The receiver therefore cannot assign one polarization beam splitter output to one transmitted polarization. The digital processor undoes the mixing with a $2 \times 2$ adaptive filter, as [Chapter 21](21_Wideband_Signal_Analysis.md) shows, and the transmitter and the receiver need no alignment of their polarization axes.
 
 ---
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>

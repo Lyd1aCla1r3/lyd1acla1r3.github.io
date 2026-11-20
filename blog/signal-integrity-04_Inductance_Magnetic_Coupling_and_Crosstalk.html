@@ -117,6 +117,37 @@
     @media (max-width: 768px) {
       .blog-post table:not(.trace-container table) { overflow-x: auto; }
     }
+    /* Signal Integrity series tables: clean KaTeX math rendering, no pill-badge wrapping, and hidden MathML node */
+    .blog-post.series-signal-integrity table:not(.trace-container table) {
+      table-layout: auto;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) th,
+    .blog-post.series-signal-integrity table:not(.trace-container table) td {
+      padding: 10px 14px;
+      vertical-align: middle;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      word-break: normal;
+      overflow-wrap: normal;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) .katex {
+      font-size: 1em;
+      white-space: nowrap;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) .katex-mathml {
+      display: none !important;
+    }
+    @media (min-width: 769px) {
+      .blog-post.series-signal-integrity table:not(.trace-container table) th:first-child:nth-last-child(2),
+      .blog-post.series-signal-integrity table:not(.trace-container table) td:first-child:nth-last-child(2) {
+        width: 32%;
+        max-width: 240px;
+      }
+      .blog-post.series-signal-integrity table:not(.trace-container table) th:first-child:not(:nth-last-child(2)),
+      .blog-post.series-signal-integrity table:not(.trace-container table) td:first-child:not(:nth-last-child(2)) {
+        max-width: 220px;
+      }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -158,191 +189,818 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="series-signal-integrity.html">Series: Signal Integrity</a></li><li><a href="signal-integrity-part-01.html">Part 1: Electromagnetic and Signal Foundations</a></li><li aria-current="page">Inductance, Magnetic Coupling, and Crosstalk</li></ol></nav>
+    <li><a href="index.html">Blog</a></li><li><a href="series-signal-integrity.html">Series: Signal Integrity</a></li><li><a href="signal-integrity-part-01.html">Part 1: Wave and Loss Foundations</a></li><li aria-current="page">Inductance, Magnetic Coupling, and Crosstalk</li></ol></nav>
         <article class="blog-post series-signal-integrity">
 <h1>Inductance, Magnetic Coupling, and Crosstalk</h1>
-<!-- SUMMARY: A changing current creates a magnetic field that induces voltage across adjacent conductors. Mutual inductance and mutual capacitance govern near-end (NEXT) and far-end (FEXT) crosstalk signatures, explaining why FEXT scales with coupled length while NEXT saturates once the coupled delay exceeds half the rise time. --><p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p><p><a href="signal-integrity-03_Impedance_Reflections_and_Termination.html">Chapter 3</a> used the inductance $L$ as a given number: a 1 nH parasitic inductor reflects the edge, and a narrow trace behaves as a series inductance. Electromagnetic field theory explains where that number comes from, why it depends on geometry, and how the magnetic field of one conductor induces a voltage in another, which is the mechanism behind crosstalk between neighboring traces.</p>
-<p>The electric field of a transmission line stores energy in the dielectric between the trace and the ground plane and defines the capacitance. The magnetic field stores energy in the current loop formed by the outbound trace and the return path and defines the inductance. <a href="signal-integrity-01_Wave_Propagation_and_Transmission_Lines.html">Chapter 1</a> showed that the ratio of the two per-unit-length quantities sets the characteristic impedance and that their product sets the propagation velocity, so controlling inductance is inseparable from controlling signal integrity.</p>
-<p>The subject divides into two mechanisms that differ in which conductor receives the induced voltage. Self-inductance describes the opposition that the changing field of a conductor creates against changes in its own current. Mutual inductance describes the coupling between two separate conductors, in which the changing field of one induces a voltage in the other. Both act simultaneously in every transmission line, and the total loop inductance depends on the self-inductance of the outbound trace, the self-inductance of the return path, and the mutual inductance between them.</p>
-<p>The sections below develop the physics in sequence: the magnetic field of a current from Ampere&#39;s law, the field inside a conductor, Faraday&#39;s and Lenz&#39;s laws and the two right-hand procedures, the four cases of induction, the definitions of self, mutual, and loop inductance, and the crosstalk that mutual coupling produces between adjacent traces.</p>
+<!-- SUMMARY: A changing current creates a magnetic field that induces voltage across adjacent conductors. Mutual inductance and mutual capacitance govern near-end (NEXT) and far-end (FEXT) crosstalk signatures, explaining why FEXT scales with coupled length while NEXT saturates once the coupled delay exceeds half the rise time. --><p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol1-ebook-v2.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 1 Ebook here.</a></em></p><p><a href="signal-integrity-03_Impedance_Reflections_and_Termination.html">Chapter 3</a> treated inductance $L$ as a circuit parameter that gives conducting electrons magnetic flywheel inertia and reflects high-frequency signal edges at impedance discontinuities. Electromagnetic field theory explains how conductor geometry creates that inductance and how the expanding magnetic field of one trace induces unwanted voltages across neighboring traces.</p>
+<p><a href="signal-integrity-01_Wave_Propagation_and_Transmission_Lines.html">Chapter 1</a> established that a transmission line stores electric field energy in the dielectric capacitance $C$ between the trace and the ground plane. The same transmission line stores magnetic field energy in the current loop formed by the outbound trace and the return path, which defines the distributed loop inductance $L$. The ratio and product of those two per-unit-length parameters set the characteristic impedance $Z_0$ and the wave propagation velocity $v_p$.</p>
+<p>Magnetic induction separates into two distinct physical mechanisms depending on which conductor experiences the changing magnetic flux. Self-inductance describes the opposing voltage that a conductor&#39;s own changing magnetic field induces against changes in its own current. Mutual inductance describes magnetic coupling between two conductors, where the changing magnetic field of one current path induces a voltage across a second path. Both mechanisms act simultaneously inside every PCB transmission line and across every pair of adjacent traces.</p>
+<p>The sections below build the physics in sequence from Ampère&#39;s law and conductor field geometry to Faraday&#39;s and Lenz&#39;s laws, the two right-hand rules, the four physical cases of induction, total loop inductance, and coupled-line crosstalk.</p>
 <h2>Core Concepts</h2>
-<h3>The Magnetic Field of a Current: Ampere&#39;s Law and the Generation Rule</h3>
-<p>Ampere&#39;s law states that the line integral of the magnetic field $\mathbf{B}$ around any closed path equals the permeability of free space $\mu_0$ times the current enclosed by the path:</p>
-<p>$$\oint \mathbf{B} \cdot d\mathbf{l} = \mu_0 I_{enc}$$</p>
-<p>Charges in motion produce the field, and the field of any conductor is the vector sum of the contributions of all its moving charges. This vector summation reflects the principle of superposition: the total field at a point is the addition, with direction, of the fields that each current element produces there.</p>
-<p>The right-hand rule gives the direction of the field. This series calls the procedure the <strong>Generation Rule</strong>: point the thumb of the right hand along the current, and the fingers curl in the direction of the magnetic field circling the conductor. The Generation Rule answers the question of which way the field points when a current is known, and it is applied once, at the start of any analysis.</p>
-<p>For a long straight wire, symmetry makes the field tangent to circles centered on the wire and constant in magnitude on each circle. Choosing a circle of radius $r$ outside the wire, the enclosed current is the full current $I$, and the integral reduces to the field times the circumference:</p>
-<p>$$B \cdot 2\pi r = \mu_0 I \quad \Rightarrow \quad B(r) = \frac{\mu_0 I}{2\pi r}$$</p>
-<p>The field falls in inverse proportion to the distance from the wire. A wide, flat conductor such as a ground plane shapes the field differently. Consider a wide sheet carrying a current per unit width $K$.</p>
-<p>At a point above the sheet, the contributions of strips lying at equal distances to the left and to the right have equal magnitudes and point at mirror-image angles, so the components perpendicular to the sheet cancel while the components parallel to the sheet add. The resulting field is parallel to the sheet, and Ampere&#39;s law with a rectangular path that straddles the sheet (two sides parallel to the sheet at equal heights above and below, each of length $w$) gives:</p>
-<p>$$B \cdot 2w = \mu_0 K w \quad \Rightarrow \quad B = \frac{\mu_0 K}{2}$$</p>
-<p>This uniform field points in opposite directions on the two sides of the sheet. The geometry of the copper therefore selects which components of the contributions of the individual current elements reinforce and which cancel: a compact wire produces tight circles around itself, and a wide sheet produces a broad, uniform field parallel to its surface. The behavior of each moving charge is identical in both cases.</p>
-<p><a href="signal-integrity-01_Wave_Propagation_and_Transmission_Lines.html">Chapter 1</a> added the Ampere-Maxwell term, which lets a changing electric field produce a magnetic field in the same way as a current. The remainder of this chapter concerns fields produced by conduction current, and the displacement-current contribution is not repeated here.</p>
-<h3>The Field Inside a Conductor</h3>
-<p>Inside a solid wire of radius $a$ carrying a uniform current density $J = I/(\pi a^2)$, the same circular symmetry applies. A circle of radius $r < a$ encloses only the part of the current that flows through the area $\pi r^2$:</p>
-<p>$$I_{enc} = J \pi r^2 = I \, \frac{r^2}{a^2}$$</p>
-<p>Ampere&#39;s law gives the field at radius $r$:</p>
-<p>$$B \cdot 2\pi r = \mu_0 I \, \frac{r^2}{a^2} \quad \Rightarrow \quad B(r) = \frac{\mu_0 I \, r}{2\pi a^2}$$</p>
-<p>The field is zero at the center, where a circle of zero radius encloses no current, and grows in direct proportion to $r$, because the enclosed current grows with the area ($\propto r^2$) while the circumference grows only with the radius ($\propto r$). At the surface ($r = a$) the result equals the external expression $\mu_0 I/(2\pi a)$, and beyond the surface the field falls as $1/r$. Assume 1 A flows in a wire of radius 0.1 mm. The field is 1 mT halfway to the surface, reaches its maximum of 2 mT at the surface, and falls to 0.2 mT at a distance of 1 mm from the axis.</p>
-<p>Ampere&#39;s law uses only the enclosed current, so the copper outside the circle contributes nothing at radius $r$. The same fact follows from a geometric argument about a hollow current-carrying pipe. Consider a point inside the cavity and a narrow cone of angle $d\theta$ that opens from the point and cuts the wall on both sides. The wall length cut by the cone is proportional to the distance from the point, so the nearer segment carries less current and the farther segment carries more current in direct proportion to its distance.</p>
-<p>A line current produces a field proportional to its current divided by its distance, so both segments produce fields of equal magnitude, and they point in opposite directions. Every cone cancels, and the field inside a hollow current-carrying cylinder is zero. A solid wire is a nest of such hollow tubes, so only the current inside radius $r$ produces the field at radius $r$.</p>
-<p>The uniform current density assumed here holds at DC. At high frequency the changing field inside the conductor drives currents of its own, which push the current distribution toward the surface, and <a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">Chapter 5</a> analyzes that redistribution.</p>
-<h3>Faraday&#39;s Law, Lenz&#39;s Law, and Ampere&#39;s Law as Three Distinct Statements</h3>
-<p>Three statements about electromagnetic induction are often blended, and keeping them separate removes most of the confusion about which direction is which:</p>
+<h3>The Magnetic Field of a Current: Ampère&#39;s Law and the Generation Rule</h3>
+<p>Stationary electric charges produce only an electric field, whereas moving electric charges generate a circulating magnetic field in the surrounding space. The total magnetic field around any copper conductor is the vector superposition of the individual magnetic fields created by all moving electrons inside the metal.</p>
+<p>A right-hand procedure, termed the <strong>Generation Rule</strong> throughout this series, gives the spatial direction of the magnetic field from a known current direction. Pointing the thumb of the right hand along the direction of conventional positive current causes the curled fingers of the right hand to point along the circulating magnetic field lines encircling the conductor.</p>
+<p>Electromagnetics distinguishes two vector quantities at every point in space to separate the current-driven cause from the material-dependent result:</p>
 <ul>
-<li><strong>Ampere&#39;s law:</strong> Electric current generates a circulating magnetic field; the current is the cause and the magnetic field is the effect.</li>
-<li><strong>Faraday&#39;s law:</strong> A time-varying magnetic flux $\Phi$ through a surface induces an electromotive force (EMF) around the enclosing loop according to $\mathcal{E} = -d\Phi/dt$.</li>
-<li><strong>Lenz&#39;s law:</strong> The minus sign in Faraday&#39;s law dictates that the induced EMF drives a current whose own magnetic field opposes the flux change that produced it.</li>
+<li><strong>Magnetic field intensity $\vec{H}$ (in amperes per meter, $\text{A/m}$):</strong> The geometric driving effort produced purely by the electric current $I$ and the path geometry, independent of the surrounding medium. Magnetic field intensity $\vec{H}$ pairs with the electric field $\vec{E}$ (in $\text{V/m}$) in the Poynting vector $\vec{S}$ of <a href="signal-integrity-03_Impedance_Reflections_and_Termination.html">Chapter 3</a>.</li>
+<li><strong>Magnetic flux density $\vec{B}$ (in teslas, $\text{T}$, or milliteslas, where $1\text{ mT}$ equals $10^{-3}\text{ T}$):</strong> The resulting concentration of magnetic field lines per unit area at a specific point after the surrounding material responds to $\vec{H}$. One tesla equals one weber per square meter ($\text{Wb/m}^2$) or one volt-second per square meter ($\text{V}\cdot\text{s/m}^2$).</li>
 </ul>
-<p>Ampere&#39;s law concerns the field that a current creates, and Lenz&#39;s law concerns the reaction of a conductor to a change in the field that passes through it. A conductor that is not exposed to a changing field shows no Lenz effect, and a conductor carrying a steady current is surrounded by a steady field with no induced EMF.</p>
+<p>The medium&#39;s total magnetic permeability $\mu$ from <a href="signal-integrity-01_Wave_Propagation_and_Transmission_Lines.html">Chapter 1</a> relates the local magnetic flux density $\vec{B}$ to the magnetic field intensity $\vec{H}$:</p>
+<p>$$\vec{B} = \mu \vec{H} = \mu_0 \mu_r \vec{H}$$</p>
+<p>Here $\mu_r$ is the dimensionless relative permeability of the material, and $\mu_0$ is the magnetic permeability of free space (expressed in henries per meter, $\text{H/m}$, or equivalently tesla-meters per ampere, $\text{T}\cdot\text{m/A}$):</p>
+<p>$$\mu_0 = 4\pi \times 10^{-7}\text{ H/m} = 4\pi \times 10^{-7}\text{ T}\cdot\text{m/A}$$</p>
+<p>Ferromagnetic materials such as iron or ferrite align their internal atomic domains with $\vec{H}$ to amplify the flux density by relative permeabilities $\mu_r$ of $10^2$ to $10^4$. Copper, air, vacuum, and PCB dielectrics such as FR4 are non-magnetic ($\mu_r$ equal to $1$), so $\vec{B}$ and $\vec{H}$ share the same spatial distribution everywhere on a circuit board and differ only by the constant $\mu_0$:</p>
+<p>$$\vec{B} = \mu_0 \vec{H}$$</p>
+<p>In its pure geometric form, Ampère&#39;s law states that the line integral of $\vec{H}$ around any closed loop equals the net conduction current $I_{\text{enc}}$ (in amperes, $\text{A}$) enclosed by that loop. Multiplying both sides by $\mu_0$ writes Ampère&#39;s law in terms of the magnetic flux density $\vec{B}$:</p>
+<p>$$\oint \vec{H} \cdot d\vec{\ell} = I_{\text{enc}} \qquad \Longleftrightarrow \qquad \oint \vec{B} \cdot d\vec{\ell} = \mu_0 I_{\text{enc}}$$</p>
+<h4>External Magnetic Field of a Cylindrical Wire</h4>
+<p>Consider a long, straight cylindrical wire of radius $a$ carrying a steady current $I$. By circular symmetry around the wire axis, every point on a concentric circle of radius $r > a$ outside the wire experiences the same magnetic field magnitude $B(r)$ directed tangentially along the circle.</p>
+<p>The vector $\vec{B}$ is everywhere parallel to the circular path and constant in magnitude at fixed radius $r$, so the line integral in Ampère&#39;s law simplifies to the field magnitude $B(r)$ multiplied by the circle circumference $2\pi r$. A circle outside the wire ($r > a$) encloses the entire wire cross-section, setting the enclosed current $I_{\text{enc}}$ equal to the full wire current $I$:</p>
+<p>$$\oint \vec{B} \cdot d\vec{\ell} = B(r)\,(2\pi r) = \mu_0 I$$</p>
+<p>Dividing both sides by the circumference $2\pi r$ gives the magnetic flux density outside a straight cylindrical wire ($r \ge a$):</p>
+<p>$$B(r) = \frac{\mu_0 I}{2\pi r}$$</p>
+<p>Moving farther away from the wire in the surrounding space does not change the enclosed current $I$, while the circular path length $2\pi r$ stretches proportionally with $r$. The external magnetic field therefore weakens in inverse proportion to the radial distance $r$.</p>
+<h4>Uniform Magnetic Field of a Wide Current Sheet</h4>
+<p>A wide, flat copper reference plane shapes the magnetic field into a completely different spatial pattern through vector superposition. Consider a horizontal copper plane of width $W_{\text{plane}}$ and vertical foil thickness $t_{\text{Cu}}$ carrying a uniform current $I$ across its two-dimensional cross-sectional area $A_{\text{plane}}$. Inside the copper foil, dividing current $I$ by $A_{\text{plane}}$ defines the cross-sectional current density $J$ (in amperes per square meter, $\text{A/m}^2$):</p>
+<p>$$A_{\text{plane}} = W_{\text{plane}}\,t_{\text{Cu}}, \qquad J = \frac{I}{A_{\text{plane}}} = \frac{I}{W_{\text{plane}}\,t_{\text{Cu}}}$$</p>
+<p>Above any observation point on the plane, narrow current strips located at equal horizontal distances to the left and right produce magnetic field vectors whose vertical components point in opposite directions and cancel, while their horizontal components parallel to the plane point in the same direction and add. Summing across the full width of the sheet eliminates the vertical field component and leaves a uniform horizontal magnetic field parallel to the copper surface, pointing in opposite directions above and below the plane.</p>
+<p>To find the magnitude of that external horizontal field, apply Ampère&#39;s law around a rectangular loop of horizontal width $w$ whose top and bottom legs sit outside the copper foil, straddling the entire vertical thickness $t_{\text{Cu}}$. Multiplying the area current density $J$ by the enclosed copper cross-sectional area $A_{\text{enc}}$ of $w\,t_{\text{Cu}}$ cancels the foil thickness $t_{\text{Cu}}$:</p>
+<p>$$I_{\text{enc}} = J\,A_{\text{enc}} = \left(\frac{I}{W_{\text{plane}}\,t_{\text{Cu}}}\right)(w\,t_{\text{Cu}}) = \left(\frac{I}{W_{\text{plane}}}\right)w$$</p>
+<p>That cancellation occurs because any loop outside the copper plane encloses $100\%$ of the vertical thickness $t_{\text{Cu}}$, just as a circle outside a cylindrical wire ($r \ge a$) encloses $100\%$ of the wire radius $a$. Electromagnetics defines the product $J\,t_{\text{Cu}}$ as the <strong>sheet (or linear) current density</strong> $K$ (in amperes per meter of width, $\text{A/m}$):</p>
+<p>$$K = J\,t_{\text{Cu}} = \frac{I}{W_{\text{plane}}}$$</p>
+<p>Substituting the enclosed current $K\,w$ along the two horizontal path segments of length $w$ (above and below the plane) into Ampère&#39;s law gives:</p>
+<p>$$B\,(2w) = \mu_0 I_{\text{enc}} = \mu_0 (K\,w)$$</p>
+<p>Dividing both sides by $2w$ cancels the loop width $w$ and gives the magnetic flux density on either side of a wide current sheet:</p>
+<p>$$B = \frac{\mu_0 K}{2} = \frac{\mu_0 I}{2 W_{\text{plane}}}$$</p>
+<p>Individual moving electrons obey the same physical law in both conductors. Cross-sectional geometry determines which vector components cancel and which reinforce: a narrow wire concentrates magnetic field lines into tight circles that decay as $1/r$, whereas a wide ground plane spreads the field into a uniform sheet parallel to the copper surface.</p>
+<h3>The Magnetic Field Inside and Outside a Solid Conductor</h3>
+<h4>One Hollow Copper Ring: Cancellation Inside, Constructive Field Outside</h4>
+<p>To see how a solid wire builds its internal magnetic field, start with a single infinitely thin hollow copper ring of radius $\rho$ and wall thickness $d\rho$ carrying current straight out of the page ($\odot$). By the Generation Rule (right-hand thumb pointing out of the page), the current filament at $12\text{ o'clock}$ creates a counter-clockwise circular magnetic field that points to the <strong>right</strong> ($\rightarrow$) below $12\text{ o'clock}$ (inside the ring) and to the <strong>left</strong> ($\leftarrow$) above $12\text{ o'clock}$ (outside the ring). The opposite filament at $6\text{ o'clock}$ creates a counter-clockwise circular field that points to the <strong>left</strong> ($\leftarrow$) above $6\text{ o'clock}$ (inside the ring) and to the <strong>right</strong> ($\rightarrow$) below $6\text{ o'clock}$ (outside the ring).</p>
+<p>Inside the hollow ring ($r < \rho$), every observation point $P$ sits between opposite walls whose magnetic fields point in opposite directions ($\rightarrow$ versus $\leftarrow$). Even when $P$ lies off-center, closer to the top wall at distance $d_1$ than to the bottom wall at distance $d_2$, drawing two opposite cones of narrow angle $d\theta$ through $P$ cuts a short near copper arc of length $d_1\,d\theta$ and a wide far copper arc of length $d_2\,d\theta$. The far arc is $d_2 / d_1$ times wider and carries $d_2 / d_1$ times more current, which cancels its greater distance in the wire field law ($\Delta I / d$) so that opposite arcs cancel pair by pair around all $360^\circ$:</p>
+<p>$$dB_{\text{ring}}(r) = 0, \qquad \text{for } r < \rho$$</p>
+<p>Outside the hollow ring ($r \ge \rho$), the magnetic field circle from the far side reaches across the ring diameter to the exterior observation point. Both the $12\text{ o'clock}$ and $6\text{ o'clock}$ filaments now lie on the same side of the observation point and push the magnetic field in the <strong>same counter-clockwise direction</strong>. The ring adds no current past its own radius $\rho$ in either surrounding air or surrounding outer copper; it contributes only the current $dI(\rho)$ flowing in its own circumference, and its field strength diminishes inversely with the observation radius $r$:</p>
+<p>$$dB_{\text{ring}}(r) = \frac{\mu_0\,dI(\rho)}{2\pi r}, \qquad \text{for } r \ge \rho$$</p>
+<h4>Building a Solid Wire from Nested Concentric Rings</h4>
+<p>A solid cylindrical copper wire of outer radius $a$ is an infinite series of infinitely thin concentric copper rings of radius $\rho$ nested from the center axis (zero $\rho$) to the outer surface ($\rho$ equal to $a$). Under a steady DC current $I$ distributed uniformly across the total wire area $\pi a^2$, the constant current per unit area is the current density $J$ (in $\text{A/m}^2$):</p>
+<p>$$J = \frac{I}{\pi a^2}$$</p>
+<p>Each thin concentric ring at radius $\rho$ with thickness $d\rho$ has a copper strip area equal to its circumference $2\pi\rho$ multiplied by $d\rho$, so the current $dI(\rho)$ generated by that single ring is proportional to its circumference:</p>
+<p>$$dI(\rho) = J\,(2\pi\rho\,d\rho)$$</p>
+<p>At an interior observation radius $r < a$ inside the solid copper wire, every outer ring larger than $r$ ($r < \rho \le a$) surrounds the observation point and cancels itself to zero. Every inner ring smaller than $r$ ($0 \le \rho \le r$) sits inside the observation circle and sends its constructive magnetic field outward to radius $r$.</p>
+<p>Each inner ring is counted <strong>only once</strong>, evaluated at the single observation radius $r$ where the field is measured. Summing the field contributions at observation radius $r$ from all inner rings (from zero $\rho$ to $r$) factors out the common observation-point denominator $2\pi r$ and integrates the inner ring circumferences $2\pi\rho\,d\rho$:</p>
+<p>$$B(r) = \int_{\rho = 0}^{\rho = r} \frac{\mu_0\,dI(\rho)}{2\pi r} = \frac{\mu_0\,J}{2\pi r}\int_{\rho = 0}^{\rho = r} 2\pi\rho\,d\rho$$</p>
+<p>Adding the circumferences $2\pi\rho\,d\rho$ of all concentric rings from zero $\rho$ to $r$ builds the circular cross-sectional area $\pi r^2$ of the interior disk, which encloses current $I_{\text{enc}}(r)$:</p>
+<p>$$\int_{\rho = 0}^{\rho = r} 2\pi\rho\,d\rho = \pi r^2 \qquad \Longrightarrow \qquad I_{\text{enc}}(r) = J\,(\pi r^2) = \left(\frac{I}{\pi a^2}\right)(\pi r^2) = I\,\frac{r^2}{a^2}$$</p>
+<p>Replacing the integral of the circumferences with the enclosed area $\pi r^2$ and enclosed current $I_{\text{enc}}(r)$ reproduces Ampère&#39;s law for a circular path of radius $r$:</p>
+<p>$$B(r)\,(2\pi r) = \mu_0 I_{\text{enc}}(r) = \mu_0 I\,\frac{r^2}{a^2}$$</p>
+<p>Dividing both sides by the observation circumference $2\pi r$ gives the internal magnetic flux density inside the solid wire ($0 \le r \le a$):</p>
+<p>$$B(r) = \frac{\mu_0 I\, r}{2\pi a^2}$$</p>
+<p>Evaluating this internal expression at the outer copper surface ($r$ equal to $a$) where the internal linear rise meets the external $1/r$ decay gives the peak surface magnetic flux density $B(a)$:</p>
+<p>$$B(a) = \frac{\mu_0 I\, a}{2\pi a^2} = \frac{\mu_0 I}{2\pi a}$$</p>
+<h4>Comparing the Four Radial Zones Across Interior, Surface, and Exterior Radii</h4>
+<p>Two competing geometric factors (the enclosed current $I_{\text{enc}}(r)$ in the numerator and the observation circumference $2\pi r$ in the denominator) govern the field across the four radial zones:</p>
+<ul>
+<li><strong>At the center axis (zero $r$):</strong> Zero concentric rings sit inside the center axis (zero $I_{\text{enc}}$), and all surrounding rings cancel at the center, leaving zero $B(0)$.</li>
+<li><strong>Inside the copper wire ($0 < r < a$):</strong> Stepping outward adds new inner rings whose cumulative area $\pi r^2$ grows as $r^2$ while the observation circumference $2\pi r$ grows only as $r$. Area growth outpaces circumference stretching by the factor $r^2 / r$, so the internal magnetic field rises <strong>linearly</strong> with radius $r$.</li>
+<li><strong>At the copper surface ($r$ equal to $a$):</strong> All concentric rings across the full radius $a$ contribute constructively ($I_{\text{enc}}$ equal to $I$) at the smallest radius containing the full wire, so the magnetic field reaches its <strong>maximum strength</strong> at the copper surface.</li>
+<li><strong>Outside the copper wire ($r > a$):</strong> Stepping beyond the wire surface into the surrounding air adds <strong>zero new rings</strong> and zero new current ($I_{\text{enc}}$ stays fixed at $I$). Increasing the observation radius $r$ stretches the denominator $2\pi r$ around that constant current, so the external field decays <strong>inversely</strong> with distance ($1/r$).</li>
+</ul>
+<p>This uniform DC current distribution holds for steady currents; at high frequencies, time-varying internal fields push current toward the outer skin (<a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">Chapter 5</a>).</p>
+<h4>Numerical Walkthrough Across Interior, Surface, and Exterior Radii</h4>
+<p>Consider a solid copper wire of outer radius $a$ equal to $0.1\text{ mm}$ ($1.0 \times 10^{-4}\text{ m}$) carrying a steady current $I$ of $1.0\text{ A}$ in free space ($\mu_0$ of $4\pi \times 10^{-7}\text{ T}\cdot\text{m/A}$).</p>
+<p>First, evaluate the field at the copper surface ($r$ equal to $a$, or $1.0 \times 10^{-4}\text{ m}$), where all concentric rings contribute the full $1.0\text{ A}$ current at minimum circumference. Substituting $\mu_0$, $I$, and $a$ into the surface field equation gives the peak magnetic flux density in teslas and milliteslas:</p>
+<p>$$B(a) = \frac{\mu_0 I}{2\pi a} = \frac{(4\pi \times 10^{-7}\text{ T}\cdot\text{m/A})(1.0\text{ A})}{2\pi (1.0 \times 10^{-4}\text{ m})}$$</p>
+<p>$$B(a) = \frac{2.0 \times 10^{-7}\text{ T}\cdot\text{m}}{1.0 \times 10^{-4}\text{ m}} = 2.0 \times 10^{-3}\text{ T} = 2.0\text{ mT}$$</p>
+<p>Second, evaluate the field inside the copper halfway from the center axis to the surface ($r$ of $0.05\text{ mm}$, equal to $0.5\,a$). The inner rings inside $0.5\,a$ span one-quarter of the cross-sectional area ($I_{\text{enc}}$ of $0.25\text{ A}$) along one-half of the surface circumference, yielding half of the surface peak:</p>
+<p>$$B(0.05\text{ mm}) = \frac{\mu_0 I\, r}{2\pi a^2} = \left(\frac{\mu_0 I}{2\pi a}\right)\left(\frac{r}{a}\right) = (2.0\text{ mT})\left(\frac{0.05\text{ mm}}{0.10\text{ mm}}\right) = 1.0\text{ mT}$$</p>
+<p>Third, evaluate the field outside the wire at a radius ten times the wire radius ($r$ of $1.0\text{ mm}$, equal to $10\,a$). Zero additional current enters beyond radius $a$ ($I_{\text{enc}}$ remains $1.0\text{ A}$) while the observation circumference is ten times larger than at the surface, reducing the magnetic flux density to one-tenth of its surface peak:</p>
+<p>$$B(1.0\text{ mm}) = \frac{\mu_0 I}{2\pi r} = \left(\frac{\mu_0 I}{2\pi a}\right)\left(\frac{a}{r}\right) = (2.0\text{ mT})\left(\frac{0.10\text{ mm}}{1.0\text{ mm}}\right) = 0.2\text{ mT}$$</p>
+<h3>Faraday&#39;s Law, Lenz&#39;s Law, and Ampère&#39;s Law as Three Distinct Principles</h3>
+<p>Electromagnetic induction involves three distinct physical laws that govern current, magnetic flux, and induced voltage. Keeping cause and effect separate in each law prevents directional sign errors.</p>
+<h4>Principle 1: Ampère&#39;s Law (Current Generates Magnetic Field)</h4>
+<p>Electric current is the physical cause, and a circulating magnetic field is the physical effect. Charge flowing along a conductor surrounds the current path with a magnetic flux density $\vec{B}$ whose direction follows the Generation Rule and whose magnitude obeys Ampère&#39;s law.</p>
+<h4>Principle 2: Faraday&#39;s Law (Changing Magnetic Flux Induces Voltage)</h4>
+<p>Magnetic flux density $\vec{B}$ (in $\text{T}$ or $\text{Wb/m}^2$) measures the local concentration of magnetic field lines <strong>per unit area at a single point</strong>. By contrast, <strong>magnetic flux</strong> $\Phi_B$ measures the <strong>total amount of magnetic field</strong> passing through an entire two-dimensional surface of area $A$, such as the rectangular dielectric window between a signal trace and its ground plane. Magnetic flux $\Phi_B$ is measured in <strong>webers</strong> ($\text{Wb}$, equal to $\text{T}\cdot\text{m}^2$ or volt-seconds, $\text{V}\cdot\text{s}$) and is found by integrating the normal component of $\vec{B}$ across the surface area $A$:</p>
+<p>$$\Phi_B = \iint_A \vec{B} \cdot d\vec{A}$$</p>
+<p>For a uniform magnetic flux density $B$ passing perpendicularly through a flat window of area $A$, that surface integral simplifies to the product of flux density and area:</p>
+<p>$$\Phi_B = B\,A$$</p>
+<p>Faraday&#39;s law states that a time-varying total magnetic flux $\Phi_B(t)$ enclosed by a loop is the physical cause, and an induced electromotive force $\mathcal{E}(t)$ (loop voltage, in volts) around that loop is the physical effect. A steady magnetic field whose enclosed flux $\Phi_B$ does not change with time induces zero voltage, regardless of how strong the static flux density $\vec{B}$ is.</p>
+<h4>Principle 3: Lenz&#39;s Law (Induced Polarity Opposes the Flux Change)</h4>
+<p>Conservation of energy requires that the voltage induced by a changing magnetic flux always takes the polarity that opposes the flux change that created it. Combining Faraday&#39;s rate-of-change magnitude with Lenz&#39;s opposing minus sign yields the Faraday-Lenz law of induction:</p>
+<p>$$\mathcal{E}(t) = -\frac{d\Phi_B(t)}{dt}$$</p>
+<p>An increasing magnetic flux $\Phi_B(t)$ through a closed conducting loop induces an electromotive force $\mathcal{E}(t)$ that drives a secondary current whose own magnetic field points opposite to the primary field to resist the increase. A decreasing primary magnetic flux drives an induced current in the opposite direction to reinforce the primary field and resist the decay.</p>
 <h3>The Reaction Rule</h3>
-<p>Applying the right-hand rule to find the direction of an induced current requires a second procedure, distinct from the Generation Rule. This series calls it the <strong>Reaction Rule</strong>:</p>
+<p>Finding the direction of an induced current from Lenz&#39;s law requires a three-step right-hand procedure that is distinct from the Generation Rule. This series calls this three-step sequence the <strong>Reaction Rule</strong>:</p>
 <ol>
-<li><strong>Primary field evaluation:</strong> Apply the Generation Rule to find the direction of the existing magnetic field and determine whether its magnitude is increasing or decreasing.</li>
-<li><strong>Opposing field alignment:</strong> Establish the direction of the opposing field required by Lenz&#39;s law, pointing opposite to the existing field when the flux grows and parallel to it when the flux shrinks.</li>
-<li><strong>Induced current readout:</strong> Point the right-hand thumb along that opposing field and read the direction of the induced current from the curl of the fingers.</li>
+<li><strong>Primary field evaluation:</strong> Apply the Generation Rule to the primary current to identify the spatial direction of the existing magnetic field $\vec{B}_{\text{primary}}$ passing through the target loop, and identify an increasing versus decreasing flux magnitude over time.</li>
+<li><strong>Opposing field alignment:</strong> Establish the direction of the induced opposing magnetic field $\vec{B}_{\text{induced}}$ required by Lenz&#39;s law, pointing opposite to $\vec{B}_{\text{primary}}$ when the primary flux is growing and parallel to $\vec{B}_{\text{primary}}$ when the primary flux is shrinking.</li>
+<li><strong>Induced current readout:</strong> Around a <strong>straight wire</strong>, curl the right-hand <strong>fingers</strong> along the concentric circles of $\vec{B}_{\text{induced}}$ and read the straight induced current direction from the right-hand <strong>thumb</strong>. Inside a <strong>single flat loop window</strong> where $\vec{B}_{\text{induced}}$ points in one direction, point the <strong>thumb</strong> along $\vec{B}_{\text{induced}}$ and read the loop current from the <strong>fingers</strong>.</li>
 </ol>
-<p>The two rules are applied one after the other with a pause between them, and they are never chained into a single motion. The Generation Rule starts from a current and produces a field. The Reaction Rule starts from a changing field, produces an opposing field, and only then reads the current that would generate that opposing field. <a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">Chapter 5</a> uses the Reaction Rule inside a single conductor to explain the skin effect, and the crosstalk section below uses it between two conductors.</p>
-<h3>The Four Cases of Induction</h3>
-<p>Four distinct physical cases classify how a conductor and a magnetic field interact:</p>
+<p>The Generation Rule and the Reaction Rule must never be blended into a single hand motion. The Generation Rule starts from a known current and finds the magnetic field it creates. The Reaction Rule starts from a changing magnetic flux, determines the opposing magnetic field required to fight that change, and reads out the induced current that generates that opposing field.</p>
+<p>Why does Step 3 sometimes place the <strong>thumb</strong> along the induced current and other times along the opposing magnetic field? On a human hand, the <strong>thumb is a straight line</strong> and the <strong>fingers curl in a circle</strong>. In every electromagnetic geometry, whichever physical quantity travels in a <strong>straight line</strong> gets the <strong>straight thumb</strong>, and whichever physical quantity wraps in a <strong>circle or closed loop</strong> gets the <strong>curled fingers</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Geometry Under Inspection</th>
+<th>Quantity Moving in a Straight Line (<strong>Straight Thumb</strong>)</th>
+<th>Quantity Wrapping in a Circle or Loop (<strong>Curled Fingers</strong>)</th>
+<th>When to Use This Orientation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Orientation A: Straight-Wire View</strong> (a straight trace surrounded by concentric circles of $\vec{B}$)</td>
+<td><strong>Current or back-EMF</strong> along the straight wire ($\rightarrow$ or $\leftarrow$)</td>
+<td><strong>Magnetic field $\vec{B}$</strong> wrapping in concentric circles around the wire ($\odot$ on one side, $\otimes$ on the other)</td>
+<td>Whenever inspecting a <strong>straight wire or PCB trace</strong> where $\vec{B}$ forms concentric circles around the conductor (<code>Case 2</code> self-inductance and straight-trace crosstalk).</td>
+</tr>
+<tr>
+<td><strong>Orientation B: Closed-Loop Window View</strong> (a rectangular loop or coil with $\vec{B}$ piercing the window)</td>
+<td><strong>Magnetic field $\vec{B}$</strong> poking straight through the loop window ($\otimes$ or $\odot$)</td>
+<td><strong>Current or back-EMF</strong> circulating around the closed loop perimeter ($\circlearrowright$ or $\circlearrowleft$)</td>
+<td>Whenever inspecting a <strong>single closed loop window</strong> on one side of a wire where $\vec{B}$ points in one single straight direction through the window (<code>Case 3</code> loop view).</td>
+</tr>
+</tbody></table>
+<p>On straight parallel PCB traces, both orientations always yield the same induced current direction along the copper trace, so either orientation can be used.</p>
+<h3>The Four Physical Cases of Magnetic Induction</h3>
+<p>Four physical scenarios classify all interactions between currents, conductors, and magnetic fields:</p>
 <table>
 <thead>
 <tr>
 <th>Case</th>
 <th>Conductor and Field State</th>
-<th>Flux Rate (<code>dPhi/dt</code>)</th>
+<th>Flux Rate</th>
 <th>Physical Mechanism and Signal Integrity Role</th>
 </tr>
 </thead>
 <tbody><tr>
 <td><strong>Case 1: Steady isolated current</strong></td>
-<td>Constant DC current in a single conductor</td>
-<td><code>dPhi/dt = 0</code></td>
-<td>Static magnetic field induces zero EMF; conductor exhibits only DC resistance.</td>
+<td>Constant DC current in a single stationary conductor</td>
+<td>$\frac{d\Phi_B}{dt} = 0$</td>
+<td>Static magnetic field induces zero voltage; conductor exhibits only DC resistance.</td>
 </tr>
 <tr>
 <td><strong>Case 2: Changing isolated current</strong></td>
-<td>Time-varying current in a single conductor</td>
-<td><code>dPhi/dt != 0</code> (self-flux)</td>
-<td>Changing self-flux induces a back-EMF (<code>-L * dI/dt</code>) that opposes current changes and drives the high-frequency skin effect (<a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">Chapter 5</a>).</td>
+<td>Time-varying current $i(t)$ in a single conductor</td>
+<td>$\frac{d\Phi_{\text{self}}}{dt} \neq 0$</td>
+<td>Changing self-flux induces a back-EMF that opposes current changes (self-inductance $L$) and drives the high-frequency skin effect (<a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">Chapter 5</a>).</td>
 </tr>
 <tr>
 <td><strong>Case 3: Changing current near a neighbor</strong></td>
-<td>Time-varying current in conductor 1 coupling into conductor 2</td>
-<td><code>dPhi_21/dt != 0</code> (mutual flux)</td>
-<td>Changing field from the aggressor links the victim loop and induces mutual EMF (<code>-M * dI_1/dt</code>), producing inductive crosstalk.</td>
+<td>Time-varying current $i_1(t)$ in conductor 1 coupling into conductor 2</td>
+<td>$\frac{d\Phi_{21}}{dt} \neq 0$</td>
+<td>Changing magnetic field from the aggressor passes through the victim loop window and induces mutual voltage (mutual inductance $M$), producing inductive crosstalk.</td>
 </tr>
 <tr>
 <td><strong>Case 4: Moving conductor in static field</strong></td>
-<td>Conductor moving mechanically through a stationary field</td>
+<td>Conductor moving mechanically through a stationary magnetic field</td>
 <td>Motional Lorentz force</td>
-<td>Generates motional EMF in rotating machinery; absent in stationary PCB interconnects.</td>
+<td>Mechanical motion cuts field lines to generate motional EMF in motors and generators; absent in stationary PCB interconnects.</td>
 </tr>
 </tbody></table>
-<p>Case 2 occurs inside Case 3, because every conductor reacts to the changing field of its own current and to the changing fields of its neighbors at the same time, and the two effects add by linear superposition. A current already flowing in the second conductor does not alter the induced current from the first, because the induced contribution superposes linearly onto the existing current.</p>
-<h3>Inductance Defined</h3>
-<p>Ampere&#39;s law shows that the field is proportional to the current that produces it, so the flux through a given loop is also proportional to that current. The constant of proportionality is the inductance of the loop:</p>
-<p>$$\Phi = L\, I$$</p>
-<p>The unit is the henry, equal to one weber per ampere or one volt-second per ampere. Faraday&#39;s law gives the EMF induced by a changing current, and the minus sign records the opposition of Lenz&#39;s law:</p>
-<p>$$\mathcal{E} = -\frac{d\Phi}{dt} = -L\,\frac{dI}{dt}$$</p>
-<p>A source that drives the current against this back-EMF must supply the opposite voltage across the inductor, which gives the circuit equation used in Chapter 3:</p>
-<p>$$v = L\,\frac{dI}{dt}$$</p>
-<p>The flux that a current $I_A$ in one loop produces through a second loop defines the mutual inductance in the same way, $\Phi_{BA} = M\, I_A$, and the EMF induced in the second loop is $-M\, dI_A/dt$.</p>
+<p>Case 2 and Case 3 operate simultaneously whenever multiple conductors carry high-speed signals on a circuit board. Every conductor reacts to the changing magnetic field of its own current (Case 2) while simultaneously reacting to the changing magnetic fields of neighboring currents (Case 3). By the linearity of Maxwell&#39;s equations, the induced voltages superpose directly on top of any signal already traveling on the victim conductor.</p>
+<h3>Self-Inductance and Mutual Inductance Defined</h3>
+<h4>Deriving Flux-Current Linearity from Ampère&#39;s Law and the Flux Integral</h4>
+<p>To see where the linear relationship between magnetic flux $\Phi_B(t)$ and current $i(t)$ comes from, substitute the magnetic flux density $B(r, t)$ from Ampère&#39;s law directly into the surface flux integral across the two-dimensional dielectric window of area $A$ between an outbound conductor and its return path:</p>
+<p>$$\Phi_B(t) = \iint_A \vec{B}(t) \cdot d\vec{A}$$</p>
+<p>First, evaluate this integral for a cylindrical wire of radius $a$ and length $\ell$ whose return path sits at radial distance $d$. Outside the wire ($a \le r \le d$), Ampère&#39;s law gives a magnetic flux density $B(r, t)$ that is proportional to $i(t)$ and inversely proportional to radius $r$:</p>
+<p>$$B(r, t) = \frac{\mu_0\,i(t)}{2\pi r}$$</p>
+<p>The rectangular dielectric window from inner radius $a$ to outer radius $d$ has length $\ell$ along the wire, so each thin radial strip of width $dr$ and length $\ell$ has differential area $dA$ equal to $\ell\,dr$. Substituting $B(r, t)$ and $\ell\,dr$ into the flux integral allows the time-varying current $i(t)$ (which depends only on time $t$, not on radius $r$) to factor completely outside the spatial integral:</p>
+<p>$$\Phi_B(t) = \int_{r = a}^{r = d} B(r, t)\,\ell\,dr = \int_{r = a}^{r = d} \left(\frac{\mu_0\,i(t)}{2\pi r}\right)\ell\,dr = \left(\frac{\mu_0\,\ell}{2\pi}\int_{r = a}^{r = d} \frac{dr}{r}\right)i(t)$$</p>
+<p>Evaluating the spatial integral of $1/r$ from $a$ to $d$ yields $\ln(d/a)$, expressing the total enclosed flux $\Phi_B(t)$ as a purely geometric constant multiplied by the current $i(t)$:</p>
+<p>$$\Phi_B(t) = \underbrace{\left[\frac{\mu_0\,\ell}{2\pi}\ln\!\left(\frac{d}{a}\right)\right]}_{L}\,i(t)$$</p>
+<p>Second, evaluate the same flux integral for a wide parallel-plate transmission line of trace width $w$, length $\ell$, and dielectric thickness $h$ ($w \gg h$). An outbound current $+i(t)$ on the top plate and an equal return current $-i(t)$ on the bottom plate each carry a surface current density $K(t)$ equal to $i(t)/w$. Between the plates, the two horizontal magnetic fields of magnitude $\frac{\mu_0 K(t)}{2}$ point in the same direction and add constructively to produce a uniform magnetic flux density $B(t)$ across the gap:</p>
+<p>$$B(t) = \frac{\mu_0 K(t)}{2} + \frac{\mu_0 K(t)}{2} = \mu_0 K(t) = \frac{\mu_0\,i(t)}{w}$$</p>
+<p>Integrating that uniform flux density across the rectangular dielectric window of height $h$ and length $\ell$ (area $A$ equal to $h\,\ell$) again factors the current $i(t)$ outside the geometry:</p>
+<p>$$\Phi_B(t) = \int_{y = 0}^{y = h} B(t)\,\ell\,dy = B(t)\,(h\,\ell) = \underbrace{\left(\frac{\mu_0\,h\,\ell}{w}\right)}_{L}\,i(t)$$</p>
+<p>In every linear, non-magnetic conductor geometry ($\mu_r$ equal to $1$), the current $i(t)$ factors out of the spatial surface integral in the same way. Doubling the current $i(t)$ doubles the local flux density $\vec{B}(t)$ at every point in the window, which doubles the total flux $\Phi_B(t)$. The ratio of total enclosed magnetic flux $\Phi_B(t)$ to current $i(t)$ is therefore a constant determined strictly by the permeability $\mu_0$ and the conductor loop geometry, defined as the <strong>inductance</strong> $L$:</p>
+<p>$$\Phi_B(t) = L\,i(t) \qquad \Longleftrightarrow \qquad L = \frac{\Phi_B(t)}{i(t)}$$</p>
+<p>Inductance $L$ is measured in <strong>henries</strong> ($\text{H}$, equal to webers per ampere, $\text{Wb/A}$, or volt-seconds per ampere, $\text{V}\cdot\text{s/A}$).</p>
+<h4>How the Cylindrical and Parallel-Plate Inductance Formulas Connect</h4>
+<p>The cylindrical inductance formula and the parallel-plate inductance formula look different at first glance, yet they are two geometric limits of the same law:</p>
+<p>$$L_{\text{cyl}} = \frac{\mu_0\,\ell}{2\pi}\ln\!\left(\frac{d}{a}\right), \qquad L_{\text{plate}} = \frac{\mu_0\,h\,\ell}{w}$$</p>
+<p>To see how one transforms into the other, take the flat parallel-plate line of width $w$, length $\ell$, and thin dielectric gap $h$, and roll it into a coaxial cylinder of inner radius $a$ and outer return radius $d$:</p>
+<ol>
+<li><strong>Trace width becomes cylinder circumference:</strong> Rolling the flat strip of width $w$ into a closed circle of radius $a$ sets the circumference $2\pi a$ equal to the width $w$:</li>
+</ol>
+<p>$$w = 2\pi a$$</p>
+<ol start="2">
+<li><strong>Dielectric thickness sets the outer radius:</strong> The return plane sits a radial distance $h$ outside the inner conductor surface of radius $a$, setting the outer return radius $d$ to $a + h$:</li>
+</ol>
+<p>$$d = a + h \qquad \Longrightarrow \qquad \frac{d}{a} = 1 + \frac{h}{a}$$</p>
+<p>Substituting this radius ratio into the cylindrical inductance formula gives:</p>
+<p>$$L_{\text{cyl}} = \frac{\mu_0\,\ell}{2\pi}\ln\!\left(1 + \frac{h}{a}\right)$$</p>
+<p>For a dielectric gap $h$ that is much thinner than the cylinder radius $a$ ($h \ll a$), the circular magnetic path circumference $2\pi r$ barely changes between the inner radius $a$ and the outer radius $a + h$, so the $1/r$ variation of the magnetic field across the gap flattens into a nearly uniform field. Mathematically, the first-order Taylor series expansion of the natural logarithm for a small ratio $\frac{h}{a} \ll 1$ replaces $\ln\!\left(1 + \frac{h}{a}\right)$ with $\frac{h}{a}$:</p>
+<p>$$\ln\!\left(1 + \frac{h}{a}\right) = \frac{h}{a} - \frac{1}{2}\left(\frac{h}{a}\right)^2 + \cdots \approx \frac{h}{a}, \qquad \text{for } h \ll a$$</p>
+<p>Replacing $\ln\!\left(1 + \frac{h}{a}\right)$ with $\frac{h}{a}$ and substituting the trace width $w$ for the circumference $2\pi a$ reduces the cylindrical formula directly to the parallel-plate formula:</p>
+<p>$$L_{\text{cyl}} \approx \frac{\mu_0\,\ell}{2\pi}\left(\frac{h}{a}\right) = \frac{\mu_0\,h\,\ell}{2\pi a} = \frac{\mu_0\,h\,\ell}{w} = L_{\text{plate}}$$</p>
+<p>The natural logarithm $\ln(d/a)$ appears whenever the return path sits far enough away ($d$ comparable to or larger than $a$) that the magnetic path circumference $2\pi r$ expands appreciably across the dielectric window, causing $B(r)$ to decay as $1/r$. A dielectric thickness $h$ that is small compared to the conductor width $w$ keeps the magnetic path length constant at $w$ across the entire gap $h$, so the logarithmic integral collapses to the ratio $h/w$.</p>
+<h4>Self-Induced Voltage from Self-Inductance ($L$)</h4>
+<p>Recall the Faraday-Lenz law relating induced electromotive force $\mathcal{E}(t)$ to the time derivative of enclosed magnetic flux:</p>
+<p>$$\mathcal{E}(t) = -\frac{d\Phi_B(t)}{dt}$$</p>
+<p>Replacing $\Phi_B(t)$ with $L\,i(t)$ for a stationary conductor geometry (where $L$ is constant in time) gives the self-induced back-EMF $\mathcal{E}_{\text{self}}(t)$:</p>
+<p>$$\mathcal{E}_{\text{self}}(t) = -\frac{d}{dt}\bigl[L\,i(t)\bigr] = -L\,\frac{di(t)}{dt}$$</p>
+<p>An external voltage source driving a changing current $i(t)$ through the inductor terminals must supply a forward terminal voltage $v_L(t)$ equal and opposite to $\mathcal{E}_{\text{self}}(t)$ to overcome this opposing back-EMF. Reversing the sign from internal back-EMF to applied terminal voltage gives the standard circuit voltage-current relation for an inductor used in <a href="signal-integrity-03_Impedance_Reflections_and_Termination.html">Chapter 3</a>:</p>
+<p>$$v_L(t) = -\mathcal{E}_{\text{self}}(t) = L\,\frac{di(t)}{dt}$$</p>
+<h4>Coupled Flux and Induced Voltage from Mutual Inductance ($M$)</h4>
+<p>Self-inductance $L$ tracks how a single loop reacts to its own magnetic field. <strong>Mutual inductance</strong> $M$ tracks the same four-step physical chain across <strong>two neighboring loops</strong>:</p>
+<ul>
+<li><strong>Loop 1 (source or aggressor loop):</strong> Carries a time-varying current $i_1(t)$ and radiates a magnetic flux density $\vec{B}_1(r, t)$ into the surrounding space.</li>
+<li><strong>Loop 2 (neighboring or victim loop):</strong> Sits nearby with its own rectangular dielectric window of surface area $A_2$.</li>
+<li><strong>Double-subscript convention ($21$):</strong> Names the <strong>target loop experiencing the effect</strong> first ($2$) and the <strong>source loop causing it</strong> second ($1$), reading $\Phi_{21}(t)$ as <em>&quot;magnetic flux in Loop 2 from Loop 1&quot;</em> and $\mathcal{E}_{21}(t)$ as <em>&quot;voltage induced in Loop 2 from Loop 1&quot;</em>.</li>
+</ul>
+<p>Walking through the four steps one equation at a time shows how $M$ and $\mathcal{E}_{21}(t)$ emerge directly from Ampère&#39;s law and Faraday&#39;s law:</p>
+<ol>
+<li><strong>Current $i_1(t)$ in Loop 1 creates magnetic flux density $B_1(r, t)$ at Loop 2:</strong> At any radial distance $r$ from Wire 1, Ampère&#39;s law gives the magnetic flux density produced by Loop 1&#39;s current:</li>
+</ol>
+<p>$$B_1(r, t) = \frac{\mu_0\,i_1(t)}{2\pi r}$$</p>
+<ol start="2">
+<li><strong>Loop 2&#39;s window area $A_2$ intercepts part of that field as shared flux $\Phi_{21}(t)$:</strong> Suppose window $A_2$ of length $\ell$ spans from radial distance $r_{\text{near}}$ to radial distance $r_{\text{far}}$ from Wire 1. Integrating Wire 1&#39;s field $B_1(r, t)$ across thin strips of differential area $dA_2$ equal to $\ell\,dr$ factors $i_1(t)$ outside the spatial integral:</li>
+</ol>
+<p>$$\Phi_{21}(t) = \iint_{A_2} \vec{B}_1(r, t) \cdot d\vec{A}_2 = \int_{r = r_{\text{near}}}^{r = r_{\text{far}}} \left(\frac{\mu_0\,i_1(t)}{2\pi r}\right)\ell\,dr$$</p>
+<p>$$\Phi_{21}(t) = \underbrace{\left[\frac{\mu_0\,\ell}{2\pi}\ln\!\left(\frac{r_{\text{far}}}{r_{\text{near}}}\right)\right]}_{M}\,i_1(t)$$</p>
+<ol start="3">
+<li><strong>Factoring out $i_1(t)$ defines the mutual inductance $M$:</strong> The bracketed spatial integral depends strictly on the permeability $\mu_0$ and the relative geometry of the two loops. Naming that geometric constant the <strong>mutual inductance</strong> $M$ (measured in henries, $\text{H}$, or $\text{Wb/A}$) relates the shared magnetic flux in Loop 2 to the current in Loop 1:</li>
+</ol>
+<p>$$\Phi_{21}(t) = M\,i_1(t) \qquad \Longleftrightarrow \qquad M = \frac{\Phi_{21}(t)}{i_1(t)}$$</p>
+<ol start="4">
+<li><strong>Changing current $i_1(t)$ in Loop 1 induces voltage $\mathcal{E}_{21}(t)$ around Loop 2:</strong> Recall the Faraday-Lenz law applied to the shared magnetic flux $\Phi_{21}(t)$ passing through Loop 2:</li>
+</ol>
+<p>$$\mathcal{E}_{21}(t) = -\frac{d\Phi_{21}(t)}{dt}$$</p>
+<p>Replacing $\Phi_{21}(t)$ with $M\,i_1(t)$ gives the open-circuit electromotive force $\mathcal{E}_{21}(t)$ induced around Loop 2 by a time-varying current in Loop 1:</p>
+<p>$$\mathcal{E}_{21}(t) = -\frac{d}{dt}\bigl[M\,i_1(t)\bigr] = -M\,\frac{di_1(t)}{dt}$$</p>
+<p>Comparing every symbol side by side highlights the one-to-one parallel between self-inductance and mutual inductance:</p>
+<table>
+<thead>
+<tr>
+<th>Physical Quantity</th>
+<th>Self-Inductance ($L$, Single Loop)</th>
+<th>Mutual Inductance ($M$, Loop 1 into Loop 2)</th>
+<th>SI Unit</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Driving current (cause)</strong></td>
+<td>$i(t)$ in the loop</td>
+<td>$i_1(t)$ in Loop 1 (source)</td>
+<td>$\text{A}$</td>
+</tr>
+<tr>
+<td><strong>Magnetic flux density generated</strong></td>
+<td>$\vec{B}(r, t)$ from $i(t)$</td>
+<td>$\vec{B}_1(r, t)$ from $i_1(t)$</td>
+<td>$\text{T}$ ($\text{Wb/m}^2$)</td>
+</tr>
+<tr>
+<td><strong>Window area intercepting the field</strong></td>
+<td>Own loop window $A$</td>
+<td>Neighboring Loop 2 window $A_2$</td>
+<td>$\text{m}^2$</td>
+</tr>
+<tr>
+<td><strong>Total enclosed magnetic flux</strong></td>
+<td>$\Phi_B(t) = L\,i(t)$</td>
+<td>$\Phi_{21}(t) = M\,i_1(t)$</td>
+<td>$\text{Wb}$ ($\text{V}\cdot\text{s}$)</td>
+</tr>
+<tr>
+<td><strong>Geometric inductance constant</strong></td>
+<td>$L = \frac{\Phi_B(t)}{i(t)}$</td>
+<td>$M = \frac{\Phi_{21}(t)}{i_1(t)}$</td>
+<td>$\text{H}$ ($\text{Wb/A}$)</td>
+</tr>
+<tr>
+<td><strong>Induced loop back-EMF (effect)</strong></td>
+<td>$\mathcal{E}_{\text{self}}(t) = -L\,\frac{di(t)}{dt}$</td>
+<td>$\mathcal{E}_{21}(t) = -M\,\frac{di_1(t)}{dt}$</td>
+<td>$\text{V}$</td>
+</tr>
+</tbody></table>
 <h2>Architecture</h2>
 <h3>Self-Inductance and the Effect of Trace Width</h3>
-<p>Self-inductance measures how much magnetic flux a conductor&#39;s geometry produces per ampere of its own current. Trace width has a pronounced effect on it. The field of a current is stronger close to the current, so a narrow trace that concentrates the current in a small cross-section produces a field that is denser near the conductor and stores more magnetic energy per unit length than a wide trace carrying the same current. The narrow trace therefore has a higher inductance per unit length.</p>
-<p>Chapter 1 showed that the inductance and capacitance per unit length change in opposite directions when the width changes, so a narrower trace over the same plane has a lower capacitance, a higher inductance, and a higher characteristic impedance. The inductance per unit length is tied to the impedance and the velocity by $L' = Z_0/v_p$, which follows from $Z_0 = \sqrt{L'/C'}$ and $v_p = 1/\sqrt{L'C'}$ (the symbols with a prime denote per-unit-length values).</p>
-<p>A short narrow section acts as a series inductor. The back-EMF of the extra inductance is proportional to $dI/dt$, so it is small for the slow change of a low-frequency signal and large for the fast change of an edge. The section therefore behaves as a low-pass filter: it passes the low-frequency content, reflects part of the high-frequency content as derived in Chapter 3, and rounds the edge that continues to the receiver.</p>
-<h3>Mutual Inductance and Geometry</h3>
-<p>Mutual inductance $M$ measures the efficiency of magnetic coupling between two current paths. The current in the outbound trace generates a field that spreads through space, and a fraction of the field lines pass through the loop of the second path. The mutual inductance is the flux through the second loop per ampere in the first.</p>
-<p>Geometry alone determines how strongly the two paths couple. A thick dielectric between the trace and the ground plane lets the field spread over a wide region before it reaches the plane, so only a small fraction of the field links the return path, and the mutual inductance is low. Compressing the dielectric moves the plane close to the trace, so the plane intercepts a much larger fraction of the field lines and the mutual inductance rises.</p>
-<h3>The Reciprocity Theorem</h3>
-<p>A narrow trace and a wide ground plane have markedly different geometries. The trace produces a dense, localized field, and the plane produces a broad, uniform one. It seems that the flux linking the plane because of a current in the trace should differ from the flux linking the trace because of the same current in the plane. The reciprocity theorem states that the two are equal:</p>
-<p>$$M_{12} = M_{21}$$</p>
-<p>The equality follows from the Neumann formula for the mutual inductance of two current paths $C_1$ and $C_2$:</p>
-<p>$$M_{12} = \frac{\mu_0}{4\pi} \oint_{C_1} \oint_{C_2} \frac{d\mathbf{l}_1 \cdot d\mathbf{l}_2}{r}$$</p>
-<p>where $r$ is the distance between the two line elements. The expression is unchanged when the labels 1 and 2 are exchanged, so $M_{12} = M_{21}$ for any pair of shapes. The derivation of the Neumann formula follows from the Biot-Savart law and the magnetic vector potential, and the integral form above defines the geometric coupling between the two closed loops. The physical content is that a concentrated source projecting onto a large receiver and a diffuse source projecting onto a small receiver couple the same total flux, and mutual inductance is a property of the pair of conductors and not of either one alone.</p>
-<p>The symmetry is the reason the loop inductance equation below contains the term $2M$ and not the sum $M_{12} + M_{21}$ of two different values.</p>
-<h3>The Total Loop Inductance Equation</h3>
-<p>A signal needs a return path, so the quantity that governs signal behavior is the inductance of the complete loop. Let a current $I$ flow along conductor 1 (the trace) and return along conductor 2 (the plane). Each conductor carries a partial self-inductance, $L_1$ and $L_2$, which describes the flux that conductor&#39;s own current produces through the loop, and the mutual inductance $M$ links them.</p>
-<p>Take the reference direction of current along the trace, so the trace carries $+I$ and the plane carries $-I$ in that direction. The voltage along each conductor combines its own back-EMF and the EMF induced by the other conductor:</p>
-<p>$$v_1 = L_1 \frac{dI}{dt} + M \frac{d(-I)}{dt} = (L_1 - M)\frac{dI}{dt}$$</p>
-<p>$$v_2 = L_2 \frac{d(-I)}{dt} + M \frac{dI}{dt} = -(L_2 - M)\frac{dI}{dt}$$</p>
-<p>The loop voltage is the drop along the outbound conductor minus the drop along the return conductor, because the loop traverses the return path in the opposite direction:</p>
-<p>$$v_{loop} = v_1 - v_2 = (L_1 - M)\frac{dI}{dt} + (L_2 - M)\frac{dI}{dt}$$</p>
-<p>Factoring out $dI/dt$ gives the total loop inductance:</p>
-<p>$$L_{loop} = L_1 + L_2 - 2M$$</p>
-<p>The minus sign on $M$ arises because the return current flows opposite to the outbound current, so the magnetic coupling between the two conductors cancels part of each self-inductance. Compressing the dielectric raises $M$ and lowers $L_{loop}$. The reduction has a floor, because the coupling cannot exceed the geometric mean of the two self-inductances, $M \le \sqrt{L_1 L_2}$. Substituting this bound gives the smallest possible loop inductance:</p>
-<p>$$L_{loop} \ge L_1 + L_2 - 2\sqrt{L_1 L_2} = \left(\sqrt{L_1} - \sqrt{L_2}\right)^2$$</p>
-<p>The loop inductance approaches zero only when the two conductors have equal self-inductances and perfect coupling. A trace and a wide plane have unequal self-inductances, so the floor is positive, and the loop inductance of a real structure remains finite however thin the dielectric becomes.</p>
-<p>The quantities $L_1$, $L_2$, and $M$ in this equation are partial inductances, which describe the contribution of a segment of the loop and have no independent meaning for an isolated segment. The per-unit-length values $L'$ and $M'$ apply to a slice of line whose length $\Delta z$ is small compared with the shortest wavelength in the signal, and the values for a full trace follow from summing the slices along its length.</p>
-<h3>Loop Inductance versus Self-Inductance</h3>
-<p>The self-inductance of a conductor considered alone, with no return path, answers a theoretical question about the flux of one wire in free space. Loop inductance describes the complete, closed circuit that exists in practice, and it includes the outbound conductor, the return conductor, and the coupling between them. No real signal exists without a return path, so the loop inductance is the quantity that determines signal behavior.</p>
-<p>High-frequency return current gathers directly beneath the trace to minimize the loop inductance. Concentrating the return current into a narrow band raises the self-inductance of the return path slightly, because a narrower current distribution produces a denser field, but the penalty is much smaller than the benefit: the loop area shrinks and the mutual inductance with the trace rises. The current settles into the distribution that minimizes the total impedance at each frequency, and <a href="signal-integrity-06_Return_Path_Dynamics_and_Parasitic_Effects.html">Chapter 6</a> describes the resulting return-path behavior in detail.</p>
-<h3>Loop Resistance and Why It Lacks Spatial Interaction</h3>
-<p>Resistance and inductance respond to conductor spacing differently at DC. The resistance of a conductor of length $\ell$ and cross-section $A$ is $R = \rho_r\, \ell / A$, where $\rho_r$ is the resistivity of copper. Spreading the return current across the full width of the ground plane enlarges $A$ and lowers the resistance.</p>
-<p>At DC the current is confined to the copper and distributes itself uniformly, so the spacing between the outbound and return paths has no effect on the total series resistance, and the term &quot;loop resistance&quot; carries no extra information beyond the sum of the two resistances. Magnetic fields project into the surrounding space, so the spacing changes the mutual inductance strongly, and &quot;loop inductance&quot; is a central design parameter.</p>
-<p>That independence holds strictly only for uniform DC current. At high frequency the currents in neighboring conductors redistribute under each other&#39;s fields, an effect called the proximity effect, and the effective resistance then depends on spacing.</p>
-<p>The frequency-dependent distribution of return current follows from the comparison between the two terms. At low frequencies the inductive reactance $\omega L$ is small, the DC resistance dominates the impedance, and the current spreads across the whole ground plane to minimize resistance. At high frequencies the reactance grows to dominate the impedance, and the current gathers under the trace to minimize the loop inductance, accepting a higher resistance as the price of the much larger reduction in the inductive term.</p>
-<h3>Crosstalk: Coupling Between Neighboring Traces</h3>
-<p>Crosstalk is the transfer of energy from one trace, the aggressor, to a neighboring trace, the victim. Two mechanisms operate together in producing crosstalk. The <strong>capacitive coupling</strong> is the electric-field link: a mutual capacitance per unit length $C_m$ lets the changing voltage of the aggressor drive displacement current into the victim. The <strong>inductive coupling</strong> is Case 3 of the four cases: the changing current of the aggressor induces an EMF in the victim loop, characterized by a mutual inductance per unit length $L_m$.</p>
-<p>Two locations on the victim define the measurements. The <strong>near end</strong> is the end of the victim next to the aggressor&#39;s transmitter, and the <strong>far end</strong> is the end next to the aggressor&#39;s receiver. The words refer to fixed positions on the board relative to the point where the aggressor launches its signal, and the direction of the victim&#39;s own traffic is irrelevant. <strong>Near-end crosstalk (NEXT)</strong> is the noise that appears at the victim&#39;s near end, which is carried by a wave traveling backward on the victim. <strong>Far-end crosstalk (FEXT)</strong> is the noise that appears at the victim&#39;s far end, carried by a wave traveling forward.</p>
-<p>The directions follow from how each mechanism launches waves on the victim. A short segment of the aggressor with a rising edge passing through it couples two sources into the matching segment of the victim:</p>
+<h4>Why Trace Width Controls Inductance ($L$) and Capacitance ($C$) in Opposite Directions</h4>
+<p>Changing the horizontal copper width $w$ of a PCB trace sitting at height $h$ above its reference plane pushes its distributed inductance per unit length $L$ (in $\text{H/m}$) and its distributed capacitance per unit length $C$ (in $\text{F/m}$) in opposite directions.</p>
+<p>First, consider why <strong>narrowing trace width $w$ increases inductance per unit length $L$</strong>. Self-inductance measures how much magnetic flux a conductor stores per ampere of its own current, and the external magnetic field of a current filament is strongest right beside the filament (decaying as $1/r$). Squeezing the same total current $I$ into a narrower copper width $w$ packs the current filaments together so their near-field flux lines reinforce around the metal perimeter, whereas widening the trace spreads the filaments apart so adjacent vertical field components cancel. Dividing $L_{\text{plate}}$ by trace length $\ell$ gives the distributed inductance per unit length $L$ with $w$ in the denominator:</p>
+<p>$$L_{\text{plate}} = \frac{\mu_0\,h\,\ell}{w} \qquad \Longrightarrow \qquad L = \frac{L_{\text{plate}}}{\ell} = \frac{\mu_0\,h}{w}$$</p>
+<p>Second, consider why <strong>narrowing trace width $w$ decreases capacitance per unit length $C$</strong>. Capacitance $C$ measures opposite electric charge $+Q$ and $-Q$ stored per volt $V$ across the dielectric ($Q/V$). <a href="signal-integrity-01_Wave_Propagation_and_Transmission_Lines.html">Chapter 1</a> established that a trace of width $w$ and length $\ell$ separated by dielectric thickness $h$ of permittivity $\varepsilon$ (the product $\varepsilon_0 \varepsilon_r$) from the ground plane forms a parallel-plate capacitor of facing area $w\,\ell$. Narrowing $w$ shrinks the facing surface area per meter of length, reducing stored charge and electric field lines across the gap:</p>
+<p>$$C_{\text{total}} = \frac{\varepsilon\,w\,\ell}{h} \qquad \Longrightarrow \qquad C = \frac{C_{\text{total}}}{\ell} = \frac{\varepsilon\,w}{h}$$</p>
+<h4>How $L$ and $C$ Set Wave Velocity ($v_p$) and Characteristic Impedance ($Z_0$)</h4>
+<p><a href="signal-integrity-01_Wave_Propagation_and_Transmission_Lines.html">Chapter 1</a> established how the per-unit-length inductance $L$ and capacitance $C$ govern the phase velocity $v_p$ and characteristic impedance $Z_0$ of a lossless transmission line:</p>
+<p>$$v_p = \frac{1}{\sqrt{LC}}, \qquad Z_0 = \sqrt{\frac{L}{C}}$$</p>
+<p>Substituting the geometric expressions for $L$ and $C$ into the product $L\,C$ cancels the geometric ratio $h/w$ against $w/h$:</p>
+<p>$$L\,C = \left(\frac{\mu_0\,h}{w}\right)\left(\frac{\varepsilon\,w}{h}\right) = \mu_0 \varepsilon = \mu_0 \varepsilon_0 \varepsilon_r$$</p>
+<p>Taking the inverse square root of $L\,C$ shows that the wave propagation velocity $v_p$ depends strictly on the dielectric material and remains constant when trace width $w$ changes:</p>
+<p>$$v_p = \frac{1}{\sqrt{LC}} = \frac{1}{\sqrt{\mu_0 \varepsilon_0 \varepsilon_r}}$$</p>
+<p>By contrast, substituting $L$ and $C$ into the ratio $L/C$ inside the characteristic impedance $Z_0$ compounds the two geometric changes:</p>
+<p>$$Z_0 = \sqrt{\frac{L}{C}} = \sqrt{\frac{\mu_0\,h / w}{\varepsilon\,w / h}} = \sqrt{\frac{\mu_0}{\varepsilon}}\,\left(\frac{h}{w}\right)$$</p>
+<p>Narrowing a PCB trace ($w \downarrow$) simultaneously raises the numerator $L$ and lowers the denominator $C$, driving the characteristic impedance $Z_0$ upward in inverse proportion to $w$.</p>
+<p>Multiplying $Z_0$ by $1/v_p$ cancels $C$ to isolate $L$, and dividing $1/v_p$ by $Z_0$ cancels $L$ to isolate $C$:</p>
+<p>$$\frac{Z_0}{v_p} = \sqrt{\frac{L}{C}}\,\sqrt{LC} = \sqrt{L^2} = L$$</p>
+<p>$$\frac{1}{Z_0 v_p} = \sqrt{\frac{C}{L}}\,\sqrt{LC} = \sqrt{C^2} = C$$</p>
+<p>Rearranging those two identities expresses the constant inverse phase velocity $1/v_p$ in terms of either $L/Z_0$ or $Z_0 C$:</p>
+<p>$$\frac{1}{v_p} = \frac{L}{Z_0} = Z_0 C$$</p>
+<h4>Signal Integrity Consequences of a Narrow Trace Neck-Down</h4>
+<p>Routing a $50\,\Omega$ PCB trace through a dense BGA pin field, connector breakout, or via array often forces the layout to narrow the trace width $w$ over a short segment, a geometry known as a <strong>neck-down</strong> (similar to transitioning onto a narrow IC package lead or bondwire). Inside that narrowed segment, the smaller copper width $w$ packs current filaments together ($L_{\text{neck}}$ rises above the line&#39;s normal $L$) while shrinking the facing plate area over the ground plane ($C_{\text{neck}}$ falls below the line&#39;s normal $C$). The narrowed segment therefore introduces <strong>localized excess series inductance</strong> $L_{\text{excess}}$ without matching shunt capacitance, spiking its local characteristic impedance $Z_{\text{neck}}$ well above $50\,\Omega$:</p>
+<p>$$Z_{\text{neck}} = \sqrt{\frac{L_{\text{neck}}}{C_{\text{neck}}}} > Z_0$$</p>
+<p>Recall the inductor voltage-current relation across that excess series inductance $L_{\text{excess}}$ for a digital step whose current changes by $\Delta I$ over rise time $t_r$:</p>
+<p>$$v_{\text{neck}}(t) = L_{\text{excess}}\,\frac{di(t)}{dt} \approx L_{\text{excess}}\,\frac{\Delta I}{t_r}$$</p>
+<p>This slew-rate proportionality explains why the same physical neck-down is harmless at low speeds yet destructive to high-speed serial links across three distinct mechanisms:</p>
 <ul>
-<li><strong>Capacitive coupling injection:</strong> Mutual capacitance injects a displacement current of $C_m\,\Delta z\,dV_a/dt$, where $V_a$ is the aggressor voltage. A shunt current source on a transmission line launches equal currents away from the injection point in both directions, so half of the current travels toward each end with the positive polarity of the injected current.</li>
-<li><strong>Inductive coupling EMF:</strong> Mutual inductance induces a series EMF of $L_m\,\Delta z\,dI_a/dt$ along the victim. By Lenz&#39;s law and the Reaction Rule, the induced current opposes the aggressor&#39;s current and flows toward the near end. A series voltage source drives current in the same physical direction on both sides of the injection point, so the backward-traveling wave toward the near end has positive voltage polarity while the forward-traveling wave toward the far end has negative voltage polarity.</li>
+<li><strong>Slew-rate selectivity between slow and steep edges:</strong> A slowly varying low-frequency signal has a long rise time $t_r$ and a small slew rate $\frac{di(t)}{dt}$, producing negligible voltage drop $v_{\text{neck}}(t)$, whereas a $20\text{ ps}$ digital edge induces a large opposing back-EMF spike.</li>
+<li><strong>Positive boundary reflection toward the transmitter ($\Gamma > 0$):</strong> <a href="signal-integrity-03_Impedance_Reflections_and_Termination.html">Chapter 3</a> showed that an incident wave on a $Z_0$ line hitting a higher-impedance segment ($Z_{\text{neck}} > Z_0$) encounters a positive reflection coefficient $\Gamma$ and reflects an upward voltage bump back toward the source.</li>
+<li><strong>Series low-pass filtering and eye closure at the receiver:</strong> In the frequency domain (<a href="signal-integrity-02_Frequency_Content_of_Digital_Signals.html">Chapter 2</a> and <a href="signal-integrity-03_Impedance_Reflections_and_Termination.html">Chapter 3</a>), inductive reactance $2\pi f L_{\text{excess}}$ grows linearly with $f$, reflecting upper Fourier harmonics to stretch $t_r$ and shrink the receiver eye opening.</li>
 </ul>
-<p>Both couplings therefore produce a positive wave toward the near end, and the two contributions add. Toward the far end, the capacitive contribution is positive and the inductive contribution is negative, and the two subtract. Backward coupling is the sum of capacitive and inductive coupling, and forward coupling is their difference.</p>
-<p>The magnitudes follow from the equations above. Assume the two traces are identical, weakly coupled, and terminated in $Z_0$ at both ends, and let $C$ and $L$ be the self values per unit length of Chapter 1. The relations $Z_0 C' = L'/Z_0 = 1/v_p$ follow from $Z_0 = \sqrt{L'/C'}$ and $v_p = 1/\sqrt{L'C'}$. A wave of half the injected current times $Z_0$ gives the backward capacitive wave from a segment $\Delta z$:</p>
-<p>$$\Delta V_{b,C} = \frac{Z_0}{2}\,C_m\,\Delta z\,\frac{dV_a}{dt} = \frac{1}{2}\,\frac{C_m}{C}\,\frac{\Delta z}{v_p}\,\frac{dV_a}{dt}$$</p>
-<p>The inductive EMF with $dI_a/dt = (1/Z_0)\,dV_a/dt$ gives half of that EMF as the backward voltage wave:</p>
-<p>$$\Delta V_{b,L} = \frac{1}{2}\,\frac{L_m}{Z_0}\,\Delta z\,\frac{dV_a}{dt} = \frac{1}{2}\,\frac{L_m}{L}\,\frac{\Delta z}{v_p}\,\frac{dV_a}{dt}$$</p>
-<p>The edge reaches the segment at position $z$ at time $z/v_p$, and the backward wave from that segment reaches the near end after a further $z/v_p$, so the contribution from position $z$ arrives at the near end delayed by $2z/v_p$. Summing over a coupled length $\ell$ with the substitution $\tau = 2z/v_p$ (so that $\Delta z = v_p\,d\tau/2$) turns the integral of the aggressor slope into the difference of the aggressor voltage at two instants:</p>
-<p>$$V_{NEXT}(t) = \frac{1}{4}\left(\frac{C_m}{C} + \frac{L_m}{L}\right)\int_0^{2T_c} \frac{dV_a(t - \tau)}{dt}\, d\tau = K_b\,\bigl[V_a(t) - V_a(t - 2T_c)\bigr]$$</p>
-<p>Here $T_c = \ell/v_p$ is the one-way delay of the coupled region and the backward coupling coefficient is:</p>
-<p>$$K_b = \frac{1}{4}\left(\frac{C_m}{C} + \frac{L_m}{L}\right)$$</p>
-<p>The bracket reaches the full aggressor swing when the round-trip delay $2T_c$ of the coupled region exceeds the rise time of the edge, and NEXT then forms a flat pulse of height $K_b V_a$ and duration about $2T_c$. The pulse height does not grow with additional coupled length once this condition holds.</p>
-<p>Forward waves behave differently, because a forward wave on the victim travels at the same velocity as the aggressor&#39;s edge and stays aligned with it. The contribution from every segment reaches the far end at the same instant, $\ell/v_p$ after the edge launches, so the segments add directly instead of spreading out in time. With the capacitive part positive and the inductive part negative:</p>
-<p>$$V_{FEXT}(t) = \frac{1}{2}\left(\frac{C_m}{C} - \frac{L_m}{L}\right)\frac{\ell}{v_p}\,\frac{dV_a}{dt}\bigg|_{t - \ell/v_p}$$</p>
-<p>FEXT is proportional to the slope of the aggressor edge and to the coupled length, so it grows with both. A stripline surrounded by a single uniform dielectric has $C_m/C = L_m/L$, and the forward terms cancel, so its FEXT is ideally zero. A microstrip has air above the trace and laminate below, so the field distribution differs between the electric and magnetic couplings, the inductive ratio $L_m/L$ exceeds $C_m/C$, and the forward crosstalk is nonzero with negative polarity. The two expressions are weak-coupling results for matched terminations and uniform parallel traces. Strong coupling, unmatched terminations that re-reflect the crosstalk, and nonparallel routing require the full coupled-line equations.</p>
-<p>Both ratios $C_m/C$ and $L_m/L$ fall as the spacing between the traces grows relative to the height above the plane, because a thinner dielectric ties the fields of each trace to its own plane and reduces the fields that reach the neighbor. Reducing the dielectric height lowers crosstalk at a fixed spacing.</p>
-<p>Crosstalk from several aggressors with uncorrelated data adds in power and not in voltage, a rule that <a href="signal-integrity-08_S_Parameters_and_VNA.html">Chapter 8</a> derives together with the decibel arithmetic. <a href="signal-integrity-08_S_Parameters_and_VNA.html">Chapter 8</a> also shows how a multiport VNA measures NEXT and FEXT, and <a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html">Chapter 10</a> classifies the timing disturbance that crosstalk causes on the victim as bounded uncorrelated jitter.</p>
+<p>$$\Gamma = \frac{Z_{\text{neck}} - Z_0}{Z_{\text{neck}} + Z_0} > 0$$</p>
+<h3>Mutual Inductance and Dielectric Height</h3>
+<p>Placing a return ground plane at vertical distance $h$ below a signal trace of radius $a$ divides the trace&#39;s concentric circular magnetic field lines into two radial zones:</p>
+<ol>
+<li><strong>Inner magnetic field circles inside the dielectric gap ($a < r < h$):</strong> Field circles with radius smaller than $h$ pass through the dielectric window between the trace and the ground plane and close without reaching the plane. These inner circles wrap around <strong>only</strong> the outbound trace.</li>
+<li><strong>Outer magnetic field circles extending beyond the ground plane ($r > h$):</strong> Field circles with radius larger than $h$ expand past the ground plane and wrap around <strong>both</strong> the outbound trace and the return ground plane.</li>
+</ol>
+<p>Those outer field circles ($r > h$) encircle both conductors in common and form the <strong>shared magnetic flux</strong> between the outbound trace and the return plane. Older textbooks say this flux &quot;links&quot; the second conductor, picturing a closed magnetic field ring interlocking a conductor ring like two loops of a chain. The <strong>mutual inductance</strong> $M$ between the outbound trace and the return plane is the amount of that shared outer magnetic flux ($r > h$) per ampere of current.</p>
+<p>The return plane carries an equal and opposite return current ($-i(t)$) whose magnetic field in the outer region ($r > h$) opposes and cancels that shared outer flux $M$, leaving only the inner magnetic field circles ($a < r < h$) inside the dielectric gap:</p>
+<ul>
+<li><strong>Thick dielectric (large $h$):</strong> Separating the trace far above the ground plane leaves a wide gap ($a < r < h$) where most magnetic field circles close before reaching the plane. Shared outer flux per ampere ($M$) stays <strong>small</strong>, little outer field is canceled by the return plane, and a large magnetic field remains stored around the loop.</li>
+<li><strong>Thin dielectric (small $h$):</strong> Bringing the ground plane close underneath the trace shrinks the gap ($a < r < h$) so nearly all magnetic field circles extend past radius $h$ and wrap around both conductors ($M$ is <strong>large</strong>). The opposite return current cancels almost all of that outer field, leaving only a thin ribbon of flux inside the narrow gap $h$.</li>
+</ul>
+<h3>The Reciprocity Theorem</h3>
+<p>A narrow copper signal trace of width $0.15\text{ mm}$ (Conductor 1) and a wide solid ground plane of width $50\text{ mm}$ (Conductor 2) have markedly different cross-sectional shapes. Driving $1\text{ A}$ through the narrow trace generates a concentrated circular magnetic field $\vec{B}_1(r, t)$ that sweeps across the wide plane at steep angles, whereas driving $1\text{ A}$ through the wide plane generates a broad horizontal magnetic field sheet $\vec{B}_2(r, t)$ around the trace. Despite that geometric asymmetry, $1\text{ A}$ in the narrow trace produces the same shared magnetic flux per ampere with the wide plane ($M_{21}$) as $1\text{ A}$ in the wide plane produces with the narrow trace ($M_{12}$).</p>
+<h4>Mutual Flux Symmetry Between Two Individual Filaments</h4>
+<p>Start with a single thin current filament representing the narrow signal trace (Filament 1) and a single thin current filament $k$ inside the ground plane, separated by straight-line radial distance $r_k$ inside an outer return boundary $r_{\text{far}}$. Recall the logarithmic shared magnetic flux equation derived in the mutual inductance section above:</p>
+<p>$$\Phi_{k1}(t) = \left[\frac{\mu_0\,\ell}{2\pi}\ln\!\left(\frac{r_{\text{far}}}{r_k}\right)\right]i_1(t) = M_{k1}\,i_1(t)$$</p>
+<p>The filament-to-filament mutual inductance $M_{k1}$ depends strictly on the permeability $\mu_0$, the shared parallel length $\ell$, and the straight-line radial distance $r_k$ between the two filaments. Point-to-point distance $r_k$ measured from Filament 1 to Filament $k$ is identical to the distance measured from Filament $k$ back to Filament 1, so swapping the roles of the two filaments leaves the logarithmic geometry factor unchanged:</p>
+<p>$$M_{k1} = M_{1k} = \frac{\mu_0\,\ell}{2\pi}\ln\!\left(\frac{r_{\text{far}}}{r_k}\right)$$</p>
+<h4>Extending from One Filament to a Wide Ground Plane of $N$ Filaments</h4>
+<p>Slicing the wide ground plane into $N$ narrow equal-width parallel filaments ($k$ running from $1$ to $N$) places each filament $k$ at its own radial distance $r_k$ from the narrow signal trace. Under a uniform current distribution across those $N$ strips (and more generally for any shared current-weight distribution across frequency), evaluating the shared flux per ampere in both driving directions yields identical sums:</p>
+<ul>
+<li><strong>Narrow trace driving the wide plane ($M_{21}$):</strong> Driving current $i_1(t)$ through the narrow trace sends magnetic flux $M_{k1}\,i_1(t)$ to each of the $N$ equal-weight filaments across the ground plane. Each filament carries weight $1/N$ of the parallel plane path, so the effective shared flux $\Phi_{21}(t)$ linking the plane as a whole is the average of the filament fluxes across all $N$ strips:</li>
+</ul>
+<p>$$\Phi_{21}(t) = \left(\frac{1}{N}\sum_{k = 1}^{N} M_{k1}\right)i_1(t) \qquad \Longrightarrow \qquad M_{21} = \frac{\Phi_{21}(t)}{i_1(t)} = \frac{1}{N}\sum_{k = 1}^{N} M_{k1}$$</p>
+<ul>
+<li><strong>Wide plane driving the narrow trace ($M_{12}$):</strong> Driving a uniform total current $i_2(t)$ through the wide ground plane divides the current equally into $i_2(t)/N$ per filament. Each filament $k$ sends a weak magnetic flux $M_{1k}\,i_2(t)/N$ back to the narrow trace, and superposing all $N$ filament contributions at the trace sums the individual fluxes:</li>
+</ul>
+<p>$$\Phi_{12}(t) = \sum_{k = 1}^{N} M_{1k}\left(\frac{i_2(t)}{N}\right) = \left(\frac{1}{N}\sum_{k = 1}^{N} M_{1k}\right)i_2(t) \qquad \Longrightarrow \qquad M_{12} = \frac{\Phi_{12}(t)}{i_2(t)} = \frac{1}{N}\sum_{k = 1}^{N} M_{1k}$$</p>
+<p>Pairwise distance symmetry ($M_{k1}$ equal to $M_{1k}$ for every strip $k$) makes the two sums identical term by term. That equality is the <strong>reciprocity theorem</strong> for mutual inductance:</p>
+<p>$$M_{21} = M_{12} = M$$</p>
+<p>No matter how asymmetric the two conductor cross-sections are, mutual inductance is a single shared geometric property $M$ of the conductor pair.</p>
+<h3>Total Loop Inductance</h3>
+<h4>Stage 1: Why Copper Alone Is Transparent to Magnetic Fields</h4>
+<p>Every high-speed signal travels around a closed current loop formed by an outbound signal conductor (Conductor 1, carrying current $i_1(t)$) and a return path (Conductor 2, carrying an equal and opposite current $i_2(t)$):</p>
+<p>$$i_1(t) = +i(t), \qquad i_2(t) = -i(t)$$</p>
+<p>What happens physically when the circular magnetic field lines $\vec{B}_1(x, y, t)$ of the outbound trace hit the copper of the return plane at an angle?</p>
+<p>Copper by itself is non-magnetic, with relative permeability $\mu_r$ equal to $1$ ($\mu$ equal to $\mu_0$). A copper sheet carrying zero current is completely transparent to magnetic fields: the circular magnetic field lines from the trace pass straight through the copper atoms at any angle without bending or stopping, just as if the copper were air. Magnetic field lines are only deflected, reshaped, or canceled at a point $(x, y)$ in space when a <strong>second magnetic field</strong> $\vec{B}_2(x, y, t)$, generated by electric current flowing in the second conductor, adds to the first field at that same point by vector superposition:</p>
+<p>$$\vec{B}_{\text{net}}(x, y, t) = \vec{B}_1(x, y, t) + \vec{B}_2(x, y, t)$$</p>
+<h4>Three-Region Right-Hand-Rule Superposition</h4>
+<p>Before examining angled vectors, trace the horizontal magnetic field directions along the vertical centerline passing through both conductors. The top outbound conductor carries current straight out of the page ($\odot$) and generates a counter-clockwise magnetic field by the Generation Rule, whereas the bottom return conductor carries current straight into the page ($\otimes$) and generates a clockwise magnetic field.</p>
+<p>A common visual trap arises from comparing the magnetic field <strong>above the top conductor</strong> (where its counter-clockwise circle points <strong>left</strong>, $\leftarrow$) with the magnetic field <strong>below the bottom conductor</strong> (where its clockwise circle also points <strong>left</strong>, $\leftarrow$). Comparing those two leftward arrows makes it appear as though the outer magnetic fields point in the same direction and reinforce.</p>
+<p>That comparison is a spatial trap because the space above the top conductor and the space below the bottom conductor are <strong>two different locations</strong>. Vector superposition adds $\vec{B}_1$ and $\vec{B}_2$ at the <strong>same point in space</strong>. Evaluating both conductors&#39; magnetic field circles at the same observation point across the three vertical regions resolves the field directions immediately:</p>
+<ol>
+<li><strong>Region 1 (Above both conductors):</strong> A point above the trace sits above the top conductor ($\odot$ counter-clockwise top pointing <strong>left</strong>, $\leftarrow$) and also sits above the bottom conductor ($\otimes$ clockwise top pointing <strong>right</strong>, $\rightarrow$). The two fields point in <strong>opposite directions and cancel</strong> in the upper outer region.</li>
+<li><strong>Region 2 (Inside dielectric gap $h$):</strong> A point inside the dielectric gap sits below the top conductor ($\odot$ counter-clockwise bottom pointing <strong>right</strong>, $\rightarrow$) and above the bottom conductor ($\otimes$ clockwise top pointing <strong>right</strong>, $\rightarrow$). Both fields point in the <strong>same rightward direction and add constructively</strong> inside the dielectric gap.</li>
+<li><strong>Region 3 (Below both conductors):</strong> A point underneath the return path sits below the top conductor ($\odot$ counter-clockwise bottom pointing <strong>right</strong>, $\rightarrow$) and also sits below the bottom conductor ($\otimes$ clockwise bottom pointing <strong>left</strong>, $\leftarrow$). The two fields point in <strong>opposite directions and cancel</strong> in the lower outer region.</li>
+</ol>
+<h4>Stage 2: How Two Angled Field Vectors Superpose into a Flat Horizontal Field</h4>
+<p>Step off the vertical centerline to an observation point $P$ on the copper return surface slightly to the right of the outbound trace, where the trace&#39;s circular field line hits the copper at an angle. By the Generation Rule, the outbound trace ($\odot$) produces a counter-clockwise magnetic field vector $\vec{B}_1$ at point $P$ slanted <strong>upward and to the right</strong> ($\nearrow$). That slanted vector decomposes into a rightward horizontal component $B_{1,x}$ ($\rightarrow$) parallel to the copper surface and an upward vertical component $+B_{1,y}$ ($\uparrow$) poking perpendicularly through the copper surface:</p>
+<p>$$\vec{B}_1 = B_{1,x}\,\hat{x} + B_{1,y}\,\hat{y}$$</p>
+<p>Return current ($\otimes$) concentrated directly beneath the trace produces a clockwise magnetic field vector $\vec{B}_2$ at point $P$ slanted <strong>downward and to the right</strong> ($\searrow$). That second vector decomposes into a rightward horizontal component $B_{2,x}$ ($\rightarrow$) parallel to the copper surface and a downward vertical component $-B_{2,y}$ ($\downarrow$) pointing into the copper surface:</p>
+<p>$$\vec{B}_2 = B_{2,x}\,\hat{x} - B_{2,y}\,\hat{y}$$</p>
+<p>Adding $\vec{B}_1$ and $\vec{B}_2$ component by component at point $P$ when the vertical components have equal magnitude ($B_{2,y}$ equal to $B_{1,y}$) bends the net magnetic field flat along the copper plane:</p>
+<p>$$B_{\text{net},x} = B_{1,x} + B_{2,x}, \qquad B_{\text{net},y} = B_{1,y} - B_{2,y} = 0$$</p>
+<p>The opposing vertical components ($\uparrow$ and $\downarrow$) cancel to zero so the net magnetic field cannot poke through the copper surface, while the matching horizontal components ($\rightarrow$ and $\rightarrow$) reinforce so the net magnetic field skims flat and parallel inside the dielectric gap.</p>
+<h4>Deriving Total Loop Inductance from Partial Inductances</h4>
+<p>Partial inductance notation quantifies how each conductor&#39;s self-flux and their shared mutual flux combine around the complete signal loop:</p>
+<ul>
+<li><strong>Outbound trace partial self-inductance $L_1$ (in $\text{H}$):</strong> The magnetic flux per ampere that Conductor 1&#39;s own current $i_1(t)$ generates around itself.</li>
+<li><strong>Return path partial self-inductance $L_2$ (in $\text{H}$):</strong> The magnetic flux per ampere that Conductor 2&#39;s own current $i_2(t)$ generates around itself.</li>
+<li><strong>Mutual inductance $M$ (in $\text{H}$):</strong> The shared outer magnetic flux per ampere ($r > h$) that wraps around both conductors in common.</li>
+</ul>
+<p>Recall the self-induced terminal voltage relation and mutual-induced voltage relation established earlier in this chapter:</p>
+<p>$$v_{\text{self}}(t) = L\,\frac{di(t)}{dt}, \qquad v_{\text{mutual}}(t) = M\,\frac{di_{\text{other}}(t)}{dt}$$</p>
+<p>Both conductors carry time-varying currents simultaneously, so the total inductive voltage drop $v_1(t)$ along Conductor 1 in the $+z$ direction is the sum of its self-induced voltage drop from $i_1(t)$ and the mutual voltage induced by Conductor 2&#39;s current $i_2(t)$. Likewise, the total inductive voltage drop $v_2(t)$ along Conductor 2 referenced to the $+z$ direction is the sum of its self-induced voltage drop from $i_2(t)$ and the mutual voltage induced by Conductor 1&#39;s current $i_1(t)$:</p>
+<p>$$v_1(t) = L_1\,\frac{di_1(t)}{dt} + M\,\frac{di_2(t)}{dt}$$</p>
+<p>$$v_2(t) = L_2\,\frac{di_2(t)}{dt} + M\,\frac{di_1(t)}{dt}$$</p>
+<p>Recall the antiparallel outbound and return loop currents:</p>
+<p>$$i_1(t) = +i(t), \qquad i_2(t) = -i(t)$$</p>
+<p>Substituting $+i(t)$ for $i_1(t)$ and $-i(t)$ for $i_2(t)$ into both conductor voltage equations shows how the opposing return current subtracts $M$ from each conductor&#39;s self-inductance:</p>
+<p>$$v_1(t) = L_1\,\frac{di(t)}{dt} + M\,\frac{d\bigl[-i(t)\bigr]}{dt} = (L_1 - M)\,\frac{di(t)}{dt}$$</p>
+<p>$$v_2(t) = L_2\,\frac{d\bigl[-i(t)\bigr]}{dt} + M\,\frac{di(t)}{dt} = -(L_2 - M)\,\frac{di(t)}{dt}$$</p>
+<p>A signal source driving the closed loop pushes current forward ($+z$) along Conductor 1 and pulls it back ($-z$) along Conductor 2. Reversing the traversal direction along Conductor 2 from $+z$ to $-z$ flips the sign of $v_2(t)$, so the total voltage drop $v_{\text{loop}}(t)$ around the complete round-trip circuit subtracts $v_2(t)$ from $v_1(t)$:</p>
+<p>$$v_{\text{loop}}(t) = v_1(t) - v_2(t) = (L_1 - M)\,\frac{di(t)}{dt} - \left[-(L_2 - M)\,\frac{di(t)}{dt}\right] = (L_1 + L_2 - 2M)\,\frac{di(t)}{dt}$$</p>
+<p>Defining the <strong>total loop inductance</strong> $L_{\text{loop}}$ as the net inductance of the complete round-trip circuit relates $v_{\text{loop}}(t)$ to $\frac{di(t)}{dt}$:</p>
+<p>$$v_{\text{loop}}(t) = L_{\text{loop}}\,\frac{di(t)}{dt} \qquad \Longrightarrow \qquad L_{\text{loop}} = L_1 + L_2 - 2M$$</p>
+<p>The $-2M$ term captures the two-way outer field cancellation in Regions 1 and 3: one $-M$ comes from Conductor 2&#39;s return current canceling the outer flux of Conductor 1 ($L_1 - M$), and the second $-M$ comes from Conductor 1&#39;s outbound current canceling the outer flux of Conductor 2 ($L_2 - M$). Bringing the return plane closer to the trace increases $M$ and reduces $L_{\text{loop}}$ by twice the increase in $M$.</p>
+<h4>Motivating the Coupling Bound $M \le \sqrt{L_1 L_2}$ and the Loop Inductance Floor</h4>
+<p>How large can the mutual inductance $M$ become before reaching a physical limit? Current $i_1(t)$ in Conductor 1 generates a total self-flux $\Phi_{11}(t)$ equal to $L_1\,i_1(t)$. Even if Conductor 2 sits right against Conductor 1, Conductor 2 can intercept at most $100\%$ of the magnetic flux that Conductor 1 created, never more than $100\%$. Let $k_1$ (a dimensionless fraction between $0$ and $1$) represent the fraction of Conductor 1&#39;s self-flux that passes through Conductor 2:</p>
+<p>$$\Phi_{11}(t) = L_1\,i_1(t), \qquad \Phi_{21}(t) = k_1\,\Phi_{11}(t), \qquad 0 \le k_1 \le 1$$</p>
+<p>Replacing $\Phi_{21}(t)$ with $M\,i_1(t)$ and $\Phi_{11}(t)$ with $L_1\,i_1(t)$ and dividing both sides by $i_1(t)$ relates $M$ to $L_1$:</p>
+<p>$$M = k_1\,L_1$$</p>
+<p>By the same physical conservation of flux, Conductor 2 carrying current $i_2(t)$ generates self-flux $\Phi_{22}(t)$ equal to $L_2\,i_2(t)$, of which Conductor 1 intercepts at most a fraction $k_2$ (between $0$ and $1$), relating $M$ to $L_2$:</p>
+<p>$$\Phi_{22}(t) = L_2\,i_2(t), \qquad \Phi_{12}(t) = k_2\,\Phi_{22}(t), \qquad 0 \le k_2 \le 1 \qquad \Longrightarrow \qquad M = k_2\,L_2$$</p>
+<p>Multiplying those two expressions for $M$ together and taking the square root defines the dimensionless <strong>magnetic coupling coefficient</strong> $k$:</p>
+<p>$$M^2 = (k_1\,L_1)(k_2\,L_2) \qquad \Longrightarrow \qquad M = k\sqrt{L_1 L_2}, \qquad k = \sqrt{k_1 k_2} \in [0, 1]$$</p>
+<p>Neither fraction $k_1$ nor $k_2$ can exceed $1$, so the coupling coefficient $k$ is at most $1$, bounding the mutual inductance $M$ by the geometric mean of the two partial self-inductances:</p>
+<p>$$M \le \sqrt{L_1 L_2}$$</p>
+<p>Recall the total loop inductance equation derived above:</p>
+<p>$$L_{\text{loop}} = L_1 + L_2 - 2M$$</p>
+<p>Replacing $M$ with its upper bound $\sqrt{L_1 L_2}$ and factoring the perfect-square trinomial establishes the theoretical minimum floor on total loop inductance:</p>
+<p>$$L_{\text{loop}} \ge L_1 - 2\sqrt{L_1 L_2} + L_2 = \left(\sqrt{L_1} - \sqrt{L_2}\right)^2$$</p>
+<p>Total loop inductance $L_{\text{loop}}$ can approach zero only when both conductors have equal partial self-inductances ($L_1$ equal to $L_2$) and share $100\%$ of their magnetic flux ($k$ equal to $1$). A narrow PCB trace ($L_1$ large) paired with a wide ground plane ($L_2$ small) always has $L_1$ larger than $L_2$, leaving a positive inductance floor $\left(\sqrt{L_1} - \sqrt{L_2}\right)^2$ no matter how thin the dielectric laminate becomes.</p>
+<h3>Loop Inductance and Return Current Distribution Across Frequency</h3>
+<p>On a circuit board, the outbound signal trace is a narrow copper strip of width $w$, whereas the return path is a continuous copper ground plane of much larger width $W_{\text{plane}}$. Return electrons inside the wide ground plane are free to distribute themselves across $W_{\text{plane}}$ along whichever path minimizes the total loop impedance $Z_{\text{loop}}(\omega)$. At angular frequency $\omega$ (equal to $2\pi f$), the total loop impedance combines the series loop resistance $R_{\text{loop}}$ (in $\Omega$) with the inductive reactance $j\omega L_{\text{loop}}$ (in $\Omega$) from <a href="signal-integrity-03_Impedance_Reflections_and_Termination.html">Chapter 3</a>:</p>
+<p>$$Z_{\text{loop}}(\omega) = R_{\text{loop}} + j\omega L_{\text{loop}}$$</p>
+<p>Comparing steady DC ($\omega$ equal to $0$) with high-frequency AC ($\omega$ greater than $0$) explains why the trace&#39;s magnetic field passes straight through the copper ground plane at DC yet is blocked from penetrating the plane at high frequencies.</p>
+<h4>Stage 3 (Steady DC): Why the Trace&#39;s Field Passes Through the Uniform Ground Plane</h4>
+<p>Under a steady, unchanging DC current $I$, the angular frequency $\omega$ is zero and the magnetic flux $\Phi_B$ around the trace is constant in time:</p>
+<p>$$\frac{d\Phi_B(t)}{dt} = 0$$</p>
+<p>Recall the Faraday-Lenz law relating induced loop voltage $\mathcal{E}(t)$ to the time derivative of magnetic flux:</p>
+<p>$$\mathcal{E}(t) = -\frac{d\Phi_B(t)}{dt}$$</p>
+<p>Substituting zero flux change shows that a static magnetic field induces zero opposing voltage ($\mathcal{E}$ equal to $0$) inside the copper ground plane, and the inductive reactance term $j\omega L_{\text{loop}}$ vanishes from the loop impedance:</p>
+<p>$$Z_{\text{loop}}(0) = R_{\text{loop}} = R_{\text{trace}} + R_{\text{plane}}$$</p>
+<p>With zero magnetic opposition acting on them, the return electrons spread uniformly across the entire two-dimensional cross-sectional area $A_{\text{plane}}$ ($W_{\text{plane}}\,t_{\text{Cu}}$) of the copper sheet (of width $W_{\text{plane}}$, vertical foil thickness $t_{\text{Cu}}$, and electrical resistivity $\rho_r$) to minimize the plane&#39;s DC resistance $R_{\text{plane}}$ from <a href="signal-integrity-01_Wave_Propagation_and_Transmission_Lines.html">Chapter 1</a>:</p>
+<p>$$R_{\text{plane}} = \frac{\rho_r\,\ell}{A_{\text{plane}}} = \frac{\rho_r\,\ell}{W_{\text{plane}}\,t_{\text{Cu}}}$$</p>
+<p>Inside the copper foil, the return current $I$ has a uniform cross-sectional area current density $J_{\text{DC}}$ (in $\text{A/m}^2$):</p>
+<p>$$J_{\text{DC}} = \frac{I}{A_{\text{plane}}} = \frac{I}{W_{\text{plane}}\,t_{\text{Cu}}}$$</p>
+<p>Outside the ground plane (in the dielectric above the plane or the air below the plane), any Ampère loop straddles the full vertical thickness $t_{\text{Cu}}$ of the copper foil. Multiplying the area current density $J_{\text{DC}}$ by the foil thickness $t_{\text{Cu}}$ cancels $t_{\text{Cu}}$ and leaves the constant DC sheet current density $K_{\text{DC}}$ (in $\text{A/m}$) per unit width across the board:</p>
+<p>$$K_{\text{DC}} = J_{\text{DC}}\,t_{\text{Cu}} = \left(\frac{I}{W_{\text{plane}}\,t_{\text{Cu}}}\right)t_{\text{Cu}} = \frac{I}{W_{\text{plane}}}$$</p>
+<p>Recall the magnetic field of a uniform current sheet derived at the start of this chapter. Around any observation point on a uniform sheet, parallel current filaments located at equal distances to the left and right carry identical currents, so their upward ($\uparrow$) and downward ($\downarrow$) vertical magnetic field components cancel completely ($B_{\text{plane},y}$ equal to $0$). The uniform ground plane generates only a weak horizontal magnetic field $B_{\text{plane},x}$ parallel to the copper surface:</p>
+<p>$$B_{\text{plane},y} = 0, \qquad B_{\text{plane},x} = \frac{\mu_0 K_{\text{DC}}}{2} = \frac{\mu_0 I}{2 W_{\text{plane}}}$$</p>
+<p>Meanwhile, the narrow signal trace at height $h$ above the plane generates a strong circular magnetic field $\vec{B}_{\text{trace}}$ that hits the copper plane at an angle with both a strong horizontal component $B_{\text{trace},x}$ and a strong vertical component $B_{\text{trace},y}$. Superposing the trace field and the uniform DC plane field reveals two physical consequences:</p>
+<ul>
+<li><strong>Zero vertical opposition at the copper surface:</strong> The uniform ground plane produces zero vertical magnetic field ($B_{\text{plane},y}$ equal to $0$) anywhere across its width. Nothing opposes $B_{\text{trace},y}$, so the trace&#39;s vertical magnetic field lines pass unopposed straight through the non-magnetic copper plane ($\mu_r$ equal to $1$).</li>
+<li><strong>Weak horizontal partial cancellation underneath the plane:</strong> Directly below the ground plane (Region 3, at radial distance $r > h$ from the trace), the trace&#39;s rightward horizontal field has magnitude $\frac{\mu_0 I}{2\pi r}$, whereas the plane&#39;s opposing leftward horizontal field is diluted across the full board width $W_{\text{plane}}$:</li>
+</ul>
+<p>$$B_{\text{net},x}\big|_{\text{below plane}} = \frac{\mu_0 I}{2\pi r} - \frac{\mu_0 I}{2 W_{\text{plane}}} > 0$$</p>
+<p>How does this spread-out DC return current affect the mutual inductance $M_{\text{DC}}$ and the total DC loop inductance $L_{\text{loop,DC}}$? Recall the filament average for mutual inductance between the narrow trace and the $N$ parallel return filaments across the ground plane:</p>
+<p>$$M_{\text{DC}} = \frac{1}{N}\sum_{k = 1}^{N} \frac{\mu_0\,\ell}{2\pi}\ln\!\left(\frac{r_{\text{far}}}{r_k}\right)$$</p>
+<p>At steady DC, most of the return current flows in distant wing filaments where the radial distance $r_k$ from the trace is large. For any distant return filament at large $r_k$, almost all of the trace&#39;s circular magnetic field lines ($a < r < r_k$) close in the space between the trace and filament $k$ without ever reaching filament $k$. Only the largest, weakest outer field circles ($r > r_k$) wrap around both the trace and that distant filament, making $\ln(r_{\text{far}}/r_k)$ small and keeping the average mutual inductance $M_{\text{DC}}$ <strong>small</strong>.</p>
+<p>Substituting that small $M_{\text{DC}}$ into the total loop inductance equation links $M_{\text{DC}}$ directly to the surviving net magnetic flux $\Phi_{\text{net,DC}}$ per ampere:</p>
+<p>$$L_{\text{loop,DC}} = L_1 + L_2 - 2M_{\text{DC}} = \frac{\Phi_{\text{net,DC}}}{I}$$</p>
+<p>Diluting the return current far out in the wings makes its opposing magnetic field near the trace tiny, which keeps the $-2M_{\text{DC}}$ field-cancellation term small. With almost no opposing field from the plane to cancel them, the trace&#39;s magnetic field lines survive unopposed across a wide region above, through, and underneath the ground plane, storing a large net magnetic flux $\Phi_{\text{net,DC}}$ per ampere and making the DC loop inductance $L_{\text{loop,DC}}$ <strong>large</strong>.</p>
+<h4>Stage 4 (High-Frequency AC): How Lenz Crowding Breaks Sheet Symmetry to Cancel Vertical and Outer Fields</h4>
+<p>Under a rapidly changing high-frequency current or a steep digital edge, the inductive reactance $\omega L_{\text{loop}}$ in the loop impedance equation dominates the resistance $R_{\text{loop}}$ by orders of magnitude:</p>
+<p>$$Z_{\text{loop}}(\omega) = R_{\text{loop}} + j\omega L_{\text{loop}} \approx j\omega L_{\text{loop}}$$</p>
+<p>Ramping up the trace current $i(t)$ causes its expanding circular magnetic field lines to push <strong>changing vertical magnetic flux</strong> through the copper ground plane directly beneath the trace. Recall the Faraday-Lenz law inside the conducting copper sheet:</p>
+<p>$$\mathcal{E}(t) = -\frac{d\Phi_B(t)}{dt}$$</p>
+<p>The trace&#39;s circular magnetic field is strongest directly underneath the trace (at shortest radial distance $h$) and weakens with horizontal distance $x$ out into the wings. That spatial concentration makes the rate of change of magnetic flux most intense in the copper strip directly below the trace. By Lenz&#39;s law and the Reaction Rule, that local flux change induces the strongest opposing electromotive force right beneath the trace. The induced opposing voltage pulls the antiparallel return current ($-i(t)$) out of the wide outer wings of the plane and crowds it into a narrow, high-density corridor directly under the trace.</p>
+<p>How does crowding the return current into a narrow corridor under the trace allow a flat copper plane to cancel the trace&#39;s <strong>vertical</strong> magnetic field component $B_{\text{trace},y}$? <strong>Current crowding breaks the left-right uniformity of the ground plane.</strong></p>
+<p>At an observation point $P$ on the copper plane surface slightly to the right of the trace, the outbound trace ($\odot$, counter-clockwise field) produces a slanted field vector $\vec{B}_{\text{trace}}$ with a rightward horizontal component ($\rightarrow$) and an <strong>upward</strong> vertical component $+B_{\text{trace},y}$ ($\uparrow$). Return filaments ($\otimes$, clockwise field) on the two sides of point $P$ contribute unequal vertical fields:</p>
+<ul>
+<li><strong>Inner plane filaments to the left of $P$ (directly under the trace):</strong> These inner filaments carry the crowded, high-density peak of the return current ($\otimes$). Point $P$ lies to the right of these clockwise filaments, so their magnetic field circles push strongly <strong>downward</strong> ($\downarrow$) at point $P$.</li>
+<li><strong>Outer plane filaments to the right of $P$ (out in the wing of the plane):</strong> These outer filaments carry only a sparse, weak tail of the return current ($\otimes$). Point $P$ lies to the left of these clockwise filaments, so their magnetic field circles push <strong>upward</strong> ($\uparrow$) at point $P$ only weakly.</li>
+</ul>
+<p>The dense inner filaments under the trace overpower the sparse outer filaments in the wing, so the plane&#39;s upward and downward vertical contributions <strong>no longer cancel each other</strong>. Instead, the plane produces a net <strong>downward</strong> vertical magnetic field component $-B_{\text{plane},y}$ ($\downarrow$) on the right of the trace (and, by mirror symmetry, a net <strong>upward</strong> vertical component $\uparrow$ on the left of the trace) that matches and cancels the trace&#39;s vertical field across the copper surface:</p>
+<p>$$B_{\text{net},y}\big|_{\text{copper surface}} = B_{\text{trace},y} - B_{\text{plane},y} = 0$$</p>
+<p>Simultaneously, concentrating the return current $-i(t)$ directly beneath the trace raises the plane&#39;s local horizontal field component $B_{\text{plane},x}$ to match the trace&#39;s horizontal field magnitude $B_{\text{trace},x}$. Inside the dielectric gap (Region 2), the two rightward horizontal fields add constructively ($\rightarrow + \rightarrow$). Underneath the ground plane (Region 3), the trace&#39;s rightward horizontal field and the crowded plane&#39;s strong leftward horizontal field cancel to zero:</p>
+<p>$$B_{\text{net},x}\big|_{\text{below plane}} = B_{\text{trace},x} - B_{\text{plane},x} \approx 0$$</p>
+<p>Recall the total loop inductance equation to see the net effect on inductance:</p>
+<p>$$L_{\text{loop}} = L_1 + L_2 - 2M$$</p>
+<p>Pinching the return current into a narrow corridor under the trace slightly increases the partial self-inductance $L_2$ of the return path, just as narrowing a trace increases its self-inductance. At the same time, placing all the return current filaments at the minimum distance $h$ directly beneath the outbound trace maximizes the shared outer flux per ampere, driving the mutual inductance $M$ up by a much larger amount. The large $-2M$ reduction outweighs the small rise in $L_2$, driving the high-frequency loop inductance $L_{\text{loop,AC}}$ down to its minimum floor and confining the magnetic field cleanly inside the dielectric gap (<a href="signal-integrity-06_Return_Path_Dynamics_and_Parasitic_Effects.html">Chapter 6</a>).</p>
+<h3>Crosstalk: Electromagnetic Coupling Between Neighboring Traces</h3>
+<h4>What Is the Victim Trace? (Victim Trace vs. Ground Plane vs. Differential Pair)</h4>
+<p>Up to this point in the chapter, every circuit had <strong>two</strong> pieces of copper: one narrow signal trace on top and one wide copper ground plane underneath. That single-wire-over-ground arrangement is called a <strong>single-ended transmission line</strong>. On a real circuit board (such as a computer memory bus), dozens of <strong>separate, independent single-ended signal traces</strong> run side by side over the <strong>same shared ground plane</strong>. <strong>Trace 1</strong> might carry Bit 0 of a data bus while <strong>Trace 2</strong> right next to it carries Bit 1.</p>
+<p>Both the ground plane underneath and Trace 2 next door are passive copper conductors sitting within reach of Trace 1&#39;s expanding electric and magnetic fields, so a signal switching on Trace 1 induces currents in <strong>both</strong> of them. Why is current induced in the ground plane helpful, whereas current induced in Trace 2 is a serious problem?</p>
+<ul>
+<li><strong>The Ground Plane (intended return path):</strong> Neither end of the ground plane connects to a receiver chip&#39;s data decision input. Current induced in the ground plane returns Trace 1&#39;s own signal current back to its source without disturbing any receiver threshold.</li>
+<li><strong>Trace 2, the Victim Trace (adjacent single-ended channel):</strong> Trace 2 connects its own transmitter at the near end (zero $z$) to its own receiver at the far end (coordinate $\ell$), both measuring voltage relative to the ground plane. Unwanted voltage induced onto a quiet $0\text{ V}$ Trace 2 by Trace 1&#39;s fields enters Trace 2&#39;s receiver and can trigger a false logic <code>1</code> (<strong>crosstalk</strong>).</li>
+<li><strong>Differential-pair contrast (intentional odd-mode coupling):</strong> A <strong>differential pair</strong> (<a href="signal-integrity-08_S_Parameters_and_VNA.html">Chapter 8</a> and <a href="signal-integrity-16_SerDes_Architecture_and_Eye_Diagrams.html">Chapter 16</a>) routes two coupled traces as paired conductors carrying equal and opposite signals ($+v(t)$ and $-v(t)$) into one differential receiver. Crosstalk instead couples two independent single-ended channels carrying unrelated data, analyzed by holding the victim quiet at $0\text{ V}$ while the aggressor steps from $0\text{ V}$ to $+V_a$.</li>
+</ul>
+<h4>Self vs. Mutual Capacitance ($C_m / C$) and Self vs. Mutual Inductance ($L_m / L$)</h4>
+<p>In a cross-section of the board, <strong>Trace 1 (aggressor)</strong> sits next to <strong>Trace 2 (victim, at $0\text{ V}$)</strong> above the <strong>shared ground plane (also at $0\text{ V}$)</strong>. Ramping the aggressor trace toward $+V_a$ and $+I_a$ sends most of its electric and magnetic fields to the ground plane underneath, while a smaller share spills sideways onto the victim trace:</p>
+<ul>
+<li><strong>Self-capacitance per unit length ($C$, in $\text{F/m}$):</strong> Pushing positive charge onto the aggressor trace sends electric field lines ($\vec{E}$) outward toward $0\text{ V}$ copper. <strong>Most</strong> go straight down to the ground plane, and $C$ counts the <strong>total</strong> electric field lines leaving the aggressor trace per volt.</li>
+<li><strong>Mutual capacitance per unit length ($C_m$, in $\text{F/m}$) and the fraction $\frac{C_m}{C}$:</strong> A smaller share of the aggressor&#39;s electric field lines curves sideways across the spacing gap and lands on the victim trace (which is also at $0\text{ V}$). The ratio $\frac{C_m}{C}$ is a fraction between $0$ and $1$ measuring <strong>what share of the aggressor&#39;s electric field lines land sideways on the victim trace</strong>.</li>
+<li><strong>Self-inductance per unit length ($L$, in $\text{H/m}$):</strong> Driving current along the aggressor trace wraps circular magnetic flux loops ($\vec{B}$) around the aggressor. The line&#39;s self-inductance $L$ counts the total magnetic flux per ampere wrapping through the aggressor&#39;s own dielectric window to the ground plane.</li>
+<li><strong>Mutual inductance per unit length ($L_m$, in $\text{H/m}$) and the fraction $\frac{L_m}{L}$:</strong> Wider magnetic flux loops from the aggressor reach sideways and thread between the victim trace and the ground plane, measured by $L_m$. The ratio $\frac{L_m}{L}$ is the matching magnetic fraction measuring <strong>what share of the aggressor&#39;s magnetic flux loops reach sideways through the victim&#39;s loop window</strong>.</li>
+</ul>
+<h4>Where Coupling Happens: Only Inside the Moving Rising Edge</h4>
+<p>Where along the coupled length $\ell$ (from zero $z$ on the left to $\ell$ on the right) do those sideways fields induce voltage and current on the victim trace?</p>
+<ul>
+<li><strong>Behind the rising edge (to the left):</strong> The aggressor has already finished rising to a steady voltage $+V_a$ and a steady current $I_a$. Static electric and magnetic fields (zero $\frac{\partial v_a}{\partial t}$ and zero $\frac{\partial i_a}{\partial t}$) induce zero current and zero voltage in the victim.</li>
+<li><strong>Ahead of the rising edge (to the right):</strong> The aggressor wave has not arrived yet, so the aggressor sits at $0\text{ V}$ and $0\text{ A}$ with zero fields.</li>
+<li><strong>Inside the moving rising edge (active transition zone):</strong> The aggressor voltage and current actively ramp upward within the moving spatial window of length $\ell_{\text{edge}}$ (equal to $v_p\,t_r$), creating time-varying electric and magnetic fields $\vec{E}(z, t)$ and $\vec{B}(z, t)$.</li>
+</ul>
+<p>$$\ell_{\text{edge}} = v_p\,t_r$$</p>
+<p>Sliding from left (zero $z$) to right (coordinate $\ell$) at wave velocity $v_p$, that rising edge sweeps past each short copper slice $\Delta z$ and launches tiny coupled voltage waves (<strong>wavelets</strong>) onto the victim trace in both directions:</p>
+<ul>
+<li><strong>Near-End Crosstalk (NEXT, measured at zero $z$):</strong> Unwanted noise voltage $v_{\text{NEXT}}(t)$ arriving at the left end of the victim trace (next to the aggressor&#39;s transmitter), carried by wavelets traveling <strong>backward</strong> ($-z$) opposite to the aggressor wave.</li>
+<li><strong>Far-End Crosstalk (FEXT, measured at coordinate $\ell$):</strong> Unwanted noise voltage $v_{\text{FEXT}}(t)$ arriving at the right end of the victim trace (next to the aggressor&#39;s receiver), carried by wavelets traveling <strong>forward</strong> ($+z$) in the same direction as the aggressor wave.</li>
+</ul>
+<h4>Zero Electrons Cross the Gap: The 3D Geometry of the Fields</h4>
+<p>Before looking at the equations for a single slice $\Delta z$, clear up two foundational physical questions: <strong>Do electrons ever jump across the gap from the aggressor wire to the victim wire?</strong> And <strong>which way do the electric and magnetic fields point in 3D space?</strong></p>
+<p>First, <strong>zero electrons ever cross the gap</strong> between the aggressor trace and the victim trace. Fiberglass and air between the two traces are electrical insulators. Instead, the victim trace is already a solid copper wire filled with its own mobile conduction electrons ($-$) and fixed positive copper ions ($+$), initially balanced everywhere ($0\text{ V}$). Both capacitive and inductive crosstalk work purely by <strong>fields reaching across the insulator and pushing the existing mobile charges already inside the victim wire</strong>.</p>
+<p>Second, trace the 3D directions of the fields around the aggressor trace as a rising step ($+V_a$, $+I_a$) travels <strong>from left to right ($\rightarrow$, forward)</strong>:</p>
+<ul>
+<li><strong>The aggressor&#39;s electrostatic field ($\vec{E}_{\text{cap}}$, from positive charge $+Q$):</strong> Positive charge on the aggressor shoots straight electric field lines <strong>radially outward like spokes on a wheel</strong>, pointing perpendicular to the wire (straight down to the ground plane and <strong>sideways across the gap</strong> toward the victim trace).</li>
+<li><strong>The aggressor&#39;s magnetic field ($\vec{B}_{\text{agg}}$, from forward current $i_a$):</strong> Pointing the right thumb to the right ($\rightarrow$) shows that $\vec{B}_{\text{agg}}$ wraps around the wire in <strong>concentric circles</strong> perpendicular to the $\vec{E}_{\text{cap}}$ spokes. Those circles come <strong>out of the page ($\odot$) above the trace</strong> and dive <strong>into the page ($\otimes$) below the trace</strong>.</li>
+<li><strong>The induced electric field ($\vec{E}_{\text{ind}}$, back-EMF) and opposing magnetic field ($\vec{B}_{\text{ind}}$):</strong> By <strong>Faraday&#39;s law</strong>, the growing magnetic field ($\otimes$) creates a <strong>lengthwise induced electric field $\vec{E}_{\text{ind}}$ pointing along the victim wire from right to left ($\leftarrow$)</strong>. That $\vec{E}_{\text{ind}}$ pushes victim current $i_{\text{ind}}$ from right to left ($\leftarrow$), generating the <strong>opposing magnetic field $\vec{B}_{\text{ind}}$ out of the page ($\odot$)</strong>.</li>
+</ul>
+<h4>Capacitive Coupling at a Single Slice: A Sideways Electric Field Repelling Positive Current Both Ways</h4>
+<p>Consider how the aggressor&#39;s <strong>sideways electrostatic field ($\vec{E}_{\text{cap}}$)</strong> acts on the existing charges inside a single short slice $\Delta z$ of the victim wire at position $z$. Inside slice $\Delta z$, the rising aggressor voltage ($+V_a$) holds concentrated positive charge ($+$), shooting $\vec{E}_{\text{cap}}$ sideways across the insulating gap onto slice $\Delta z$ of the victim wire.</p>
+<p>By Coulomb&#39;s law (<strong>opposite charges attract, like charges repel</strong>), that positive electric field reaching from the side attracts negative electrons ($-$) toward the facing surface of slice $\Delta z$ while <strong>repelling positive conventional current ($\Delta i_C$) away from slice $\Delta z$ along the victim wire</strong>.</p>
+<p>Pushing on slice $\Delta z$ <strong>from the side</strong> (perpendicular to the length of the victim wire), $\vec{E}_{\text{cap}}$ has zero preference for left versus right. Seeing the same characteristic impedance $Z_0$ looking left (backward, $-z$) and looking right (forward, $+z$), the repelled positive current splits $50/50$ outward in <strong>both directions</strong>:</p>
+<ul>
+<li>Half of the repelled positive current ($\frac{1}{2}\Delta i_C$) flows <strong>left (backward, $-z$)</strong> toward the Near End, launching a <strong>positive</strong> capacitive voltage bump ($\Delta v_{b,C}$ positive).</li>
+<li>Half of the repelled positive current ($\frac{1}{2}\Delta i_C$) flows <strong>right (forward, $+z$)</strong> toward the Far End, launching an identical <strong>positive</strong> capacitive voltage bump ($\Delta v_{f,C}$ positive).</li>
+</ul>
+<p>Three physical factors set the voltage height of those two positive capacitive bumps:</p>
+<ol>
+<li><strong>The $\frac{1}{2}$ left-right split:</strong> Half of the repelled positive current goes backward ($-z$) and half goes forward ($+z$).</li>
+<li><strong>The electric-field sharing fraction $\frac{C_m}{C}$:</strong> The fraction of the aggressor&#39;s electric field lines that land sideways on the victim trace ($C_m$) rather than the ground plane ($C$).</li>
+<li><strong>The aggressor voltage change during the slice transit time $\frac{\Delta z}{v_p}\,\frac{\partial v_a(z, t)}{\partial t}$:</strong> Traveling at speed $v_p$, the aggressor wavefront spends transit time $\frac{\Delta z}{v_p}$ crossing slice $\Delta z$ while ramping at rate $\frac{\partial v_a(z, t)}{\partial t}$.</li>
+</ol>
+<p>Circuit equations reproduce this product of three physical factors directly. Recall the capacitor current-voltage relation from <a href="signal-integrity-03_Impedance_Reflections_and_Termination.html">Chapter 3</a> and apply it to the slice coupling capacitance $C_{\text{cap}}$ of $C_m\,\Delta z$:</p>
+<p>$$C_{\text{cap}} = C_m\,\Delta z, \qquad i_C(t) = C_{\text{cap}}\,\frac{dv(t)}{dt} \qquad \Longrightarrow \qquad \Delta i_C(z, t) = (C_m\,\Delta z)\,\frac{\partial v_a(z, t)}{\partial t}$$</p>
+<p>Recall from <a href="signal-integrity-01_Wave_Propagation_and_Transmission_Lines.html">Chapter 1</a> how a current wave $i_{\text{wave}}$ traveling into characteristic impedance $Z_0$ produces a voltage wave $v_{\text{wave}}$, and apply that relation to each half-current $\frac{1}{2}\Delta i_C(z, t)$:</p>
+<p>$$v_{\text{wave}} = Z_0\,i_{\text{wave}}$$</p>
+<p>$$\Delta v_{b,C}(z, t) = \Delta v_{f,C}(z, t) = Z_0\left[\frac{1}{2}\Delta i_C(z, t)\right] = \frac{1}{2}\,Z_0\,C_m\,\Delta z\,\frac{\partial v_a(z, t)}{\partial t}$$</p>
+<p>To express circuit impedance $Z_0$ in terms of the line&#39;s self-capacitance $C$ and wave velocity $v_p$, recall the transmission-line identity derived earlier in this chapter:</p>
+<p>$$Z_0 = \frac{1}{v_p\,C}$$</p>
+<p>Replacing $Z_0$ with $\frac{1}{v_p\,C}$ confirms the three physical factors (the $\frac{1}{2}$ split, the capacitive sharing fraction $\frac{C_m}{C}$, and the slice transit time $\frac{\Delta z}{v_p}$ times the voltage slew rate):</p>
+<p>$$\Delta v_{b,C}(z, t) = \Delta v_{f,C}(z, t) = \frac{1}{2}\,\frac{C_m}{C}\,\frac{\Delta z}{v_p}\,\frac{\partial v_a(z, t)}{\partial t}$$</p>
+<h4>Inductive Coupling at a Single Slice: A Lengthwise Induced Electric Field (Back-EMF) Shoving Charge Backward</h4>
+<p>Contrasting that sideways capacitive push against the aggressor&#39;s expanding <strong>magnetic field ($\vec{B}_{\text{agg}}$)</strong> explains what magnetic coupling does to the charges inside that same victim slice $\Delta z$. Why does magnetic coupling launch a <strong>positive</strong> wave going backward ($-z$) and a <strong>negative</strong> wave going forward ($+z$)?</p>
+<p>Follow the four-step Faraday and Lenz chain inside slice $\Delta z$ as the aggressor current $i_a(z, t)$ ramps up from <strong>left to right ($\rightarrow$, forward)</strong>:</p>
+<ol>
+<li><strong>Growing magnetic field into the page ($\otimes$):</strong> Below the wires inside the dielectric loop window, the aggressor&#39;s magnetic field $\vec{B}_{\text{agg}}$ points <strong>into the page ($\otimes$)</strong> and grows stronger with time (while coming <strong>out of the page $\odot$</strong> above the wire).</li>
+<li><strong>Opposing magnetic field out of the page ($\odot$) below the wire:</strong> By Lenz&#39;s law, the victim loop opposes that increase by generating an <strong>induced magnetic field $\vec{B}_{\text{ind}}$</strong> that comes <strong>out of the page ($\odot$) below the wire</strong> (and goes <strong>into the page $\otimes$ above the wire</strong>).</li>
+<li><strong>Victim current direction from right to left ($\leftarrow$):</strong> Pointing the right thumb <strong>from right to left ($\leftarrow$)</strong> along the victim wire curls the fingers into the page ($\otimes$) above and out of the page ($\odot$) below, producing $\vec{B}_{\text{ind}}$.</li>
+<li><strong>Lengthwise induced electric field ($\vec{E}_{\text{ind}}$, back-EMF) pushing from right to left ($\leftarrow$):</strong> Faraday&#39;s law creates a <strong>lengthwise induced electric field $\vec{E}_{\text{ind}}$ pointing horizontally along the victim wire from right to left ($\leftarrow$)</strong>, driving that leftward victim current.</li>
+</ol>
+<p>Unlike the capacitive field $\vec{E}_{\text{cap}}$ (which pushed from the <strong>side</strong> and repelled positive charge equally left and right), the inductive back-EMF field $\vec{E}_{\text{ind}}$ pushes <strong>lengthwise along the wire from right to left ($\leftarrow$)</strong>, shoving positive charge from the right end of segment $\Delta z$ to the left end of segment $\Delta z$:</p>
+<ul>
+<li><strong>Near-End charge surplus on the left side ($+$):</strong> Shoving positive charge into the left end creates a positive charge surplus on the left side. That surplus launches a <strong>positive</strong> inductive voltage wave ($\Delta v_{b,L}$ positive) traveling <strong>backward</strong> ($-z$) toward the near end (zero $z$).</li>
+<li><strong>Far-End charge deficit on the right side ($-$):</strong> Pulling that positive charge out of the right end leaves behind a charge deficit (a negative voltage dip) on the right side. That deficit launches an equal-magnitude <strong>negative</strong> inductive voltage wave ($\Delta v_{f,L}$ negative) traveling <strong>forward</strong> ($+z$) toward the far end (coordinate $\ell$).</li>
+</ul>
+<p>Why does inductive coupling also have a <strong>$\frac{1}{2}$ factor</strong> on each side (instead of sending the full amount to the left and making the leftward inductive current twice as large as the leftward capacitive current)?</p>
+<p>To push current $i_{\text{ind}}$ from right to left ($\leftarrow$) through segment $\Delta z$, the inductive voltage $\Delta v_L$ cannot create charge out of nothing. Every bit of current pushed into the left half of the wire (impedance $Z_0$) must be pulled out of the right half (also impedance $Z_0$). Fighting both halves of the wire in <strong>series</strong> ($2Z_0$ total) cuts the inductive current in <strong>half</strong>:</p>
+<p>$$Z_{\text{total}} = Z_0 + Z_0 = 2Z_0 \qquad \Longrightarrow \qquad i_{\text{ind}} = \frac{\Delta v_L}{Z_0 + Z_0} = \frac{1}{2}\,\frac{\Delta v_L}{Z_0}$$</p>
+<p>Half of the total inductive voltage $\Delta v_L$ is spent pushing the left side up above $0\text{ V}$ ($+\frac{1}{2}\Delta v_L$), and the other half is spent pulling the right side down below $0\text{ V}$ ($-\frac{1}{2}\Delta v_L$). Parallel to capacitive coupling, three physical factors set the amplitude of those two opposite-sign inductive waves:</p>
+<ol>
+<li><strong>The $\pm\frac{1}{2}$ series split:</strong> Fighting $Z_0$ on the right and $Z_0$ on the left in series divides $\Delta v_L$ equally into $+\frac{1}{2}$ on the left and $-\frac{1}{2}$ on the right.</li>
+<li><strong>The magnetic-flux sharing fraction $\frac{L_m}{L}$:</strong> The fraction of the aggressor&#39;s magnetic flux loops that thread the victim&#39;s loop window ($L_m$) compared to the aggressor&#39;s own loop window ($L$).</li>
+<li><strong>The aggressor voltage change during the slice transit time $\frac{\Delta z}{v_p}\,\frac{\partial v_a(z, t)}{\partial t}$:</strong> The transit time $\frac{\Delta z}{v_p}$ spent crossing slice $\Delta z$ multiplied by the aggressor&#39;s voltage slew rate.</li>
+</ol>
+<p>Circuit equations confirm this result directly. Recall the mutual-induction voltage magnitude relation across the slice mutual inductance $M$ of $L_m\,\Delta z$:</p>
+<p>$$M = L_m\,\Delta z, \qquad |\mathcal{E}_{21}(t)| = M\,\frac{di_1(t)}{dt} \qquad \Longrightarrow \qquad \Delta v_L(z, t) = (L_m\,\Delta z)\,\frac{\partial i_a(z, t)}{\partial t}$$</p>
+<p>Dividing that inline voltage $\Delta v_L(z, t)$ equally between the backward victim impedance $Z_0$ ($+\frac{1}{2}\Delta v_L$ on the left) and forward victim impedance $Z_0$ ($-\frac{1}{2}\Delta v_L$ on the right) gives:</p>
+<p>$$\Delta v_{b,L}(z, t) = +\frac{1}{2}\,L_m\,\Delta z\,\frac{\partial i_a(z, t)}{\partial t}, \qquad \Delta v_{f,L}(z, t) = -\frac{1}{2}\,L_m\,\Delta z\,\frac{\partial i_a(z, t)}{\partial t}$$</p>
+<p>To express the aggressor&#39;s current slew rate $\frac{\partial i_a(z, t)}{\partial t}$ in terms of its voltage slew rate $\frac{\partial v_a(z, t)}{\partial t}$ and self-inductance $L$, recall from <a href="signal-integrity-01_Wave_Propagation_and_Transmission_Lines.html">Chapter 1</a> how a forward current wave relates to the voltage wave on a line of impedance $Z_0$, and recall the inductance identity derived earlier in this chapter:</p>
+<p>$$i_a(z, t) = \frac{v_a(z, t)}{Z_0} \qquad \Longrightarrow \qquad \frac{\partial i_a(z, t)}{\partial t} = \frac{1}{Z_0}\,\frac{\partial v_a(z, t)}{\partial t}, \qquad \frac{1}{Z_0} = \frac{1}{v_p\,L}$$</p>
+<p>Replacing $\frac{\partial i_a(z, t)}{\partial t}$ with $\frac{1}{v_p\,L}\,\frac{\partial v_a(z, t)}{\partial t}$ confirms the three physical factors (the $\pm\frac{1}{2}$ split, the magnetic sharing fraction $\frac{L_m}{L}$, and the slice transit time $\frac{\Delta z}{v_p}$ times the voltage slew rate):</p>
+<p>$$\Delta v_{b,L}(z, t) = +\frac{1}{2}\,\frac{L_m}{L}\,\frac{\Delta z}{v_p}\,\frac{\partial v_a(z, t)}{\partial t}$$</p>
+<p>$$\Delta v_{f,L}(z, t) = -\frac{1}{2}\,\frac{L_m}{L}\,\frac{\Delta z}{v_p}\,\frac{\partial v_a(z, t)}{\partial t}$$</p>
+<h4>Combining Both Mechanisms at Each Slice: The Four-Halves Accounting and Why FEXT Survives in Microstrip</h4>
+<p>Count the <strong>four half-waves</strong> generated at slice $\Delta z$ by both mechanisms combined: two halves from capacitance ($+\frac{1}{2}\frac{C_m}{C}$ going left and $+\frac{1}{2}\frac{C_m}{C}$ going right) plus two halves from inductance ($+\frac{1}{2}\frac{L_m}{L}$ going left and $-\frac{1}{2}\frac{L_m}{L}$ going right):</p>
+<ul>
+<li><strong>Going backward toward the Near End ($-z$, two halves add):</strong> On the left side, both halves push positive charge left ($\leftarrow$), so the backward wavelet $\Delta v_b(z, t)$ is <strong>$50\%$ ($\frac{1}{2}$) of the combined induced sum</strong> $\left(\frac{C_m}{C} + \frac{L_m}{L}\right)$:</li>
+</ul>
+<p>$$\Delta v_b(z, t) = \Delta v_{b,C}(z, t) + \Delta v_{b,L}(z, t) = \frac{1}{2}\left(\frac{C_m}{C} + \frac{L_m}{L}\right)\frac{\Delta z}{v_p}\,\frac{\partial v_a(z, t)}{\partial t}$$</p>
+<ul>
+<li><strong>Going forward toward the Far End ($+z$, two halves subtract):</strong> On the right side, the positive capacitive half ($+\frac{1}{2}\frac{C_m}{C}$) and the negative inductive half ($-\frac{1}{2}\frac{L_m}{L}$) oppose each other, so the forward wavelet $\Delta v_f(z, t)$ is <strong>$50\%$ ($\frac{1}{2}$) of their difference</strong>:</li>
+</ul>
+<p>$$\Delta v_f(z, t) = \Delta v_{f,C}(z, t) + \Delta v_{f,L}(z, t) = \frac{1}{2}\left(\frac{C_m}{C} - \frac{L_m}{L}\right)\frac{\Delta z}{v_p}\,\frac{\partial v_a(z, t)}{\partial t}$$</p>
+<p>Opposing signs between the two forward halves raise two immediate physical questions: how any FEXT pulse survives to reach the Far End, and what a negative percentage such as $-2\%$ physically represents on the victim wire. The polarity and survival of FEXT depend on the balance between $\frac{C_m}{C}$ and $\frac{L_m}{L}$:</p>
+<ul>
+<li><strong>Uniform buried medium (stripline, $\frac{C_m}{C}$ equal to $\frac{L_m}{L}$, zero FEXT):</strong> Burying both traces inside uniform fiberglass makes the capacitive and inductive fractions equal (such as $10\%$ each). On the right side, the $+5\%$ capacitive half and $-5\%$ inductive half cancel to <strong>$0\%$</strong> at every slice, so <strong>zero FEXT arrives at the Far End</strong>.</li>
+<li><strong>Bare outer surface in air (microstrip, $\frac{C_m}{C}$ smaller than $\frac{L_m}{L}$, negative FEXT):</strong> Routing traces on the top surface puts fiberglass ($\varepsilon_r$ near $4$) below and <strong>air</strong> ($\varepsilon_r$ equal to $1$) above. Magnetic flux keeps $\frac{L_m}{L}$ at $10\%$ (forward half $-5\%$), whereas air weakens $\frac{C_m}{C}$ to $6\%$ (forward half $+3\%$), leaving an <strong>uncanceled $-2\%$ negative pulse</strong> traveling right at every slice.</li>
+<li><strong>High-permittivity overlay or capacitive tabs ($\frac{C_m}{C}$ larger than $\frac{L_m}{L}$, positive FEXT):</strong> Coating the gap between the traces with a higher-permittivity dielectric overlay or adding small interdigitated copper fingers (capacitive compensation tabs) boosts $\frac{C_m}{C}$ above $\frac{L_m}{L}$ (such as $14\%$ versus $10\%$). The $+7\%$ capacitive half then exceeds the $-5\%$ inductive half, leaving a <strong>$+2\%$ positive pulse</strong> traveling right.</li>
+</ul>
+<p>What does an uncanceled <strong>$-2\%$ forward pulse</strong> in bare microstrip physically mean and look like on the wire? On the right end of slice $\Delta z$, capacitance pushes $3\text{ units}$ of positive charge to the right ($\rightarrow$) while inductance pulls $5\text{ units}$ of positive charge to the left ($\leftarrow$), so a <strong>net $2\text{ units}$ ($2\%$) of positive charge are pulled out of the right side</strong>.</p>
+<p>Pulling positive charge out of a neutral $0\text{ V}$ wire leaves behind an excess of negative electrons, dropping the local voltage <strong>below $0\text{ V}$</strong> (for a $+1000\text{ mV}$ aggressor step, $-2\%$ forms a <strong>$-20\text{ mV}$ voltage trough below ground</strong>). That $-20\text{ mV}$ local potential depression draws positive charge leftward from the next copper slice ahead of it while returning electrons flow on the reference plane underneath, propagating the <strong>negative voltage trough forward ($\rightarrow$)</strong> at velocity $v_p$ as a standard electromagnetic wave on the victim transmission line.</p>
+<h4>Why FEXT Is a Tall Narrow Spike and NEXT Is a Wide Flat Plateau: A Four-Section Timeline</h4>
+<p>Why do the wavelets arriving at the Far End (coordinate $\ell$, FEXT) form a <strong>single narrow, tall spike</strong> that grows taller with wire length? And why do the wavelets arriving at the Near End (zero $z$, NEXT) form a <strong>wide, flat-topped plateau</strong> whose ceiling height never grows past saturation?</p>
+<p>Divide the coupled wire from left (zero $z$) to right (coordinate $\ell$) into <strong>4 equal sections</strong> (<code>Section 1</code>, <code>Section 2</code>, <code>Section 3</code>, <code>Section 4</code>), where a wave takes <strong>$1\text{ ns}$</strong> to cross each section (total one-way flight time $T_c$ equal to $4\text{ ns}$). Traveling from left to right at $1\text{ section per ns}$, the aggressor&#39;s rising edge triggers a coupled pulse in <code>Section 1</code> at $0\text{ ns}$, in <code>Section 2</code> at $1\text{ ns}$, in <code>Section 3</code> at $2\text{ ns}$, and in <code>Section 4</code> at $3\text{ ns}$.</p>
+<p>First, follow the <strong>forward pulses (FEXT, moving right toward the Far End)</strong> across those 4 sections:</p>
+<ol>
+<li><strong>In <code>Section 1</code> at $0\text{ ns}$:</strong> The aggressor rising edge enters <code>Section 1</code> and creates forward <code>Pulse 1</code> on the victim wire. Both the aggressor edge and <code>Pulse 1</code> travel right at the <strong>same speed</strong> ($1\text{ section per ns}$), so they reach <code>Section 2</code> <strong>at the same moment ($1\text{ ns}$)</strong>.</li>
+<li><strong>In <code>Section 2</code> at $1\text{ ns}$:</strong> Right as <code>Pulse 1</code> arrives at <code>Section 2</code>, the aggressor edge creates <code>Pulse 2</code> in <code>Section 2</code>, stacking <code>Pulse 2</code> <strong>directly on top of <code>Pulse 1</code></strong> (wave height <code>2 pulses</code>).</li>
+<li><strong>In <code>Section 3</code> ($2\text{ ns}$) and <code>Section 4</code> ($3\text{ ns}$):</strong> Both waves continue moving right together; <code>Pulse 3</code> lands directly on top of them at $2\text{ ns}$ (height <code>3 pulses</code>), and <code>Pulse 4</code> lands directly on top of them at $3\text{ ns}$ (height <code>4 pulses</code>).</li>
+<li><strong>In the Far-End receiver at $4\text{ ns}$ ($T_c$):</strong> All 4 pulses (<code>Pulse 1 + Pulse 2 + Pulse 3 + Pulse 4</code>) hit the Far-End receiver <strong>at the same instant ($4\text{ ns}$)</strong>. Stacked <strong>vertically on top of each other</strong>, they form a <strong>single narrow, tall spike</strong> of width $t_r$ whose height grows in direct proportion to wire length $\ell$.</li>
+</ol>
+<p>Second, follow the <strong>backward pulses (NEXT, moving left toward the Near End)</strong> from those same 4 sections for a $4\text{ ns}$ rise time $t_r$ and a $+8\%$ single-slice sum $\frac{1}{2}\left(\frac{C_m}{C} + \frac{L_m}{L}\right)$. Each $1\text{ ns}$ section experiences one-fourth ($\frac{1\text{ ns}}{4\text{ ns}}$) of the $4\text{ ns}$ voltage ramp at any instant, radiating a backward wave of height <strong>$+2\%$</strong> ($\frac{1}{4}$ of $+8\%$) that stays <strong>on across the $4\text{ ns}$ rise time</strong> and turns <strong>off</strong> once the section reaches steady $+V_a$:</p>
+<ol>
+<li><strong>From <code>Section 1</code> ($0\text{ ns}$ away):</strong> Backward wave arrives at the Near End starting at <strong>$0\text{ ns}$</strong>, stays on from $0\text{ ns}$ to $4\text{ ns}$, and <strong>turns off at $4\text{ ns}$</strong>.</li>
+<li><strong>From <code>Section 2</code> ($1\text{ ns}$ away):</strong> Out-and-back travel adds a <strong>$2\text{ ns}$ round trip</strong> ($1\text{ ns}$ out plus $1\text{ ns}$ back), so the wave stays on at the Near End from <strong>$2\text{ ns}$ to $6\text{ ns}$</strong> and <strong>turns off at $6\text{ ns}$</strong>.</li>
+<li><strong>From <code>Section 3</code> ($2\text{ ns}$ away):</strong> Out-and-back travel adds a <strong>$4\text{ ns}$ round trip</strong> ($2\text{ ns}$ out plus $2\text{ ns}$ back), so the wave stays on at the Near End from <strong>$4\text{ ns}$ to $8\text{ ns}$</strong>, turning on at $4\text{ ns}$ <strong>right as <code>Section 1</code> turns off</strong>.</li>
+<li><strong>From <code>Section 4</code> ($3\text{ ns}$ away):</strong> Out-and-back travel adds a <strong>$6\text{ ns}$ round trip</strong> ($3\text{ ns}$ out plus $3\text{ ns}$ back), so the wave stays on at the Near End from <strong>$6\text{ ns}$ to $10\text{ ns}$</strong>, turning on at $6\text{ ns}$ <strong>right as <code>Section 2</code> turns off</strong>.</li>
+</ol>
+<p>Contrasting that arrival schedule against FEXT explains why Near-End crosstalk saturates. Propagation delay never shrinks the voltage of any individual lossless wave; every section&#39;s backward wave arrives with its full <strong>$+2\%$</strong> height. Instead, Near-End amplitude depends on <strong>how many sections overlap at the Near End at the same time</strong>:</p>
+<ul>
+<li><strong>Half-window ceiling ($+4\%$ rather than $+8\%$):</strong> Overlapping all 4 sections simultaneously would produce $+8\%$ ($4$ sections at $+2\%$ each). The $2\text{ ns}$ round trip delays <code>Section 3</code> until $4\text{ ns}$, right as <code>Section 1</code> finishes its $4\text{ ns}$ rise time and turns off, so <strong>only 2 sections (half of 4)</strong> overlap at once ($+4\%$).</li>
+<li><strong>Flat-topped plateau across round-trip duration $2T_c$:</strong> Holding 2 overlapping sections active at a time locks the Near-End voltage at a flat $+4\%$ ceiling across the $8\text{ ns}$ round-trip duration $2T_c$.</li>
+<li><strong>Length-independent ceiling past saturation:</strong> Extending the wire (<code>Section 5</code>, <code>Section 6</code>, and beyond) adds later echoes at $8\text{ ns}$ and $10\text{ ns}$ right as earlier sections turn off, widening the flat plateau in time without raising its voltage ceiling.</li>
+</ul>
+<h4>Turning the Four-Section Schedule into Two Board-Design Formulas: <code>(Overlapping Slices) x (Voltage per Slice)</code></h4>
+<p>Why turn the 4-section schedule above into two compact equations? In printed circuit board layout (as demonstrated immediately below in <code>Worked Example 4</code>), a designer needs to calculate in seconds how many millivolts of crosstalk noise will hit a receiver pin so that traces can be spaced apart before the board is fabricated. No calculus or differentiation is needed; the peak voltage at either end of the victim trace is <strong><code>(Number of Slices Overlapping at Once)</code> multiplied by <code>(Voltage from 1 Slice)</code></strong>.</p>
+<p>First, find the <strong>voltage from 1 slice</strong> of flight time $\Delta t_{\text{slice}}$. Recall the single-slice backward and forward voltage equations:</p>
+<p>$$\Delta t_{\text{slice}} = \frac{\Delta z}{v_p}$$</p>
+<p>$$\Delta v_b = \frac{1}{2}\left(\frac{C_m}{C} + \frac{L_m}{L}\right)\Delta t_{\text{slice}}\,\frac{\partial v_a}{\partial t}$$</p>
+<p>$$\Delta v_f = \frac{1}{2}\left(\frac{C_m}{C} - \frac{L_m}{L}\right)\Delta t_{\text{slice}}\,\frac{\partial v_a}{\partial t}$$</p>
+<p>For a digital step ramping from $0\text{ V}$ to $V_a$ over rise time $t_r$, the ramp rate $\frac{\partial v_a}{\partial t}$ is constant across the rising edge:</p>
+<p>$$\frac{\partial v_a}{\partial t} = \frac{V_a}{t_r}$$</p>
+<p>Substituting that constant ramp rate shows that one slice experiences the fraction $\frac{\Delta t_{\text{slice}}}{t_r}$ of the voltage ramp (in the 4-section timeline where $\Delta t_{\text{slice}}$ is $1\text{ ns}$ and $t_r$ is $4\text{ ns}$, each section experienced $\frac{1}{4}$ of the ramp):</p>
+<p>$$\Delta v_b\text{ (from 1 slice)} = \frac{1}{2}\left(\frac{C_m}{C} + \frac{L_m}{L}\right)\left(\frac{\Delta t_{\text{slice}}}{t_r}\right)V_a$$</p>
+<p>$$\Delta v_f\text{ (from 1 slice)} = \frac{1}{2}\left(\frac{C_m}{C} - \frac{L_m}{L}\right)\left(\frac{\Delta t_{\text{slice}}}{t_r}\right)V_a$$</p>
+<p>Multiplying the single-slice voltage by the number of slices overlapping simultaneously at each receiver yields the two board-design formulas.</p>
+<p>First, find the <strong>NEXT Ceiling Formula ($V_{\text{NEXT,peak}}$ at the Near End, zero $z$)</strong>. Each slice stays active across $t_r$, while the out-and-back round trip delays each consecutive slice by $2\,\Delta t_{\text{slice}}$ ($\Delta t_{\text{slice}}$ out plus $\Delta t_{\text{slice}}$ back). Dividing the active duration $t_r$ by the round-trip spacing $2\,\Delta t_{\text{slice}}$ gives the number of slices overlapping at the Near End at the same time (2 slices in the 4-section timeline):</p>
+<p>$$N_{\text{overlap,NEXT}} = \frac{t_r}{2\,\Delta t_{\text{slice}}}$$</p>
+<p>Multiplying $N_{\text{overlap,NEXT}}$ by the single-slice backward voltage cancels both $\Delta t_{\text{slice}}$ and $t_r$. Combining the $\frac{1}{2}$ directional split with the $\frac{1}{2}$ round-trip overlap factor defines the dimensionless <strong>backward coupling coefficient</strong> $k_b$:</p>
+<p>$$V_{\text{NEXT,peak}} = \left(\frac{t_r}{2\,\Delta t_{\text{slice}}}\right)\left[\frac{1}{2}\left(\frac{C_m}{C} + \frac{L_m}{L}\right)\left(\frac{\Delta t_{\text{slice}}}{t_r}\right)V_a\right]$$</p>
+<p>$$V_{\text{NEXT,peak}} = \frac{1}{4}\left(\frac{C_m}{C} + \frac{L_m}{L}\right)V_a$$</p>
+<p>$$k_b = \frac{1}{4}\left(\frac{C_m}{C} + \frac{L_m}{L}\right) \qquad \Longrightarrow \qquad V_{\text{NEXT,peak}} = k_b\,V_a, \qquad \text{for } 2T_c \ge t_r$$</p>
+<p>How does this plateau behave as a function of time $t$ from start to finish? Write the aggressor input waveform as a digital step $v_w(t)$ that sits at $0\text{ V}$ before time zero, ramps linearly from $0\text{ V}$ to $+V_a$ over the rise time ($0 < t < t_r$), and stays flat at $+V_a$ thereafter ($t \ge t_r$). Subtracting a copy of that same step delayed by the full-wire round-trip time $2T_c$ writes the complete Near-End waveform in one line:</p>
+<p>$$2T_c = \frac{2\ell}{v_p} \qquad \Longrightarrow \qquad v_{\text{NEXT}}(t) = k_b\,\Bigl[v_w(t) - v_w(t - 2T_c)\Bigr]$$</p>
+<p>Why is $v_{\text{NEXT}}(t)$ non-zero across the middle window when subtracting $v_w(t - 2T_c)$ from $v_w(t)$, and at what instant does it return to $0\text{ V}$? Any causal step waveform is $0\text{ V}$ whenever the time argument inside its parentheses is zero or negative (before that wave arrives). Until $t$ reaches the round-trip time $2T_c$ ($8\text{ ns}$ in the 4-section timeline), the far-end echo has not returned to the Near End yet, so the delayed term $v_w(t - 2T_c)$ remains <strong>$0\text{ V}$</strong>. Past $2T_c$, the delayed term $v_w(t - 2T_c)$ ramps from $0\text{ V}$ to $+V_a$ (between $2T_c$ and $2T_c + t_r$), subtracting from $+V_a$ to bring the plateau back down to $0\text{ V}$:</p>
+<table>
+<thead>
+<tr>
+<th>Time Window ($t_r = 4\text{ ns}, 2T_c = 8\text{ ns}$)</th>
+<th>First Term $v_w(t)$ (Immediate Step)</th>
+<th>Second Term $v_w(t - 2T_c)$ (Delayed Echo)</th>
+<th>Resulting Near-End Voltage $v_{\text{NEXT}}(t) = k_b\,[v_w(t) - v_w(t - 2T_c)]$</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>1. Pre-step quiet state ($t \le 0$)</strong></td>
+<td>Holds at $0\text{ V}$</td>
+<td>Holds at $0\text{ V}$</td>
+<td><strong>Holds at $0\text{ V}$</strong> (quiet wire before switching)</td>
+</tr>
+<tr>
+<td><strong>2. Rising front edge ($0 < t < t_r$, $0\text{ to }4\text{ ns}$)</strong></td>
+<td>Ramps up from $0\text{ V}$ to $+V_a$</td>
+<td>Holds at $0\text{ V}$ ($t - 2T_c < 0$; far-end echo has not returned)</td>
+<td><strong>Ramps up</strong> from $0\text{ V}$ to ceiling $+k_b\,V_a$</td>
+</tr>
+<tr>
+<td><strong>3. Flat ceiling plateau ($t_r \le t \le 2T_c$, $4\text{ to }8\text{ ns}$)</strong></td>
+<td>Holds flat at $+V_a$</td>
+<td>Holds at $0\text{ V}$ ($v_w(0) = 0\text{ V}$ at $t = 2T_c$)</td>
+<td><strong>Holds flat</strong> at $+k_b\,V_a$ ($k_b\,[V_a - 0] = +k_b\,V_a$)</td>
+</tr>
+<tr>
+<td><strong>4. Falling back edge ($2T_c < t < 2T_c + t_r$, $8\text{ to }12\text{ ns}$)</strong></td>
+<td>Holds flat at $+V_a$</td>
+<td>Ramps up from $0\text{ V}$ to $+V_a$ starting at $t = 2T_c$</td>
+<td><strong>Ramps down</strong> from $+k_b\,V_a$ to $0\text{ V}$ as the delayed ramp subtracts</td>
+</tr>
+<tr>
+<td><strong>5. Post-echo steady state ($t \ge 2T_c + t_r$, $\ge 12\text{ ns}$)</strong></td>
+<td>Holds flat at $+V_a$</td>
+<td>Holds flat at $+V_a$</td>
+<td><strong>Returns to $0\text{ V}$</strong> ($k_b\,[V_a - V_a] = 0\text{ V}$)</td>
+</tr>
+</tbody></table>
+<p>Second, find the <strong>FEXT Spike Formula ($V_{\text{FEXT,peak}}$ at the Far End, coordinate $\ell$)</strong>. Forward wavelets travel right at the same speed $v_p$ as the aggressor edge, so zero round-trip wait occurs; <strong>every slice along the entire wire</strong> arrives at the Far End at the same instant $T_c$. Dividing the total one-way flight time $T_c$ by the single-slice time $\Delta t_{\text{slice}}$ gives the total number of slices stacking together at the Far End (all 4 slices in the 4-section timeline):</p>
+<p>$$T_c = \frac{\ell}{v_p} \qquad \Longrightarrow \qquad N_{\text{overlap,FEXT}} = \frac{T_c}{\Delta t_{\text{slice}}}$$</p>
+<p>Multiplying $N_{\text{overlap,FEXT}}$ by $\Delta v_f\text{ (from 1 slice)}$ cancels $\Delta t_{\text{slice}}$ and defines the dimensionless <strong>forward coupling coefficient</strong> $k_f$ (with factor $\frac{1}{2}$):</p>
+<p>$$V_{\text{FEXT,peak}} = \left(\frac{T_c}{\Delta t_{\text{slice}}}\right)\left[\frac{1}{2}\left(\frac{C_m}{C} - \frac{L_m}{L}\right)\left(\frac{\Delta t_{\text{slice}}}{t_r}\right)V_a\right]$$</p>
+<p>$$V_{\text{FEXT,peak}} = \frac{1}{2}\left(\frac{C_m}{C} - \frac{L_m}{L}\right)\left(\frac{T_c}{t_r}\right)V_a$$</p>
+<p>$$k_f = \frac{1}{2}\left(\frac{C_m}{C} - \frac{L_m}{L}\right) \qquad \Longrightarrow \qquad V_{\text{FEXT,peak}} = k_f\,V_a\,\left(\frac{T_c}{t_r}\right) = k_f\,V_a\,\left(\frac{\ell}{v_p\,t_r}\right)$$</p>
+<p>Comparing NEXT and FEXT side by side summarizes their physical mechanisms and board-design formulas:</p>
+<table>
+<thead>
+<tr>
+<th>Crosstalk Property</th>
+<th>Near-End Crosstalk (NEXT, at $z = 0$)</th>
+<th>Far-End Crosstalk (FEXT, at $z = \ell$)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Propagation direction on victim</strong></td>
+<td>Backward ($-z$), opposite to aggressor wave</td>
+<td>Forward ($+z$), co-propagating with aggressor wave</td>
+</tr>
+<tr>
+<td><strong>Capacitive and inductive wavelet signs</strong></td>
+<td>Both positive; add constructively ($\frac{C_m}{C} + \frac{L_m}{L}$)</td>
+<td>Opposite signs; subtract ($\frac{C_m}{C} - \frac{L_m}{L}$)</td>
+</tr>
+<tr>
+<td><strong>Number of slices overlapping at once</strong></td>
+<td>Half of the rise-time window ($N_{\text{overlap}} = \frac{t_r}{2\,\Delta t_{\text{slice}}}$) due to round-trip delay</td>
+<td>All slices along the entire wire ($N_{\text{overlap}} = \frac{T_c}{\Delta t_{\text{slice}}}$) arriving together at $t = T_c$</td>
+</tr>
+<tr>
+<td><strong>Coupling coefficient</strong></td>
+<td>$k_b = \frac{1}{4}\left(\frac{C_m}{C} + \frac{L_m}{L}\right)$</td>
+<td>$k_f = \frac{1}{2}\left(\frac{C_m}{C} - \frac{L_m}{L}\right)$</td>
+</tr>
+<tr>
+<td><strong>Peak voltage design formula</strong></td>
+<td>$V_{\text{NEXT,peak}} = k_b\,V_a$ (for $2T_c \ge t_r$)</td>
+<td>$V_{\text{FEXT,peak}} = k_f\,V_a\,\left(\frac{T_c}{t_r}\right)$</td>
+</tr>
+<tr>
+<td><strong>Waveform shape and duration</strong></td>
+<td>Wide flat plateau ($v_{\text{NEXT}}(t) = k_b\,[v_w(t) - v_w(t - 2T_c)]$)</td>
+<td>Narrow spike of duration $t_r$ arriving at $t = T_c$</td>
+</tr>
+<tr>
+<td><strong>Scaling with coupled length $\ell$</strong></td>
+<td>Ceiling saturates at $k_b\,V_a$ once $2T_c \ge t_r$</td>
+<td>Spike height grows linearly with $\ell$ ($T_c = \frac{\ell}{v_p}$)</td>
+</tr>
+</tbody></table>
 <h2>Worked Examples</h2>
-<h3>Case 2 and Case 3 on the Desk</h3>
-<p>A fixed coordinate frame removes the ambiguity of &quot;above&quot; and &quot;below&quot;. Imagine looking down at a flat desk. The $x$ axis points to the right, the $y$ axis points toward the top of the page, and the $z$ axis points up out of the desk toward the viewer.</p>
-<p><strong>Case 2 (self-inductance):</strong> Wire A lies on the desk along the $x$ axis, with its current flowing to the right and increasing. The Generation Rule (thumb to the right) gives a field that points out of the desk, in the $+z$ direction, at points on the $+y$ side of the wire and into the desk, in the $-z$ direction, on the $-y$ side. The field at every point grows in proportion to the current.</p>
-<p>The Reaction Rule demands an opposing field at each point. Where the original field points out of the desk, the opposing field points into the desk, and the right-hand thumb into the desk gives a clockwise circulation of induced current as seen from above. The induced current therefore reduces the net field, which is the back-EMF of self-inductance, and its distribution inside a single conductor is the subject of <a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">Chapter 5</a>.</p>
-<p><strong>Case 3 (mutual inductance):</strong> Wire B lies on the desk parallel to Wire A on its $-y$ side, so Wire A is above Wire B in the picture, and the return path of Wire B lies farther toward $-y$. Wire B and its return path form a long rectangle, and the flux through that rectangle is the flux of the field of Wire A at the rectangle.</p>
-<p>The field of Wire A points into the desk at Wire B and grows with the current. The Reaction Rule demands an opposing field out of the desk, and the right-hand thumb out of the desk gives a counterclockwise circulation around the rectangle. Wire B is the edge of the rectangle nearest to Wire A, so a counterclockwise circulation carries the current in Wire B from right to left, opposite to the current in Wire A. This opposition is the property of inductive crosstalk used above, and the induced voltage is $-M\,dI_A/dt$.</p>
-<p>The rectangle formed by Wire B and its return path is the closed loop whose enclosed changing flux sets the EMF, and it is the same loop area that governs loop inductance in <a href="signal-integrity-06_Return_Path_Dynamics_and_Parasitic_Effects.html">Chapter 6</a>. Case 2 occurs inside Case 3 in this example. The total EMF in the rectangle is the sum of the EMF from Wire B&#39;s own changing current and the EMF from Wire A&#39;s changing current:</p>
-<p>$$\mathcal{E}_B = -L_B\,\frac{dI_B}{dt} - M\,\frac{dI_A}{dt}$$</p>
-<p>A current that already flows in Wire B contributes only through the first term, and the second term is independent of it.</p>
-<h3>Loop Inductance of a 50 Ω Microstrip</h3>
-<p><a href="signal-integrity-01_Wave_Propagation_and_Transmission_Lines.html">Chapter 1</a> gave a velocity of $1.46\times10^8$ m/s for FR4. The relation $L' = Z_0/v_p$ then gives the loop inductance per unit length of a 50 Ω line:</p>
-<p>$$L' = \frac{50}{1.46\times10^8} = 342\ \text{nH/m} \approx 8.7\ \text{nH/in}$$</p>
-<p>The capacitance per unit length follows from $C' = 1/(Z_0 v_p) = 137$ pF/m, which is about 3.5 pF/in, and the two values reproduce $Z_0 = \sqrt{L'/C'} = 50\ \Omega$.</p>
-<p>The loop inductance of one inch combines the partial inductances according to $L_{loop} = L_1 + L_2 - 2M$. Assume partial inductances $L_1 = 14$ nH for the trace and $L_2 = 2$ nH for the plane (illustrative values chosen to reproduce the 8.7 nH/in loop value). A mutual inductance of $M = 3.65$ nH gives $14 + 2 - 7.3 = 8.7$ nH, matching the figure above.</p>
-<p>Thinning the dielectric until $M = 4.5$ nH lowers the loop inductance to $16 - 9 = 7.0$ nH. The coupling bound is $M \le \sqrt{14 \cdot 2} = 5.29$ nH, so even perfect coupling leaves a floor of $(\sqrt{14} - \sqrt{2})^2 = 5.4$ nH. The reduction available from thinning the dielectric is therefore limited, and the loop inductance never approaches zero.</p>
-<h3>A Narrow Neck as a Series Inductor</h3>
-<p>Assume a manufacturing defect narrows a 2 mm section of a 50 Ω trace so that its local impedance rises to 65 Ω (a value a field solver would supply), and assume the velocity is unchanged. The excess loop inductance of the neck follows from $L' = Z/v_p$:</p>
-<p>$$\Delta L = \frac{65 - 50}{1.46\times10^8}\,(2\times10^{-3}) \approx 0.21\ \text{nH}$$</p>
-<p>The reduced capacitance of the narrow neck partly compensates this inductance, as the cancellation condition of <a href="signal-integrity-03_Impedance_Reflections_and_Termination.html">Chapter 3</a> describes, so the net behavior is smaller than that of the inductance alone.</p>
-<p>Using the inductance alone as an upper estimate and the series-inductor reflection of <a href="signal-integrity-03_Impedance_Reflections_and_Termination.html">Chapter 3</a>, $|\Gamma| = \omega \Delta L / |2Z_0 + j\omega \Delta L|$ gives 0.013 at 1 GHz and 0.128 at 10 GHz. The neck is nearly invisible to a slow edge and reflects about 13% of the voltage at the highest frequencies of a fast one, which rounds the edge at the receiver as described above. On a TDR display, which <a href="signal-integrity-07_Time_Domain_Reflectometry.html">Chapter 7</a> treats, the neck appears as a positive impedance bump.</p>
-<h3>Crosstalk Numbers: Microstrip versus Stripline</h3>
-<p>Assume two closely spaced traces with a 1 V aggressor edge of 100 ps rise time, a coupled length of 1 inch (25.4 mm), and a velocity of $1.46\times10^8$ m/s, which gives $T_c = 174$ ps and a round-trip delay of $2T_c = 348$ ps. The round-trip delay exceeds the rise time, so NEXT reaches its full plateau.</p>
-<p>For a microstrip, assume $C_m/C = 0.04$ and $L_m/L = 0.08$ (illustrative values for closely spaced traces). The backward coefficient is $K_b = \tfrac{1}{4}(0.04 + 0.08) = 0.03$, so NEXT is a 30 mV pulse lasting about 350 ps. The forward result is $V_{FEXT} = \tfrac{1}{2}(0.04 - 0.08)(174\ \text{ps})(1\ \text{V}/100\ \text{ps}) = -35$ mV, a negative pulse with the duration of the edge.</p>
-<p>For a stripline with the same total coupling, assume $C_m/C = L_m/L = 0.06$. The backward coefficient is again $K_b = 0.03$, and NEXT is the same 30 mV. The forward terms cancel, and FEXT is zero.</p>
-<p>NEXT depends on the sum of the two couplings and FEXT on their difference, so identical NEXT amplitudes can accompany substantially different FEXT waveforms. Both quantities fall with greater spacing or with a thinner dielectric, which ties the fields of each trace to its own reference plane.</p>
+<h3>Worked Example 1: Case 2 and Case 3 on a Desktop Coordinate Grid</h3>
+<p>Fix a Cartesian coordinate system on a flat horizontal desk where the $+x$ axis points to the right, the $+y$ axis points toward the top of the desk, and the $+z$ axis points vertically upward out of the desk toward the viewer.</p>
+<h4>Case 2 (Self-Inductance on Wire A)</h4>
+<p>Wire A lies along the $x$ axis carrying a rightward ($+x$) current $i_A(t)$ that is increasing with time ($\frac{di_A(t)}{dt}$ positive). Pointing the right-hand thumb in the $+x$ direction under the Generation Rule curls the fingers upward out of the desk ($+z$) in the upper half-plane ($y$ positive) and downward into the desk ($-z$) in the lower half-plane ($y$ negative). Rising current $i_A(t)$ causes the magnetic flux density to grow in magnitude everywhere around Wire A.</p>
+<p>Applying the Reaction Rule around Wire A requires concentric circles of induced magnetic field that oppose that growth, pointing into the desk ($-z$) in the upper half-plane ($y$ positive) and out of the desk ($+z$) in the lower half-plane ($y$ negative). Curling the right-hand <strong>fingers</strong> along those opposing concentric circles (into the desk above the $x$ axis and out of the desk below the $x$ axis) points the right-hand <strong>thumb</strong> leftward ($-x$) along the copper of Wire A, producing the self-induced back-EMF $\mathcal{E}_{\text{self}}(t)$ that resists the current rise:</p>
+<p>$$\mathcal{E}_{\text{self}}(t) = -L_A\,\frac{di_A(t)}{dt}$$</p>
+<h4>Case 3 (Mutual Inductance from Wire A into Victim Loop B)</h4>
+<p>Place a parallel victim conductor, Wire B, in the lower half-plane ($y$ negative) with its own return path located farther in the $-y$ direction so that Wire B and its return path enclose a single rectangular loop window in the lower half-plane. Across that lower half-plane, the primary magnetic field from Wire A points downward into the desk ($-z$) and grows stronger as $i_A(t)$ rises.</p>
+<p>Step 2 of the Reaction Rule requires an opposing induced magnetic field inside Victim Loop B pointing upward out of the desk ($+z$). Inside that lower-half-plane rectangle, pointing the right-hand <strong>thumb</strong> upward ($+z$) curls the <strong>fingers</strong> counter-clockwise around the perimeter of Victim Loop B as viewed from above.</p>
+<p>Along the top edge of Loop B (Wire B, closest to Wire A), counter-clockwise circulation drives induced current from right to left ($-x$). That matches the straight-wire readout around Wire B, where curling the fingers into the desk above Wire B and out of the desk below Wire B points the thumb along $-x$. Summing the self-induced EMF from Wire B&#39;s own current $i_B(t)$ and the mutual EMF from Wire A&#39;s current $i_A(t)$ gives the total induced EMF around Loop B:</p>
+<p>$$\mathcal{E}_B(t) = -L_B\,\frac{di_B(t)}{dt} - M\,\frac{di_A(t)}{dt}$$</p>
+<h3>Worked Example 2: Loop Inductance of a 50 Ohm FR4 Microstrip</h3>
+<p>A standard microstrip trace on FR4 laminate has characteristic impedance $Z_0$ of $50\,\Omega$ and propagation velocity $v_p$ of $1.46 \times 10^8\text{ m/s}$ from <a href="signal-integrity-01_Wave_Propagation_and_Transmission_Lines.html">Chapter 1</a>. Recall the identities expressing distributed loop inductance $L$ and distributed capacitance $C$ per unit length in terms of $Z_0$ and $v_p$:</p>
+<p>$$L = \frac{Z_0}{v_p}, \qquad C = \frac{1}{Z_0 v_p}$$</p>
+<p>Substituting the $50\,\Omega$ impedance and $1.46 \times 10^8\text{ m/s}$ velocity into both equations yields the per-meter and per-inch line parameters ($1\text{ in}$ equals $0.0254\text{ m}$):</p>
+<p>$$L = \frac{50\,\Omega}{1.46 \times 10^8\text{ m/s}} = 342\text{ nH/m} \approx 8.7\text{ nH/in}$$</p>
+<p>$$C = \frac{1}{(50\,\Omega)(1.46 \times 10^8\text{ m/s})} = 137\text{ pF/m} \approx 3.5\text{ pF/in}$$</p>
+<p>Recall the characteristic impedance relation and substitute $L$ and $C$ to verify self-consistency:</p>
+<p>$$Z_0 = \sqrt{\frac{L}{C}} = \sqrt{\frac{342 \times 10^{-9}\text{ H/m}}{137 \times 10^{-12}\text{ F/m}}} = 50\,\Omega$$</p>
+<p>Consider a $1\text{ in}$ ($25.4\text{ mm}$) section of this microstrip where the outbound trace has partial self-inductance $L_1$ of $14.0\text{ nH}$, the wide ground plane has partial self-inductance $L_2$ of $2.0\text{ nH}$, and the dielectric spacing establishes a mutual inductance $M$ of $3.65\text{ nH}$. Recall the total loop inductance equation:</p>
+<p>$$L_{\text{loop}} = L_1 + L_2 - 2M$$</p>
+<p>Substituting the three partial inductances reproduces the $8.7\text{ nH}$ loop inductance of the $1\text{ in}$ segment:</p>
+<p>$$L_{\text{loop}} = 14.0\text{ nH} + 2.0\text{ nH} - 2(3.65\text{ nH}) = 16.0\text{ nH} - 7.3\text{ nH} = 8.7\text{ nH}$$</p>
+<p>Thinning the dielectric laminate increases the mutual coupling $M$ to $4.5\text{ nH}$, which lowers the $1\text{ in}$ loop inductance to $7.0\text{ nH}$:</p>
+<p>$$L_{\text{loop}} = 14.0\text{ nH} + 2.0\text{ nH} - 2(4.5\text{ nH}) = 16.0\text{ nH} - 9.0\text{ nH} = 7.0\text{ nH}$$</p>
+<p>Recall the geometric-mean upper bound on mutual inductance:</p>
+<p>$$M_{\text{max}} = \sqrt{L_1 L_2}$$</p>
+<p>Substituting $L_1$ of $14.0\text{ nH}$ and $L_2$ of $2.0\text{ nH}$ limits the maximum physically achievable mutual inductance for this trace-and-plane pair:</p>
+<p>$$M_{\text{max}} = \sqrt{(14.0\text{ nH})(2.0\text{ nH})} = \sqrt{28.0}\text{ nH} \approx 5.29\text{ nH}$$</p>
+<p>Recall the theoretical loop inductance floor equation and substitute $M_{\text{max}}$ of $5.29\text{ nH}$ to find the minimum loop inductance achievable by thinning the dielectric alone:</p>
+<p>$$L_{\text{loop,min}} = \left(\sqrt{L_1} - \sqrt{L_2}\right)^2 = L_1 + L_2 - 2\sqrt{L_1 L_2}$$</p>
+<p>$$L_{\text{loop,min}} = 16.0\text{ nH} - 2(5.29\text{ nH}) \approx 5.42\text{ nH}$$</p>
+<h3>Worked Example 3: A Narrow Trace Neck as a Lumped Series Inductor</h3>
+<p>Suppose an etching defect narrows a short segment of length $\Delta \ell$ equal to $2.0\text{ mm}$ ($2.0 \times 10^{-3}\text{ m}$) along a $50\,\Omega$ trace ($v_p$ of $1.46 \times 10^8\text{ m/s}$), raising the local characteristic impedance within the neck $Z_{\text{neck}}$ to $65\,\Omega$. Recall the identity relating distributed inductance per unit length $L$ to characteristic impedance and phase velocity:</p>
+<p>$$L = \frac{Z_0}{v_p}$$</p>
+<p>Multiplying the increase in distributed inductance inside the neck by the neck length $\Delta \ell$ gives the lumped excess series inductance $\Delta L_{\text{neck}}$:</p>
+<p>$$\Delta L_{\text{neck}} = \left(\frac{Z_{\text{neck}} - Z_0}{v_p}\right)\Delta \ell$$</p>
+<p>Substituting $Z_{\text{neck}}$ of $65\,\Omega$, $Z_0$ of $50\,\Omega$, velocity $v_p$, and length $\Delta \ell$ yields the lumped excess inductance:</p>
+<p>$$\Delta L_{\text{neck}} = \left(\frac{65\,\Omega - 50\,\Omega}{1.46 \times 10^8\text{ m/s}}\right)(2.0 \times 10^{-3}\text{ m}) \approx 0.21\text{ nH}$$</p>
+<p>Inserting that lumped series inductor $\Delta L_{\text{neck}}$ of $0.21\text{ nH}$ ahead of the continuing $50\,\Omega$ line sets the effective load impedance $Z_L(\omega)$ at the neck entrance to the series sum of $j\omega \Delta L_{\text{neck}}$ and $Z_0$:</p>
+<p>$$Z_L(\omega) = Z_0 + j\omega \Delta L_{\text{neck}}$$</p>
+<p>Recall the reflection coefficient equation from <a href="signal-integrity-03_Impedance_Reflections_and_Termination.html">Chapter 3</a>:</p>
+<p>$$\Gamma(\omega) = \frac{Z_L(\omega) - Z_0}{Z_L(\omega) + Z_0}$$</p>
+<p>Substituting the series load impedance $Z_L(\omega)$ cancels $Z_0$ in the numerator and adds $2Z_0$ in the denominator:</p>
+<p>$$\Gamma(\omega) = \frac{(Z_0 + j\omega \Delta L_{\text{neck}}) - Z_0}{(Z_0 + j\omega \Delta L_{\text{neck}}) + Z_0} = \frac{j\omega \Delta L_{\text{neck}}}{2Z_0 + j\omega \Delta L_{\text{neck}}}$$</p>
+<p>Taking the complex magnitude of the numerator and the complex magnitude of the denominator gives the reflection magnitude $|\Gamma(\omega)|$ at angular frequency $\omega$ ($2\pi f$):</p>
+<p>$$|j\omega \Delta L_{\text{neck}}| = \omega \Delta L_{\text{neck}}, \qquad |2Z_0 + j\omega \Delta L_{\text{neck}}| = \sqrt{(2Z_0)^2 + (\omega \Delta L_{\text{neck}})^2}$$</p>
+<p>$$|\Gamma(\omega)| = \frac{\omega \Delta L_{\text{neck}}}{\sqrt{(2Z_0)^2 + (\omega \Delta L_{\text{neck}})^2}}$$</p>
+<p>At frequency $f$ of $1\text{ GHz}$, the inductive reactance $\omega \Delta L_{\text{neck}}$ is $1.32\,\Omega$, producing a small reflection magnitude of $0.013$ ($1.3\%$):</p>
+<p>$$\omega \Delta L_{\text{neck}}\big|_{1\text{ GHz}} = 2\pi(10^9\text{ Hz})(0.21 \times 10^{-9}\text{ H}) \approx 1.32\,\Omega$$</p>
+<p>$$|\Gamma(1\text{ GHz})| = \frac{1.32\,\Omega}{\sqrt{(100\,\Omega)^2 + (1.32\,\Omega)^2}} \approx 0.013$$</p>
+<p>At frequency $f$ of $10\text{ GHz}$, the inductive reactance rises tenfold to $13.2\,\Omega$, raising the reflection magnitude to $0.131$ ($13.1\%$):</p>
+<p>$$\omega \Delta L_{\text{neck}}\big|_{10\text{ GHz}} = 2\pi(10^{10}\text{ Hz})(0.21 \times 10^{-9}\text{ H}) \approx 13.2\,\Omega$$</p>
+<p>$$|\Gamma(10\text{ GHz})| = \frac{13.2\,\Omega}{\sqrt{(100\,\Omega)^2 + (13.2\,\Omega)^2}} \approx 0.131$$</p>
+<h3>Worked Example 4: NEXT and FEXT in Microstrip versus Stripline</h3>
+<p>Consider two parallel $50\,\Omega$ traces coupled over a length $\ell$ of $1.0\text{ in}$ ($0.0254\text{ m}$) with propagation velocity $v_p$ of $1.46 \times 10^8\text{ m/s}$. The aggressor launches a step transition of amplitude $V_a$ equal to $1.0\text{ V}$ and rise time $t_r$ of $100\text{ ps}$. Recall the one-way coupled flight time equation and evaluate $T_c$ and the round-trip delay $2T_c$:</p>
+<p>$$T_c = \frac{\ell}{v_p} = \frac{0.0254\text{ m}}{1.46 \times 10^8\text{ m/s}} \approx 174\text{ ps}, \qquad 2T_c \approx 348\text{ ps}$$</p>
+<p>The round-trip delay $2T_c$ of $348\text{ ps}$ exceeds the aggressor rise time $t_r$ of $100\text{ ps}$, so the near-end crosstalk reaches its full saturated plateau height.</p>
+<h4>Case A: Surface Microstrip</h4>
+<p>For closely spaced surface microstrip traces where air above the board reduces capacitive coupling relative to inductive coupling, take a capacitive coupling ratio of $0.04$ and an inductive coupling ratio of $0.08$:</p>
+<p>$$\frac{C_m}{C} = 0.04, \qquad \frac{L_m}{L} = 0.08$$</p>
+<p>Recall the backward coupling coefficient equation and substitute both ratios:</p>
+<p>$$k_b = \frac{1}{4}\left(\frac{C_m}{C} + \frac{L_m}{L}\right) = \frac{1}{4}(0.04 + 0.08) = 0.03$$</p>
+<p>Recall the saturated NEXT peak equation and multiply $k_b$ by the aggressor swing $V_a$ of $1.0\text{ V}$:</p>
+<p>$$V_{\text{NEXT,peak}} = k_b\,V_a = (0.03)(1.0\text{ V}) = +30\text{ mV}$$</p>
+<p>Recall the peak FEXT pulse equation for a linear transition slope $V_a / t_r$:</p>
+<p>$$V_{\text{FEXT,peak}} = \frac{1}{2}\left(\frac{C_m}{C} - \frac{L_m}{L}\right)T_c\,\left(\frac{V_a}{t_r}\right)$$</p>
+<p>Substituting the microstrip ratios, $T_c$ of $174\text{ ps}$, $V_a$ of $1.0\text{ V}$, and $t_r$ of $100\text{ ps}$ yields a negative FEXT pulse of duration $100\text{ ps}$:</p>
+<p>$$V_{\text{FEXT,peak}} = \frac{1}{2}(0.04 - 0.08)(174\text{ ps})\left(\frac{1.0\text{ V}}{100\text{ ps}}\right) = (-0.02)(1.74)\text{ V} \approx -34.8\text{ mV}$$</p>
+<h4>Case B: Homogeneous Stripline</h4>
+<p>Burying the traces inside a uniform stripline dielectric equalizes the capacitive and inductive coupling ratios at $0.06$:</p>
+<p>$$\frac{C_m}{C} = \frac{L_m}{L} = 0.06$$</p>
+<p>Substituting equal coupling ratios into the NEXT and FEXT equations above gives:</p>
+<p>$$k_b = \frac{1}{4}(0.06 + 0.06) = 0.03 \qquad \Longrightarrow \qquad V_{\text{NEXT,peak}} = (0.03)(1.0\text{ V}) = +30\text{ mV}$$</p>
+<p>$$V_{\text{FEXT,peak}} = \frac{1}{2}(0.06 - 0.06)(174\text{ ps})\left(\frac{1.0\text{ V}}{100\text{ ps}}\right) = 0\text{ mV}$$</p>
+<p>Routing sensitive parallel buses on internal stripline layers eliminates far-end crosstalk while leaving near-end crosstalk unchanged for the same total coupling strength.</p>
 <h2>Edge Cases</h2>
-<h3>Two Geometries, One Inductance Increase</h3>
-<p>Trace width and loop area both raise inductance, through different mechanisms, and confusing the two is a common source of error.</p>
-<p>A narrow trace width increases the self-inductance of the trace by concentrating the field into a denser region around the conductor. A wide loop area, meaning a large vertical separation between the trace and the return plane, increases the loop inductance by allowing the field to occupy a larger volume, so more field lines pass through the loop and more flux links it per ampere.</p>
-<p>The two mechanisms are geometrically independent of each other. A designer can choose a wide trace, which has a low self-inductance, on a thick dielectric, which has a high loop inductance, or a narrow trace on a thin dielectric. Good design minimizes both contributions: a trace width matched to the target impedance avoids unnecessary field concentration, and a thin dielectric raises the mutual coupling and lowers the loop inductance toward its floor.</p>
-<h3>Short Coupled Lengths and Unmatched Victims</h3>
-<p>The NEXT expression $K_b[V_a(t) - V_a(t - 2T_c)]$ applies for any coupled length. The pulse height is approximately $K_b V_a\,(2T_c/t_r)$ when the round-trip delay is shorter than the rise time, because the bracket no longer reaches the full swing. Assume a coupled length of 5 mm with the 100 ps edge of the previous example. The round-trip delay is 68 ps, and the NEXT amplitude falls to about 21 mV instead of 30 mV.</p>
-<p>The derivation assumed that both ends of the victim are terminated in $Z_0$. An unmatched victim end reflects the arriving crosstalk wave with the reflection coefficient $\Gamma$ of <a href="signal-integrity-03_Impedance_Reflections_and_Termination.html">Chapter 3</a>, so a high-impedance receiver at the far end of the victim doubles the arriving FEXT, and a low-impedance driver at the near end of the victim reflects part of the backward wave toward the far end. The crosstalk observed at an unmatched victim is therefore the sum of the coupling terms above and their reflections.</p>
-<p><a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">Chapter 5</a> applies the Reaction Rule inside a single conductor, where the changing field of the current itself drives eddy currents that push the current toward the surface, and examines the polarization loss in the dielectric. The two mechanisms together set the frequency-dependent attenuation that rounds the edges whose spectrum <a href="signal-integrity-02_Frequency_Content_of_Digital_Signals.html">Chapter 2</a> quantified.</p>
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<h3>Two Independent Geometries That Increase Inductance</h3>
+<p>Trace width $w$ and dielectric loop height $h$ both control inductance, but they act through distinct physical mechanisms that must not be conflated.</p>
+<p>Narrowing the trace width $w$ increases the partial self-inductance $L_1$ of the trace by crowding the outbound current filaments into a smaller cross-section, which intensifies the local magnetic flux density around the wire. Increasing the dielectric height $h$ between the trace and the ground plane increases the total loop inductance $L_{\text{loop}}$ by separating the antiparallel return current farther from the outbound current, which reduces their mutual inductance $M$ and leaves a wider dielectric window of unshared magnetic flux.</p>
+<p>A layout engineer can vary $w$ and $h$ independently. Keeping $L_{\text{loop}}$ low while holding characteristic impedance $Z_0$ at $50\,\Omega$ requires pairing a thin dielectric substrate $h$ (to maximize mutual coupling $M$) with a correspondingly narrow trace width $w$.</p>
+<h3>Short Coupled Lengths and Unmatched Victim Terminations</h3>
+<h4>Short Coupled Lengths ($2T_c < t_r$)</h4>
+<p>What happens physically to Near-End Crosstalk when the coupled trace section $\ell$ is so short that its round-trip propagation delay $2T_c$ is shorter than the aggressor rise time $t_r$?</p>
+<p>In the overlapping-slices picture, reaching the full NEXT ceiling $+k_b\,V_a$ requires enough wire length for all $N_{\text{overlap,NEXT}}$ slices to overlap at the Near End at the same time (2 sections for a $4\text{ ns}$ rise time). Shortening the wire so that $2T_c < t_r$ (such as 1 section of $1\text{ ns}$ one-way flight time and $2\text{ ns}$ round-trip delay) leaves only the fraction $\frac{2T_c}{t_r}$ of the slices needed for full overlap. Equivalently, in the time-domain subtraction below, the delayed echo $v_w(t - 2T_c)$ begins subtracting at time $2T_c$ <strong>before</strong> the immediate step $v_w(t)$ finishes rising to $+V_a$ at time $t_r$, truncating the upward ramp at the fraction $\frac{2T_c}{t_r}$ of the full ceiling $k_b\,V_a$:</p>
+<p>$$v_{\text{NEXT}}(t) = k_b\,\Bigl[v_w(t) - v_w(t - 2T_c)\Bigr]$$</p>
+<p>During the overlap window ($2T_c \le t \le t_r$), both ramps rise with the same constant slope $V_a / t_r$:</p>
+<p>$$v_w(t) = \left(\frac{V_a}{t_r}\right)t, \qquad v_w(t - 2T_c) = \left(\frac{V_a}{t_r}\right)(t - 2T_c)$$</p>
+<p>Substituting both ramp expressions into the NEXT equation cancels the time variable $t$ and confirms that the peak NEXT voltage scales down by the ratio $2T_c / t_r$:</p>
+<p>$$V_{\text{NEXT,short}} = k_b\left[\left(\frac{V_a}{t_r}\right)t - \left(\frac{V_a}{t_r}\right)(t - 2T_c)\right] = k_b\,V_a\,\left(\frac{2T_c}{t_r}\right), \qquad \text{for } 2T_c < t_r$$</p>
+<p>Shortening the coupled microstrip section in Worked Example 4 from $25.4\text{ mm}$ to $5.0\text{ mm}$ reduces the round-trip delay $2T_c$ to $68.49\text{ ps}$, shorter than the $100\text{ ps}$ rise time $t_r$. Substituting $2T_c$ of $68.49\text{ ps}$ and $t_r$ of $100\text{ ps}$ into the short-line equation lowers the peak NEXT amplitude from $30\text{ mV}$ to $20.5\text{ mV}$:</p>
+<p>$$2T_c = \frac{2(0.005\text{ m})}{1.46 \times 10^8\text{ m/s}} \approx 68.49\text{ ps}, \qquad V_{\text{NEXT,short}} = (30\text{ mV})\left(\frac{68.49\text{ ps}}{100\text{ ps}}\right) \approx 20.5\text{ mV}$$</p>
+<h4>Unmatched Victim Terminations</h4>
+<p>The crosstalk derivations above assume that both ends of the victim trace are terminated in matched resistors $Z_0$. An unmatched victim termination of impedance $Z_{\text{term}}$ reflects the arriving crosstalk wave according to the voltage reflection coefficient $\Gamma$ and voltage transmission coefficient $T_V$ from <a href="signal-integrity-03_Impedance_Reflections_and_Termination.html">Chapter 3</a>:</p>
+<p>$$\Gamma = \frac{Z_{\text{term}} - Z_0}{Z_{\text{term}} + Z_0}, \qquad T_V = 1 + \Gamma = \frac{2Z_{\text{term}}}{Z_{\text{term}} + Z_0}$$</p>
+<p>An unterminated, high-impedance CMOS receiver at the far end of the victim trace (infinite $Z_{\text{term}}$) produces full positive reflection and voltage doubling at the receiver input pads:</p>
+<p>$$\Gamma = +1, \qquad T_V = 1 + \Gamma = 2$$</p>
+<p>Conversely, a low-impedance active driver at the near end of the victim trace ($Z_{\text{term}} < Z_0$) presents a negative reflection coefficient ($\Gamma < 0$), reflecting an inverted copy of the backward NEXT plateau and sending it traveling forward down the victim line toward the far-end receiver.</p>
+<p><a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">Chapter 5</a> applies the Reaction Rule inside the cross-section of a single conductor to show how internal magnetic flux forces high-frequency current onto the outer copper skin, and combines conductor loss with dielectric polarization damping to model frequency-dependent channel attenuation.</p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol1-ebook-v2.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 1 Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="signal-integrity-03_Impedance_Reflections_and_Termination.html" class="pagination-link prev">

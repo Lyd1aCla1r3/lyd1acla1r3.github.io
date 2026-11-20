@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Blog | Lydia Pedersen</title>
+  <meta name="description" content="Engineering series, reproducible AI architecture guides, empirical validation benchmarks, and systems analyses by Lydia Pedersen.">
   <link rel="stylesheet" href="../css/styles.css?v=1.2">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
   <style>
@@ -23,7 +24,7 @@
         transform: translateY(-2px);
         box-shadow: 0 12px 24px var(--rose-gold-subtle);
     }
-    .blog-item h2 { font-family: var(--font-display); color: var(--text-primary); margin-top: 0; }
+    .blog-item h2, .blog-item h3 { font-family: var(--font-display); font-size: var(--fs-xl); color: var(--text-primary); margin-top: 0; }
     .blog-item a { text-decoration: none; color: inherit; }
     .blog-item p { color: var(--text-secondary); line-height: var(--lh-relaxed); margin-bottom: 0; }
     
@@ -36,7 +37,15 @@
         justify-content: center;
     }
     .blog-tabs input[type="radio"] {
-        display: none;
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+        pointer-events: none;
+    }
+    .blog-tabs input[type="radio"]:focus-visible + .tab-label {
+        outline: 2px solid var(--rose-gold);
+        outline-offset: 2px;
     }
     .tab-label {
         padding: var(--space-sm) var(--space-lg);
@@ -124,6 +133,13 @@
     .series-item {
         margin-bottom: 0; /* Reset margin inside series-items flex container */
     }
+
+    @media (max-width: 480px) {
+        .blog-list { padding: var(--space-2xl) var(--space-md); }
+        .series-group { padding: var(--space-md); }
+        .blog-item { padding: var(--space-lg); }
+        .tab-desc { padding: 0; }
+    }
   </style>
 </head>
 <body>
@@ -131,6 +147,9 @@
   <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
   <!-- Full-screen overlay canvas for the diagonal binary->agent->text animation -->
   <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Skip Navigation -->
+  <a href="#main-content" class="sr-only">Skip to main content</a>
 
   <!-- Navigation -->
   <nav class="nav" id="navbar" aria-label="Main navigation">
@@ -193,12 +212,12 @@
             </div>
             
             <div class="tab-content" id="content-series">
-                <p class="tab-desc">Sequential explorations born from personal curiosity. These collections document my process of deconstructing complex systems from first principles and sharing the resulting insights.</p>
+                <p class="tab-desc">Multi-chapter engineering series deconstructing physical-layer signal integrity, neural network mathematics, and agentic AI infrastructure from first principles. Each collection builds a complete technical domain step by step from governing equations to system architecture.</p>
                 
           <a href="series-signal-integrity.html">
               <article class="blog-item series-item" style="margin-bottom: var(--space-md);">
-                  <h2>Signal Integrity (Advanced Edition) Series</h2>
-                  <p>A first-principles exploration of high-speed digital systems, tracing the physics of electromagnetic wave propagation through frequency-dependent loss mechanisms, jitter decomposition, equalization architectures (CTLE/DFE/FFE), the complete SerDes link budget, and coherent optical transmission physics. <strong>(6 parts, 21 chapters)</strong></p>
+                  <h2>Signal Integrity Series</h2>
+                  <p>A first-principles exploration of high-speed digital systems published across two standalone ebook editions covering accessible wave foundations and advanced transceiver architecture. This series traces electromagnetic wave propagation, S-parameter and jitter measurement, CTLE/DFE/FFE and PAM4 equalization, and SerDes clocking with coherent optics. <strong>(6 parts, 21 chapters)</strong></p>
               </article>
           </a>
           <a href="series-tokenization.html">
@@ -222,7 +241,7 @@
           <a href="series-transformers.html">
               <article class="blog-item series-item" style="margin-bottom: var(--space-md);">
                   <h2>Transformers Series</h2>
-                  <p>A geometric deconstruction of the Decoder-only Transformer architecture. This complete series builds the model from the ground up, moving from the vocabulary embedding matrix through the multi-head attention mechanism and residual streams, terminating in the mathematical calculation of the cross-entropy loss function. <strong>(25 chapters)</strong></p>
+                  <p>A geometric deconstruction of the decoder-only Transformer architecture. This complete series builds the model from the ground up, tracing the forward and backward pass from the vocabulary embedding matrix through multi-head attention and residual streams to the cross-entropy loss function. <strong>(25 chapters)</strong></p>
               </article>
           </a>
           <a href="series-mixture-of-experts.html">
@@ -245,7 +264,7 @@
         <a href="serp-api-benchmark.html">
             <article class="blog-item">
                 <h2>Benchmarking SERP API Fidelity for AI Overviews</h2>
-                <p>This benchmark measures how reliably four major SERP APIs detect and extract Google's AI Overviews, a non-deterministic generative block that standard API comparisons ignore. It reports detection yield and extraction richness across 50 queries and audits every saved raw response for silent parser failures to determine which providers can support retrieval-augmented generation pipelines that depend on AI Overview content.</p>
+                <p>An empirical benchmark measuring how reliably four major SERP APIs detect and extract Google AI Overviews, a non-deterministic generative block that standard API comparisons ignore. Detection yield, extraction richness across 50 queries, and raw-response parser audits identify which providers can ground retrieval-augmented generation pipelines.</p>
             </article>
         </a>
             </div>
@@ -262,31 +281,31 @@
           <a href="guide-enterprise-agentic-pipeline.html">
               <article class="blog-item series-item" style="margin-bottom: var(--space-md);">
                   <h2>Enterprise Agentic Pipeline</h2>
-                  <p>A complete configuration walkthrough assembling LangChain, LangGraph, MCP servers, LiteLLM, Weaviate, Unstructured, Langfuse, vLLM, and HF TRL into a governed multi-agent system for enterprise engineering organizations. The architecture introduces orchestrated agent coordination, gateway-enforced cost and compliance controls, production observability, and a closed-loop fine-tuning pipeline that the solo developer configuration intentionally omitted. <strong>(2 articles)</strong></p>
+                  <p>A complete configuration walkthrough for a governed multi-agent platform serving enterprise engineering organizations. LangChain, LangGraph, MCP servers, and LiteLLM enforce stateful agent coordination alongside gateway cost and compliance controls. Weaviate and Unstructured support hybrid document retrieval, while Langfuse, vLLM, and HF TRL provide production observability and closed-loop fine-tuning. <strong>(2 articles)</strong></p>
               </article>
           </a>
           <a href="guide-private-and-airgapped-deployment.html">
               <article class="blog-item series-item" style="margin-bottom: var(--space-md);">
                   <h2>Private and Airgapped Deployment</h2>
-                  <p>A complete configuration walkthrough assembling LlamaIndex, LangGraph, MCP servers, LiteLLM, vLLM, SGLang, Qdrant, Docling, Arize Phoenix, and Unsloth into a self-contained AI system that operates entirely within a network perimeter with zero external connectivity. The architecture replaces every commercial API dependency from the enterprise pipeline with self-hosted alternatives, addresses offline model acquisition, and closes the fine-tuning loop entirely on-premises. <strong>(2 articles)</strong></p>
+                  <p>A complete configuration walkthrough for a self-contained AI platform operating inside a sealed network perimeter with zero external connectivity. LlamaIndex, LangGraph, MCP servers, and LiteLLM coordinate multi-agent workflows and local gateway routing entirely on-premises. Self-hosted vLLM and SGLang inference engines pair with Qdrant, Docling, Arize Phoenix, and Unsloth to run retrieval and fine-tuning offline. <strong>(2 articles)</strong></p>
               </article>
           </a>
           <a href="guide-rag-first-knowledge-system.html">
               <article class="blog-item series-item" style="margin-bottom: var(--space-md);">
-                  <h2>RAG First Knowledge System</h2>
-                  <p>A complete configuration walkthrough assembling LlamaIndex, MCP servers, LiteLLM, Pinecone, LlamaParse, Firecrawl, and Braintrust into a retrieval-augmented generation system optimized for answer quality over a large, continuously evolving document corpus. The architecture prioritizes ingestion pipeline design, chunking strategy selection, and retrieval evaluation rather than model serving infrastructure, reflecting the principle that retrieval quality dominates answer quality in knowledge-heavy applications. <strong>(2 articles)</strong></p>
+                  <h2>RAG-First Knowledge System</h2>
+                  <p>A complete configuration walkthrough for a retrieval-augmented generation system optimized for answer accuracy across a large, evolving document corpus. LlamaParse, Firecrawl, and Pinecone handle layout-aware document ingestion and hybrid vector indexing. LlamaIndex, MCP servers, LiteLLM, and Braintrust orchestrate query routing and retrieval evaluation so context fidelity governs answer quality. <strong>(2 articles)</strong></p>
               </article>
           </a>
           <a href="guide-evaluation-driven-development-loop.html">
               <article class="blog-item series-item" style="margin-bottom: var(--space-md);">
-                  <h2>Evaluation Driven Development Loop</h2>
-                  <p>A complete configuration walkthrough assembling LangChain or LlamaIndex, Langfuse, Braintrust, Unsloth, vLLM, and LiteLLM into a continuous improvement cycle that captures production traces, curates evaluation datasets, scores output quality across experiments, fine-tunes specialized models from high-quality examples, deploys fine-tuned checkpoints alongside base models, and routes traffic between variants for data-driven comparison. The architecture treats systematic quality measurement as the primary engineering discipline rather than an afterthought applied to a finished system. <strong>(2 articles)</strong></p>
+                  <h2>Evaluation-Driven Development Loop</h2>
+                  <p>A complete configuration walkthrough for a closed-loop evaluation and model improvement system. LangChain or LlamaIndex pairs with Langfuse and Braintrust to capture production traces, curate golden datasets, and score experiment quality. Unsloth, vLLM, and LiteLLM fine-tune specialized checkpoints from high-scoring traces and route live traffic across model variants for quantitative comparison. <strong>(2 articles)</strong></p>
               </article>
           </a>
           <a href="guide-template-for-coding-agent-best-practices.html">
               <article class="blog-item series-item" style="margin-bottom: var(--space-md);">
                   <h2>Template for Coding Agent Best Practices</h2>
-                  <p>An architecture walkthrough of the operating layer around a coding agent: always-on rules, on-demand skills, context-isolated subagents, deterministic hooks and linters, and file-based session state. The configuration enforces critical constraints in code rather than prompts, keeps context lean across long efforts, and lives in version control so any team can reproduce it. <strong>(2 articles)</strong></p>
+                  <p>A complete configuration walkthrough of the operating layer around a coding agent. Commit-tracked rules, on-demand skills, and context-isolated subagents pair with deterministic hooks, linters, and file-based session state. The configuration enforces mandatory constraints in code rather than prompts, keeps context lean across long efforts, and lives in version control for team reproducibility. <strong>(2 articles)</strong></p>
               </article>
           </a>
             </div>
@@ -295,6 +314,13 @@
 
     </div>
   </main>
+  <footer class="footer">
+    <div class="container">
+      <p class="footer__text">
+        Designed and built by Lydia Pedersen. This portfolio is <a href="https://github.com/Lyd1aCla1r3/lyd1acla1r3.github.io" target="_blank" rel="noopener">open source</a>.
+      </p>
+    </div>
+  </footer>
   <script src="../js/main.js?v=1.2"></script>
 
   <!-- KaTeX for Math Rendering -->

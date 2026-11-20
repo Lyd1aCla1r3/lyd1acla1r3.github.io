@@ -117,6 +117,37 @@
     @media (max-width: 768px) {
       .blog-post table:not(.trace-container table) { overflow-x: auto; }
     }
+    /* Signal Integrity series tables: clean KaTeX math rendering, no pill-badge wrapping, and hidden MathML node */
+    .blog-post.series-signal-integrity table:not(.trace-container table) {
+      table-layout: auto;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) th,
+    .blog-post.series-signal-integrity table:not(.trace-container table) td {
+      padding: 10px 14px;
+      vertical-align: middle;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      word-break: normal;
+      overflow-wrap: normal;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) .katex {
+      font-size: 1em;
+      white-space: nowrap;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) .katex-mathml {
+      display: none !important;
+    }
+    @media (min-width: 769px) {
+      .blog-post.series-signal-integrity table:not(.trace-container table) th:first-child:nth-last-child(2),
+      .blog-post.series-signal-integrity table:not(.trace-container table) td:first-child:nth-last-child(2) {
+        width: 32%;
+        max-width: 240px;
+      }
+      .blog-post.series-signal-integrity table:not(.trace-container table) th:first-child:not(:nth-last-child(2)),
+      .blog-post.series-signal-integrity table:not(.trace-container table) td:first-child:not(:nth-last-child(2)) {
+        max-width: 220px;
+      }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -161,7 +192,7 @@
     <li><a href="index.html">Blog</a></li><li><a href="series-signal-integrity.html">Series: Signal Integrity</a></li><li><a href="signal-integrity-part-04.html">Part 4: Equalization and RX Architecture</a></li><li aria-current="page">Continuous Time Linear Equalization and Decision Feedback Equalization</li></ol></nav>
         <article class="blog-post series-signal-integrity">
 <h1>Continuous Time Linear Equalization and Decision Feedback Equalization</h1>
-<!-- SUMMARY: High-speed receivers combine two distinct equalizers to recover attenuated signals. A continuous-time linear equalizer (CTLE) applies a zero-pole high-pass boost to flatten channel insertion loss, while a decision feedback equalizer (DFE) subtracts decided post-cursor interference without amplifying noise, trained jointly by least-mean-square gradient descent. --><p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p><p><a href="signal-integrity-13_Transmitter_FFE.html">Chapter 13: Transmitter Feed-Forward Equalization</a> ends with the division of work among the three equalizers: the transmitter filter is open loop and can act on pre-cursors and post-cursors, the decision feedback equalizer cancels post-cursors only, and the linear equalizer at the receiver shapes the smooth part of the loss. This chapter describes the two receiver equalizers and the procedure that sets all three. It works with the same line as the earlier chapters, 12 inches of FR4 whose loss comes from <a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">Chapter 5: Skin Effect and Dielectric Loss</a> and whose insertion loss, a quantity defined in <a href="signal-integrity-08_S_Parameters_and_VNA.html">Chapter 8: S-Parameters and Vector Network Analysis</a>, sets the amount of equalization required.</p>
+<!-- SUMMARY: High-speed receivers combine two distinct equalizers to recover attenuated signals. A continuous-time linear equalizer (CTLE) applies a zero-pole high-pass boost to flatten channel insertion loss, while a decision feedback equalizer (DFE) subtracts decided post-cursor interference without amplifying noise, trained jointly by least-mean-square gradient descent. --><p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p><p><a href="signal-integrity-13_Transmitter_FFE.html">Chapter 13: Transmitter Feed-Forward Equalization</a> ends with the division of work among the three equalizers: the transmitter filter is open loop and can act on pre-cursors and post-cursors, the decision feedback equalizer cancels post-cursors only, and the linear equalizer at the receiver shapes the smooth part of the loss. This chapter describes the two receiver equalizers and the procedure that sets all three. It works with the same line as the earlier chapters, 12 inches of FR4 whose loss comes from <a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">Chapter 5: Skin Effect and Dielectric Loss</a> and whose insertion loss, a quantity defined in <a href="signal-integrity-08_S_Parameters_and_VNA.html">Chapter 8: S-Parameters and Vector Network Analysis</a>, sets the amount of equalization required.</p>
 <p>The two equalizers differ in what they observe. The CTLE sees the analog waveform before any decision, and it applies a gain that depends on frequency. The DFE sees the decisions of the slicer, and it subtracts a weighted sum of them from the waveform before the next decision. The first is a linear filter and shares the limits of every linear filter, which is that it cannot change the signal-to-noise ratio at any single frequency. The second is nonlinear because it contains the slicer, and the nonlinearity is the reason that it escapes one of those limits and acquires another: it does not enhance noise, and it can propagate a decision error.</p>
 <p>Neither equalizer chooses its own parameters without help from an adaptation procedure. An adaptation engine estimates the tap weights from the received signal, and a negotiation with the transmitter sets the transmitter filter. The chapter derives the update rule of the adaptation engine, shows how fast it converges, and describes the negotiation. <a href="signal-integrity-15_PAM4_Signaling_and_Gray_Coding.html">Chapter 15: PAM4 Signaling and Gray Coding</a> then shows why these equalizers become more demanding when the number of voltage levels increases from two to four.</p>
 <h2>Core Concepts</h2>
@@ -171,7 +202,9 @@
 <p>$$y_n = A \sum_{k} h_k\, a_{n-k} + \nu_n$$</p>
 <p>where $\nu_n$ is the noise at the sampling instant. The terms with $k \neq 0$ make up the intersymbol interference, and the peak-distortion result of <a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html">Chapter 10: Jitter Decomposition and Measurement</a> gives the worst-case eye height $2A(1 - \sum_{k \neq 0}|h_k|)$. The cursors are properties of the pulse response and not of the impulse response. The two are related by the convolution of that earlier chapter, and a statement such as &quot;the DFE taps equal the impulse response&quot; is correct only in the sense that each tap equals one sample of the pulse response at the cursor spacing.</p>
 <p>The main cursor $A$ is smaller than the launch amplitude. The line of <a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">Chapter 5</a> delivers 0.874 of the launch amplitude at the main cursor, because part of the energy of each bit has moved into the tail.</p>
-<p>The resistance of the copper at DC accounts for a small part of that reduction: the 12 inches have $R_{DC} = 0.125 \times 12 = 1.5\ \Omega$ in the model of that chapter, and the conductor attenuation at low frequency is $R/(2Z_0) = 1.5/100 = 0.015$ Np, which is 0.13 dB or 1.5 percent of the voltage. The dielectric loss is proportional to frequency and has no DC component. The main cursor is therefore a measured quantity of the received pulse, and the receiver estimates it, as the Architecture section describes.</p>
+<p>The resistance of the copper at DC accounts for a small part of that reduction. In the model of that chapter, the DC resistance and low-frequency conductor attenuation of the 12 inches are</p>
+<p>$$R_{DC} = 0.125 \times 12 = 1.5\ \Omega, \qquad \frac{R}{2Z_0} = \frac{1.5}{100} = 0.015\ \text{Np}$$</p>
+<p>An attenuation of 0.015 Np equals 0.13 dB, or 1.5 percent of the voltage. The dielectric loss is proportional to frequency and has no DC component. The main cursor is therefore a measured quantity of the received pulse, and the receiver estimates it, as the Architecture section describes.</p>
 <h3>The CTLE Transfer Function</h3>
 <p><a href="signal-integrity-03_Impedance_Reflections_and_Termination.html">Chapter 3: Impedance, Reflections, and Termination</a> derives the transfer function of a resistor and a capacitor, $H = 1/(1 + j\omega RC)$, whose magnitude is $1/\sqrt{1 + (f/f_{3\text{dB}})^2}$. The phasor rule of that chapter replaces the derivative with a multiplication by $j\omega$, and the transfer function of a circuit is therefore a ratio of polynomials in $s = j\omega$. Write the single-pole response with the pole frequency $\omega_p = 1/RC$:</p>
 <p>$$H_{pole}(s) = \frac{1}{1 + s/\omega_p}$$</p>
@@ -277,7 +310,9 @@
 <p>The same equations describe an equalizer whose decisions are computed digitally after an analog-to-digital converter, in which the taps are binary multiplications in logic. <a href="signal-integrity-16_SerDes_Architecture_and_Eye_Diagrams.html">Chapter 16: SerDes Architecture and Eye Diagrams</a> compares the analog front end with the converter-based receiver, and only the implementation differs from this chapter.</p>
 <h2>Worked Examples</h2>
 <h3>A CTLE for the 12 Inch Line</h3>
-<p>Over 12 inches, the line of <a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">Chapter 5</a> has the insertion loss $IL(f) = 12\,(0.20\sqrt{f/5} + 0.47\,f/5)$ dB with $f$ in GHz. Evaluating that loss formula gives 8.04 dB at 5 GHz (matching the 8.1 dB of <a href="signal-integrity-08_S_Parameters_and_VNA.html">Chapter 8</a> with the rounded constants), which is the Nyquist frequency of a 10 Gbps link. Choose a CTLE with $f_z = 1.5$ GHz, $f_{p1} = 6$ GHz, $f_{p2} = 15$ GHz, and $A_{dc} = 1$. The circuit of the previous section needs $g_mR_s/2 = f_{p1}/f_z - 1 = 3$ for this ratio. The gain follows from the three factors:</p>
+<p>Over 12 inches, the line of <a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">Chapter 5</a> has the insertion loss $IL(f) = 12\,(0.20\sqrt{f/5} + 0.47\,f/5)$ dB with $f$ in GHz. Evaluating that loss formula gives 8.04 dB at 5 GHz (matching the 8.1 dB of <a href="signal-integrity-08_S_Parameters_and_VNA.html">Chapter 8</a> with the rounded constants), which is the Nyquist frequency of a 10 Gbps link. Choose a CTLE with $f_z = 1.5$ GHz, $f_{p1} = 6$ GHz, $f_{p2} = 15$ GHz, and $A_{dc} = 1$. The circuit of the previous section sets the degeneration factor from that pole-to-zero ratio:</p>
+<p>$$\frac{g_m R_s}{2} = \frac{f_{p1}}{f_z} - 1 = 3$$</p>
+<p>The gain follows from the three factors:</p>
 <p>$$|H(f)| = \frac{\sqrt{1 + (f/1.5)^2}}{\sqrt{1 + (f/6)^2}\,\sqrt{1 + (f/15)^2}}$$</p>
 <p>The asymptotic estimate of the peaking is $20\log_{10}(6/1.5) = 12.04$ dB. The full two-pole magnitude response peaks at 9.23 dB near 9.2 GHz, because the second pole and the proximity of the first pole round off the plateau. The table compares the filter with the channel:</p>
 <table>
@@ -335,7 +370,8 @@
 <p>The net response is within 0.9 dB of flat from 0.5 GHz to the Nyquist frequency, and the Nyquist tone, which the channel reduces to 0.396 of its amplitude, leaves the filter at 1.005. Above the Nyquist frequency the net response falls to $-5.47$ dB at 10 GHz.</p>
 <p>The data pattern has no fundamental above 5 GHz, so the high-frequency roll-off affects only the edge harmonics, and the cursors that result from it are part of what the DFE removes. Placing the zero at the frequency where channel loss reaches 3 dB (1.5 GHz in the table) aligns the onset of boost with the channel roll-off, while the 4 dB gap between the 12.04 dB asymptotic estimate and the 8.08 dB filter gain at the Nyquist frequency shows why evaluating the complete denominator polynomial is necessary.</p>
 <h3>Cancelling the Cursors of the 12 Inch Line</h3>
-<p>Take the pulse response of <a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">Chapter 5</a> at 10 Gbps and the receiver values of <a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html">Chapter 10</a>, a main cursor of $A = 200$ mV. The first seven normalized post-cursors are 0.0418, 0.0186, 0.0111, 0.0076, 0.0056, 0.0044, and 0.0035, so the weights of the DFE in volts are $w_k = A h_k = 8.37$, 3.72, 2.22, 1.52, 1.12, 0.87, and 0.70 mV.</p>
+<p>Take the pulse response of <a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">Chapter 5</a> at 10 Gbps and the receiver values of <a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html">Chapter 10</a>, a main cursor of $A = 200$ mV. The first seven normalized post-cursors are 0.0418, 0.0186, 0.0111, 0.0076, 0.0056, 0.0044, and 0.0035, so the DFE tap weights in millivolts are</p>
+<p>$$w_k = A h_k = \{8.37,\ 3.72,\ 2.22,\ 1.52,\ 1.12,\ 0.87,\ 0.70\}\ \text{mV}$$</p>
 <p>For a bit $n$ with the previous three decisions $(+1, -1, +1)$ the sample is $200 + 8.37(+1) + 3.72(-1) + 2.22(+1) = 206.87$ mV for $a_n = +1$. The DFE subtracts $8.37(+1) + 3.72(-1) + 2.22(+1) = 6.87$ mV and the slicer sees 200.00 mV. The subtraction follows the history of the bits, so the same cancellation applies to every pattern, and the interference of this history is removed whether it adds to the sample or subtracts from it.</p>
 <p>The cursors of this model decay as $t^{-3/2}$ because they come from the erfc step response of <a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">Chapter 5</a>, and the sum of the post-cursors beyond tap $K$ is $(1 - s((K+1)\,UI))/h_{main}$ with the step response $s$ normalized to its final value 1. The first seven cursors of the earlier chapters sum to 9.26 percent, and the sum of all post-cursors is 14.35 percent, because the tail beyond the seventh cursor holds the other 5.09 percent. The residual after $K$ taps and the resulting eye height $2A(1 - R(K))$ are:</p>
 <table>
@@ -467,7 +503,7 @@
 <h3>Training Search and Local Minima</h3>
 <p>The training procedure searches a space with several dimensions: the transmitter taps, the CTLE peaking, and the number of DFE taps in use. The figure of merit that the receiver measures at each point is the result after its own adaptation, so it is noisy and its dependence on the parameters need not be a single smooth hill.</p>
 <p>A step in the wrong direction can look like an improvement, and the search can stop at a combination that is better than its neighbors and worse than the best. The designer reduces the risk through the starting presets and the step sizes of the state machine. The search fails whatever its algorithm when the equalization that the silicon provides is smaller than the loss of the channel.</p>
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="signal-integrity-13_Transmitter_FFE.html" class="pagination-link prev">

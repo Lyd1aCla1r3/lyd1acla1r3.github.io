@@ -117,6 +117,37 @@
     @media (max-width: 768px) {
       .blog-post table:not(.trace-container table) { overflow-x: auto; }
     }
+    /* Signal Integrity series tables: clean KaTeX math rendering, no pill-badge wrapping, and hidden MathML node */
+    .blog-post.series-signal-integrity table:not(.trace-container table) {
+      table-layout: auto;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) th,
+    .blog-post.series-signal-integrity table:not(.trace-container table) td {
+      padding: 10px 14px;
+      vertical-align: middle;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      word-break: normal;
+      overflow-wrap: normal;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) .katex {
+      font-size: 1em;
+      white-space: nowrap;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) .katex-mathml {
+      display: none !important;
+    }
+    @media (min-width: 769px) {
+      .blog-post.series-signal-integrity table:not(.trace-container table) th:first-child:nth-last-child(2),
+      .blog-post.series-signal-integrity table:not(.trace-container table) td:first-child:nth-last-child(2) {
+        width: 32%;
+        max-width: 240px;
+      }
+      .blog-post.series-signal-integrity table:not(.trace-container table) th:first-child:not(:nth-last-child(2)),
+      .blog-post.series-signal-integrity table:not(.trace-container table) td:first-child:not(:nth-last-child(2)) {
+        max-width: 220px;
+      }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -158,7 +189,7 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="guide-evaluation-driven-development-loop.html">Guides: Evaluation Driven Development Loop</a></li><li aria-current="page">Evaluation-Driven Development Loop: Setup Guide</li></ol></nav>
+    <li><a href="index.html">Blog</a></li><li><a href="guide-evaluation-driven-development-loop.html">Guides: Evaluation-Driven Development Loop</a></li><li aria-current="page">Evaluation-Driven Development Loop: Setup Guide</li></ol></nav>
         <article class="blog-post ">
 <h1>Evaluation-Driven Development Loop: Setup Guide</h1>
 <!-- SUMMARY: A step-by-step installation and configuration guide for assembling the Evaluation-Driven Development Loop, covering Langfuse deployment for production trace capture, Braintrust setup for evaluation scoring and experiment management, Unsloth installation for memory-efficient fine-tuning, vLLM configuration for multi-model serving with LoRA adapter support, and LiteLLM weighted routing for A/B traffic distribution, with integration wiring scripts and end-to-end verification steps. --><p>The <a href="evaluation-driven-development-loop-configuration.html">Architecture and Configuration</a> chapter explains the rationale behind each component selection, the continuous improvement cycle, and the principle that systematic quality measurement replaces intuition-based prompt iteration. This guide provides the concrete installation commands, configuration snippets, and wiring steps needed to bring that architecture to a working state.</p>

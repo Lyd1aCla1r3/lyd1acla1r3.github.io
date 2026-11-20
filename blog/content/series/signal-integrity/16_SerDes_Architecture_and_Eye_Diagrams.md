@@ -1,8 +1,8 @@
 # SerDes Architecture and Eye Diagrams
 
-<!-- SUMMARY: A SerDes link confines multi-gigahertz analog processing to a compact physical medium attachment (PMA) front end before deserializing data to parallel logic clocks. Tracing the receiver signal path establishes differential common-mode rejection, contrasts analog slicer front ends against ADC-based digital signal processing (DSP) receivers, and connects real-time oscilloscope, sampling oscilloscope, and BERT eye diagrams. -->
+<!-- SUMMARY: A SerDes link confines multi-gigahertz analog processing to a compact physical medium attachment (PMA) front end before deserializing data to parallel logic clocks. Signal-path analysis establishes differential common-mode rejection, contrasts analog slicer front ends against ADC-based digital signal processing (DSP) receivers, and connects oscilloscope and BERT eye diagrams. -->
 
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>
 
 The preceding chapters examined the parts of a high-speed link one at a time: the transmit filter of [Chapter 13: Transmitter Feed-Forward Equalization](13_Transmitter_FFE.md), the receive equalizers of [Chapter 14: Continuous Time Linear Equalization and Decision Feedback Equalization](14_CTLE_and_DFE.md), and the four-level signaling of [Chapter 15: PAM4 Signaling and Gray Coding](15_PAM4_Signaling_and_Gray_Coding.md). This chapter assembles those parts into a serializer/deserializer (SerDes) link and describes how laboratory instruments observe the result.
 
@@ -86,9 +86,9 @@ Three additional physical properties explain why high-speed serial links univers
 
 The coupling of [Chapter 4](04_Inductance_Magnetic_Coupling_and_Crosstalk.md) also sets the impedances of the two modes. In the differential (odd) mode the traces carry opposite voltages and currents, so the effective inductance falls to $L - L_m$ and the effective capacitance rises to $C + C_m$. In the common (even) mode the effective inductance rises to $L + L_m$ and the effective capacitance falls to $C - C_m$, because the mutual capacitance carries no charge between traces at equal voltage. Here $C$ is the total capacitance of one trace and $C_m$ is the mutual capacitance, as in that chapter. The impedances of the two modes then follow from the effective inductance and capacitance of each mode:
 
-$$Z_{odd} = \sqrt{\frac{L - L_m}{C + C_m}} \approx Z_0\,(1 - 2K_b), \qquad Z_{even} = \sqrt{\frac{L + L_m}{C - C_m}} \approx Z_0\,(1 + 2K_b)$$
+$$Z_{odd} = \sqrt{\frac{L - L_m}{C + C_m}} \approx Z_0\,(1 - 2k_b), \qquad Z_{even} = \sqrt{\frac{L + L_m}{C - C_m}} \approx Z_0\,(1 + 2k_b)$$
 
-where the approximations hold for weak coupling and $K_b = \tfrac{1}{4}(C_m/C + L_m/L)$ is the backward coupling coefficient of that chapter. The differential impedance is $Z_{diff} = 2Z_{odd}$ because the two traces are driven in series, and the common-mode impedance is $Z_{even}/2$ because they are driven in parallel. The skew between the two traces converts a part of the differential signal into the common mode and the reverse, and [Chapter 8](08_S_Parameters_and_VNA.md) derives that conversion from the mixed-mode parameters.
+where the approximations hold for weak coupling and $k_b = \tfrac{1}{4}(C_m/C + L_m/L)$ is the backward coupling coefficient of that chapter. The differential impedance is $Z_{diff} = 2Z_{odd}$ because the two traces are driven in series, and the common-mode impedance is $Z_{even}/2$ because they are driven in parallel. The skew between the two traces converts a part of the differential signal into the common mode and the reverse, and [Chapter 8](08_S_Parameters_and_VNA.md) derives that conversion from the mixed-mode parameters.
 
 ### The Eye as a Receiver View
 
@@ -187,7 +187,11 @@ The scope tests the transmitter by listening, and the BERT tests the receiver by
 
 An RTO captures a 10 Gbps NRZ signal for 1 microsecond at 256 GSa/s. The sample interval is $1/256\ \text{GHz} = 3.906$ ps, the record holds 256,000 samples, and the record spans 10,000 unit intervals of 100 ps. Each interval therefore contains $100/3.906 = 25.6$ samples on average.
 
-The software recovers the clock from the crossings and computes $t' = (t - t_{ref}) \bmod UI$ for every sample. The ratio $UI/T_s = 25.6 = 128/5$ is a ratio of integers, so in the idealized case of a clock without jitter the sample $k$ lands at the position $k \cdot 3.906\ \text{ps} \bmod 100\ \text{ps} = 0.78125 \cdot (5k \bmod 128)$ ps.
+The software recovers the clock from the crossings and computes $t' = (t - t_{ref}) \bmod UI$ for every sample. The unit interval and sampling period form an integer ratio:
+
+$$\frac{UI}{T_s} = 25.6 = \frac{128}{5}$$
+
+In the idealized case of a clock without jitter, sample $k$ lands at the position $k \cdot 3.906\ \text{ps} \bmod 100\ \text{ps} = 0.78125 \cdot (5k \bmod 128)$ ps.
 
 The numbers 5 and 128 share no factor, so the 128 values of $5k \bmod 128$ cover every integer from 0 to 127, and the fold fills 128 distinct horizontal positions with a spacing of $100/128 = 0.781$ ps. Every one of these positions receives $256{,}000/128 = 2{,}000$ samples of the record. In a real capture the jitter of the clock and a small frequency offset spread the samples between these positions, and the density of 2,000 samples per column sets the lowest probability that a column can show, about $5 \times 10^{-4}$.
 
@@ -195,7 +199,11 @@ The rising edges of all slices cluster at the crossings, the falling edges clust
 
 ### The Aperture and the Bandwidth of a Sampler
 
-A sampling scope has an aperture of $T_a = 10$ ps. The $-3$ dB bandwidth is $0.443/10\ \text{ps} = 44.3$ GHz, and the first null of $H(f)$ lies at 100 GHz, where the 10 ps window spans one full cycle. At 70 GHz the argument is $\pi f T_a = 0.7\pi$, so $H = \sin(0.7\pi)/(0.7\pi) = 0.368$, which is $-8.7$ dB. A bandwidth of 70 GHz at the $-3$ dB point requires $T_a = 0.443/70\ \text{GHz} = 6.33$ ps. Halving the aperture to 5 ps raises the bandwidth to 88.6 GHz.
+A sampling scope has an aperture of $T_a = 10$ ps. The $-3$ dB bandwidth is $0.443/10\ \text{ps} = 44.3$ GHz, and the first null of $H(f)$ lies at 100 GHz, where the 10 ps window spans one full cycle. At 70 GHz the argument is $\pi f T_a = 0.7\pi$, giving the response magnitude and the aperture needed to place the $-3$ dB point at 70 GHz:
+
+$$H(70\ \text{GHz}) = \frac{\sin(0.7\pi)}{0.7\pi} = 0.368\ (-8.7\ \text{dB}), \qquad T_a = \frac{0.443}{70\ \text{GHz}} = 6.33\ \text{ps}$$
+
+Halving the 10 ps aperture to 5 ps raises the $-3$ dB bandwidth to 88.6 GHz.
 
 The equivalent-time coverage follows from the number of delay steps. An eye window of two UI, 200 ps at 100 ps per UI, with a delay step of 0.2 ps, has 1,000 timing positions. The equivalent sample rate is $1/0.2\ \text{ps} = 5$ TSa/s, compared with 256 GSa/s of the RTO. A density of 1,000 dots per position needs $10^6$ dots, which take 1 s at 1 MSa/s.
 
@@ -221,7 +229,11 @@ The eye at $10^{-12}$ is 104 mV smaller than the peak-distortion height of 363 m
 
 A BERT tests a 28 Gbps NRZ link at one grid coordinate, a threshold of +50 mV and a delay of +5 ps from the recovered clock edge. The ED samples $10^{10}$ bits in $10^{10}/28 \times 10^9 = 0.357$ s and counts 3 errors, so the ratio at that coordinate is $3 \times 10^{-10}$. The count of errors is a Poisson quantity, and its relative uncertainty is $1/\sqrt{3} = 58$ percent. A relative uncertainty of 10 percent requires 100 errors.
 
-A coordinate where no error occurs reports an upper bound and not a zero. The number of bits that confirm a ratio $p_0$ at 95 percent confidence is $N = -\ln(0.05)/p_0 = 3.0/p_0$, the relation of [Chapter 11](11_Dual_Dirac_Model_and_BER_Extrapolation.md). The dwell times at 28 Gbps are:
+A coordinate where no error occurs reports an upper bound and not a zero. From [Chapter 11](11_Dual_Dirac_Model_and_BER_Extrapolation.md), the number of error-free bits required to confirm a ratio $p_0$ at 95 percent confidence is
+
+$$N = \frac{-\ln(0.05)}{p_0} = \frac{3.0}{p_0}$$
+
+The dwell times at 28 Gbps are:
 
 | Target BER (`p_0`) | Bits Required (`95%` Confidence) | Dwell Time per Grid Point (`28 Gbps`) |
 |:---:|:---:|:---:|
@@ -255,7 +267,9 @@ A converter-based PAM4 receiver uses a full-scale range of 800 mV, the span of t
 
 Even six bits use about 1 percent of the variance, so the resolution of the ADC is not the limiting term in this budget, and the effective number of bits of a real converter is lower than the nominal number because of the clock and thermal noise that the table omits.
 
-The clock term is larger than the quantization term. Assume that a full-swing PAM4 transition of 800 mV takes a ramp of $0.4\,UI$, which is 12.5 ps at 32 GBd (UI of 31.25 ps), as in the timing recovery section of [Chapter 15](15_PAM4_Signaling_and_Gray_Coding.md). The slope of that edge is $S = 800/12.5 = 64$ mV/ps.
+The clock term is larger than the quantization term. Assume that a full-swing PAM4 transition of 800 mV takes a ramp of $0.4\,UI$, which is 12.5 ps at 32 GBd (UI of 31.25 ps), as in the timing recovery section of [Chapter 15](15_PAM4_Signaling_and_Gray_Coding.md). That edge has the slope
+
+$$S = \frac{800\ \text{mV}}{12.5\ \text{ps}} = 64\ \text{mV/ps}$$
 
 A sampling-clock jitter of 0.2 ps rms produces $64 \times 0.2 = 12.8$ mV rms on a sample at the middle of that edge, and the 1.8 mV of quantization noise of the 7-bit converter adds in quadrature to give 12.9 mV. The clock jitter dominates by a factor of seven in amplitude, which explains why the sampling clock of a converter-based receiver receives most of the design effort. The error applies to the samples on edges, and a sample at the center of an eye sees a small fraction of it.
 
@@ -283,7 +297,13 @@ The bandwidth requirement therefore depends on the edge that the measurement tar
 
 ### Splitter Loss
 
-A resistive splitter feeds the measurement channel and the clock recovery from one signal, and its loss follows from a short calculation. A symmetric three-resistor star has the resistors $R = Z_0/3$ in each arm, and each port connects to a $Z_0$ load. The input sees $R + (R + Z_0)\parallel(R + Z_0) = Z_0/3 + 2Z_0/3 = Z_0$, so the star is matched. The center node holds $\tfrac{2}{3}$ of the input voltage, because the two output arms in parallel have the resistance $2Z_0/3$ and the input arm has $Z_0/3$. Each output sees $Z_0/(R + Z_0) = 3/4$ of the center voltage, so $V_{out}/V_{in} = \tfrac{2}{3} \times \tfrac{3}{4} = \tfrac{1}{2}$, which is $-6.02$ dB.
+A resistive splitter feeds the measurement channel and the clock recovery from one signal, and its loss follows from a short calculation. A symmetric three-resistor star has the resistors $R = Z_0/3$ in each arm, and each port connects to a $Z_0$ load. At the input port, the series arm and the two terminated output branches in parallel present the driving-point impedance
+
+$$Z_{in} = R + (R + Z_0)\parallel(R + Z_0) = \frac{Z_0}{3} + \frac{2Z_0}{3} = Z_0$$
+
+The star is therefore matched at every port. The center node holds $\tfrac{2}{3}$ of the input voltage, because the two output arms in parallel have the resistance $2Z_0/3$ and the input arm has $Z_0/3$. Each output load divides that center voltage by $Z_0/(R + Z_0) = 3/4$, giving the port-to-port voltage transfer ratio
+
+$$\frac{V_{out}}{V_{in}} = \frac{2}{3} \times \frac{3}{4} = \frac{1}{2}\ (-6.02\ \text{dB})$$
 
 The power at each output is $\tfrac{1}{4}$ of the input power, and the two outputs together carry $\tfrac{1}{2}$ of it. Splitting the power equally between two ports costs $10\log_{10}2 = 3.01$ dB per port, and the resistors dissipate the other half of the input power, which accounts for the remaining 3.01 dB. The loss per port is therefore 6 dB, of which 3 dB is the split, and the resistive splitter cannot avoid the second 3 dB.
 
@@ -299,4 +319,4 @@ A sampling scope and a BERT accumulate over many repetitions and are not limited
 
 The eye diagram measures the margin available to the analog receiver. An eye that is unrecoverably closed makes the slicer pass bit errors into the PCS, and the forward error correction of [Chapter 18](18_Line_Coding_FEC_and_Protocol_Framing.md) tries to correct them. A link may therefore operate with a closed eye at the BER that the code tolerates and still deliver correct data, and the opposite also holds: an open eye does not guarantee correct data if a burst of errors exceeds the capability of the code. The two quantities, the raw error ratio at the slicer and the error ratio after the code, need separate measurements.
 
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>

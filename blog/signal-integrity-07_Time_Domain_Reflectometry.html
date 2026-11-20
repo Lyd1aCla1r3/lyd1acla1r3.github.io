@@ -117,6 +117,37 @@
     @media (max-width: 768px) {
       .blog-post table:not(.trace-container table) { overflow-x: auto; }
     }
+    /* Signal Integrity series tables: clean KaTeX math rendering, no pill-badge wrapping, and hidden MathML node */
+    .blog-post.series-signal-integrity table:not(.trace-container table) {
+      table-layout: auto;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) th,
+    .blog-post.series-signal-integrity table:not(.trace-container table) td {
+      padding: 10px 14px;
+      vertical-align: middle;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      word-break: normal;
+      overflow-wrap: normal;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) .katex {
+      font-size: 1em;
+      white-space: nowrap;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) .katex-mathml {
+      display: none !important;
+    }
+    @media (min-width: 769px) {
+      .blog-post.series-signal-integrity table:not(.trace-container table) th:first-child:nth-last-child(2),
+      .blog-post.series-signal-integrity table:not(.trace-container table) td:first-child:nth-last-child(2) {
+        width: 32%;
+        max-width: 240px;
+      }
+      .blog-post.series-signal-integrity table:not(.trace-container table) th:first-child:not(:nth-last-child(2)),
+      .blog-post.series-signal-integrity table:not(.trace-container table) td:first-child:not(:nth-last-child(2)) {
+        max-width: 220px;
+      }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -158,10 +189,10 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="series-signal-integrity.html">Series: Signal Integrity</a></li><li><a href="signal-integrity-part-02.html">Part 2: Signal Integrity Measurement</a></li><li aria-current="page">Time Domain Reflectometry</li></ol></nav>
+    <li><a href="index.html">Blog</a></li><li><a href="series-signal-integrity.html">Series: Signal Integrity</a></li><li><a href="signal-integrity-part-02.html">Part 2: Discontinuities and Signal Integrity Measurement</a></li><li aria-current="page">Time Domain Reflectometry</li></ol></nav>
         <article class="blog-post series-signal-integrity">
 <h1>Time Domain Reflectometry</h1>
-<!-- SUMMARY: Time domain reflectometry (TDR) launches a fast step into a transmission line to record impedance mismatches. The analysis derives the spatial resolution limit of the incident edge, the masking effect of multiple reflections, and the closed-form area extraction of series inductance and shunt capacitance. --><p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p><p><a href="signal-integrity-03_Impedance_Reflections_and_Termination.html">Chapter 3</a> derived the reflection coefficient $\Gamma$ and its inversion to impedance, and <a href="signal-integrity-06_Return_Path_Dynamics_and_Parasitic_Effects.html">Chapter 6</a> derived how the capacitance and inductance of a via reflect a fast edge. A time domain reflectometer (TDR) measures those reflections in the laboratory. The instrument launches a voltage step with a short rise time onto a transmission line, records the voltage at its own connector as a function of time, and interprets every deviation from the launched level as a reflection from an impedance change somewhere along the path.</p>
+<!-- SUMMARY: Time-domain reflectometry (TDR) launches a fast voltage step into a transmission line to locate and quantify impedance mismatches along the channel. Incident rise time sets spatial resolution limits while closed-form reflection area integrals extract parasitic series inductance and shunt capacitance ahead of multi-reflection masking. --><p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p><p><a href="signal-integrity-03_Impedance_Reflections_and_Termination.html">Chapter 3</a> derived the reflection coefficient $\Gamma$ and its inversion to impedance, and <a href="signal-integrity-06_Return_Path_Dynamics_and_Parasitic_Effects.html">Chapter 6</a> derived how the capacitance and inductance of a via reflect a fast edge. A time domain reflectometer (TDR) measures those reflections in the laboratory. The instrument launches a voltage step with a short rise time onto a transmission line, records the voltage at its own connector as a function of time, and interprets every deviation from the launched level as a reflection from an impedance change somewhere along the path.</p>
 <p>The measurement rests on the wave propagation of <a href="signal-integrity-01_Wave_Propagation_and_Transmission_Lines.html">Chapter 1</a>. The step travels through the dielectric between the trace and the reference plane at the velocity $v_p = c/\sqrt{\epsilon_r}$, a reflection returns at the same velocity, and the delay between the launch and the return of a reflection therefore locates the impedance change along the line. The amplitude of the reflection identifies the size of the change, and its polarity identifies whether the structure is predominantly capacitive or inductive. A single measurement thus produces an impedance profile of the whole channel, with distance replaced by time along the horizontal axis.</p>
 <p>The sections below establish the complete TDR measurement framework: the instrument architecture, the conversion from measured port voltage to characteristic impedance, and the time-domain signatures of the reactive structures from <a href="signal-integrity-06_Return_Path_Dynamics_and_Parasitic_Effects.html">Chapter 6</a>. Subsequent sections derive the spatial resolution limit set by the step rise time, the closed-form extraction of capacitance and inductance from reflection area, and the masking and dispersion effects that obscure features far from the launch connector.</p>
 <h2>Core Concepts</h2>
@@ -196,7 +227,9 @@
 <p>$$\Gamma(t) = \frac{v(t) - V_{inc}}{V_{inc}}$$</p>
 <p>The inversion of <a href="signal-integrity-03_Impedance_Reflections_and_Termination.html">Chapter 3</a> converts each value of $\Gamma(t)$ to the impedance that produced it:</p>
 <p>$$Z(t) = Z_0\,\frac{1 + \Gamma(t)}{1 - \Gamma(t)}$$</p>
-<p>The same result follows from the divider alone. Before any reflection from a later feature has returned, the line looks like an impedance $Z$ to the source, and the connector voltage is $v = V_S Z/(R_S + Z)$. Solving for $Z$ gives $Z = R_S\,v/(V_S - v)$, which equals $Z_0\,v/(V_S - v)$ for $R_S = Z_0$. Substituting $v = V_{inc}(1 + \Gamma) = V_S(1 + \Gamma)/2$ into this expression reproduces $Z_0(1 + \Gamma)/(1 - \Gamma)$.</p>
+<p>The same result follows from the divider alone. Before any reflection from a later feature has returned, the line looks like an impedance $Z$ to the source, and the connector voltage is $v = V_S Z/(R_S + Z)$. Solving for $Z$ gives $Z = R_S\,v/(V_S - v)$, which equals $Z_0\,v/(V_S - v)$ for $R_S = Z_0$. Expressing the port voltage in terms of the reflection coefficient gives:</p>
+<p>$$v = V_{inc}(1 + \Gamma) = \frac{V_S(1 + \Gamma)}{2}$$</p>
+<p>Substituting that port voltage into $Z_0\,v/(V_S - v)$ reproduces $Z_0(1 + \Gamma)/(1 - \Gamma)$.</p>
 <p>Assume the display reads 0.6 V at some instant. The reflection coefficient is $(0.6 - 0.5)/0.5 = 0.2$, the impedance is $50 \cdot 1.2/0.8 = 75\ \Omega$, and the divider form gives $50 \cdot 0.6/(1 - 0.6) = 75\ \Omega$ as well. The display therefore shows a step from the 0.5 V baseline to 0.6 V when the line changes from 50 Ω to 75 Ω.</p>
 <p>The vertical accuracy of the impedance readout depends on the accuracy of the voltage readout. Differentiating $Z = Z_0\,v/(V_S - v)$ and evaluating at $v = V_S/2$ gives $\Delta Z/Z = 2\,\Delta v/v$, so a 1 percent error in the voltage at the 50 Ω level produces a 2 percent error in the impedance. The factor 2 explains why the instrument is calibrated against a reference of known impedance.</p>
 <p>The impedance profile $Z(t)$ is an apparent impedance. It treats the wave at every point as if it had the full launched amplitude, which holds until an earlier reflection has depleted the wave. The Edge Cases section quantifies the error.</p>
@@ -209,14 +242,17 @@
 <li><strong>$t = 4.08$ ns:</strong> The reflection of $+0.5$ V arrives and adds to the existing 0.5 V, and the display steps to 1.0 V.</li>
 <li><strong>$t > 4.08$ ns:</strong> The source absorbs the reflection, and the display stays at 1.0 V.</li>
 </ol>
-<p>The staircase has two steps, and the width of the first plateau gives the electrical length of the trace: $d = v_p \cdot 4.08\ \text{ns}/2 = 12$ in.</p>
+<p>The staircase has two steps, and the width of the first plateau gives the electrical length of the trace:</p>
+<p>$$d = \frac{v_p \cdot 4.08\ \text{ns}}{2} = 12\ \text{in}$$</p>
 <h2>Architecture</h2>
 <h3>Capacitive Dips and Inductive Bumps</h3>
 <p>A structure with a small reactive impedance reflects only the part of the edge that changes in time, and the display records the reflection with a polarity that identifies the type of the structure. <a href="signal-integrity-06_Return_Path_Dynamics_and_Parasitic_Effects.html">Chapter 6</a> derived the result for each type, for an incident edge $u(t)$ that is slow compared with the time constant of the structure:</p>
 <p>$$v_r \approx -\tau_C\,\dot u \ \ \text{(shunt capacitance, } \tau_C = Z_0 C/2\text{)}, \qquad v_r \approx +\tau_L\,\dot u \ \ \text{(series inductance, } \tau_L = L/(2Z_0)\text{)}$$</p>
 <p>A shunt capacitance reflects a negative pulse and produces a downward dip on the display, corresponding to a local impedance below $Z_0$. The uncharged capacitor draws current from the arriving transition as a transient short circuit, with a current magnitude proportional to the voltage slew rate $du/dt$.</p>
 <p>A series inductance reflects a positive pulse and produces an upward bump on the display, corresponding to a local impedance above $Z_0$. The inductance opposes the change in line current with a back-EMF of $L\,di/dt$, which returns toward the source as a positive voltage reflection. Both reflection amplitudes scale directly with the slope of the incident edge: a slow step with a long rise time produces a small reflection, whereas a fast step produces a large peak, matching the high-frequency reflection behavior $\Gamma(f)$ derived in <a href="signal-integrity-03_Impedance_Reflections_and_Termination.html">Chapter 3</a>.</p>
-<p>The numbers of Chapter 6 give the size of each feature on the display. The 0.37 pF anti-pad of a 62 mil via, probed by a 30 ps edge, produces a dip of $-0.30$, which is an impedance of 27 Ω at the minimum. Its 1.33 nH barrel produces a bump of $+0.40$, an impedance of 116 Ω at the maximum. The 0.21 nH neck of <a href="signal-integrity-04_Inductance_Magnetic_Coupling_and_Crosstalk.html">Chapter 4</a>, probed by a 15 ps edge, has $\tau_L = 0.21\ \text{nH}/100\ \Omega = 2.1$ ps and produces a bump of $(2.1/15)(1 - e^{-15/2.1}) = +0.14$, an impedance of 66 Ω. The neck also removes capacitance, so the measured bump is smaller than this inductance-only estimate.</p>
+<p>The numbers of Chapter 6 give the size of each feature on the display. The 0.37 pF anti-pad of a 62 mil via, probed by a 30 ps edge, produces a dip of $-0.30$, which is an impedance of 27 Ω at the minimum. Its 1.33 nH barrel produces a bump of $+0.40$, an impedance of 116 Ω at the maximum. Probing the 0.21 nH neck of <a href="signal-integrity-04_Inductance_Magnetic_Coupling_and_Crosstalk.html">Chapter 4</a> with a 15 ps edge gives the time constant and peak positive reflection:</p>
+<p>$$\tau_L = \frac{0.21\ \text{nH}}{100\ \Omega} = 2.1\ \text{ps}, \qquad \Gamma_{\text{peak}} = \frac{2.1}{15}\left(1 - e^{-15/2.1}\right) = +0.14$$</p>
+<p>That reflection peak corresponds to an apparent impedance of 66 Ω. The neck also removes capacitance, so the measured bump is smaller than this inductance-only estimate.</p>
 <p>The same signatures appear for distributed features. A section of trace that is wider than the rest has more capacitance per unit length and a lower impedance, and it appears as a plateau below the baseline. A narrower section appears as a plateau above the baseline. The lumped dip or bump is the limit in which the section is shorter than the edge, so that the plateau does not reach its full height. The next two sections describe the plateau and its limit.</p>
 <h3>Returning to the Baseline After a Defect</h3>
 <p>A defect has a finite length, so the display returns to the baseline after it. Consider a section of impedance $Z_1$ and one-way delay $T_d$ in an otherwise uniform 50 Ω line. The wavefront reaches the entry of the section and generates a reflection with coefficient $\Gamma_1 = (Z_1 - Z_0)/(Z_1 + Z_0)$ that returns to the connector. The wavefront then travels through the section to the exit, where the impedance returns to $Z_0$ and the reflection coefficient for a wave arriving from the section is:</p>
@@ -240,7 +276,9 @@
 <h3>A 75 Ω Section on the Display</h3>
 <p>Assume a 1 V source and a 50 Ω source resistor, so that $V_{inc} = 0.5$ V, and a section of 75 Ω trace of one-way delay $T_d$ in a 50 Ω line that ends in a matched load. The entry reflection coefficient is:</p>
 <p>$$\Gamma_1 = \frac{75 - 50}{75 + 50} = 0.2$$</p>
-<p>The reflected wave at the entry is $0.2 \cdot 0.5 = 0.1$ V, so the display steps to $0.5 + 0.1 = 0.6$ V across a long section, corresponding to $Z = 50 \cdot 0.6/(1 - 0.6) = 75\ \Omega$. Meanwhile, a transmitted wave of amplitude $\tau V_{inc} = 1.2 \cdot 0.5 = 0.6$ V continues into the 75 Ω section. At the exit boundary back to 50 Ω, the reflection coefficient is $-0.2$, launching a $-0.12$ V wave backward toward the entry.</p>
+<p>The reflected wave at the entry is $0.2 \cdot 0.5 = 0.1$ V, so the display steps to $0.5 + 0.1 = 0.6$ V across a long section. With voltage transmission coefficient $T_V = 1.2$, the displayed impedance and the wave amplitude continuing into the 75 Ω section evaluate to:</p>
+<p>$$Z = 50 \cdot \frac{0.6}{1 - 0.6} = 75\ \Omega, \qquad V_{trans} = T_V V_{inc} = (1 + \Gamma_1)V_{inc} = 1.2 \cdot 0.5\ \text{V} = 0.6\ \text{V}$$</p>
+<p>At the exit boundary back to 50 Ω, the reflection coefficient is $-0.2$, launching a $-0.12$ V wave backward toward the entry.</p>
 <p>Crossing the entry boundary from the 75 Ω side into the 50 Ω line multiplies that wave by the transmission coefficient $1 + (-0.2) = 0.8$, delivering $-0.12 \cdot 0.8 = -0.096$ V to the connector at time $2T_d$ after the first step. The display drops to $0.6 - 0.096 = 0.504$ V rather than returning all the way to 0.5 V, because a portion of the backward wave reflects off the entry boundary from the inside and reverberates within the 75 Ω section. Each subsequent internal round trip scales the escaping wave by $(-0.2)^2 = 0.04$, stepping the display through 0.504 V, 0.50016 V, and 0.500006 V toward 0.5 V. Immediately after the 75 Ω section, the matched 50 Ω line reads an apparent impedance of $50 \cdot 0.504/(1 - 0.504) = 50.8\ \Omega$, illustrating the upstream masking effect analyzed in the Edge Cases section.</p>
 <p>A section shorter than the edge behaves differently. To first order in $\Gamma$, the reflected voltage is the incident edge, scaled by $\Gamma_1$, minus a copy of the same edge delayed by $2T_d$, scaled by $\Gamma_1$ as well:</p>
 <p>$$v_r(t) \approx \Gamma_1 V_{inc}\,[\,u(t) - u(t - 2T_d)\,]$$</p>
@@ -280,9 +318,12 @@
 <td><code>42 Ω</code></td>
 </tr>
 </tbody></table>
-<p>The three dips exhibit markedly different peak depths, yet each encloses the identical area $\tau_C = 9.25$ ps, yielding $C = 2 \cdot 9.25\ \text{ps}/50\ \Omega = 0.37$ pF. The physical capacitance does not change between the three measurements; a slower edge reduces only the peak depth on the display, making peak impedance an unreliable metric for a lumped parasitic unless the test rise time is specified alongside it.</p>
+<p>The three dips exhibit markedly different peak depths, yet each encloses the identical area $\tau_C = 9.25$ ps, recovering the underlying capacitance:</p>
+<p>$$C = \frac{2 \cdot 9.25\ \text{ps}}{50\ \Omega} = 0.37\ \text{pF}$$</p>
+<p>The physical capacitance does not change between the three measurements; a slower edge reduces only the peak depth on the display, making peak impedance an unreliable metric for a lumped parasitic unless the test rise time is specified alongside it.</p>
 <p>Any low-pass filter in the instrument, test cable, or trace preserves the integrated area as long as its DC gain equals unity, because the integral of a convolution equals the product of the individual integrals. Area extraction therefore remains accurate even when the measurement path slows the displayed reflection below the launched rise time.</p>
-<p>The measurement works in reverse for the neck of <a href="signal-integrity-04_Inductance_Magnetic_Coupling_and_Crosstalk.html">Chapter 4</a>. A measured bump with area 2.1 ps on the $\Gamma(t)$ axis gives $L = 2 \cdot 50 \cdot 2.1\ \text{ps} = 0.21$ nH.</p>
+<p>The measurement works in reverse for the neck of <a href="signal-integrity-04_Inductance_Magnetic_Coupling_and_Crosstalk.html">Chapter 4</a>. A measured bump with area 2.1 ps on the $\Gamma(t)$ axis gives the series inductance:</p>
+<p>$$L = 2 \cdot 50\ \Omega \cdot 2.1\ \text{ps} = 0.21\ \text{nH}$$</p>
 <h3>The Order of a Bump and a Dip</h3>
 <p>The display shows the features in the order the edge meets them. Consider a series inductance $L = 1.33$ nH and a shunt capacitance $C = 0.37$ pF placed next to each other on a 50 Ω line, probed by a 30 ps linear ramp. The equations of both elements, solved numerically for the two orders, give the following display:</p>
 <table>
@@ -304,7 +345,9 @@
 <td>Bump of <code>+0.25</code> at <code>50 ps</code></td>
 </tr>
 </tbody></table>
-<p>The times are measured from the instant the edge begins to arrive at the structure. The peaks differ from the isolated values of the previous example ($+0.40$ and $-0.30$), because the edge reaching the second element has already been modified by the first, and because the two reflections overlap in time. The net area is the same for both orders and equals $\tau_L - \tau_C = 13.3 - 9.25 = 4.05$ ps, which the numerical integral confirms. The area of a pair that overlaps in time is the difference of the two time constants, and it vanishes for $L = Z_0^2 C$, the cancellation condition of Chapter 3.</p>
+<p>The times are measured from the instant the edge begins to arrive at the structure. The peaks differ from the isolated values of the previous example ($+0.40$ and $-0.30$), because the edge reaching the second element has already been modified by the first, and because the two reflections overlap in time. Numerical integration confirms that both element orderings enclose the identical net reflection area:</p>
+<p>$$\int_0^{\infty} \Gamma(t)\,dt = \tau_L - \tau_C = 13.3\ \text{ps} - 9.25\ \text{ps} = 4.05\ \text{ps}$$</p>
+<p>The area of a pair that overlaps in time is the difference of the two time constants, and it vanishes for $L = Z_0^2 C$, the cancellation condition of Chapter 3.</p>
 <p>The order identifies the sequence along the signal path. A dip followed by a bump indicates a capacitive feature in front of an inductive one, and the reverse indicates the opposite order. A via modeled as a pad capacitance followed by a barrel inductance therefore shows the dip first.</p>
 <h2>Edge Cases</h2>
 <h3>Rise Time Degradation and the Need for a Rising Edge</h3>
@@ -393,7 +436,7 @@
 <p>The extraction of a discrete $L$ and $C$ is limited by the resolution of the instrument. A dip and a bump that are separated in time by more than the resolution show two areas, one for $C$ and one for $L$. A pair that overlaps within the resolution, as in the previous example, reports only the net area $\tau_L - \tau_C$, from which the individual values cannot be recovered, and a pair with $L = Z_0^2 C$ shows no area at all. The time domain measures the net signature of a cluster of structures within the resolution of the edge and does not separate their parts in space.</p>
 <p>The frequency domain resolves this overlap ambiguity because a complex reflection coefficient measured across frequency distinguishes series inductance from shunt capacitance by phase angle. <a href="signal-integrity-08_S_Parameters_and_VNA.html">Chapter 8</a> defines the vector network analyzer measurement of $S_{11} = \Gamma(f)$ and derives the mathematical transformation from a TDR step response to $S_{11}$: differentiating the step response yields the impulse response, and the Fourier transform of that impulse response produces $S_{11}(f)$.</p>
 <p><a href="signal-integrity-09_Smith_Charts.html">Chapter 9</a> then maps $S_{11}(f)$ onto the Smith chart, separating inductive and capacitive reflections into opposite hemispheres. Together, those two chapters show how measuring reflection directly in the frequency domain overcomes the spatial resolution ceiling of a time-domain step.</p>
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="signal-integrity-06_Return_Path_Dynamics_and_Parasitic_Effects.html" class="pagination-link prev">

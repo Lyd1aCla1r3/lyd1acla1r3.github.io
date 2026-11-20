@@ -1,8 +1,8 @@
 # S-Parameters and Vector Network Analysis
 
-<!-- SUMMARY: S-parameters describe linear networks via ratios of normalized voltage waves. The analysis defines scattering matrices, decibel arithmetic, and the θ = -360° f τ phase rule, and examines vector network analyzer (VNA) architecture, dynamic range, calibration, and the extraction of S11 from a TDR step. -->
+<!-- SUMMARY: S-parameters characterize linear multi-port networks through ratios of incident and reflected normalized power waves. Multi-port wave matrices, decibel arithmetic, and linear transmission phase establish the frequency-domain framework. Vector network analyzer (VNA) architecture, error calibration, and time-to-frequency reflection conversion complete the laboratory measurement chain. -->
 
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>
 
 [Chapter 7](07_Time_Domain_Reflectometry.md) ended at the limit of the time domain: a TDR displays the reflection as a function of time, and the rise time of its step restricts how finely it separates nearby structures and how much it reveals about their frequency dependence. A vector network analyzer (VNA) measures the same reflection directly as a function of frequency, one sine wave at a time, and it also measures what the network transmits. The results are organized as scattering parameters (S-parameters), which are the common language of channel specifications. The compliance documents for PCIe, USB, HDMI, and Ethernet define their pass and fail limits as masks on S-parameters plotted against frequency.
 
@@ -124,11 +124,15 @@ $$\theta(f) = -360^\circ\, f\,\tau$$
 
 The phase is a per-frequency quantity, and a delay of 1 ns gives $\theta = -180^\circ$ at 500 MHz, where the delay is half a period, and $-360^\circ$ at 1 GHz, where it is a full period. A fixed physical delay therefore produces a phase that rotates faster as the frequency rises.
 
-A matched line connects the phase to the propagation constant of [Chapter 1](01_Wave_Propagation_and_Transmission_Lines.md). A line of length $\ell$ terminated in $Z_0$ at both ports has $S_{11} = S_{22} = 0$ and a transmission equal to the factor by which a wave changes over the length:
+A matched line connects the phase to the propagation constant of [Chapter 1](01_Wave_Propagation_and_Transmission_Lines.md). A line of length $\ell$ terminated in $Z_0$ at both ports exhibits zero reflection and a forward transmission equal to the wave propagation factor across the length:
 
-$$S_{21} = S_{12} = e^{-\gamma\ell} = e^{-\alpha\ell}\,e^{-j\beta\ell}$$
+$$S_{11} = S_{22} = 0, \qquad S_{21} = S_{12} = e^{-\gamma\ell} = e^{-\alpha\ell}\,e^{-j\beta\ell}$$
 
-The magnitude gives the insertion loss $\text{IL} = 8.686\,\alpha\ell$, and the phase is $-\beta\ell = -\omega\ell/v_p = -\omega\tau$ for a line whose delay is $\tau = \ell/v_p$, which agrees with the rule above.
+The magnitude gives the insertion loss $\text{IL} = 8.686\,\alpha\ell$, and for a line with propagation delay $\tau = \ell/v_p$ the transmission phase in radians is:
+
+$$\theta_{\text{rad}} = -\beta\ell = -\frac{\omega\ell}{v_p} = -\omega\tau$$
+
+Converting radians to degrees reproduces the linear phase rule above.
 
 The derivative of the phase with frequency measures how much the delay varies across the band. The group delay is:
 
@@ -225,15 +229,19 @@ Assume a lossless junction between a 50 Ω line (port 1) and a 75 Ω line (port 
 
 $$S_{11} = \frac{75 - 50}{75 + 50} = 0.2$$
 
-The transmitted voltage wave is $\tau = 1 + \Gamma = 1.2$ times the incident voltage wave, and the normalization converts it to a ratio of normalized waves:
+The voltage transmission coefficient across the boundary scales the forward voltage wave, and impedance normalization converts that voltage ratio into the forward scattering parameter:
 
-$$S_{21} = 1.2\,\sqrt{\frac{50}{75}} = 0.9798$$
+$$T_V = 1 + \Gamma = 1.2, \qquad S_{21} = T_V\,\sqrt{\frac{50}{75}} = 1.2\,\sqrt{\frac{50}{75}} = 0.9798$$
 
-From port 2, the reflection coefficient is $S_{22} = (50 - 75)/(75 + 50) = -0.2$, the transmitted voltage wave is $1 + S_{22} = 0.8$ times the incident wave, and:
+Driving the junction from port 2 reverses the impedance step, yielding a negative reflection coefficient, a voltage transmission factor of $1 + S_{22} = 0.8$, and the reverse scattering parameter:
 
-$$S_{12} = 0.8\,\sqrt{\frac{75}{50}} = 0.9798$$
+$$S_{22} = \frac{50 - 75}{75 + 50} = -0.2, \qquad S_{12} = 0.8\,\sqrt{\frac{75}{50}} = 0.9798$$
 
-The two transmissions are equal ($S_{21} = S_{12}$, reciprocity), and the two reflections are not ($S_{11} = 0.2$ and $S_{22} = -0.2$), because the junction looks different from the two sides. The power balance closes the calculation: $|S_{11}|^2 + |S_{21}|^2 = 0.04 + 0.96 = 1$, confirming that the lossless junction conserves all incident power. The return loss at port 1 is $-20\log_{10}(0.2) = 13.98$ dB, and the insertion loss of 0.177 dB is the power that the 20% voltage reflection (4% of the power) removes from the transmitted wave.
+The two transmissions are equal ($S_{21} = S_{12}$, reciprocity), and the two reflections are not ($S_{11} = 0.2$ and $S_{22} = -0.2$), because the junction looks different from the two sides. Evaluating the sum of reflected and transmitted power fractions closes the energy balance:
+
+$$|S_{11}|^2 + |S_{21}|^2 = 0.04 + 0.96 = 1$$
+
+That unity sum confirms that the lossless junction conserves all incident power. The return loss at port 1 is $-20\log_{10}(0.2) = 13.98$ dB, and the insertion loss of 0.177 dB is the power that the 20% voltage reflection (4% of the power) removes from the transmitted wave.
 
 ### Reading a Channel Plot
 
@@ -251,9 +259,9 @@ Assume that four aggressors with independent data each couple $-50$ dB into a vi
 
 ### A Shunt Capacitance from the TDR Step to $S_{11}$
 
-Assume the 0.5 pF shunt capacitance of Chapter 3 on a 50 Ω line. The reflection has the time constant $\tau_C = Z_0 C/2 = 12.5$ ps ([Chapter 6](06_Return_Path_Dynamics_and_Parasitic_Effects.md)), and the response of the reflection to an ideal step is a step down of the full incident amplitude that decays back to the baseline:
+Assume the 0.5 pF shunt capacitance of Chapter 3 on a 50 Ω line. From [Chapter 6](06_Return_Path_Dynamics_and_Parasitic_Effects.md), the capacitive time constant and the reflected step response (a downward jump of the full incident amplitude that decays exponentially back to the baseline) are:
 
-$$s(t) = -e^{-t/\tau_C}\,u(t)$$
+$$\tau_C = \frac{Z_0 C}{2} = 12.5\ \text{ps}, \qquad s(t) = -e^{-t/\tau_C}\,u(t)$$
 
 The negative sign is the dip of a capacitive discontinuity on a TDR display ([Chapter 7](07_Time_Domain_Reflectometry.md)). Differentiating the step response gives the impulse response. The derivative of the jump at $t = 0$ is a delta function, so:
 
@@ -263,7 +271,11 @@ The Fourier transform of $\delta(t)$ is 1, and the transform of $e^{-t/\tau_C}u(
 
 $$S_{11}(f) = -1 + \frac{1}{1 + j\omega\tau_C} = \frac{-j\omega\tau_C}{1 + j\omega\tau_C}$$
 
-Substituting $\tau_C = Z_0C/2$ and $x = \omega C Z_0$ gives $S_{11} = -jx/(2 + jx)$, the reflection coefficient that Chapter 3 derived directly from the impedance of the parallel combination, so the two routes agree. The magnitude for small $x$ is $|S_{11}| \approx \omega\tau_C = x/2 = \pi f C Z_0$, which rises in proportion to frequency (it does not show a $1/(2\pi f C)$ roll-off, because the reflection of a small capacitance grows as its admittance grows). The values are:
+Substituting $\tau_C = Z_0C/2$ and $x = \omega C Z_0$ gives $S_{11} = -jx/(2 + jx)$, the reflection coefficient that Chapter 3 derived directly from the impedance of the parallel combination, so the two routes agree. For small $x$, the reflection magnitude scales linearly with frequency:
+
+$$|S_{11}| \approx \omega\tau_C = \frac{x}{2} = \pi f C Z_0$$
+
+That linear rise shows no $1/(2\pi f C)$ roll-off because the reflection of a small shunt capacitance grows as its admittance grows. Evaluating both expressions across frequency gives:
 
 | Frequency (`f`) | Normalized Susceptance (`x = ω C Z_0`) | Magnitude (`∣S_11∣`) | Return Loss | Phase (`∠S_11`) | Reflected Power |
 |---|---|---|---|---|---|
@@ -279,7 +291,13 @@ Assume the error terms $e_{00} = 0.05$ (a directivity of $-26$ dB), $e_{11} = 0.
 
 $$\Gamma_m = 0.05 + \frac{0.9 \times 0.2}{1 - 0.1\times0.2} = 0.2337$$
 
-The instrument therefore reports a return loss of 12.6 dB, an error of 1.35 dB, because the directivity leakage adds to the true reflection in phase. The three standards would measure $\Gamma_{m,\text{load}} = 0.05$, $\Gamma_{m,\text{open}} = 1.05$, and $\Gamma_{m,\text{short}} = -0.768$. These give $p = 1.00$ and $q = 0.818$, so $e_{11} = (1.00 - 0.818)/(1.818) = 0.100$ and $\Delta = 2(1.00)(0.818)/1.818 = 0.900$, which recovers the error terms. The correction of the reading uses $y = 0.2337 - 0.05 = 0.1837$ and returns $\Gamma = 0.1837/(0.9 + 0.1\times0.1837) = 0.2000$, the true value of the DUT.
+The instrument therefore reports a return loss of 12.6 dB, an error of 1.35 dB, because the directivity leakage adds to the true reflection in phase. Measuring the three calibration standards yields $\Gamma_{m,\text{load}} = 0.05$, $\Gamma_{m,\text{open}} = 1.05$, and $\Gamma_{m,\text{short}} = -0.768$, giving $p = 1.00$ and $q = 0.818$ and recovering the remaining error terms:
+
+$$e_{11} = \frac{1.00 - 0.818}{1.818} = 0.100, \qquad \Delta = \frac{2(1.00)(0.818)}{1.818} = 0.900$$
+
+Applying the calibration inversion to the raw DUT measurement recovers the true reflection coefficient:
+
+$$y = 0.2337 - 0.05 = 0.1837, \qquad \Gamma = \frac{0.1837}{0.900 + 0.100 \times 0.1837} = 0.2000$$
 
 ### Mixed-Mode Parameters of a Differential Pair
 
@@ -295,7 +313,11 @@ The same procedure with the common-mode wave at the output gives the mode conver
 
 $$S_{cd21} = \frac{S_{31} - S_{32} + S_{41} - S_{42}}{2}, \qquad S_{dc21} = \frac{S_{31} + S_{32} - S_{41} - S_{42}}{2}, \qquad S_{cc21} = \frac{S_{31} + S_{32} + S_{41} + S_{42}}{2}$$
 
-For a symmetric pair, the through paths are equal ($S_{31} = S_{42} = s$) and the cross-coupled paths are equal ($S_{32} = S_{41} = c$), which gives $S_{dd21} = s - c$, $S_{cc21} = s + c$, and $S_{cd21} = S_{dc21} = 0$. The differential mode sees the through transmission minus the coupling and the common mode sees it plus the coupling, which reflects the different propagation of the even mode and the odd mode on a coupled pair. Any asymmetry between the two paths produces mode conversion. Assume uncoupled traces ($c = 0$) with a skew $\Delta\tau$ between them, so that $S_{42} = S_{31}\,e^{-j\omega\Delta\tau}$, and the conversion becomes:
+For a symmetric pair with identical through paths and identical cross-coupled paths, the mixed-mode transmission terms simplify directly:
+
+$$S_{31} = S_{42} = s, \qquad S_{32} = S_{41} = c \quad\Longrightarrow\quad S_{dd21} = s - c, \quad S_{cc21} = s + c, \quad S_{cd21} = S_{dc21} = 0$$
+
+The differential mode sees the through transmission minus the coupling and the common mode sees it plus the coupling, which reflects the different propagation of the even mode and the odd mode on a coupled pair. Any asymmetry between the two paths produces mode conversion. Assume uncoupled traces ($c = 0$) with a skew $\Delta\tau$ between them, so that $S_{42} = S_{31}\,e^{-j\omega\Delta\tau}$, and the conversion becomes:
 
 $$|S_{cd21}| = |S_{31}|\,\frac{\left|1 - e^{-j\omega\Delta\tau}\right|}{2} = |S_{31}|\,\sin\!\left(\frac{\omega\Delta\tau}{2}\right)$$
 
@@ -307,11 +329,15 @@ The crosstalk mechanisms of [Chapter 4](04_Inductance_Magnetic_Coupling_and_Cros
 
 Near-end crosstalk (NEXT) is therefore the complex ratio $S_{31}$, and far-end crosstalk (FEXT) is the complex ratio $S_{41}$, both plotted as negative decibel curves across frequency. These port assignments refer to fixed geometric ends on the board; the signaling direction of the victim lane itself does not alter the S-parameter definitions.
 
-[Chapter 4](04_Inductance_Magnetic_Coupling_and_Crosstalk.md) derived the backward coupling coefficient $K_b = \tfrac{1}{4}(C_m/C + L_m/L)$ and the time-domain near-end response $V_{NEXT}(t) = K_b[V_a(t) - V_a(t - 2T_c)]$ for a coupled section with one-way delay $T_c$. In the frequency domain, the round-trip delay $2T_c$ multiplies the delayed term by $e^{-j2\omega T_c}$:
+[Chapter 4](04_Inductance_Magnetic_Coupling_and_Crosstalk.md) derived the backward coupling coefficient $k_b = \tfrac{1}{4}(C_m/C + L_m/L)$ and the time-domain near-end response $V_{NEXT}(t) = k_b[V_a(t) - V_a(t - 2T_c)]$ for a coupled section with one-way delay $T_c$. In the frequency domain, the round-trip delay $2T_c$ multiplies the delayed term by $e^{-j2\omega T_c}$:
 
-$$S_{31}(f) = K_b\left(1 - e^{-j2\omega T_c}\right), \qquad |S_{31}(f)| = 2K_b\left|\sin(\omega T_c)\right|$$
+$$S_{31}(f) = k_b\left(1 - e^{-j2\omega T_c}\right), \qquad |S_{31}(f)| = 2k_b\left|\sin(\omega T_c)\right|$$
 
-For the coupled microstrip of [Chapter 4](04_Inductance_Magnetic_Coupling_and_Crosstalk.md) with $K_b = 0.03$ and $T_c = 174$ ps, $|S_{31}|$ starts at $-43.7$ dB at 100 MHz, climbs to its first peak of $2K_b = 0.06$ ($-24.4$ dB) at the quarter-wave frequency $f = 1/(4T_c) = 1.44$ GHz, and drops to a deep null at $f = 1/(2T_c) = 2.87$ GHz where the round-trip delay equals a full period and the two reflections cancel. Above 2.87 GHz, the sinusoidal lobes repeat periodically.
+For the coupled microstrip of [Chapter 4](04_Inductance_Magnetic_Coupling_and_Crosstalk.md) with $k_b = 0.03$ and $T_c = 174$ ps, $|S_{31}|$ starts at $-43.7$ dB at 100 MHz, climbs to its first peak of $2k_b = 0.06$ ($-24.4$ dB) at the quarter-wave frequency, and drops to a deep null at the half-wave frequency where the round-trip delay equals a full period:
+
+$$f_{\text{peak}} = \frac{1}{4T_c} = 1.44\ \text{GHz}, \qquad f_{\text{null}} = \frac{1}{2T_c} = 2.87\ \text{GHz}$$
+
+At 2.87 GHz the two boundary reflections cancel completely, and above 2.87 GHz the sinusoidal lobes repeat periodically.
 
 Far-end coupling follows from the forward difference coefficient. With $C_m/C = 0.04$ and $L_m/L = 0.08$, the forward magnitude $|S_{41}(f)| \approx \tfrac{1}{2}\,|C_m/C - L_m/L|\,\omega T_c$ equals $-33.2$ dB at 1 GHz and $-19.2$ dB at 5 GHz, rising linearly with frequency because FEXT is proportional to the time derivative of the aggressor transition.
 
@@ -341,4 +367,4 @@ Frequency-domain phase measurements supply a complementary constraint: a circuit
 
 S-parameters describe the linear, time-invariant behavior of a network. They do not describe phenomena that depend on the signal amplitude, such as compression in active devices and dielectric nonlinearity at extreme voltages, nor phenomena that change with time, such as thermal drift during a long sweep or the aging of connector contacts. Systems that show any of these behaviors need large-signal measurement techniques or repeated, time-stamped sweeps. The measurement of the channel in the time domain (the eye diagram of [Chapter 10](10_Jitter_Decomposition_and_Measurement.md)) is the complement for the effects that the linear model does not contain, and [Chapter 9](09_Smith_Charts.md) turns to the conformal coordinate chart that makes the complex reflection $S_{11}(f)$ readable at a glance.
 
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>

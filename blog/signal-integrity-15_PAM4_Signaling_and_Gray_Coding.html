@@ -117,6 +117,37 @@
     @media (max-width: 768px) {
       .blog-post table:not(.trace-container table) { overflow-x: auto; }
     }
+    /* Signal Integrity series tables: clean KaTeX math rendering, no pill-badge wrapping, and hidden MathML node */
+    .blog-post.series-signal-integrity table:not(.trace-container table) {
+      table-layout: auto;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) th,
+    .blog-post.series-signal-integrity table:not(.trace-container table) td {
+      padding: 10px 14px;
+      vertical-align: middle;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      word-break: normal;
+      overflow-wrap: normal;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) .katex {
+      font-size: 1em;
+      white-space: nowrap;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) .katex-mathml {
+      display: none !important;
+    }
+    @media (min-width: 769px) {
+      .blog-post.series-signal-integrity table:not(.trace-container table) th:first-child:nth-last-child(2),
+      .blog-post.series-signal-integrity table:not(.trace-container table) td:first-child:nth-last-child(2) {
+        width: 32%;
+        max-width: 240px;
+      }
+      .blog-post.series-signal-integrity table:not(.trace-container table) th:first-child:not(:nth-last-child(2)),
+      .blog-post.series-signal-integrity table:not(.trace-container table) td:first-child:not(:nth-last-child(2)) {
+        max-width: 220px;
+      }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -161,7 +192,7 @@
     <li><a href="index.html">Blog</a></li><li><a href="series-signal-integrity.html">Series: Signal Integrity</a></li><li><a href="signal-integrity-part-04.html">Part 4: Equalization and RX Architecture</a></li><li aria-current="page">PAM4 Signaling and Gray Coding</li></ol></nav>
         <article class="blog-post series-signal-integrity">
 <h1>PAM4 Signaling and Gray Coding</h1>
-<!-- SUMMARY: Four-level pulse amplitude modulation (PAM4) encodes two bits per symbol across four voltage levels to halve the channel Nyquist frequency. Dividing the peak voltage swing into three eyes introduces a -9.54 dB amplitude margin penalty, requiring three-slicer thermometer decoding, Gray coding to halve adjacent-threshold bit errors, and forward error correction. --><p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p><p><a href="signal-integrity-14_CTLE_and_DFE.html">Chapter 14: Continuous Time Linear Equalization and Decision Feedback Equalization</a> describes the receiver equalizers that restore the amplitude and the shape of a pulse after the channel. The equalizers cannot restore energy that the channel has converted to heat, and the loss grows with frequency as <a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">Chapter 5: Skin Effect and Dielectric Loss</a> derives. A higher symbol rate therefore costs insertion loss at a higher Nyquist frequency, and at some rate the loss exceeds what the transmitter and receiver can compensate.</p>
+<!-- SUMMARY: Four-level pulse amplitude modulation (PAM4) encodes two bits per symbol across four voltage levels to halve the channel Nyquist frequency. The three-eye voltage partition introduces a -9.54 dB amplitude margin penalty that requires three-slicer thermometer decoding, Gray coding to halve adjacent-threshold bit errors, and forward error correction. --><p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p><p><a href="signal-integrity-14_CTLE_and_DFE.html">Chapter 14: Continuous Time Linear Equalization and Decision Feedback Equalization</a> describes the receiver equalizers that restore the amplitude and the shape of a pulse after the channel. The equalizers cannot restore energy that the channel has converted to heat, and the loss grows with frequency as <a href="signal-integrity-05_Skin_Effect_and_Dielectric_Loss.html">Chapter 5: Skin Effect and Dielectric Loss</a> derives. A higher symbol rate therefore costs insertion loss at a higher Nyquist frequency, and at some rate the loss exceeds what the transmitter and receiver can compensate.</p>
 <p>PAM4 (pulse amplitude modulation with four levels) raises the data rate without raising the symbol rate. The transmitter divides the voltage swing into four evenly spaced levels, and each level represents a unique pair of bits. A 64 Gbps PAM4 link operates at 32 GBd, and its Nyquist frequency of 16 GHz is the Nyquist frequency of a 32 Gbps NRZ link. The channel loss at 16 GHz is much smaller than the loss at the 32 GHz that 64 Gbps NRZ would need, and the Worked Examples section puts numbers on the difference.</p>
 <p>The price of the extra levels is paid in voltage margin. Four levels share the swing that held two, so the distance between adjacent levels is one third of the NRZ distance, and the same noise causes more errors. This chapter derives the penalty and the conditions under which it applies, links it to the Q table of <a href="signal-integrity-11_Dual_Dirac_Model_and_BER_Extrapolation.html">Chapter 11: Dual-Dirac Model and BER Extrapolation</a>, and derives the error ratios of the three-slicer receiver. It then shows how the assignment of bit pairs to levels, the Gray code, reduces the bit error ratio, and why timing recovery from a PAM4 waveform is harder than from an NRZ waveform.</p>
 <h2>Core Concepts</h2>
@@ -171,7 +202,9 @@
 <h3>Symbol Rate, Unit Interval, and the Nyquist Frequency</h3>
 <p>Three quantities describe the speed of a serial link, and they are easily confused. The <strong>data rate</strong> is the number of bits per second that the protocol delivers. The <strong>symbol rate</strong> $R_s$ (in baud) is the number of voltage symbols per second on the wire. The <strong>unit interval</strong> is the duration of one symbol, $UI = 1/R_s$, which is the definition of <a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html">Chapter 10: Jitter Decomposition and Measurement</a>. A symbol that can take $M$ levels carries $\log_2 M$ bits, so</p>
 <p>$$\text{data rate} = R_s\log_2 M$$</p>
-<p>NRZ has $M = 2$ and one bit per symbol, so the data rate in bits per second equals the symbol rate in baud. PAM4 has $M = 4$ and two bits per symbol, so the data rate is twice the symbol rate, and the unit interval of a PAM4 link is the reciprocal of the symbol rate and not of the bit rate: a 64 Gbps PAM4 link has $UI = 1/(32\ \text{GBd}) = 31.25$ ps, whereas a 64 Gbps NRZ link would need $UI = 15.625$ ps.</p>
+<p>NRZ has $M = 2$ and one bit per symbol, so the data rate in bits per second equals the symbol rate in baud. PAM4 has $M = 4$ and two bits per symbol, so the data rate is twice the symbol rate. The unit interval of a PAM4 link is the reciprocal of the symbol rate rather than the bit rate, so a 64 Gbps PAM4 link at 32 GBd has</p>
+<p>$$UI = \frac{1}{32\ \text{GBd}} = 31.25\ \text{ps}$$</p>
+<p>A 64 Gbps NRZ link requires $UI = 15.625$ ps.</p>
 <p><a href="signal-integrity-02_Frequency_Content_of_Digital_Signals.html">Chapter 2: Frequency Content of Digital Signals</a> defines the Nyquist frequency as half the symbol rate, the fundamental frequency of the fastest alternating pattern. The definition applies without change to PAM4, because the fastest alternation of a multilevel signal is one in which the level changes at every symbol, for instance $+3, -3, +3, -3$, which completes one cycle every two symbols. A pattern that cycles through all four levels, $+3, +1, -1, -3$, repeats only every four symbols and has the lower fundamental $R_s/4$, so it is not the fastest pattern. The Nyquist frequency is $R_s/2$ for both signaling schemes, and the comparison that matters for the channel is the symbol rate:</p>
 <table>
 <thead>
@@ -238,7 +271,8 @@
 <p>The decibel figure translates into an error ratio through the Q function of <a href="signal-integrity-11_Dual_Dirac_Model_and_BER_Extrapolation.html">Chapter 11</a>. Assume that the noise at the slicer is Gaussian with the standard deviation $\sigma$. A level that lies a distance $d$ from a threshold is misread across that threshold with the probability $Q(d/\sigma)$. An NRZ level has one threshold, so the bit error ratio is $Q(A/\sigma)$, and the distance in standard deviations for a target ratio is the Q-factor of that chapter: 4.753, 5.998, 7.034, 7.941, and 8.757 for $10^{-6}$, $10^{-9}$, $10^{-12}$, $10^{-15}$, and $10^{-18}$.</p>
 <p>An inner PAM4 level has a threshold on each side and an outer level has one. Take the four symbols as equally likely and count the errors to adjacent levels, the dominant error. Each of the three thresholds is crossed by two symbols, one from each side, with probability $Q(d/\sigma)$ each, where $d = A/3$ is the half-interval. The probability per symbol that a given threshold is crossed is therefore $2 \times \tfrac14\,Q(d/\sigma) = \tfrac12 Q(d/\sigma)$, and the symbol error ratio is the sum over the three thresholds:</p>
 <p>$$\mathrm{SER} = 3 \times \tfrac12\,Q\!\left(\frac{d}{\sigma}\right) = 1.5\,Q\!\left(\frac{A}{3\sigma}\right)$$</p>
-<p>The inner symbols have two neighbors and an error ratio of $2Q$ each, the outer symbols have one neighbor and an error ratio of $Q$ each, and the average over four symbols is $(2 \times 2Q + 2 \times Q)/4 = 1.5Q$, which agrees. The number of bit errors per symbol error depends on the code and is derived in the next sections. With Gray coding each adjacent-level error flips one of the two bits, and the bit error ratio is $\mathrm{BER} = \mathrm{SER}/2 = 0.75\,Q(A/(3\sigma))$.</p>
+<p>The inner symbols have two neighbors and an error ratio of $2Q$ each, the outer symbols have one neighbor and an error ratio of $Q$ each, and the average over four symbols is $(2 \times 2Q + 2 \times Q)/4 = 1.5Q$, which agrees. The number of bit errors per symbol error depends on the code and is derived in the next sections. With Gray coding each adjacent-level error flips one of the two bits, giving the bit error ratio</p>
+<p>$$\mathrm{BER} = \frac{\mathrm{SER}}{2} = 0.75\,Q\!\left(\frac{A}{3\sigma}\right)$$</p>
 <p>The required noise follows from this expression. For a target $p$ the half-interval must be $z_p$ standard deviations, with $0.75\,Q(z_p) = p$. The values below use the Q function of that chapter, and the NRZ column is its table. They assume the same peak swing and the same Gaussian noise for both signals:</p>
 <table>
 <thead>
@@ -341,7 +375,9 @@
 <td align="center"><code>0-0</code></td>
 </tr>
 </tbody></table>
-<p>Every adjacent-level error changes one bit, and the number of bit errors per symbol is $\tfrac12 Q \times 3 = 1.5Q$, so $\mathrm{BER}_{Gray} = 1.5Q/2 = 0.75Q$. Gray coding lowers the bit error ratio by one quarter compared with natural binary mapping, a factor of $4/3$. The reduction is a measurable gain and a modest one, and it comes from the middle threshold alone, which causes two bit errors with natural binary and one with Gray.</p>
+<p>Every adjacent-level error changes one bit, so the expected bit error count per symbol and the Gray-coded bit error ratio are</p>
+<p>$$\tfrac12 Q \times 3 = 1.5Q, \qquad \mathrm{BER}_{Gray} = \frac{1.5Q}{2} = 0.75Q$$</p>
+<p>Gray coding lowers the bit error ratio by one quarter compared with natural binary mapping, a factor of $4/3$. The reduction is a measurable gain and a modest one, and it comes from the middle threshold alone, which causes two bit errors with natural binary and one with Gray.</p>
 <p>The assignment also divides the errors between the two bits. The first (most significant) bit is 1 for the top two levels and 0 for the bottom two, and it changes only across the middle threshold. The second (least significant) bit is 0 for the two outer levels and 1 for the inner levels, and it changes across the upper and the lower threshold.</p>
 <p>A middle-threshold error occurs with the probability $\tfrac12 Q$ per symbol and an outer-threshold error with $2 \times \tfrac12 Q = Q$, so the second bit has twice the error ratio of the first. The average, $(0.5Q + Q)/2 = 0.75Q$, agrees with the total. The benefit of Gray coding for forward error correction depends on how the code counts errors, which <a href="signal-integrity-18_Line_Coding_FEC_and_Protocol_Framing.html">Chapter 18</a> describes.</p>
 <h2>Architecture</h2>
@@ -397,7 +433,7 @@
 <p>The PAM4 margin is $A/3$ while the neighbors can still be at $\pm A$, so the interference removes the fraction $3\sum|h_k|$ of it, and each eye has the height $(2A/3)(1 - 3\sum|h_k|)$. For $M$ levels the fraction is $(M-1)\sum|h_k|$, and the eye closes when that product reaches 1.</p>
 <p>The numbers of the 12 inch line show the effect. Take $A = 200$ mV and the cursor sum of 9.26 percent for the first seven cursors. The NRZ eye height is $400 \times 0.9074 = 363$ mV, and 9.26 percent of the margin is gone. Each PAM4 eye has the height $(400/3)(1 - 3 \times 0.0926) = 96.3$ mV in place of 133.3 mV, so 27.8 percent of the margin is gone.</p>
 <p>The NRZ eye closes at a cursor sum of 1, and the PAM4 eyes close at a cursor sum of 1/3. The receiver therefore needs to cancel interference much more completely than for NRZ, and this requirement is the reason that the equalization of <a href="signal-integrity-14_CTLE_and_DFE.html">Chapter 14</a> is applied to its full extent in PAM4 links.</p>
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="signal-integrity-14_CTLE_and_DFE.html" class="pagination-link prev">

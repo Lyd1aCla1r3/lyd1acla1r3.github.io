@@ -117,6 +117,37 @@
     @media (max-width: 768px) {
       .blog-post table:not(.trace-container table) { overflow-x: auto; }
     }
+    /* Signal Integrity series tables: clean KaTeX math rendering, no pill-badge wrapping, and hidden MathML node */
+    .blog-post.series-signal-integrity table:not(.trace-container table) {
+      table-layout: auto;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) th,
+    .blog-post.series-signal-integrity table:not(.trace-container table) td {
+      padding: 10px 14px;
+      vertical-align: middle;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      word-break: normal;
+      overflow-wrap: normal;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) .katex {
+      font-size: 1em;
+      white-space: nowrap;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) .katex-mathml {
+      display: none !important;
+    }
+    @media (min-width: 769px) {
+      .blog-post.series-signal-integrity table:not(.trace-container table) th:first-child:nth-last-child(2),
+      .blog-post.series-signal-integrity table:not(.trace-container table) td:first-child:nth-last-child(2) {
+        width: 32%;
+        max-width: 240px;
+      }
+      .blog-post.series-signal-integrity table:not(.trace-container table) th:first-child:not(:nth-last-child(2)),
+      .blog-post.series-signal-integrity table:not(.trace-container table) td:first-child:not(:nth-last-child(2)) {
+        max-width: 220px;
+      }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -158,10 +189,10 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="series-signal-integrity.html">Series: Signal Integrity</a></li><li><a href="signal-integrity-part-02.html">Part 2: Signal Integrity Measurement</a></li><li aria-current="page">S-Parameters and Vector Network Analysis</li></ol></nav>
+    <li><a href="index.html">Blog</a></li><li><a href="series-signal-integrity.html">Series: Signal Integrity</a></li><li><a href="signal-integrity-part-02.html">Part 2: Discontinuities and Signal Integrity Measurement</a></li><li aria-current="page">S-Parameters and Vector Network Analysis</li></ol></nav>
         <article class="blog-post series-signal-integrity">
 <h1>S-Parameters and Vector Network Analysis</h1>
-<!-- SUMMARY: S-parameters describe linear networks via ratios of normalized voltage waves. The analysis defines scattering matrices, decibel arithmetic, and the θ = -360° f τ phase rule, and examines vector network analyzer (VNA) architecture, dynamic range, calibration, and the extraction of S11 from a TDR step. --><p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p><p><a href="signal-integrity-07_Time_Domain_Reflectometry.html">Chapter 7</a> ended at the limit of the time domain: a TDR displays the reflection as a function of time, and the rise time of its step restricts how finely it separates nearby structures and how much it reveals about their frequency dependence. A vector network analyzer (VNA) measures the same reflection directly as a function of frequency, one sine wave at a time, and it also measures what the network transmits. The results are organized as scattering parameters (S-parameters), which are the common language of channel specifications. The compliance documents for PCIe, USB, HDMI, and Ethernet define their pass and fail limits as masks on S-parameters plotted against frequency.</p>
+<!-- SUMMARY: S-parameters characterize linear multi-port networks through ratios of incident and reflected normalized power waves. Multi-port wave matrices, decibel arithmetic, and linear transmission phase establish the frequency-domain framework. Vector network analyzer (VNA) architecture, error calibration, and time-to-frequency reflection conversion complete the laboratory measurement chain. --><p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p><p><a href="signal-integrity-07_Time_Domain_Reflectometry.html">Chapter 7</a> ended at the limit of the time domain: a TDR displays the reflection as a function of time, and the rise time of its step restricts how finely it separates nearby structures and how much it reveals about their frequency dependence. A vector network analyzer (VNA) measures the same reflection directly as a function of frequency, one sine wave at a time, and it also measures what the network transmits. The results are organized as scattering parameters (S-parameters), which are the common language of channel specifications. The compliance documents for PCIe, USB, HDMI, and Ethernet define their pass and fail limits as masks on S-parameters plotted against frequency.</p>
 <p>The sections below establish the complete S-parameter and VNA framework: normalized power waves at a port, the scattering matrix, decibel and dBm arithmetic, and the linear relationship between phase slope and propagation delay. The architecture sections then cover the VNA signal path, the intermediate-frequency bandwidth (IFBW) tradeoff that governs dynamic range, one-port and two-port error calibration, the mathematical extraction of $S_{11}(f)$ from a TDR step response, and four-port mixed-mode and crosstalk measurements.</p>
 <h2>Core Concepts</h2>
 <h3>Incident and Scattered Waves at a Port</h3>
@@ -266,9 +297,11 @@
 <p>The lag is $2\pi f\tau$ radians, and the delay $\tau$ is a fraction $\tau/T = f\tau$ of one period $T = 1/f$, and one period corresponds to 360°, so:</p>
 <p>$$\theta(f) = -360^\circ\, f\,\tau$$</p>
 <p>The phase is a per-frequency quantity, and a delay of 1 ns gives $\theta = -180^\circ$ at 500 MHz, where the delay is half a period, and $-360^\circ$ at 1 GHz, where it is a full period. A fixed physical delay therefore produces a phase that rotates faster as the frequency rises.</p>
-<p>A matched line connects the phase to the propagation constant of <a href="signal-integrity-01_Wave_Propagation_and_Transmission_Lines.html">Chapter 1</a>. A line of length $\ell$ terminated in $Z_0$ at both ports has $S_{11} = S_{22} = 0$ and a transmission equal to the factor by which a wave changes over the length:</p>
-<p>$$S_{21} = S_{12} = e^{-\gamma\ell} = e^{-\alpha\ell}\,e^{-j\beta\ell}$$</p>
-<p>The magnitude gives the insertion loss $\text{IL} = 8.686\,\alpha\ell$, and the phase is $-\beta\ell = -\omega\ell/v_p = -\omega\tau$ for a line whose delay is $\tau = \ell/v_p$, which agrees with the rule above.</p>
+<p>A matched line connects the phase to the propagation constant of <a href="signal-integrity-01_Wave_Propagation_and_Transmission_Lines.html">Chapter 1</a>. A line of length $\ell$ terminated in $Z_0$ at both ports exhibits zero reflection and a forward transmission equal to the wave propagation factor across the length:</p>
+<p>$$S_{11} = S_{22} = 0, \qquad S_{21} = S_{12} = e^{-\gamma\ell} = e^{-\alpha\ell}\,e^{-j\beta\ell}$$</p>
+<p>The magnitude gives the insertion loss $\text{IL} = 8.686\,\alpha\ell$, and for a line with propagation delay $\tau = \ell/v_p$ the transmission phase in radians is:</p>
+<p>$$\theta_{\text{rad}} = -\beta\ell = -\frac{\omega\ell}{v_p} = -\omega\tau$$</p>
+<p>Converting radians to degrees reproduces the linear phase rule above.</p>
 <p>The derivative of the phase with frequency measures how much the delay varies across the band. The group delay is:</p>
 <p>$$\tau_g = -\frac{1}{360^\circ}\,\frac{d\theta}{df}$$</p>
 <p>For the constant delay above, $d\theta/df = -360^\circ\tau$ and $\tau_g = \tau$. A real channel has a group delay that changes with frequency, which means that its frequency components arrive at slightly different times and the pulse shape distorts (the linear time-invariant channel of <a href="signal-integrity-02_Frequency_Content_of_Digital_Signals.html">Chapter 2</a>).</p>
@@ -320,11 +353,13 @@
 <h3>A Junction Between Two Impedances</h3>
 <p>Assume a lossless junction between a 50 Ω line (port 1) and a 75 Ω line (port 2), with each port referenced to the impedance of its own line, so that $a_1 = V_1^+/\sqrt{50}$ and $a_2 = V_2^+/\sqrt{75}$. From port 1, the reflection coefficient of Chapter 3 is:</p>
 <p>$$S_{11} = \frac{75 - 50}{75 + 50} = 0.2$$</p>
-<p>The transmitted voltage wave is $\tau = 1 + \Gamma = 1.2$ times the incident voltage wave, and the normalization converts it to a ratio of normalized waves:</p>
-<p>$$S_{21} = 1.2\,\sqrt{\frac{50}{75}} = 0.9798$$</p>
-<p>From port 2, the reflection coefficient is $S_{22} = (50 - 75)/(75 + 50) = -0.2$, the transmitted voltage wave is $1 + S_{22} = 0.8$ times the incident wave, and:</p>
-<p>$$S_{12} = 0.8\,\sqrt{\frac{75}{50}} = 0.9798$$</p>
-<p>The two transmissions are equal ($S_{21} = S_{12}$, reciprocity), and the two reflections are not ($S_{11} = 0.2$ and $S_{22} = -0.2$), because the junction looks different from the two sides. The power balance closes the calculation: $|S_{11}|^2 + |S_{21}|^2 = 0.04 + 0.96 = 1$, confirming that the lossless junction conserves all incident power. The return loss at port 1 is $-20\log_{10}(0.2) = 13.98$ dB, and the insertion loss of 0.177 dB is the power that the 20% voltage reflection (4% of the power) removes from the transmitted wave.</p>
+<p>The voltage transmission coefficient across the boundary scales the forward voltage wave, and impedance normalization converts that voltage ratio into the forward scattering parameter:</p>
+<p>$$T_V = 1 + \Gamma = 1.2, \qquad S_{21} = T_V\,\sqrt{\frac{50}{75}} = 1.2\,\sqrt{\frac{50}{75}} = 0.9798$$</p>
+<p>Driving the junction from port 2 reverses the impedance step, yielding a negative reflection coefficient, a voltage transmission factor of $1 + S_{22} = 0.8$, and the reverse scattering parameter:</p>
+<p>$$S_{22} = \frac{50 - 75}{75 + 50} = -0.2, \qquad S_{12} = 0.8\,\sqrt{\frac{75}{50}} = 0.9798$$</p>
+<p>The two transmissions are equal ($S_{21} = S_{12}$, reciprocity), and the two reflections are not ($S_{11} = 0.2$ and $S_{22} = -0.2$), because the junction looks different from the two sides. Evaluating the sum of reflected and transmitted power fractions closes the energy balance:</p>
+<p>$$|S_{11}|^2 + |S_{21}|^2 = 0.04 + 0.96 = 1$$</p>
+<p>That unity sum confirms that the lossless junction conserves all incident power. The return loss at port 1 is $-20\log_{10}(0.2) = 13.98$ dB, and the insertion loss of 0.177 dB is the power that the 20% voltage reflection (4% of the power) removes from the transmitted wave.</p>
 <h3>Reading a Channel Plot</h3>
 <p>Consider a 12 inch FR4 stripline pair measured to 20 GHz. Chapter 5 gives the insertion loss of the line as 0.67 dB per inch at 5 GHz and 1.76 dB per inch at 15 GHz, so the $S_{21}$ trace reaches $8.1$ dB of loss at 5 GHz ($|S_{21}| = 0.39$) and $21.2$ dB at 15 GHz ($|S_{21}| = 0.087$). The trace falls steadily with frequency because the conductor loss grows as $\sqrt{f}$ and the dielectric loss grows as $f$. The compliance mask of the protocol is a curve in the same plot, and the channel passes when the trace stays above the mask at every frequency of the operating band.</p>
 <p>The reflection trace reads differently, because a return loss of 30 dB at low frequency ($|S_{11}| = 0.032$) shows a well-matched line, and a peak at $-10$ dB ($|S_{11}| = 0.316$, 10% of the power) at one frequency identifies a structure whose reflection has grown with frequency, such as the via or connector of Chapter 6, and Chapter 7 can then locate it in space.</p>
@@ -333,13 +368,15 @@
 <h3>The Decibel Arithmetic of a Crosstalk Budget</h3>
 <p>Assume that four aggressors with independent data each couple $-50$ dB into a victim lane. Independent signals add in power, so the total is $-50 + 10\log_{10}4 = -43.98$ dB, a degradation of 6.02 dB relative to a single aggressor. Aggressors of unequal strength are summed in power: for individual couplings of $-45$, $-50$, $-50$, and $-55$ dB, the total power is $10^{-4.5} + 2\times10^{-5} + 10^{-5.5} = 5.5\times10^{-5}$, which is $-42.6$ dB. The strongest aggressor contributes 58% of the total power, and the remaining three together contribute the other 42%.</p>
 <h3>A Shunt Capacitance from the TDR Step to $S_{11}$</h3>
-<p>Assume the 0.5 pF shunt capacitance of Chapter 3 on a 50 Ω line. The reflection has the time constant $\tau_C = Z_0 C/2 = 12.5$ ps (<a href="signal-integrity-06_Return_Path_Dynamics_and_Parasitic_Effects.html">Chapter 6</a>), and the response of the reflection to an ideal step is a step down of the full incident amplitude that decays back to the baseline:</p>
-<p>$$s(t) = -e^{-t/\tau_C}\,u(t)$$</p>
+<p>Assume the 0.5 pF shunt capacitance of Chapter 3 on a 50 Ω line. From <a href="signal-integrity-06_Return_Path_Dynamics_and_Parasitic_Effects.html">Chapter 6</a>, the capacitive time constant and the reflected step response (a downward jump of the full incident amplitude that decays exponentially back to the baseline) are:</p>
+<p>$$\tau_C = \frac{Z_0 C}{2} = 12.5\ \text{ps}, \qquad s(t) = -e^{-t/\tau_C}\,u(t)$$</p>
 <p>The negative sign is the dip of a capacitive discontinuity on a TDR display (<a href="signal-integrity-07_Time_Domain_Reflectometry.html">Chapter 7</a>). Differentiating the step response gives the impulse response. The derivative of the jump at $t = 0$ is a delta function, so:</p>
 <p>$$h(t) = \frac{ds}{dt} = -\delta(t) + \frac{1}{\tau_C}\,e^{-t/\tau_C}\,u(t)$$</p>
 <p>The Fourier transform of $\delta(t)$ is 1, and the transform of $e^{-t/\tau_C}u(t)/\tau_C$ is $1/(1 + j\omega\tau_C)$, so:</p>
 <p>$$S_{11}(f) = -1 + \frac{1}{1 + j\omega\tau_C} = \frac{-j\omega\tau_C}{1 + j\omega\tau_C}$$</p>
-<p>Substituting $\tau_C = Z_0C/2$ and $x = \omega C Z_0$ gives $S_{11} = -jx/(2 + jx)$, the reflection coefficient that Chapter 3 derived directly from the impedance of the parallel combination, so the two routes agree. The magnitude for small $x$ is $|S_{11}| \approx \omega\tau_C = x/2 = \pi f C Z_0$, which rises in proportion to frequency (it does not show a $1/(2\pi f C)$ roll-off, because the reflection of a small capacitance grows as its admittance grows). The values are:</p>
+<p>Substituting $\tau_C = Z_0C/2$ and $x = \omega C Z_0$ gives $S_{11} = -jx/(2 + jx)$, the reflection coefficient that Chapter 3 derived directly from the impedance of the parallel combination, so the two routes agree. For small $x$, the reflection magnitude scales linearly with frequency:</p>
+<p>$$|S_{11}| \approx \omega\tau_C = \frac{x}{2} = \pi f C Z_0$$</p>
+<p>That linear rise shows no $1/(2\pi f C)$ roll-off because the reflection of a small shunt capacitance grows as its admittance grows. Evaluating both expressions across frequency gives:</p>
 <table>
 <thead>
 <tr>
@@ -380,7 +417,10 @@
 <h3>A One-Port Calibration with Numbers</h3>
 <p>Assume the error terms $e_{00} = 0.05$ (a directivity of $-26$ dB), $e_{11} = 0.1$, and $\Delta = 0.9$, and a DUT with a true reflection of $\Gamma = 0.2$ (a return loss of 13.98 dB). The instrument reads:</p>
 <p>$$\Gamma_m = 0.05 + \frac{0.9 \times 0.2}{1 - 0.1\times0.2} = 0.2337$$</p>
-<p>The instrument therefore reports a return loss of 12.6 dB, an error of 1.35 dB, because the directivity leakage adds to the true reflection in phase. The three standards would measure $\Gamma_{m,\text{load}} = 0.05$, $\Gamma_{m,\text{open}} = 1.05$, and $\Gamma_{m,\text{short}} = -0.768$. These give $p = 1.00$ and $q = 0.818$, so $e_{11} = (1.00 - 0.818)/(1.818) = 0.100$ and $\Delta = 2(1.00)(0.818)/1.818 = 0.900$, which recovers the error terms. The correction of the reading uses $y = 0.2337 - 0.05 = 0.1837$ and returns $\Gamma = 0.1837/(0.9 + 0.1\times0.1837) = 0.2000$, the true value of the DUT.</p>
+<p>The instrument therefore reports a return loss of 12.6 dB, an error of 1.35 dB, because the directivity leakage adds to the true reflection in phase. Measuring the three calibration standards yields $\Gamma_{m,\text{load}} = 0.05$, $\Gamma_{m,\text{open}} = 1.05$, and $\Gamma_{m,\text{short}} = -0.768$, giving $p = 1.00$ and $q = 0.818$ and recovering the remaining error terms:</p>
+<p>$$e_{11} = \frac{1.00 - 0.818}{1.818} = 0.100, \qquad \Delta = \frac{2(1.00)(0.818)}{1.818} = 0.900$$</p>
+<p>Applying the calibration inversion to the raw DUT measurement recovers the true reflection coefficient:</p>
+<p>$$y = 0.2337 - 0.05 = 0.1837, \qquad \Gamma = \frac{0.1837}{0.900 + 0.100 \times 0.1837} = 0.2000$$</p>
 <h3>Mixed-Mode Parameters of a Differential Pair</h3>
 <p>A differential pair is measured with four ports. Assume that ports 1 and 2 connect the two traces at the near end and ports 3 and 4 connect the same traces at the far end. The differential and common-mode waves at each end are the normalized difference and sum of the single-ended waves:</p>
 <p>$$a_d = \frac{a_1 - a_2}{\sqrt{2}}, \qquad a_c = \frac{a_1 + a_2}{\sqrt{2}}$$</p>
@@ -388,15 +428,19 @@
 <p>$$b_{d3} = \frac{b_3 - b_4}{\sqrt{2}} = \frac{A\,(S_{31} - S_{32} - S_{41} + S_{42})}{\sqrt{2}} \quad\Rightarrow\quad S_{dd21} = \frac{b_{d3}}{a_{d1}} = \frac{S_{31} - S_{32} - S_{41} + S_{42}}{2}$$</p>
 <p>The same procedure with the common-mode wave at the output gives the mode conversion from differential to common mode, and a common-mode stimulus gives the conversion in the other direction:</p>
 <p>$$S_{cd21} = \frac{S_{31} - S_{32} + S_{41} - S_{42}}{2}, \qquad S_{dc21} = \frac{S_{31} + S_{32} - S_{41} - S_{42}}{2}, \qquad S_{cc21} = \frac{S_{31} + S_{32} + S_{41} + S_{42}}{2}$$</p>
-<p>For a symmetric pair, the through paths are equal ($S_{31} = S_{42} = s$) and the cross-coupled paths are equal ($S_{32} = S_{41} = c$), which gives $S_{dd21} = s - c$, $S_{cc21} = s + c$, and $S_{cd21} = S_{dc21} = 0$. The differential mode sees the through transmission minus the coupling and the common mode sees it plus the coupling, which reflects the different propagation of the even mode and the odd mode on a coupled pair. Any asymmetry between the two paths produces mode conversion. Assume uncoupled traces ($c = 0$) with a skew $\Delta\tau$ between them, so that $S_{42} = S_{31}\,e^{-j\omega\Delta\tau}$, and the conversion becomes:</p>
+<p>For a symmetric pair with identical through paths and identical cross-coupled paths, the mixed-mode transmission terms simplify directly:</p>
+<p>$$S_{31} = S_{42} = s, \qquad S_{32} = S_{41} = c \quad\Longrightarrow\quad S_{dd21} = s - c, \quad S_{cc21} = s + c, \quad S_{cd21} = S_{dc21} = 0$$</p>
+<p>The differential mode sees the through transmission minus the coupling and the common mode sees it plus the coupling, which reflects the different propagation of the even mode and the odd mode on a coupled pair. Any asymmetry between the two paths produces mode conversion. Assume uncoupled traces ($c = 0$) with a skew $\Delta\tau$ between them, so that $S_{42} = S_{31}\,e^{-j\omega\Delta\tau}$, and the conversion becomes:</p>
 <p>$$|S_{cd21}| = |S_{31}|\,\frac{\left|1 - e^{-j\omega\Delta\tau}\right|}{2} = |S_{31}|\,\sin\!\left(\frac{\omega\Delta\tau}{2}\right)$$</p>
 <p>For a skew of 5 ps at 10 GHz, $\omega\Delta\tau = 0.314$ rad, so $\sin(0.157) = 0.156$, which is $-16.1$ dB relative to $|S_{31}|$. Roughly 2.4% of the differential power converts into the common mode at that frequency, and the conversion grows in proportion to the frequency for small skew.</p>
 <h3>NEXT, FEXT, and Their Frequency Dependence</h3>
 <p>The crosstalk mechanisms of <a href="signal-integrity-04_Inductance_Magnetic_Coupling_and_Crosstalk.html">Chapter 4</a> are characterized in the frequency domain by connecting a four-port VNA across two adjacent lanes. Assign ports 1 and 2 to the near and far ends of the aggressor trace, assign ports 3 and 4 to the near and far ends of the victim trace, and drive the stimulus at port 1. The victim near end is the port co-located with the aggressor transmitter (port 3), and the victim far end is the port co-located with the aggressor receiver (port 4).</p>
 <p>Near-end crosstalk (NEXT) is therefore the complex ratio $S_{31}$, and far-end crosstalk (FEXT) is the complex ratio $S_{41}$, both plotted as negative decibel curves across frequency. These port assignments refer to fixed geometric ends on the board; the signaling direction of the victim lane itself does not alter the S-parameter definitions.</p>
-<p><a href="signal-integrity-04_Inductance_Magnetic_Coupling_and_Crosstalk.html">Chapter 4</a> derived the backward coupling coefficient $K_b = \tfrac{1}{4}(C_m/C + L_m/L)$ and the time-domain near-end response $V_{NEXT}(t) = K_b[V_a(t) - V_a(t - 2T_c)]$ for a coupled section with one-way delay $T_c$. In the frequency domain, the round-trip delay $2T_c$ multiplies the delayed term by $e^{-j2\omega T_c}$:</p>
-<p>$$S_{31}(f) = K_b\left(1 - e^{-j2\omega T_c}\right), \qquad |S_{31}(f)| = 2K_b\left|\sin(\omega T_c)\right|$$</p>
-<p>For the coupled microstrip of <a href="signal-integrity-04_Inductance_Magnetic_Coupling_and_Crosstalk.html">Chapter 4</a> with $K_b = 0.03$ and $T_c = 174$ ps, $|S_{31}|$ starts at $-43.7$ dB at 100 MHz, climbs to its first peak of $2K_b = 0.06$ ($-24.4$ dB) at the quarter-wave frequency $f = 1/(4T_c) = 1.44$ GHz, and drops to a deep null at $f = 1/(2T_c) = 2.87$ GHz where the round-trip delay equals a full period and the two reflections cancel. Above 2.87 GHz, the sinusoidal lobes repeat periodically.</p>
+<p><a href="signal-integrity-04_Inductance_Magnetic_Coupling_and_Crosstalk.html">Chapter 4</a> derived the backward coupling coefficient $k_b = \tfrac{1}{4}(C_m/C + L_m/L)$ and the time-domain near-end response $V_{NEXT}(t) = k_b[V_a(t) - V_a(t - 2T_c)]$ for a coupled section with one-way delay $T_c$. In the frequency domain, the round-trip delay $2T_c$ multiplies the delayed term by $e^{-j2\omega T_c}$:</p>
+<p>$$S_{31}(f) = k_b\left(1 - e^{-j2\omega T_c}\right), \qquad |S_{31}(f)| = 2k_b\left|\sin(\omega T_c)\right|$$</p>
+<p>For the coupled microstrip of <a href="signal-integrity-04_Inductance_Magnetic_Coupling_and_Crosstalk.html">Chapter 4</a> with $k_b = 0.03$ and $T_c = 174$ ps, $|S_{31}|$ starts at $-43.7$ dB at 100 MHz, climbs to its first peak of $2k_b = 0.06$ ($-24.4$ dB) at the quarter-wave frequency, and drops to a deep null at the half-wave frequency where the round-trip delay equals a full period:</p>
+<p>$$f_{\text{peak}} = \frac{1}{4T_c} = 1.44\ \text{GHz}, \qquad f_{\text{null}} = \frac{1}{2T_c} = 2.87\ \text{GHz}$$</p>
+<p>At 2.87 GHz the two boundary reflections cancel completely, and above 2.87 GHz the sinusoidal lobes repeat periodically.</p>
 <p>Far-end coupling follows from the forward difference coefficient. With $C_m/C = 0.04$ and $L_m/L = 0.08$, the forward magnitude $|S_{41}(f)| \approx \tfrac{1}{2}\,|C_m/C - L_m/L|\,\omega T_c$ equals $-33.2$ dB at 1 GHz and $-19.2$ dB at 5 GHz, rising linearly with frequency because FEXT is proportional to the time derivative of the aggressor transition.</p>
 <p>The total crosstalk into one victim from several independent aggressors is summed in power with the rule of the decibel section. Compliance limits are written as the power sum of NEXT (PSNEXT) and of FEXT (PSFEXT), defined as $-10\log_{10}\sum_k |S_{k1}|^2$ in positive decibels, with the sum taken over the near-end terms or over the far-end terms, which carries the same $10\log_{10}N$ penalty that four equal aggressors incur in the preceding example.</p>
 <h2>Edge Cases</h2>
@@ -411,7 +455,7 @@
 <p>Frequency-domain phase measurements supply a complementary constraint: a circuit model of two lumped elements can be fitted to the measured complex $S_{11}(f)$ across frequency, because inductance and capacitance have opposite reactance signs and distinct frequency trajectories. <a href="signal-integrity-09_Smith_Charts.html">Chapter 9</a> describes how the Smith chart displays this distinction and why the scalar magnitude $|S_{11}|$ alone cannot separate a series inductance from a shunt capacitance.</p>
 <h3>What S-Parameters Cannot Capture</h3>
 <p>S-parameters describe the linear, time-invariant behavior of a network. They do not describe phenomena that depend on the signal amplitude, such as compression in active devices and dielectric nonlinearity at extreme voltages, nor phenomena that change with time, such as thermal drift during a long sweep or the aging of connector contacts. Systems that show any of these behaviors need large-signal measurement techniques or repeated, time-stamped sweeps. The measurement of the channel in the time domain (the eye diagram of <a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html">Chapter 10</a>) is the complement for the effects that the linear model does not contain, and <a href="signal-integrity-09_Smith_Charts.html">Chapter 9</a> turns to the conformal coordinate chart that makes the complex reflection $S_{11}(f)$ readable at a glance.</p>
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="signal-integrity-07_Time_Domain_Reflectometry.html" class="pagination-link prev">

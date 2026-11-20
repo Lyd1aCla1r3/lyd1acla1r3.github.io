@@ -1,8 +1,8 @@
 # Smith Charts
 
-<!-- SUMMARY: The Smith chart is the conformal map Γ = (z - 1)/(z + 1) that maps all passive impedances inside the unit circle. The analysis derives the constant-resistance circles and constant-reactance arcs, showing how the complex S11 reflection plane separates inductive and capacitive reactances by hemisphere. -->
+<!-- SUMMARY: Passive impedances span zero to infinity, yet passive reflection coefficients remain bounded inside the complex unit circle. Conformal bilinear mapping projects constant-resistance circles and constant-reactance arcs onto that unit disk, separating inductive and capacitive reactances into upper and lower hemispheres across frequency sweeps. -->
 
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>
 
 [Chapter 8](08_S_Parameters_and_VNA.md) established that $S_{11}$ measured at one frequency is the reflection coefficient $\Gamma$ of [Chapter 3](03_Impedance_Reflections_and_Termination.md), and that a VNA reports it as a complex number at every point of a frequency sweep. A complex number needs two coordinates, so a plot of magnitude in decibels or of phase in degrees against frequency shows only half of the information at a time. The complex plane of $\Gamma$ shows both halves together, with the real part on the horizontal axis and the imaginary part on the vertical axis, and the Smith chart is the same plane with a grid of impedance values printed on top of it.
 
@@ -106,7 +106,11 @@ Completing the square in $u$ requires adding $\left(\frac{r}{r+1}\right)^2$ to b
 
 $$\left(u - \frac{r}{r+1}\right)^2 + v^2 = \frac{1 - r}{r + 1} + \frac{r^2}{(r+1)^2}$$
 
-The right side over the common denominator $(r + 1)^2$ is $\frac{(1 - r)(r + 1) + r^2}{(r + 1)^2} = \frac{1 - r^2 + r^2}{(r + 1)^2} = \frac{1}{(r + 1)^2}$, so:
+Combining the right-hand side over the common denominator $(r + 1)^2$ simplifies the constant term:
+
+$$\frac{(1 - r)(r + 1) + r^2}{(r + 1)^2} = \frac{1 - r^2 + r^2}{(r + 1)^2} = \frac{1}{(r + 1)^2}$$
+
+Substituting that simplified right-hand side gives the standard equation of a circle:
 
 $$\left(u - \frac{r}{r+1}\right)^2 + v^2 = \left(\frac{1}{r+1}\right)^2$$
 
@@ -140,7 +144,11 @@ Assume a load of $25 + j50$ Ω in a 50 Ω system. The normalized impedance is $z
 
 $$u = \frac{0.25 - 1 + 1}{3.25} = 0.0769, \qquad v = \frac{2}{3.25} = 0.6154$$
 
-The distance from the center is $|\Gamma| = \sqrt{0.0769^2 + 0.6154^2} = 0.620$ and the angle is $\arctan(0.6154/0.0769) = 82.9^\circ$. The squared magnitude from the closed form is $|\Gamma|^2 = 1.25/3.25 = 0.385$, which confirms the coordinates. The return loss is $-20\log_{10}(0.620) = 4.15$ dB and the fraction of the power absorbed by the load is $1 - 0.385 = 0.615$. The point lies in the upper half of the chart, in agreement with the positive reactance.
+From those Cartesian coordinates, the radial distance from the chart center and the closed-form squared magnitude evaluate to:
+
+$$|\Gamma| = \sqrt{0.0769^2 + 0.6154^2} = 0.620, \qquad |\Gamma|^2 = \frac{1.25}{3.25} = 0.385$$
+
+The phase angle is $\arctan(0.6154/0.0769) = 82.9^\circ$, confirming the coordinate conversion. The return loss is $-20\log_{10}(0.620) = 4.15$ dB and the fraction of the power absorbed by the load is $1 - 0.385 = 0.615$. The point lies in the upper half of the chart, in agreement with the positive reactance.
 
 ## Architecture
 
@@ -167,22 +175,32 @@ $$\Gamma(d) = \Gamma_L\,e^{-2\gamma d} = \Gamma_L\,e^{-2\alpha d}\,e^{-j2\beta d
 
 On a lossless line ($\alpha = 0$) the magnitude is unchanged and the phase decreases by $2\beta d$, so the point rotates clockwise around the center on a circle of constant $|\Gamma|$. The phase $2\beta d = 2\omega d/v_p$ equals $360^\circ f\,(2\tau_d)$ for the delay $\tau_d = d/v_p$ of the line, which is the rule $\theta = -360^\circ f\tau$ of Chapter 8 applied to the round-trip delay. A half wavelength of line ($\beta d = 180^\circ$) turns the point through a full circle. Increasing the frequency at fixed length rotates the point clockwise by the same rule, so a trace of $S_{11}(f)$ for any structure with delay moves clockwise as the sweep proceeds.
 
-Assume an open stub of 1 inch of FR4 line, which has a delay of 170 ps ([Chapter 1](01_Wave_Propagation_and_Transmission_Lines.md)) and a round-trip delay of 340 ps. The open circuit starts at $\Gamma = 1$ (phase 0°). At 1 GHz the phase is $-360^\circ \times 10^9 \times 0.34\times10^{-9} = -122.4^\circ$, which places the point in the lower left of the chart, and the impedance is $z = -j\cot(2\pi f\tau_d) = -j0.550$, a capacitive reactance in the lower half.
+Assume an open stub of 1 inch of FR4 line, which has a delay of $\tau_d = 170$ ps ([Chapter 1](01_Wave_Propagation_and_Transmission_Lines.md)) and a round-trip delay of 340 ps. The open circuit starts at $\Gamma = 1$ (phase 0°). At 1 GHz the phase rotates to $-360^\circ \times 10^9 \times 0.34\times10^{-9} = -122.4^\circ$ in the lower left of the chart, where the normalized input impedance and the subsequent quarter-wave resonance frequency are:
 
-At $f = 1/(4\tau_d) = 1.47$ GHz the phase is $-180^\circ$ and the stub, a quarter wavelength long, appears as a short circuit at the left edge. At 2 GHz the phase is $-244.8^\circ$ (equivalent to $+115.2^\circ$), and the impedance is $z = +j0.635$, which is inductive and lies in the upper half. A single open stub is therefore capacitive below the quarter-wave frequency and inductive above it, and the trace passes from the lower to the upper half of the chart through the short-circuit point.
+$$z(1\ \text{GHz}) = -j\cot(2\pi f\tau_d) = -j0.550, \qquad f_{\lambda/4} = \frac{1}{4\tau_d} = 1.47\ \text{GHz}$$
+
+At 1 GHz the stub acts as a capacitive reactance in the lower half-plane, and at 1.47 GHz the phase reaches $-180^\circ$ so the quarter-wave stub appears as a short circuit at the left edge. At 2 GHz the phase reaches $-244.8^\circ$ (equivalent to $+115.2^\circ$), and the impedance becomes $z = +j0.635$, which is inductive and lies in the upper half. A single open stub is therefore capacitive below the quarter-wave frequency and inductive above it, and the trace passes from the lower to the upper half of the chart through the short-circuit point.
 
 ### The Admittance Chart
 
-Shunt elements add their admittances, so the natural variable for a shunt element is the normalized admittance $y = 1/z = g + jb$, with the normalized conductance $g$ and the normalized susceptance $b$. The reflection coefficient in terms of $y$ follows from $z = 1/y$:
+Shunt elements add their admittances, so the natural variable for a shunt element is the normalized admittance, decomposed into normalized conductance $g$ and normalized susceptance $b$:
 
-$$\Gamma = \frac{z - 1}{z + 1} = \frac{1/y - 1}{1/y + 1} = \frac{1 - y}{1 + y}$$
+$$y = \frac{1}{z} = g + jb, \qquad \Gamma = \frac{z - 1}{z + 1} = \frac{1/y - 1}{1/y + 1} = \frac{1 - y}{1 + y}$$
 
 The expression equals the earlier map with $y$ in place of $z$ and a change of sign, which means that the point for the admittance $y$ lies at $-\Gamma$ of the point for the impedance $z = y$. The admittance chart is therefore the impedance chart rotated by 180° around the center. The constant-conductance circles are the images of the constant-resistance circles and pass through the left edge, and the constant-susceptance arcs mirror the reactance arcs. A combined impedance and admittance chart prints both grids, and each point carries both readings.
 
-The two elements of Chapter 3 take a simple form in the two variables. A shunt capacitance on a matched line adds a susceptance $b = \omega C Z_0 = x$ (the dimensionless quantity of Chapter 3) to the matched admittance $y = 1$. A series inductance adds a reactance $x_L = \omega L/Z_0$ to the matched impedance $z = 1$. Assume $f = 5$ GHz and $Z_0 = 50$ Ω:
+The two elements of Chapter 3 take a direct form in the two variables. On a matched line, a shunt capacitance adds normalized susceptance to $y = 1$, and a series inductance adds normalized reactance to $z = 1$:
 
-- **Shunt capacitance (`C = 0.5 pF`):** Adds a normalized susceptance yielding $y = 1 + j0.785$ and $z = 1/y = 0.618 - j0.486$, which places the reflection coefficient at $\Gamma = -0.134 - j0.340$ ($|\Gamma| = 0.366$, angle $-111.4^\circ$) in the lower half of the chart.
-- **Series inductance (`L = 1 nH`):** Adds a normalized reactance yielding $z = 1 + j0.628$, which places the reflection coefficient at $\Gamma = 0.090 + j0.286$ ($|\Gamma| = 0.300$, angle $+72.6^\circ$) in the upper half of the chart.
+$$b = \omega C Z_0 = x, \qquad x_L = \frac{\omega L}{Z_0}$$
+
+Evaluating both discontinuities at $f = 5$ GHz on a $Z_0 = 50$ Ω line gives the normalized immittances and resulting reflection coefficients:
+
+$$y_C = 1 + j0.785, \qquad z_C = \frac{1}{y_C} = 0.618 - j0.486, \qquad \Gamma_C = -0.134 - j0.340$$
+
+$$z_L = 1 + j0.628, \qquad \Gamma_L = 0.090 + j0.286$$
+
+- **Shunt capacitance (`C = 0.5 pF`):** Maps to $|\Gamma_C| = 0.366$ at angle $-111.4^\circ$ in the lower half of the chart.
+- **Series inductance (`L = 1 nH`):** Maps to $|\Gamma_L| = 0.300$ at angle $+72.6^\circ$ in the upper half of the chart.
 
 These magnitudes agree with the values of Chapter 3 (0.366 and 0.300), and the chart adds the information of the position: the capacitance lies below the horizontal axis and the inductance lies above it.
 
@@ -237,7 +255,11 @@ For a component that is measured as a one-port, with the component as the termin
 
 A lossless element reflects all of the power, so $|S_{11}| = 1$ at every frequency and the decibel plot is a flat line at 0 dB, placing all of the information in the phase. The capacitor has the angles $-17.9^\circ$, $-76.3^\circ$, and $-115.0^\circ$ at the three frequencies, and the inductor has $165.7^\circ$, $115.7^\circ$, and $77.0^\circ$. Both trajectories move clockwise along the rim of the chart as the frequency rises, the inductor from near the short circuit toward the open circuit and the capacitor from near the open circuit toward the short circuit.
 
-For a small discontinuity that is embedded in a line terminated by $Z_0$, as in Chapters 3, 6, and 7, the magnitude $|S_{11}|$ rises with frequency, and the roll-off $1/(2\pi f C)$ does not appear in $S_{11}$ itself. A shunt capacitance gives the input impedance $Z_{in} = Z_0/(1 + jx)$, whose magnitude falls with frequency, and that fall appears only after the conversion from $S_{11}$ to impedance. The admittance $Y_{in} = 1/Z_{in} = (1 + jx)/Z_0$ shows the capacitance directly, because its imaginary part $\omega C$ is a straight line that rises with frequency. A series inductance gives $Z_{in} - Z_0 = j\omega L$, which is also a straight line. The slopes of those lines are the values of $C$ and $L$.
+For a small discontinuity that is embedded in a line terminated by $Z_0$, as in Chapters 3, 6, and 7, the magnitude $|S_{11}|$ rises with frequency, and the roll-off $1/(2\pi f C)$ does not appear in $S_{11}$ itself. A shunt capacitance gives the input impedance $Z_{in} = Z_0/(1 + jx)$, whose magnitude falls with frequency, and that fall appears only after converting $S_{11}$ to impedance. Converting to input admittance for a shunt capacitance or excess impedance for a series inductance isolates each reactive element linearly:
+
+$$Y_{in} = \frac{1}{Z_{in}} = \frac{1 + jx}{Z_0} = \frac{1}{Z_0} + j\omega C, \qquad Z_{in} - Z_0 = j\omega L$$
+
+The imaginary part $\omega C$ of $Y_{in}$ and the imaginary part $\omega L$ of $Z_{in} - Z_0$ both rise as straight lines with frequency, and their slopes yield $C$ and $L$ directly.
 
 #### Resolving an Overlapping L-C Via Cluster
 
@@ -251,7 +273,15 @@ $$Z_{in} - Z_0 \approx j\omega\left(L - Z_0^2 C\right) - Z_0 x^2, \qquad S_{11} 
 
 The first-order term is the net quantity $L - Z_0^2 C = 0.405$ nH, which is the same net area $\tau_L - \tau_C$ that Chapter 7 measures from the TDR display, so the two instruments agree at low frequency and carry the same limit there. The second-order term is real, equals $-Z_0 x^2$, and depends on the capacitance alone.
 
-At 1 GHz the full input impedance is $Z_{in} = 49.33 + j2.62$ Ω. The real part gives $x^2 = Z_0/\operatorname{Re}(Z_{in}) - 1 = 0.0135$, so $x = 0.116$ and $C = x/(\omega Z_0) = 0.370$ pF. The imaginary part then gives $\omega L = \operatorname{Im}(Z_{in}) + Z_0 x/(1 + x^2) = 2.62 + 5.74 = 8.36$ Ω, so $L = 1.33$ nH. One complex number at one frequency therefore determines both elements, where the time domain with an overlapping pair determines only their difference. The real part differs from $Z_0$ by only 0.67 Ω at 1 GHz, and the difference grows as $x^2$ (it is 12.6 Ω at 5 GHz), so the accuracy of the calibration of Chapter 8 and the use of many frequency points determine the quality of the result.
+At 1 GHz the full input impedance is $Z_{in} = 49.33 + j2.62$ Ω. Isolating $x$ from the real part recovers the shunt capacitance first:
+
+$$x^2 = \frac{Z_0}{\operatorname{Re}(Z_{in})} - 1 = 0.0135 \quad\Longrightarrow\quad x = 0.116, \qquad C = \frac{x}{\omega Z_0} = 0.370\ \text{pF}$$
+
+Substituting $x = 0.116$ into the imaginary part then recovers the series inductance:
+
+$$\omega L = \operatorname{Im}(Z_{in}) + \frac{Z_0 x}{1 + x^2} = 2.62 + 5.74 = 8.36\ \Omega \quad\Longrightarrow\quad L = 1.33\ \text{nH}$$
+
+One complex number at one frequency therefore determines both elements, where the time domain with an overlapping pair determines only their difference. The real part differs from $Z_0$ by only 0.67 Ω at 1 GHz, and the difference grows as $x^2$ (it is 12.6 Ω at 5 GHz), so the accuracy of the calibration of Chapter 8 and the use of many frequency points determine the quality of the result.
 
 #### Model Dependence and Spatial Resolution Limits
 
@@ -261,4 +291,4 @@ The measurement identifies the net frequency signature of the cluster and permit
 
 The channel that this chapter and the previous three chapters characterize is a frequency-dependent filter, and its effect on the timing of a digital signal is a separate question. [Chapter 10](10_Jitter_Decomposition_and_Measurement.md) begins Part 3 with that question and decomposes the timing error of a received signal into its sources.
 
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>

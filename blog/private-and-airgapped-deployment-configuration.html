@@ -117,6 +117,37 @@
     @media (max-width: 768px) {
       .blog-post table:not(.trace-container table) { overflow-x: auto; }
     }
+    /* Signal Integrity series tables: clean KaTeX math rendering, no pill-badge wrapping, and hidden MathML node */
+    .blog-post.series-signal-integrity table:not(.trace-container table) {
+      table-layout: auto;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) th,
+    .blog-post.series-signal-integrity table:not(.trace-container table) td {
+      padding: 10px 14px;
+      vertical-align: middle;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      word-break: normal;
+      overflow-wrap: normal;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) .katex {
+      font-size: 1em;
+      white-space: nowrap;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) .katex-mathml {
+      display: none !important;
+    }
+    @media (min-width: 769px) {
+      .blog-post.series-signal-integrity table:not(.trace-container table) th:first-child:nth-last-child(2),
+      .blog-post.series-signal-integrity table:not(.trace-container table) td:first-child:nth-last-child(2) {
+        width: 32%;
+        max-width: 240px;
+      }
+      .blog-post.series-signal-integrity table:not(.trace-container table) th:first-child:not(:nth-last-child(2)),
+      .blog-post.series-signal-integrity table:not(.trace-container table) td:first-child:not(:nth-last-child(2)) {
+        max-width: 220px;
+      }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -161,7 +192,7 @@
     <li><a href="index.html">Blog</a></li><li><a href="guide-private-and-airgapped-deployment.html">Guides: Private and Airgapped Deployment</a></li><li aria-current="page">Private and Airgapped Deployment</li></ol></nav>
         <article class="blog-post ">
 <h1>Private and Airgapped Deployment</h1>
-<!-- SUMMARY: A complete configuration walkthrough assembling LlamaIndex, LangGraph, MCP servers, LiteLLM, vLLM, SGLang, Qdrant, Docling, Arize Phoenix, and Unsloth into a self-contained AI system that operates entirely within a network perimeter with zero external connectivity. The architecture replaces every commercial API dependency from the enterprise pipeline with self-hosted alternatives, addresses offline model acquisition, and closes the fine-tuning loop entirely on-premises. --><p>Enterprise AI architectures such as the <a href="enterprise-agentic-pipeline-configuration.html">Enterprise Agentic Pipeline</a> assume outbound internet connectivity for commercial frontier APIs, cloud embedding endpoints, and live package registries during deployment. Organizations operating in classified or heavily regulated environments across defense, intelligence, healthcare, and critical infrastructure face a boundary condition that invalidates that assumption: zero bytes may leave the network perimeter, and no external service may receive inbound connections. Every component in this configuration from the <a href="index.html#tab-guides">Guides collection</a> runs on-premises, every model weight and wheel archive arrives via physical media transfer, and the complete stack operates indefinitely without internet access.</p>
+<!-- SUMMARY: A complete configuration walkthrough for a self-contained AI platform operating inside a sealed network perimeter with zero external connectivity. LlamaIndex, LangGraph, MCP servers, and LiteLLM coordinate multi-agent workflows and local gateway routing entirely on-premises. Self-hosted vLLM and SGLang inference engines pair with Qdrant, Docling, Arize Phoenix, and Unsloth to run retrieval and fine-tuning offline. --><p>Enterprise AI architectures such as the <a href="enterprise-agentic-pipeline-configuration.html">Enterprise Agentic Pipeline</a> assume outbound internet connectivity for commercial frontier APIs, cloud embedding endpoints, and live package registries during deployment. Organizations operating in classified or heavily regulated environments across defense, intelligence, healthcare, and critical infrastructure face a boundary condition that invalidates that assumption: zero bytes may leave the network perimeter, and no external service may receive inbound connections. Every component in this configuration from the <a href="index.html#tab-guides">Guides collection</a> runs on-premises, every model weight and wheel archive arrives via physical media transfer, and the complete stack operates indefinitely without internet access.</p>
 <h2>The Problem</h2>
 <p>An organization operating inside a sealed or classified network must deploy multi-agent retrieval, reasoning, and model adaptation entirely on isolated infrastructure. The architecture spans the same nine ecosystem layers as the standard enterprise pipeline, with one non-negotiable constraint applied at every boundary: zero external network connectivity.</p>
 <h3>Nine-Layer Airgapped Requirements</h3>

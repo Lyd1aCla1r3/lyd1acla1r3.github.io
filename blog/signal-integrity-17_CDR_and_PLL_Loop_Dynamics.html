@@ -117,6 +117,37 @@
     @media (max-width: 768px) {
       .blog-post table:not(.trace-container table) { overflow-x: auto; }
     }
+    /* Signal Integrity series tables: clean KaTeX math rendering, no pill-badge wrapping, and hidden MathML node */
+    .blog-post.series-signal-integrity table:not(.trace-container table) {
+      table-layout: auto;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) th,
+    .blog-post.series-signal-integrity table:not(.trace-container table) td {
+      padding: 10px 14px;
+      vertical-align: middle;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      word-break: normal;
+      overflow-wrap: normal;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) .katex {
+      font-size: 1em;
+      white-space: nowrap;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) .katex-mathml {
+      display: none !important;
+    }
+    @media (min-width: 769px) {
+      .blog-post.series-signal-integrity table:not(.trace-container table) th:first-child:nth-last-child(2),
+      .blog-post.series-signal-integrity table:not(.trace-container table) td:first-child:nth-last-child(2) {
+        width: 32%;
+        max-width: 240px;
+      }
+      .blog-post.series-signal-integrity table:not(.trace-container table) th:first-child:not(:nth-last-child(2)),
+      .blog-post.series-signal-integrity table:not(.trace-container table) td:first-child:not(:nth-last-child(2)) {
+        max-width: 220px;
+      }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -161,7 +192,7 @@
     <li><a href="index.html">Blog</a></li><li><a href="series-signal-integrity.html">Series: Signal Integrity</a></li><li><a href="signal-integrity-part-05.html">Part 5: SerDes Architecture and Clocking</a></li><li aria-current="page">CDR and PLL Loop Dynamics</li></ol></nav>
         <article class="blog-post series-signal-integrity">
 <h1>CDR and PLL Loop Dynamics</h1>
-<!-- SUMMARY: Serial links embed the sampling clock directly in the data stream. Phase-locked loop (PLL) dynamics govern how clock and data recovery (CDR) circuits extract this timing reference, linking the jitter transfer and error transfer functions to low-pass tracking and high-pass jitter tolerance across early/late and baud-rate phase detectors. --><p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p><p><a href="signal-integrity-16_SerDes_Architecture_and_Eye_Diagrams.html">Chapter 16: SerDes Architecture and Eye Diagrams</a> placed the clock and data recovery circuit (CDR) in parallel with the slicer. Its output is the clock that strobes the slicer, so it decides where in each unit interval the decision is made, and <a href="signal-integrity-14_CTLE_and_DFE.html">Chapter 14: CTLE and DFE</a> noted that this instant is the one at which the main cursor is sampled. This chapter is the single home of embedded clocking, of the phase-locked loop (PLL) model that describes the CDR, of the jitter transfer function (JTF), and of the golden PLL by which standards define the clock that a measurement must use.</p>
+<!-- SUMMARY: Serial links embed the sampling clock directly in the data stream. Phase-locked loop (PLL) dynamics govern how clock and data recovery (CDR) circuits extract this timing reference, linking the jitter transfer and error transfer functions to low-pass tracking and high-pass jitter tolerance across early/late and baud-rate phase detectors. --><p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p><p><a href="signal-integrity-16_SerDes_Architecture_and_Eye_Diagrams.html">Chapter 16: SerDes Architecture and Eye Diagrams</a> placed the clock and data recovery circuit (CDR) in parallel with the slicer. Its output is the clock that strobes the slicer, so it decides where in each unit interval the decision is made, and <a href="signal-integrity-14_CTLE_and_DFE.html">Chapter 14: CTLE and DFE</a> noted that this instant is the one at which the main cursor is sampled. This chapter is the single home of embedded clocking, of the phase-locked loop (PLL) model that describes the CDR, of the jitter transfer function (JTF), and of the golden PLL by which standards define the clock that a measurement must use.</p>
 <p>The CDR is a filter with chosen dynamics and not only a clock extractor. Slow timing variations of the data, such as drift from temperature or the small frequency difference between two crystals, must be followed so that the sampling instant stays in the eye. Fast variations must not be followed, because a clock that jumps with every edge displacement carries no stable timing reference. The boundary between the two behaviors is the loop bandwidth, and the shape of the response near that boundary decides whether the loop amplifies jitter at some frequency.</p>
 <p>Two statements about the same loop appear contradictory at first. The recovered clock follows the slow components of the data timing, which makes the loop a low-pass filter for jitter. The timing error that the sampler experiences, the difference between the data edge and the recovered clock, contains only the components that the loop does not follow, which makes it a high-pass quantity. <a href="signal-integrity-12_Test_Patterns_and_Jitter_Isolation.html">Chapter 12: Test Patterns and Jitter Isolation</a> stated this relation with a first-order model, and this chapter derives it for the first-order and second-order loops and shows that the two statements are complementary. One numerical loop, introduced in the Worked Examples, serves every calculation.</p>
 <h2>Core Concepts</h2>
@@ -316,20 +347,29 @@
 <p>$$\text{JTOL}(f) = \frac{J_{max}}{|E(f)|}$$</p>
 <p>At high jitter frequency $|E| \to 1$ and the tolerance equals $J_{max}$. Below the loop bandwidth the tolerance rises at 40 dB per decade, because the loop follows the jitter. The tolerance mask of a standard is a requirement on this curve.</p>
 <h2>Worked Examples</h2>
-<p>The examples share one loop, whose symbol rate is 16 GT/s NRZ (16 Gbps line rate) with a unit interval of 62.5 ps and a clock of 16 GHz ($100\ \text{MHz} \times 160$). The transmitter and receiver crystals differ by 100 ppm, so the data frequency offset is $\Delta f = 1.6$ MHz. The VCO gain is 800 MHz per volt ($K_{vco} = 2\pi \times 800 \times 10^6$ rad/s per volt). The rms jitter on the data edges is 1.5 ps, the value used in <a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html">Chapter 10</a>, which is $\sigma_\varphi = 2\pi \times 1.5/62.5 = 0.1508$ rad. The transition density is $\eta_T = 1/2$ and the charge pump current is $I_{cp} = 2\ \mu\text{A}$. All values are assumptions chosen to give round results, and no standard is implied.</p>
+<p>The examples share one loop, whose symbol rate is 16 GT/s NRZ (16 Gbps line rate) with a unit interval of 62.5 ps and a clock of 16 GHz ($100\ \text{MHz} \times 160$). The transmitter and receiver crystals differ by 100 ppm, so the data frequency offset is $\Delta f = 1.6$ MHz. The VCO gain is 800 MHz per volt ($K_{vco} = 2\pi \times 800 \times 10^6$ rad/s per volt). The rms jitter on the data edges is 1.5 ps, the value used in <a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html">Chapter 10</a>, corresponding to the rms phase jitter</p>
+<p>$$\sigma_\varphi = \frac{2\pi \times 1.5\ \text{ps}}{62.5\ \text{ps}} = 0.1508\ \text{rad}$$</p>
+<p>The transition density is $\eta_T = 1/2$ and the charge pump current is $I_{cp} = 2\ \mu\text{A}$. All values are assumptions chosen to give round results, and no standard is implied.</p>
 <h3>The Detector Gain and the Loop Design</h3>
-<p>The effective detector gain is $K_{pd} = 0.5 \times 2\ \mu\text{A} \times 0.7979/0.1508 = 5.29\ \mu\text{A}$ per radian. Choose the resistor so that the loop gain is $K_{pd}R = 5$ mV per radian, which gives $R = 945\ \Omega$. The Type-I loop of this resistor has $\omega_L = K_{pd}RK_{vco} = 0.005 \times 5.027 \times 10^9 = 2.513 \times 10^7$ rad/s, which is $f_L = 4$ MHz, the corner of the first-order model of <a href="signal-integrity-12_Test_Patterns_and_Jitter_Isolation.html">Chapter 12</a>.</p>
-<p>Add the capacitor to make the Type-II loop with the same $K = \omega_L$. The relation $2\zeta\omega_n = K$ holds for this loop, and the choice $\zeta = 1$ gives $\omega_n = 1.257 \times 10^7$ rad/s, $f_n = 2$ MHz, and a zero at $f_z = f_n/(2\zeta) = 1$ MHz. The capacitor follows from $\omega_z = 1/(RC)$:</p>
-<p>$$C = \frac{1}{R\,\omega_z} = \frac{1}{945 \times 6.283 \times 10^6} = 168\ \text{pF}$$</p>
+<p>The bang-bang gain formula gives the effective phase detector gain:</p>
+<p>$$K_{pd} = \frac{0.5 \times 2\ \mu\text{A} \times 0.7979}{0.1508} = 5.29\ \mu\text{A/rad}$$</p>
+<p>A resistor of $R = 945\ \Omega$ sets the proportional path to $K_{pd}R = 5$ mV per radian, giving the Type-I loop bandwidth</p>
+<p>$$\omega_L = K_{pd} R K_{vco} = 0.005 \times 5.027 \times 10^9 = 2.513 \times 10^7\ \text{rad/s}$$</p>
+<p>That radian corner corresponds to $f_L = 4$ MHz, the corner of the first-order model of <a href="signal-integrity-12_Test_Patterns_and_Jitter_Isolation.html">Chapter 12</a>.</p>
+<p>Add the capacitor to make the Type-II loop with the same $K = \omega_L$. The relation $2\zeta\omega_n = K$ holds for this loop, and the choice $\zeta = 1$ gives $\omega_n = 1.257 \times 10^7$ rad/s and $f_n = 2$ MHz. From $\omega_z = 1/(RC)$, the zero frequency and series capacitance are</p>
+<p>$$f_z = \frac{f_n}{2\zeta} = 1\ \text{MHz}, \qquad C = \frac{1}{R\,\omega_z} = \frac{1}{945 \times 6.283 \times 10^6} = 168\ \text{pF}$$</p>
 <p>The check $\omega_n^2 = K_{pd}K_{vco}/C$ gives $1.579 \times 10^{14}$, as it must. The component values are illustrative, and a digital loop filter has the same two paths.</p>
 <h3>The Static Phase Error of the Type-I Loop</h3>
 <p>The frequency offset of 1.6 MHz needs a control voltage of $1.6\ \text{MHz}/800\ \text{MHz per V} = 2$ mV. The resistor produces this voltage only with the phase error</p>
 <p>$$\theta_e = \frac{\Delta f}{f_L} = \frac{1.6}{4} = 0.40\ \text{rad} = 22.9^\circ = 0.0637\ \text{UI} = 3.98\ \text{ps}$$</p>
 <p>The check $2\ \text{mV}/(5\ \text{mV/rad}) = 0.4$ rad gives the same result. The same number follows from the group delay: the lag is $1/\omega_L = 39.8$ ns, and $1.6\ \text{MHz} \times 39.8\ \text{ns} = 0.0637$ cycle. The clock samples 3.98 ps away from the point it would choose without the offset. Doubling the gain halves the error, and no finite gain removes it.</p>
 <h3>The Type-II Loop Removes the Error</h3>
-<p>With the capacitor the static error of the frequency offset is zero. The capacitor stores the 2 mV after the transient. The transient of the error follows from $E(s)\,\Delta\omega/s^2 = \Delta\omega/(s^2 + 2\zeta\omega_n s + \omega_n^2)$. For $\zeta = 1$ the time function is $\theta_e(t) = \Delta\omega\,t\,e^{-\omega_n t}$, which has its maximum at $t = 1/\omega_n = 79.6$ ns:</p>
+<p>With the capacitor the static error of the frequency offset is zero. The capacitor stores the 2 mV after the transient. The transient of the error follows from $E(s)\,\Delta\omega/s^2 = \Delta\omega/(s^2 + 2\zeta\omega_n s + \omega_n^2)$. For $\zeta = 1$ the time function is $\theta_e(t) = \Delta\omega\,t\,e^{-\omega_n t}$, which reaches its peak at</p>
+<p>$$t = \frac{1}{\omega_n} = 79.6\ \text{ns}$$</p>
+<p>Substitution of that peak time into $\theta_e(t)$ gives the maximum transient phase error:</p>
 <p>$$\theta_{e,max} = \frac{\Delta\omega}{\omega_n e} = \frac{2\pi \times 1.6 \times 10^6}{1.257 \times 10^7 \times 2.718} = 0.294\ \text{rad} = 2.93\ \text{ps}$$</p>
-<p>The Type-I error of 3.98 ps stays forever, and the Type-II error reaches a maximum of 2.93 ps and then decays to zero. A step in the phase of the data overshoots by 13.5 percent at $t = 2/\omega_n = 159$ ns, from the expression of the Core Concepts.</p>
+<p>The Type-I error of 3.98 ps stays forever, and the Type-II error reaches a maximum of 2.93 ps and then decays to zero. From the step-response expression of the Core Concepts, a phase step on the data reaches its 13.5 percent overshoot peak at</p>
+<p>$$t = \frac{2}{\omega_n} = 159\ \text{ns}$$</p>
 <h3>The JTF, the Error Transfer Function, and the Tolerance</h3>
 <p>The loop has $f_n = 2$ MHz and $\zeta = 1$. The $-3$ dB bandwidth is $2.482 \times 2 = 4.96$ MHz, and the peaking of 1.25 dB (a ratio of 1.155) occurs at $0.707 \times 2 = 1.41$ MHz. The table gives the response and the tolerance for the assumption $J_{max} = 0.3$ UI.</p>
 <table>
@@ -425,7 +465,7 @@
 <p>A detector can avoid both effects by using only the full-swing transitions ($-3 \leftrightarrow +3$), whose crossings sit at the middle of the ramp with the full slope. These are 2 of the 16 equally probable symbol pairs, which gives a transition density of $1/8$ in place of $1/2$. The detector gain $K_{pd}$ is proportional to the density and falls by a factor of 4, and the charge pump current or the loop filter must compensate to keep the bandwidth. Both options reduce to the linear model of this chapter with the corresponding $K_{pd}$.</p>
 <h3>The Detector Always Dithers</h3>
 <p>A binary detector cannot output zero while a transition is present. In lock the early and late decisions alternate, and the phase hunts around the lock point with an amplitude of a few phase steps. This dither is a small jitter added to the recovered clock, set by the phase step of the interpolator ($0.244$ ps in the example) and by the proportional gain, and it is one reason that the proportional step is made small.</p>
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="signal-integrity-16_SerDes_Architecture_and_Eye_Diagrams.html" class="pagination-link prev">

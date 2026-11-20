@@ -117,6 +117,37 @@
     @media (max-width: 768px) {
       .blog-post table:not(.trace-container table) { overflow-x: auto; }
     }
+    /* Signal Integrity series tables: clean KaTeX math rendering, no pill-badge wrapping, and hidden MathML node */
+    .blog-post.series-signal-integrity table:not(.trace-container table) {
+      table-layout: auto;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) th,
+    .blog-post.series-signal-integrity table:not(.trace-container table) td {
+      padding: 10px 14px;
+      vertical-align: middle;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      word-break: normal;
+      overflow-wrap: normal;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) .katex {
+      font-size: 1em;
+      white-space: nowrap;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) .katex-mathml {
+      display: none !important;
+    }
+    @media (min-width: 769px) {
+      .blog-post.series-signal-integrity table:not(.trace-container table) th:first-child:nth-last-child(2),
+      .blog-post.series-signal-integrity table:not(.trace-container table) td:first-child:nth-last-child(2) {
+        width: 32%;
+        max-width: 240px;
+      }
+      .blog-post.series-signal-integrity table:not(.trace-container table) th:first-child:not(:nth-last-child(2)),
+      .blog-post.series-signal-integrity table:not(.trace-container table) td:first-child:not(:nth-last-child(2)) {
+        max-width: 220px;
+      }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -161,7 +192,7 @@
     <li><a href="index.html">Blog</a></li><li><a href="series-signal-integrity.html">Series: Signal Integrity</a></li><li><a href="signal-integrity-part-06.html">Part 6: Coherent Optics</a></li><li aria-current="page">Mach-Zehnder and IQ Modulators</li></ol></nav>
         <article class="blog-post series-signal-integrity">
 <h1>Mach-Zehnder and IQ Modulators</h1>
-<!-- SUMMARY: Nested Mach-Zehnder interferometers modulate both the amplitude and phase of an optical carrier. Driving dual push-pull child modulators in quadrature synthesizes arbitrary QPSK and 16QAM constellations, while a 90-degree optical hybrid and balanced photodiode pairs beat the signal against a local oscillator for coherent reception. --><p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p><p><a href="signal-integrity-19_Light_and_the_Electro_Optic_Effect.html">Chapter 19: Light as an Electromagnetic Wave and the Electro-Optic Effect</a> ended with a phase modulator, a crystal section that adds the phase $\Delta\phi = \pi V/V_\pi$ to the wave that passes through it. A phase modulator alone moves the phase and leaves the amplitude unchanged, and a transmitter that must place a symbol anywhere on the plane of amplitude and phase needs more.</p>
+<!-- SUMMARY: Nested Mach-Zehnder interferometers modulate both the amplitude and phase of an optical carrier. Quadrature excitation of dual push-pull child modulators synthesizes QPSK and 16QAM constellations, while a 90-degree optical hybrid and balanced photodiode pairs beat the signal against a local oscillator for coherent reception. --><p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p><p><a href="signal-integrity-19_Light_and_the_Electro_Optic_Effect.html">Chapter 19: Light as an Electromagnetic Wave and the Electro-Optic Effect</a> ended with a phase modulator, a crystal section that adds the phase $\Delta\phi = \pi V/V_\pi$ to the wave that passes through it. A phase modulator alone moves the phase and leaves the amplitude unchanged, and a transmitter that must place a symbol anywhere on the plane of amplitude and phase needs more.</p>
 <p>This chapter derives how an interferometer converts a phase difference into an amplitude, how two interferometers in quadrature produce any point of the plane, and how the receiver recovers the two components again. The chapter uses the trigonometry that <a href="signal-integrity-02_Frequency_Content_of_Digital_Signals.html">Chapter 2: Frequency Content of Digital Signals</a> used for the Fourier series, and the receiver derivation uses the power relations of <a href="signal-integrity-08_S_Parameters_and_VNA.html">Chapter 8: S-Parameters and Vector Network Analysis</a>.</p>
 <h2>Core Concepts</h2>
 <h3>The Mach-Zehnder Modulator</h3>
@@ -183,7 +214,9 @@
 <p>The right side has the form $I\cos\omega t + Q\sin\omega t$ with $I = A\cos\varphi$ and $Q = A\sin\varphi$. The two relations invert to the amplitude and the phase,</p>
 <p>$$I\cos\omega t + Q\sin\omega t = A\cos(\omega t - \varphi), \qquad A = \sqrt{I^2 + Q^2}, \quad \varphi = \operatorname{atan2}(Q, I)$$</p>
 <p>where $\operatorname{atan2}$ chooses the quadrant of the angle (the plain arctangent $\operatorname{atan}(Q/I)$ cannot distinguish $(I, Q)$ from $(-I, -Q)$). This trigonometric identity is the same relation that <a href="signal-integrity-17_CDR_and_PLL_Loop_Dynamics.html">Chapter 17: CDR and PLL Loop Dynamics</a> uses for a phase interpolator: a sum of a weighted cosine and a weighted sine of one frequency is one sinusoid of that frequency, with amplitude $\sqrt{w_1^2 + w_2^2}$ and phase $\operatorname{atan}(w_2/w_1)$.</p>
-<p>Two numbers $(I, Q)$ and the two numbers $(A, \varphi)$ are two descriptions of one point, and the point is written as the complex number $s = I + jQ = A e^{j\varphi}$, the complex envelope of the carrier, with $E(t) = \operatorname{Re}\{s\,e^{-j\omega t}\}$. The sign of the exponent is a convention of optics that differs from the $e^{j\omega t}$ of <a href="signal-integrity-03_Impedance_Reflections_and_Termination.html">Chapter 3: Impedance, Reflections, and Termination</a>, and the constellation point $(I, Q)$ is the same in both.</p>
+<p>The Cartesian pair $(I, Q)$ and the polar pair $(A, \varphi)$ describe the same point on the plane through the complex envelope of the carrier:</p>
+<p>$$s = I + jQ = A\,e^{j\varphi}, \qquad E(t) = \operatorname{Re}\bigl\{s\,e^{-j\omega t}\bigr\}$$</p>
+<p>The sign of the exponent is a convention of optics that differs from the $e^{j\omega t}$ of <a href="signal-integrity-03_Impedance_Reflections_and_Termination.html">Chapter 3: Impedance, Reflections, and Termination</a>, and the constellation point $(I, Q)$ is the same in both.</p>
 <p>The weights can be recovered from the sum. Average the product of the sum with $\cos\omega t$ over one period, using $\langle\cos^2\rangle = \tfrac12$ and $\langle\sin\cos\rangle = 0$:</p>
 <p>$$\left\langle (I\cos\omega t + Q\sin\omega t)\cos\omega t\right\rangle = \frac{I}{2}, \qquad \left\langle (I\cos\omega t + Q\sin\omega t)\sin\omega t\right\rangle = \frac{Q}{2}$$</p>
 <p>The cosine and the sine are <strong>mathematically orthogonal</strong>: their product averages to zero, so each average isolates one weight and ignores the other. This orthogonality is a different property from the <strong>physical orthogonality</strong> of two polarizations in <a href="signal-integrity-19_Light_and_the_Electro_Optic_Effect.html">Chapter 19</a>. Two polarizations are separate field components that never add into one vector direction, and the receiver separates them with a polarization beam splitter. The in-phase and quadrature waves have the <em>same</em> polarization and add into one wave, and only the multiplication and averaging above separate them.</p>
@@ -220,7 +253,9 @@
 <p>An IQ modulator nests two MZMs inside a third interferometer. The outer splitter divides the field into two arms of $E_{in}/\sqrt2$, and each arm contains a child MZM, one for $I$ and one for $Q$. The child field transfers are the real numbers $m_I, m_Q \in [-1, 1]$ of the null-biased expression above, each multiplied by the child&#39;s own field factor, so each child passes $E_{in}\,m/\sqrt2$. A phase section in the $Q$ arm adds a fixed $90^\circ$ at the carrier (a quarter of an optical <em>cycle</em>, 1.29 fs of delay at 1550 nm, set by a bias voltage on a phase modulator and not by a physical path of a quarter wavelength). The outer combiner passes $1/\sqrt2$ of each arm, so</p>
 <p>$$E_{out} = \frac{E_{in}}{2}\left(m_I + j\,m_Q\right)$$</p>
 <p>with $m_I$ and $m_Q$ set by the two data drives.</p>
-<p>The combination of the two orthogonal waves produces one wave with amplitude $A = \tfrac12\sqrt{m_I^2 + m_Q^2}\,|E_{in}|$ and phase $\operatorname{atan2}(m_Q, m_I)$, as the identity above states, so the complex number $m_I + j m_Q$ sets the constellation point. The factor $1/2$ in this field costs optical power. At a corner of the constellation ($m_I = m_Q = 1$) the output power is $\tfrac14(1 + 1) = \tfrac12$ of the input (3.01 dB loss), and on an axis ($m_I = 1$, $m_Q = 0$) it is $\tfrac14$ (6.02 dB loss), because the output combiner passes the factor $1/\sqrt2$ of each arm field and the remaining power leaves through the unused port or radiates into the substrate.</p>
+<p>The combination of the two orthogonal waves produces one wave with amplitude $A = \tfrac12\sqrt{m_I^2 + m_Q^2}\,|E_{in}|$ and phase $\operatorname{atan2}(m_Q, m_I)$, as the identity above states, so the complex number $m_I + j m_Q$ sets the constellation point. The factor $1/2$ in this field costs optical power. At a corner of the constellation, the drive levels and normalized output power are</p>
+<p>$$m_I = m_Q = 1, \qquad \frac{P_{out}}{P_{in}} = \frac{1}{4}(1 + 1) = \frac{1}{2}\ (-3.01\ \text{dB})$$</p>
+<p>On an axis ($m_I = 1$, $m_Q = 0$) the output power is $\tfrac14$ of the input (6.02 dB loss), because the output combiner passes the factor $1/\sqrt2$ of each arm field and the remaining power leaves through the unused port or radiates into the substrate.</p>
 <h3>Dual-Polarization Transmitter</h3>
 <p>The dual-polarization transmitter of <a href="signal-integrity-19_Light_and_the_Electro_Optic_Effect.html">Chapter 19</a> places one such IQ modulator in each polarization branch. The laser feeds a power splitter, the two IQ modulators carry independent data, a polarization rotator turns the second branch by $90^\circ$, and the polarization beam combiner merges the branches. The array contains four child MZMs, each with two phase-modulating arms, which makes eight arms in all. The four child MZMs receive four independent electrical streams: XI, XQ, YI, and YQ.</p>
 <p>The optical power budget follows from the factors above. For a 16QAM constellation driven to $m \in \{\pm\tfrac13, \pm1\}$ the mean of $m^2$ is $\tfrac12(\tfrac19 + 1) = 0.556$, so each IQ modulator has the mean output power $\tfrac14(2)(0.556) = 0.278$ of its input, and the whole transmitter delivers $0.278$ of the laser power (a loss of 5.56 dB) before the excess loss of the waveguides.</p>
@@ -243,9 +278,13 @@
 <p>The second consequence is that the angle $\theta$ is not constant. The two lasers have a frequency offset $\Delta f$ and a phase drift, so $\theta$ rotates as $2\pi\Delta f\,t$ plus the symbol phase and the laser noise, and the processor must remove the rotation. It tracks the carrier phase with a loop of the type of <a href="signal-integrity-17_CDR_and_PLL_Loop_Dynamics.html">Chapter 17</a>, and <a href="signal-integrity-21_Wideband_Signal_Analysis.html">Chapter 21: Wideband Signal Analysis and EVM</a> treats the other impairments that the processor removes.</p>
 <h2>Worked Examples</h2>
 <h3>Mach-Zehnder Transfer Numbers</h3>
-<p>Take $V_\pi = 3$ V and push-pull drive, which gives the transmission $\cos^2 0 = 1$ at $v = 0$. At $v = V_\pi/2 = 1.5$ V the phase difference is $\pi/2$, and the power transmission is $\cos^2(\pi/4) = 0.5$ (3.01 dB). At $v = V_\pi = 3$ V the transmission is zero. With the null bias, a drive of $\pm1.5$ V gives the field $\mp\sin(\pi/4) = \mp0.707$ (power $0.5$), and $\pm3$ V gives $\mp1$. A splitting error of $\varepsilon = 0.03$ leaves the field $0.03\,E_{in}$ at the null, a power of $9\times10^{-4}$ and an extinction ratio of 30.5 dB.</p>
+<p>Take $V_\pi = 3$ V and push-pull drive, which gives the transmission $\cos^2 0 = 1$ at $v = 0$. The quadrature point and the null point occur at the drive voltages</p>
+<p>$$v = \frac{V_\pi}{2} = 1.5\ \text{V}, \qquad v = V_\pi = 3\ \text{V}$$</p>
+<p>At $1.5$ V the phase difference is $\pi/2$ and the power transmission is $\cos^2(\pi/4) = 0.5$ (3.01 dB loss), whereas at $3$ V the transmission reaches zero. With the null bias, a drive of $\pm1.5$ V gives the field $\mp\sin(\pi/4) = \mp0.707$ (power $0.5$), and $\pm3$ V gives $\mp1$. A splitting error of $\varepsilon = 0.03$ leaves the field $0.03\,E_{in}$ at the null, a power of $9\times10^{-4}$ and an extinction ratio of 30.5 dB.</p>
 <h3>Synthesizing a Constellation Point</h3>
-<p>The 16QAM point with $I = 3$ and $Q = 1$ has the amplitude $A = \sqrt{10} = 3.162$ and the phase $\varphi = \operatorname{atan2}(1, 3) = 18.43^\circ$. The wave $3\cos\omega t + 1\sin\omega t$ and the wave $3.162\cos(\omega t - 18.43^\circ)$ agree at every instant: at $\omega t = 0$ both equal 3.000, and at $\omega t = 90^\circ$ both equal 1.000. The receiver averages with the cosine and the sine and finds $I/2 = 1.5$ and $Q/2 = 0.5$, which restores the point after the factor 2 is applied.</p>
+<p>The 16QAM point with $I = 3$ and $Q = 1$ has the polar amplitude and phase</p>
+<p>$$A = \sqrt{3^2 + 1^2} = \sqrt{10} = 3.162, \qquad \varphi = \operatorname{atan2}(1, 3) = 18.43^\circ$$</p>
+<p>The wave $3\cos\omega t + 1\sin\omega t$ and the wave $3.162\cos(\omega t - 18.43^\circ)$ agree at every instant: at $\omega t = 0$ both equal 3.000, and at $\omega t = 90^\circ$ both equal 1.000. The receiver averages with the cosine and the sine and finds $I/2 = 1.5$ and $Q/2 = 0.5$, which restores the point after the factor 2 is applied.</p>
 <h3>Arcsine Drive and the Penalty of a Linear Drive</h3>
 <p>The four fields of 16QAM per axis are $-1, -\tfrac13, +\tfrac13, +1$, with equal spacings of $\tfrac23$ and the three eye openings equal. A drive that applied the voltages $\pm\tfrac13 V_\pi$ and $\pm V_\pi$ without correction would produce the fields $\sin(\pi/6) = 0.5$ and $\sin(\pi/2) = 1$, that is, $-1, -0.5, +0.5, +1$, so the spacings become $0.5, 1.0, 0.5$.</p>
 <p>The two outer eyes shrink to $0.5/0.667 = 0.75$ of the intended opening, which is a loss of $20\log_{10}0.75 = 2.5$ dB of margin in the outer eyes, while the middle eye grows to 1.5 times its intended opening. With the arcsine drive all three equal $\tfrac23$. The comparison is the optical counterpart of the equal PAM4 eyes of <a href="signal-integrity-15_PAM4_Signaling_and_Gray_Coding.html">Chapter 15: PAM4 Signaling and Gray Coding</a>, where the transmitter must also place the levels at equal spacing.</p>
@@ -266,7 +305,7 @@
 <h3>Polarization Rotation in the Fiber</h3>
 <p>The fiber does not preserve the orientation of the polarization. The two components that leave the transmitter as XI/XQ and YI/YQ arrive as mixtures of each other, with a mixing that changes with temperature and with mechanical disturbance. The receiver therefore cannot assign one polarization beam splitter output to one transmitted polarization. The digital processor undoes the mixing with a $2 \times 2$ adaptive filter, as <a href="signal-integrity-21_Wideband_Signal_Analysis.html">Chapter 21</a> shows, and the transmitter and the receiver need no alignment of their polarization axes.</p>
 <hr>
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="signal-integrity-19_Light_and_the_Electro_Optic_Effect.html" class="pagination-link prev">

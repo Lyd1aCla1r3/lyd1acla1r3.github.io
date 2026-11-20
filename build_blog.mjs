@@ -8,15 +8,34 @@ const BLOG_DIR = path.join(process.cwd(), 'blog');
 const INDEX_PATH = path.join(process.cwd(), 'blog/index.html');
 
 const templateHtml = fs.readFileSync(TEMPLATE_PATH, 'utf-8');
+const FROZEN_SERIES = new Set(['tokenization', 'transformers', 'mixture-of-experts']);
+const GUIDE_TITLES = {
+    'solo-developer-stack': 'Solo Developer Stack',
+    'enterprise-agentic-pipeline': 'Enterprise Agentic Pipeline',
+    'private-and-airgapped-deployment': 'Private and Airgapped Deployment',
+    'rag-first-knowledge-system': 'RAG-First Knowledge System',
+    'evaluation-driven-development-loop': 'Evaluation-Driven Development Loop',
+    'template-for-coding-agent-best-practices': 'Template for Coding Agent Best Practices',
+};
+function formatGuideName(gName) {
+    if (GUIDE_TITLES[gName]) return GUIDE_TITLES[gName];
+    return gName.split('-').map(word => {
+        if (word.toLowerCase() === 'rag') return 'RAG';
+        if (word.toLowerCase() === 'ai') return 'AI';
+        if (word.toLowerCase() === 'and') return 'and';
+        if (word.toLowerCase() === 'for') return 'for';
+        return word.charAt(0).toUpperCase() + word.slice(1);
+    }).join(' ');
+}
 
 // Signal Integrity 2-tier Part/Chapter structure
 const siParts = [
-    { id: 1, title: 'Electromagnetic and Signal Foundations', prefix: ['01_','02_','03_','04_','05_','06_'], summary: 'The electromagnetic wave is the carrier of all digital information. Part 1 traces the physics of wave propagation on PCB transmission lines, the frequency content of digital signals, characteristic impedance and reflection coefficients, magnetic coupling and crosstalk, frequency-dependent conductor and dielectric losses, and the return path dynamics that govern every high-speed channel.' },
-    { id: 2, title: 'Signal Integrity Measurement', prefix: ['07_','08_','09_'], summary: 'Measurement instruments reveal the physical reality that simulation predicts. Part 2 covers time domain reflectometry, S-parameter matrix formalism with vector network analysis, and the Smith Chart, which maps the same reflection data onto the impedance plane.' },
-    { id: 3, title: 'Jitter Analysis', prefix: ['10_','11_','12_'], summary: 'Timing uncertainty is the ultimate limiter of serial link performance. Part 3 decomposes total jitter into random and deterministic components, derives the Dual-Dirac model for BER extrapolation to unmeasurable error ratios, and details the test pattern selection and spectral techniques that isolate each jitter source.' },
-    { id: 4, title: 'Equalization and RX Architecture', prefix: ['13_','14_','15_'], summary: 'The channel degrades signal quality, and equalization reconstructs it. Part 4 derives transmitter feed-forward equalization, continuous time linear equalization, and decision feedback equalization as three complementary stages of a modern link budget, then extends the framework to PAM4 multi-level signaling and Gray coding.' },
+    { id: 1, title: 'Wave and Loss Foundations', prefix: ['01_','02_','03_','04_','05_'], summary: 'The electromagnetic wave is the carrier of all digital information. Part 1 traces the physics of wave propagation on PCB transmission lines, the frequency content of digital signals, characteristic impedance and reflection coefficients, magnetic coupling and crosstalk, and the frequency-dependent conductor and dielectric losses that attenuate high-speed channels.' },
+    { id: 2, title: 'Discontinuities and Signal Integrity Measurement', prefix: ['06_','07_','08_','09_'], summary: 'Physical discontinuities reshape traveling waves, and measurement instruments capture the resulting channel behavior. Part 2 covers return-path dynamics and via parasitics, time-domain reflectometry, S-parameter matrix formalism with vector network analysis, and the Smith chart, which maps reflection data onto the impedance plane.' },
+    { id: 3, title: 'Jitter Analysis', prefix: ['10_','11_','12_'], summary: 'Edge timing uncertainty is the ultimate limiter of serial link performance. Part 3 decomposes total jitter into random and deterministic components, derives the Dual-Dirac model for BER extrapolation to unmeasurable error ratios, and details the test pattern selection and spectral techniques that isolate each jitter source.' },
+    { id: 4, title: 'Equalization and RX Architecture', prefix: ['13_','14_','15_'], summary: 'The channel degrades signal quality, and equalization reconstructs it. Part 4 derives transmitter feed-forward equalization, continuous-time linear equalization, and decision feedback equalization as three complementary stages of a modern link budget, then extends the framework to PAM4 multi-level signaling and Gray coding.' },
     { id: 5, title: 'SerDes Architecture and Clocking', prefix: ['16_','17_','18_'], summary: 'The serializer/deserializer is the complete system that converts parallel logic into serial analog transmission and back. Part 5 covers SerDes architecture and eye diagram measurement, CDR and PLL loop dynamics including phase noise analysis, and the line coding, forward error correction, and protocol framing layers that sit between the physical channel and usable data throughput.' },
-    { id: 6, title: 'Coherent Optics', prefix: ['19_','20_','21_'], summary: 'Coherent optical transmission extends high-speed link physics into the optical domain. Part 6 examines how electro-optic modulators manipulate the refractive index of lithium niobate to encode digital data into the phase and amplitude of orthogonal electromagnetic fields, and how wideband signal analyzers isolate the resulting physical layer distortions.' },
+    { id: 6, title: 'Coherent Optics', prefix: ['19_','20_','21_'], summary: 'Coherent optical transmission extends high-speed link physics into the optical domain. Part 6 examines how electro-optic modulators manipulate the refractive index of lithium niobate to encode digital data into the phase and amplitude of orthogonal electromagnetic fields, and how wideband signal analyzers isolate the resulting physical-layer distortions.' },
 ];
 
 function getSiPart(filename) {
@@ -136,13 +155,7 @@ for (const fileObj of mdFiles) {
           }
       }
   } else if (topLevelDir === 'guides' && guideName) {
-      let guideDisplay = guideName.split('-').map(word => {
-          if (word.toLowerCase() === 'rag') return 'RAG';
-          if (word.toLowerCase() === 'ai') return 'AI';
-          if (word.toLowerCase() === 'and') return 'and';
-          if (word.toLowerCase() === 'for') return 'for';
-          return word.charAt(0).toUpperCase() + word.slice(1);
-      }).join(' ');
+      let guideDisplay = formatGuideName(guideName);
       breadcrumbHtml += `<li><a href="guide-${guideName}.html">Guides: ${guideDisplay}</a></li>`;
   } else if (topLevelDir !== 'uncategorized') {
       breadcrumbHtml += `<li><a href="index.html#${tabId}">${tierDisplay}</a></li>`;
@@ -241,9 +254,11 @@ for (let i = 0; i < postsData.length; i++) {
     .replace('{{PAGINATION}}', () => paginationHtml)
     .replace('{{SERIES_CLASS}}', () => post.seriesName ? `series-${post.seriesName}` : '');
     
-  const outPath = path.join(BLOG_DIR, post.url);
-  fs.writeFileSync(outPath, finalHtml, 'utf-8');
-  console.log(`Generated blog post: ${post.url}`);
+  if (!post.seriesName || !FROZEN_SERIES.has(post.seriesName)) {
+    const outPath = path.join(BLOG_DIR, post.url);
+    fs.writeFileSync(outPath, finalHtml, 'utf-8');
+    console.log(`Generated blog post: ${post.url}`);
+  }
   
   posts.push({
     title: post.title,
@@ -295,11 +310,11 @@ if (posts.length > 0) {
               if (word.toLowerCase() === 'ai') return 'AI';
               if (word.toLowerCase() === 'of') return 'of';
               return word.charAt(0).toUpperCase() + word.slice(1);
-          }).join(' ') + (sName === 'signal-integrity' ? ' (Advanced Edition)' : '');
+          }).join(' ');
           
           let seriesDesc = `A sequential exploration of ${seriesTitle}.`;
           if (sName === 'transformers') {
-              seriesDesc = "A geometric deconstruction of the Decoder-only Transformer architecture. This complete series builds the model from the ground up, moving from the vocabulary embedding matrix through the multi-head attention mechanism and residual streams, terminating in the mathematical calculation of the cross-entropy loss function.";
+              seriesDesc = "A geometric deconstruction of the decoder-only Transformer architecture. This complete series builds the model from the ground up, tracing the forward and backward pass from the vocabulary embedding matrix through multi-head attention and residual streams to the cross-entropy loss function.";
           } else if (sName === 'tokenization') {
               seriesDesc = "A step-by-step unrolling of the Byte Pair Encoding algorithm. This collection traces the deterministic compression of character-level data into semantic subword units, proving mathematically how the statistical distribution of language generates structural linguistic features before reaching the neural network.";
           } else if (sName === 'embeddings') {
@@ -311,7 +326,7 @@ if (posts.length > 0) {
           } else if (sName === 'mixture-of-experts') {
               seriesDesc = "A first-principles deconstruction of sparse Mixture of Experts architectures. This series bridges from the dense feed-forward network to dynamic top-k routing, examining expert collapse, load balancing, capacity limits, and the parameter-compute decoupling that defines sparse frontier models.";
           } else if (sName === 'signal-integrity') {
-              seriesDesc = "A first-principles exploration of high-speed digital systems, tracing the physics of electromagnetic wave propagation through frequency-dependent loss mechanisms, jitter decomposition, equalization architectures (CTLE/DFE/FFE), the complete SerDes link budget, and coherent optical transmission physics.";
+              seriesDesc = "A first-principles exploration of high-speed digital systems published across two standalone ebook editions covering accessible wave foundations and advanced transceiver architecture. This series traces electromagnetic wave propagation, S-parameter and jitter measurement, CTLE/DFE/FFE and PAM4 equalization, and SerDes clocking with coherent optics.";
           }
           
           seriesHtml += `
@@ -322,27 +337,54 @@ if (posts.length > 0) {
               </article>
           </a>`;
           
+          if (FROZEN_SERIES.has(sName)) {
+              continue;
+          }
+
           // Generate dedicated series page
           let seriesPageHtml = indexHtml;
+          seriesPageHtml = seriesPageHtml.replace(
+              /<title>Blog \| Lydia Pedersen<\/title>/,
+              `<title>${seriesTitle} Series | Lydia Pedersen</title>`
+          );
+          seriesPageHtml = seriesPageHtml.replace(
+              /<meta name="description" content="[^"]*">/,
+              `<meta name="description" content="${seriesDesc}">`
+          );
           seriesPageHtml = seriesPageHtml.replace(
               /<nav aria-label="breadcrumb" class="breadcrumbs">[\s\S]*?<\/nav>/,
               `<nav aria-label="breadcrumb" class="breadcrumbs"><ol><li><a href="../index.html">Home</a></li><li><a href="index.html#tab-series">Blog</a></li><li aria-current="page">${seriesTitle} Series</li></ol></nav>`
           );
           seriesPageHtml = seriesPageHtml.replace(
               /<h1 class="hero__name" style="text-align: center; margin-bottom: var\(--space-2xl\);">Blog<\/h1>/,
-              `<h1 class="hero__name" style="text-align: center; margin-bottom: 0;">Blog</h1>\n          <h2 class="metallic-text" style="text-align: center; font-size: clamp(2rem, 4vw, 2.5rem); margin-top: 10px; margin-bottom: var(--space-2xl); font-family: var(--font-display);">${seriesTitle} Series</h2>`
+              `<span class="section-label" style="justify-content: center; margin-bottom: var(--space-xs);">Blog Series</span>\n          <h1 class="hero__name" style="text-align: center; font-size: clamp(2.25rem, 4.5vw, 3.25rem); margin-bottom: var(--space-2xl);">${seriesTitle} Series</h1>`
           );
           
           let dedicatedSeriesContent;
           if (sName === 'signal-integrity') {
-              // 2-tier: show 5 Part cards instead of flat chapter list
+              // 2-tier: group Part 1 under Volume 1 and Parts 2-6 under Volume 2
               dedicatedSeriesContent = `
               <div class="series-group" style="margin-top: var(--space-2xl);">
+                  <h2 class="series-title">Volume 1: Wave and Loss Foundations (Expanded Second Edition)</h2>
+                  <p style="color: var(--text-secondary); line-height: var(--lh-relaxed); margin-bottom: var(--space-md);">Part 1 pairs accessible beginner intuition with complete step-by-step derivations across Chapters 1 to 5. <a href="../assets/docs/signal-integrity-vol1-ebook-v2.0.pdf" target="_blank" rel="noopener" style="color: var(--text-accent); font-weight: 500; text-decoration: none;">Download Volume 1 PDF (Ch 1-5) &rarr;</a></p>
                   <div class="series-items">
-                      ${siParts.map(part => `
+                      ${siParts.filter(part => part.id === 1).map(part => `
                       <a href="signal-integrity-part-${String(part.id).padStart(2, '0')}.html">
                           <article class="blog-item series-item">
-                              <h2>Part ${part.id}: ${part.title}</h2>
+                              <h3>Part ${part.id}: ${part.title}</h3>
+                              <p>${part.summary} <strong>(${part.prefix.length} chapters)</strong></p>
+                          </article>
+                      </a>`).join('')}
+                  </div>
+              </div>
+              <div class="series-group">
+                  <h2 class="series-title">Volume 2: Measurement, SerDes, and Coherent Optics (Concise First Edition)</h2>
+                  <p style="color: var(--text-secondary); line-height: var(--lh-relaxed); margin-bottom: var(--space-md);">Parts 2 through 6 advance from board-level physics into laboratory characterization and multi-gigabit transceiver design in a concise reference format across Chapters 6 to 21. <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener" style="color: var(--text-accent); font-weight: 500; text-decoration: none;">Download Volume 2 PDF (Ch 6-21) &rarr;</a></p>
+                  <div class="series-items">
+                      ${siParts.filter(part => part.id >= 2).map(part => `
+                      <a href="signal-integrity-part-${String(part.id).padStart(2, '0')}.html">
+                          <article class="blog-item series-item">
+                              <h3>Part ${part.id}: ${part.title}</h3>
                               <p>${part.summary} <strong>(${part.prefix.length} chapters)</strong></p>
                           </article>
                       </a>`).join('')}
@@ -377,12 +419,20 @@ if (posts.length > 0) {
                   const partTitle = `Part ${part.id}: ${part.title}`;
                   
                   partPageHtml = partPageHtml.replace(
+                      /<title>Blog \| Lydia Pedersen<\/title>/,
+                      `<title>${partTitle} | Signal Integrity Series | Lydia Pedersen</title>`
+                  );
+                  partPageHtml = partPageHtml.replace(
+                      /<meta name="description" content="[^"]*">/,
+                      `<meta name="description" content="${part.summary}">`
+                  );
+                  partPageHtml = partPageHtml.replace(
                       /<nav aria-label="breadcrumb" class="breadcrumbs">[\s\S]*?<\/nav>/,
                       `<nav aria-label="breadcrumb" class="breadcrumbs"><ol><li><a href="../index.html">Home</a></li><li><a href="index.html#tab-series">Blog</a></li><li><a href="series-signal-integrity.html">Signal Integrity Series</a></li><li aria-current="page">${partTitle}</li></ol></nav>`
                   );
                   partPageHtml = partPageHtml.replace(
                       /<h1 class="hero__name" style="text-align: center; margin-bottom: var\(--space-2xl\);">Blog<\/h1>/,
-                      `<h1 class="hero__name" style="text-align: center; margin-bottom: 0;">Blog</h1>\n          <h2 class="metallic-text" style="text-align: center; font-size: clamp(2rem, 4vw, 2.5rem); margin-top: 10px; margin-bottom: var(--space-2xl); font-family: var(--font-display);">${partTitle}</h2>`
+                      `<span class="section-label" style="justify-content: center; margin-bottom: var(--space-xs);">Signal Integrity Series</span>\n          <h1 class="hero__name" style="text-align: center; font-size: clamp(2rem, 4vw, 3rem); margin-bottom: var(--space-2xl);">${partTitle}</h1>`
                   );
                   
                   const partChapters = sPosts.filter(p => part.prefix.some(pre => path.basename(p.url).includes(pre)));
@@ -430,16 +480,6 @@ if (posts.length > 0) {
       'template-for-coding-agent-best-practices'
     ];
 
-    function formatGuideName(gName) {
-      return gName.split('-').map(word => {
-        if (word.toLowerCase() === 'rag') return 'RAG';
-        if (word.toLowerCase() === 'ai') return 'AI';
-        if (word.toLowerCase() === 'and') return 'and';
-        if (word.toLowerCase() === 'for') return 'for';
-        return word.charAt(0).toUpperCase() + word.slice(1);
-      }).join(' ');
-    }
-
     let guidesHtml = '';
     if (Object.keys(guideGroups).length === 0) {
        guidesHtml = '<p style="text-align: center; color: var(--text-muted); font-style: italic;">No guides available yet.</p>';
@@ -467,12 +507,20 @@ if (posts.length > 0) {
           // Generate dedicated guide group page
           let guidePageHtml = indexHtml;
           guidePageHtml = guidePageHtml.replace(
+              /<title>Blog \| Lydia Pedersen<\/title>/,
+              `<title>${guideTitle} | Lydia Pedersen</title>`
+          );
+          guidePageHtml = guidePageHtml.replace(
+              /<meta name="description" content="[^"]*">/,
+              `<meta name="description" content="${guideDesc}">`
+          );
+          guidePageHtml = guidePageHtml.replace(
               /<nav aria-label="breadcrumb" class="breadcrumbs">[\s\S]*?<\/nav>/,
               `<nav aria-label="breadcrumb" class="breadcrumbs"><ol><li><a href="../index.html">Home</a></li><li><a href="index.html#tab-guides">Blog</a></li><li aria-current="page">${guideTitle}</li></ol></nav>`
           );
           guidePageHtml = guidePageHtml.replace(
               /<h1 class="hero__name" style="text-align: center; margin-bottom: var\(--space-2xl\);">Blog<\/h1>/,
-              `<h1 class="hero__name" style="text-align: center; margin-bottom: 0;">Blog</h1>\n          <h2 class="metallic-text" style="text-align: center; font-size: clamp(2rem, 4vw, 2.5rem); margin-top: 10px; margin-bottom: var(--space-2xl); font-family: var(--font-display);">${guideTitle}</h2>`
+              `<span class="section-label" style="justify-content: center; margin-bottom: var(--space-xs);">Architecture Guide</span>\n          <h1 class="hero__name" style="text-align: center; font-size: clamp(2rem, 4vw, 3rem); margin-bottom: var(--space-2xl);">${guideTitle}</h1>`
           );
           
           const dedicatedGuideContent = `
@@ -520,7 +568,7 @@ if (posts.length > 0) {
             </div>
             
             <div class="tab-content" id="content-series">
-                <p class="tab-desc">Sequential explorations born from personal curiosity. These collections document my process of deconstructing complex systems from first principles and sharing the resulting insights.</p>
+                <p class="tab-desc">Multi-chapter engineering series deconstructing physical-layer signal integrity, neural network mathematics, and agentic AI infrastructure from first principles. Each collection builds a complete technical domain step by step from governing equations to system architecture.</p>
                 ${seriesHtml}
             </div>
             

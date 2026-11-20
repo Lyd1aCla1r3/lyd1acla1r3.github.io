@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blog | Lydia Pedersen</title>
+  <title>RAG-First Knowledge System | Lydia Pedersen</title>
+  <meta name="description" content="A complete configuration walkthrough for a retrieval-augmented generation system optimized for answer accuracy across a large, evolving document corpus. LlamaParse, Firecrawl, and Pinecone handle layout-aware document ingestion and hybrid vector indexing. LlamaIndex, MCP servers, LiteLLM, and Braintrust orchestrate query routing and retrieval evaluation so context fidelity governs answer quality.">
   <link rel="stylesheet" href="../css/styles.css?v=1.2">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
   <style>
@@ -23,7 +24,7 @@
         transform: translateY(-2px);
         box-shadow: 0 12px 24px var(--rose-gold-subtle);
     }
-    .blog-item h2 { font-family: var(--font-display); color: var(--text-primary); margin-top: 0; }
+    .blog-item h2, .blog-item h3 { font-family: var(--font-display); font-size: var(--fs-xl); color: var(--text-primary); margin-top: 0; }
     .blog-item a { text-decoration: none; color: inherit; }
     .blog-item p { color: var(--text-secondary); line-height: var(--lh-relaxed); margin-bottom: 0; }
     
@@ -36,7 +37,15 @@
         justify-content: center;
     }
     .blog-tabs input[type="radio"] {
-        display: none;
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+        pointer-events: none;
+    }
+    .blog-tabs input[type="radio"]:focus-visible + .tab-label {
+        outline: 2px solid var(--rose-gold);
+        outline-offset: 2px;
     }
     .tab-label {
         padding: var(--space-sm) var(--space-lg);
@@ -124,6 +133,13 @@
     .series-item {
         margin-bottom: 0; /* Reset margin inside series-items flex container */
     }
+
+    @media (max-width: 480px) {
+        .blog-list { padding: var(--space-2xl) var(--space-md); }
+        .series-group { padding: var(--space-md); }
+        .blog-item { padding: var(--space-lg); }
+        .tab-desc { padding: 0; }
+    }
   </style>
 </head>
 <body>
@@ -131,6 +147,9 @@
   <div class="chip-visual" id="chip-visual" aria-hidden="true"></div>
   <!-- Full-screen overlay canvas for the diagonal binary->agent->text animation -->
   <canvas class="chip-overlay" id="chip-canvas" aria-hidden="true"></canvas>
+
+  <!-- Skip Navigation -->
+  <a href="#main-content" class="sr-only">Skip to main content</a>
 
   <!-- Navigation -->
   <nav class="nav" id="navbar" aria-label="Main navigation">
@@ -153,9 +172,9 @@
 
   <main id="main-content" style="padding-top: calc(var(--nav-height) + var(--space-2xl));">
     <div class="container blog-list">
-        <nav aria-label="breadcrumb" class="breadcrumbs"><ol><li><a href="../index.html">Home</a></li><li><a href="index.html#tab-guides">Blog</a></li><li aria-current="page">RAG First Knowledge System</li></ol></nav>
-        <h1 class="hero__name" style="text-align: center; margin-bottom: 0;">Blog</h1>
-          <h2 class="metallic-text" style="text-align: center; font-size: clamp(2rem, 4vw, 2.5rem); margin-top: 10px; margin-bottom: var(--space-2xl); font-family: var(--font-display);">RAG First Knowledge System</h2>
+        <nav aria-label="breadcrumb" class="breadcrumbs"><ol><li><a href="../index.html">Home</a></li><li><a href="index.html#tab-guides">Blog</a></li><li aria-current="page">RAG-First Knowledge System</li></ol></nav>
+        <span class="section-label" style="justify-content: center; margin-bottom: var(--space-xs);">Architecture Guide</span>
+          <h1 class="hero__name" style="text-align: center; font-size: clamp(2rem, 4vw, 3rem); margin-bottom: var(--space-2xl);">RAG-First Knowledge System</h1>
         <!-- BLOG_LIST_START -->
 
           <div class="series-group" style="margin-top: var(--space-2xl);">
@@ -164,7 +183,7 @@
                   <a href="rag-first-knowledge-system-configuration.html">
                       <article class="blog-item series-item">
                           <h2>Configuration</h2>
-                          <p>A complete configuration walkthrough assembling LlamaIndex, MCP servers, LiteLLM, Pinecone, LlamaParse, Firecrawl, and Braintrust into a retrieval-augmented generation system optimized for answer quality over a large, continuously evolving document corpus. The architecture prioritizes ingestion pipeline design, chunking strategy selection, and retrieval evaluation rather than model serving infrastructure, reflecting the principle that retrieval quality dominates answer quality in knowledge-heavy applications.</p>
+                          <p>A complete configuration walkthrough for a retrieval-augmented generation system optimized for answer accuracy across a large, evolving document corpus. LlamaParse, Firecrawl, and Pinecone handle layout-aware document ingestion and hybrid vector indexing. LlamaIndex, MCP servers, LiteLLM, and Braintrust orchestrate query routing and retrieval evaluation so context fidelity governs answer quality.</p>
                       </article>
                   </a>
                   <a href="rag-first-knowledge-system-guide.html">
@@ -179,6 +198,13 @@
 
     </div>
   </main>
+  <footer class="footer">
+    <div class="container">
+      <p class="footer__text">
+        Designed and built by Lydia Pedersen. This portfolio is <a href="https://github.com/Lyd1aCla1r3/lyd1acla1r3.github.io" target="_blank" rel="noopener">open source</a>.
+      </p>
+    </div>
+  </footer>
   <script src="../js/main.js?v=1.2"></script>
 
   <!-- KaTeX for Math Rendering -->

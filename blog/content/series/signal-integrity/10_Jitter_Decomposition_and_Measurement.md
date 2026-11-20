@@ -2,7 +2,7 @@
 
 <!-- SUMMARY: A receiver decides bits by sampling a waveform against a threshold, making crossing timing as critical as voltage. The analysis defines the unit interval, separates total jitter into random and deterministic components, and establishes the measurement flow for root-cause isolation. -->
 
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>
 
 The first nine chapters characterize the channel as a frequency-dependent filter that delays, attenuates, and reflects a signal. The receiver at the end of the channel does not see the filter. It sees a waveform and decides, once per bit, whether the level is high or low, and that decision is correct only if the waveform crosses the decision threshold at a suitable time relative to the instant at which the receiver samples. This chapter begins Part 3 by defining the unit interval and the eye diagram that frame the question, defining jitter as the deviation of each threshold crossing from its ideal time, and separating that deviation into components by statistical behavior and physical origin.
 
@@ -49,9 +49,9 @@ $$TIE_k = t_k - (t_0 + k\,UI)$$
 
 A positive TIE means the edge arrived late, and a negative TIE means it arrived early. The zero of the TIE axis is not a fixed point in time, and the reference clock sets it, which in an oscilloscope measurement is a clock recovered by a software phase-locked loop running on the captured data. The choice of reference changes what counts as jitter: a reference that follows slow drift removes the slow components from the TIE, and a fixed-frequency reference leaves them in. [Chapter 17](17_CDR_and_PLL_Loop_Dynamics.md) explains why a receiver that tracks slow drift is not harmed by it.
 
-Two related quantities follow from the TIE sequence. The period between two consecutive edges is $T_k = t_{k+1} - t_k = UI + TIE_{k+1} - TIE_k$, so the **period jitter** is the first difference of the TIE:
+Two related quantities follow from the TIE sequence. Expressing the period between two consecutive edges in terms of the TIE defines the **period jitter** as the first difference of the sequence:
 
-$$J_k = T_k - UI = TIE_{k+1} - TIE_k$$
+$$T_k = t_{k+1} - t_k = UI + TIE_{k+1} - TIE_k, \qquad J_k = T_k - UI = TIE_{k+1} - TIE_k$$
 
 The **cycle-to-cycle jitter** is the difference between two consecutive periods, $T_{k+1} - T_k$. The difference operation acts as a high-pass filter on the TIE. A sinusoidal TIE component of amplitude $a_j$ and frequency $f_j$, written $TIE_k = a_j \sin(\omega_j k\,UI)$ with $\omega_j = 2\pi f_j$, produces the period jitter
 
@@ -100,7 +100,11 @@ Thermal and shot noise voltages are the sum of millions of independent microscop
 
 $$RJ_{\text{rms}} = \sigma_t = \frac{\sigma_v}{S}$$
 
-Assume a noise of 7.5 mV rms at the threshold crossing of the reference receiver. Then $\sigma_t = 7.5/5 = 1.5$ ps, the value used in the examples of [Chapter 11](11_Dual_Dirac_Model_and_BER_Extrapolation.md). Each edge is an independent draw from this distribution, which is the defining contrast with ISI, where the timing of an edge is dictated by the history of the preceding bits.
+Assume a noise of 7.5 mV rms at the threshold crossing of the reference receiver, where $S = 5$ mV/ps:
+
+$$\sigma_t = \frac{7.5\ \text{mV}}{5\ \text{mV/ps}} = 1.5\ \text{ps}$$
+
+That 1.5 ps value serves as the reference $RJ_{\text{rms}}$ across the examples of [Chapter 11](11_Dual_Dirac_Model_and_BER_Extrapolation.md). Each edge is an independent draw from this distribution, which is the defining contrast with ISI, where the timing of an edge is dictated by the history of the preceding bits.
 
 The value of $RJ_{\text{rms}}$ is a property of the whole signal path, and it is not a fixed constant of the silicon. It scales as $1/S$, so a slower edge at the receiver has more random jitter for the same noise voltage. It depends on temperature through the noise voltage. It also depends on the bandwidth over which the jitter is measured, because flicker noise concentrates its energy at low frequency, and a clock-recovery loop tracks those slow components and removes them from the jitter that the sampler sees. Two instruments with different reference clocks can therefore report different $RJ_{\text{rms}}$ for the same signal.
 
@@ -134,7 +138,11 @@ The second mechanism is **receiver threshold offset**. Assume that the transmitt
 
 $$DCD = \delta\left(\frac{1}{S_r} + \frac{1}{S_f}\right)$$
 
-With $\delta = 10$ mV and $S_r = S_f = 5$ mV/ps, the rising crossings move 2 ps later, the falling crossings move 2 ps earlier, and the two clusters of crossing times are separated by 4 ps. The transmitter and the channel are unchanged, and the measurement reference point is the part that is wrong. In either mechanism the histogram of DCD consists of two clusters, one from rising edges and one from falling edges, which is the shape that the Dual-Dirac model of [Chapter 11](11_Dual_Dirac_Model_and_BER_Extrapolation.md) places at the center of its description.
+For a threshold offset of $\delta = 10$ mV and symmetric edge slopes, the rising crossings shift 2 ps later, the falling crossings shift 2 ps earlier, and the separation between the two crossing clusters evaluates to:
+
+$$S_r = S_f = 5\ \text{mV/ps} \quad\Longrightarrow\quad DCD = 10\ \text{mV}\left(\frac{1}{5} + \frac{1}{5}\right)\text{ps/mV} = 4\ \text{ps}$$
+
+The transmitter and the channel are unchanged, and the measurement reference point is the part that is wrong. In either mechanism the histogram of DCD consists of two clusters, one from rising edges and one from falling edges, which is the shape that the Dual-Dirac model of [Chapter 11](11_Dual_Dirac_Model_and_BER_Extrapolation.md) places at the center of its description.
 
 ### Periodic and Sinusoidal Jitter
 
@@ -263,7 +271,11 @@ The cursors that shift the crossings also reduce the eye height. The worst-case 
 
 $$V_{eye} = 2A\left(1 - \sum_{j \ne 0}|h_j|\right)$$
 
-For the 9 percent seven-cursor sum and the 200 mV amplitude of the example, $V_{eye} = 400 \times 0.91 = 364$ mV, from the 400 mV that an interference-free eye would have. The eye closes when the sum of the magnitudes of the other cursors reaches the main cursor, $\sum_{j \ne 0}|h_j| \ge 1$. The sampled value of a bit can then lie on the wrong side of the threshold, and the receiver records a bit error even with no noise. That eye-closure threshold is the direct motivation for transmitter equalization ([Chapter 13](13_Transmitter_FFE.md)) and receiver equalization ([Chapter 14](14_CTLE_and_DFE.md)), which reduce the cursor sum.
+For the 9 percent seven-cursor sum and the $A = 200$ mV main-cursor amplitude of the example, the vertical eye opening shrinks below the 400 mV interference-free swing:
+
+$$V_{eye} = 400\ \text{mV} \times 0.91 = 364\ \text{mV}$$
+
+The eye closes when the sum of the magnitudes of the other cursors reaches the main cursor, $\sum_{j \ne 0}|h_j| \ge 1$. The sampled value of a bit can then lie on the wrong side of the threshold, and the receiver records a bit error even with no noise. That eye-closure threshold is the direct motivation for transmitter equalization ([Chapter 13](13_Transmitter_FFE.md)) and receiver equalization ([Chapter 14](14_CTLE_and_DFE.md)), which reduce the cursor sum.
 
 ### Nonlinear Amplitude-to-Phase Conversion
 
@@ -283,4 +295,4 @@ The Dual-Dirac model replaces the full DJ distribution by two impulses and repor
 
 The decomposition in this chapter describes what each component is and how large it is, and the open question is how to turn the measured distribution into a statement about the rare edges that cause a bit error once in a trillion bits. [Chapter 11](11_Dual_Dirac_Model_and_BER_Extrapolation.md) answers that question.
 
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>

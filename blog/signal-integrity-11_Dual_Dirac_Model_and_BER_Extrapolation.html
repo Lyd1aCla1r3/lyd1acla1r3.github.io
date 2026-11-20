@@ -117,6 +117,37 @@
     @media (max-width: 768px) {
       .blog-post table:not(.trace-container table) { overflow-x: auto; }
     }
+    /* Signal Integrity series tables: clean KaTeX math rendering, no pill-badge wrapping, and hidden MathML node */
+    .blog-post.series-signal-integrity table:not(.trace-container table) {
+      table-layout: auto;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) th,
+    .blog-post.series-signal-integrity table:not(.trace-container table) td {
+      padding: 10px 14px;
+      vertical-align: middle;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      word-break: normal;
+      overflow-wrap: normal;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) .katex {
+      font-size: 1em;
+      white-space: nowrap;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) .katex-mathml {
+      display: none !important;
+    }
+    @media (min-width: 769px) {
+      .blog-post.series-signal-integrity table:not(.trace-container table) th:first-child:nth-last-child(2),
+      .blog-post.series-signal-integrity table:not(.trace-container table) td:first-child:nth-last-child(2) {
+        width: 32%;
+        max-width: 240px;
+      }
+      .blog-post.series-signal-integrity table:not(.trace-container table) th:first-child:not(:nth-last-child(2)),
+      .blog-post.series-signal-integrity table:not(.trace-container table) td:first-child:not(:nth-last-child(2)) {
+        max-width: 220px;
+      }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -161,7 +192,7 @@
     <li><a href="index.html">Blog</a></li><li><a href="series-signal-integrity.html">Series: Signal Integrity</a></li><li><a href="signal-integrity-part-03.html">Part 3: Jitter Analysis</a></li><li aria-current="page">Dual-Dirac Model and BER Extrapolation</li></ol></nav>
         <article class="blog-post series-signal-integrity">
 <h1>Dual-Dirac Model and BER Extrapolation</h1>
-<!-- SUMMARY: Compliance targets like 10^-12 describe edges too rare to capture directly in an oscilloscope record. The analysis derives how the Dual-Dirac model extrapolates total jitter from the visible Gaussian tails (TJ = DJ + 2Q · RJ) and constructs the bathtub curve to project bit error ratios beyond the measured histogram. --><p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p><p><a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html">Chapter 10</a> decomposed the timing error of a received signal into random and deterministic components and ended with a histogram of time interval error values that is the convolution of the two. A specification does not ask for that histogram. It asks how wide a window of time around the ideal edge contains all but one edge in a trillion, and the answer lies in a part of the distribution that a measurement of a few hundred thousand edges never reaches.</p>
+<!-- SUMMARY: Compliance targets like 10^-12 describe edges too rare to capture directly in an oscilloscope record. The analysis derives how the Dual-Dirac model extrapolates total jitter from the visible Gaussian tails (TJ = DJ + 2Q · RJ) and constructs the bathtub curve to project bit error ratios beyond the measured histogram. --><p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p><p><a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html">Chapter 10</a> decomposed the timing error of a received signal into random and deterministic components and ended with a histogram of time interval error values that is the convolution of the two. A specification does not ask for that histogram. It asks how wide a window of time around the ideal edge contains all but one edge in a trillion, and the answer lies in a part of the distribution that a measurement of a few hundred thousand edges never reaches.</p>
 <p>The high-speed serial standards state compliance at bit error ratios such as $10^{-12}$. A direct measurement at that ratio is feasible only for a short time at a modest rate, and it becomes impractical at lower ratios, as the first worked example computes. An oscilloscope that captures a few hundred thousand edges therefore projects the timing behavior at the target ratio from the tails that its histogram does show. The projection rests on the shape of the Gaussian distribution and on a deliberately simple model of the deterministic part.</p>
 <p>This chapter derives the mathematics in the order in which it is needed: the Gaussian distribution and its standard deviation, the tail area as a bit error ratio, the complementary error function and the Q-factor, the Dual-Dirac model and the formula for total jitter, the Q-scale fit that extracts the model parameters, and the bathtub curve that links a sampling position to an error ratio. The Edge Cases state the conditions under which the projection is conservative and the conditions under which it is not.</p>
 <h2>Core Concepts</h2>
@@ -227,7 +258,9 @@
 <p>$$\operatorname{erfc}(x) = \frac{2}{\sqrt{\pi}}\int_x^{\infty} e^{-u^2}\,du$$</p>
 <p>The two are related by the substitution $s = \sqrt{2}\,u$, which gives $ds = \sqrt{2}\,du$ and a lower limit $u = z/\sqrt{2}$:</p>
 <p>$$Q(z) = \frac{1}{\sqrt{2\pi}}\cdot\sqrt{2}\int_{z/\sqrt{2}}^{\infty} e^{-u^2}du = \frac{1}{\sqrt{\pi}}\int_{z/\sqrt{2}}^{\infty} e^{-u^2}du = \frac{1}{2}\operatorname{erfc}\!\left(\frac{z}{\sqrt{2}}\right)$$</p>
-<p>Rearranged, $\operatorname{erfc}(x) = 2\,Q(x\sqrt{2}) = 2\,P(Z > x\sqrt{2})$, which is the correct statement of the definition: erfc counts the tail beyond $x\sqrt{2}$ standard deviations, doubled, and not the tail beyond $x$ standard deviations. The bit error ratio for a Gaussian edge distribution whose mean is $Q$ standard deviations from the sampling instant is</p>
+<p>Inverting that scaling expresses the complementary error function in terms of the standard Gaussian tail probability:</p>
+<p>$$\operatorname{erfc}(x) = 2\,Q(x\sqrt{2}) = 2\,P(Z > x\sqrt{2})$$</p>
+<p>That relation clarifies the argument scaling: $\operatorname{erfc}(x)$ counts the tail beyond $x\sqrt{2}$ standard deviations, doubled, and not the tail beyond $x$ standard deviations. The bit error ratio for a Gaussian edge distribution whose mean is $Q_{\text{factor}}$ standard deviations from the sampling instant is</p>
 <p>$$\text{BER} = Q(Q_{\text{factor}}) = \frac{1}{2}\operatorname{erfc}\!\left(\frac{Q_{\text{factor}}}{\sqrt{2}}\right)$$</p>
 <p>A specification fixes the ratio, and the quantity to find is the distance. The jitter analysis therefore needs the inverse of the tail function. The forward function takes a boundary coordinate and returns the tail area. The inverse takes a tail area and returns the boundary coordinate, in units of the standard deviation, and an inverse function is a reversal of inputs and outputs and not a reciprocal. The coordinate returned for the target ratio is the <strong>Q-factor</strong>:</p>
 <p>$$Q_{\text{factor}} = Q^{-1}(\text{BER})$$</p>
@@ -268,7 +301,9 @@
 </tbody></table>
 <p>The Q-factor grows slowly with the number of decades of error ratio, and a short argument shows why. In the tail, $s \ge z$, so $1 \le s/z$ and</p>
 <p>$$Q(z) = \int_z^{\infty}\varphi(s)\,ds < \int_z^{\infty}\frac{s}{z}\,\varphi(s)\,ds = \frac{\varphi(z)}{z}, \qquad \varphi(s) = \frac{e^{-s^2/2}}{\sqrt{2\pi}}$$</p>
-<p>where the last step uses the fact that $s\,\varphi(s)$ is the derivative of $-\varphi(s)$. At $z = 7.034$ the bound is $1.02 \times 10^{-12}$ against the full integral value of $1.00 \times 10^{-12}$, so it is accurate to 2 percent there. The logarithm of the bound has the slope $-z$ with respect to $z$, so each factor of ten in the ratio requires an increase of about $\ln 10/z = 2.303/7 = 0.33$ in the Q-factor, in agreement with the table (from $10^{-9}$ to $10^{-12}$ the increase is 1.04 over three decades, or 0.35 per decade). The extrapolation to a much lower ratio therefore adds little distance.</p>
+<p>where the last step uses the fact that $s\,\varphi(s)$ is the derivative of $-\varphi(s)$. At $z = 7.034$ the bound is $1.02 \times 10^{-12}$ against the full integral value of $1.00 \times 10^{-12}$, so it is accurate to 2 percent there. Taking the natural logarithm of the bound yields a local slope of $-z$ with respect to $z$, so each decade reduction in bit error ratio requires a Q-factor increment near $z = 7$ of:</p>
+<p>$$\Delta Q_{\text{decade}} \approx \frac{\ln 10}{z} \approx \frac{2.303}{7} = 0.33$$</p>
+<p>That increment agrees with the table above, where moving from $10^{-9}$ to $10^{-12}$ adds 1.04 over three decades, or 0.35 per decade. Extrapolating to a much lower error ratio therefore adds little horizontal distance.</p>
 <p><a href="signal-integrity-15_PAM4_Signaling_and_Gray_Coding.html">Chapter 15</a> uses the same mapping between a ratio and a Q-factor for amplitude noise.</p>
 <h3>The Dual-Dirac Model</h3>
 <p>The histogram of <a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html">Chapter 10</a> is the convolution of the deterministic density $p_{DJ}$ with the Gaussian $g$ of the random jitter. The deterministic density has a complicated shape: two clusters for duty cycle distortion, a set of clusters for intersymbol interference, an arcsine shape for each periodic tone, and a continuous bounded shape for crosstalk. Deconvolving the Gaussian from a general shape is sensitive to noise.</p>
@@ -339,7 +374,8 @@
 </tbody></table>
 <p>A ratio of $10^{-12}$ can therefore be verified directly with a bit error ratio tester in a few minutes at this rate. A ratio of $10^{-15}$ or lower, a capture of a limited record by an oscilloscope, and any measurement that must also identify the cause of the errors need the projection from the tails.</p>
 <h3>PCIe Gen 4 Jitter Budget</h3>
-<p>Consider a PCIe Gen 4 link operating at 16 GT/s NRZ (16 Gbps raw wire rate, 15.754 Gbps payload after 128b/130b coding), so that $UI = 1/(16 \times 10^9) = 62.5$ ps. Assume that the tail fit returns $DJ_{\delta\delta} = 12.0$ ps and $RJ_{\text{rms}} = 1.5$ ps. For a target ratio of $10^{-12}$ the Q-factor is 7.034, and the calculation proceeds in four steps:</p>
+<p>Consider a PCIe Gen 4 link operating at 16 GT/s NRZ (16 Gbps raw wire rate, 15.754 Gbps payload after 128b/130b coding). Assume that the tail fit returns $DJ_{\delta\delta} = 12.0$ ps and $RJ_{\text{rms}} = 1.5$ ps. For a target ratio of $10^{-12}$ the Q-factor is 7.034, and the calculation proceeds in four steps:</p>
+<p>$$UI = \frac{1}{16 \times 10^9\ \text{s}^{-1}} = 62.5\ \text{ps}$$</p>
 <p>$$RJ_{\text{p-p}} = 2 \times 7.034 \times 1.5\ \text{ps} = 21.10\ \text{ps}$$</p>
 <p>$$TJ = DJ_{\delta\delta} + RJ_{\text{p-p}} = 12.0 + 21.10 = 33.10\ \text{ps}$$</p>
 <p>$$W_{eye} = UI - TJ = 62.5 - 33.10 = 29.40\ \text{ps}$$</p>
@@ -407,7 +443,11 @@
 <td align="center">5.0</td>
 </tr>
 </tbody></table>
-<p>The points lie on a straight line with slope $1/\sigma = 1/1.5 = 0.667$ per ps, which crosses zero at 6.0 ps. The regression therefore returns $\mu_R = 6.0$ ps and $\sigma = 1.5$ ps, and the mirrored left tail returns $\mu_L = -6.0$ ps, so $DJ_{\delta\delta} = 12.0$ ps. Extending the line to $Q^{-1} = 7.034$ gives $x_R = 6.0 + 7.034 \times 1.5 = 16.55$ ps and $TJ = 2 \times 16.55 = 33.10$ ps, the same total as before.</p>
+<p>The points lie on a straight line that crosses zero at 6.0 ps with reciprocal-sigma slope:</p>
+<p>$$\frac{1}{\sigma} = \frac{1}{1.5\ \text{ps}} = 0.667\ \text{ps}^{-1}$$</p>
+<p>The regression therefore returns $\mu_R = 6.0$ ps and $\sigma = 1.5$ ps, and the mirrored left tail returns $\mu_L = -6.0$ ps, so $DJ_{\delta\delta} = 12.0$ ps. Extending the fitted line to $Q^{-1} = 7.034$ gives the right compliance boundary and the symmetric total jitter:</p>
+<p>$$x_R = 6.0 + 7.034 \times 1.5 = 16.55\ \text{ps}, \qquad TJ = 2 \times 16.55\ \text{ps} = 33.10\ \text{ps}$$</p>
+<p>That Q-scale extrapolation reproduces the 33.10 ps budget total directly from the tail points.</p>
 <h3>The Bathtub of the Example</h3>
 <p>Evaluate the bathtub formula with $UI = 62.5$ ps, $\mu = \pm 6$ ps, $\sigma = 1.5$ ps, and $\eta_T = 1/2$:</p>
 <table>
@@ -506,7 +546,7 @@
 <h3>The Gaussian Assumption in the Far Tail</h3>
 <p>The central limit theorem explains why a sum of many small independent noise contributions is close to Gaussian near its center, and it gives the weakest guarantee in the far tails. A single large disturbance, a nonlinear conversion from voltage to time near the rails (<a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html">Chapter 10</a>), or a rare mechanism with a different noise level changes the tail without changing the center. The Q-scale line exposes such a change as a bend: a measured tail that departs from a straight line in the fit region indicates that the extrapolation should not be trusted beyond that region.</p>
 <p>The projection tells the designer how much timing margin remains at the target ratio, and it needs the random and deterministic components to be known separately and accurately. <a href="signal-integrity-12_Test_Patterns_and_Jitter_Isolation.html">Chapter 12</a> shows how pattern averaging and spectral analysis separate the data-dependent, periodic, and random contributions that this chapter treated as two parameters.</p>
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>
 
 <div class="blog-pagination">
       <a href="signal-integrity-10_Jitter_Decomposition_and_Measurement.html" class="pagination-link prev">

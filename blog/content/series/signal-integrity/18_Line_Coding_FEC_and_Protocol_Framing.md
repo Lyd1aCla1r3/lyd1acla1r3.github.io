@@ -2,7 +2,7 @@
 
 <!-- SUMMARY: Recovered slicer decisions require structural processing before becoming usable payload data. Line coding and self-synchronous scramblers bound run lengths and running disparity, cyclic redundancy checks detect frame errors, and Reed-Solomon forward error correction repairs symbol error bursts prior to word and lane alignment. -->
 
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>
 
 [Chapter 17: CDR and PLL Loop Dynamics](17_CDR_and_PLL_Loop_Dynamics.md) ended with a receiver that holds a recovered clock and a stream of slicer decisions, and with two requests of the data: the stream must contain transitions often enough for the loop to hold its phase, and the receiver must be able to find the word boundary again after a cycle slip. This chapter shows how the transmitter satisfies the first request and how the receiver satisfies the second. The decided bits are still not data. They have no word boundaries, they may contain a few errors, and they may be shifted by a bit relative to the transmitted stream, and three operations remove these problems before a processor sees a byte.
 
@@ -65,13 +65,17 @@ $$y_n = x_n \oplus y_{n-39} \oplus y_{n-58}, \qquad \text{that is,} \qquad Y(x) 
 
 where $\oplus$ is the exclusive-or, the sum without carry that the CRC section below defines, and the polynomial form writes each bit stream as a polynomial in a delay variable $x$ (a bit delayed by $m$ positions is multiplied by $x^m$). The receiver applies the inverse operation and obtains
 
-$$x_n = y_n \oplus y_{n-39} \oplus y_{n-58}, \qquad X(x) = Y(x)\,G(x)$$
+$$x_n = y_n \oplus y_{n-39} \oplus y_{n-58}, \qquad X(x) = Y(x)\,G(x) = \frac{X(x)}{G(x)}\,G(x) = X(x)$$
 
-and the two operations are inverse to each other, because $X = Y G = X G/G = X$. Two consequences follow directly from the structure.
+The two operations are therefore inverse to each other, and two consequences follow directly from the structure.
 
 The first consequence is **self-synchronization**, which follows from the fact that the descrambler output depends only on the last 58 received bits, so it recovers the correct data 58 bits after it starts, whatever state its delay line held at the start. A simulation of a random stream with a wrong initial state shows 27 of the first 58 bits in error and none after bit 58. No reset signal or seed exchange is needed.
 
-The second consequence is **error multiplication**, and it follows from the same structure. Assume that the channel flips one bit of the stream, so that the received stream is $Y(x) + x^m$. The descrambler output is $(Y + x^m)G = X + x^m G(x) = X + x^m + x^{m+39} + x^{m+58}$, which differs from the transmitted data in three positions, spaced 39 and 58 bits from the first. The simulation confirms the positions 500, 539 and 558 for a flip at bit 500. The number of errors after descrambling is equal to the number of non-zero terms of $G(x)$, so a scrambled link multiplies the bit error ratio by up to three for isolated errors. The multiplication affects the choice of the order of operations, as the architecture section shows.
+The second consequence is **error multiplication**, and it follows from the same structure. Assume that the channel flips one bit of the stream, so that the received stream is $Y(x) + x^m$. The descrambler output is
+
+$$\bigl(Y(x) + x^m\bigr)G(x) = X(x) + x^m G(x) = X(x) + x^m + x^{m+39} + x^{m+58}$$
+
+That polynomial differs from the transmitted data in three positions, spaced 39 and 58 bits from the first. The simulation confirms the positions 500, 539 and 558 for a flip at bit 500. The number of errors after descrambling is equal to the number of non-zero terms of $G(x)$, so a scrambled link multiplies the bit error ratio by up to three for isolated errors. The multiplication affects the choice of the order of operations, as the architecture section shows.
 
 The transition density of a scrambled stream is a statistical statement. For independent random bits the probability that a given position starts a run of at least $L$ identical bits (preceded by a transition) is $\tfrac12 \cdot 2^{-(L-1)} = 2^{-L}$, so such a run occurs on average once in $2^L$ bits. At 16 Gbps a run of 40 bits occurs once every 69 s, a run of 50 bits once every 19.5 hours, and a run of 64 bits once every $1.15 \times 10^9$ s, which is 36.6 years. The probability of a long run falls with the factor 2 per added bit, and the payload alone cannot be called a deterministic bound.
 
@@ -89,7 +93,11 @@ A **cyclic redundancy check** (CRC) detects errors at the level of a frame. The 
 
 $$D(x)\,x^r = Q(x)\,G(x) + R(x)$$
 
-The transmitter sends the $k + r$ bits of $C(x) = D(x)\,x^r + R(x)$. Addition is the exclusive-or, so $R + R = 0$ and $C(x) = Q(x)\,G(x) + R(x) + R(x) = Q(x)\,G(x)$. Every valid codeword is therefore a multiple of $G(x)$, and the receiver divides the received polynomial by $G(x)$ and accepts the frame when the remainder is zero.
+The transmitter sends the $k + r$ bits of $C(x) = D(x)\,x^r + R(x)$. Addition modulo 2 is the exclusive-or, so $R(x) + R(x) = 0$ and the transmitted codeword simplifies to
+
+$$C(x) = Q(x)\,G(x) + R(x) + R(x) = Q(x)\,G(x)$$
+
+Every valid codeword is therefore a multiple of $G(x)$, and the receiver divides the received polynomial by $G(x)$ and accepts the frame when the remainder is zero.
 
 The detection capability follows from the same algebra. Assume that the channel adds an error pattern $E(x)$, so that the received polynomial is $C(x) + E(x)$. The remainder of the received frame equals the remainder of $E(x)$, since $C$ leaves none. An error escapes detection only when $G(x)$ divides $E(x)$. Three properties follow:
 
@@ -197,7 +205,11 @@ The same aggregate follows from the chain that includes FEC. The 66-bit blocks a
 
 $$100 \times \frac{257}{256} \times \frac{528}{514} = 103.125\ \text{Gbps}$$
 
-The RS(528,514) code has $t = (528 - 514)/2 = 7$, a minimum distance of 15, a codeword of 5,280 bits, and an overhead of $14/514 = 2.72$ percent. The 400 Gbps chain uses RS(544,514) ($t = 15$, minimum distance 31, 5,440 bits, overhead 5.84 percent) and gives
+The RS(528,514) code has a minimum distance of 15, a codeword of 5,280 bits, an overhead of $14/514 = 2.72$ percent, and the symbol-error correction limit
+
+$$t = \frac{528 - 514}{2} = 7$$
+
+The 400 Gbps chain uses RS(544,514) ($t = 15$, minimum distance 31, 5,440 bits, overhead 5.84 percent) and gives
 
 $$400 \times \frac{257}{256} \times \frac{544}{514} = 425.0\ \text{Gbps}$$
 
@@ -223,7 +235,11 @@ A scrambled stream behaves like random bits $a_k = \pm 1$. The capacitor voltage
 
 $$\sigma_v^2 = \left(\frac{A T_{UI}}{\tau}\right)^2 \sum_{j=0}^{\infty} e^{-2jT_{UI}/\tau} \approx \left(\frac{A T_{UI}}{\tau}\right)^2 \frac{\tau}{2T_{UI}} = \frac{A^2 T_{UI}}{2\tau}$$
 
-where the sum of the geometric series uses $T_{UI} \ll \tau$. For the 5 $\mu$s time constant at 10 Gbps this gives $\sigma_v = A\sqrt{100\ \text{ps}/(2 \times 5\ \mu\text{s})} = 3.2 \times 10^{-3} A$, and at the 7.03 sigma of a $10^{-12}$ tail the shift is $2.2 \times 10^{-2} A$. The deterministic code bound above is 100 times smaller than this tail. A 1 nF capacitor with the same 50 ohm termination has $\tau = 50$ ns and gives $\sigma_v = 0.032 A$ and a $10^{-12}$ tail shift of 0.22 $A$ for the scrambled stream, while the 8b/10b bound is $11 \times 100\ \text{ps}/50\ \text{ns} = 0.022 A$, ten times smaller. The scrambled link therefore needs a larger coupling capacitor, or a receiver that corrects the baseline, to reach the same margin.
+where the sum of the geometric series uses $T_{UI} \ll \tau$. For the 5 $\mu$s time constant at 10 Gbps, the rms baseline wander is
+
+$$\sigma_v = A\sqrt{\frac{100\ \text{ps}}{2 \times 5\ \mu\text{s}}} = 3.2 \times 10^{-3}\,A$$
+
+At the 7.03 sigma of a $10^{-12}$ tail the shift is $2.2 \times 10^{-2} A$. The deterministic code bound above is 100 times smaller than this tail. A 1 nF capacitor with the same 50 ohm termination has $\tau = 50$ ns and gives $\sigma_v = 0.032 A$ and a $10^{-12}$ tail shift of 0.22 $A$ for the scrambled stream, while the 8b/10b bound is $11 \times 100\ \text{ps}/50\ \text{ns} = 0.022 A$, ten times smaller. The scrambled link therefore needs a larger coupling capacitor, or a receiver that corrects the baseline, to reach the same margin.
 
 ### Self-Synchronous Scrambler
 
@@ -290,4 +306,4 @@ A collapsed eye at the PMA input does not prove that the link fails, and an open
 
 Conversely, a link whose raw ratio sits just above the threshold of the code produces a stream of uncorrectable codewords even though the eye looks open at the $10^{-12}$ extrapolation of [Chapter 11: Dual-Dirac Model and BER Extrapolation](11_Dual_Dirac_Model_and_BER_Extrapolation.md), and the extrapolation does not apply to the bursts that a DFE generates. A validation plan therefore measures both: the raw ratio by a BERT or the eye contour of [Chapter 16](16_SerDes_Architecture_and_Eye_Diagrams.md), and the post-correction codeword failure count by the error counters of the PCS. The next chapter begins Part 6, where the same questions of bandwidth, noise, and margin appear for a signal that travels on a light wave instead of a copper trace.
 
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>

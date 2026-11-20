@@ -117,6 +117,37 @@
     @media (max-width: 768px) {
       .blog-post table:not(.trace-container table) { overflow-x: auto; }
     }
+    /* Signal Integrity series tables: clean KaTeX math rendering, no pill-badge wrapping, and hidden MathML node */
+    .blog-post.series-signal-integrity table:not(.trace-container table) {
+      table-layout: auto;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) th,
+    .blog-post.series-signal-integrity table:not(.trace-container table) td {
+      padding: 10px 14px;
+      vertical-align: middle;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      word-break: normal;
+      overflow-wrap: normal;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) .katex {
+      font-size: 1em;
+      white-space: nowrap;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) .katex-mathml {
+      display: none !important;
+    }
+    @media (min-width: 769px) {
+      .blog-post.series-signal-integrity table:not(.trace-container table) th:first-child:nth-last-child(2),
+      .blog-post.series-signal-integrity table:not(.trace-container table) td:first-child:nth-last-child(2) {
+        width: 32%;
+        max-width: 240px;
+      }
+      .blog-post.series-signal-integrity table:not(.trace-container table) th:first-child:not(:nth-last-child(2)),
+      .blog-post.series-signal-integrity table:not(.trace-container table) td:first-child:not(:nth-last-child(2)) {
+        max-width: 220px;
+      }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -161,7 +192,7 @@
     <li><a href="index.html">Blog</a></li><li><a href="guide-template-for-coding-agent-best-practices.html">Guides: Template for Coding Agent Best Practices</a></li><li aria-current="page">Template for Coding Agent Best Practices</li></ol></nav>
         <article class="blog-post ">
 <h1>Template for Coding Agent Best Practices</h1>
-<!-- SUMMARY: An architecture walkthrough of the operating layer around a coding agent: always-on rules, on-demand skills, context-isolated subagents, deterministic hooks and linters, and file-based session state. The configuration enforces critical constraints in code rather than prompts, keeps context lean across long efforts, and lives in version control so any team can reproduce it. --><p>The <a href="series-ai-tooling.html">AI Tooling series</a> surveys the coding agents, protocols, and runtime services that make up an AI development environment, and the five configurations in the <a href="index.html#tab-guides">Guides collection</a> wire those services into working stacks. Every one of those stacks places a coding agent at its interactive center, yet none of them configures the agent itself.</p>
+<!-- SUMMARY: A complete configuration walkthrough of the operating layer around a coding agent. Commit-tracked rules, on-demand skills, and context-isolated subagents pair with deterministic hooks, linters, and file-based session state. The configuration enforces mandatory constraints in code rather than prompts, keeps context lean across long efforts, and lives in version control for team reproducibility. --><p>The <a href="series-ai-tooling.html">AI Tooling series</a> surveys the coding agents, protocols, and runtime services that make up an AI development environment, and the five configurations in the <a href="index.html#tab-guides">Guides collection</a> wire those services into working stacks. Every one of those stacks places a coding agent at its interactive center, yet none of them configures the agent itself.</p>
 <p>An agent installed with default settings forgets project rules under load, trusts prose to stop destructive commands, loses decisions as transcripts grow, and keeps its behavior in editor dialogs that never reach version control. This configuration adds the missing operating layer: five kinds of committed files that shape, constrain, and preserve the agent&#39;s work inside any of those stacks.</p>
 <h2>The Problem</h2>
 <p>An agent left at its defaults degrades in four predictable ways during sustained engineering work. Fixing all four failures takes the same move: separate what the model should consider from what code must enforce, and keep both in the repository next to the source they govern. The template applies that split across seven targets: Claude Code, Cursor, Google Antigravity, Posit Assistant, Windsurf, Cline, and a vendor-neutral baseline built on plain instruction files and Git hooks.</p>

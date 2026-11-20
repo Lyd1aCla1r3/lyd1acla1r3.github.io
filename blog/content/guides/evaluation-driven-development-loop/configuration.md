@@ -1,6 +1,6 @@
 # Evaluation-Driven Development Loop
 
-<!-- SUMMARY: A complete configuration walkthrough assembling LangChain or LlamaIndex, Langfuse, Braintrust, Unsloth, vLLM, and LiteLLM into a continuous improvement cycle that captures production traces, curates evaluation datasets, scores output quality across experiments, fine-tunes specialized models from high-quality examples, deploys fine-tuned checkpoints alongside base models, and routes traffic between variants for data-driven comparison. The architecture treats systematic quality measurement as the primary engineering discipline rather than an afterthought applied to a finished system. -->
+<!-- SUMMARY: A complete configuration walkthrough for a closed-loop evaluation and model improvement system. LangChain or LlamaIndex pairs with Langfuse and Braintrust to capture production traces, curate golden datasets, and score experiment quality. Unsloth, vLLM, and LiteLLM fine-tune specialized checkpoints from high-scoring traces and route live traffic across model variants for quantitative comparison. -->
 
 Every AI application across the [AI Tooling series](series-ai-tooling.html) and the [Guides collection](index.html#tab-guides), whether a RAG pipeline, a multi-agent workflow, an enterprise chatbot, or a code generation tool, produces outputs whose quality varies across inputs, model versions, prompt revisions, and infrastructure changes. Without systematic measurement, teams rely on intuition and spot-checking to assess whether a change improved or degraded the system.
 

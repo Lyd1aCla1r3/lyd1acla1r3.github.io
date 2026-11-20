@@ -1,8 +1,8 @@
 # Light as an Electromagnetic Wave and the Electro-Optic Effect
 
-<!-- SUMMARY: Coherent optical links carry symbols on the amplitude and phase of a 193 THz light wave in silica fiber. Deriving the dielectric wave equation establishes phase velocity, refractive index, wave impedance, Fresnel reflection, polarization orthogonality, and Pockels electro-optic phase modulation in lithium niobate. -->
+<!-- SUMMARY: Coherent optical links carry symbols on the amplitude and phase of a 193 THz light wave in silica fiber. The dielectric wave equation establishes phase velocity, refractive index, wave impedance, Fresnel reflection, and Pockels electro-optic phase modulation in lithium niobate. -->
 
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>
 
 [Chapter 18: Line Coding, FEC, and Protocol Framing](18_Line_Coding_FEC_and_Protocol_Framing.md) closed the electrical story of a serial link with a stream of corrected bits. A coherent optical link starts from the same bits, and it differs in the carrier: the symbols ride on the amplitude and phase of a light wave at about 193 THz, and the signal travels through glass instead of copper.
 
@@ -26,7 +26,11 @@ $$v = \frac{1}{\sqrt{\mu_0\varepsilon_0\varepsilon_r}} = \frac{c}{\sqrt{\varepsi
 
 which is the velocity $c/\sqrt{\varepsilon_r}$ of [Chapter 1](01_Wave_Propagation_and_Transmission_Lines.md) under the optical name **refractive index** $n$. The wave needs no conductor to guide it, because the two fields sustain each other and carry the energy between them.
 
-The first equation also fixes the ratio of the two fields. Assume the fields $E_x = E_0\cos(kz-\omega t)$ and $B_y = B_0\cos(kz-\omega t)$, for which $\partial E_x/\partial z = -kE_0\sin(kz-\omega t)$ and $-\partial B_y/\partial t = -\omega B_0\sin(kz-\omega t)$, and equating the two gives $B_0 = kE_0/\omega = E_0/v$. The ratio of the electric to the magnetic field strength $H = B/\mu_0$ is the **wave impedance** of the medium:
+The first equation also fixes the ratio of the two fields. Assume the fields $E_x = E_0\cos(kz-\omega t)$ and $B_y = B_0\cos(kz-\omega t)$, for which $\partial E_x/\partial z = -kE_0\sin(kz-\omega t)$ and $-\partial B_y/\partial t = -\omega B_0\sin(kz-\omega t)$. Equality of those two derivatives relates the magnetic and electric field amplitudes:
+
+$$B_0 = \frac{k E_0}{\omega} = \frac{E_0}{v}$$
+
+The ratio of the electric to the magnetic field strength $H = B/\mu_0$ is the **wave impedance** of the medium:
 
 $$\eta = \frac{E}{H} = \mu_0 v = \sqrt{\frac{\mu_0}{\varepsilon_0\varepsilon_r}} = \frac{\eta_0}{n}, \qquad \eta_0 = \sqrt{\frac{\mu_0}{\varepsilon_0}} = 376.7\ \Omega$$
 
@@ -59,7 +63,11 @@ $$\phi = kL = \frac{2\pi n L}{\lambda_0} = \omega\,\frac{nL}{c} = \omega\tau$$
 
 with the delay $\tau = nL/c$, which is the relation $\theta = -360^\circ f\tau$ of [Chapter 8](08_S_Parameters_and_VNA.md) in another notation, evaluated at a frequency $10^{4}$ times higher than a microwave measurement. The consequence is the central fact of optical modulation: a delay of half a cycle, $T/2 = 2.6$ fs, changes the phase by $180^\circ$, so a tiny change of the delay (the light travels 0.78 $\mu$m in that time in vacuum) controls the phase completely. A delay of one full period, 5.17 fs, changes the phase by $2\pi$ and is indistinguishable from no delay, so a delay change of a few femtoseconds covers the whole range of phases.
 
-A steady phase offset leaves the frequency unchanged. A phase that changes with time does shift the instantaneous frequency by $\Delta f = (1/2\pi)\,d\phi/dt$. A phase ramp of $\pi$ in 10 ps corresponds to $\Delta f = (\pi/10\ \text{ps})/2\pi = 50$ GHz, which is the way in which a modulated carrier acquires the sidebands of the spectrum in [Chapter 2: Frequency Content of Digital Signals](02_Frequency_Content_of_Digital_Signals.md): the electrical bandwidth of the data appears as optical bandwidth around the carrier.
+A steady phase offset leaves the frequency unchanged. A phase that changes with time does shift the instantaneous frequency by $\Delta f = (1/2\pi)\,d\phi/dt$, so a linear phase ramp of $\pi$ in 10 ps produces the frequency shift
+
+$$\Delta f = \frac{\pi / (10\ \text{ps})}{2\pi} = 50\ \text{GHz}$$
+
+Modulation of the optical phase produces the spectral sidebands derived in [Chapter 2: Frequency Content of Digital Signals](02_Frequency_Content_of_Digital_Signals.md), translating the electrical bandwidth of the data into optical bandwidth around the carrier.
 
 ### Reflection at an Interface
 
@@ -101,7 +109,11 @@ Differentiating $1/n^2$ with respect to $n$ gives $\Delta(1/n^2) = -2\Delta n/n^
 
 $$\Delta n = -\tfrac12\,n^3\,r\,E$$
 
-For light polarized along the crystal axis of largest coefficient, $n = n_e = 2.14$ and $r_{33} = 30.8$ pm/V at 1550 nm (typical literature values, which differ between crystal grades). An electrode pair with the gap $g$ and a voltage $V$ produces the field $E = V/g$. The extra phase of light that travels the length $L$ in this field is
+For light polarized along the crystal axis of largest coefficient at 1550 nm, typical literature values (which differ between crystal grades) are
+
+$$n = n_e = 2.14, \qquad r_{33} = 30.8\ \text{pm/V}$$
+
+An electrode pair with the gap $g$ and a voltage $V$ produces the field $E = V/g$. The extra phase of light that travels the length $L$ in this field is
 
 $$\Delta\phi = \frac{2\pi}{\lambda_0}\,\Delta n\,L = -\frac{\pi\,n^3 r_{33}\,V\,L}{\lambda_0\,g}$$
 
@@ -131,21 +143,43 @@ The bandwidth falls in proportion to the length and the velocity mismatch, and t
 
 ### Frequency and Wavelength at 1550 nm
 
-The vacuum wavelength 1550 nm gives $f = 299{,}792{,}458/1.55\times10^{-6} = 193.41$ THz and a period of 5.170 fs, and the wavenumber is $2\pi/\lambda_0 = 4.054\times10^{6}$ rad/m. Inside lithium niobate the wavelength is $1550/2.138 = 725$ nm, the speed is 0.468 $c$, and the wave impedance is $376.7/2.138 = 176.2\ \Omega$.
+At the vacuum wavelength $\lambda_0 = 1550$ nm, the optical carrier frequency is
+
+$$f = \frac{299{,}792{,}458\ \text{m/s}}{1.55 \times 10^{-6}\ \text{m}} = 193.41\ \text{THz}$$
+
+One optical cycle lasts $5.170$ fs, and the vacuum wavenumber is $2\pi/\lambda_0 = 4.054\times10^{6}$ rad/m. Inside lithium niobate the wavelength is $1550/2.138 = 725$ nm, the speed is 0.468 $c$, and the wave impedance is $376.7/2.138 = 176.2\ \Omega$.
 
 ### Reflection at the Fiber and Crystal Facets
 
-The boundary from fiber ($n = 1.444$) to lithium niobate ($n = 2.138$) gives $\Gamma = (1.444 - 2.138)/(1.444 + 2.138) = -0.194$. The reflected power is $\Gamma^2 = 3.75$ percent, which is a return loss of 14.3 dB and an insertion loss of $-10\log_{10}(1 - 0.0375) = 0.17$ dB per facet from the reflection alone. The boundary from air to lithium niobate reflects 13.2 percent ($\Gamma = -0.363$, 8.8 dB). An uncoated facet in air therefore loses 0.6 dB, and the reflected light returns to the laser, where it can disturb the source.
+At normal incidence from fiber ($n = 1.444$) into lithium niobate ($n = 2.138$), the Fresnel field reflection coefficient is
+
+$$\Gamma = \frac{1.444 - 2.138}{1.444 + 2.138} = -0.194$$
+
+The reflected power is $\Gamma^2 = 3.75$ percent, which is a return loss of 14.3 dB and an insertion loss of $-10\log_{10}(1 - 0.0375) = 0.17$ dB per facet from the reflection alone. The boundary from air to lithium niobate reflects 13.2 percent ($\Gamma = -0.363$, 8.8 dB). An uncoated facet in air therefore loses 0.6 dB, and the reflected light returns to the laser, where it can disturb the source.
 
 ### Phase per Volt
 
-Take $g = 10\ \mu$m and $V = 1$ V, which gives the field $E = V/g = 10^{5}$ V/m. With $n^3 r_{33} = 2.138^3 \times 30.8\ \text{pm/V} = 3.01\times10^{-10}$ m/V the index change is $\Delta n = \tfrac12 (3.01\times10^{-10})(10^{5}) = 1.51\times10^{-5}$. Over 1 cm the phase is $2\pi(1.51\times10^{-5})(0.01)/(1.55\times10^{-6}) = 0.610$ rad, or 35.0 degrees, and the delay is $\Delta n L/c = 0.50$ fs, which is 0.097 of one optical period.
+Take an electrode gap $g = 10\ \mu$m and an applied voltage $V = 1$ V. The gap field and electro-optic factor are
 
-The ideal product is $V_\pi L = \lambda_0 g/(n^3 r_{33}) = 5.15$ V cm. The optical field does not fill the gap uniformly, and an assumed overlap factor of 0.5 doubles the product to 10.3 V cm, so a 4 cm electrode has $V_\pi = 2.6$ V (a value that illustrates the order of magnitude and depends on the actual geometry).
+$$E = \frac{V}{g} = 10^{5}\ \text{V/m}, \qquad n^3 r_{33} = 2.138^3 \times 30.8\ \text{pm/V} = 3.01 \times 10^{-10}\ \text{m/V}$$
+
+The resulting refractive index change magnitude is
+
+$$\Delta n = \tfrac12\,(3.01 \times 10^{-10})(10^{5}) = 1.51 \times 10^{-5}$$
+
+Over 1 cm the phase is $2\pi(1.51\times10^{-5})(0.01)/(1.55\times10^{-6}) = 0.610$ rad, or 35.0 degrees, and the delay is $\Delta n L/c = 0.50$ fs, which is 0.097 of one optical period. For uniform field overlap, the ideal voltage-length product is
+
+$$V_\pi L = \frac{\lambda_0 g}{n^3 r_{33}} = 5.15\ \text{V}\cdot\text{cm}$$
+
+The optical field does not fill the gap uniformly, and an assumed overlap factor of 0.5 doubles the product to 10.3 V cm, so a 4 cm electrode has $V_\pi = 2.6$ V (a value that illustrates the order of magnitude and depends on the actual geometry).
 
 ### Electrode Bandwidth from Velocity Mismatch
 
-An assumed electrode of $L = 4$ cm with a mismatch $\Delta n = 2.0$ has $f_{3\text{dB}} = 1.392 \times 2.998\times10^{8}/(\pi \times 0.04 \times 2.0) = 1.66$ GHz. A design that reduces the mismatch to $\Delta n = 0.5$ and shortens the electrode to 2 cm reaches 13.3 GHz, and with $\Delta n = 0.2$ it reaches 33.2 GHz. The numbers illustrate the scaling across the three design points:
+An assumed electrode of $L = 4$ cm with a mismatch $\Delta n = 2.0$ has the $-3$ dB modulation bandwidth
+
+$$f_{3\text{dB}} = \frac{1.392 \times 2.998 \times 10^{8}}{\pi \times 0.04 \times 2.0} = 1.66\ \text{GHz}$$
+
+A design that reduces the mismatch to $\Delta n = 0.5$ and shortens the electrode to 2 cm reaches 13.3 GHz, and with $\Delta n = 0.2$ it reaches 33.2 GHz. The numbers illustrate the scaling across the three design points:
 
 | Electrode Length (`L`) | Index Mismatch (`Δn`) | Half-Wave Voltage (`V_π`) | `-3 dB` Modulation Bandwidth | Design Tradeoff |
 |:---:|:---:|:---:|:---:|:---|
@@ -178,4 +212,4 @@ A voltage applied for a long time can drift in a lithium niobate modulator, beca
 The statements of this chapter use the wave description, which is sufficient for modulation and interference. The photon description gives the same average power and adds the shot noise of the detection process, and it explains why the energy of a quantum depends on the frequency alone. A reader needs the photon only to understand noise in the receiver, which [Chapter 20](20_Mach_Zehnder_IQ_Modulators.md) and [Chapter 21](21_Wideband_Signal_Analysis.md) treat as an additive noise power.
 
 ---
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>

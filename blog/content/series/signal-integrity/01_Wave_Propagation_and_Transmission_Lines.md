@@ -1,294 +1,617 @@
 # Wave Propagation and Transmission Lines
 
-<!-- SUMMARY: Information in high-speed digital systems travels as electromagnetic waves, not as drifting electrons. The physical mechanism of transmission lines governs how characteristic impedance and propagation velocity emerge from the Telegrapher's Equations and why a steady current flows behind every propagating wavefront. -->
+<!-- SUMMARY: Information in high-speed digital systems travels as electromagnetic waves through the PCB dielectric rather than as drifting electrons in copper. Trace geometry and Maxwell's coupled field loops feed the lossless and lossy Telegrapher's Equations to govern characteristic impedance, propagation velocity, and wave attenuation. -->
 
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol1-ebook-v2.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 1 Ebook here.</a></em></p>
 
-Every high-speed digital system operates on a single physical principle: information travels as electromagnetic waves, not as electrons drifting through copper. The moment a transistor connects a trace to a voltage rail, a localized electric field boundary forms and propagates through the dielectric material at a significant fraction of the speed of light, while the electrons themselves barely move. Understanding this distinction is the foundation on which all signal integrity analysis rests, from characteristic impedance and TDR measurements to jitter budgeting and equalization design.
+Every high-speed digital system operates on a single physical principle: information travels as electromagnetic waves through the insulating dielectric, not as individual electrons racing from transmitter to receiver through copper. At the instant a transistor switch connects a trace to a voltage rail, a localized electromagnetic field boundary forms at the driver. That boundary sweeps down the dielectric channel at more than half the speed of light, whereas conduction electrons inside the metal lattice drift at fractions of a millimeter per second. A clear grasp of this distinction provides the physical foundation for characteristic impedance, time-domain reflectometry, return-path design, jitter analysis, and equalization.
 
-The physical mechanism of wave propagation on a PCB transmission line spans five linked stages: the distributed nature of trace geometry, the CMOS switching event that launches a wavefront, the segment-by-segment chain reaction that constitutes propagation, the relationship between signal voltage and current, and the Telegrapher's Equations, from which the characteristic impedance and the propagation velocity are derived.
+Six linked stages govern wave propagation on a printed circuit board (PCB) transmission line. Stages one through three cover the transition from lumped circuits to distributed transmission lines and the coupled three-dimensional loops of a transverse electromagnetic (TEM) wave, followed by first-principles derivations of capacitance, inductance, velocity, and characteristic impedance. Stages four through six develop the lossless Telegrapher's Equations, segment-by-segment charge delivery and return-path closure between driver and receiver, and the lossy frequency-domain Helmholtz wave equation.
 
 ## Core Concepts
 
-### Distributed vs. Lumped Elements
+### Distributed vs. Lumped Elements and Trace Geometry
 
-A discrete resistor, capacitor, or inductor is a *lumped* element: a component localized at a single physical coordinate, designed to hold a specific value and small enough that the signal traverses it in effectively zero time. Ohm's law, Kirchhoff's voltage law, and the standard circuit equations all assume lumped behavior.
+A discrete resistor, capacitor, or inductor is a *lumped* element: a component localized at a single physical coordinate and small enough that an electromagnetic wave traverses its body in negligible time. Kirchhoff's nodal equations, elementary circuit analysis, and Ohm's law all assume lumped behavior, treating voltage $V$ as uniform across a wire of resistance $R$ carrying current $I$ at any frozen instant of time:
 
-A transmission line is a *distributed* structure. Its physical dimensions are significant relative to the wavelength of the signal it carries. The capacitance and inductance are not localized hardware elements; they exist continuously along every microscopic fraction of the trace. A bare microstrip trace on a PCB is itself a capacitor, with no soldered ceramic component required: the trace is the top metal plate, the ground plane is the bottom metal plate, and the FR4 fiberglass laminate is the insulating dielectric between them. The capacitance is intrinsic to the geometry and distributed along the entire length.
+$$V = I R$$
 
-The inductance is similarly geometric: any current flowing through a conductor generates a surrounding magnetic field that resists changes in current flow. The signal current travels forward on the trace while the return current travels backward on the ground plane directly below it, forming a current loop. The area enclosed by this loop stores energy in the magnetic field, producing a distributed series inductance per unit length.
+Circuit behavior depends on two distinct dimensions: variation across time ($t$) at a single coordinate, and variation across space ($z$) at a single frozen clock instant. Standard $60\text{ Hz}$ household power cords vary continuously in time, yet their electromagnetic wavelength spans roughly $5{,}000\text{ km}$. A snapshot at any frozen microsecond reveals the same voltage at every point along a two-meter desk lamp cord, so the cord behaves as a single lumped node.
 
-These two parameters are geometrically coupled, so a change that raises one usually lowers the other. Widening a trace increases the surface area facing the ground plane, which increases capacitance. That same widening simultaneously provides a broader path for current, which decreases the loop area and lowers inductance. Moving the trace closer to the ground plane increases capacitance and decreases inductance. The ratio of distributed inductance to distributed capacitance per unit length determines the characteristic impedance of the line, derived from the Telegrapher's Equations at the end of this section:
+High-speed PCB traces operate in the *distributed* regime because the signal voltage changes faster than the wave can cross the board. At any frozen instant during a transition, the near end of the trace sits at $1.2\text{ V}$ while the far end still sits at $0\text{ V}$. Capacitance and inductance no longer act as isolated components; both properties exist continuously along every microscopic slice of the trace.
+
+#### Distributed Capacitance from Electrostatic Geometry
+
+A bare microstrip trace over a reference plane forms a distributed parallel-plate capacitor without any soldered ceramic component. The copper trace acts as the top plate of width $w$, the solid ground plane acts as the bottom plate at vertical distance $h$, and the FR4 fiberglass epoxy laminate forms the insulating dielectric between them. Two electrostatic mechanisms govern how trace width $w$ and dielectric height $h$ control the distributed capacitance per unit length ($C$):
+
+- **Trace width ($w$) and lateral repulsion:** Like charges on the same metal surface repel one another horizontally. A wider trace provides greater surface area per unit length, allowing charges to spread out laterally with weaker mutual repulsion so the trace stores more charge at the same voltage.
+- **Dielectric height ($h$) and vertical attraction:** Opposite charges on the trace ($+Q$) and the ground plane beneath it ($-Q$) attract one another vertically across the dielectric gap. A thinner dielectric brings those opposite charges closer together, strengthening vertical attraction and pulling more charge onto the plates for a given voltage.
+
+Together, wider copper and thinner insulation scale capacitance per unit length in direct proportion to $w$ and inverse proportion to $h$:
+
+$$C \propto w, \qquad C \propto \frac{1}{h}$$
+
+#### Distributed Inductance from the Signal-Return Loop
+
+Distributed series inductance per unit length ($L$, in $\text{H/m}$) emerges from the magnetic field of the signal-and-return current loop. Forward conduction current $I$ flows along the trace in the $+z$ direction while return current flows in the $-z$ direction on the ground plane directly beneath the trace, enclosing a vertical cross-sectional window of height $h$ between the conductors. In a non-magnetic PCB laminate of free-space magnetic permeability $\mu_0$ ($4\pi \times 10^{-7}\text{ H/m}$), spreading current $I$ across a wide sheet of width $w$ sets the horizontal magnetic flux density $B$ (in Teslas, $\text{T}$, or $\text{Wb/m}^2$) between the plates:
+
+$$B = \frac{\mu_0 I}{w}$$
+
+Two magnetostatic mechanisms govern how the same geometric dimensions $w$ and $h$ control the distributed inductance per unit length ($L$):
+
+- **Trace width ($w$) and current-sheet spreading:** A wider trace at fixed dielectric height $h$ spreads the forward current $I$ and its underlying return current across a broader horizontal sheet. Current distributed across that wider sheet lowers the magnetic flux density $B$ between the plates and reduces the stored magnetic flux per amp.
+- **Dielectric height ($h$) and magnetic cancellation:** A thinner dielectric shrinks the vertical cross-sectional window height $h$ through which magnetic flux passes. Closer spacing simultaneously brings the opposing forward and return currents into tighter proximity, so their opposite magnetic fields cancel more completely in the surrounding space.
+
+Together, wider copper and thinner insulation scale inductance per unit length in inverse proportion to $w$ and direct proportion to $h$:
+
+$$L \propto \frac{1}{w}, \qquad L \propto h$$
+
+Capacitance and inductance move in opposite directions whenever trace geometry changes. A wider trace or a thinner dielectric raises $C$ and lowers $L$, reducing the characteristic impedance $Z_0$ of the transmission line, which the Telegrapher's Equations derive later in this chapter:
 
 $$Z_0 = \sqrt{\frac{L}{C}}$$
 
-The boundary between lumped and distributed behavior is set by comparing the time the wave needs to cross the trace with the duration of the signal transition. A trace whose one-way propagation delay is a small fraction of the rise time charges almost uniformly during the edge, and a single lumped capacitor models it adequately. A trace whose delay is comparable to the rise time has one end changing voltage while the other end has not yet responded, and only the distributed model describes it.
+### Rise Time, Rising-Edge Length, and the Critical Length Threshold
 
-A widely used guideline treats a trace as lumped only when its length is less than about one sixth of the spatial length of the rising edge, which is the distance the edge travels during one rise time. Assume a driver with a 30 ps rise time on FR4, where the wave travels about 0.147 mm per picosecond (derived in the velocity section below). The rising edge spans about 4.4 mm of trace, so the lumped limit, called the critical length, is roughly 0.7 mm. Every trace in a multi-gigabit link exceeds this threshold and must be analyzed as a transmission line.
+The boundary between lumped and distributed behavior depends on the ratio between the one-way propagation delay of the trace ($t_{pd}$) and the signal rise time ($t_r$, typically measured from $10\%$ to $90\%$ of the voltage step). A trace of physical length $\ell$ carrying a wave at propagation velocity $v_p$ has a one-way transit delay:
 
-### Why Ohm's Law Fails at High Speed
+$$t_{pd} = \frac{\ell}{v_p}$$
 
-Ohm's law ($V = IR$) assumes an immediate steady-state condition where electrons drift uniformly across the entire conductor and the voltage is identical at every point. This assumption requires the signal to have already finished propagating and settled into equilibrium.
+Over the rise time $t_r$ required for the transmitter output to slew from $0\text{ V}$ to $1.2\text{ V}$, the leading toe of the wavefront advances into the dielectric at speed $v_p$. At the instant the transmitter reaches the top of its $1.2\text{ V}$ ramp, the physical span of trace occupied by the sloped transition is the spatial length of the rising edge:
 
-High-speed serial links operate in a regime where this equilibrium never exists during a signal transition. A CMOS driver transitions from low to high in picoseconds. The voltage at the near end of the trace changes before the wave has reached the far end. The wavefront sees the bare trace as an infinite chain of empty geometric capacitors it must fill with charge. The energy is consumed charging the local geometry, not overcoming the DC resistance of the copper.
+$$\ell_{\text{edge}} = v_p\, t_r$$
 
-The ratio of voltage to current within the traveling wave is determined by the trace geometry alone, expressed as the characteristic impedance $Z_0 = \sqrt{L/C}$, not the DC resistance of the conductor. Treating a high-speed transmission line as a lumped resistor produces physically incorrect results.
+A widely used engineering rule treats an interconnect as a lumped element only when its physical length $\ell$ is shorter than one-sixth of the spatial length of the rising edge:
 
-### Transverse Electromagnetic (TEM) Propagation
+$$\ell_{\text{critical}} = \frac{\ell_{\text{edge}}}{6} = \frac{v_p\, t_r}{6} \qquad \Longleftrightarrow \qquad t_{pd} < \frac{t_r}{6}$$
 
-A static voltage applied by a disconnected battery creates a pure electric field with no associated magnetic field. A steady DC current creates a constant magnetic field with no changing electric field. Neither of these scenarios produces a propagating wave.
+The factor of one-sixth comes from round-trip reflection timing. Any reflection generated at the far end of the trace must travel from the driver to the load and back again, requiring a round-trip time of $2 t_{pd}$. Keeping one-way transit delay $t_{pd}$ below one-sixth of $t_r$ confines the round-trip echo $2 t_{pd}$ to less than one-third of $t_r$. Returning within that window brings the echo back while the driver is still slewing, blending the reflection smoothly into the transition instead of ringing.
 
-Propagation requires both fields to exist simultaneously and to vary in time, and two of Maxwell's equations supply the coupling between them. The Ampere-Maxwell law states that a changing electric field produces a magnetic field in the same way a conduction current does; this contribution is the displacement current that appears again in the propagation sequence below. Faraday's law states that a changing magnetic field produces an electric field, and [Chapter 4](04_Inductance_Magnetic_Coupling_and_Crosstalk.md) develops it in detail as the basis of inductance.
+Consider a CMOS driver with rise time $t_r$ of $30\text{ ps}$ launching onto an FR4 stripline with propagation velocity $v_p$ of approximately $0.146\text{ mm/ps}$. Those parameters determine the spatial rising-edge length and the lumped critical length on the board:
 
-Each changing field regenerates the other a short distance further along the line, and the pair travels as a self-sustaining transverse electromagnetic (TEM) wave through the dielectric material between the trace and the ground plane. The word transverse means that both fields point across the direction of travel: the electric field runs from the trace down to the plane, and the magnetic field circles the trace within the cross-section.
+$$\ell_{\text{edge}} = (0.146\text{ mm/ps})(30\text{ ps}) \approx 4.4\text{ mm}, \qquad \ell_{\text{critical}} = \frac{\ell_{\text{edge}}}{6} \approx \frac{4.4\text{ mm}}{6} \approx 0.73\text{ mm}$$
 
-The electromagnetic wave propagates through the dielectric material, not through the copper. The copper trace and the ground plane serve as physical guide rails that confine and direct the wave. This dielectric propagation path explains why the properties of the PCB laminate material (dielectric constant, loss tangent) dominate high-speed signal integrity engineering.
+Every PCB trace in a multi-gigabit link exceeds a millimeter and must be designed as a distributed transmission line.
 
-### Propagation Velocity and the Dielectric Constant
+### Why Ohm's Law Fails During Wave Propagation
 
-The speed of the electromagnetic wave in a transmission line is governed by the dielectric constant ($\epsilon_r$, also called relative permittivity or $D_k$) of the insulating material surrounding the conductors:
+Steady-state Ohm's law describes a circuit in which charge carriers drift uniformly throughout the entire conductor loop and the potential gradient is established end to end. That steady-state condition exists only after all wavefront reflections have settled.
 
-$$v_p = \frac{c}{\sqrt{\epsilon_r}}$$
+In a picosecond logic transition, the transmitter switches states long before the electromagnetic wave reaches the far-end receiver. At the launch instant, the wavefront cannot observe what load impedance sits centimeters away at the end of the trace; the wave interacts solely with the local distributed capacitance $C$ and inductance $L$ of the copper slice immediately ahead.
 
-where $c$ is the speed of light in a vacuum ($\approx 3 \times 10^8$ m/s).
+Source energy during the transition goes into building electric and magnetic fields inside each newly reached slice of dielectric rather than merely overcoming the DC resistance of the copper. Even though a multimeter measures less than $0.1\ \Omega$ of end-to-end DC resistance along the copper trace, the ratio of voltage to current in the forward-traveling wave is governed by the local geometric characteristic impedance $Z_0$ (typically $50\ \Omega$):
 
-Standard FR4 has a dielectric constant of approximately 4.0 to 4.5, which reduces the propagation velocity to roughly half the speed of light. For $\epsilon_r = 4.2$, the velocity is about $1.46 \times 10^8$ m/s, a delay of about 6.8 ps per millimeter (about 170 ps per inch). Lower-loss laminates such as Megtron 6 have lower dielectric constants (around 3.6), which allow slightly faster propagation.
+$$Z_0 = \sqrt{\frac{L}{C}}$$
 
-The amplitude of the signal has no effect on propagation velocity. A higher voltage produces a stronger electric field (higher "electrical pressure"), but the velocity of an electromagnetic wave in a transmission line is determined entirely by the distributed inductance and capacitance of the physical geometry:
+### Transverse Electromagnetic (TEM) Propagation and the 3D Field Loops
 
-$$v_p = \frac{1}{\sqrt{LC}}$$
+Electromagnetic wave propagation down a PCB trace depends on dynamic coupling between electric and magnetic fields inside the insulating laminate. Distinguishing static charge, steady direct current, and a moving transition clarifies how a wave propels itself and how its three-dimensional field loops fit together.
 
-Neither $L$ nor $C$ changes when the voltage increases from 1V to 5V. The speed remains identical regardless of the signal amplitude.
+#### Static, Steady-State, and Coupled Dynamic Field Regimes
 
-The two velocity formulas describe the same quantity, and the link between them shows why the geometry drops out of the velocity. Every TEM line in a uniform dielectric obeys:
+On a disconnected battery or charged open trace, surface charges hold a constant voltage difference between the conductors and produce a static vertical electric field (nonzero $\vec{E}$). Zero current $I$ flows through the open conductor, so the magnetic field $\vec{B}$ vanishes everywhere:
 
-$$LC = \mu_0 \epsilon_0 \epsilon_r$$
+$$I = 0, \qquad \vec{B} = 0$$
 
-where $\mu_0$ is the permeability of free space and $\epsilon_0$ is the permittivity of free space. Copper and PCB laminates are nonmagnetic, so the permeability stays at $\mu_0$. A wide trace over a plane, with the fringing fields at its edges ignored, shows the cancellation directly. Assume a trace of width $w$ at height $h$ above the plane. The capacitance per unit length follows the parallel-plate formula:
+In a closed loop carrying steady direct current $I$ forward through the trace and back through the ground plane, a static magnetic field (nonzero $\vec{B}$) surrounds the conductors while the constant trace-to-ground voltage maintains a static vertical electric field (nonzero $\vec{E}$). Both time derivatives vanish in steady state, so the two static fields coexist independently without regenerating each other:
 
-$$C = \frac{\epsilon_0 \epsilon_r w}{h}$$
+$$\frac{\partial \vec{E}}{\partial t} = 0, \qquad \frac{\partial \vec{B}}{\partial t} = 0$$
 
-The inductance per unit length of the same geometry, a current sheet of width $w$ with its return sheet a distance $h$ below, is:
+At a propagating wavefront between the charged and uncharged regions of a trace, both fields change rapidly in time:
 
-$$L = \frac{\mu_0 h}{w}$$
+$$\frac{\partial \vec{E}}{\partial t} \neq 0, \qquad \frac{\partial \vec{B}}{\partial t} \neq 0$$
 
-Multiplying the two cancels both the width and the height:
+Each changing field continuously generates the other slightly further down the line. The Ampère-Maxwell law states that a time-varying electric field ($\partial \vec{E} / \partial t$) across the dielectric generates a circulating magnetic field as Maxwell's displacement current. Faraday's law of induction ([Chapter 4](04_Inductance_Magnetic_Coupling_and_Crosstalk.md)) states that a time-varying magnetic field ($\partial \vec{B} / \partial t$) generates a circulating electric field loop.
 
-$$LC = \frac{\epsilon_0 \epsilon_r w}{h} \cdot \frac{\mu_0 h}{w} = \mu_0 \epsilon_0 \epsilon_r$$
+#### Unified Dielectric Wavefront and Clockwise Current Loop
 
-Substituting this product into the geometric velocity formula:
+A side view of the board places the transmitter on the left (at spatial origin $z$ equal to $0$) and the receiver on the right, with the signal trace on top and the ground plane on the bottom. During a positive $+1.2\text{ V}$ transition, one unified electromagnetic wavefront sweeps from left to right ($+z$) through the insulating dielectric corridor between the trace and the ground plane, where $80\%$ to $95\%$ of the field energy is concentrated. The top of that dielectric wavefront strips electrons from the bottom surface of the trace while the bottom of the same wavefront pushes electrons along the top surface of the ground plane directly below.
 
-$$v_p = \frac{1}{\sqrt{LC}} = \frac{1}{\sqrt{\mu_0 \epsilon_0}} \cdot \frac{1}{\sqrt{\epsilon_r}} = \frac{c}{\sqrt{\epsilon_r}}$$
+Rightward conduction current ($\rightarrow$) flows along the trace from the driver to the wavefront, while downward displacement current ($\downarrow$, driven by $\partial \vec{E} / \partial t$ as the vertical electric field builds) crosses the dielectric exclusively within the moving wavefront zone. Leftward return conduction current ($\leftarrow$) flows along the ground plane beneath the trace back to the source. All three legs form a single clockwise current loop, and by the right-hand rule all three legs reinforce one magnetic field ($\vec{B} \otimes$) pointing into the page between the trace and the ground plane.
 
-The last step uses the defining relationship of the speed of light, $c = 1/\sqrt{\mu_0 \epsilon_0}$. Widening the trace raises $C$ and lowers $L$ by the same factor, which is the geometric coupling described earlier expressed as an equation, so widening a trace changes its impedance while leaving its velocity unchanged.
+#### Counter-Clockwise Faraday Loop and TEM Wave Geometry
 
-The same two expressions give the impedance of the wide trace, $Z_0 = \sqrt{L/C} = (h/w)\sqrt{\mu_0/(\epsilon_0 \epsilon_r)}$, which falls as the trace widens or moves closer to the plane. A microstrip departs from the uniform-dielectric case in degree: part of its field travels through the air above the trace, so the wave sees an effective dielectric constant between 1 and $\epsilon_r$ and travels slightly faster than a stripline buried in the same laminate.
+At the leading edge of the wavefront, the into-the-page magnetic flux increases rapidly ($\partial \vec{B} / \partial t \otimes$). Faraday's law relates the curl of the induced electric field to that growing magnetic flux density:
 
-### The Telegrapher's Equations: Deriving Z0 and Velocity
+$$\nabla \times \vec{E}_{\text{induced}} = -\frac{\partial \vec{B}}{\partial t}$$
 
-The characteristic impedance and the propagation velocity both follow from applying Kirchhoff's laws to one short slice of line. A slice of a lossless line, of length $\Delta z$, contains a series inductance $L\,\Delta z$ and a shunt capacitance $C\,\Delta z$, where $L$ and $C$ are the per-unit-length values. Let $v(z,t)$ and $i(z,t)$ be the voltage and current at position $z$ and time $t$.
+Growing into-the-page magnetic flux induces a counter-clockwise electric field loop around the wavefront boundary. Its left vertical leg points downward ($\downarrow$) from trace to ground behind the wavefront to sustain the vertical TEM electric field. Its top horizontal leg points leftward ($\leftarrow$) inside the trace copper, producing the inductive back-EMF that momentarily opposes the forward current surge into the next segment.
 
-Kirchhoff's voltage law states that the voltage lost across the slice equals the voltage across its series inductance:
+Both the vertical electric field ($\vec{E} \downarrow$) and the horizontal into-the-page magnetic field ($\vec{B} \otimes$) lie entirely in the cross-sectional plane perpendicular to the $+z$ direction of travel. Perpendicular electric and magnetic field geometry defines a **Transverse Electromagnetic (TEM)** wave. Wave energy travels inside the dielectric space between the conductors while the copper surfaces serve as guide rails, so the permittivity and loss tangent of the PCB laminate govern signal speed and high-frequency attenuation.
 
-$$v(z,t) - v(z+\Delta z,t) = L\,\Delta z\,\frac{\partial i}{\partial t}$$
+### Propagation Velocity, Material Constants, and Parallel-Plate Derivations
 
-Kirchhoff's current law states that the current lost along the slice is the current diverted through its shunt capacitance:
+The propagation velocity $v_p$ of a TEM wave in a uniform dielectric is set by the relative permittivity ($\varepsilon_r$, also called the dielectric constant or $D_k$) of the insulator:
 
-$$i(z,t) - i(z+\Delta z,t) = C\,\Delta z\,\frac{\partial v}{\partial t}$$
+$$v_p = \frac{c}{\sqrt{\varepsilon_r}}$$
 
-Dividing both equations by $\Delta z$ and letting the slice shrink to zero turns each left-hand difference into a spatial derivative. The results are the lossless Telegrapher's Equations:
-
-$$-\frac{\partial v}{\partial z} = L\,\frac{\partial i}{\partial t}$$
-
-$$-\frac{\partial i}{\partial z} = C\,\frac{\partial v}{\partial t}$$
-
-The first equation states that a voltage falling along the line requires a current changing in time. The second states that a current falling along the line requires a voltage changing in time, because the current that disappears from the trace is charging the local capacitance.
-
-A wave traveling in the $+z$ direction at speed $v_p$ keeps its shape, so its voltage and current depend only on the combination $t - z/v_p$. Writing the voltage waveform as $f$ and the current waveform as $g$:
-
-$$v(z,t) = f\!\left(t - \frac{z}{v_p}\right), \qquad i(z,t) = g\!\left(t - \frac{z}{v_p}\right)$$
-
-By the chain rule, a derivative with respect to $z$ brings out a factor of $-1/v_p$, while a derivative with respect to $t$ brings out a factor of 1:
-
-$$\frac{\partial v}{\partial z} = -\frac{1}{v_p} f', \qquad \frac{\partial i}{\partial t} = g'$$
-
-Here $f'$ and $g'$ are the derivatives of each waveform with respect to its argument. Substituting both into the first Telegrapher's Equation:
-
-$$\frac{1}{v_p} f' = L\, g'$$
-
-Integrating both sides gives the first relationship between voltage and current (the integration constant is zero because the line ahead of the wave is uncharged and carries no current):
-
-$$f = v_p L\, g$$
-
-The same steps applied to the second Telegrapher's Equation give the second relationship:
-
-$$g = v_p C\, f$$
-
-Substituting the second relationship into the first:
-
-$$f = v_p L \cdot v_p C\, f = v_p^2 LC\, f$$
-
-The waveform $f$ cancels from both sides, leaving the propagation velocity:
+Constant $c$ (approximately $3.00 \times 10^8\text{ m/s}$) is the speed of light in a vacuum. From the circuit perspective, the same propagation velocity is set by the distributed inductance $L$ and distributed capacitance $C$ per unit length:
 
 $$v_p = \frac{1}{\sqrt{LC}}$$
 
-The characteristic impedance is the ratio of the voltage waveform to the current waveform. Taking the first relationship and substituting the velocity:
+Signal voltage amplitude appears in neither formula; doubling the launch swing from $1\text{ V}$ to $2\text{ V}$ doubles the electric field strength and doubles the charging current, leaving $L$, $C$, and $v_p$ unchanged.
 
-$$Z_0 = \frac{f}{g} = v_p L = \frac{L}{\sqrt{LC}} = \sqrt{\frac{L}{C}}$$
+The physical bridge between the material velocity expression $c / \sqrt{\varepsilon_r}$ and the circuit velocity expression $1 / \sqrt{LC}$ comes from Maxwell's vacuum relation for the speed of light:
 
-The waveform shape $f$ appears in neither result. Every edge, regardless of its rise time or amplitude, travels at the same velocity and carries current in the same proportion to its voltage, provided $L$ and $C$ do not depend on frequency. Losses introduce that frequency dependence, as the Edge Cases section shows.
+$$c = \frac{1}{\sqrt{\mu_0 \varepsilon_0}} \qquad \Longleftrightarrow \qquad \frac{1}{c^2} = \mu_0 \varepsilon_0$$
+
+Taking the reciprocal of the squared velocity links $LC$ directly to the fundamental electromagnetic constants of the medium:
+
+$$\frac{1}{v_p^2} = LC = \frac{\varepsilon_r}{c^2} = \mu_0 \varepsilon_0 \varepsilon_r$$
+
+#### Permittivity and Permeability of PCB Materials
+
+Total electric permittivity $\varepsilon$ and total magnetic permeability $\mu$ scale their free-space baselines by dimensionless material constants:
+
+$$\varepsilon = \varepsilon_0 \varepsilon_r, \qquad \mu = \mu_0 \mu_r$$
+
+Free space has a baseline electric permittivity $\varepsilon_0$ of approximately $8.854 \times 10^{-12}\text{ F/m}$, while relative permittivity $\varepsilon_r$ measures how strongly an insulator polarizes under an applied electric field relative to vacuum (where $\varepsilon_r$ equals $1$). In standard FR4 epoxy-glass ($\varepsilon_r$ of approximately $4.2$), molecular dipoles stretch and rotate against the applied vertical electric field, partially counteracting the internal electric field so the copper plates store $4.2$ times more charge at the same voltage.
+
+Free space has a baseline magnetic permeability $\mu_0$ of $4\pi \times 10^{-7}\text{ H/m}$, while relative permeability $\mu_r$ measures how strongly a material amplifies magnetic flux relative to vacuum. Ferromagnetic materials such as iron or ferrite contain magnetic domains that align with a magnetic field ($\mu_r$ from $10^2$ to $10^4$), whereas copper and PCB dielectrics are non-magnetic ($\mu_r$ equal to $1$), fixing the total permeability of every PCB transmission line at vacuum permeability:
+
+$$\mu = \mu_0(1) = \mu_0$$
+
+#### First-Principles Parallel-Plate Capacitance per Unit Length
+
+First-principles derivations of $C$ and $L$ for a wide parallel-plate transmission line of trace width $w$, dielectric thickness $h$, and section length $\ell$ (neglecting edge fringing) prove why trace geometry cancels out of $LC$ while directly controlling $Z_0$. Total capacitance $C_{\text{total}}$ equals stored charge $Q$ divided by voltage $V$, and Gauss's law gives the uniform vertical electric field $E$ produced by charge $Q$ spread across rectangular plate area $A$ (equal to $w\ell$) in permittivity $\varepsilon_0 \varepsilon_r$:
+
+$$C_{\text{total}} = \frac{Q}{V}, \qquad A = w\ell, \qquad E = \frac{Q}{\varepsilon_0 \varepsilon_r w \ell}$$
+
+Multiplying that uniform vertical electric field by the plate separation $h$ gives the potential difference between the trace and ground plane:
+
+$$V = E\, h = \frac{Q\, h}{\varepsilon_0 \varepsilon_r w \ell}$$
+
+Substitution of $V$ into the total capacitance ratio and division by the section length $\ell$ yield the capacitance per unit length $C$ (in $\text{F/m}$):
+
+$$C_{\text{total}} = \frac{Q}{\dfrac{Q\, h}{\varepsilon_0 \varepsilon_r w \ell}} = \frac{\varepsilon_0 \varepsilon_r w \ell}{h}$$
+
+$$C = \frac{C_{\text{total}}}{\ell} = \frac{\varepsilon_0 \varepsilon_r w}{h}$$
+
+#### First-Principles Parallel-Plate Inductance per Unit Length
+
+Total inductance $L_{\text{total}}$ equals enclosed magnetic flux $\Phi_B$ divided by current $I$. Applying Ampère's circuital law around a forward current $I$ distributed across a sheet of width $w$ above an opposing return-current sheet produces a uniform horizontal magnetic flux density $B$ confined between the sheets and zero field outside:
+
+$$L_{\text{total}} = \frac{\Phi_B}{I}, \qquad \oint \vec{B} \cdot d\vec{\ell} = \mu_0 I \qquad \Longrightarrow \qquad B = \frac{\mu_0 I}{w}$$
+
+That magnetic field passes perpendicularly through the side cross-sectional window of height $h$, length $\ell$, and area $A_{\text{window}}$ (equal to $h\ell$), producing total magnetic flux $\Phi_B$:
+
+$$A_{\text{window}} = h\ell, \qquad \Phi_B = B\, A_{\text{window}} = \left(\frac{\mu_0 I}{w}\right)(h\ell)$$
+
+Substitution of $\Phi_B$ into the total inductance ratio and division by the section length $\ell$ yield the inductance per unit length $L$ (in $\text{H/m}$):
+
+$$L_{\text{total}} = \frac{\Phi_B}{I} = \frac{\mu_0 h \ell}{w} \qquad \Longrightarrow \qquad L = \frac{L_{\text{total}}}{\ell} = \frac{\mu_0 h}{w}$$
+
+#### Cancellation of Geometry in Velocity and Aspect-Ratio Control of Impedance
+
+Multiplying $L$ and $C$ cancels both geometric dimensions $w$ and $h$ identically:
+
+$$LC = \left(\frac{\mu_0 h}{w}\right) \left(\frac{\varepsilon_0 \varepsilon_r w}{h}\right) = \mu_0 \varepsilon_0 \varepsilon_r$$
+
+$$v_p = \frac{1}{\sqrt{LC}} = \frac{1}{\sqrt{\mu_0 \varepsilon_0}} \frac{1}{\sqrt{\varepsilon_r}} = \frac{c}{\sqrt{\varepsilon_r}}$$
+
+Division of $L$ by $C$ inside the characteristic impedance square root inverts the denominator fraction and reinforces the geometric aspect ratio $h/w$:
+
+$$Z_0 = \sqrt{\frac{L}{C}} = \sqrt{\frac{\dfrac{\mu_0 h}{w}}{\dfrac{\varepsilon_0 \varepsilon_r w}{h}}} = \sqrt{\frac{\mu_0 h}{w} \cdot \frac{h}{\varepsilon_0 \varepsilon_r w}}$$
+
+$$Z_0 = \sqrt{\frac{h^2}{w^2} \frac{\mu_0}{\varepsilon_0 \varepsilon_r}} = \frac{h}{w} \sqrt{\frac{\mu_0}{\varepsilon_0 \varepsilon_r}}$$
+
+A wider trace ($w \uparrow$) or a thinner dielectric ($h \downarrow$) lowers $L$ and raises $C$ by the same geometric factor $h/w$, reducing $Z_0$ while leaving $v_p$ unchanged.
+
+### Buried Stripline vs. Surface Microstrip Propagation Speeds
+
+Trace layer placement in the PCB stackup determines how much of the electric field resides inside the FR4 substrate versus the surrounding air, directly setting wave propagation speed.
+
+#### Buried Stripline in a Homogeneous Dielectric
+
+A stripline trace is routed on an internal PCB layer sandwiched symmetrically between an upper reference plane and a lower reference plane, completely encased in FR4 ($\varepsilon_r$ of approximately $4.2$). All electric field lines remain inside the FR4 dielectric, so every stripline trace experiences the full relative permittivity of $4.2$ and propagates at a uniform speed (equivalent to $14.6\text{ cm/ns}$, or a delay of $6.8\text{ ps/mm}$):
+
+$$v_p = \frac{c}{\sqrt{4.2}} \approx 1.46 \times 10^8\text{ m/s}$$
+
+#### Surface Microstrip in an Inhomogeneous Air-Plus-FR4 Dielectric
+
+A microstrip trace sits on the top or bottom outer surface of the PCB, with FR4 ($\varepsilon_r$ of approximately $4.2$) beneath the copper and air ($\varepsilon_r$ of approximately $1.0$) above the copper. Most electric field lines pass directly downward through the FR4 to the ground plane, while the remaining lines fringe upward through the air before curving back down to the reference plane.
+
+Field sharing across air and laminate exposes the wave to a weighted-average **effective dielectric constant** $\varepsilon_{\text{eff}}$ between $1.0$ and $\varepsilon_r$ (typically $3.0$ to $3.3$ on FR4). Reduced effective permittivity allows a surface microstrip signal to travel $15\%$ to $20\%$ faster (or a delay of $5.9\text{ ps/mm}$) than an inner-layer stripline on the same PCB:
+
+$$v_p = \frac{c}{\sqrt{\varepsilon_{\text{eff}}}} \approx 1.70 \times 10^8\text{ m/s}$$
+
+### The Lossless Telegrapher's Equations and Traveling-Wave Solution
+
+Characteristic impedance $Z_0$ and propagation velocity $v_p$ emerge rigorously from Kirchhoff's voltage and current laws applied to an infinitesimal slice of lossless transmission line of length $\Delta z$ containing series inductance $L\,\Delta z$ and shunt capacitance $C\,\Delta z$. Let $v(z, t)$ and $i(z, t)$ denote the instantaneous voltage and current at spatial coordinate $z$ and time $t$; many textbooks omit $(z, t)$ as shorthand, but explicit arguments keep every spatial and temporal derivative unambiguous.
+
+#### Differential Slice Balance and Coupled Partial Derivatives
+
+Voltage $v(z, t)$ and current $i(z, t)$ depend on two independent variables ($z$ and $t$), so calculus uses the partial derivative symbol $\partial$:
+
+- **Spatial partial derivative ($\partial / \partial z$):** Holds time $t$ frozen like a photograph and measures how rapidly voltage or current changes per meter along the copper trace at that single instant.
+- **Temporal partial derivative ($\partial / \partial t$):** Holds position $z$ fixed at a single probe point and measures how rapidly voltage or current changes per second as the wave sweeps past that coordinate.
+
+Kirchhoff's voltage law across the slice from $z$ to $z + \Delta z$ at frozen instant $t$ equates the spatial voltage drop to the inductive voltage across $L\,\Delta z$:
+
+$$v(z, t) - v(z + \Delta z, t) = L\,\Delta z\,\frac{\partial i(z, t)}{\partial t}$$
+
+Kirchhoff's current law at the slice node equates the spatial current lost along the trace to the displacement current diverted into the shunt capacitance $C\,\Delta z$:
+
+$$i(z, t) - i(z + \Delta z, t) = C\,\Delta z\,\frac{\partial v(z, t)}{\partial t}$$
+
+Taking the forward-difference limit as slice length $\Delta z$ shrinks to zero converts each difference quotient into a spatial partial derivative:
+
+$$-\lim_{\Delta z \to 0} \frac{v(z + \Delta z, t) - v(z, t)}{\Delta z} = L\,\frac{\partial i(z, t)}{\partial t} \qquad \Longrightarrow \qquad -\frac{\partial v(z, t)}{\partial z} = L\,\frac{\partial i(z, t)}{\partial t}$$
+
+$$-\lim_{\Delta z \to 0} \frac{i(z + \Delta z, t) - i(z, t)}{\Delta z} = C\,\frac{\partial v(z, t)}{\partial t} \qquad \Longrightarrow \qquad -\frac{\partial i(z, t)}{\partial z} = C\,\frac{\partial v(z, t)}{\partial t}$$
+
+These two coupled partial differential equations are the **lossless Telegrapher's Equations**. The first states that a spatial voltage gradient along the trace requires a time-varying current through the distributed inductance $L$; the second states that a spatial decrease in trace current along the line feeds a time-varying voltage across the distributed capacitance $C$.
+
+#### Traveling-Wave Substitution and Impedance Proof
+
+On a lossless line (zero series resistance $R$ and zero shunt conductance $G$, so zero energy dissipates as heat) with frequency-independent $L$ and $C$ (zero dispersion, so all frequency components travel at speed $v_p$), a forward-traveling wave preserves its shape in $+z$. Reserving symbol $f$ for frequency in Hertz ($\text{Hz}$), let $v_w(\tau)$ and $i_w(\tau)$ denote the arbitrary forward-traveling voltage and current waveform shapes as functions of a single combined variable $\tau$, the **launch time**:
+
+$$\tau = t - \frac{z}{v_p}$$
+
+$$v(z, t) = v_w\!\left(t - \frac{z}{v_p}\right) = v_w(\tau), \qquad i(z, t) = i_w\!\left(t - \frac{z}{v_p}\right) = i_w(\tau)$$
+
+Ratio $z / v_p$ is the transit time required for a feature on the wave to travel from the transmitter at coordinate $0$ to position $z$, so launch time $\tau$ is the clock time when the piece of the wave observed at $(z, t)$ originally left the driver. Functions $v_w(\tau)$ and $i_w(\tau)$ are not restricted to sine or cosine waves; they represent any pulse, step, or ramp profile launched onto the trace.
+
+Consider a concrete numerical voltage ramp of slew rate $0.1\text{ V/ns}$ launched onto a trace with propagation velocity $v_p$ of $15\text{ cm/ns}$:
+
+$$v_w(\tau) = (0.1\text{ V/ns})\,\tau$$
+
+At the transmitter ($z$ of $0\text{ cm}$) at clock instant $t$ of $2\text{ ns}$, zero transit delay sets the launch time and driver voltage:
+
+$$\tau = 2\text{ ns} - 0\text{ ns} = 2\text{ ns}, \qquad v(0, 2\text{ ns}) = (0.1\text{ V/ns})(2\text{ ns}) = 0.2\text{ V}$$
+
+One nanosecond later ($t$ of $3\text{ ns}$) at a probe point $15\text{ cm}$ down the trace, the transit delay $z / v_p$ of $(15\text{ cm}) / (15\text{ cm/ns})$ equals $1\text{ ns}$, yielding the identical launch time and identical voltage:
+
+$$\tau = 3\text{ ns} - 1\text{ ns} = 2\text{ ns}, \qquad v(15\text{ cm}, 3\text{ ns}) = (0.1\text{ V/ns})(2\text{ ns}) = 0.2\text{ V}$$
+
+Differentiating the scalar launch-time argument $\tau$ partially with respect to $z$ and $t$ produces two constant factors:
+
+$$\frac{\partial \tau}{\partial z} = -\frac{1}{v_p}, \qquad \frac{\partial \tau}{\partial t} = 1$$
+
+Applying the chain rule relates the spatial and temporal partial derivatives directly to the ordinary waveform derivatives $dv_w(\tau)/d\tau$ and $di_w(\tau)/d\tau$:
+
+$$\frac{\partial v(z, t)}{\partial z} = \frac{dv_w(\tau)}{d\tau} \frac{\partial \tau}{\partial z} = -\frac{1}{v_p} \frac{dv_w(\tau)}{d\tau}, \qquad \frac{\partial i(z, t)}{\partial t} = \frac{di_w(\tau)}{d\tau} \frac{\partial \tau}{\partial t} = \frac{di_w(\tau)}{d\tau}$$
+
+$$\frac{\partial i(z, t)}{\partial z} = \frac{di_w(\tau)}{d\tau} \frac{\partial \tau}{\partial z} = -\frac{1}{v_p} \frac{di_w(\tau)}{d\tau}, \qquad \frac{\partial v(z, t)}{\partial t} = \frac{dv_w(\tau)}{d\tau} \frac{\partial \tau}{\partial t} = \frac{dv_w(\tau)}{d\tau}$$
+
+Recalling the first lossless Telegrapher's Equation and substituting the first pair of chain-rule derivatives cancel the minus signs:
+
+$$-\frac{\partial v(z, t)}{\partial z} = L\,\frac{\partial i(z, t)}{\partial t} \qquad \Longrightarrow \qquad \frac{1}{v_p} \frac{dv_w(\tau)}{d\tau} = L\,\frac{di_w(\tau)}{d\tau}$$
+
+Integration of both sides with respect to $\tau$ from the uncharged baseline ahead of the wave (where both $v_w(\tau)$ and $i_w(\tau)$ vanish, fixing the integration constant at zero) gives the first algebraic relation between voltage and current:
+
+$$v_w(\tau) = v_p\, L\, i_w(\tau)$$
+
+Recalling the second lossless Telegrapher's Equation, substituting the second pair of chain-rule derivatives, and integrating with respect to $\tau$ give the companion relation:
+
+$$-\frac{\partial i(z, t)}{\partial z} = C\,\frac{\partial v(z, t)}{\partial t} \qquad \Longrightarrow \qquad \frac{1}{v_p} \frac{di_w(\tau)}{d\tau} = C\,\frac{dv_w(\tau)}{d\tau}$$
+
+$$i_w(\tau) = v_p\, C\, v_w(\tau)$$
+
+Substituting that current expression $i_w(\tau)$ into the voltage relation eliminates the current waveform:
+
+$$v_w(\tau) = v_p L \left(v_p C\, v_w(\tau)\right) = v_p^2 LC\, v_w(\tau)$$
+
+Cancellation of the arbitrary nonzero waveform $v_w(\tau)$ from both sides proves the geometric propagation velocity formula:
+
+$$v_p^2 LC = 1 \qquad \Longrightarrow \qquad v_p = \frac{1}{\sqrt{LC}}$$
+
+Dividing the forward voltage waveform $v_w(\tau)$ by the forward current waveform $i_w(\tau)$ and substituting $1 / \sqrt{LC}$ for $v_p$ prove the characteristic impedance formula:
+
+$$Z_0 = \frac{v_w(\tau)}{i_w(\tau)} = v_p\, L = \frac{L}{\sqrt{LC}} = \sqrt{\frac{L}{C}}$$
+
+Neither $v_p$ nor $Z_0$ contains the waveform shape $v_w(\tau)$. Every edge, regardless of rise time or voltage swing, travels at the same speed $1 / \sqrt{LC}$ and maintains the voltage-to-current ratio $\sqrt{L/C}$ at every point along a lossless uniform line.
 
 ## Architecture
 
 ### The CMOS Driver as a High-Speed Valve
 
-The voltage rail (such as +1.2V) and the ground plane (0V) are two reservoirs of constant electrical potential. The power distribution network (PDN) works to keep these reservoirs stable and fully charged, regardless of what the surrounding logic circuits are doing.
+The positive power rail (such as $+1.2\text{ V}$) and the ground plane ($0\text{ V}$) act as two reservoirs of constant electrical potential maintained by the power distribution network (PDN). At the near end of the trace (spatial origin $z$ equal to $0$) sits a CMOS output driver composed of two complementary transistor switches. A pull-up PMOS switch connects the trace to the $+1.2\text{ V}$ rail, while a pull-down NMOS switch connects the trace to the $0\text{ V}$ ground plane.
 
-At the beginning of a trace sits an output driver (transmitter). At the most basic level, this driver consists of two complementary transistors acting as switches. The pull-up transistor connects the trace to the voltage rail. The pull-down transistor connects the trace to ground. The power supply is never asked to generate different voltage levels, and the information is encoded in *time*, in the moments at which the switches change state. To send a logic "1," the driver closes the pull-up switch and opens the pull-down switch, connecting the trace to the +1.2V reservoir. To send a logic "0," the driver does the reverse.
-
-The power supply provides the constant potential energy, and the transistor decides when that energy is applied to the trace. Abrupt transitions in the time domain contain broad frequency content in the frequency domain, and [Chapter 2](02_Frequency_Content_of_Digital_Signals.md) quantifies that content and its dependence on the transition speed.
+The power supply never generates time-varying analog waveforms to encode bits; information is encoded in the instants at which the switches change state. A logic `1` transition closes the pull-up switch and opens the pull-down switch, exposing the near end of the trace to $+1.2\text{ V}$. A logic `0` transition opens the pull-up switch and closes the pull-down switch, shorting the near end of the trace to the $0\text{ V}$ ground plane. Abrupt time-domain transitions generate broad frequency spectra, which [Chapter 2](02_Frequency_Content_of_Digital_Signals.md) derives from Fourier analysis.
 
 ### The Wavefront Launch Event
 
-Consider a trace currently sitting at 0V. At the instant the pull-up transistor switches on, the physical copper at the beginning of the trace is abruptly exposed to the +1.2V potential from the rail.
+Consider an uncharged trace of total length $\ell$ sitting at $0\text{ V}$ from its near end to its far end. At initial instant $t$ equal to $0$, the pull-up transistor switches on and exposes the near-end copper at the driver to the $+1.2\text{ V}$ supply rail.
 
-The entire length of the trace cannot instantly jump to 1.2V. The distributed parasitic capacitance requires time to charge, and the distributed series inductance resists sudden current flow. A sharp boundary forms right at the transmitter between the newly applied 1.2V region and the existing 0V region.
+The entire length of the trace cannot jump to $1.2\text{ V}$ instantaneously because each downstream slice of distributed capacitance $C\,\Delta z$ requires charge and each slice of series inductance $L\,\Delta z$ opposes an instantaneous current jump. A steep spatial boundary of rising-edge width $\ell_{\text{edge}}$ (equal to $v_p t_r$, or roughly $4.4\text{ mm}$ for a $30\text{ ps}$ edge on FR4) forms at the transmitter between the newly charged $1.2\text{ V}$ region and the uncharged $0\text{ V}$ copper ahead.
 
-The 1.2V difference concentrated across this narrow boundary creates an intense, localized change in the electric field. This field, accompanied by a magnetic field from the inrush current, is what launches down the trace as an electromagnetic wave. The spatial width of the boundary equals the rise time multiplied by the propagation velocity, about 4.4 mm for a 30 ps edge on FR4.
+### Segment-by-Segment Propagation and Local Inductive Back-EMF
 
-### Segment-by-Segment Propagation
+A chain of contiguous microscopic segments of length $\Delta z$, each containing series inductance $L\,\Delta z$ and shunt capacitance $C\,\Delta z$, reveals the chronological chain reaction of wave propagation.
 
-The physical mechanism of propagation can be understood by mentally dividing the entire trace into millions of microscopic, contiguous segments. Each segment is a tiny piece of copper separated from the ground plane by an insulator, making each segment a tiny capacitor with a tiny series inductance.
+#### Stage 1: Initial Launch and Displacement Current in Segment 1
 
-**Time $t = 0$:** The transistor switches on, abruptly exposing the first microscopic segment of the trace (at $d = 0$) to the 1.2V rail. Bringing this first segment up to 1.2V requires depositing charge onto it. A localized burst of conventional current flows from the power supply into this segment (physically, electrons are pulled out of the copper, as the section on conventional current below explains). This movement of charge is the conduction current.
+Activation of the pull-up switch at time $0$ exposes Segment 1 at the driver to the $+1.2\text{ V}$ rail. Conduction current flows from the supply into Segment 1, stripping electrons from the copper to deposit positive charge and building a downward vertical electric field $\vec{E} \downarrow$ across the dielectric to the ground plane. That rapidly growing vertical electric field ($\partial \vec{E} / \partial t$) creates downward displacement current $I_D$ across the insulator, closing the initial current loop while Segments 2, 3, and beyond remain at $0\text{ V}$:
 
-The accumulating charge rapidly builds an electric field across the dielectric, pointing from the trace down to the ground plane. Maxwell showed that a changing electric field produces a magnetic field in the same manner as a conduction current. This displacement current bridges the physical gap of the insulator, completing the local circuit loop back through the ground plane to the source. At this moment, only the first microscopic segment is affected, and the rest of the trace has not yet received any signal.
+$$I_D = C\,\Delta z\,\frac{\partial v(z, t)}{\partial t}$$
 
-**Time $t > 0$:** Segment 1 is now charged to 1.2V, but segment 2 remains at 0V. The voltage difference causes segment 1 to act as the local power source for segment 2. Charge shifts from segment 1 into segment 2. The local series inductance briefly resists this sudden movement, but charge transfers. Segment 2 charges, and an electric field forms beneath it, creating a local displacement current through the dielectric and a local magnetic field around the copper. Segment 2 then acts as the source for segment 3, which in turn charges segment 4.
+#### Stage 2: Current Surge and Direct Faraday Induction into Segment 2
 
-This continuous, sequential charging of microscopic segments is the physical mechanism of electromagnetic wave propagation on a transmission line.
+Segment 1 rises toward $1.2\text{ V}$ while Segment 2 sits at $0\text{ V}$, and the horizontal voltage drop pushes conduction current rightward into Segment 2. Rising forward current generates a growing into-the-page magnetic field ($\partial \vec{B} / \partial t \otimes$) in the dielectric window beneath the junction, governed by Faraday's law:
 
-### The Three Zones of a Propagating Wavefront
+$$\nabla \times \vec{E}_{\text{induced}} = -\frac{\partial \vec{B}}{\partial t}$$
 
-Freezing time while the wavefront is halfway down the board reveals three distinct zones:
+Growing into-the-page magnetic flux directly induces a leftward horizontal electric field ($\vec{E}_{\text{induced}} \leftarrow$) inside the trace copper. An out-of-the-page right-hand thumb ($\odot$) serves solely as the right-hand-rule mnemonic for the minus sign in Faraday's law, not as a second opposing magnetic field.
 
-- **Charged region behind the wavefront:** The trace is fully charged to 1.2V. A static electric field holds steady between the trace and the ground plane, and because the voltage is not changing, no displacement current flows here. The conduction current is steady and nonzero: a current of $V/Z_0$ flows along the trace from the driver to the wavefront and returns along the ground plane beneath it, surrounding the trace with a static magnetic field that delivers charge to each newly reached segment.
-- **Uncharged region ahead of the wavefront:** The trace remains at 0V, its voltage is not changing, and neither conduction current nor displacement current flows.
-- **Active transition zone at the wavefront:** The voltage actively transitions from 0V to 1.2V as conduction current charges the local segment and a growing electric field passes displacement current through the dielectric. Current flows forward on the trace from the driver to the wavefront, vertically through the dielectric as displacement current, and backward through the ground plane to the source. The vertical leg of this loop, the only region where the fields change, slides down the transmission line at the propagation velocity and lengthens the loop as the signal travels.
+#### Stage 3: Inductive Pacing and Downstream Cascade
 
-### The Role of the Power Supply During Propagation
+The leftward induced electric field ($\vec{E}_{\text{induced}} \leftarrow$) opposes the incoming charge and produces the series inductance voltage drop $v_L(z, t)$ across the slice:
 
-A critical physical detail governs energy delivery: segment 1 does not dump its stored charge into segment 2 and go dead. Segment 1 remains continuously connected to the 1.2V power supply through the closed transistor switch. The power supply acts as a continuous, high-pressure source that forces charge into the trace at $d = 0$ to feed the propagating wavefront. Every segment behind the wavefront stays firmly pinned at 1.2V.
+$$v_L(z, t) = L\,\Delta z\,\frac{\partial i(z, t)}{\partial t}$$
 
-The rate at which the supply must deliver charge follows from the geometry. In each second, the wavefront advances a distance $v_p$ and charges that length of line, whose capacitance is $C v_p$, to the voltage $V$. The charge delivered per second is the current:
+Inductive back-EMF paces the current ramp so charge transfers into Segment 2 at the finite velocity $v_p$ of $1 / \sqrt{LC}$. Segment 2 then charges its own capacitance $C\,\Delta z$ through vertical displacement current and feeds Segment 3 in a continuous cascade down the line.
 
-$$I = C\, v_p\, V = \frac{C}{\sqrt{LC}}\, V = \sqrt{\frac{C}{L}}\, V = \frac{V}{Z_0}$$
+### The Three Zones of a Propagating Wavefront and Return Current in a 0V Plane
 
-An ideal 1.2V switch launching into a 50Ω line therefore draws a steady 24 mA from the supply for as long as the wavefront is still traveling toward the far end. A real driver has some output resistance, which forms a voltage divider with $Z_0$ and lowers the launched voltage; [Chapter 3](03_Impedance_Reflections_and_Termination.md) treats that divider. The ratio $Z_0 = V/I$ obtained here from charge bookkeeping alone is the same one the Telegrapher's Equations produced.
+A snapshot in time halfway through a transition along a trace of length $\ell$ divides the interconnect into three distinct spatial zones relative to the wavefront coordinate $z_{\text{front}}$.
 
-The forward direction of energy flow is maintained by the permanent voltage gradient. The driver at $d = 0$ is forcefully held at 1.2V, representing high potential energy. The uncharged trace ahead of the wavefront sits at 0V. Charge always flows from higher potential to lower potential. The electrical pressure behind the wavefront is 1.2V, and the pressure in front is 0V. A forward segment cannot transfer charge backward to a previous segment because the previous segment is held at a higher electrical potential by the continuous supply.
+#### Charged Region Behind the Wavefront
 
-The transmitter sends a logic "0" by disconnecting the 1.2V rail and connecting the trace to 0V ground. The high-pressure source is removed, a low-resistance path to ground is provided, and the stored charge flows out of the trace through the driver, discharging the line segment by segment as a falling wavefront travels toward the far end.
+Across the energized span from $0$ to $z_{\text{front}}$ behind the transition, every segment sits at a constant $+1.2\text{ V}$ with a static vertical electric field $E$ of $V / h$ between the $+Q$ trace charge and $-Q$ ground-plane charge. Unchanging local voltage sets the temporal voltage derivative and dielectric displacement current $I_D$ to zero:
+
+$$\frac{\partial v(z, t)}{\partial t} = 0, \qquad I_D = 0$$
+
+Inside the copper, the horizontal electric field drives a steady conduction current $I$ rightward from the driver to deliver charge to the wavefront while an equal return current flows leftward in the ground plane:
+
+$$I = \frac{V}{Z_0}$$
+
+That steady current loop surrounds the trace behind the wavefront with a static into-the-page magnetic field ($\vec{B} \otimes$) storing magnetic energy $\frac{1}{2}L I^2$ per meter.
+
+#### Active Transition Zone at the Wavefront
+
+Within the moving transition zone around $z_{\text{front}}$ (of spatial width $\ell_{\text{edge}}$ equal to $v_p t_r$), both local trace voltage $v(z, t)$ and current $i(z, t)$ actively slew upward with positive time derivatives. Forward conduction current arrives from the trace behind the wavefront, turns downward across the dielectric as displacement current $I_D$ while the vertical electric field builds, and turns leftward onto the ground plane as return conduction current:
+
+$$I_D = C\,\Delta z\,\frac{\partial v(z, t)}{\partial t}$$
+
+That vertical displacement-current bridge slides rightward at speed $v_p$, continuously elongating the energized current loop behind it.
+
+#### Uncharged Region Ahead of the Wavefront
+
+Ahead of the advancing boundary between $z_{\text{front}}$ and far end $\ell$, the electromagnetic wave has not yet arrived. Both the trace and the ground plane remain at $0\text{ V}$ with zero electric field, zero magnetic field, zero conduction current, and zero displacement current.
+
+#### Return Current Flow Through a 0 V Reference Plane
+
+A natural question arises in the behind-the-wavefront zone: how can return conduction current flow leftward through a ground plane labeled "$0\text{ V}$" everywhere? The label "$0\text{ V}$" does not indicate zero charge or an inability to conduct current; it denotes the arbitrary reference potential assigned to the negative terminal of the power supply.
+
+In an ideal lossless copper ground plane (zero sheet resistance $R_{\text{plane}}$), mobile electrons experience zero lattice friction and coast from the wavefront footprint back to the source terminal with zero voltage drop:
+
+$$\Delta V = I\, R_{\text{plane}} = 0\text{ V}$$
+
+In a real copper ground plane with a small sheet resistance $R_{\text{plane}}$ of $1\text{ m}\Omega$, a $24\text{ mA}$ return current produces a microvolt-scale longitudinal potential gradient:
+
+$$\Delta V = (24\text{ mA})(1\text{ m}\Omega) = 24\,\mu\text{V}$$
+
+That $24\,\mu\text{V}$ gradient between the wavefront footprint ($+0.000024\text{ V}$) and the supply ground terminal ($0.000000\text{ V}$) drives the return current home while keeping the plane within microvolts of the $0\text{ V}$ reference.
+
+### The Closed-Loop Power Supply Pump, Probing, and the Falling Edge
+
+Sustaining a traveling step wave requires continuous charge delivery from the local power distribution network, two-contact differential probing, and proper far-end termination. Tracing a complete pulse from supply injection through load arrival and logic-zero discharge connects every part of the transmission-line loop.
+
+#### Continuous Supply Current and Local Decoupling
+
+Segment 1 at the driver never dumps its stored charge into Segment 2 and drops back to $0\text{ V}$; Segment 1 remains clamped to $+1.2\text{ V}$ through the closed pull-up switch while the power supply continuously feeds charge into the trace. In each second of travel, the wavefront advances a distance $v_p$ and charges a new capacitance $C v_p$ to voltage $V$, requiring a steady supply current:
+
+$$I = \frac{\Delta Q}{\Delta t} = C\, v_p\, V = \frac{C}{\sqrt{LC}}\, V = \sqrt{\frac{C}{L}}\, V = \frac{V}{Z_0}$$
+
+An ideal $1.2\text{ V}$ switch launching into a $50\ \Omega$ trace draws a constant wave current throughout transit (a real driver has a small internal source resistance $R_S$ that forms a voltage divider with $Z_0$, covered in [Chapter 3](03_Impedance_Reflections_and_Termination.md)):
+
+$$I = \frac{1.2\text{ V}}{50\ \Omega} = 24\text{ mA}$$
+
+At the driver end of the board, the local decoupling capacitor ($C_{\text{decap}}$) next to the transmitter pins and the board voltage regulator module (VRM) connect directly between the $+1.2\text{ V}$ rail and the $0\text{ V}$ ground plane. Together they act as a closed-loop charge pump: $C_{\text{decap}}$ supplies the initial picosecond current surge before the distant VRM responds, and the VRM replenishes $C_{\text{decap}}$ to sustain steady-state current. Returning conventional current exits the left edge of the $0\text{ V}$ ground plane at the same $24\text{ mA}$ rate that charge enters the trace, preventing charge accumulation and holding the plane at $0\text{ V}$.
+
+#### Two-Contact Voltage Probing and Ground-Loop Inductance
+
+Measurement of that $1.2\text{ V}$ signal with a multimeter or a high-bandwidth oscilloscope probe always requires **two** physical contacts because voltage is strictly a potential difference between two locations. Touching the probe tip to the signal trace ($+1.2\text{ V}$) while seating a coaxial ground spring on the adjacent PCB ground plane ($0\text{ V}$) reports the true signal swing, whereas placing both contacts on the same $1.2\text{ V}$ trace reports zero:
+
+$$V_{\text{probe}} = 1.2\text{ V} - 0\text{ V} = 1.2\text{ V}, \qquad V_{\text{same-trace}} = 1.2\text{ V} - 1.2\text{ V} = 0\text{ V}$$
+
+Using a long clip-on ground wire instead of a short coaxial ground spring forces the probe return current around a large physical loop of parasitic inductance $L_{\text{loop}}$. Fast edge currents through $L_{\text{loop}}$ add a false inductive voltage spike $V_{\text{error}}$ that masquerades as signal ringing on the oscilloscope screen:
+
+$$V_{\text{error}} = L_{\text{loop}}\,\frac{di(t)}{dt}$$
+
+#### Far-End Receiver Termination States
+
+Far-end receiver termination ([Chapter 3](03_Impedance_Reflections_and_Termination.md)) determines the steady-state fields once the rising wavefront reaches distance $\ell$. With a **parallel-terminated load** matched to the line impedance, wavefront arrival leaves the entire trace charged to $1.2\text{ V}$ and stops dielectric displacement current everywhere ($I_D$ of $0\text{ A}$). Termination resistor $R_T$ bridges the far end of the trace to the ground plane and takes over from the displacement current to close the loop, sustaining a steady DC conduction current $I_C$ alongside both the static vertical electric field and the static into-the-page magnetic field:
+
+$$R_T = Z_0 = 50\ \Omega \qquad \Longrightarrow \qquad I_C = \frac{1.2\text{ V}}{50\ \Omega} = 24\text{ mA}$$
+
+With an **open circuit or high-impedance CMOS gate** (infinite load resistance $R_L$), no DC path to ground exists at distance $\ell$, so current cannot exit the far end of the trace. Decay of the reflection transient reduces displacement current $I_D$ and conduction current $I_C$ to zero, collapses the magnetic field $\vec{B}$, and leaves only the static vertical electric field $E$ across the charged trace capacitance:
+
+$$I_D = 0, \qquad I_C = 0, \qquad \vec{B} = 0, \qquad E = \frac{1.2\text{ V}}{h}$$
+
+#### Falling-Edge Discharge Wavefront
+
+Transmission of a logic `0` (a falling transition from $+1.2\text{ V}$ back to $0\text{ V}$) begins at the driver. The CMOS output stage opens the top PMOS pull-up switch to disconnect the $+1.2\text{ V}$ supply and closes the bottom NMOS pull-down switch, creating a low-resistance bridge directly between the near end of the trace and the $0\text{ V}$ ground plane beneath it. Segment 1 at the driver immediately drains its stored positive charge downward through the closed NMOS switch into the ground plane and drops to $0\text{ V}$, while Segment 2 still sits at $+1.2\text{ V}$.
+
+The resulting potential difference causes Segment 2 to discharge leftward ($\leftarrow$) into Segment 1 and down through the NMOS switch to ground, dropping Segment 2 to $0\text{ V}$ and pulling charge from Segment 3. At the moving **discharge wavefront**, falling local voltage produces a negative temporal derivative $\partial v(z, t) / \partial t$ and drives an upward displacement current ($\uparrow$) that closes a counter-clockwise loop:
+
+$$I_D = C\,\Delta z\,\frac{\partial v(z, t)}{\partial t} < 0$$
+
+Stored positive charge drains leftward ($\leftarrow$) along the trace into the NMOS ground switch while the discharge boundary sweeps rightward ($\rightarrow$) at velocity $v_p$. By superposition, closing the pull-down switch launches a $-1.2\text{ V}$ wave in $+z$ that cancels the $+1.2\text{ V}$ state segment by segment.
 
 ### Conventional Current vs. Electron Motion
 
-Operating a standard positive voltage rail (+1.2V) means the power supply performs the direct opposite of "pushing electrons into the trace." Electrons carry negative charge, and the copper trace naturally contains an equal number of protons and electrons, giving it a neutral 0V baseline. Creating a +1.2V potential on the trace requires the power supply to *strip electrons away* from the copper atoms and deposit them into the ground plane.
+Positive-rail operation ($+1.2\text{ V}$) requires the power supply to perform the physical opposite of pushing electrons into the signal trace. Electrons carry negative charge ($-q$), and an uncharged $0\text{ V}$ copper trace contains equal numbers of protons and electrons. Raising the trace to $+1.2\text{ V}$ requires the power supply to *pull electrons out* of the trace at the driver end and pump them into the ground plane.
 
-This removal of electrons creates a localized electron deficiency (a net positive charge) at $d = 0$. The propagating wavefront requires the power supply to continuously pull more electrons out of the trace at $d = 0$ so that each newly encountered segment reaches that same +1.2V state of electron deficiency.
+Removal of electrons from Segment 1 leaves behind a net positive charge deficiency ($+1.2\text{ V}$) on the trace and a net electron surplus on the ground plane beneath it. Propagation of the rising wavefront rightward ($+z$) causes free electrons in each newly reached trace segment to drift slightly leftward ($-z$) toward the driver while electrons in the ground plane drift slightly rightward ($+z$) beneath the wavefront.
 
-Operating a negative voltage rail (-1.2V) reverses this: the power supply forces surplus electrons into the trace, creating a state of electron overdensity.
-
-Electrical engineers typically use "conventional current" and state that "the power supply pushes charge into the trace" for a positive voltage. This directional assignment is a historical mathematical convention established by Benjamin Franklin before the electron was discovered. The physical reality of the subatomic motion is always reversed for positive voltages. The core mechanical principle remains identical regardless of polarity: the power supply actively does physical work at $d = 0$ to alter the electron density of the copper, and it must continuously perform that work to keep the entire length of the transmission line fully charged behind the wavefront. The rest of this series describes current in the conventional direction.
+Electrical engineering follows Benjamin Franklin's historical **conventional current** convention, defining current direction as the flow of positive charge (opposite to electron drift). Every field direction, right-hand rule, and circuit equation produces identical physical results under either convention; the rest of this series tracks current in the conventional direction.
 
 ## Worked Examples
 
 ### Electrons, Drift Velocity, and Signal Speed
 
-Electrons move through copper at a drift velocity measured in millimeters per second. The signal arrives at the far end of a trace in under a nanosecond. The resolution to this apparent paradox lies in the distinction between particle transport and wave transport.
+Conduction electrons inside a copper trace drift at fractions of a millimeter per second, yet a digital edge crosses a circuit board in less than a nanosecond. Separating mechanical particle drift inside the metal lattice from electromagnetic wave propagation inside the dielectric resolves this apparent paradox.
 
-The mathematical definition of current is:
+Conduction current $I$ in a conductor of cross-sectional area $A$ obeys the microscopic carrier transport equation:
 
 $$I = n \cdot A \cdot q \cdot v_d$$
 
-where $n$ is the electron density (number of free electrons per unit volume), $A$ is the cross-sectional area of the conductor, $q$ is the charge of one electron, and $v_d$ is the drift velocity. The electron density $n$ is a fixed physical property of the copper lattice (approximately $8.5 \times 10^{28}$ electrons per cubic meter). To increase current, the drift velocity $v_d$ increases. The drift velocity remains extremely slow, but the number of free electrons is so large that a tiny collective drift moves a large number of coulombs past any cross-section each second.
+Four physical quantities govern this transport relation:
 
-Assume the 24 mA wavefront current from the previous section flows in a trace 100 µm wide and 35 µm thick, a cross-section of $3.5 \times 10^{-9}$ m². Solving the current equation for the drift velocity:
+- **Free-electron carrier density ($n$):** Copper's atomic lattice donates roughly one free conduction electron per atom, fixing carrier concentration $n$ at approximately $8.5 \times 10^{28}\text{ electrons/m}^3$. Kirchhoff's current law ensures that every electron pulled out of the trace is injected into the ground plane, keeping $n$ constant at all times.
+- **Conductor cross-sectional area ($A$):** Trace width $w$ multiplied by copper thickness $t_{\text{cu}}$ defines the conducting cross-section through which charge carriers drift.
+- **Elementary charge ($q$):** Each conduction electron carries a fixed charge magnitude $q$ of approximately $1.602 \times 10^{-19}\text{ C}$.
+- **Electron drift velocity ($v_d$):** The internal longitudinal electric field $E_{\text{wire}}$ drives electrons through the copper lattice at an average net speed proportional to electron mobility $\mu_e$.
 
-$$v_d = \frac{I}{n A q} = \frac{0.024}{(8.5 \times 10^{28})(3.5 \times 10^{-9})(1.6 \times 10^{-19})} \approx 5 \times 10^{-4} \text{ m/s}$$
+Conducting cross-section $A$ and average drift speed $v_d$ follow directly from trace dimensions and copper mobility:
 
-The electrons drift at about half a millimeter per second, while the wavefront they support travels at about $1.5 \times 10^8$ m/s, a ratio of roughly 300 billion.
+$$A = w\, t_{\text{cu}}, \qquad v_d = \mu_e\, E_{\text{wire}}$$
 
-The copper trace is already packed completely full of free electrons. Applying the 1.2V potential at the driver exerts a force on the electrons at $d = 0$, which drift a short distance toward the driver. Their neighbors drift to fill the vacancy, and the next neighbors follow, creating a cascading wave of charge-density change along the line. An electron at $d = 0$ only needs to move a fraction of a micrometer for the disturbance to pass to its neighbor, which passes it to the next neighbor in line.
+The copper lattice and trace cross-section fix $n$, $A$, and $q$, so a larger current $I$ (driven by a larger voltage and stronger $E_{\text{wire}}$) proportionally increases the mechanical drift speed $v_d$. That variable particle drift speed $v_d$ inside the copper is completely distinct from the electromagnetic wave velocity $v_p$ ($c / \sqrt{\varepsilon_r}$, or $1 / \sqrt{LC}$) inside the dielectric, which depends solely on the laminate constants and never varies with voltage or current.
 
-The signal is the electromagnetic wave traveling through the dielectric. The current is the localized shuffling of electrons facilitating that wave. The electrons leaving the transmitter are not the same electrons arriving at the receiver when the bit flips. The wave propagates through the dielectric at a fraction of the speed of light, locally perturbing the electron sea as it passes.
+Consider the $24\text{ mA}$ wavefront current on a $50\ \Omega$ trace of width $w$ equal to $100\,\mu\text{m}$ and copper thickness $t_{\text{cu}}$ equal to $35\,\mu\text{m}$:
+
+$$A = \left(100 \times 10^{-6}\text{ m}\right) \times \left(35 \times 10^{-6}\text{ m}\right) = 3.5 \times 10^{-9}\text{ m}^2$$
+
+Rearrangement of the carrier transport equation for the drift velocity $v_d$ gives:
+
+$$v_d = \frac{I}{n\, A\, q} = \frac{0.024\text{ A}}{\left(8.5 \times 10^{28}\text{ m}^{-3}\right) \left(3.5 \times 10^{-9}\text{ m}^2\right) \left(1.602 \times 10^{-19}\text{ C}\right)} \approx 5.0 \times 10^{-4}\text{ m/s}$$
+
+Conduction electrons drift at $0.5\text{ mm/s}$, whereas the electromagnetic wavefront in the dielectric travels at $1.46 \times 10^8\text{ m/s}$, faster by a factor of nearly $300\text{ billion}$. Copper's lattice is already packed with $8.5 \times 10^{28}\text{ electrons/m}^3$, so electrons at the driver end only shift by nanometers for the electromagnetic field disturbance in the dielectric to propagate at $v_p$ and set local electrons in motion at each downstream segment.
 
 ### Signal, Voltage, and Characteristic Impedance
 
-The "signal" is the electromagnetic wave, and its driving force is the voltage (potential difference). The current is the resulting flow of charge. The relationship linking voltage to current in a traveling wave is the characteristic impedance:
+The electromagnetic wave is the signal, the transverse voltage $V$ is the electrical potential difference driving the wave, and the current $I$ is the resulting rate of charge flow. Within a single forward-traveling wave on a lossless line, voltage and current are locked in the constant ratio of the characteristic impedance:
 
 $$Z_0 = \frac{V}{I}$$
 
-A higher voltage pushes more current through a given transmission line geometry. On a 50Ω line, a 1.2V wavefront carries 24 mA and a 0.6V wavefront carries 12 mA, and both travel at the same velocity. This relationship holds strictly for the traveling wave; it does not describe the DC resistance of the copper. It also holds only for a single wave traveling in one direction. A reflected wave traveling back over the same segment adds its own voltage and current, and the ratio of the totals at that point is no longer $Z_0$, as [Chapter 3](03_Impedance_Reflections_and_Termination.md) shows.
+On a $50\ \Omega$ trace, a $1.2\text{ V}$ wavefront carries $24\text{ mA}$ and a $0.6\text{ V}$ wavefront carries $12\text{ mA}$, and both wavefronts propagate at the same speed $v_p$. That single-wave ratio $V / I$ equals $Z_0$ strictly for a lone wave traveling in one direction. Superposition of a backward-traveling reflection over the same copper shifts the ratio of total voltage to total current away from $Z_0$, as [Chapter 3](03_Impedance_Reflections_and_Termination.md) proves.
 
 ### How Information Reaches the Receiver
 
-Information is carried by the arrival time of wavefronts, not by the receiver interpreting the frequency content of each edge.
+Digital receivers recover data from the arrival times of wavefront transitions rather than by computing a Fourier transform of each incoming edge. At the far end of the link, the receiver acts as a clocked voltage comparator timed by a clock and data recovery (CDR) loop ([Chapter 17](17_CDR_and_PLL_Loop_Dynamics.md)).
 
-The receiver at the far end of the trace acts as a high-speed voltage comparator that samples the line at instants set by a recovered clock ([Chapter 17](17_CDR_and_PLL_Loop_Dynamics.md) explains how the receiver extracts that clock from the data itself). A rising-edge wavefront arrives, the local voltage at the receiver jumps from 0V to 1.2V, and at the next clock tick the receiver reads 1.2V and records a "1."
+Arrival of a rising wavefront steps the receiver voltage from $0\text{ V}$ to $1.2\text{ V}$, and the comparator samples the line at the center of the bit period (unit interval) to record a logic `1`. A closed pull-up switch held across a second consecutive bit period launches no new wavefront and keeps the line at $1.2\text{ V}$. The next clock sample then records a second logic `1` until a falling wavefront arrives to discharge the line to $0\text{ V}$.
 
-At the following tick the trace is still fully charged, since the transmitter kept the pull-up transistor closed and no falling edge has arrived, so the receiver records a second "1." A falling-edge wavefront then arrives and discharges the trace to 0V, and the receiver records a "0" at the next tick.
-
-The data is encoded purely in the time duration between wavefronts. The high-frequency content of each edge, quantified in [Chapter 2](02_Frequency_Content_of_Digital_Signals.md), is the physical mechanism that makes those edges steep and sharp. An edge lacking that content would be slow and sloped, and the receiver would struggle to identify the specific instant the transition crossed the threshold, leading to jitter and bit errors.
+The high-frequency harmonics inside each edge ([Chapter 2](02_Frequency_Content_of_Digital_Signals.md)) keep the rising and falling wavefronts steep in time. Loss of those high-frequency harmonics rounds and stretches the transition, shifting the instant at which the waveform crosses the comparator threshold and introducing timing jitter and bit errors.
 
 ## Edge Cases
 
-### The Telegrapher's Equations with Losses
+### The Telegrapher's Equations with Losses and the Helmholtz Wave Equation
 
-The derivation in Core Concepts assumes perfect copper and a perfect insulator. A real transmission line models each infinitesimal slice using four distributed parameters per unit length, grouped by whether they act in series along the conductor path or in shunt across the dielectric:
+Real PCB traces have finite copper conductivity and imperfect dielectric insulation characterized by dielectric loss tangent $\tan\delta$. A complete transmission-line model adds series resistance $R$ (in $\Omega/\text{m}$) and parallel shunt conductance $G$ (in $\text{S/m}$) to each infinitesimal slice $\Delta z$ alongside $L$ and $C$:
 
 | Parameter | Circuit Placement | Physical Origin | Frequency Dependence |
 |---|---|---|---|
-| `R` (series resistance) | In-line with the current path | Ohmic resistance of the trace and return path | Rises as `sqrt(f)` due to the skin effect ([Chapter 5](05_Skin_Effect_and_Dielectric_Loss.md)) |
-| `L` (series inductance) | In-line with the current path | Magnetic energy stored in the trace-to-plane current loop | Approximately constant at high frequencies |
-| `G` (shunt conductance) | Parallel across the dielectric | Dielectric polarization loss (distinct from `1/R`) | Negligible at DC; scales as `omega * C * tan(delta)` ([Chapter 5](05_Skin_Effect_and_Dielectric_Loss.md)) |
-| `C` (shunt capacitance) | Parallel across the dielectric | Electric field energy stored between trace and plane | Approximately constant across signal bandwidths |
+| **$R$** (series resistance, $\Omega/\text{m}$) | In series along the trace and return path | Lattice scattering of conduction electrons in copper | Holds constant at DC and rises as $\sqrt{f}$ at high frequencies via the skin effect ([Chapter 5](05_Skin_Effect_and_Dielectric_Loss.md)) |
+| **$L$** (series inductance, $\text{H/m}$) | In series along the trace and return path | Magnetic energy stored in the trace-to-plane window | Remains nearly constant across high-speed signal bandwidths |
+| **$G$** (shunt conductance, $\text{S/m}$) | In parallel across the dielectric | Dielectric dipole polarization friction (distinct from $1/R$) | Stays negligible at DC and rises linearly with frequency as $\omega C \tan\delta$ ([Chapter 5](05_Skin_Effect_and_Dielectric_Loss.md)) |
+| **$C$** (shunt capacitance, $\text{F/m}$) | In parallel across the dielectric | Electric field energy stored between trace and ground plane | Remains nearly constant across gigahertz bandwidths |
 
-Adding $R$ to the voltage equation and $G$ to the current equation gives the full Telegrapher's Equations:
+#### Distributed Loss Mechanisms and the Lossy Telegrapher's Equations
 
-$$-\frac{\partial v}{\partial z} = R\,i + L\,\frac{\partial i}{\partial t}$$
+The physical origin of parallel shunt conductance $G$ (measured in Siemens per meter, $\text{S/m}$, or $\Omega^{-1}/\text{m}$, and completely unrelated to horizontal copper resistance $R$) lies in molecular dipole polarization. Virtually zero free electrons leak DC current across fiberglass epoxy, yet a time-varying vertical electric field forces the polar epoxy molecules inside the FR4 laminate to twist back and forth billions of times per second.
 
-$$-\frac{\partial i}{\partial z} = G\,v + C\,\frac{\partial v}{\partial t}$$
+Friction between those twisting molecular dipoles and their neighboring polymer chains dissipates electromagnetic energy into heat at a rate proportional to the square of the transverse voltage $V^2$. In circuit theory, any mechanism across two parallel plates that dissipates heat proportional to $V^2$ acts as an effective vertical resistance $R_{\text{polarization}}$ in parallel with capacitance $C$, defined alongside its reciprocal conductance $G$:
 
-With losses present, an edge no longer keeps its shape, because each frequency inside it is attenuated and delayed by a different amount. The analysis therefore proceeds one sine-wave frequency at a time. For a sine wave at angular frequency $\omega = 2\pi f$, each time derivative becomes a multiplication by $j\omega$, the notation for a 90° phase shift that [Chapter 3](03_Impedance_Reflections_and_Termination.md) derives in its treatment of reactive impedance. Writing $V$ and $I$ for the complex amplitudes of the voltage and current at one frequency, the equations become:
+$$P_{\text{loss}} = \frac{V^2}{R_{\text{polarization}}} = G\, V^2, \qquad G = \frac{1}{R_{\text{polarization}}}$$
 
-$$-\frac{dV}{dz} = (R + j\omega L)\, I$$
+Reciprocal conductance $G$ eliminates fractions when summing the two parallel vertical currents crossing the dielectric slice $\Delta z$. Total shunt current leaving the trace across $\Delta z$ is the sum of the in-phase loss current $G\,\Delta z\,v(z, t)$ and the capacitive displacement current $C\,\Delta z\,\partial v(z, t) / \partial t$:
 
-$$-\frac{dI}{dz} = (G + j\omega C)\, V$$
+$$i(z, t) - i(z + \Delta z, t) = G\,\Delta z\,v(z, t) + C\,\Delta z\,\frac{\partial v(z, t)}{\partial t}$$
 
-A forward-traveling solution has the form $V = V^+ e^{-\gamma z}$ and $I = I^+ e^{-\gamma z}$, where $\gamma$ is the propagation constant. Its real part sets the attenuation per unit length, and its imaginary part sets the phase shift per unit length. Differentiating each exponential brings down a factor of $-\gamma$, so the two equations become:
+Similarly, the total series voltage drop along the copper slice $\Delta z$ is the sum of the resistive drop $R\,\Delta z\,i(z, t)$ and the inductive drop $L\,\Delta z\,\partial i(z, t) / \partial t$:
 
-$$\gamma\, V^+ = (R + j\omega L)\, I^+$$
+$$v(z, t) - v(z + \Delta z, t) = R\,\Delta z\,i(z, t) + L\,\Delta z\,\frac{\partial i(z, t)}{\partial t}$$
 
-$$\gamma\, I^+ = (G + j\omega C)\, V^+$$
+Division of both slice equations by $\Delta z$ as slice length $\Delta z$ shrinks to zero yields the general **lossy Telegrapher's Equations**:
 
-Multiplying the two equations together and canceling the common factor $V^+ I^+$ gives the propagation constant:
+$$-\frac{\partial v(z, t)}{\partial z} = R\,i(z, t) + L\,\frac{\partial i(z, t)}{\partial t}$$
 
-$$\gamma = \sqrt{(R + j\omega L)(G + j\omega C)}$$
+$$-\frac{\partial i(z, t)}{\partial z} = G\,v(z, t) + C\,\frac{\partial v(z, t)}{\partial t}$$
 
-Dividing the first equation by $I^+$ and substituting $\gamma$ gives the characteristic impedance, first written in this form by Oliver Heaviside:
+#### Complex Phasor Reduction and the Helmholtz Wave Equation
 
-$$Z_0 = \frac{V^+}{I^+} = \frac{R + j\omega L}{\gamma} = \sqrt{\frac{R + j\omega L}{G + j\omega C}}$$
+Frequency-dependent losses $R(f)$ and $G(f)$ attenuate high frequencies more strongly than low frequencies, so an arbitrary digital pulse distorts along the line. Lossy transmission lines are solved one sinusoidal frequency $f$ at a time using complex phasors ([Chapter 3](03_Impedance_Reflections_and_Termination.md)) at angular frequency $\omega$:
 
-Setting $R = G = 0$ recovers $Z_0 = \sqrt{L/C}$ and a purely imaginary $\gamma = j\omega\sqrt{LC}$, whose phase shift per unit length corresponds to the velocity $v_p = 1/\sqrt{LC}$ found earlier. At multi-gigahertz frequencies, $\omega L$ greatly exceeds $R$ and $\omega C$ greatly exceeds $G$ on a typical PCB trace, so $Z_0$ stays close to $\sqrt{L/C}$ even on a lossy line. The losses appear mainly in the real part of $\gamma$, as an attenuation that grows with frequency.
+$$\omega = 2\pi f$$
 
-The series impedance $R + j\omega L$ also governs how return current distributes itself when several return paths are available, a topic [Chapter 6](06_Return_Path_Dynamics_and_Parasitic_Effects.md) develops.
+The time derivative of a sinusoidal wave $\cos(\omega t)$ scales its amplitude by $\omega$ and shifts its phase forward by $+90^\circ$ ($\pi/2\text{ radians}$) because the steepest upward slope of a cosine wave occurs at its upward zero-crossing, a quarter-cycle earlier in time than its peak:
+
+$$\frac{d}{dt} \cos(\omega t) = -\omega\sin(\omega t) = \omega\cos(\omega t + 90^\circ)$$
+
+Euler's formula packages both the $\omega$ amplitude scaling and the $+90^\circ$ counter-clockwise complex-plane rotation of the imaginary unit $j$ into a single algebraic operation:
+
+$$e^{j\theta} = \cos\theta + j\sin\theta, \qquad j = \sqrt{-1}, \qquad e^{j 90^\circ} = j$$
+
+Sinusoidal voltage and current at angular frequency $\omega$ take complex exponential form with position-dependent complex phasor amplitudes $V(z)$ and $I(z)$:
+
+$$v(z, t) = V(z)e^{j\omega t}, \qquad i(z, t) = I(z)e^{j\omega t}$$
+
+Differentiating those complex exponentials turns every time derivative $\partial / \partial t$ into multiplication by $j\omega$:
+
+$$\frac{\partial v(z, t)}{\partial t} = \frac{\partial}{\partial t} \left[V(z)e^{j\omega t}\right] = j\omega\, V(z)e^{j\omega t}, \qquad \frac{\partial i(z, t)}{\partial t} = j\omega\, I(z)e^{j\omega t}$$
+
+Substitution of these phasor expressions into the lossy Telegrapher's Equations and cancellation of the common nonzero time factor $e^{j\omega t}$ convert the partial differential equations into coupled ordinary differential equations in $z$:
+
+$$-\frac{dV(z)}{dz} = (R + j\omega L)\, I(z)$$
+
+$$-\frac{dI(z)}{dz} = (G + j\omega C)\, V(z)$$
+
+Isolation of $V(z)$ from this coupled system begins with the spatial derivative $d/dz$ of the first equation, where $(R + j\omega L)$ is constant with respect to position $z$ at a fixed frequency $\omega$:
+
+$$-\frac{d^2 V(z)}{dz^2} = (R + j\omega L)\,\frac{dI(z)}{dz}$$
+
+Substituting $-(G + j\omega C)V(z)$ for $dI(z)/dz$ from the second equation eliminates $I(z)$ and produces the second-order **Helmholtz wave equation** for a lossy transmission line:
+
+$$\frac{d^2 V(z)}{dz^2} = (R + j\omega L)(G + j\omega C)\, V(z) = \gamma^2\, V(z)$$
+
+Complex propagation constant $\gamma$ combines series impedance and shunt admittance per meter into real and imaginary parts:
+
+$$\gamma = \sqrt{(R + j\omega L)(G + j\omega C)} = \alpha + j\beta$$
+
+#### Attenuation Constant, Phase Constant, and Lossy Characteristic Impedance
+
+The Helmholtz equation states that differentiating $V(z)$ twice with respect to $z$ returns the constant $\gamma^2$ multiplied by the original function $V(z)$. An exponential function is the only mathematical function whose derivative is a constant multiple of itself, so a wave traveling in the $+z$ direction takes the exponential form:
+
+$$V(z) = V^+ e^{-\gamma z}, \qquad I(z) = I^+ e^{-\gamma z}$$
+
+Two spatial differentiations verify this solution directly:
+
+$$\frac{dV(z)}{dz} = -\gamma V^+ e^{-\gamma z}, \qquad \frac{d^2 V(z)}{dz^2} = (-\gamma)^2 V^+ e^{-\gamma z} = \gamma^2\, V(z)$$
+
+Restoring the time factor $e^{j\omega t}$ and decomposing $\gamma$ into its real part $\alpha$ and imaginary part $\beta$ reveal the physical meaning of both components:
+
+$$v(z, t) = V^+ e^{-(\alpha + j\beta)z}\, e^{j\omega t} = \underbrace{V^+ e^{-\alpha z}}_{\text{amplitude decay}}\, \underbrace{e^{j(\omega t - \beta z)}}_{\text{traveling phase}}$$
+
+Real and imaginary parts of $\gamma$ define the attenuation constant $\alpha$, phase constant $\beta$, and sinusoidal phase velocity $v_p$:
+
+$$\alpha = \mathrm{Re}\{\gamma\}, \qquad \beta = \mathrm{Im}\{\gamma\} = \frac{\omega}{v_p}, \qquad v_p = \frac{\omega}{\beta}$$
+
+Two propagation behaviors follow directly from those two components:
+
+- **Attenuation constant ($\alpha$, in Nepers per meter, $\text{Np/m}$):** Governs the real exponential amplitude decay $e^{-\alpha z}$ as resistive and dielectric losses convert wave energy into heat along the trace.
+- **Phase constant ($\beta$, in $\text{rad/m}$):** Governs the spatial phase shift $e^{-j\beta z}$ per meter of travel, setting the phase velocity $v_p$ at angular frequency $\omega$.
+
+Substituting the forward-traveling phasors $V(z)$ and $I(z)$ back into the first coupled phasor equation relates the wave amplitudes $V^+$ and $I^+$:
+
+$$-\frac{dV(z)}{dz} = \gamma V^+ e^{-\gamma z} = (R + j\omega L)\,I^+ e^{-\gamma z}$$
+
+Solving for the ratio $V^+ / I^+$ yields Oliver Heaviside's general **characteristic impedance** of a lossy transmission line:
+
+$$Z_0 = \frac{V(z)}{I(z)} = \frac{V^+}{I^+} = \frac{R + j\omega L}{\gamma} = \frac{R + j\omega L}{\sqrt{(R + j\omega L)(G + j\omega C)}} = \sqrt{\frac{R + j\omega L}{G + j\omega C}}$$
+
+Zero-loss values of $R$ and $G$ recover the lossless results immediately:
+
+$$\gamma = \sqrt{(j\omega L)(j\omega C)} = j\omega\sqrt{LC} \qquad \Longrightarrow \qquad \alpha = 0, \qquad \beta = \omega\sqrt{LC}$$
+
+$$v_p = \frac{\omega}{\beta} = \frac{1}{\sqrt{LC}}, \qquad Z_0 = \sqrt{\frac{j\omega L}{j\omega C}} = \sqrt{\frac{L}{C}}$$
+
+At multi-gigahertz SerDes frequencies on a PCB trace, reactive terms dominate resistive and conductive losses:
+
+$$\omega L \gg R, \qquad \omega C \gg G$$
+
+In that low-loss high-frequency regime, $Z_0$ remains close to $\sqrt{L/C}$ while copper skin-effect resistance $R(f)$ and dielectric loss $G(f)$ appear primarily in the attenuation constant $\alpha(f)$. Conductor series impedance $R + j\omega L$ also governs how return current distributes itself across reference planes across frequency, as [Chapter 6](06_Return_Path_Dynamics_and_Parasitic_Effects.md) develops.
 
 ### Static Fields Between Transitions
 
-Between edge transitions, no new frequency content propagates along the trace. The section behind a wavefront that is still traveling holds a static electric field and carries the steady current $V/Z_0$ with its static magnetic field, as described in the three-zone picture. The wavefront then reaches the far end, and the reflections described in [Chapter 3](03_Impedance_Reflections_and_Termination.md) travel back and forth until the line settles into a DC state set by the load. A high-impedance CMOS receiver draws essentially no current, so only the static electric field remains and the magnetic field disappears. A resistive termination $R_T$ keeps a DC current $V/R_T$ flowing, together with its static magnetic field.
+Between logic transitions, no wavefront sweeps along the trace and no high-frequency energy propagates. Throughout the transit of a rising wavefront toward the receiver, the region behind the wavefront holds both a static vertical electric field ($V / h$) and a steady conduction current ($V / Z_0$) surrounded by its static magnetic field ($\vec{B} \otimes$).
 
-The trace remains in this static state until the next wavefront arrives to change it. The changing fields, and therefore the high-frequency content of the signal, are confined to the rising and falling edges, while the flat portions between edges hold only static fields.
+Wavefront arrival at the far end and decay of all boundary reflections ([Chapter 3](03_Impedance_Reflections_and_Termination.md)) leave the entire line in a steady DC state dictated by the far-end load. An unterminated high-impedance CMOS receiver draws zero steady-state current $I_C$, so the magnetic field vanishes everywhere and the trace holds only a static vertical electric field like a charged capacitor. A parallel termination resistor $R_T$ to ground sustains a continuous DC current $I_C$ and a static magnetic field alongside the static electric field until the next wavefront arrives:
 
-[Chapter 2](02_Frequency_Content_of_Digital_Signals.md) determines how much high-frequency content a single edge carries, which sets the bandwidth that every later structure in the channel, and every instrument that measures it, must support.
+$$I_C = 0 \quad (\text{open load}), \qquad I_C = \frac{V}{R_T} \quad (\text{parallel termination})$$
 
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+High-frequency electromagnetic activity is confined to the rising and falling edges. [Chapter 2](02_Frequency_Content_of_Digital_Signals.md) quantifies the frequency spectrum carried by each edge and derives how rise time dictates the required bandwidth of the interconnect and measurement instrumentation.
+
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol1-ebook-v2.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 1 Ebook here.</a></em></p>

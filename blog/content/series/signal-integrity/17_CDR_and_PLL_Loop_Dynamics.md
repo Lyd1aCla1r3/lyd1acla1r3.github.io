@@ -2,7 +2,7 @@
 
 <!-- SUMMARY: Serial links embed the sampling clock directly in the data stream. Phase-locked loop (PLL) dynamics govern how clock and data recovery (CDR) circuits extract this timing reference, linking the jitter transfer and error transfer functions to low-pass tracking and high-pass jitter tolerance across early/late and baud-rate phase detectors. -->
 
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>
 
 [Chapter 16: SerDes Architecture and Eye Diagrams](16_SerDes_Architecture_and_Eye_Diagrams.md) placed the clock and data recovery circuit (CDR) in parallel with the slicer. Its output is the clock that strobes the slicer, so it decides where in each unit interval the decision is made, and [Chapter 14: CTLE and DFE](14_CTLE_and_DFE.md) noted that this instant is the one at which the main cursor is sampled. This chapter is the single home of embedded clocking, of the phase-locked loop (PLL) model that describes the CDR, of the jitter transfer function (JTF), and of the golden PLL by which standards define the clock that a measurement must use.
 
@@ -236,15 +236,27 @@ At high jitter frequency $|E| \to 1$ and the tolerance equals $J_{max}$. Below t
 
 ## Worked Examples
 
-The examples share one loop, whose symbol rate is 16 GT/s NRZ (16 Gbps line rate) with a unit interval of 62.5 ps and a clock of 16 GHz ($100\ \text{MHz} \times 160$). The transmitter and receiver crystals differ by 100 ppm, so the data frequency offset is $\Delta f = 1.6$ MHz. The VCO gain is 800 MHz per volt ($K_{vco} = 2\pi \times 800 \times 10^6$ rad/s per volt). The rms jitter on the data edges is 1.5 ps, the value used in [Chapter 10](10_Jitter_Decomposition_and_Measurement.md), which is $\sigma_\varphi = 2\pi \times 1.5/62.5 = 0.1508$ rad. The transition density is $\eta_T = 1/2$ and the charge pump current is $I_{cp} = 2\ \mu\text{A}$. All values are assumptions chosen to give round results, and no standard is implied.
+The examples share one loop, whose symbol rate is 16 GT/s NRZ (16 Gbps line rate) with a unit interval of 62.5 ps and a clock of 16 GHz ($100\ \text{MHz} \times 160$). The transmitter and receiver crystals differ by 100 ppm, so the data frequency offset is $\Delta f = 1.6$ MHz. The VCO gain is 800 MHz per volt ($K_{vco} = 2\pi \times 800 \times 10^6$ rad/s per volt). The rms jitter on the data edges is 1.5 ps, the value used in [Chapter 10](10_Jitter_Decomposition_and_Measurement.md), corresponding to the rms phase jitter
+
+$$\sigma_\varphi = \frac{2\pi \times 1.5\ \text{ps}}{62.5\ \text{ps}} = 0.1508\ \text{rad}$$
+
+The transition density is $\eta_T = 1/2$ and the charge pump current is $I_{cp} = 2\ \mu\text{A}$. All values are assumptions chosen to give round results, and no standard is implied.
 
 ### The Detector Gain and the Loop Design
 
-The effective detector gain is $K_{pd} = 0.5 \times 2\ \mu\text{A} \times 0.7979/0.1508 = 5.29\ \mu\text{A}$ per radian. Choose the resistor so that the loop gain is $K_{pd}R = 5$ mV per radian, which gives $R = 945\ \Omega$. The Type-I loop of this resistor has $\omega_L = K_{pd}RK_{vco} = 0.005 \times 5.027 \times 10^9 = 2.513 \times 10^7$ rad/s, which is $f_L = 4$ MHz, the corner of the first-order model of [Chapter 12](12_Test_Patterns_and_Jitter_Isolation.md).
+The bang-bang gain formula gives the effective phase detector gain:
 
-Add the capacitor to make the Type-II loop with the same $K = \omega_L$. The relation $2\zeta\omega_n = K$ holds for this loop, and the choice $\zeta = 1$ gives $\omega_n = 1.257 \times 10^7$ rad/s, $f_n = 2$ MHz, and a zero at $f_z = f_n/(2\zeta) = 1$ MHz. The capacitor follows from $\omega_z = 1/(RC)$:
+$$K_{pd} = \frac{0.5 \times 2\ \mu\text{A} \times 0.7979}{0.1508} = 5.29\ \mu\text{A/rad}$$
 
-$$C = \frac{1}{R\,\omega_z} = \frac{1}{945 \times 6.283 \times 10^6} = 168\ \text{pF}$$
+A resistor of $R = 945\ \Omega$ sets the proportional path to $K_{pd}R = 5$ mV per radian, giving the Type-I loop bandwidth
+
+$$\omega_L = K_{pd} R K_{vco} = 0.005 \times 5.027 \times 10^9 = 2.513 \times 10^7\ \text{rad/s}$$
+
+That radian corner corresponds to $f_L = 4$ MHz, the corner of the first-order model of [Chapter 12](12_Test_Patterns_and_Jitter_Isolation.md).
+
+Add the capacitor to make the Type-II loop with the same $K = \omega_L$. The relation $2\zeta\omega_n = K$ holds for this loop, and the choice $\zeta = 1$ gives $\omega_n = 1.257 \times 10^7$ rad/s and $f_n = 2$ MHz. From $\omega_z = 1/(RC)$, the zero frequency and series capacitance are
+
+$$f_z = \frac{f_n}{2\zeta} = 1\ \text{MHz}, \qquad C = \frac{1}{R\,\omega_z} = \frac{1}{945 \times 6.283 \times 10^6} = 168\ \text{pF}$$
 
 The check $\omega_n^2 = K_{pd}K_{vco}/C$ gives $1.579 \times 10^{14}$, as it must. The component values are illustrative, and a digital loop filter has the same two paths.
 
@@ -258,11 +270,17 @@ The check $2\ \text{mV}/(5\ \text{mV/rad}) = 0.4$ rad gives the same result. The
 
 ### The Type-II Loop Removes the Error
 
-With the capacitor the static error of the frequency offset is zero. The capacitor stores the 2 mV after the transient. The transient of the error follows from $E(s)\,\Delta\omega/s^2 = \Delta\omega/(s^2 + 2\zeta\omega_n s + \omega_n^2)$. For $\zeta = 1$ the time function is $\theta_e(t) = \Delta\omega\,t\,e^{-\omega_n t}$, which has its maximum at $t = 1/\omega_n = 79.6$ ns:
+With the capacitor the static error of the frequency offset is zero. The capacitor stores the 2 mV after the transient. The transient of the error follows from $E(s)\,\Delta\omega/s^2 = \Delta\omega/(s^2 + 2\zeta\omega_n s + \omega_n^2)$. For $\zeta = 1$ the time function is $\theta_e(t) = \Delta\omega\,t\,e^{-\omega_n t}$, which reaches its peak at
+
+$$t = \frac{1}{\omega_n} = 79.6\ \text{ns}$$
+
+Substitution of that peak time into $\theta_e(t)$ gives the maximum transient phase error:
 
 $$\theta_{e,max} = \frac{\Delta\omega}{\omega_n e} = \frac{2\pi \times 1.6 \times 10^6}{1.257 \times 10^7 \times 2.718} = 0.294\ \text{rad} = 2.93\ \text{ps}$$
 
-The Type-I error of 3.98 ps stays forever, and the Type-II error reaches a maximum of 2.93 ps and then decays to zero. A step in the phase of the data overshoots by 13.5 percent at $t = 2/\omega_n = 159$ ns, from the expression of the Core Concepts.
+The Type-I error of 3.98 ps stays forever, and the Type-II error reaches a maximum of 2.93 ps and then decays to zero. From the step-response expression of the Core Concepts, a phase step on the data reaches its 13.5 percent overshoot peak at
+
+$$t = \frac{2}{\omega_n} = 159\ \text{ns}$$
 
 ### The JTF, the Error Transfer Function, and the Tolerance
 
@@ -331,4 +349,4 @@ A detector can avoid both effects by using only the full-swing transitions ($-3 
 
 A binary detector cannot output zero while a transition is present. In lock the early and late decisions alternate, and the phase hunts around the lock point with an amplitude of a few phase steps. This dither is a small jitter added to the recovered clock, set by the phase step of the interpolator ($0.244$ ps in the example) and by the proportional gain, and it is one reason that the proportional step is made small.
 
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>

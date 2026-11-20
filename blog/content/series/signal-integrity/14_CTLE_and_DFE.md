@@ -2,7 +2,7 @@
 
 <!-- SUMMARY: High-speed receivers combine two distinct equalizers to recover attenuated signals. A continuous-time linear equalizer (CTLE) applies a zero-pole high-pass boost to flatten channel insertion loss, while a decision feedback equalizer (DFE) subtracts decided post-cursor interference without amplifying noise, trained jointly by least-mean-square gradient descent. -->
 
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>
 
 [Chapter 13: Transmitter Feed-Forward Equalization](13_Transmitter_FFE.md) ends with the division of work among the three equalizers: the transmitter filter is open loop and can act on pre-cursors and post-cursors, the decision feedback equalizer cancels post-cursors only, and the linear equalizer at the receiver shapes the smooth part of the loss. This chapter describes the two receiver equalizers and the procedure that sets all three. It works with the same line as the earlier chapters, 12 inches of FR4 whose loss comes from [Chapter 5: Skin Effect and Dielectric Loss](05_Skin_Effect_and_Dielectric_Loss.md) and whose insertion loss, a quantity defined in [Chapter 8: S-Parameters and Vector Network Analysis](08_S_Parameters_and_VNA.md), sets the amount of equalization required.
 
@@ -24,7 +24,11 @@ where $\nu_n$ is the noise at the sampling instant. The terms with $k \neq 0$ ma
 
 The main cursor $A$ is smaller than the launch amplitude. The line of [Chapter 5](05_Skin_Effect_and_Dielectric_Loss.md) delivers 0.874 of the launch amplitude at the main cursor, because part of the energy of each bit has moved into the tail.
 
-The resistance of the copper at DC accounts for a small part of that reduction: the 12 inches have $R_{DC} = 0.125 \times 12 = 1.5\ \Omega$ in the model of that chapter, and the conductor attenuation at low frequency is $R/(2Z_0) = 1.5/100 = 0.015$ Np, which is 0.13 dB or 1.5 percent of the voltage. The dielectric loss is proportional to frequency and has no DC component. The main cursor is therefore a measured quantity of the received pulse, and the receiver estimates it, as the Architecture section describes.
+The resistance of the copper at DC accounts for a small part of that reduction. In the model of that chapter, the DC resistance and low-frequency conductor attenuation of the 12 inches are
+
+$$R_{DC} = 0.125 \times 12 = 1.5\ \Omega, \qquad \frac{R}{2Z_0} = \frac{1.5}{100} = 0.015\ \text{Np}$$
+
+An attenuation of 0.015 Np equals 0.13 dB, or 1.5 percent of the voltage. The dielectric loss is proportional to frequency and has no DC component. The main cursor is therefore a measured quantity of the received pulse, and the receiver estimates it, as the Architecture section describes.
 
 ### The CTLE Transfer Function
 
@@ -171,7 +175,11 @@ The same equations describe an equalizer whose decisions are computed digitally 
 
 ### A CTLE for the 12 Inch Line
 
-Over 12 inches, the line of [Chapter 5](05_Skin_Effect_and_Dielectric_Loss.md) has the insertion loss $IL(f) = 12\,(0.20\sqrt{f/5} + 0.47\,f/5)$ dB with $f$ in GHz. Evaluating that loss formula gives 8.04 dB at 5 GHz (matching the 8.1 dB of [Chapter 8](08_S_Parameters_and_VNA.md) with the rounded constants), which is the Nyquist frequency of a 10 Gbps link. Choose a CTLE with $f_z = 1.5$ GHz, $f_{p1} = 6$ GHz, $f_{p2} = 15$ GHz, and $A_{dc} = 1$. The circuit of the previous section needs $g_mR_s/2 = f_{p1}/f_z - 1 = 3$ for this ratio. The gain follows from the three factors:
+Over 12 inches, the line of [Chapter 5](05_Skin_Effect_and_Dielectric_Loss.md) has the insertion loss $IL(f) = 12\,(0.20\sqrt{f/5} + 0.47\,f/5)$ dB with $f$ in GHz. Evaluating that loss formula gives 8.04 dB at 5 GHz (matching the 8.1 dB of [Chapter 8](08_S_Parameters_and_VNA.md) with the rounded constants), which is the Nyquist frequency of a 10 Gbps link. Choose a CTLE with $f_z = 1.5$ GHz, $f_{p1} = 6$ GHz, $f_{p2} = 15$ GHz, and $A_{dc} = 1$. The circuit of the previous section sets the degeneration factor from that pole-to-zero ratio:
+
+$$\frac{g_m R_s}{2} = \frac{f_{p1}}{f_z} - 1 = 3$$
+
+The gain follows from the three factors:
 
 $$|H(f)| = \frac{\sqrt{1 + (f/1.5)^2}}{\sqrt{1 + (f/6)^2}\,\sqrt{1 + (f/15)^2}}$$
 
@@ -193,7 +201,9 @@ The data pattern has no fundamental above 5 GHz, so the high-frequency roll-off 
 
 ### Cancelling the Cursors of the 12 Inch Line
 
-Take the pulse response of [Chapter 5](05_Skin_Effect_and_Dielectric_Loss.md) at 10 Gbps and the receiver values of [Chapter 10](10_Jitter_Decomposition_and_Measurement.md), a main cursor of $A = 200$ mV. The first seven normalized post-cursors are 0.0418, 0.0186, 0.0111, 0.0076, 0.0056, 0.0044, and 0.0035, so the weights of the DFE in volts are $w_k = A h_k = 8.37$, 3.72, 2.22, 1.52, 1.12, 0.87, and 0.70 mV.
+Take the pulse response of [Chapter 5](05_Skin_Effect_and_Dielectric_Loss.md) at 10 Gbps and the receiver values of [Chapter 10](10_Jitter_Decomposition_and_Measurement.md), a main cursor of $A = 200$ mV. The first seven normalized post-cursors are 0.0418, 0.0186, 0.0111, 0.0076, 0.0056, 0.0044, and 0.0035, so the DFE tap weights in millivolts are
+
+$$w_k = A h_k = \{8.37,\ 3.72,\ 2.22,\ 1.52,\ 1.12,\ 0.87,\ 0.70\}\ \text{mV}$$
 
 For a bit $n$ with the previous three decisions $(+1, -1, +1)$ the sample is $200 + 8.37(+1) + 3.72(-1) + 2.22(+1) = 206.87$ mV for $a_n = +1$. The DFE subtracts $8.37(+1) + 3.72(-1) + 2.22(+1) = 6.87$ mV and the slicer sees 200.00 mV. The subtraction follows the history of the bits, so the same cancellation applies to every pattern, and the interference of this history is removed whether it adds to the sample or subtracts from it.
 
@@ -274,4 +284,4 @@ The training procedure searches a space with several dimensions: the transmitter
 
 A step in the wrong direction can look like an improvement, and the search can stop at a combination that is better than its neighbors and worse than the best. The designer reduces the risk through the starting presets and the step sizes of the state machine. The search fails whatever its algorithm when the equalization that the silicon provides is smaller than the loss of the channel.
 
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>

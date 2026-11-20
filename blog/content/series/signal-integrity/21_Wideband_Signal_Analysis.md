@@ -2,7 +2,7 @@
 
 <!-- SUMMARY: Coherent optical receivers use digital signal processing to invert chromatic dispersion, polarization mixing, and carrier phase noise. Error vector magnitude (EVM) quantifies the residual constellation scatter after digital equalization and maps directly to optical signal-to-noise ratio and pre-FEC bit error ratio. -->
 
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>
 
 [Chapter 20: Mach-Zehnder and IQ Modulators](20_Mach_Zehnder_IQ_Modulators.md) ended with eight photodiodes, four transimpedance amplifiers and four converters that deliver the in-phase and quadrature samples of two polarizations to a digital processor. The processor must undo what the fiber, the amplifiers and the two lasers did to the symbols, and an engineer who designs or qualifies a link needs a number that says how well it succeeded and a way to find the cause when it did not.
 
@@ -16,15 +16,17 @@ The refractive index of silica depends slightly on the wavelength, so the waves 
 
 $$\beta(\omega_0 + \Omega) = \beta_0 + \beta_1\Omega + \tfrac12\beta_2\Omega^2 + \dots$$
 
-The first term is a constant phase, and the second term $\beta_1\Omega$ is a pure delay $\beta_1 L$ of the whole signal (the delay $L/v_g$ with the group velocity $v_g$). The term that distorts the signal is the third, $\tfrac12\beta_2\Omega^2$, whose coefficient $\beta_2$ is the **group velocity dispersion**. The group delay of a component at the offset $\Omega$ is the derivative of the accumulated phase, $\tau_g(\Omega) = d(\beta L)/d\Omega = \beta_1L + \beta_2 L\,\Omega$, so two components separated by the bandwidth $\Delta\omega$ arrive with the delay difference
+The first term is a constant phase, and the second term $\beta_1\Omega$ is a pure delay $\beta_1 L$ of the whole signal (the delay $L/v_g$ with the group velocity $v_g$). The term that distorts the signal is the third, $\tfrac12\beta_2\Omega^2$, whose coefficient $\beta_2$ is the **group velocity dispersion**. The derivative of the accumulated phase gives the frequency-dependent group delay and the arrival spread across a bandwidth $\Delta\omega$:
 
-$$\Delta\tau = \beta_2 L\,\Delta\omega$$
+$$\tau_g(\Omega) = \frac{d(\beta L)}{d\Omega} = \beta_1 L + \beta_2 L\,\Omega, \qquad \Delta\tau = \beta_2 L\,\Delta\omega$$
 
 The fiber data sheets quote the **dispersion parameter** $D$ in ps/(nm km) instead of $\beta_2$. The conversion follows from $\Delta\omega = 2\pi c\,\Delta\lambda/\lambda^2$: the magnitude of $\Delta\tau$ is $\left(2\pi c\,|\beta_2|/\lambda^2\right) L\,\Delta\lambda$, and with $D = -2\pi c\,\beta_2/\lambda^2$ this delay spread becomes
 
 $$\Delta\tau = |D|\,L\,\Delta\lambda$$
 
-Standard single-mode fiber has $D \approx 17$ ps/(nm km) at 1550 nm (a typical value), which corresponds to $\beta_2 = -D\lambda^2/(2\pi c) = -21.7$ ps$^2$/km.
+Standard single-mode fiber has $D \approx 17$ ps/(nm km) at 1550 nm (a typical value), corresponding to the group velocity dispersion parameter
+
+$$\beta_2 = -\frac{D\lambda^2}{2\pi c} = -21.7\ \text{ps}^2/\text{km}$$
 
 The distortion is a pure phase, because the factor $e^{-j\beta_2L\Omega^2/2}$ has magnitude 1 at every frequency, so the fiber is an **all-pass filter** with a quadratic phase, and it removes no power. A digital filter with the opposite phase, $H(\Omega) = e^{+j\beta_2L\Omega^2/2}$, cancels that phase distortion completely, and it amplifies no noise because its magnitude is also 1.
 
@@ -66,9 +68,9 @@ The relation to the bit error ratio follows from the Q function of [Chapter 11: 
 
 $$\text{BER}_{QPSK} = Q\!\left(\frac{a}{a\,\text{EVM}}\right) = Q\!\left(\frac{1}{\text{EVM}}\right)$$
 
-A 16QAM axis is a PAM4 signal ([Chapter 15: PAM4 Signaling and Gray Coding](15_PAM4_Signaling_and_Gray_Coding.md)). With the levels $\pm1$ and $\pm3$ the half-spacing between a level and its threshold is 1, the mean power is $10$, and the noise per axis is $\sigma_{axis} = \sqrt{10\,\text{EVM}^2/2} = \sqrt5\,\text{EVM}$. The Gray-coded PAM4 result of [Chapter 15](15_PAM4_Signaling_and_Gray_Coding.md) ($\text{BER} = 0.75\,Q$) gives
+A 16QAM axis is a PAM4 signal ([Chapter 15: PAM4 Signaling and Gray Coding](15_PAM4_Signaling_and_Gray_Coding.md)). With the levels $\pm1$ and $\pm3$ the half-spacing between a level and its threshold is 1 and the mean constellation power is $10$. Half of the complex noise variance falls on each axis, so the Gray-coded PAM4 relation of [Chapter 15](15_PAM4_Signaling_and_Gray_Coding.md) ($\text{BER} = 0.75\,Q$) gives
 
-$$\text{BER}_{16QAM} = 0.75\,Q\!\left(\frac{1}{\sqrt5\,\text{EVM}}\right)$$
+$$\sigma_{axis} = \sqrt{\frac{10\,\text{EVM}^2}{2}} = \sqrt{5}\,\text{EVM}, \qquad \text{BER}_{16QAM} = 0.75\,Q\!\left(\frac{1}{\sqrt5\,\text{EVM}}\right)$$
 
 Both expressions assume noise that is white and Gaussian and a receiver that makes no other error.
 
@@ -150,11 +152,23 @@ The $Q$ argument for 16QAM is the solution of $0.75\,Q = \text{BER}$, which is 6
 
 ### From OSNR to EVM
 
-A 50 GBd signal with an OSNR of 20 dB (a ratio of 100) has $\text{SNR} = 100 \times 12.5/50 = 25$, or 13.98 dB, and $\text{EVM} = 1/\sqrt{25} = 20$ percent. That value lies within the QPSK limit of 26.9 percent at $10^{-4}$ and far outside the 16QAM limit of 12.3 percent. The OSNR that 16QAM needs for $10^{-12}$ is the SNR of 23.88 dB plus the bandwidth ratio $10\log_{10}(50/12.5) = 6.02$ dB, which is 29.9 dB. Every doubling of the number of amplified spans costs 3.01 dB of OSNR, so a link with 29.9 dB after $N$ spans has 26.9 dB after $2N$ spans and can no longer carry uncoded 16QAM at $10^{-12}$.
+For a 50 GBd signal with an OSNR of 20 dB (a linear ratio of 100), the electrical SNR in the symbol bandwidth and the resulting rms EVM are
+
+$$\text{SNR} = 100 \times \frac{12.5}{50} = 25\ (13.98\ \text{dB}), \qquad \text{EVM} = \frac{1}{\sqrt{25}} = 0.20\ (20\%)$$
+
+That 20 percent EVM lies within the QPSK limit of 26.9 percent at $10^{-4}$ and far outside the 16QAM limit of 12.3 percent. The OSNR that 16QAM needs for $10^{-12}$ is the SNR of 23.88 dB plus the bandwidth ratio $10\log_{10}(50/12.5) = 6.02$ dB, which is 29.9 dB. Every doubling of the number of amplified spans costs 3.01 dB of OSNR, so a link with 29.9 dB after $N$ spans has 26.9 dB after $2N$ spans and can no longer carry uncoded 16QAM at $10^{-12}$.
 
 ### Chromatic Dispersion of a Link
 
-A 50 GBd signal occupies about 50 GHz, which is $\Delta\lambda = \lambda^2\Delta f/c = (1.55\ \mu\text{m})^2(50\ \text{GHz})/c = 0.40$ nm. At 80 km the accumulated dispersion is $DL = 17 \times 80 = 1{,}360$ ps/nm, and the delay spread is $\Delta\tau = 1360 \times 0.40 = 545$ ps, which is 27 symbol periods of 20 ps. A converter that samples every 10 ps (twice per symbol) sees a response that spans 54 samples, so the compensating FIR filter needs about 54 taps. At 1,000 km the spread is 6.8 ns, which is 341 symbols, and the filter needs about 680 taps. A signal without compensation is unreadable, because each symbol overlaps dozens of its neighbors, and a filter of this size is routine for a digital receiver.
+A 50 GBd signal occupies an optical bandwidth of about $\Delta f = 50$ GHz around $\lambda = 1.55\ \mu\text{m}$, giving the wavelength span
+
+$$\Delta\lambda = \frac{\lambda^2\,\Delta f}{c} = \frac{(1.55\ \mu\text{m})^2(50\ \text{GHz})}{c} = 0.40\ \text{nm}$$
+
+Over an 80 km span with $D = 17$ ps/(nm km), the accumulated dispersion and differential delay spread are
+
+$$DL = 17 \times 80 = 1{,}360\ \text{ps/nm}, \qquad \Delta\tau = 1{,}360 \times 0.40 = 545\ \text{ps}$$
+
+A 545 ps spread spans 27 symbol periods of 20 ps. A converter that samples every 10 ps (twice per symbol) sees a response that spans 54 samples, so the compensating FIR filter needs about 54 taps. At 1,000 km the spread is 6.8 ns, which is 341 symbols, and the filter needs about 680 taps. A signal without compensation is unreadable, because each symbol overlaps dozens of its neighbors, and a filter of this size is routine for a digital receiver.
 
 ### Phase Noise and Its Contribution to EVM
 
@@ -193,4 +207,4 @@ A cycle slip of the carrier loop ([Chapter 17](17_CDR_and_PLL_Loop_Dynamics.md) 
 The question of [Chapter 1: Wave Propagation and Transmission Lines](01_Wave_Propagation_and_Transmission_Lines.md) was how a wave travels along a trace and how much of it reaches the end. The same question closes here for a wave of light in glass: the amplitude and phase that arrive carry the data, the channel distorts them in ways that can be modeled, and a measurement quantifies how much margin remains. The tools carry over from the copper trace to the fiber because the physics is the same: the field equations, the impedance and reflection, the spectrum of a modulated signal, the Gaussian noise tail, and the limits of equalization that each chapter derived from them.
 
 ---
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>

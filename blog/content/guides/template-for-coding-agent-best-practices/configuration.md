@@ -1,6 +1,6 @@
 # Template for Coding Agent Best Practices
 
-<!-- SUMMARY: An architecture walkthrough of the operating layer around a coding agent: always-on rules, on-demand skills, context-isolated subagents, deterministic hooks and linters, and file-based session state. The configuration enforces critical constraints in code rather than prompts, keeps context lean across long efforts, and lives in version control so any team can reproduce it. -->
+<!-- SUMMARY: A complete configuration walkthrough of the operating layer around a coding agent. Commit-tracked rules, on-demand skills, and context-isolated subagents pair with deterministic hooks, linters, and file-based session state. The configuration enforces mandatory constraints in code rather than prompts, keeps context lean across long efforts, and lives in version control for team reproducibility. -->
 
 The [AI Tooling series](series-ai-tooling.html) surveys the coding agents, protocols, and runtime services that make up an AI development environment, and the five configurations in the [Guides collection](index.html#tab-guides) wire those services into working stacks. Every one of those stacks places a coding agent at its interactive center, yet none of them configures the agent itself.
 

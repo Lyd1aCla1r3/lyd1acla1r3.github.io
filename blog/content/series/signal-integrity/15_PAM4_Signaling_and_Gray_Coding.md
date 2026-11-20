@@ -1,8 +1,8 @@
 # PAM4 Signaling and Gray Coding
 
-<!-- SUMMARY: Four-level pulse amplitude modulation (PAM4) encodes two bits per symbol across four voltage levels to halve the channel Nyquist frequency. Dividing the peak voltage swing into three eyes introduces a -9.54 dB amplitude margin penalty, requiring three-slicer thermometer decoding, Gray coding to halve adjacent-threshold bit errors, and forward error correction. -->
+<!-- SUMMARY: Four-level pulse amplitude modulation (PAM4) encodes two bits per symbol across four voltage levels to halve the channel Nyquist frequency. The three-eye voltage partition introduces a -9.54 dB amplitude margin penalty that requires three-slicer thermometer decoding, Gray coding to halve adjacent-threshold bit errors, and forward error correction. -->
 
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>
 
 [Chapter 14: Continuous Time Linear Equalization and Decision Feedback Equalization](14_CTLE_and_DFE.md) describes the receiver equalizers that restore the amplitude and the shape of a pulse after the channel. The equalizers cannot restore energy that the channel has converted to heat, and the loss grows with frequency as [Chapter 5: Skin Effect and Dielectric Loss](05_Skin_Effect_and_Dielectric_Loss.md) derives. A higher symbol rate therefore costs insertion loss at a higher Nyquist frequency, and at some rate the loss exceeds what the transmitter and receiver can compensate.
 
@@ -24,7 +24,11 @@ Three quantities describe the speed of a serial link, and they are easily confus
 
 $$\text{data rate} = R_s\log_2 M$$
 
-NRZ has $M = 2$ and one bit per symbol, so the data rate in bits per second equals the symbol rate in baud. PAM4 has $M = 4$ and two bits per symbol, so the data rate is twice the symbol rate, and the unit interval of a PAM4 link is the reciprocal of the symbol rate and not of the bit rate: a 64 Gbps PAM4 link has $UI = 1/(32\ \text{GBd}) = 31.25$ ps, whereas a 64 Gbps NRZ link would need $UI = 15.625$ ps.
+NRZ has $M = 2$ and one bit per symbol, so the data rate in bits per second equals the symbol rate in baud. PAM4 has $M = 4$ and two bits per symbol, so the data rate is twice the symbol rate. The unit interval of a PAM4 link is the reciprocal of the symbol rate rather than the bit rate, so a 64 Gbps PAM4 link at 32 GBd has
+
+$$UI = \frac{1}{32\ \text{GBd}} = 31.25\ \text{ps}$$
+
+A 64 Gbps NRZ link requires $UI = 15.625$ ps.
 
 [Chapter 2: Frequency Content of Digital Signals](02_Frequency_Content_of_Digital_Signals.md) defines the Nyquist frequency as half the symbol rate, the fundamental frequency of the fastest alternating pattern. The definition applies without change to PAM4, because the fastest alternation of a multilevel signal is one in which the level changes at every symbol, for instance $+3, -3, +3, -3$, which completes one cycle every two symbols. A pattern that cycles through all four levels, $+3, +1, -1, -3$, repeats only every four symbols and has the lower fundamental $R_s/4$, so it is not the fastest pattern. The Nyquist frequency is $R_s/2$ for both signaling schemes, and the comparison that matters for the channel is the symbol rate:
 
@@ -66,7 +70,9 @@ An inner PAM4 level has a threshold on each side and an outer level has one. Tak
 
 $$\mathrm{SER} = 3 \times \tfrac12\,Q\!\left(\frac{d}{\sigma}\right) = 1.5\,Q\!\left(\frac{A}{3\sigma}\right)$$
 
-The inner symbols have two neighbors and an error ratio of $2Q$ each, the outer symbols have one neighbor and an error ratio of $Q$ each, and the average over four symbols is $(2 \times 2Q + 2 \times Q)/4 = 1.5Q$, which agrees. The number of bit errors per symbol error depends on the code and is derived in the next sections. With Gray coding each adjacent-level error flips one of the two bits, and the bit error ratio is $\mathrm{BER} = \mathrm{SER}/2 = 0.75\,Q(A/(3\sigma))$.
+The inner symbols have two neighbors and an error ratio of $2Q$ each, the outer symbols have one neighbor and an error ratio of $Q$ each, and the average over four symbols is $(2 \times 2Q + 2 \times Q)/4 = 1.5Q$, which agrees. The number of bit errors per symbol error depends on the code and is derived in the next sections. With Gray coding each adjacent-level error flips one of the two bits, giving the bit error ratio
+
+$$\mathrm{BER} = \frac{\mathrm{SER}}{2} = 0.75\,Q\!\left(\frac{A}{3\sigma}\right)$$
 
 The required noise follows from this expression. For a target $p$ the half-interval must be $z_p$ standard deviations, with $0.75\,Q(z_p) = p$. The values below use the Q function of that chapter, and the NRZ column is its table. They assume the same peak swing and the same Gaussian noise for both signals:
 
@@ -109,7 +115,11 @@ $$\tfrac12 Q \times 2 + \tfrac12 Q \times 1 + \tfrac12 Q \times 1 = 2Q, \qquad \
 | `-1` | `0-0-1` | `0-1` |
 | `-3` | `0-0-0` | `0-0` |
 
-Every adjacent-level error changes one bit, and the number of bit errors per symbol is $\tfrac12 Q \times 3 = 1.5Q$, so $\mathrm{BER}_{Gray} = 1.5Q/2 = 0.75Q$. Gray coding lowers the bit error ratio by one quarter compared with natural binary mapping, a factor of $4/3$. The reduction is a measurable gain and a modest one, and it comes from the middle threshold alone, which causes two bit errors with natural binary and one with Gray.
+Every adjacent-level error changes one bit, so the expected bit error count per symbol and the Gray-coded bit error ratio are
+
+$$\tfrac12 Q \times 3 = 1.5Q, \qquad \mathrm{BER}_{Gray} = \frac{1.5Q}{2} = 0.75Q$$
+
+Gray coding lowers the bit error ratio by one quarter compared with natural binary mapping, a factor of $4/3$. The reduction is a measurable gain and a modest one, and it comes from the middle threshold alone, which causes two bit errors with natural binary and one with Gray.
 
 The assignment also divides the errors between the two bits. The first (most significant) bit is 1 for the top two levels and 0 for the bottom two, and it changes only across the middle threshold. The second (least significant) bit is 0 for the two outer levels and 1 for the inner levels, and it changes across the upper and the lower threshold.
 
@@ -198,4 +208,4 @@ The numbers of the 12 inch line show the effect. Take $A = 200$ mV and the curso
 
 The NRZ eye closes at a cursor sum of 1, and the PAM4 eyes close at a cursor sum of 1/3. The receiver therefore needs to cancel interference much more completely than for NRZ, and this requirement is the reason that the equalization of [Chapter 14](14_CTLE_and_DFE.md) is applied to its full extent in PAM4 links.
 
-<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Ebook here.</a></em></p>
+<p><em>Prefer to read this offline? <a href="../assets/docs/signal-integrity-vol2-ebook-v1.0.pdf" target="_blank" rel="noopener">Download the complete, formatting-optimized Signal Integrity Volume 2 Ebook here.</a></em></p>

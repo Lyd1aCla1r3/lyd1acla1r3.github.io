@@ -117,6 +117,37 @@
     @media (max-width: 768px) {
       .blog-post table:not(.trace-container table) { overflow-x: auto; }
     }
+    /* Signal Integrity series tables: clean KaTeX math rendering, no pill-badge wrapping, and hidden MathML node */
+    .blog-post.series-signal-integrity table:not(.trace-container table) {
+      table-layout: auto;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) th,
+    .blog-post.series-signal-integrity table:not(.trace-container table) td {
+      padding: 10px 14px;
+      vertical-align: middle;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      word-break: normal;
+      overflow-wrap: normal;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) .katex {
+      font-size: 1em;
+      white-space: nowrap;
+    }
+    .blog-post.series-signal-integrity table:not(.trace-container table) .katex-mathml {
+      display: none !important;
+    }
+    @media (min-width: 769px) {
+      .blog-post.series-signal-integrity table:not(.trace-container table) th:first-child:nth-last-child(2),
+      .blog-post.series-signal-integrity table:not(.trace-container table) td:first-child:nth-last-child(2) {
+        width: 32%;
+        max-width: 240px;
+      }
+      .blog-post.series-signal-integrity table:not(.trace-container table) th:first-child:not(:nth-last-child(2)),
+      .blog-post.series-signal-integrity table:not(.trace-container table) td:first-child:not(:nth-last-child(2)) {
+        max-width: 220px;
+      }
+    }
     
     /* Post Tabs */
     .post-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border-subtle); margin: var(--space-xl) 0 0 0; overflow-x: auto; scrollbar-width: none; }
@@ -158,7 +189,7 @@
     <div class="container">
 <nav aria-label="breadcrumb" class="breadcrumbs"><ol>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="index.html">Blog</a></li><li><a href="guide-rag-first-knowledge-system.html">Guides: RAG First Knowledge System</a></li><li aria-current="page">RAG-First Knowledge System: Setup Guide</li></ol></nav>
+    <li><a href="index.html">Blog</a></li><li><a href="guide-rag-first-knowledge-system.html">Guides: RAG-First Knowledge System</a></li><li aria-current="page">RAG-First Knowledge System: Setup Guide</li></ol></nav>
         <article class="blog-post ">
 <h1>RAG-First Knowledge System: Setup Guide</h1>
 <!-- SUMMARY: A step-by-step installation and configuration guide for assembling the RAG-First Knowledge System, covering LlamaIndex setup with Pinecone integration, LiteLLM gateway configuration for embedding and generation routing, Pinecone index provisioning, LlamaParse document parsing, Firecrawl web crawling, and Braintrust evaluation scoring, with integration wiring scripts and end-to-end verification steps. --><p>The <a href="rag-first-knowledge-system-configuration.html">Architecture and Configuration</a> chapter explains the rationale behind each component selection, the dual-pipeline ingestion and query design, and why upstream retrieval precision governs downstream answer quality. This setup guide provides the installation commands, gateway configuration files, Python ingestion and query scripts, and Braintrust evaluation checks needed to bring that architecture to a working state. Each step installs and verifies one layer in isolation before the wiring section connects the tools into an evaluated retrieval pipeline over both static files and live web properties.</p>

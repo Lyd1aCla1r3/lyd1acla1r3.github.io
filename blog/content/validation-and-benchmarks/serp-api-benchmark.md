@@ -1,6 +1,6 @@
 # Benchmarking SERP API Fidelity for AI Overviews
 
-<!-- SUMMARY: This benchmark measures how reliably four major SERP APIs detect and extract Google's AI Overviews, a non-deterministic generative block that standard API comparisons ignore. It reports detection yield and extraction richness across 50 queries and audits every saved raw response for silent parser failures to determine which providers can support retrieval-augmented generation pipelines that depend on AI Overview content. -->
+<!-- SUMMARY: An empirical benchmark measuring how reliably four major SERP APIs detect and extract Google AI Overviews, a non-deterministic generative block that standard API comparisons ignore. Detection yield, extraction richness across 50 queries, and raw-response parser audits identify which providers can ground retrieval-augmented generation pipelines. -->
 
 AI agents and RAG (Retrieval-Augmented Generation) pipelines that search the web for grounded facts usually rely on a SERP API (Search Engine Results Page Application Programming Interface) to scrape Google and return structured JSON.
 
